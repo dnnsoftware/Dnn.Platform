@@ -35,14 +35,6 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the type of LogEntry.
-        /// </summary>
-        /// <value>A LogType.</value>
-        /// -----------------------------------------------------------------------------
-        public LogType Type { get; private set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets the description of LogEntry.
         /// </summary>
         /// <value>A String.</value>
@@ -59,6 +51,14 @@ namespace DotNetNuke.Services.Installer.Log
                 return this._description;
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the type of LogEntry.
+        /// </summary>
+        /// <value>A LogType.</value>
+        /// -----------------------------------------------------------------------------
+        public LogType Type { get; private set; }
 
         public override string ToString()
         {

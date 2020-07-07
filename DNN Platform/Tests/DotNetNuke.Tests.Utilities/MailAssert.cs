@@ -27,6 +27,39 @@ namespace DotNetNuke.Tests.Utilities
             Assert.IsFalse(string.IsNullOrEmpty(contentLine));
         }
 
+        public static void FromLineContains(string expectedValue, string toAddress, string findByText)
+        {
+            string fromLine = FindEmailLineUsingRegex("From", GetEmailFileName(toAddress, findByText));
+
+            Assert.IsTrue(fromLine.Contains(expectedValue));
+        }
+
+        public static void MessageSent(string expectedValue, string toAddress, string message)
+        {
+            GetEmailFileName(toAddress, expectedValue);
+        }
+
+        public static void ReplyToLineContains(string expectedValue, string toAddress, string findByText)
+        {
+            string replyToLine = FindEmailLineUsingRegex("Reply-To", GetEmailFileName(toAddress, findByText));
+
+            Assert.IsTrue(replyToLine.Contains(expectedValue));
+        }
+
+        public static void SubjectLineContains(string expectedValue, string toAddress, string findByText)
+        {
+            string subjectLine = FindEmailLineUsingRegex("Subject", GetEmailFileName(toAddress, findByText));
+
+            Assert.IsTrue(subjectLine.Contains(expectedValue));
+        }
+
+        public static void ToLineContains(string expectedValue, string toAddress, string findByText)
+        {
+            string toLine = FindEmailLineUsingRegex("To", GetEmailFileName(toAddress, findByText));
+
+            Assert.IsTrue(toLine.Contains(expectedValue));
+        }
+
         private static string ConvertEmailContentFromBase64ToUnicode(string emailFileName)
         {
             string emailContent = File.ReadAllText(emailFileName);
@@ -99,39 +132,6 @@ namespace DotNetNuke.Tests.Utilities
             Assert.IsTrue(emailFileName != null, message + " The test was searching in: " + emailPath);
 
             return emailFileName;
-        }
-
-        public static void FromLineContains(string expectedValue, string toAddress, string findByText)
-        {
-            string fromLine = FindEmailLineUsingRegex("From", GetEmailFileName(toAddress, findByText));
-
-            Assert.IsTrue(fromLine.Contains(expectedValue));
-        }
-
-        public static void MessageSent(string expectedValue, string toAddress, string message)
-        {
-            GetEmailFileName(toAddress, expectedValue);
-        }
-
-        public static void ReplyToLineContains(string expectedValue, string toAddress, string findByText)
-        {
-            string replyToLine = FindEmailLineUsingRegex("Reply-To", GetEmailFileName(toAddress, findByText));
-
-            Assert.IsTrue(replyToLine.Contains(expectedValue));
-        }
-
-        public static void SubjectLineContains(string expectedValue, string toAddress, string findByText)
-        {
-            string subjectLine = FindEmailLineUsingRegex("Subject", GetEmailFileName(toAddress, findByText));
-
-            Assert.IsTrue(subjectLine.Contains(expectedValue));
-        }
-
-        public static void ToLineContains(string expectedValue, string toAddress, string findByText)
-        {
-            string toLine = FindEmailLineUsingRegex("To", GetEmailFileName(toAddress, findByText));
-
-            Assert.IsTrue(toLine.Contains(expectedValue));
         }
     }
 }

@@ -38,6 +38,5 @@ namespace DotNetNuke.Modules.Html.Components
     /// The <see cref="SettingsRepository{T}"/> used for storing and retrieving <see cref="HtmlModuleSettings"/>.
     /// </summary>
     public class HtmlModuleSettingsRepository : SettingsRepository<HtmlModuleSettings>
-    {
-    }
+    {}
 }

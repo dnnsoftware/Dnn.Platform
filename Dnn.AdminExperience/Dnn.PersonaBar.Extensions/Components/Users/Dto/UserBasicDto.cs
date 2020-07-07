@@ -20,10 +20,26 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         }
 
+        public UserBasicDto(UserInfo user)
+        {
+            this.UserId = user.UserID;
+            this.Username = user.Username;
+            this.Displayname = user.DisplayName;
+            this.Email = user.Email;
+            this.CreatedOnDate = user.CreatedOnDate;
+            this.IsDeleted = user.IsDeleted;
+            this.Authorized = user.Membership.Approved;
+            this.HasAgreedToTerms = user.HasAgreedToTerms;
+            this.RequestsRemoval = user.RequestsRemoval;
+            this.IsSuperUser = user.IsSuperUser;
+            this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
+        }
+
+        [DataMember(Name = "avatar")]
+        public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
+
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
-
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         [DataMember(Name = "userName")]
         public string Username { get; set; }
@@ -61,23 +77,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isAdmin")]
         public bool IsAdmin { get; set; }
 
-        [DataMember(Name = "avatar")]
-        public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
-
-        public UserBasicDto(UserInfo user)
-        {
-            this.UserId = user.UserID;
-            this.Username = user.Username;
-            this.Displayname = user.DisplayName;
-            this.Email = user.Email;
-            this.CreatedOnDate = user.CreatedOnDate;
-            this.IsDeleted = user.IsDeleted;
-            this.Authorized = user.Membership.Approved;
-            this.HasAgreedToTerms = user.HasAgreedToTerms;
-            this.RequestsRemoval = user.RequestsRemoval;
-            this.IsSuperUser = user.IsSuperUser;
-            this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
-        }
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public static UserBasicDto FromUserInfo(UserInfo user)
         {
@@ -96,6 +96,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 IsSuperUser = user.IsSuperUser
             };
         }
+
         public static UserBasicDto FromUserDetails(UserDetailDto user)
         {
             if (user == null) return null;

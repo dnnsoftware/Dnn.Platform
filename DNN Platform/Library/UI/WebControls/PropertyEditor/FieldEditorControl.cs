@@ -71,6 +71,27 @@ namespace DotNetNuke.UI.WebControls
 
         public event EditorCreatedEventHandler ItemCreated;
 
+        public event PropertyChangedEventHandler ItemDeleted;
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether all of the properties are Valid.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        public bool IsValid
+        {
+            get
+            {
+                if (!this._Validated)
+                {
+                    this.Validate();
+                }
+
+                return this._IsValid;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the DataSource that is bound to this control.
@@ -91,14 +112,6 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue("")]
         [Description("Enter the name of the field that is data bound to the Control.")]
         public string DataField { get; set; }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -186,25 +199,6 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool IsDirty { get; private set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether all of the properties are Valid.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
-        public bool IsValid
-        {
-            get
-            {
-                if (!this._Validated)
-                {
-                    this.Validate();
-                }
-
-                return this._IsValid;
-            }
-        }
 
         public LabelMode LabelMode { get; set; }
 
@@ -336,7 +330,13 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
-        public event PropertyChangedEventHandler ItemDeleted;
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -459,6 +459,99 @@ namespace DotNetNuke.UI.WebControls
         protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemAdded(e);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when an item is removed from a collection type property.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
+        {
+            this.OnItemDeleted(e);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when an item is added to a collection type property.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void OnItemAdded(PropertyEditorEventArgs e)
+        {
+            if (this.ItemAdded != null)
+            {
+                this.ItemAdded(this, e);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when the Editor is Created.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
+        {
+            if (this.ItemCreated != null)
+            {
+                this.ItemCreated(this, e);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when an item is removed from a collection type property.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
+        {
+            if (this.ItemDeleted != null)
+            {
+                this.ItemDeleted(this, e);
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (string.IsNullOrEmpty(this.CssClass))
+            {
+                this.CssClass = "dnnFormItem";
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when the Value of a Property changes.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void ValueChanged(object sender, PropertyEditorEventArgs e)
+        {
+            this.IsDirty = this.EditorInfoAdapter.UpdateValue(e);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when the Visibility of a Property changes.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void VisibilityChanged(object sender, PropertyEditorEventArgs e)
+        {
+            this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when an Item in the List Is Changed.
+        /// </summary>
+        /// <remarks>Raises an ItemChanged event.</remarks>
+        /// -----------------------------------------------------------------------------
+        protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
+        {
+            if (this.ItemChanged != null)
+            {
+                this.ItemChanged(this, e);
+            }
         }
 
         /// <summary>
@@ -791,99 +884,6 @@ namespace DotNetNuke.UI.WebControls
             }
 
             return visControl;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when an item is removed from a collection type property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
-        {
-            this.OnItemDeleted(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when an item is added to a collection type property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void OnItemAdded(PropertyEditorEventArgs e)
-        {
-            if (this.ItemAdded != null)
-            {
-                this.ItemAdded(this, e);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when the Editor is Created.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
-        {
-            if (this.ItemCreated != null)
-            {
-                this.ItemCreated(this, e);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when an item is removed from a collection type property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
-        {
-            if (this.ItemDeleted != null)
-            {
-                this.ItemDeleted(this, e);
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (string.IsNullOrEmpty(this.CssClass))
-            {
-                this.CssClass = "dnnFormItem";
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when the Value of a Property changes.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void ValueChanged(object sender, PropertyEditorEventArgs e)
-        {
-            this.IsDirty = this.EditorInfoAdapter.UpdateValue(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when the Visibility of a Property changes.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void VisibilityChanged(object sender, PropertyEditorEventArgs e)
-        {
-            this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when an Item in the List Is Changed.
-        /// </summary>
-        /// <remarks>Raises an ItemChanged event.</remarks>
-        /// -----------------------------------------------------------------------------
-        protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
-        {
-            if (this.ItemChanged != null)
-            {
-                this.ItemChanged(this, e);
-            }
         }
     }
 }

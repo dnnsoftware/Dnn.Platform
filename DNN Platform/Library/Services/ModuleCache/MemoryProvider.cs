@@ -35,21 +35,6 @@ namespace DotNetNuke.Services.ModuleCache
             return this.GetCacheKeys(tabModuleId).Count;
         }
 
-        private List<string> GetCacheKeys(int tabModuleId)
-        {
-            var keys = new List<string>();
-            IDictionaryEnumerator CacheEnum = CachingProvider.Instance().GetEnumerator();
-            while (CacheEnum.MoveNext())
-            {
-                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|")))
-                {
-                    keys.Add(CacheEnum.Key.ToString());
-                }
-            }
-
-            return keys;
-        }
-
         public override byte[] GetModule(int tabModuleId, string cacheKey)
         {
             return DataCache.GetCache<byte[]>(cacheKey);
@@ -74,6 +59,21 @@ namespace DotNetNuke.Services.ModuleCache
         public override void PurgeExpiredItems(int portalId)
         {
             // throw new NotSupportedException();
+        }
+
+        private List<string> GetCacheKeys(int tabModuleId)
+        {
+            var keys = new List<string>();
+            IDictionaryEnumerator CacheEnum = CachingProvider.Instance().GetEnumerator();
+            while (CacheEnum.MoveNext())
+            {
+                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|")))
+                {
+                    keys.Add(CacheEnum.Key.ToString());
+                }
+            }
+
+            return keys;
         }
     }
 }

@@ -73,6 +73,28 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            try
+            {
+                if (this._result == null)
+                {
+                    return;
+                }
+
+                var mvcString = this.RenderModule(this._result);
+                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
+                {
+                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
         private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
         {
             ModuleApplication moduleApplication = null;
@@ -205,28 +227,6 @@ namespace DotNetNuke.Web.Mvc
             }
 
             return moduleOutput;
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            try
-            {
-                if (this._result == null)
-                {
-                    return;
-                }
-
-                var mvcString = this.RenderModule(this._result);
-                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
-                {
-                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
     }
 }

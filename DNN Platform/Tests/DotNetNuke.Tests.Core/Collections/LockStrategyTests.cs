@@ -40,8 +40,6 @@ namespace DotNetNuke.Tests.Core.Collections
             }
         }
 
-        internal abstract ILockStrategy GetLockStrategy();
-
         [Test]
         [ExpectedException(typeof(LockRecursionException))]
         public void ReadAndWriteLockOnSameThreadThrows()
@@ -231,6 +229,8 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
         }
+
+        internal abstract ILockStrategy GetLockStrategy();
 
         protected virtual IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
         {

@@ -21,48 +21,6 @@ namespace Dnn.PersonaBar.Library.Model
         private string _parent;
 
         [DataMember]
-        public int MenuId { get; set; }
-
-        [DataMember]
-        public string Identifier { get; set; }
-
-        [DataMember]
-        public string ModuleName { get; set; }
-
-        [DataMember]
-        public string FolderName { get; set; }
-
-        [IgnoreDataMember]
-        public string Controller { get; set; }
-
-        [DataMember]
-        public string ResourceKey { get; set; }
-
-        [DataMember]
-        public string Path { get; set; }
-
-        [DataMember]
-        public string Link { get; set; }
-
-        [DataMember]
-        public string CssClass { get; set; }
-
-        [DataMember]
-        public string IconFile { get; set; }
-
-        [DataMember]
-        public int ParentId { get; set; }
-
-        [DataMember]
-        public int Order { get; set; }
-
-        [DataMember]
-        public bool AllowHost { get; set; }
-
-        [DataMember]
-        public bool Enabled { get; set; }
-
-        [DataMember]
         public string Parent
         {
             get
@@ -115,6 +73,48 @@ namespace Dnn.PersonaBar.Library.Model
                 return displayName;
             }
         }
+
+        [DataMember]
+        public int MenuId { get; set; }
+
+        [DataMember]
+        public string Identifier { get; set; }
+
+        [DataMember]
+        public string ModuleName { get; set; }
+
+        [DataMember]
+        public string FolderName { get; set; }
+
+        [IgnoreDataMember]
+        public string Controller { get; set; }
+
+        [DataMember]
+        public string ResourceKey { get; set; }
+
+        [DataMember]
+        public string Path { get; set; }
+
+        [DataMember]
+        public string Link { get; set; }
+
+        [DataMember]
+        public string CssClass { get; set; }
+
+        [DataMember]
+        public string IconFile { get; set; }
+
+        [DataMember]
+        public int ParentId { get; set; }
+
+        [DataMember]
+        public int Order { get; set; }
+
+        [DataMember]
+        public bool AllowHost { get; set; }
+
+        [DataMember]
+        public bool Enabled { get; set; }
 
         [DataMember]
         public string Settings { get; set; }

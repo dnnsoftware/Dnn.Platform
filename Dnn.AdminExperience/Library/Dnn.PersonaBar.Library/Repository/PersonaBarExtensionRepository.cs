@@ -42,16 +42,6 @@ namespace Dnn.PersonaBar.Library.Repository
             this.DeleteExtension(extension.Identifier);
         }
 
-        protected override Func<IPersonaBarExtensionRepository> GetFactory()
-        {
-            return () => new PersonaBarExtensionRepository();
-        }
-
-        private void ClearCache()
-        {
-            DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
-        }
-
         public void DeleteExtension(string identifier)
         {
             this._dataService.DeletePersonaBarExtension(identifier);
@@ -83,6 +73,16 @@ namespace Dnn.PersonaBar.Library.Repository
         public IList<PersonaBarExtension> GetExtensions(int menuId)
         {
             return this.GetExtensions().Where(t => t.MenuId == menuId).ToList();
+        }
+
+        protected override Func<IPersonaBarExtensionRepository> GetFactory()
+        {
+            return () => new PersonaBarExtensionRepository();
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
         }
     }
 }

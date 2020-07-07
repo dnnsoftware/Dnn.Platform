@@ -53,46 +53,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return GetCacheKeys(tabId).Count();
         }
 
-        internal static List<string> GetCacheKeys()
-        {
-            var keys = new List<string>();
-            IDictionaryEnumerator CacheEnum = Cache.GetEnumerator();
-            while (CacheEnum.MoveNext())
-            {
-                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix)))
-                {
-                    keys.Add(CacheEnum.Key.ToString());
-                }
-            }
-
-            return keys;
-        }
-
-        internal static List<string> GetCacheKeys(int tabId)
-        {
-            var keys = new List<string>();
-            IDictionaryEnumerator CacheEnum = Cache.GetEnumerator();
-            while (CacheEnum.MoveNext())
-            {
-                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, tabId.ToString(), "_")))
-                {
-                    keys.Add(CacheEnum.Key.ToString());
-                }
-            }
-
-            return keys;
-        }
-
-        private string GetCacheKey(string CacheKey)
-        {
-            if (string.IsNullOrEmpty(CacheKey))
-            {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
-            }
-
-            return string.Concat(cachePrefix, CacheKey);
-        }
-
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             object output = Cache[cacheKey];
@@ -146,6 +106,46 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
             context.Response.BinaryWrite(Encoding.Default.GetBytes(Cache[cacheKey].ToString()));
             return true;
+        }
+
+        internal static List<string> GetCacheKeys()
+        {
+            var keys = new List<string>();
+            IDictionaryEnumerator CacheEnum = Cache.GetEnumerator();
+            while (CacheEnum.MoveNext())
+            {
+                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix)))
+                {
+                    keys.Add(CacheEnum.Key.ToString());
+                }
+            }
+
+            return keys;
+        }
+
+        internal static List<string> GetCacheKeys(int tabId)
+        {
+            var keys = new List<string>();
+            IDictionaryEnumerator CacheEnum = Cache.GetEnumerator();
+            while (CacheEnum.MoveNext())
+            {
+                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, tabId.ToString(), "_")))
+                {
+                    keys.Add(CacheEnum.Key.ToString());
+                }
+            }
+
+            return keys;
+        }
+
+        private string GetCacheKey(string CacheKey)
+        {
+            if (string.IsNullOrEmpty(CacheKey))
+            {
+                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+            }
+
+            return string.Concat(cachePrefix, CacheKey);
         }
     }
 }

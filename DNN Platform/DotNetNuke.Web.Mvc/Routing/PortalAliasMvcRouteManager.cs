@@ -73,23 +73,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             return $"{GeneratePrefixString(count)}DesktopModules/MVC/{moduleFolderName}/{url}";
         }
 
-        private static string GeneratePrefixString(int count)
-        {
-            if (count == 0)
-            {
-                return string.Empty;
-            }
-
-            var prefix = string.Empty;
-
-            for (var i = count - 1; i >= 0; i--)
-            {
-                prefix = "{prefix" + i + "}/" + prefix;
-            }
-
-            return prefix;
-        }
-
         public void ClearCachedData()
         {
             this._prefixCounts = null;
@@ -109,15 +92,15 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             foreach (
                 var count in
-                    portals.Cast<PortalInfo>()
-                        .Select(
-                            portal =>
-                                PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
-                                    .Select(x => x.HTTPAlias))
-                        .Select(this.StripApplicationPath)
-                        .SelectMany(
-                            aliases =>
-                                aliases.Select(CalcAliasPrefixCount).Where(count => !segmentCounts1.Contains(count))))
+                portals.Cast<PortalInfo>()
+                    .Select(
+                        portal =>
+                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
+                                .Select(x => x.HTTPAlias))
+                    .Select(this.StripApplicationPath)
+                    .SelectMany(
+                        aliases =>
+                            aliases.Select(CalcAliasPrefixCount).Where(count => !segmentCounts1.Contains(count))))
             {
                 segmentCounts1.Add(count);
             }
@@ -126,6 +109,23 @@ namespace DotNetNuke.Web.Mvc.Routing
             this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
 
             return this._prefixCounts;
+        }
+
+        private static string GeneratePrefixString(int count)
+        {
+            if (count == 0)
+            {
+                return string.Empty;
+            }
+
+            var prefix = string.Empty;
+
+            for (var i = count - 1; i >= 0; i--)
+            {
+                prefix = "{prefix" + i + "}/" + prefix;
+            }
+
+            return prefix;
         }
 
         private static int CalcAliasPrefixCount(string alias)

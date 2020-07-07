@@ -26,11 +26,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             this._provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteNotificationType"), notificationTypeId);
         }
 
-        private static string GetFullyQualifiedName(string procedureName)
-        {
-            return Prefix + procedureName;
-        }
-
         public IDataReader GetNotificationType(int notificationTypeId)
         {
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetNotificationType"), notificationTypeId);
@@ -144,6 +139,11 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         public IDataReader GetToasts(int userId, int portalId)
         {
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetToasts"), userId, portalId);
+        }
+
+        private static string GetFullyQualifiedName(string procedureName)
+        {
+            return Prefix + procedureName;
         }
     }
 }

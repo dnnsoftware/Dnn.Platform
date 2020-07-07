@@ -141,370 +141,6 @@ namespace DotNetNuke.Services.FileSystem
             return folder;
         }
 
-        private static Regex WildcardToRegex(string pattern)
-        {
-            if (!pattern.Contains("*") && !pattern.Contains("?"))
-            {
-                pattern = "^" + pattern + ".*$";
-            }
-            else
-            {
-                pattern = "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
-            }
-
-            return RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase);
-        }
-
-        private static bool IsStandardFolderProviderType(FolderMappingInfo folderMappingInfo)
-        {
-            var compatibleTypes = new[] { "StandardFolderProvider", "SecureFolderProvider", "DatabaseFolderProvider" };
-            return compatibleTypes.Contains(folderMappingInfo.FolderProviderType);
-        }
-
-        private int AddFolderInternal(IFolderInfo folder)
-        {
-            // Check this is not a duplicate
-            var tmpfolder = this.GetFolder(folder.PortalID, folder.FolderPath);
-
-            if (tmpfolder != null && folder.FolderID == Null.NullInteger)
-            {
-                folder.FolderID = tmpfolder.FolderID;
-            }
-
-            if (folder.FolderID == Null.NullInteger)
-            {
-                var isVersioned = folder.IsVersioned;
-                var workflowId = folder.WorkflowID;
-
-                // Inherit some configuration from its Parent Folder
-                var parentFolder = this.GetParentFolder(folder.PortalID, folder.FolderPath);
-                var parentId = Null.NullInteger;
-                if (parentFolder != null)
-                {
-                    isVersioned = parentFolder.IsVersioned;
-                    workflowId = parentFolder.WorkflowID;
-                    parentId = parentFolder.FolderID;
-                }
-
-                folder.FolderPath = PathUtils.Instance.FormatFolderPath(folder.FolderPath);
-                folder.FolderID = DataProvider.Instance().AddFolder(
-                    folder.PortalID,
-                    folder.UniqueId,
-                    folder.VersionGuid,
-                    folder.FolderPath,
-                    folder.MappedPath,
-                    folder.StorageLocation,
-                    folder.IsProtected,
-                    folder.IsCached,
-                    folder.LastUpdated,
-                    this.GetCurrentUserId(),
-                    folder.FolderMappingID,
-                    isVersioned,
-                    workflowId,
-                    parentId);
-
-                // Refetch folder for logging
-                folder = this.GetFolder(folder.PortalID, folder.FolderPath);
-
-                this.AddLogEntry(folder, EventLogController.EventLogType.FOLDER_CREATED);
-
-                if (parentFolder != null)
-                {
-                    this.UpdateFolderInternal(parentFolder, false);
-                }
-                else
-                {
-                    this.UpdateParentFolder(folder.PortalID, folder.FolderPath);
-                }
-            }
-            else
-            {
-                var parentFolder = this.GetParentFolder(folder.PortalID, folder.FolderPath);
-                if (parentFolder != null)
-                {
-                    // Ensure that Parent Id is repaired
-                    folder.ParentID = parentFolder.FolderID;
-                }
-
-                this.UpdateFolderInternal(folder, false);
-            }
-
-            // Invalidate Cache
-            this.ClearFolderCache(folder.PortalID);
-
-            return folder.FolderID;
-        }
-
-        private bool GetOnlyUnmap(IFolderInfo folder)
-        {
-            if (folder == null || folder.ParentID == Null.NullInteger)
-            {
-                return true;
-            }
-
-            return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).FolderProviderType).SupportsMappedPaths &&
-                this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID;
-        }
-
-        private void UnmapFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
-        {
-            Requires.NotNull("folder", folder);
-
-            if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
-            {
-                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
-            }
-
-            this.DeleteFolder(folder.PortalID, folder.FolderPath);
-
-            // Notify folder deleted event
-            this.OnFolderDeleted(folder, this.GetCurrentUserId(), isCascadeDeleting);
-        }
-
-        private void DeleteFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
-        {
-            Requires.NotNull("folder", folder);
-
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
-
-            try
-            {
-                FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFolder(folder);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                throw new FolderProviderException(
-                    Localization.GetExceptionMessage(
-                        "DeleteFolderUnderlyingSystemError",
-                        "The underlying system threw an exception. The folder has not been deleted."),
-                    ex);
-            }
-
-            if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
-            {
-                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
-            }
-
-            this.DeleteFolder(folder.PortalID, folder.FolderPath);
-
-            // Notify folder deleted event
-            this.OnFolderDeleted(folder, this.GetCurrentUserId(), isCascadeDeleting);
-        }
-
-        private IFolderInfo GetParentFolder(int portalId, string folderPath)
-        {
-            if (!string.IsNullOrEmpty(folderPath))
-            {
-                var parentFolderPath = folderPath.Substring(0, folderPath.Substring(0, folderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
-                return this.GetFolder(portalId, parentFolderPath);
-            }
-
-            return null;
-        }
-
-        private IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, Regex regex, bool recursive)
-        {
-            var fileCollection =
-                CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, false, false));
-
-            var files = (from f in fileCollection where regex.IsMatch(f.FileName) select f).Cast<IFileInfo>().ToList();
-
-            if (recursive)
-            {
-                foreach (var subFolder in this.GetFolders(folder))
-                {
-                    if (FolderPermissionController.Instance.CanViewFolder(subFolder))
-                    {
-                        files.AddRange(this.SearchFiles(subFolder, regex, true));
-                    }
-                }
-            }
-
-            return files;
-        }
-
-        private IFolderInfo UpdateFolderInternal(IFolderInfo folder, bool clearCache)
-        {
-            Requires.NotNull("folder", folder);
-
-            DataProvider.Instance().UpdateFolder(
-                folder.PortalID,
-                folder.VersionGuid,
-                folder.FolderID,
-                PathUtils.Instance.FormatFolderPath(folder.FolderPath),
-                folder.StorageLocation,
-                folder.MappedPath,
-                folder.IsProtected,
-                folder.IsCached,
-                folder.LastUpdated,
-                this.GetCurrentUserId(),
-                folder.FolderMappingID,
-                folder.IsVersioned,
-                folder.WorkflowID,
-                folder.ParentID);
-
-            if (clearCache)
-            {
-                this.ClearFolderCache(folder.PortalID);
-            }
-
-            return folder;
-        }
-
-        private int FindFolderMappingId(MergedTreeItem item, int portalId)
-        {
-            if (item.ExistsInFolderMapping)
-            {
-                return item.FolderMappingID;
-            }
-
-            if (item.FolderPath.IndexOf('/') != item.FolderPath.LastIndexOf('/'))
-            {
-                var parentPath = item.FolderPath.Substring(0, item.FolderPath.TrimEnd('/').LastIndexOf('/') + 1);
-                var folder = this.GetFolder(portalId, parentPath);
-                if (folder != null)
-                {
-                    return folder.FolderMappingID;
-                }
-            }
-
-            return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
-        }
-
-        private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder, bool unmap)
-        {
-            Requires.NotNull("folder", folder);
-
-            if (UserSecurityController.Instance.HasFolderPermission(folder, "DELETE"))
-            {
-                var subfolders = this.GetFolders(folder);
-
-                var allSubFoldersHasBeenDeleted = true;
-
-                foreach (var subfolder in subfolders)
-                {
-                    if (!this.DeleteFolderRecursive(subfolder, notDeletedSubfolders, false, unmap || this.GetOnlyUnmap(subfolder)))
-                    {
-                        allSubFoldersHasBeenDeleted = false;
-                    }
-                }
-
-                var files = this.GetFiles(folder, false, true);
-                foreach (var file in files)
-                {
-                    if (unmap)
-                    {
-                        FileDeletionController.Instance.UnlinkFile(file);
-                    }
-                    else
-                    {
-                        FileDeletionController.Instance.DeleteFile(file);
-                    }
-
-                    this.OnFileDeleted(file, this.GetCurrentUserId(), true);
-                }
-
-                if (allSubFoldersHasBeenDeleted)
-                {
-                    if (unmap)
-                    {
-                        this.UnmapFolderInternal(folder, !isRecursiveDeletionFolder);
-                    }
-                    else
-                    {
-                        this.DeleteFolderInternal(folder, !isRecursiveDeletionFolder);
-                    }
-
-                    return true;
-                }
-            }
-
-            notDeletedSubfolders.Add(folder);
-            return false;
-        }
-
-        private string GetDefaultMappedPath(FolderMappingInfo folderMapping)
-        {
-            var defaultMappedPath = folderMapping.FolderMappingSettings[DefaultMappedPathSetting];
-            if (defaultMappedPath == null)
-            {
-                return string.Empty;
-            }
-
-            return defaultMappedPath.ToString();
-        }
-
-        private IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, bool allSubFolders)
-        {
-            Requires.NotNull("parentFolder", parentFolder);
-
-            if (allSubFolders)
-            {
-                var subFolders =
-                    this.GetFolders(parentFolder.PortalID)
-                        .Where(
-                            f =>
-                                f.FolderPath.StartsWith(
-                                    parentFolder.FolderPath,
-                                    StringComparison.InvariantCultureIgnoreCase));
-
-                return subFolders.Where(f => f.FolderID != parentFolder.FolderID);
-            }
-
-            return this.GetFolders(parentFolder.PortalID).Where(f => f.ParentID == parentFolder.FolderID);
-        }
-
-        private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
-        {
-            EventManager.Instance.OnFolderMoved(new FolderMovedEventArgs
-            {
-                FolderInfo = folderInfo,
-                UserId = userId,
-                OldFolderPath = oldFolderPath,
-            });
-        }
-
-        private void OnFolderRenamed(IFolderInfo folderInfo, int userId, string oldFolderName)
-        {
-            EventManager.Instance.OnFolderRenamed(new FolderRenamedEventArgs
-            {
-                FolderInfo = folderInfo,
-                UserId = userId,
-                OldFolderName = oldFolderName,
-            });
-        }
-
-        private void OnFolderDeleted(IFolderInfo folderInfo, int userId, bool isCascadeDeleting)
-        {
-            EventManager.Instance.OnFolderDeleted(new FolderDeletedEventArgs
-            {
-                FolderInfo = folderInfo,
-                UserId = userId,
-                IsCascadeDeletng = isCascadeDeleting,
-            });
-        }
-
-        private void OnFolderAdded(IFolderInfo folderInfo, int userId)
-        {
-            EventManager.Instance.OnFolderAdded(new FolderChangedEventArgs
-            {
-                FolderInfo = folderInfo,
-                UserId = userId,
-            });
-        }
-
-        private void OnFileDeleted(IFileInfo fileInfo, int userId, bool isCascadeDeleting)
-        {
-            EventManager.Instance.OnFileDeleted(new FileDeletedEventArgs
-            {
-                FileInfo = fileInfo,
-                UserId = userId,
-                IsCascadeDeleting = isCascadeDeleting,
-            });
-        }
-
         /// <summary>
         /// Creates a new folder in the given portal using the provided folder path.
         /// The same mapping than the parent folder will be used to create this folder. So this method have to be used only to create subfolders.
@@ -536,12 +172,6 @@ namespace DotNetNuke.Services.FileSystem
         public virtual void DeleteFolder(IFolderInfo folder)
         {
             this.DeleteFolderInternal(folder, false);
-        }
-
-        internal virtual bool IsValidFolderPath(string folderPath)
-        {
-            var illegalInFolderPath = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidPathChars()))), RegexOptions.Compiled);
-            return !illegalInFolderPath.IsMatch(folderPath) && !folderPath.TrimEnd('/', '\\').EndsWith(".");
         }
 
         public virtual void UnlinkFolder(IFolderInfo folder)
@@ -1160,28 +790,6 @@ namespace DotNetNuke.Services.FileSystem
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
-        private FolderPermissionCollection GetFolderPermissionsFromSyncData(int portalId, string relativePath)
-        {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-            FolderPermissionCollection permissions = null;
-            if (SyncFoldersData.ContainsKey(threadId))
-            {
-                if (SyncFoldersData[threadId].FolderPath == relativePath && SyncFoldersData[threadId].PortalId == portalId)
-                {
-                    return SyncFoldersData[threadId].Permissions;
-                }
-
-                permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
-                SyncFoldersData[threadId] = new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions };
-                return permissions;
-            }
-
-            permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
-            SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
-
-            return permissions;
-        }
-
         /// <summary>
         /// Sets folder permissions for administrator role to the given folder.
         /// </summary>
@@ -1228,6 +836,12 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return this.MoveFolder(folder, parentFolder);
+        }
+
+        internal virtual bool IsValidFolderPath(string folderPath)
+        {
+            var illegalInFolderPath = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidPathChars()))), RegexOptions.Compiled);
+            return !illegalInFolderPath.IsMatch(folderPath) && !folderPath.TrimEnd('/', '\\').EndsWith(".");
         }
 
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
@@ -2059,36 +1673,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void InitialiseSyncFoldersData(int portalId, string relativePath)
-        {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-            var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
-            if (SyncFoldersData.ContainsKey(threadId))
-            {
-                if (SyncFoldersData[threadId].FolderPath == relativePath && SyncFoldersData[threadId].PortalId == portalId)
-                {
-                    SyncFoldersData[threadId].Permissions = permissions;
-                }
-                else
-                {
-                    SyncFoldersData[threadId] = new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions };
-                }
-            }
-            else
-            {
-                SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
-            }
-        }
-
-        private void RemoveSyncFoldersData(string relativePath)
-        {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-            if (SyncFoldersData.ContainsKey(threadId))
-            {
-                SyncFoldersData.Remove(threadId);
-            }
-        }
-
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void RenameFolderInFileSystem(IFolderInfo folder, string newFolderPath)
         {
@@ -2255,6 +1839,422 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return IsStandardFolderProviderType(sourceFolderMapping) && IsStandardFolderProviderType(destinationFolderMapping);
+        }
+
+        private static Regex WildcardToRegex(string pattern)
+        {
+            if (!pattern.Contains("*") && !pattern.Contains("?"))
+            {
+                pattern = "^" + pattern + ".*$";
+            }
+            else
+            {
+                pattern = "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
+            }
+
+            return RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase);
+        }
+
+        private static bool IsStandardFolderProviderType(FolderMappingInfo folderMappingInfo)
+        {
+            var compatibleTypes = new[] { "StandardFolderProvider", "SecureFolderProvider", "DatabaseFolderProvider" };
+            return compatibleTypes.Contains(folderMappingInfo.FolderProviderType);
+        }
+
+        private int AddFolderInternal(IFolderInfo folder)
+        {
+            // Check this is not a duplicate
+            var tmpfolder = this.GetFolder(folder.PortalID, folder.FolderPath);
+
+            if (tmpfolder != null && folder.FolderID == Null.NullInteger)
+            {
+                folder.FolderID = tmpfolder.FolderID;
+            }
+
+            if (folder.FolderID == Null.NullInteger)
+            {
+                var isVersioned = folder.IsVersioned;
+                var workflowId = folder.WorkflowID;
+
+                // Inherit some configuration from its Parent Folder
+                var parentFolder = this.GetParentFolder(folder.PortalID, folder.FolderPath);
+                var parentId = Null.NullInteger;
+                if (parentFolder != null)
+                {
+                    isVersioned = parentFolder.IsVersioned;
+                    workflowId = parentFolder.WorkflowID;
+                    parentId = parentFolder.FolderID;
+                }
+
+                folder.FolderPath = PathUtils.Instance.FormatFolderPath(folder.FolderPath);
+                folder.FolderID = DataProvider.Instance().AddFolder(
+                    folder.PortalID,
+                    folder.UniqueId,
+                    folder.VersionGuid,
+                    folder.FolderPath,
+                    folder.MappedPath,
+                    folder.StorageLocation,
+                    folder.IsProtected,
+                    folder.IsCached,
+                    folder.LastUpdated,
+                    this.GetCurrentUserId(),
+                    folder.FolderMappingID,
+                    isVersioned,
+                    workflowId,
+                    parentId);
+
+                // Refetch folder for logging
+                folder = this.GetFolder(folder.PortalID, folder.FolderPath);
+
+                this.AddLogEntry(folder, EventLogController.EventLogType.FOLDER_CREATED);
+
+                if (parentFolder != null)
+                {
+                    this.UpdateFolderInternal(parentFolder, false);
+                }
+                else
+                {
+                    this.UpdateParentFolder(folder.PortalID, folder.FolderPath);
+                }
+            }
+            else
+            {
+                var parentFolder = this.GetParentFolder(folder.PortalID, folder.FolderPath);
+                if (parentFolder != null)
+                {
+                    // Ensure that Parent Id is repaired
+                    folder.ParentID = parentFolder.FolderID;
+                }
+
+                this.UpdateFolderInternal(folder, false);
+            }
+
+            // Invalidate Cache
+            this.ClearFolderCache(folder.PortalID);
+
+            return folder.FolderID;
+        }
+
+        private bool GetOnlyUnmap(IFolderInfo folder)
+        {
+            if (folder == null || folder.ParentID == Null.NullInteger)
+            {
+                return true;
+            }
+
+            return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).FolderProviderType).SupportsMappedPaths &&
+                this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID;
+        }
+
+        private void UnmapFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
+        {
+            Requires.NotNull("folder", folder);
+
+            if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
+            {
+                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
+            }
+
+            this.DeleteFolder(folder.PortalID, folder.FolderPath);
+
+            // Notify folder deleted event
+            this.OnFolderDeleted(folder, this.GetCurrentUserId(), isCascadeDeleting);
+        }
+
+        private void DeleteFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
+        {
+            Requires.NotNull("folder", folder);
+
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
+
+            try
+            {
+                FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFolder(folder);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                throw new FolderProviderException(
+                    Localization.GetExceptionMessage(
+                        "DeleteFolderUnderlyingSystemError",
+                        "The underlying system threw an exception. The folder has not been deleted."),
+                    ex);
+            }
+
+            if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
+            {
+                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
+            }
+
+            this.DeleteFolder(folder.PortalID, folder.FolderPath);
+
+            // Notify folder deleted event
+            this.OnFolderDeleted(folder, this.GetCurrentUserId(), isCascadeDeleting);
+        }
+
+        private IFolderInfo GetParentFolder(int portalId, string folderPath)
+        {
+            if (!string.IsNullOrEmpty(folderPath))
+            {
+                var parentFolderPath = folderPath.Substring(0, folderPath.Substring(0, folderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
+                return this.GetFolder(portalId, parentFolderPath);
+            }
+
+            return null;
+        }
+
+        private IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, Regex regex, bool recursive)
+        {
+            var fileCollection =
+                CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, false, false));
+
+            var files = (from f in fileCollection where regex.IsMatch(f.FileName) select f).Cast<IFileInfo>().ToList();
+
+            if (recursive)
+            {
+                foreach (var subFolder in this.GetFolders(folder))
+                {
+                    if (FolderPermissionController.Instance.CanViewFolder(subFolder))
+                    {
+                        files.AddRange(this.SearchFiles(subFolder, regex, true));
+                    }
+                }
+            }
+
+            return files;
+        }
+
+        private IFolderInfo UpdateFolderInternal(IFolderInfo folder, bool clearCache)
+        {
+            Requires.NotNull("folder", folder);
+
+            DataProvider.Instance().UpdateFolder(
+                folder.PortalID,
+                folder.VersionGuid,
+                folder.FolderID,
+                PathUtils.Instance.FormatFolderPath(folder.FolderPath),
+                folder.StorageLocation,
+                folder.MappedPath,
+                folder.IsProtected,
+                folder.IsCached,
+                folder.LastUpdated,
+                this.GetCurrentUserId(),
+                folder.FolderMappingID,
+                folder.IsVersioned,
+                folder.WorkflowID,
+                folder.ParentID);
+
+            if (clearCache)
+            {
+                this.ClearFolderCache(folder.PortalID);
+            }
+
+            return folder;
+        }
+
+        private int FindFolderMappingId(MergedTreeItem item, int portalId)
+        {
+            if (item.ExistsInFolderMapping)
+            {
+                return item.FolderMappingID;
+            }
+
+            if (item.FolderPath.IndexOf('/') != item.FolderPath.LastIndexOf('/'))
+            {
+                var parentPath = item.FolderPath.Substring(0, item.FolderPath.TrimEnd('/').LastIndexOf('/') + 1);
+                var folder = this.GetFolder(portalId, parentPath);
+                if (folder != null)
+                {
+                    return folder.FolderMappingID;
+                }
+            }
+
+            return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
+        }
+
+        private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder, bool unmap)
+        {
+            Requires.NotNull("folder", folder);
+
+            if (UserSecurityController.Instance.HasFolderPermission(folder, "DELETE"))
+            {
+                var subfolders = this.GetFolders(folder);
+
+                var allSubFoldersHasBeenDeleted = true;
+
+                foreach (var subfolder in subfolders)
+                {
+                    if (!this.DeleteFolderRecursive(subfolder, notDeletedSubfolders, false, unmap || this.GetOnlyUnmap(subfolder)))
+                    {
+                        allSubFoldersHasBeenDeleted = false;
+                    }
+                }
+
+                var files = this.GetFiles(folder, false, true);
+                foreach (var file in files)
+                {
+                    if (unmap)
+                    {
+                        FileDeletionController.Instance.UnlinkFile(file);
+                    }
+                    else
+                    {
+                        FileDeletionController.Instance.DeleteFile(file);
+                    }
+
+                    this.OnFileDeleted(file, this.GetCurrentUserId(), true);
+                }
+
+                if (allSubFoldersHasBeenDeleted)
+                {
+                    if (unmap)
+                    {
+                        this.UnmapFolderInternal(folder, !isRecursiveDeletionFolder);
+                    }
+                    else
+                    {
+                        this.DeleteFolderInternal(folder, !isRecursiveDeletionFolder);
+                    }
+
+                    return true;
+                }
+            }
+
+            notDeletedSubfolders.Add(folder);
+            return false;
+        }
+
+        private string GetDefaultMappedPath(FolderMappingInfo folderMapping)
+        {
+            var defaultMappedPath = folderMapping.FolderMappingSettings[DefaultMappedPathSetting];
+            if (defaultMappedPath == null)
+            {
+                return string.Empty;
+            }
+
+            return defaultMappedPath.ToString();
+        }
+
+        private IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, bool allSubFolders)
+        {
+            Requires.NotNull("parentFolder", parentFolder);
+
+            if (allSubFolders)
+            {
+                var subFolders =
+                    this.GetFolders(parentFolder.PortalID)
+                        .Where(
+                            f =>
+                                f.FolderPath.StartsWith(
+                                    parentFolder.FolderPath,
+                                    StringComparison.InvariantCultureIgnoreCase));
+
+                return subFolders.Where(f => f.FolderID != parentFolder.FolderID);
+            }
+
+            return this.GetFolders(parentFolder.PortalID).Where(f => f.ParentID == parentFolder.FolderID);
+        }
+
+        private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
+        {
+            EventManager.Instance.OnFolderMoved(new FolderMovedEventArgs
+            {
+                FolderInfo = folderInfo,
+                UserId = userId,
+                OldFolderPath = oldFolderPath,
+            });
+        }
+
+        private void OnFolderRenamed(IFolderInfo folderInfo, int userId, string oldFolderName)
+        {
+            EventManager.Instance.OnFolderRenamed(new FolderRenamedEventArgs
+            {
+                FolderInfo = folderInfo,
+                UserId = userId,
+                OldFolderName = oldFolderName,
+            });
+        }
+
+        private void OnFolderDeleted(IFolderInfo folderInfo, int userId, bool isCascadeDeleting)
+        {
+            EventManager.Instance.OnFolderDeleted(new FolderDeletedEventArgs
+            {
+                FolderInfo = folderInfo,
+                UserId = userId,
+                IsCascadeDeletng = isCascadeDeleting,
+            });
+        }
+
+        private void OnFolderAdded(IFolderInfo folderInfo, int userId)
+        {
+            EventManager.Instance.OnFolderAdded(new FolderChangedEventArgs
+            {
+                FolderInfo = folderInfo,
+                UserId = userId,
+            });
+        }
+
+        private void OnFileDeleted(IFileInfo fileInfo, int userId, bool isCascadeDeleting)
+        {
+            EventManager.Instance.OnFileDeleted(new FileDeletedEventArgs
+            {
+                FileInfo = fileInfo,
+                UserId = userId,
+                IsCascadeDeleting = isCascadeDeleting,
+            });
+        }
+
+        private FolderPermissionCollection GetFolderPermissionsFromSyncData(int portalId, string relativePath)
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            FolderPermissionCollection permissions = null;
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                if (SyncFoldersData[threadId].FolderPath == relativePath && SyncFoldersData[threadId].PortalId == portalId)
+                {
+                    return SyncFoldersData[threadId].Permissions;
+                }
+
+                permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
+                SyncFoldersData[threadId] = new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions };
+                return permissions;
+            }
+
+            permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
+            SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
+
+            return permissions;
+        }
+
+        private void InitialiseSyncFoldersData(int portalId, string relativePath)
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                if (SyncFoldersData[threadId].FolderPath == relativePath && SyncFoldersData[threadId].PortalId == portalId)
+                {
+                    SyncFoldersData[threadId].Permissions = permissions;
+                }
+                else
+                {
+                    SyncFoldersData[threadId] = new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions };
+                }
+            }
+            else
+            {
+                SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
+            }
+        }
+
+        private void RemoveSyncFoldersData(string relativePath)
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                SyncFoldersData.Remove(threadId);
+            }
         }
 
         /// <summary>

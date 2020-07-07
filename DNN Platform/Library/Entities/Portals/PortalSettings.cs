@@ -44,34 +44,6 @@ namespace DotNetNuke.Entities.Portals
             this.BuildPortalSettings(tabId, portal);
         }
 
-        public enum ControlPanelPermission
-        {
-            TabEditor,
-            ModuleEditor,
-        }
-
-        public enum Mode
-        {
-            View,
-            Edit,
-            Layout,
-        }
-
-        public enum PortalAliasMapping
-        {
-            None,
-            CanonicalUrl,
-            Redirect,
-        }
-
-        public enum UserDeleteAction
-        {
-            Off = 0,
-            Manual = 1,
-            DelayedHardDelete = 2,
-            HardDelete = 3,
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalSettings"/> class.
@@ -106,6 +78,34 @@ namespace DotNetNuke.Entities.Portals
             this.BuildPortalSettings(tabId, portal);
         }
 
+        public enum ControlPanelPermission
+        {
+            TabEditor,
+            ModuleEditor,
+        }
+
+        public enum Mode
+        {
+            View,
+            Edit,
+            Layout,
+        }
+
+        public enum PortalAliasMapping
+        {
+            None,
+            CanonicalUrl,
+            Redirect,
+        }
+
+        public enum UserDeleteAction
+        {
+            Off = 0,
+            Manual = 1,
+            DelayedHardDelete = 2,
+            HardDelete = 3,
+        }
+
         public static PortalSettings Current
         {
             get
@@ -114,38 +114,196 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
+        public bool ControlPanelVisible
+        {
+            get
+            {
+                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
+                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+            }
+        }
+
+        public string DefaultPortalAlias
+        {
+            get
+            {
+                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
+                {
+                    return alias.HTTPAlias;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public PortalAliasMapping PortalAliasMappingMode
+        {
+            get
+            {
+                return PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
+            }
+        }
+
+        /// <summary>Gets the currently logged in user identifier.</summary>
+        /// <value>The user identifier.</value>
+        public int UserId
+        {
+            get
+            {
+                if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
+                {
+                    return this.UserInfo.UserID;
+                }
+
+                return Null.NullInteger;
+            }
+        }
+
+        /// <summary>Gets the currently logged in user.</summary>
+        /// <value>The current user information.</value>
+        public UserInfo UserInfo
+        {
+            get
+            {
+                return UserController.Instance.GetCurrentUserInfo();
+            }
+        }
+
+        public Mode UserMode
+        {
+            get
+            {
+                Mode mode;
+                if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
+                {
+                    mode = this.DefaultControlPanelMode;
+                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + this.PortalId));
+                    switch (setting.ToUpper())
+                    {
+                        case "VIEW":
+                            mode = Mode.View;
+                            break;
+                        case "EDIT":
+                            mode = Mode.Edit;
+                            break;
+                        case "LAYOUT":
+                            mode = Mode.Layout;
+                            break;
+                    }
+                }
+                else
+                {
+                    mode = Mode.View;
+                }
+
+                return mode;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
+        /// </summary>
+        public bool IsLocked
+        {
+            get { return this.IsThisPortalLocked || Host.Host.IsLocked; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
+        /// </summary>
+        public bool IsThisPortalLocked
+        {
+            get { return PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false); }
+        }
+
+        public string PageHeadText
+        {
+            get
+            {
+                // For New Install
+                string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
+                string setting;
+                if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("PageHeadText", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    pageHead = (setting == "false") ? string.Empty : setting;
+                }
+
+                return pageHead;
+            }
+        }
+
+        /*
+         * add <a name="[moduleid]"></a> on the top of the module
+         *
+         * Desactivate this remove the html5 compatibility warnings
+         * (and make the output smaller)
+         *
+         */
+        public bool InjectModuleHyperLink
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", this.PortalId, true);
+            }
+        }
+
+        /*
+         * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
+         *
+
+         */
+        public string AddCompatibleHttpHeader
+        {
+            get
+            {
+                string CompatibleHttpHeader = "IE=edge";
+                string setting;
+                if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    CompatibleHttpHeader = (setting == "false") ? string.Empty : setting;
+                }
+
+                return CompatibleHttpHeader;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether if true then add a cachebuster parameter to generated file URI's.
+        /// </summary>
+        public bool AddCachebusterToResourceUris
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", this.PortalId, true);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether if this is true, then regular users can't send message to specific user/group.
+        /// </summary>
+        public bool DisablePrivateMessage
+        {
+            get
+            {
+                return PortalController.GetPortalSetting("DisablePrivateMessage", this.PortalId, "N") == "Y";
+            }
+        }
+
         public TabInfo ActiveTab { get; set; }
 
         public int AdministratorId { get; set; }
 
         public int AdministratorRoleId { get; set; }
-
-        private void BuildPortalSettings(int tabId, PortalInfo portal)
-        {
-            PortalSettingsController.Instance().LoadPortalSettings(this);
-
-            if (portal == null)
-            {
-                return;
-            }
-
-            PortalSettingsController.Instance().LoadPortal(portal, this);
-
-            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
-            var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
-            if (items != null && items.Contains(key))
-            {
-                this.ActiveTab = items[key] as TabInfo;
-            }
-            else
-            {
-                this.ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
-                if (items != null && this.ActiveTab != null)
-                {
-                    items[key] = this.ActiveTab;
-                }
-            }
-        }
 
         public string AdministratorRoleName { get; set; }
 
@@ -429,192 +587,7 @@ namespace DotNetNuke.Entities.Portals
 
         public int SMTPMaxIdleTime { get; internal set; }
 
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
-        }
-
-        public bool ControlPanelVisible
-        {
-            get
-            {
-                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
-                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
-            }
-        }
-
-        public string DefaultPortalAlias
-        {
-            get
-            {
-                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
-                {
-                    return alias.HTTPAlias;
-                }
-
-                return string.Empty;
-            }
-        }
-
-        public PortalAliasMapping PortalAliasMappingMode
-        {
-            get
-            {
-                return PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
-            }
-        }
-
-        /// <summary>Gets the currently logged in user identifier.</summary>
-        /// <value>The user identifier.</value>
-        public int UserId
-        {
-            get
-            {
-                if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-                {
-                    return this.UserInfo.UserID;
-                }
-
-                return Null.NullInteger;
-            }
-        }
-
-        /// <summary>Gets the currently logged in user.</summary>
-        /// <value>The current user information.</value>
-        public UserInfo UserInfo
-        {
-            get
-            {
-                return UserController.Instance.GetCurrentUserInfo();
-            }
-        }
-
-        public Mode UserMode
-        {
-            get
-            {
-                Mode mode;
-                if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-                {
-                    mode = this.DefaultControlPanelMode;
-                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + this.PortalId));
-                    switch (setting.ToUpper())
-                    {
-                        case "VIEW":
-                            mode = Mode.View;
-                            break;
-                        case "EDIT":
-                            mode = Mode.Edit;
-                            break;
-                        case "LAYOUT":
-                            mode = Mode.Layout;
-                            break;
-                    }
-                }
-                else
-                {
-                    mode = Mode.View;
-                }
-
-                return mode;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
-        /// </summary>
-        public bool IsLocked
-        {
-            get { return this.IsThisPortalLocked || Host.Host.IsLocked; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
-        /// </summary>
-        public bool IsThisPortalLocked
-        {
-            get { return PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false); }
-        }
-
         public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
-
-        public string PageHeadText
-        {
-            get
-            {
-                // For New Install
-                string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
-                string setting;
-                if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("PageHeadText", out setting))
-                {
-                    // Hack to store empty string portalsetting with non empty default value
-                    pageHead = (setting == "false") ? string.Empty : setting;
-                }
-
-                return pageHead;
-            }
-        }
-
-        /*
-         * add <a name="[moduleid]"></a> on the top of the module
-         *
-         * Desactivate this remove the html5 compatibility warnings
-         * (and make the output smaller)
-         *
-         */
-        public bool InjectModuleHyperLink
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", this.PortalId, true);
-            }
-        }
-
-        /*
-         * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
-         *
-
-         */
-        public string AddCompatibleHttpHeader
-        {
-            get
-            {
-                string CompatibleHttpHeader = "IE=edge";
-                string setting;
-                if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
-                {
-                    // Hack to store empty string portalsetting with non empty default value
-                    CompatibleHttpHeader = (setting == "false") ? string.Empty : setting;
-                }
-
-                return CompatibleHttpHeader;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether if true then add a cachebuster parameter to generated file URI's.
-        /// </summary>
-        public bool AddCachebusterToResourceUris
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", this.PortalId, true);
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether if this is true, then regular users can't send message to specific user/group.
-        /// </summary>
-        public bool DisablePrivateMessage
-        {
-            get
-            {
-                return PortalController.GetPortalSetting("DisablePrivateMessage", this.PortalId, "N") == "Y";
-            }
-        }
 
         /// <summary>
         /// Gets a value indicating whether if true then all users will be pushed through the data consent workflow.
@@ -875,6 +848,33 @@ namespace DotNetNuke.Entities.Portals
         public PortalSettings Clone()
         {
             return (PortalSettings)this.MemberwiseClone();
+        }
+
+        private void BuildPortalSettings(int tabId, PortalInfo portal)
+        {
+            PortalSettingsController.Instance().LoadPortalSettings(this);
+
+            if (portal == null)
+            {
+                return;
+            }
+
+            PortalSettingsController.Instance().LoadPortal(portal, this);
+
+            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
+            var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
+            if (items != null && items.Contains(key))
+            {
+                this.ActiveTab = items[key] as TabInfo;
+            }
+            else
+            {
+                this.ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
+                if (items != null && this.ActiveTab != null)
+                {
+                    items[key] = this.ActiveTab;
+                }
+            }
         }
     }
 }

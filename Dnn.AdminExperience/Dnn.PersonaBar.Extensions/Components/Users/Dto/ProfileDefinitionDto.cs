@@ -21,6 +21,29 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         }
 
+        public ProfileDefinitionDto(ProfilePropertyDefinition definition)
+        {
+            this.PropertyCategory = definition.PropertyCategory;
+            this.PropertyName = definition.PropertyName;
+            this.Required = definition.Required;
+            this.ValidationExpression = definition.ValidationExpression;
+            this.PropertyValue = definition.PropertyValue;
+            this.Visible = definition.Visible;
+            this.Length = definition.Length;
+
+            var dataTypeId = definition.DataType;
+            var listController = new ListController();
+            var dataTypes = listController.GetListEntryInfoDictionary("DataType");
+            if (dataTypes.Any(i => i.Value.EntryID == dataTypeId))
+            {
+                this.DataType = dataTypes.First(i => i.Value.EntryID == dataTypeId).Key.ToLowerInvariant().Substring(9);
+            }
+            else
+            {
+                this.DataType = "unknown";
+            }
+        }
+
         [DataMember(Name = "propertyCategory")]
         public string PropertyCategory { get; set; }
 
@@ -44,28 +67,5 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "length")]
         public int Length { get; set; }
-
-        public ProfileDefinitionDto(ProfilePropertyDefinition definition)
-        {
-            this.PropertyCategory = definition.PropertyCategory;
-            this.PropertyName = definition.PropertyName;
-            this.Required = definition.Required;
-            this.ValidationExpression = definition.ValidationExpression;
-            this.PropertyValue = definition.PropertyValue;
-            this.Visible = definition.Visible;
-            this.Length = definition.Length;
-
-            var dataTypeId = definition.DataType;
-            var listController = new ListController();
-            var dataTypes = listController.GetListEntryInfoDictionary("DataType");
-            if (dataTypes.Any(i => i.Value.EntryID == dataTypeId))
-            {
-                this.DataType = dataTypes.First(i => i.Value.EntryID == dataTypeId).Key.ToLowerInvariant().Substring(9);
-            }
-            else
-            {
-                this.DataType = "unknown";
-            }
-        }
     }
 }

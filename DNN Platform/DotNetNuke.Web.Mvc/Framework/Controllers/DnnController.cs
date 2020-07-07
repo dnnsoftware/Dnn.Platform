@@ -38,24 +38,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get { return (this.PortalSettings == null) ? null : this.PortalSettings.ActiveTab; }
         }
 
-        public Page DnnPage { get; set; }
-
-        public new DnnUrlHelper Url { get; set; }
-
-        public string LocalResourceFile { get; set; }
-
-        public ModuleActionCollection ModuleActions { get; set; }
-
-        public ModuleInstanceContext ModuleContext { get; set; }
-
         public PortalSettings PortalSettings
         {
             get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
-        }
-
-        public string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         public ActionResult ResultOfLastExecute
@@ -72,7 +57,22 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get { return (this.PortalSettings == null) ? null : this.PortalSettings.UserInfo; }
         }
 
+        public Page DnnPage { get; set; }
+
+        public new DnnUrlHelper Url { get; set; }
+
+        public string LocalResourceFile { get; set; }
+
+        public ModuleActionCollection ModuleActions { get; set; }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
+
         public ViewEngineCollection ViewEngineCollectionEx { get; set; }
+
+        public string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
 
         protected internal RedirectToRouteResult RedirectToDefaultRoute()
         {

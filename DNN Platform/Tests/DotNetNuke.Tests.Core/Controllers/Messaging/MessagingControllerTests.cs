@@ -130,83 +130,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.IsTrue(result);
         }
 
-        private void SetupDataProvider()
-        {
-            // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-
-            var dataTable = new DataTable("Languages");
-            var pkId = dataTable.Columns.Add("LanguageID", typeof(int));
-            dataTable.Columns.Add("CultureCode", typeof(string));
-            dataTable.Columns.Add("CultureName", typeof(string));
-            dataTable.Columns.Add("FallbackCulture", typeof(string));
-            dataTable.Columns.Add("CreatedByUserID", typeof(int));
-            dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
-            dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
-            dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            dataTable.PrimaryKey = new[] { pkId };
-            dataTable.Rows.Add(1, "en-US", "English (United States)", null, -1, "2011-05-04 09:42:11.530", -1, "2011-05-04 09:42:11.530");
-
-            this._dataProvider.Setup(x => x.GetLanguages()).Returns(dataTable.CreateDataReader());
-        }
-
-        private void SetupUsers()
-        {
-            this._adminUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Admin, UserID = Constants.UserID_Admin, Roles = new[] { Constants.RoleName_Administrators } };
-            this._hostUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Host, UserID = Constants.UserID_Host, IsSuperUser = true };
-            this._user12UserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_User12, UserID = Constants.UserID_User12 };
-            this._groupOwnerUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_FirstSocialGroupOwner, UserID = Constants.UserID_FirstSocialGroupOwner };
-        }
-
-        private void SetupPortalSettings()
-        {
-            var portalSettings = new PortalSettings
-            {
-                AdministratorRoleName = Constants.RoleName_Administrators,
-            };
-
-            this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
-        }
-
-        private void SetupCachingProvider()
-        {
-            this._mockCacheProvider.Setup(c => c.GetItem(It.IsAny<string>())).Returns<string>(key =>
-            {
-                if (key.Contains("Portal-1_"))
-                {
-                    var portals = new List<PortalInfo>();
-                    portals.Add(new PortalInfo() { PortalID = 0 });
-
-                    return portals;
-                }
-                else if (key.Contains("PortalGroups"))
-                {
-                    return new List<PortalGroupInfo>();
-                }
-
-                return null;
-            });
-        }
-
-        private void SetupRoleProvider()
-        {
-            var adminRoleInfoForAdministrators = new UserRoleInfo { RoleName = Constants.RoleName_Administrators, RoleID = Constants.RoleID_Administrators, UserID = Constants.UserID_Admin };
-            var adminRoleInfoforRegisteredUsers = new UserRoleInfo { RoleName = Constants.RoleName_RegisteredUsers, RoleID = Constants.RoleID_RegisteredUsers, UserID = Constants.UserID_User12 };
-            var user12RoleInfoforRegisteredUsers = new UserRoleInfo { RoleName = Constants.RoleName_RegisteredUsers, RoleID = Constants.RoleID_RegisteredUsers, UserID = Constants.UserID_User12 };
-            var userFirstSocialGroupOwner = new UserRoleInfo { RoleName = Constants.RoleName_FirstSocialGroup, RoleID = Constants.RoleID_FirstSocialGroup, UserID = Constants.UserID_FirstSocialGroupOwner, IsOwner = true };
-
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers });
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers });
-            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
-        }
-
-        private void SetupFileControllers()
-        {
-            this._folderManager.Setup(f => f.GetFolder(It.IsAny<int>())).Returns(new FolderInfo());
-            this._fileManager.Setup(f => f.GetFile(It.IsAny<int>())).Returns(new FileInfo());
-            this._folderPermissionController.Setup(f => f.CanViewFolder(It.IsAny<IFolderInfo>())).Returns(true);
-        }
-
         [Test]
         public void IncludeAttachments_Returns_True_When_MessagingIncludeAttachments_Setting_Is_YES()
         {
@@ -1442,6 +1365,83 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 NotificationTypeID = 1,
             };
             return message;
+        }
+
+        private void SetupDataProvider()
+        {
+            // Standard DataProvider Path for Logging
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+
+            var dataTable = new DataTable("Languages");
+            var pkId = dataTable.Columns.Add("LanguageID", typeof(int));
+            dataTable.Columns.Add("CultureCode", typeof(string));
+            dataTable.Columns.Add("CultureName", typeof(string));
+            dataTable.Columns.Add("FallbackCulture", typeof(string));
+            dataTable.Columns.Add("CreatedByUserID", typeof(int));
+            dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
+            dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
+            dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            dataTable.PrimaryKey = new[] { pkId };
+            dataTable.Rows.Add(1, "en-US", "English (United States)", null, -1, "2011-05-04 09:42:11.530", -1, "2011-05-04 09:42:11.530");
+
+            this._dataProvider.Setup(x => x.GetLanguages()).Returns(dataTable.CreateDataReader());
+        }
+
+        private void SetupUsers()
+        {
+            this._adminUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Admin, UserID = Constants.UserID_Admin, Roles = new[] { Constants.RoleName_Administrators } };
+            this._hostUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Host, UserID = Constants.UserID_Host, IsSuperUser = true };
+            this._user12UserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_User12, UserID = Constants.UserID_User12 };
+            this._groupOwnerUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_FirstSocialGroupOwner, UserID = Constants.UserID_FirstSocialGroupOwner };
+        }
+
+        private void SetupPortalSettings()
+        {
+            var portalSettings = new PortalSettings
+            {
+                AdministratorRoleName = Constants.RoleName_Administrators,
+            };
+
+            this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
+        }
+
+        private void SetupCachingProvider()
+        {
+            this._mockCacheProvider.Setup(c => c.GetItem(It.IsAny<string>())).Returns<string>(key =>
+            {
+                if (key.Contains("Portal-1_"))
+                {
+                    var portals = new List<PortalInfo>();
+                    portals.Add(new PortalInfo() { PortalID = 0 });
+
+                    return portals;
+                }
+                else if (key.Contains("PortalGroups"))
+                {
+                    return new List<PortalGroupInfo>();
+                }
+
+                return null;
+            });
+        }
+
+        private void SetupRoleProvider()
+        {
+            var adminRoleInfoForAdministrators = new UserRoleInfo { RoleName = Constants.RoleName_Administrators, RoleID = Constants.RoleID_Administrators, UserID = Constants.UserID_Admin };
+            var adminRoleInfoforRegisteredUsers = new UserRoleInfo { RoleName = Constants.RoleName_RegisteredUsers, RoleID = Constants.RoleID_RegisteredUsers, UserID = Constants.UserID_User12 };
+            var user12RoleInfoforRegisteredUsers = new UserRoleInfo { RoleName = Constants.RoleName_RegisteredUsers, RoleID = Constants.RoleID_RegisteredUsers, UserID = Constants.UserID_User12 };
+            var userFirstSocialGroupOwner = new UserRoleInfo { RoleName = Constants.RoleName_FirstSocialGroup, RoleID = Constants.RoleID_FirstSocialGroup, UserID = Constants.UserID_FirstSocialGroupOwner, IsOwner = true };
+
+            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers });
+            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers });
+            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
+        }
+
+        private void SetupFileControllers()
+        {
+            this._folderManager.Setup(f => f.GetFolder(It.IsAny<int>())).Returns(new FolderInfo());
+            this._fileManager.Setup(f => f.GetFile(It.IsAny<int>())).Returns(new FileInfo());
+            this._folderPermissionController.Setup(f => f.CanViewFolder(It.IsAny<IFolderInfo>())).Returns(true);
         }
 
         private void SetupDataTables()

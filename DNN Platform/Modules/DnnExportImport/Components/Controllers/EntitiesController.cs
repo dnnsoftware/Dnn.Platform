@@ -37,11 +37,6 @@ namespace Dnn.ExportImport.Components.Controllers
             return job;
         }
 
-        protected override Func<IEntitiesController> GetFactory()
-        {
-            return () => new EntitiesController();
-        }
-
         public IList<ExportImportJobLog> GetJobSummaryLog(int jobId)
         {
             return CBO.Instance.FillCollection<ExportImportJobLog>(this._dataProvider.GetJobSummaryLog(jobId));
@@ -192,6 +187,11 @@ namespace Dnn.ExportImport.Components.Controllers
                     SchedulingProvider.Instance().ReStart("Change made to schedule.");
                 }
             }
+        }
+
+        protected override Func<IEntitiesController> GetFactory()
+        {
+            return () => new EntitiesController();
         }
 
         private string GetSchedulerTypeFullName()

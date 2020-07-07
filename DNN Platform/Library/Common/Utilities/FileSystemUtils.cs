@@ -96,135 +96,6 @@ namespace DotNetNuke.Common.Utilities
             File.Copy(sourceFileName, destFileName, true);
         }
 
-        private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
-        {
-            var strMessage = string.Empty;
-            var fileManager = FileManager.Instance;
-
-            try
-            {
-                var file = fileManager.AddFile(folder, fileName, fileContent, overwrite, checkPermissions, contentType);
-                if (unzip && file.Extension == "zip")
-                {
-                    fileManager.UnzipFile(file, folder);
-                }
-            }
-            catch (PermissionsNotMetException)
-            {
-                strMessage += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
-            }
-            catch (NoSpaceAvailableException)
-            {
-                strMessage += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
-            }
-            catch (InvalidFileExtensionException)
-            {
-                strMessage += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                strMessage += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
-            }
-
-            return strMessage;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the filename for a file path.
-        /// </summary>
-        /// <param name="filePath">The full name of the file.</param>
-        /// -----------------------------------------------------------------------------
-        private static string GetFileName(string filePath)
-        {
-            return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, string.Empty);
-        }
-
-        private static int GetFolderPortalID(PortalSettings settings)
-        {
-            return (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
-        }
-
-        private static void RemoveOrphanedFiles(FolderInfo folder, int PortalId)
-        {
-            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(PortalId, "Database").FolderMappingID)
-            {
-                foreach (FileInfo objFile in FolderManager.Instance.GetFiles(folder))
-                {
-                    RemoveOrphanedFile(objFile, PortalId);
-                }
-            }
-        }
-
-        private static void RemoveOrphanedFile(FileInfo objFile, int PortalId)
-        {
-            FileManager.Instance.DeleteFile(objFile);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a Stream to the appropriate File Storage.
-        /// </summary>
-        /// <param name="objResponse">The Id of the File.</param>
-        /// <param name="objStream">The Input Stream.</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static void WriteStream(HttpResponse objResponse, Stream objStream)
-        {
-            // Buffer to read 10K bytes in chunk:
-            var bytBuffer = new byte[10000];
-
-            // Length of the file:
-            int intLength;
-
-            // Total bytes to read:
-            long lngDataToRead;
-            try
-            {
-                // Total bytes to read:
-                lngDataToRead = objStream.Length;
-
-                // Read the bytes.
-                while (lngDataToRead > 0)
-                {
-                    // Verify that the client is connected.
-                    if (objResponse.IsClientConnected)
-                    {
-                        // Read the data in buffer
-                        intLength = objStream.Read(bytBuffer, 0, 10000);
-
-                        // Write the data to the current output stream.
-                        objResponse.OutputStream.Write(bytBuffer, 0, intLength);
-
-                        // Flush the data to the HTML output.
-                        objResponse.Flush();
-
-                        lngDataToRead = lngDataToRead - intLength;
-                    }
-                    else
-                    {
-                        lngDataToRead = -1;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                objResponse.Write("Error : " + ex.Message);
-            }
-            finally
-            {
-                if (objStream != null)
-                {
-                    objStream.Close();
-                    objStream.Dispose();
-                }
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging)
@@ -520,6 +391,135 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return input.Trim().Replace("/", "\\");
+        }
+
+        private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
+        {
+            var strMessage = string.Empty;
+            var fileManager = FileManager.Instance;
+
+            try
+            {
+                var file = fileManager.AddFile(folder, fileName, fileContent, overwrite, checkPermissions, contentType);
+                if (unzip && file.Extension == "zip")
+                {
+                    fileManager.UnzipFile(file, folder);
+                }
+            }
+            catch (PermissionsNotMetException)
+            {
+                strMessage += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
+            }
+            catch (NoSpaceAvailableException)
+            {
+                strMessage += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+            }
+            catch (InvalidFileExtensionException)
+            {
+                strMessage += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                strMessage += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
+            }
+
+            return strMessage;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the filename for a file path.
+        /// </summary>
+        /// <param name="filePath">The full name of the file.</param>
+        /// -----------------------------------------------------------------------------
+        private static string GetFileName(string filePath)
+        {
+            return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, string.Empty);
+        }
+
+        private static int GetFolderPortalID(PortalSettings settings)
+        {
+            return (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
+        }
+
+        private static void RemoveOrphanedFiles(FolderInfo folder, int PortalId)
+        {
+            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(PortalId, "Database").FolderMappingID)
+            {
+                foreach (FileInfo objFile in FolderManager.Instance.GetFiles(folder))
+                {
+                    RemoveOrphanedFile(objFile, PortalId);
+                }
+            }
+        }
+
+        private static void RemoveOrphanedFile(FileInfo objFile, int PortalId)
+        {
+            FileManager.Instance.DeleteFile(objFile);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Writes a Stream to the appropriate File Storage.
+        /// </summary>
+        /// <param name="objResponse">The Id of the File.</param>
+        /// <param name="objStream">The Input Stream.</param>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static void WriteStream(HttpResponse objResponse, Stream objStream)
+        {
+            // Buffer to read 10K bytes in chunk:
+            var bytBuffer = new byte[10000];
+
+            // Length of the file:
+            int intLength;
+
+            // Total bytes to read:
+            long lngDataToRead;
+            try
+            {
+                // Total bytes to read:
+                lngDataToRead = objStream.Length;
+
+                // Read the bytes.
+                while (lngDataToRead > 0)
+                {
+                    // Verify that the client is connected.
+                    if (objResponse.IsClientConnected)
+                    {
+                        // Read the data in buffer
+                        intLength = objStream.Read(bytBuffer, 0, 10000);
+
+                        // Write the data to the current output stream.
+                        objResponse.OutputStream.Write(bytBuffer, 0, intLength);
+
+                        // Flush the data to the HTML output.
+                        objResponse.Flush();
+
+                        lngDataToRead = lngDataToRead - intLength;
+                    }
+                    else
+                    {
+                        lngDataToRead = -1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                objResponse.Write("Error : " + ex.Message);
+            }
+            finally
+            {
+                if (objStream != null)
+                {
+                    objStream.Close();
+                    objStream.Dispose();
+                }
+            }
         }
     }
 }

@@ -16,44 +16,11 @@ namespace DotNetNuke.UI.WebControls
         private string _styleSheetUrl = string.Empty;
         private string _theme = string.Empty;
 
-        public string Theme
-        {
-            get
-            {
-                return this._theme;
-            }
-
-            set
-            {
-                this._theme = value;
-            }
-        }
-
         public string ResourcesFolderUrl
         {
             get
             {
                 return Globals.ResolveUrl("~/Resources/");
-            }
-        }
-
-        public string StyleSheetUrl
-        {
-            get
-            {
-                if (this._styleSheetUrl.StartsWith("~"))
-                {
-                    return Globals.ResolveUrl(this._styleSheetUrl);
-                }
-                else
-                {
-                    return this._styleSheetUrl;
-                }
-            }
-
-            set
-            {
-                this._styleSheetUrl = value;
             }
         }
 
@@ -84,6 +51,39 @@ namespace DotNetNuke.UI.WebControls
             {
                 bool _IsAdmin = false;
                 return _IsAdmin;
+            }
+        }
+
+        public string Theme
+        {
+            get
+            {
+                return this._theme;
+            }
+
+            set
+            {
+                this._theme = value;
+            }
+        }
+
+        public string StyleSheetUrl
+        {
+            get
+            {
+                if (this._styleSheetUrl.StartsWith("~"))
+                {
+                    return Globals.ResolveUrl(this._styleSheetUrl);
+                }
+                else
+                {
+                    return this._styleSheetUrl;
+                }
+            }
+
+            set
+            {
+                this._styleSheetUrl = value;
             }
         }
 

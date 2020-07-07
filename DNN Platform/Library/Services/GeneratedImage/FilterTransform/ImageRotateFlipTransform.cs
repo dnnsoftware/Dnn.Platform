@@ -22,14 +22,14 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone.
-        /// </summary>
-        public RotateFlipType RotateFlip { get; set; }
-
-        /// <summary>
         /// Gets provides an Unique String for this transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.RotateFlip;
+
+        /// <summary>
+        /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone.
+        /// </summary>
+        public RotateFlipType RotateFlip { get; set; }
 
         /// <summary>
         /// Processes an input image applying a rotation image transformation.

@@ -35,6 +35,22 @@ namespace DotNetNuke.Services.Exceptions
         {
         }
 
+        public override string Message
+        {
+            get
+            {
+                string _Message = base.Message;
+                _Message += " Expecting - " + this.Type + ".";
+                _Message += " Returned - ";
+                foreach (string columnName in this.Columns)
+                {
+                    _Message += columnName + ", ";
+                }
+
+                return _Message;
+            }
+        }
+
         public List<string> Columns
         {
             get
@@ -58,22 +74,6 @@ namespace DotNetNuke.Services.Exceptions
             set
             {
                 this._Type = value;
-            }
-        }
-
-        public override string Message
-        {
-            get
-            {
-                string _Message = base.Message;
-                _Message += " Expecting - " + this.Type + ".";
-                _Message += " Returned - ";
-                foreach (string columnName in this.Columns)
-                {
-                    _Message += columnName + ", ";
-                }
-
-                return _Message;
             }
         }
     }

@@ -18,9 +18,6 @@ namespace Dnn.PersonaBar.Security.Components
             this.Notes = new List<string>();
         }
 
-        public SeverityEnum Severity { get; set; }
-        public string CheckName { get; set; }
-
         public string Reason
         {
             get
@@ -47,6 +44,9 @@ namespace Dnn.PersonaBar.Security.Components
                 return this.CheckName + " : " + Localization.GetString(this.CheckName + "Name", this.LocalResourceFile);
             }
         }
+
+        public SeverityEnum Severity { get; set; }
+        public string CheckName { get; set; }
 
         public IList<String> Notes { get; set; }
 

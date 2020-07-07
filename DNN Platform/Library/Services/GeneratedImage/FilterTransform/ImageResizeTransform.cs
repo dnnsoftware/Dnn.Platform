@@ -31,6 +31,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
+        /// Gets provides an Unique String for this transformation.
+        /// </summary>
+        [Browsable(false)]
+        public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
+
+        /// <summary>
         /// Gets or sets the resize mode. The default value is Fit.
         /// </summary>
         public ImageResizeMode Mode { get; set; }
@@ -124,12 +130,6 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Gets or sets the Backcolor.
         /// </summary>
         public Color BackColor { get; set; } = Color.White;
-
-        /// <summary>
-        /// Gets provides an Unique String for this transformation.
-        /// </summary>
-        [Browsable(false)]
-        public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
 
         /// <summary>
         /// Processes an input image applying a resize image transformation.

@@ -19,6 +19,14 @@ namespace DotNetNuke.Services.Journal
 
     public class JournalItem : IHydratable, IPropertyAccess
     {
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
         public int JournalId { get; set; }
 
         public int JournalTypeId { get; set; }
@@ -91,14 +99,6 @@ namespace DotNetNuke.Services.Journal
             set
             {
                 this.JournalId = value;
-            }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
             }
         }
 

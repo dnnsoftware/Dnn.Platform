@@ -36,22 +36,6 @@ namespace DotNetNuke.Collections.Internal
             this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy);
         }
 
-        private ReaderWriterLockSlim Lock
-        {
-            get
-            {
-                return this._lock ?? (this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy));
-            }
-        }
-
-        // Implement this method to serialize data. The method is called
-        // on serialization.
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            // Use the AddValue method to specify serialized values.
-            info.AddValue("_lockRecursionPolicy", this._lockRecursionPolicy, typeof(LockRecursionPolicy));
-        }
-
         ~ReaderWriterLockStrategy()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
@@ -82,6 +66,22 @@ namespace DotNetNuke.Collections.Internal
             {
                 return true;
             }
+        }
+
+        private ReaderWriterLockSlim Lock
+        {
+            get
+            {
+                return this._lock ?? (this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy));
+            }
+        }
+
+        // Implement this method to serialize data. The method is called
+        // on serialization.
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            // Use the AddValue method to specify serialized values.
+            info.AddValue("_lockRecursionPolicy", this._lockRecursionPolicy, typeof(LockRecursionPolicy));
         }
 
         public ISharedCollectionLock GetReadLock()

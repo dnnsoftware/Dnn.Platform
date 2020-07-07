@@ -75,82 +75,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(TermLeap.ToLowerInvariant(), synonyms[1]);
         }
 
-        private void SetupDataProvider()
-        {
-            // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-
-            this._dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
-
-            this._dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns<int, string>(this.GetPortalSettingsCallBack);
-
-            var dataTable = new DataTable("SynonymsGroups");
-            var pkId = dataTable.Columns.Add("SynonymsGroupID", typeof(int));
-            dataTable.Columns.Add("SynonymsTags", typeof(string));
-            dataTable.Columns.Add("CreatedByUserID", typeof(int));
-            dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
-            dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
-            dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            dataTable.Columns.Add("PortalID", typeof(int));
-
-            dataTable.PrimaryKey = new[] { pkId };
-
-            // Create some test data
-            var now = DateTime.Now;
-            dataTable.Rows.Add(1, string.Join(",", new[] { TermDNN, TermDotNetNuke }), 1, now, 1, now, 0);
-            dataTable.Rows.Add(2, string.Join(",", new[] { TermLaptop, TermNotebook }), 1, now, 1, now, 0);
-            dataTable.Rows.Add(3, string.Join(",", new[] { TermJump, TermLeap, TermHop }), 1, now, 1, now, 0);
-
-            this._dataProvider.Setup(x => x.GetAllSynonymsGroups(0, It.IsAny<string>())).Returns(dataTable.CreateDataReader());
-        }
-
-        private IDataReader GetPortalSettingsCallBack(int portalId, string culture)
-        {
-            var table = new DataTable("PortalSettings");
-
-            var cols = new string[]
-                           {
-                            "SettingName", "SettingValue", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
-                           };
-
-            foreach (var col in cols)
-            {
-                table.Columns.Add(col);
-            }
-
-            table.Rows.Add("SearchAdminInitialization", "true", "-1", DateTime.Now, "-1", DateTime.Now, CultureEnUs);
-
-            return table.CreateDataReader();
-        }
-
-        private IDataReader GetPortalsCallBack(string culture)
-        {
-            return this.GetPortalCallBack(PortalId0, CultureEnUs);
-        }
-
-        private IDataReader GetPortalCallBack(int portalId, string culture)
-        {
-            DataTable table = new DataTable("Portal");
-
-            var cols = new string[]
-                           {
-                               "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
-                               "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
-                               "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                               "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
-                           };
-
-            foreach (var col in cols)
-            {
-                table.Columns.Add(col);
-            }
-
-            var homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null, "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null, homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
-
-            return table.CreateDataReader();
-        }
-
         [Test]
         public void SearchHelper_Rephrase_NoWildCardButExact_1()
         {
@@ -388,6 +312,82 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.AreEqual(expected, analyzed);
+        }
+
+        private void SetupDataProvider()
+        {
+            // Standard DataProvider Path for Logging
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+
+            this._dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
+
+            this._dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns<int, string>(this.GetPortalSettingsCallBack);
+
+            var dataTable = new DataTable("SynonymsGroups");
+            var pkId = dataTable.Columns.Add("SynonymsGroupID", typeof(int));
+            dataTable.Columns.Add("SynonymsTags", typeof(string));
+            dataTable.Columns.Add("CreatedByUserID", typeof(int));
+            dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
+            dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
+            dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            dataTable.Columns.Add("PortalID", typeof(int));
+
+            dataTable.PrimaryKey = new[] { pkId };
+
+            // Create some test data
+            var now = DateTime.Now;
+            dataTable.Rows.Add(1, string.Join(",", new[] { TermDNN, TermDotNetNuke }), 1, now, 1, now, 0);
+            dataTable.Rows.Add(2, string.Join(",", new[] { TermLaptop, TermNotebook }), 1, now, 1, now, 0);
+            dataTable.Rows.Add(3, string.Join(",", new[] { TermJump, TermLeap, TermHop }), 1, now, 1, now, 0);
+
+            this._dataProvider.Setup(x => x.GetAllSynonymsGroups(0, It.IsAny<string>())).Returns(dataTable.CreateDataReader());
+        }
+
+        private IDataReader GetPortalSettingsCallBack(int portalId, string culture)
+        {
+            var table = new DataTable("PortalSettings");
+
+            var cols = new string[]
+                           {
+                            "SettingName", "SettingValue", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
+                           };
+
+            foreach (var col in cols)
+            {
+                table.Columns.Add(col);
+            }
+
+            table.Rows.Add("SearchAdminInitialization", "true", "-1", DateTime.Now, "-1", DateTime.Now, CultureEnUs);
+
+            return table.CreateDataReader();
+        }
+
+        private IDataReader GetPortalsCallBack(string culture)
+        {
+            return this.GetPortalCallBack(PortalId0, CultureEnUs);
+        }
+
+        private IDataReader GetPortalCallBack(int portalId, string culture)
+        {
+            DataTable table = new DataTable("Portal");
+
+            var cols = new string[]
+                           {
+                               "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
+                               "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
+                               "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
+                               "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
+                           };
+
+            foreach (var col in cols)
+            {
+                table.Columns.Add(col);
+            }
+
+            var homePage = 1;
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null, "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null, homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
+
+            return table.CreateDataReader();
         }
     }
 }

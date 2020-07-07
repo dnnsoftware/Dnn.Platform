@@ -206,36 +206,6 @@ namespace DotNetNuke.HttpModules.Membership
         {
         }
 
-        private void OnAuthenticateRequest(object sender, EventArgs e)
-        {
-            var application = (HttpApplication)sender;
-            AuthenticateRequest(new HttpContextWrapper(application.Context), false);
-        }
-
-        // DNN-6973: if the authentication cookie set by cookie slide in membership,
-        // then use SignIn method instead if current portal is in portal group.
-        private void OnPreSendRequestHeaders(object sender, EventArgs e)
-        {
-            var application = (HttpApplication)sender;
-
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
-                                    && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
-            if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
-            {
-                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
-                if (isInPortalGroup)
-                {
-                    var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
-                    if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
-                    {
-                        application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
-                        PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
-                    }
-                }
-            }
-        }
-
         private static bool RequireLogout(HttpContextBase context, UserInfo user)
         {
             try
@@ -266,6 +236,36 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 Logger.Error(ex);
                 return true;
+            }
+        }
+
+        private void OnAuthenticateRequest(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+            AuthenticateRequest(new HttpContextWrapper(application.Context), false);
+        }
+
+        // DNN-6973: if the authentication cookie set by cookie slide in membership,
+        // then use SignIn method instead if current portal is in portal group.
+        private void OnPreSendRequestHeaders(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
+                                    && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
+            if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
+            {
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
+                if (isInPortalGroup)
+                {
+                    var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
+                    if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
+                    {
+                        application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                        PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
+                    }
+                }
             }
         }
     }

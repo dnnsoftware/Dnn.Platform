@@ -111,22 +111,6 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private int GetPortalVersion(int portalId)
-        {
-            var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
-            int version;
-            if (int.TryParse(settingValue, out version))
-            {
-                if (version == 0)
-                {
-                    version = 1;
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.VersionKey, "1", true);
-                }
-            }
-
-            return version;
-        }
-
         /// POST: api/Servers/IncrementHostVersion
         /// <summary>
         /// Increment host resources management version.
@@ -209,6 +193,22 @@ namespace Dnn.PersonaBar.Servers.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private int GetPortalVersion(int portalId)
+        {
+            var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
+            int version;
+            if (int.TryParse(settingValue, out version))
+            {
+                if (version == 0)
+                {
+                    version = 1;
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.VersionKey, "1", true);
+                }
+            }
+
+            return version;
         }
 
         private void SaveCachingProvider(string cachingProvider)

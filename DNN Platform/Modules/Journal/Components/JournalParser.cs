@@ -28,29 +28,13 @@ namespace DotNetNuke.Modules.Journal.Components
     {
         private const string ResxPath = "~/DesktopModules/Journal/App_LocalResources/SharedResources.resx";
         private static readonly Regex CdataRegex = new Regex(@"\<\!\[CDATA\[(?<text>[^\]]*)\]\]\>", RegexOptions.Compiled);
+        private static readonly Regex TemplateRegex = new Regex("{CanComment}(.*?){/CanComment}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex BaseUrlRegex = new Regex("\\[BaseUrl\\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private readonly string url = string.Empty;
         private bool isAdmin;
         private bool isUnverifiedUser;
-
-        public int JournalId { get; set; }
-
-        protected INavigationManager NavigationManager { get; }
-
-        private PortalSettings PortalSettings { get; set; }
-
-        private int ProfileId { get; set; }
-
-        private int SocialGroupId { get; set; }
-
-        private int ModuleId { get; set; }
-
-        private UserInfo CurrentUser { get; set; }
-
-        private int OwnerPortalId { get; set; }
-        private static readonly Regex TemplateRegex = new Regex("{CanComment}(.*?){/CanComment}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex BaseUrlRegex = new Regex("\\[BaseUrl\\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo)
         {
@@ -79,6 +63,22 @@ namespace DotNetNuke.Modules.Journal.Components
                 this.url,
                 !HttpContext.Current.Request.Url.IsDefaultPort && !this.url.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
         }
+
+        public int JournalId { get; set; }
+
+        protected INavigationManager NavigationManager { get; }
+
+        private PortalSettings PortalSettings { get; set; }
+
+        private int ProfileId { get; set; }
+
+        private int SocialGroupId { get; set; }
+
+        private int ModuleId { get; set; }
+
+        private UserInfo CurrentUser { get; set; }
+
+        private int OwnerPortalId { get; set; }
 
         public string GetList(int currentIndex, int rows)
         {

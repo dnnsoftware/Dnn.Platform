@@ -20,9 +20,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     public class AspNetClientCapabilityProvider : ClientCapabilityProvider
     {
         private static readonly object _allCapabilitiesLock = new object();
-        private static IQueryable<IClientCapability> _allCapabilities;
 
         private static readonly object _allClientCapabilityValuesLock = new object();
+        private static IQueryable<IClientCapability> _allCapabilities;
         private static Dictionary<string, List<string>> _allClientCapabilityValues;
 
         private static IDictionary<string, int> _highPiorityCapabilityValues;

@@ -48,22 +48,6 @@ namespace DotNetNuke.Web.Mvp
 
         public ModuleInfo ModuleInfo { get; set; }
 
-        protected internal virtual bool AllowAnonymousAccess
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        protected internal virtual bool IsUserAuthorized
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         public bool IsEditable { get; set; }
 
         public bool IsPostBack { get; set; }
@@ -85,6 +69,22 @@ namespace DotNetNuke.Web.Mvp
         public Dictionary<string, string> Settings { get; set; }
 
         public Validator Validator { get; set; }
+
+        protected internal virtual bool AllowAnonymousAccess
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        protected internal virtual bool IsUserAuthorized
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public virtual void RestoreState(StateBag stateBag)
         {
@@ -130,20 +130,6 @@ namespace DotNetNuke.Web.Mvp
 
                 this.TabId = this.ModuleContext.TabId;
                 this.UserId = this.ModuleContext.PortalSettings.UserInfo.UserID;
-            }
-        }
-
-        private void InitializeInternal(object sender, EventArgs e)
-        {
-            this.LoadFromContext();
-            this.OnInit();
-        }
-
-        private void LoadInternal(object sender, EventArgs e)
-        {
-            if (this.CheckAuthPolicy())
-            {
-                this.OnLoad();
             }
         }
 
@@ -226,6 +212,20 @@ namespace DotNetNuke.Web.Mvp
                 }
 
                 this.View.ShowMessage(messageHeader, message, messageType);
+            }
+        }
+
+        private void InitializeInternal(object sender, EventArgs e)
+        {
+            this.LoadFromContext();
+            this.OnInit();
+        }
+
+        private void LoadInternal(object sender, EventArgs e)
+        {
+            if (this.CheckAuthPolicy())
+            {
+                this.OnLoad();
             }
         }
     }

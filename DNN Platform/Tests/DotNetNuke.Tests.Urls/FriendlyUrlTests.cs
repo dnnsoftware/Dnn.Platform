@@ -147,95 +147,6 @@ namespace DotNetNuke.Tests.Urls
             this.ExecuteTest("Improved", testFields);
         }
 
-        private void ExecuteTest(string test, Dictionary<string, string> testFields)
-        {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
-
-            this.SetDefaultAlias(testFields);
-
-            this.ExecuteTest(test, settings, testFields);
-        }
-
-        private void ExecuteTest(string test, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
-        {
-            var tabName = testFields["Page Name"];
-            var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
-            if (tab == null)
-            {
-                Assert.Fail($"TAB with name [{tabName}] is not found!");
-            }
-
-            this.ExecuteTestForTab(test, tab, settings, testFields);
-        }
-
-        private void ExecuteTestForTab(string test, TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
-        {
-            var httpAlias = testFields["Alias"];
-            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
-            var tabName = testFields["Page Name"];
-            var scheme = testFields["Scheme"];
-            var parameters = testFields["Params"];
-            var result = testFields["Expected Url"];
-            var customPage = testFields.GetValue("Custom Page Name", _defaultPage);
-            string vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
-
-            var httpAliasFull = scheme + httpAlias + "/";
-            var expectedResult = result.Replace("{alias}", httpAlias)
-                                        .Replace("{usealias}", defaultAlias)
-                                        .Replace("{tabName}", tabName)
-                                        .Replace("{tabId}", tab.TabID.ToString())
-                                        .Replace("{vanityUrl}", vanityUrl)
-                                        .Replace("{defaultPage}", _defaultPage);
-
-            if (!string.IsNullOrEmpty(parameters) && !parameters.StartsWith("&"))
-            {
-                parameters = "&" + parameters;
-            }
-
-            var userName = testFields.GetValue("UserName", string.Empty);
-            if (!string.IsNullOrEmpty(userName))
-            {
-                var user = UserController.GetUserByName(this.PortalId, userName);
-                if (user != null)
-                {
-                    expectedResult = expectedResult.Replace("{userId}", user.UserID.ToString());
-                    parameters = parameters.Replace("{userId}", user.UserID.ToString());
-                }
-            }
-
-            var baseUrl = httpAliasFull + "Default.aspx?TabId=" + tab.TabID + parameters;
-            string testUrl;
-            if (test == "Base")
-            {
-                testUrl = AdvancedFriendlyUrlProvider.BaseFriendlyUrl(
-                    tab,
-                    baseUrl,
-                    customPage,
-                    httpAlias,
-                    settings);
-            }
-            else
-            {
-                testUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
-                    tab,
-                    baseUrl,
-                    customPage,
-                    httpAlias,
-                    true,
-                    settings,
-                    Guid.Empty);
-            }
-
-            Assert.IsTrue(expectedResult.Equals(testUrl, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        private void UpdateTabName(int tabId, string newName)
-        {
-            var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
-            tab.TabName = newName;
-            TabController.Instance.UpdateTab(tab);
-        }
-
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_SpaceEncodingTestCases")]
         public void AdvancedUrlProvider_SpaceEncoding(Dictionary<string, string> testFields)
@@ -455,6 +366,95 @@ namespace DotNetNuke.Tests.Urls
             }
 
             this.ExecuteTest("Improved", settings, testFields);
+        }
+
+        private void ExecuteTest(string test, Dictionary<string, string> testFields)
+        {
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
+
+            this.SetDefaultAlias(testFields);
+
+            this.ExecuteTest(test, settings, testFields);
+        }
+
+        private void ExecuteTest(string test, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
+        {
+            var tabName = testFields["Page Name"];
+            var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
+            if (tab == null)
+            {
+                Assert.Fail($"TAB with name [{tabName}] is not found!");
+            }
+
+            this.ExecuteTestForTab(test, tab, settings, testFields);
+        }
+
+        private void ExecuteTestForTab(string test, TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
+        {
+            var httpAlias = testFields["Alias"];
+            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
+            var tabName = testFields["Page Name"];
+            var scheme = testFields["Scheme"];
+            var parameters = testFields["Params"];
+            var result = testFields["Expected Url"];
+            var customPage = testFields.GetValue("Custom Page Name", _defaultPage);
+            string vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
+
+            var httpAliasFull = scheme + httpAlias + "/";
+            var expectedResult = result.Replace("{alias}", httpAlias)
+                                        .Replace("{usealias}", defaultAlias)
+                                        .Replace("{tabName}", tabName)
+                                        .Replace("{tabId}", tab.TabID.ToString())
+                                        .Replace("{vanityUrl}", vanityUrl)
+                                        .Replace("{defaultPage}", _defaultPage);
+
+            if (!string.IsNullOrEmpty(parameters) && !parameters.StartsWith("&"))
+            {
+                parameters = "&" + parameters;
+            }
+
+            var userName = testFields.GetValue("UserName", string.Empty);
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var user = UserController.GetUserByName(this.PortalId, userName);
+                if (user != null)
+                {
+                    expectedResult = expectedResult.Replace("{userId}", user.UserID.ToString());
+                    parameters = parameters.Replace("{userId}", user.UserID.ToString());
+                }
+            }
+
+            var baseUrl = httpAliasFull + "Default.aspx?TabId=" + tab.TabID + parameters;
+            string testUrl;
+            if (test == "Base")
+            {
+                testUrl = AdvancedFriendlyUrlProvider.BaseFriendlyUrl(
+                    tab,
+                    baseUrl,
+                    customPage,
+                    httpAlias,
+                    settings);
+            }
+            else
+            {
+                testUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
+                    tab,
+                    baseUrl,
+                    customPage,
+                    httpAlias,
+                    true,
+                    settings,
+                    Guid.Empty);
+            }
+
+            Assert.IsTrue(expectedResult.Equals(testUrl, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private void UpdateTabName(int tabId, string newName)
+        {
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
+            tab.TabName = newName;
+            TabController.Instance.UpdateTab(tab);
         }
     }
 }

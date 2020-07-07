@@ -9,6 +9,5 @@ namespace DotNetNuke.Web.UI.WebControls
     using Telerik.Web.UI;
 
     internal class DnnMonthYearPicker : RadMonthYearPicker
-    {
-    }
+    {}
 }

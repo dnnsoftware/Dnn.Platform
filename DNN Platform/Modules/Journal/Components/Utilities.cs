@@ -76,6 +76,32 @@ namespace DotNetNuke.Modules.Journal.Components
             }
         }
 
+        public static string RemoveHTML(string sText)
+        {
+            if (string.IsNullOrEmpty(sText))
+            {
+                return string.Empty;
+            }
+
+            sText = HttpUtility.HtmlDecode(sText);
+            sText = HttpUtility.UrlDecode(sText);
+            sText = sText.Trim();
+            if (string.IsNullOrEmpty(sText))
+            {
+                return string.Empty;
+            }
+
+            sText = HtmlTextRegex.Replace(sText, string.Empty);
+            sText = HttpUtility.HtmlEncode(sText);
+            return sText;
+        }
+
+        public static bool AreFriends(UserInfo profileUser, UserInfo currentUser)
+        {
+            var friendsRelationShip = RelationshipController.Instance.GetFriendRelationship(profileUser, currentUser);
+            return friendsRelationShip != null && friendsRelationShip.Status == RelationshipStatus.Accepted;
+        }
+
         internal static Bitmap GetImageFromURL(string url)
         {
             string sImgName = string.Empty;
@@ -324,32 +350,6 @@ namespace DotNetNuke.Modules.Journal.Components
             }
 
             return sHTML;
-        }
-
-        public static string RemoveHTML(string sText)
-        {
-            if (string.IsNullOrEmpty(sText))
-            {
-                return string.Empty;
-            }
-
-            sText = HttpUtility.HtmlDecode(sText);
-            sText = HttpUtility.UrlDecode(sText);
-            sText = sText.Trim();
-            if (string.IsNullOrEmpty(sText))
-            {
-                return string.Empty;
-            }
-
-            sText = HtmlTextRegex.Replace(sText, string.Empty);
-            sText = HttpUtility.HtmlEncode(sText);
-            return sText;
-        }
-
-        public static bool AreFriends(UserInfo profileUser, UserInfo currentUser)
-        {
-            var friendsRelationShip = RelationshipController.Instance.GetFriendRelationship(profileUser, currentUser);
-            return friendsRelationShip != null && friendsRelationShip.Status == RelationshipStatus.Accepted;
         }
     }
 }

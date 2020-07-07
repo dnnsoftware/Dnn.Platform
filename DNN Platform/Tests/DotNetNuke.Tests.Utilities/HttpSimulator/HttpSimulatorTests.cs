@@ -54,31 +54,6 @@ namespace UnitTests.Subtext
             } // HttpContext.Current is set to null again.
         }
 
-        internal class TestHttpHandler : IHttpHandler
-        {
-            public bool IsReusable
-            {
-                get { return true; }
-            }
-
-            public void ProcessRequest(HttpContext context)
-            {
-                var physicalPath = context.Request.MapPath("/MyHandler.ashx");
-                var username = context.Request.Form["username"];
-                var id = context.Request.QueryString["id"];
-                if (context.Request.UrlReferrer == null)
-                {
-                    return;
-                }
-
-                var referer = context.Request.UrlReferrer.ToString();
-
-                // Imagine, if you will, a bunch of complex interesting
-                // and fascinating logic here.
-                context.Response.Write(physicalPath + ":" + username + ":" + id + ":" + referer);
-            }
-        }
-
         ////[Test]
         public void CanDispose()
         {
@@ -320,6 +295,31 @@ namespace UnitTests.Subtext
         public void CanStripTrailing()
         {
             Assert.AreEqual(@"c:\blah\blah2", HttpSimulatorTester.CallStripTrailingBackSlashes(@"c:\blah\blah2\"));
+        }
+
+        internal class TestHttpHandler : IHttpHandler
+        {
+            public bool IsReusable
+            {
+                get { return true; }
+            }
+
+            public void ProcessRequest(HttpContext context)
+            {
+                var physicalPath = context.Request.MapPath("/MyHandler.ashx");
+                var username = context.Request.Form["username"];
+                var id = context.Request.QueryString["id"];
+                if (context.Request.UrlReferrer == null)
+                {
+                    return;
+                }
+
+                var referer = context.Request.UrlReferrer.ToString();
+
+                // Imagine, if you will, a bunch of complex interesting
+                // and fascinating logic here.
+                context.Response.Write(physicalPath + ":" + username + ":" + id + ":" + referer);
+            }
         }
     }
 

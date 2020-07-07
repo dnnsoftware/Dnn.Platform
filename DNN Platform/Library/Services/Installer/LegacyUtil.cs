@@ -31,6 +31,7 @@ namespace DotNetNuke.Services.Installer
     public class LegacyUtil
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LegacyUtil));
+
         private static string AdminModules =
             "Adsense, MarketShare, Authentication, Banners, FeedExplorer, FileManager, HostSettings, Lists, LogViewer, Newsletters, PortalAliases, Portals, RecycleBin, Scheduler, SearchAdmin, SearchInput, SearchResults, Security, SiteLog, SiteWizard, SQL, Tabs, Vendors,";
 
@@ -139,99 +140,6 @@ namespace DotNetNuke.Services.Installer
             else
             {
                 package.License = Util.PACKAGE_NoLicense;
-            }
-        }
-
-        private static PackageInfo CreateSkinPackage(SkinPackageInfo skin)
-        {
-            // Create a Package
-            var package = new PackageInfo(new InstallerInfo());
-            package.Name = skin.SkinName;
-            package.FriendlyName = skin.SkinName;
-            package.Description = Null.NullString;
-            package.Version = new Version(1, 0, 0);
-            package.PackageType = skin.SkinType;
-            package.License = Util.PACKAGE_NoLicense;
-
-            // See if the Skin is using a Namespace (or is a known skin)
-            ParsePackageName(package);
-
-            return package;
-        }
-
-        private static void CreateSkinManifest(XmlWriter writer, string skinFolder, string skinType, string tempInstallFolder, string subFolder)
-        {
-            string skinName = Path.GetFileNameWithoutExtension(skinFolder);
-            var skin = new SkinPackageInfo();
-            skin.SkinName = skinName;
-            skin.SkinType = skinType;
-
-            // Create a Package
-            PackageInfo package = CreateSkinPackage(skin);
-
-            // Create a SkinPackageWriter
-            var skinWriter = new SkinPackageWriter(skin, package, tempInstallFolder, subFolder);
-            skinWriter.GetFiles(false);
-
-            // We need to reset the BasePath so it using the correct basePath rather than the Temp InstallFolder
-            skinWriter.SetBasePath();
-
-            // Writer package manifest fragment to writer
-            skinWriter.WriteManifest(writer, true);
-        }
-
-        private static void ProcessLegacySkin(string skinFolder, string skinType)
-        {
-            string skinName = Path.GetFileName(skinFolder);
-            if (skinName != "_default")
-            {
-                var skin = new SkinPackageInfo();
-                skin.SkinName = skinName;
-                skin.SkinType = skinType;
-
-                // Create a Package
-                PackageInfo package = CreateSkinPackage(skin);
-
-                // Create a SkinPackageWriter
-                var skinWriter = new SkinPackageWriter(skin, package);
-                skinWriter.GetFiles(false);
-
-                // Save the manifest
-                package.Manifest = skinWriter.WriteManifest(true);
-
-                // Save Package
-                PackageController.Instance.SaveExtensionPackage(package);
-
-                // Update Skin Package with new PackageID
-                skin.PackageID = package.PackageID;
-
-                // Save Skin Package
-                skin.SkinPackageID = SkinController.AddSkinPackage(skin);
-
-                foreach (InstallFile skinFile in skinWriter.Files.Values)
-                {
-                    if (skinFile.Type == InstallFileType.Ascx)
-                    {
-                        if (skinType == "Skin")
-                        {
-                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootSkin, Path.Combine(skin.SkinName, skinFile.FullName)));
-                        }
-                        else
-                        {
-                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootContainer, Path.Combine(skin.SkinName, skinFile.FullName)));
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void ParsePackageName(PackageInfo package, string separator)
-        {
-            // See if the Module is using a "Namespace" for its name
-            int ownerIndex = package.Name.IndexOf(separator);
-            if (ownerIndex > 0)
-            {
-                package.Owner = package.Name.Substring(0, ownerIndex);
             }
         }
 
@@ -503,6 +411,99 @@ namespace DotNetNuke.Services.Installer
             foreach (string skinFolder in Directory.GetDirectories(skinRootPath))
             {
                 ProcessLegacySkin(skinFolder, "Container");
+            }
+        }
+
+        private static PackageInfo CreateSkinPackage(SkinPackageInfo skin)
+        {
+            // Create a Package
+            var package = new PackageInfo(new InstallerInfo());
+            package.Name = skin.SkinName;
+            package.FriendlyName = skin.SkinName;
+            package.Description = Null.NullString;
+            package.Version = new Version(1, 0, 0);
+            package.PackageType = skin.SkinType;
+            package.License = Util.PACKAGE_NoLicense;
+
+            // See if the Skin is using a Namespace (or is a known skin)
+            ParsePackageName(package);
+
+            return package;
+        }
+
+        private static void CreateSkinManifest(XmlWriter writer, string skinFolder, string skinType, string tempInstallFolder, string subFolder)
+        {
+            string skinName = Path.GetFileNameWithoutExtension(skinFolder);
+            var skin = new SkinPackageInfo();
+            skin.SkinName = skinName;
+            skin.SkinType = skinType;
+
+            // Create a Package
+            PackageInfo package = CreateSkinPackage(skin);
+
+            // Create a SkinPackageWriter
+            var skinWriter = new SkinPackageWriter(skin, package, tempInstallFolder, subFolder);
+            skinWriter.GetFiles(false);
+
+            // We need to reset the BasePath so it using the correct basePath rather than the Temp InstallFolder
+            skinWriter.SetBasePath();
+
+            // Writer package manifest fragment to writer
+            skinWriter.WriteManifest(writer, true);
+        }
+
+        private static void ProcessLegacySkin(string skinFolder, string skinType)
+        {
+            string skinName = Path.GetFileName(skinFolder);
+            if (skinName != "_default")
+            {
+                var skin = new SkinPackageInfo();
+                skin.SkinName = skinName;
+                skin.SkinType = skinType;
+
+                // Create a Package
+                PackageInfo package = CreateSkinPackage(skin);
+
+                // Create a SkinPackageWriter
+                var skinWriter = new SkinPackageWriter(skin, package);
+                skinWriter.GetFiles(false);
+
+                // Save the manifest
+                package.Manifest = skinWriter.WriteManifest(true);
+
+                // Save Package
+                PackageController.Instance.SaveExtensionPackage(package);
+
+                // Update Skin Package with new PackageID
+                skin.PackageID = package.PackageID;
+
+                // Save Skin Package
+                skin.SkinPackageID = SkinController.AddSkinPackage(skin);
+
+                foreach (InstallFile skinFile in skinWriter.Files.Values)
+                {
+                    if (skinFile.Type == InstallFileType.Ascx)
+                    {
+                        if (skinType == "Skin")
+                        {
+                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootSkin, Path.Combine(skin.SkinName, skinFile.FullName)));
+                        }
+                        else
+                        {
+                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootContainer, Path.Combine(skin.SkinName, skinFile.FullName)));
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void ParsePackageName(PackageInfo package, string separator)
+        {
+            // See if the Module is using a "Namespace" for its name
+            int ownerIndex = package.Name.IndexOf(separator);
+            if (ownerIndex > 0)
+            {
+                package.Owner = package.Name.Substring(0, ownerIndex);
             }
         }
     }

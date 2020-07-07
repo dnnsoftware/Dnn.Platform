@@ -20,7 +20,5 @@ namespace Dnn.PersonaBar.SiteImportExport.Services
 
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SiteImportExportController : PersonaBarApiController
-    {
-
-    }
+    {}
 }

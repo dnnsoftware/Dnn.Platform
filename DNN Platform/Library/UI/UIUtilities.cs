@@ -66,6 +66,14 @@ namespace DotNetNuke.UI
             return isLegacyUi;
         }
 
+        public static bool IsLegacyUI(int portalId)
+        {
+            var key = GetControlKey();
+            var moduleId = GetModuleId(key);
+
+            return IsLegacyUI(moduleId, key, portalId);
+        }
+
         internal static string GetControlKey()
         {
             HttpRequest request = HttpContext.Current.Request;
@@ -151,14 +159,6 @@ namespace DotNetNuke.UI
             slaveModule.DisplaySyndicate = false;
 
             return slaveModule;
-        }
-
-        public static bool IsLegacyUI(int portalId)
-        {
-            var key = GetControlKey();
-            var moduleId = GetModuleId(key);
-
-            return IsLegacyUI(moduleId, key, portalId);
         }
 
         internal static string GetLocalResourceFile(Control ctrl)

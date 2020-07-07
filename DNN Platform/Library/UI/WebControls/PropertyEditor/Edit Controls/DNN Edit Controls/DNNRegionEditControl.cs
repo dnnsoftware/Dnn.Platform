@@ -56,6 +56,36 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         public string ParentKey { get; set; }
 
+        protected string OldStringValue
+        {
+            get { return Convert.ToString(this.OldValue); }
+        }
+
+        /// <summary>
+        /// Gets the ListEntryInfo objects associated witht the control.
+        /// </summary>
+        protected IEnumerable<ListEntryInfo> ListEntries
+        {
+            get
+            {
+                if (this._listEntries == null)
+                {
+                    var listController = new ListController();
+                    this._listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                }
+
+                return this._listEntries;
+            }
+        }
+
+        protected int PortalId
+        {
+            get
+            {
+                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
+            }
+        }
+
         protected override string StringValue
         {
             get
@@ -70,11 +100,6 @@ namespace DotNetNuke.UI.WebControls
             }
 
             set { this.Value = value; }
-        }
-
-        protected string OldStringValue
-        {
-            get { return Convert.ToString(this.OldValue); }
         }
 
         private DropDownList Regions
@@ -113,31 +138,6 @@ namespace DotNetNuke.UI.WebControls
                 }
 
                 return this._InitialValue;
-            }
-        }
-
-        /// <summary>
-        /// Gets the ListEntryInfo objects associated witht the control.
-        /// </summary>
-        protected IEnumerable<ListEntryInfo> ListEntries
-        {
-            get
-            {
-                if (this._listEntries == null)
-                {
-                    var listController = new ListController();
-                    this._listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
-                }
-
-                return this._listEntries;
-            }
-        }
-
-        protected int PortalId
-        {
-            get
-            {
-                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
             }
         }
 

@@ -248,47 +248,6 @@ namespace DotNetNuke.Services.Assets
             return folder;
         }
 
-        private static IEnumerable<IFileInfo> SortFiles(IEnumerable<IFileInfo> files, SortProperties sortProperties)
-        {
-            switch (sortProperties.Column)
-            {
-                case "ItemName":
-                    return OrderBy(files, f => f.FileName, sortProperties.Ascending);
-                case "LastModifiedOnDate":
-                    return OrderBy(files, f => f.LastModifiedOnDate, sortProperties.Ascending);
-                case "Size":
-                    return OrderBy(files, f => f.Size, sortProperties.Ascending);
-                case "ParentFolder":
-                    return OrderBy(files, f => f.FolderId, new FolderPathComparer(), sortProperties.Ascending);
-                case "CreatedOnDate":
-                    return OrderBy(files, f => f.CreatedOnDate, sortProperties.Ascending);
-                default:
-                    return files;
-            }
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector) : source.OrderByDescending(keySelector);
-        }
-
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
-        {
-            Requires.NotNull("folder", folder);
-
-            if (Host.EnableFileAutoSync && startIndex == 0)
-            {
-                FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, false, true);
-            }
-
-            return SortFiles(FolderManager.Instance.GetFiles(folder, recursive, true), sortProperties);
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector, comparer) : source.OrderByDescending(keySelector, comparer);
-        }
-
         public IFolderInfo CreateFolder(string folderName, int folderParentId, int folderMappingId, string mappedPath)
         {
             Requires.NotNullOrEmpty("folderName", folderName);
@@ -381,9 +340,50 @@ namespace DotNetNuke.Services.Assets
             return true;
         }
 
+        private static IEnumerable<IFileInfo> SortFiles(IEnumerable<IFileInfo> files, SortProperties sortProperties)
+        {
+            switch (sortProperties.Column)
+            {
+                case "ItemName":
+                    return OrderBy(files, f => f.FileName, sortProperties.Ascending);
+                case "LastModifiedOnDate":
+                    return OrderBy(files, f => f.LastModifiedOnDate, sortProperties.Ascending);
+                case "Size":
+                    return OrderBy(files, f => f.Size, sortProperties.Ascending);
+                case "ParentFolder":
+                    return OrderBy(files, f => f.FolderId, new FolderPathComparer(), sortProperties.Ascending);
+                case "CreatedOnDate":
+                    return OrderBy(files, f => f.CreatedOnDate, sortProperties.Ascending);
+                default:
+                    return files;
+            }
+        }
+
+        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, bool ascending)
+        {
+            return ascending ? source.OrderBy(keySelector) : source.OrderByDescending(keySelector);
+        }
+
+        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, bool ascending)
+        {
+            return ascending ? source.OrderBy(keySelector, comparer) : source.OrderByDescending(keySelector, comparer);
+        }
+
         private static string CleanDotsAtTheEndOfTheName(string name)
         {
             return name.Trim().TrimEnd('.', ' ');
+        }
+
+        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
+        {
+            Requires.NotNull("folder", folder);
+
+            if (Host.EnableFileAutoSync && startIndex == 0)
+            {
+                FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, false, true);
+            }
+
+            return SortFiles(FolderManager.Instance.GetFiles(folder, recursive, true), sortProperties);
         }
 
         private void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> nonDeletedItems)

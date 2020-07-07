@@ -57,14 +57,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
             get { return (this.PortalSettings == null) ? null : this.PortalSettings.ActiveTab; }
         }
 
-        public Page DnnPage { get; set; }
-
-        public string LocalResourceFile { get; set; }
-
-        public ModuleInstanceContext ModuleContext { get; set; }
-
-        internal HtmlHelper HtmlHelper { get; set; }
-
         public PortalSettings PortalSettings
         {
             get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
@@ -73,11 +65,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public RouteCollection RouteCollection
         {
             get { return this.HtmlHelper.RouteCollection; }
-        }
-
-        public string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         public UserInfo User
@@ -103,6 +90,19 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public IViewDataContainer ViewDataContainer
         {
             get { return this.HtmlHelper.ViewDataContainer; }
+        }
+
+        public Page DnnPage { get; set; }
+
+        public string LocalResourceFile { get; set; }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
+
+        internal HtmlHelper HtmlHelper { get; set; }
+
+        public string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
         }
     }
 }

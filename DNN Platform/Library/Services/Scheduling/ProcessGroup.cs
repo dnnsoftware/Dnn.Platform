@@ -19,13 +19,13 @@ namespace DotNetNuke.Services.Scheduling
         private static int numberOfProcessesInQueue;
         private static int numberOfProcesses;
         private static int processesCompleted;
+        private static int ticksElapsed;
 
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
         // This class represents a process group for
         // our threads to run in.
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
         public delegate void CompletedEventHandler();
-        private static int ticksElapsed;
 
         public event CompletedEventHandler Completed;
 

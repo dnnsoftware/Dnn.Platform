@@ -33,6 +33,14 @@ namespace DotNetNuke.UI.Containers
         private int _animationFrames = 5;
         private Panel _pnlModuleContent;
 
+        public string ResourceFile
+        {
+            get
+            {
+                return Localization.GetResourceFile(this, "Visibility.ascx");
+            }
+        }
+
         public int AnimationFrames
         {
             get
@@ -47,6 +55,42 @@ namespace DotNetNuke.UI.Containers
         }
 
         public string BorderWidth { get; set; }
+
+        public bool ContentVisible
+        {
+            get
+            {
+                switch (this.ModuleControl.ModuleContext.Configuration.Visibility)
+                {
+                    case VisibilityState.Maximized:
+                    case VisibilityState.Minimized:
+                        return DNNClientAPI.MinMaxContentVisibile(
+                            this.cmdVisibility,
+                            this.ModuleControl.ModuleContext.ModuleId,
+                            this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                            DNNClientAPI.MinMaxPersistanceType.Cookie);
+                    default:
+                        return true;
+                }
+            }
+
+            set
+            {
+                DNNClientAPI.MinMaxContentVisibile(
+                    this.cmdVisibility,
+                    this.ModuleControl.ModuleContext.ModuleId,
+                    this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                    DNNClientAPI.MinMaxPersistanceType.Cookie,
+                    value);
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        // TODO can this be renamed with a capital M
+        public string minIcon { get; set; }
+
+        // ReSharper restore InconsistentNaming
+        public string MaxIcon { get; set; }
 
         private string MinIconLoc
         {
@@ -96,50 +140,6 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
-            }
-        }
-
-        public bool ContentVisible
-        {
-            get
-            {
-                switch (this.ModuleControl.ModuleContext.Configuration.Visibility)
-                {
-                    case VisibilityState.Maximized:
-                    case VisibilityState.Minimized:
-                        return DNNClientAPI.MinMaxContentVisibile(
-                            this.cmdVisibility,
-                            this.ModuleControl.ModuleContext.ModuleId,
-                            this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
-                            DNNClientAPI.MinMaxPersistanceType.Cookie);
-                    default:
-                        return true;
-                }
-            }
-
-            set
-            {
-                DNNClientAPI.MinMaxContentVisibile(
-                    this.cmdVisibility,
-                    this.ModuleControl.ModuleContext.ModuleId,
-                    this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
-                    DNNClientAPI.MinMaxPersistanceType.Cookie,
-                    value);
-            }
-        }
-
-        // ReSharper disable InconsistentNaming
-        // TODO can this be renamed with a capital M
-        public string minIcon { get; set; }
-
-        // ReSharper restore InconsistentNaming
-        public string MaxIcon { get; set; }
-
-        public string ResourceFile
-        {
-            get
-            {
-                return Localization.GetResourceFile(this, "Visibility.ascx");
             }
         }
 

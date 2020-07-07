@@ -22,19 +22,25 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("email", "Prompt_NewUser_FlagEmail", "String", true)]
         private const string FlagEmail = "email";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("username", "Prompt_NewUser_FlagUsername", "String", true)]
         private const string FlagUsername = "username";
+
         [FlagParameter("firstname", "Prompt_NewUser_FlagFirstname", "String", true)]
         private const string FlagFirstname = "firstname";
+
         [FlagParameter("lastname", "Prompt_NewUser_FlagLastname", "String", true)]
         private const string FlagLastname = "lastname";
+
         [FlagParameter("password", "Prompt_NewUser_FlagPassword", "String", "auto-generated")]
         private const string FlagPassword = "password";
+
         [FlagParameter("approved", "Prompt_NewUser_FlagApproved", "Boolean", "true")]
         private const string FlagApproved = "approved";
+
         [FlagParameter("notify", "Prompt_NewUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
         private string Username { get; set; }
@@ -91,6 +97,5 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(ex.Message);
             }
         }
-
     }
 }

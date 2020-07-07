@@ -214,6 +214,32 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// The Rollback method undoes the installation of the script component in the event
+        /// that one of the other components fails.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Rollback()
+        {
+            base.Rollback();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstall method uninstalls the script component.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void UnInstall()
+        {
+            this.Log.AddInfo(Util.SQL_BeginUnInstall);
+
+            // Call the base method
+            base.UnInstall();
+
+            this.Log.AddInfo(Util.SQL_EndUnInstall);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
         /// <param name="type">The type of file being processed.</param>
@@ -259,6 +285,25 @@ namespace DotNetNuke.Services.Installer.Installers
 
             // Call base method to set up for file processing
             base.ProcessFile(file, nav);
+        }
+
+        protected override void UnInstallFile(InstallFile scriptFile)
+        {
+            // Process the file if it is an UnInstall Script
+            var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
+            if (extension != null && this.UnInstallScripts.ContainsValue(scriptFile))
+            {
+                string fileExtension = extension.Substring(1);
+                if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && this.IsValidScript(fileExtension))
+                {
+                    // Install Script
+                    this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
+                    this.ExecuteSql(scriptFile);
+                }
+            }
+
+            // Call base method to delete file
+            base.UnInstallFile(scriptFile);
         }
 
         private bool ExecuteSql(InstallFile scriptFile)
@@ -318,51 +363,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             return bSuccess;
-        }
-
-        protected override void UnInstallFile(InstallFile scriptFile)
-        {
-            // Process the file if it is an UnInstall Script
-            var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
-            if (extension != null && this.UnInstallScripts.ContainsValue(scriptFile))
-            {
-                string fileExtension = extension.Substring(1);
-                if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && this.IsValidScript(fileExtension))
-                {
-                    // Install Script
-                    this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
-                    this.ExecuteSql(scriptFile);
-                }
-            }
-
-            // Call base method to delete file
-            base.UnInstallFile(scriptFile);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Rollback method undoes the installation of the script component in the event
-        /// that one of the other components fails.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Rollback()
-        {
-            base.Rollback();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the script component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void UnInstall()
-        {
-            this.Log.AddInfo(Util.SQL_BeginUnInstall);
-
-            // Call the base method
-            base.UnInstall();
-
-            this.Log.AddInfo(Util.SQL_EndUnInstall);
         }
     }
 }

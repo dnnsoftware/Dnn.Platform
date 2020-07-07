@@ -72,6 +72,17 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Value = new Pair { First = this._skinValue, Second = this._containerValue };
         }
 
+        protected override void LoadControlState(object state)
+        {
+            base.LoadControlState(state);
+            var pair = this.Value as Pair;
+            if (pair != null)
+            {
+                this._skinValue = pair.First;
+                this._containerValue = pair.Second;
+            }
+        }
+
         private void ContainerIndexChanged(object sender, EventArgs e)
         {
             this.UpdateDataSource(this._containerValue, this._containerCombo.SelectedValue, this.ContainerDataField);
@@ -99,17 +110,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             return skins;
-        }
-
-        protected override void LoadControlState(object state)
-        {
-            base.LoadControlState(state);
-            var pair = this.Value as Pair;
-            if (pair != null)
-            {
-                this._skinValue = pair.First;
-                this._containerValue = pair.Second;
-            }
         }
     }
 }

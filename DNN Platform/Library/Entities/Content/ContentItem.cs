@@ -78,6 +78,64 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>
+        /// Gets the metadata.
+        /// </summary>
+        /// <value>metadata collection.</value>
+        [XmlIgnore]
+        [ScriptIgnore]
+        public NameValueCollection Metadata
+        {
+            get
+            {
+                return this._metadata ?? (this._metadata = this.GetMetaData(this.ContentItemId));
+            }
+        }
+
+        /// <summary>
+        /// Gets the terms.
+        /// </summary>
+        /// <value>Terms Collection.</value>
+        [XmlIgnore]
+        [ScriptIgnore]
+        public List<Term> Terms
+        {
+            get
+            {
+                return this._terms ?? (this._terms = this.GetTerms(this.ContentItemId));
+            }
+        }
+
+        /// <summary>
+        /// Gets files that are attached to this ContentItem.
+        /// </summary>
+        [XmlIgnore]
+        [ScriptIgnore]
+        public List<IFileInfo> Files
+        {
+            get { return this._files ?? (this._files = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.FilesKey]).ToList()); }
+        }
+
+        /// <summary>
+        /// Gets video files attached to this ContentItem.
+        /// </summary>
+        [XmlIgnore]
+        [ScriptIgnore]
+        public List<IFileInfo> Videos
+        {
+            get { return this._videos ?? (this._videos = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.VideoKey]).ToList()); }
+        }
+
+        /// <summary>
+        /// Gets images associated with this ContentItem.
+        /// </summary>
+        [XmlIgnore]
+        [ScriptIgnore]
+        public List<IFileInfo> Images
+        {
+            get { return this._images ?? (this._images = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.ImageKey]).ToList()); }
+        }
+
+        /// <summary>
         /// Gets or sets the content item id.
         /// </summary>
         /// <value>
@@ -127,20 +185,6 @@ namespace DotNetNuke.Entities.Content
         public bool Indexed { get; set; }
 
         /// <summary>
-        /// Gets the metadata.
-        /// </summary>
-        /// <value>metadata collection.</value>
-        [XmlIgnore]
-        [ScriptIgnore]
-        public NameValueCollection Metadata
-        {
-            get
-            {
-                return this._metadata ?? (this._metadata = this.GetMetaData(this.ContentItemId));
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the module ID.
         /// </summary>
         /// <value>
@@ -158,20 +202,6 @@ namespace DotNetNuke.Entities.Content
         [XmlElement("tabid")]
         public int TabID { get; set; }
 
-        /// <summary>
-        /// Gets the terms.
-        /// </summary>
-        /// <value>Terms Collection.</value>
-        [XmlIgnore]
-        [ScriptIgnore]
-        public List<Term> Terms
-        {
-            get
-            {
-                return this._terms ?? (this._terms = this.GetTerms(this.ContentItemId));
-            }
-        }
-
         /// <summary>Gets or sets the title of the ContentItem.</summary>
         [XmlElement("contentTitle")]
         public string ContentTitle
@@ -185,36 +215,6 @@ namespace DotNetNuke.Entities.Content
             {
                 this.Metadata[AttachmentController.TitleKey] = value;
             }
-        }
-
-        /// <summary>
-        /// Gets files that are attached to this ContentItem.
-        /// </summary>
-        [XmlIgnore]
-        [ScriptIgnore]
-        public List<IFileInfo> Files
-        {
-            get { return this._files ?? (this._files = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.FilesKey]).ToList()); }
-        }
-
-        /// <summary>
-        /// Gets video files attached to this ContentItem.
-        /// </summary>
-        [XmlIgnore]
-        [ScriptIgnore]
-        public List<IFileInfo> Videos
-        {
-            get { return this._videos ?? (this._videos = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.VideoKey]).ToList()); }
-        }
-
-        /// <summary>
-        /// Gets images associated with this ContentItem.
-        /// </summary>
-        [XmlIgnore]
-        [ScriptIgnore]
-        public List<IFileInfo> Images
-        {
-            get { return this._images ?? (this._images = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.ImageKey]).ToList()); }
         }
 
         /// <summary>

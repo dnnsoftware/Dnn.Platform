@@ -17,12 +17,12 @@ namespace Dnn.PersonaBar.Library.Prompt
     {
         public abstract string LocalResourceFile { get; }
 
-        public string ValidationMessage { get; private set; }
-
         /// <summary>
         /// Gets resource key for the result html.
         /// </summary>
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
+
+        public string ValidationMessage { get; private set; }
 
         protected PortalSettings PortalSettings { get; private set; }
 
@@ -106,6 +106,25 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
         }
 
+        public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        {
+            this.Args = args;
+            this.PortalSettings = portalSettings;
+            this.User = userInfo;
+            this.PortalId = portalSettings.PortalId;
+            this.TabId = activeTabId;
+            this.ValidationMessage = string.Empty;
+            this.ParseFlags();
+            this.Init(args, portalSettings, userInfo, activeTabId);
+        }
+
+        public abstract ConsoleResultModel Run();
+
+        public virtual bool IsValid()
+        {
+            return string.IsNullOrEmpty(this.ValidationMessage);
+        }
+
         protected bool HasFlag(string flagName)
         {
             flagName = NormalizeFlagName(flagName);
@@ -127,25 +146,6 @@ namespace Dnn.PersonaBar.Library.Prompt
         protected void AddMessage(string message)
         {
             this.ValidationMessage += message;
-        }
-
-        public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {
-            this.Args = args;
-            this.PortalSettings = portalSettings;
-            this.User = userInfo;
-            this.PortalId = portalSettings.PortalId;
-            this.TabId = activeTabId;
-            this.ValidationMessage = string.Empty;
-            this.ParseFlags();
-            this.Init(args, portalSettings, userInfo, activeTabId);
-        }
-
-        public abstract ConsoleResultModel Run();
-
-        public virtual bool IsValid()
-        {
-            return string.IsNullOrEmpty(this.ValidationMessage);
         }
 
         private static string GetTypeName(Type type)

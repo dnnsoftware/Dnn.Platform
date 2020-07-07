@@ -252,6 +252,27 @@ namespace Dnn.PersonaBar.Library.Controllers
             return ApplySort(descendants, sortOrder);
         }
 
+        private static bool IsSecuredTab(TabInfo tab)
+        {
+            var perms = tab.TabPermissions;
+            return
+                perms.Cast<TabPermissionInfo>()
+                    .All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
+        }
+
+        private static IEnumerable<TabDto> ApplySort(IEnumerable<TabDto> items, int sortOrder)
+        {
+            switch (sortOrder)
+            {
+                case 1: // sort by a-z
+                    return items.OrderBy(item => item.Name).ToList();
+                case 2: // sort by z-a
+                    return items.OrderByDescending(item => item.Name).ToList();
+                default: // no sort
+                    return items;
+            }
+        }
+
         private IEnumerable<TabDto> ValidateModuleInTab(IEnumerable<TabDto> tabs, string validateTab)
         {
             return tabs.Where(
@@ -383,27 +404,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                 ChildTabs = new List<TabDto>(),
                 Selectable = TabPermissionController.CanAddPage(tab),
             };
-        }
-
-        private static bool IsSecuredTab(TabInfo tab)
-        {
-            var perms = tab.TabPermissions;
-            return
-                perms.Cast<TabPermissionInfo>()
-                    .All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
-        }
-
-        private static IEnumerable<TabDto> ApplySort(IEnumerable<TabDto> items, int sortOrder)
-        {
-            switch (sortOrder)
-            {
-                case 1: // sort by a-z
-                    return items.OrderBy(item => item.Name).ToList();
-                case 2: // sort by z-a
-                    return items.OrderByDescending(item => item.Name).ToList();
-                default: // no sort
-                    return items;
-            }
         }
 
         private TabCollection GetExportableTabs(TabCollection tabs)

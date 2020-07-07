@@ -601,6 +601,13 @@ namespace DNN.Integration.Test.Framework.Scripts
                 AND   (dtm.FriendlyName = @friendlyName OR mdfn.FriendlyName = @friendlyName)
                 ORDER BY dtm.FriendlyName, mdfn.FriendlyName, dtm.DesktopModuleID, mdfn.ModuleDefID, mdl.ModuleID;";
 
+        public const string TableExist = @"
+            IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.[{objectQualifier}$[table_name]]') AND type in (N'U'))
+                SELECT 1
+            ELSE
+                SELECT 0
+            ;";
+
         public static string UserGetPreferredTimeZone = @"
             DECLARE @UserId INT
             DECLARE @PortalID INT
@@ -615,12 +622,5 @@ namespace DNN.Integration.Test.Framework.Scripts
 
             SELECT PropertyValue FROM [dbo].[{objectQualifier}UserProfile]
             WHERE PropertyDefinitionID = @PropertyDefinitionId AND [UserId] = @UserId";
-
-        public const string TableExist = @"
-            IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.[{objectQualifier}$[table_name]]') AND type in (N'U'))
-                SELECT 1
-            ELSE
-                SELECT 0
-            ;";
     }
 }

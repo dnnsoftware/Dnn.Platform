@@ -16,6 +16,26 @@ namespace Dnn.ExportImport.Components.Services
     /// </summary>
     public abstract class BasePortableService
     {
+        // The following properties and methods must be overriden in descendant classes
+
+        /// <summary>
+        /// Gets category name for the exportable module. For example: "ASSETS".
+        /// </summary>
+        public abstract string Category { get; }
+
+        /// <summary>
+        /// Gets category name for the parent exportable module. For example: "USERS".
+        /// If this is null, then the category is a top parent. If this is not null,
+        /// then this category will be included automatically when the parent is included.
+        /// </summary>
+        public abstract string ParentCategory { get; }
+
+        /// <summary>
+        /// Gets a priority for exporting/importing the object. Objects with higher
+        /// priority are exported/imported first. Highest priority is 0.
+        /// </summary>
+        public abstract uint Priority { get; }
+
         /// <summary>
         /// Gets or sets an object to record the export/import progress information.
         /// This is set by the export/import engine.
@@ -51,26 +71,6 @@ namespace Dnn.ExportImport.Components.Services
         /// </summary>
         /// <returns>True if the implementation to abort progress; false to continue.</returns>
         public Func<BasePortableService, bool> CheckPointStageCallback { get; set; }
-
-        // The following properties and methods must be overriden in descendant classes
-
-        /// <summary>
-        /// Gets category name for the exportable module. For example: "ASSETS".
-        /// </summary>
-        public abstract string Category { get; }
-
-        /// <summary>
-        /// Gets category name for the parent exportable module. For example: "USERS".
-        /// If this is null, then the category is a top parent. If this is not null,
-        /// then this category will be included automatically when the parent is included.
-        /// </summary>
-        public abstract string ParentCategory { get; }
-
-        /// <summary>
-        /// Gets a priority for exporting/importing the object. Objects with higher
-        /// priority are exported/imported first. Highest priority is 0.
-        /// </summary>
-        public abstract uint Priority { get; }
 
         public abstract void ExportData(ExportImportJob exportJob, ExportDto exportDto);
 

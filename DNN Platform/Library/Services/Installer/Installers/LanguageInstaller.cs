@@ -146,6 +146,43 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// The Rollback method undoes the installation of the component in the event
+        /// that one of the other components fails.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Rollback()
+        {
+            // If Temp Language exists then we need to update the DataStore with this
+            if (this.TempLanguage == null)
+            {
+                // No Temp Language - Delete newly added Language
+                this.DeleteLanguage();
+            }
+            else
+            {
+                // Temp Language - Rollback to Temp
+                Localization.SaveLanguage(this.TempLanguage);
+            }
+
+            // Call base class to prcoess files
+            base.Rollback();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstall method uninstalls the language component.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void UnInstall()
+        {
+            this.DeleteLanguage();
+
+            // Call base class to process files
+            base.UnInstall();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// The ReadCustomManifest method reads the custom manifest items.
         /// </summary>
         /// <param name="nav">The XPathNavigator representing the node.</param>
@@ -210,43 +247,6 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Log.AddFailure(ex);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Rollback method undoes the installation of the component in the event
-        /// that one of the other components fails.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Rollback()
-        {
-            // If Temp Language exists then we need to update the DataStore with this
-            if (this.TempLanguage == null)
-            {
-                // No Temp Language - Delete newly added Language
-                this.DeleteLanguage();
-            }
-            else
-            {
-                // Temp Language - Rollback to Temp
-                Localization.SaveLanguage(this.TempLanguage);
-            }
-
-            // Call base class to prcoess files
-            base.Rollback();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the language component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void UnInstall()
-        {
-            this.DeleteLanguage();
-
-            // Call base class to prcoess files
-            base.UnInstall();
         }
     }
 }

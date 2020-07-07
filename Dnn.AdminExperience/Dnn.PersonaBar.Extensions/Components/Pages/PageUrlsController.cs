@@ -482,6 +482,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 UserName = userName
             });
         }
+
         private string GetCleanPath(string path, FriendlyUrlSettings friendlyUrlSettings)
         {
             if (string.IsNullOrEmpty(path))
@@ -494,6 +495,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return string.Format("/{0}", urlPath);
         }
+
         public class KeyValuePairComparer : IComparer<KeyValuePair<int, string>>
         {
             public int Compare(KeyValuePair<int, string> pair1, KeyValuePair<int, string> pair2)

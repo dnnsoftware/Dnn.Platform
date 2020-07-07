@@ -34,6 +34,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         private int _portalId = -1;
         private PortalSettings _portalSettings;
+
         private new int PortalId
         {
             get
@@ -49,6 +50,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 this._portalId = value;
             }
         }
+
         private new PortalSettings PortalSettings
         {
             get

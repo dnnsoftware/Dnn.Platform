@@ -9,8 +9,6 @@ namespace DotNetNuke.UI.WebControls
 
     public class CountryLookup
     {
-        private static long CountryBegin = 16776960;
-
         private static readonly string[] CountryName = new[]
                                                            {
                                                                "N/A", "Asia/Pacific Region", "Europe", "Andorra", "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Anguilla", "Albania",
@@ -58,6 +56,8 @@ namespace DotNetNuke.UI.WebControls
                                                                "TD", "TF", "TG", "TH", "TJ", "TK", "TM", "TN", "TO", "TP", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC",
                                                                "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "YU", "ZA", "ZM", "ZR", "ZW", "A1", "A2",
                                                            };
+
+        private static long CountryBegin = 16776960;
 
         public CountryLookup(MemoryStream ms)
         {
@@ -115,30 +115,6 @@ namespace DotNetNuke.UI.WebControls
         {
             // Look up the country code, e.g. US, for the passed in IP Address
             return CountryCode[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(_IPAddress), 31))];
-        }
-
-        private long ConvertIPAddressToNumber(IPAddress _IPAddress)
-        {
-            // Convert an IP Address, (e.g. 127.0.0.1), to the numeric equivalent
-            string[] _Address = _IPAddress.ToString().Split('.');
-            if (_Address.Length == 4)
-            {
-                return Convert.ToInt64((16777216 * Convert.ToDouble(_Address[0])) + (65536 * Convert.ToDouble(_Address[1])) + (256 * Convert.ToDouble(_Address[2])) + Convert.ToDouble(_Address[3]));
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        private string ConvertIPNumberToAddress(long _IPNumber)
-        {
-            // Convert an IP Number to the IP Address equivalent
-            string _IPNumberPart1 = Convert.ToString(((int)(_IPNumber / 16777216)) % 256);
-            string _IPNumberPart2 = Convert.ToString(((int)(_IPNumber / 65536)) % 256);
-            string _IPNumberPart3 = Convert.ToString(((int)(_IPNumber / 256)) % 256);
-            string _IPNumberPart4 = Convert.ToString(((int)_IPNumber) % 256);
-            return _IPNumberPart1 + "." + _IPNumberPart2 + "." + _IPNumberPart3 + "." + _IPNumberPart4;
         }
 
         public string LookupCountryCode(string _IPAddress)
@@ -243,6 +219,30 @@ namespace DotNetNuke.UI.WebControls
             {
                 throw new Exception("Error seeking country: " + exc.Message);
             }
+        }
+
+        private long ConvertIPAddressToNumber(IPAddress _IPAddress)
+        {
+            // Convert an IP Address, (e.g. 127.0.0.1), to the numeric equivalent
+            string[] _Address = _IPAddress.ToString().Split('.');
+            if (_Address.Length == 4)
+            {
+                return Convert.ToInt64((16777216 * Convert.ToDouble(_Address[0])) + (65536 * Convert.ToDouble(_Address[1])) + (256 * Convert.ToDouble(_Address[2])) + Convert.ToDouble(_Address[3]));
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private string ConvertIPNumberToAddress(long _IPNumber)
+        {
+            // Convert an IP Number to the IP Address equivalent
+            string _IPNumberPart1 = Convert.ToString(((int)(_IPNumber / 16777216)) % 256);
+            string _IPNumberPart2 = Convert.ToString(((int)(_IPNumber / 65536)) % 256);
+            string _IPNumberPart3 = Convert.ToString(((int)(_IPNumber / 256)) % 256);
+            string _IPNumberPart4 = Convert.ToString(((int)_IPNumber) % 256);
+            return _IPNumberPart1 + "." + _IPNumberPart2 + "." + _IPNumberPart3 + "." + _IPNumberPart4;
         }
     }
 }

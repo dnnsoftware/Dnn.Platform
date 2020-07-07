@@ -21,6 +21,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     {
         [FlagParameter("id", "Prompt_DeleteRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DeleteRole));
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;

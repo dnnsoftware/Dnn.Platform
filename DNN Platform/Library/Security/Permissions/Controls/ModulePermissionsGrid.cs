@@ -34,6 +34,23 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ModulePermission Collection.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public ModulePermissionCollection Permissions
+        {
+            get
+            {
+                // First Update Permissions in case they have been changed
+                this.UpdatePermissions();
+
+                // Return the ModulePermissions
+                return this._ModulePermissions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets a value indicating whether gets and Sets whether the Module inherits the Page's(Tab's) permissions.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -73,6 +90,13 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and Sets the Id of the Tab associated with this module.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public int TabId { get; set; }
+
         protected override List<PermissionInfoBase> PermissionsList
         {
             get
@@ -83,30 +107,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
 
                 return this._PermissionsList;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the Id of the Tab associated with this module.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public int TabId { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModulePermission Collection.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public ModulePermissionCollection Permissions
-        {
-            get
-            {
-                // First Update Permissions in case they have been changed
-                this.UpdatePermissions();
-
-                // Return the ModulePermissions
-                return this._ModulePermissions;
             }
         }
 
@@ -145,70 +145,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                     if (objPermission.PermissionKey == "VIEW")
                     {
                         this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
-                    }
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Check if a role is implicit for Module Permissions.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private bool IsImplicitRole(int portalId, int roleId)
-        {
-            return ModulePermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModulePermissions from the Data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void GetModulePermissions()
-        {
-            this._ModulePermissions = new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabId));
-            this._PermissionsList = null;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
-        /// </summary>
-        /// <param name="Settings">A string array of settings.</param>
-        /// -----------------------------------------------------------------------------
-        private ModulePermissionInfo ParseKeys(string[] Settings)
-        {
-            var objModulePermission = new ModulePermissionInfo();
-
-            // Call base class to load base properties
-            this.ParsePermissionKeys(objModulePermission, Settings);
-            if (string.IsNullOrEmpty(Settings[2]))
-            {
-                objModulePermission.ModulePermissionID = -1;
-            }
-            else
-            {
-                objModulePermission.ModulePermissionID = Convert.ToInt32(Settings[2]);
-            }
-
-            objModulePermission.ModuleID = this.ModuleID;
-            return objModulePermission;
-        }
-
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            var item = e.Item;
-
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
-                {
-                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
-                    if (actionImage != null)
-                    {
-                        actionImage.Visible = false;
                     }
                 }
             }
@@ -548,6 +484,70 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return true;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Check if a role is implicit for Module Permissions.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private bool IsImplicitRole(int portalId, int roleId)
+        {
+            return ModulePermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the ModulePermissions from the Data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void GetModulePermissions()
+        {
+            this._ModulePermissions = new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabId));
+            this._PermissionsList = null;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
+        /// </summary>
+        /// <param name="Settings">A string array of settings.</param>
+        /// -----------------------------------------------------------------------------
+        private ModulePermissionInfo ParseKeys(string[] Settings)
+        {
+            var objModulePermission = new ModulePermissionInfo();
+
+            // Call base class to load base properties
+            this.ParsePermissionKeys(objModulePermission, Settings);
+            if (string.IsNullOrEmpty(Settings[2]))
+            {
+                objModulePermission.ModulePermissionID = -1;
+            }
+            else
+            {
+                objModulePermission.ModulePermissionID = Convert.ToInt32(Settings[2]);
+            }
+
+            objModulePermission.ModuleID = this.ModuleID;
+            return objModulePermission;
+        }
+
+        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                {
+                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
+                    if (actionImage != null)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
         }
     }
 }

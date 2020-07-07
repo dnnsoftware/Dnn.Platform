@@ -89,620 +89,6 @@ namespace DotNetNuke.Entities.Users
             MembershipProvider.Instance().AddUserPortal(portalId, userId);
         }
 
-        UserInfo IUserController.GetCurrentUserInfo()
-        {
-            return GetCurrentUserInternal();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUser retrieves a User from the DataStore.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
-        public UserInfo GetUser(int portalId, int userId)
-        {
-            return GetUserById(portalId, userId);
-        }
-
-        internal static Hashtable GetUserSettings(int portalId, Hashtable settings)
-        {
-            portalId = GetEffectivePortalId(portalId);
-
-            if (settings["Column_FirstName"] == null)
-            {
-                settings["Column_FirstName"] = false;
-            }
-
-            if (settings["Column_LastName"] == null)
-            {
-                settings["Column_LastName"] = false;
-            }
-
-            if (settings["Column_DisplayName"] == null)
-            {
-                settings["Column_DisplayName"] = true;
-            }
-
-            if (settings["Column_Address"] == null)
-            {
-                settings["Column_Address"] = true;
-            }
-
-            if (settings["Column_Telephone"] == null)
-            {
-                settings["Column_Telephone"] = true;
-            }
-
-            if (settings["Column_Email"] == null)
-            {
-                settings["Column_Email"] = false;
-            }
-
-            if (settings["Column_CreatedDate"] == null)
-            {
-                settings["Column_CreatedDate"] = true;
-            }
-
-            if (settings["Column_LastLogin"] == null)
-            {
-                settings["Column_LastLogin"] = false;
-            }
-
-            if (settings["Column_Authorized"] == null)
-            {
-                settings["Column_Authorized"] = true;
-            }
-
-            if (settings["Display_Mode"] == null)
-            {
-                settings["Display_Mode"] = DisplayMode.All;
-            }
-            else
-            {
-                settings["Display_Mode"] = (DisplayMode)Convert.ToInt32(settings["Display_Mode"]);
-            }
-
-            if (settings["Display_SuppressPager"] == null)
-            {
-                settings["Display_SuppressPager"] = false;
-            }
-
-            if (settings["Records_PerPage"] == null)
-            {
-                settings["Records_PerPage"] = 10;
-            }
-
-            if (settings["Profile_DefaultVisibility"] == null)
-            {
-                settings["Profile_DefaultVisibility"] = UserVisibilityMode.AdminOnly;
-            }
-            else
-            {
-                settings["Profile_DefaultVisibility"] = (UserVisibilityMode)Convert.ToInt32(settings["Profile_DefaultVisibility"]);
-            }
-
-            if (settings["Profile_DisplayVisibility"] == null)
-            {
-                settings["Profile_DisplayVisibility"] = true;
-            }
-
-            if (settings["Profile_ManageServices"] == null)
-            {
-                settings["Profile_ManageServices"] = true;
-            }
-
-            if (settings["Redirect_AfterLogin"] == null)
-            {
-                settings["Redirect_AfterLogin"] = -1;
-            }
-
-            if (settings["Redirect_AfterRegistration"] == null)
-            {
-                settings["Redirect_AfterRegistration"] = -1;
-            }
-
-            if (settings["Redirect_AfterLogout"] == null)
-            {
-                settings["Redirect_AfterLogout"] = -1;
-            }
-
-            if (settings["Security_CaptchaLogin"] == null)
-            {
-                settings["Security_CaptchaLogin"] = false;
-            }
-
-            if (settings["Security_CaptchaRegister"] == null)
-            {
-                settings["Security_CaptchaRegister"] = false;
-            }
-
-            if (settings["Security_CaptchaChangePassword"] == null)
-            {
-                settings["Security_CaptchaChangePassword"] = false;
-            }
-
-            if (settings["Security_CaptchaRetrivePassword"] == null)
-            {
-                settings["Security_CaptchaRetrivePassword"] = false;
-            }
-
-            if (settings["Security_EmailValidation"] == null)
-            {
-                settings["Security_EmailValidation"] = Globals.glbEmailRegEx;
-            }
-
-            if (settings["Security_UserNameValidation"] == null)
-            {
-                settings["Security_UserNameValidation"] = Globals.glbUserNameRegEx;
-            }
-
-            // Forces a valid profile on registration
-            if (settings["Security_RequireValidProfile"] == null)
-            {
-                settings["Security_RequireValidProfile"] = false;
-            }
-
-            // Forces a valid profile on login
-            if (settings["Security_RequireValidProfileAtLogin"] == null)
-            {
-                settings["Security_RequireValidProfileAtLogin"] = true;
-            }
-
-            if (settings["Security_UsersControl"] == null)
-            {
-                var portal = PortalController.Instance.GetPortal(portalId);
-
-                if (portal != null && portal.Users > 1000)
-                {
-                    settings["Security_UsersControl"] = UsersControl.TextBox;
-                }
-                else
-                {
-                    settings["Security_UsersControl"] = UsersControl.Combo;
-                }
-            }
-            else
-            {
-                settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"]);
-            }
-
-            // Display name format
-            if (settings["Security_DisplayNameFormat"] == null)
-            {
-                settings["Security_DisplayNameFormat"] = string.Empty;
-            }
-
-            if (settings["Registration_RequireConfirmPassword"] == null)
-            {
-                settings["Registration_RequireConfirmPassword"] = true;
-            }
-
-            if (settings["Registration_RandomPassword"] == null)
-            {
-                settings["Registration_RandomPassword"] = false;
-            }
-
-            if (settings["Registration_UseEmailAsUserName"] == null)
-            {
-                settings["Registration_UseEmailAsUserName"] = false;
-            }
-
-            if (settings["Registration_UseAuthProviders"] == null)
-            {
-                settings["Registration_UseAuthProviders"] = false;
-            }
-
-            if (settings["Registration_UseProfanityFilter"] == null)
-            {
-                settings["Registration_UseProfanityFilter"] = false;
-            }
-
-            if (settings["Registration_RegistrationFormType"] == null)
-            {
-                settings["Registration_RegistrationFormType"] = 0;
-            }
-
-            if (settings["Registration_RegistrationFields"] == null)
-            {
-                settings["Registration_RegistrationFields"] = string.Empty;
-            }
-
-            if (settings["Registration_ExcludeTerms"] == null)
-            {
-                settings["Registration_ExcludeTerms"] = string.Empty;
-            }
-
-            if (settings["Registration_RequireUniqueDisplayName"] == null)
-            {
-                settings["Registration_RequireUniqueDisplayName"] = false;
-            }
-
-            return settings;
-        }
-
-        protected override Func<IUserController> GetFactory()
-        {
-            return () => new UserController();
-        }
-
-        private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
-        {
-            // initialize log record
-            var objSecurity = PortalSecurity.Instance;
-            var log = new LogInfo
-            {
-                LogTypeKey = loginStatus.ToString(),
-                LogPortalID = portalId,
-                LogPortalName = portalName,
-                LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
-                LogUserID = userId,
-            };
-            log.AddProperty("IP", ip);
-
-            // create log record
-            LogController.Instance.AddLog(log);
-        }
-
-        private static void AutoAssignUsersToPortalRoles(UserInfo user, int portalId)
-        {
-            foreach (var role in RoleController.Instance.GetRoles(portalId, role => role.AutoAssignment && role.Status == RoleStatus.Approved))
-            {
-                RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-            }
-
-            // Clear the roles cache - so the usercount is correct
-            RoleController.Instance.ClearRoleCache(portalId);
-        }
-
-        private static void AutoAssignUsersToRoles(UserInfo user, int portalId)
-        {
-            var thisPortal = PortalController.Instance.GetPortal(portalId);
-
-            if (IsMemberOfPortalGroup(portalId))
-            {
-                foreach (var portal in PortalGroupController.Instance.GetPortalsByGroup(thisPortal.PortalGroupID))
-                {
-                    if (!user.Membership.Approved && portal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
-                    {
-                        var role = RoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == "Unverified Users");
-                        RoleController.Instance.AddUserRole(portal.PortalID, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-                    }
-                    else
-                    {
-                        AutoAssignUsersToPortalRoles(user, portal.PortalID);
-                    }
-                }
-            }
-            else
-            {
-                if (!user.Membership.Approved && thisPortal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
-                {
-                    var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == "Unverified Users");
-                    RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-                }
-                else
-                {
-                    AutoAssignUsersToPortalRoles(user, portalId);
-                }
-            }
-        }
-
-        // TODO - Handle Portal Groups
-        private static void DeleteUserPermissions(UserInfo user)
-        {
-            FolderPermissionController.DeleteFolderPermissionsByUser(user);
-
-            // Delete Module Permissions
-            ModulePermissionController.DeleteModulePermissionsByUser(user);
-
-            // Delete Tab Permissions
-            TabPermissionController.DeleteTabPermissionsByUser(user);
-        }
-
-        private static void RestoreUserPermissions(UserInfo user)
-        {
-            // restore user's folder permission
-            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
-            var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
-            var userFolder = FolderManager.Instance.GetFolder(portalId, userFolderPath);
-
-            if (userFolder != null)
-            {
-                foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
-                {
-                    if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
-                            || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
-                            || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var folderPermission = new FolderPermissionInfo(permission)
-                        {
-                            FolderID = userFolder.FolderID,
-                            UserID = user.UserID,
-                            RoleID = int.Parse(Globals.glbRoleNothing),
-                            AllowAccess = true,
-                        };
-
-                        userFolder.FolderPermissions.Add(folderPermission, true);
-                    }
-                }
-
-                FolderPermissionController.SaveFolderPermissions((FolderInfo)userFolder);
-            }
-        }
-
-        private static void FixMemberPortalId(UserInfo user, int portalId)
-        {
-            if (user != null)
-            {
-                user.PortalID = portalId;
-            }
-        }
-
-        private static UserInfo GetCurrentUserInternal()
-        {
-            UserInfo user;
-            if (HttpContext.Current == null)
-            {
-                if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
-                {
-                    return new UserInfo();
-                }
-
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                if (portalSettings != null)
-                {
-                    user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
-                    return user ?? new UserInfo();
-                }
-
-                return new UserInfo();
-            }
-
-            user = (UserInfo)HttpContext.Current.Items["UserInfo"];
-            return user ?? new UserInfo();
-        }
-
-        private static int GetEffectivePortalId(int portalId)
-        {
-            return PortalController.GetEffectivePortalId(portalId);
-        }
-
-        private static object GetUserCountByPortalCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalId = (int)cacheItemArgs.ParamList[0];
-            var portalUserCount = MembershipProvider.Instance().GetUserCountByPortal(portalId);
-            DataCache.SetCache(cacheItemArgs.CacheKey, portalUserCount);
-            return portalUserCount;
-        }
-
-        private static SharedDictionary<int, string> GetUserLookupDictionary(int portalId)
-        {
-            var masterPortalId = GetEffectivePortalId(portalId);
-            var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
-            return CBO.GetCachedObject<SharedDictionary<int, string>>(
-                new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut,
-                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(), true);
-        }
-
-        private static bool IsMemberOfPortalGroup(int portalId)
-        {
-            return PortalController.IsMemberOfPortalGroup(portalId);
-        }
-
-        private static void MergeUserProfileProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
-        {
-            foreach (ProfilePropertyDefinition property in userMergeFrom.Profile.ProfileProperties)
-            {
-                if (string.IsNullOrEmpty(userMergeTo.Profile.GetPropertyValue(property.PropertyName)))
-                {
-                    userMergeTo.Profile.SetProfileProperty(property.PropertyName, property.PropertyValue);
-                }
-            }
-        }
-
-        private static void MergeUserProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
-        {
-            if (string.IsNullOrEmpty(userMergeTo.DisplayName))
-            {
-                userMergeTo.DisplayName = userMergeFrom.DisplayName;
-            }
-
-            if (string.IsNullOrEmpty(userMergeTo.Email))
-            {
-                userMergeTo.Email = userMergeFrom.Email;
-            }
-
-            if (string.IsNullOrEmpty(userMergeTo.FirstName))
-            {
-                userMergeTo.FirstName = userMergeFrom.FirstName;
-            }
-
-            if (string.IsNullOrEmpty(userMergeTo.LastName))
-            {
-                userMergeTo.LastName = userMergeFrom.LastName;
-            }
-        }
-
-        private static void SendDeleteEmailNotifications(UserInfo user, PortalSettings portalSettings)
-        {
-            var message = new Message();
-            message.FromUserID = portalSettings.AdministratorId;
-            message.ToUserID = portalSettings.AdministratorId;
-            message.Subject = Localization.GetSystemMessage(
-                user.Profile.PreferredLocale,
-                portalSettings,
-                "EMAIL_USER_UNREGISTER_SUBJECT",
-                user,
-                Localization.GlobalResourceFile,
-                null,
-                string.Empty,
-                portalSettings.AdministratorId);
-            message.Body = Localization.GetSystemMessage(
-                user.Profile.PreferredLocale,
-                portalSettings,
-                "EMAIL_USER_UNREGISTER_BODY",
-                user,
-                Localization.GlobalResourceFile,
-                null,
-                string.Empty,
-                portalSettings.AdministratorId);
-            message.Status = MessageStatusType.Unread;
-            Mail.SendEmail(portalSettings.Email, portalSettings.Email, message.Subject, message.Body);
-        }
-
-        public UserInfo GetUserByDisplayname(int portalId, string displayName)
-        {
-            return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
-        }
-
-        UserInfo IUserController.GetUserById(int portalId, int userId)
-        {
-            return GetUserById(portalId, userId);
-        }
-
-        public IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
-            bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames,
-            string propertyValues)
-        {
-            return MembershipProvider.Instance().GetUsersAdvancedSearch(PortalController.GetEffectivePortalId(portalId), userId, filterUserId, filterRoleId, relationTypeId,
-                                                      isAdmin, pageIndex, pageSize, sortColumn,
-                                                      sortAscending, propertyNames, propertyValues);
-        }
-
-        public IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending,
-            string propertyName, string propertyValue)
-        {
-            return MembershipProvider.Instance().GetUsersBasicSearch(PortalController.GetEffectivePortalId(portalId), pageIndex, pageSize, sortColumn,
-                                                       sortAscending, propertyName, propertyValue);
-        }
-
-        /// <summary>
-        /// Return User Profile Picture relative Url.
-        /// </summary>
-        /// <param name="userId">User Id.</param>
-        /// <param name="width">Width in pixel.</param>
-        /// <param name="height">Height in pixel.</param>
-        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal.</returns>
-        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
-        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32).
-        /// </remarks>
-        public string GetUserProfilePictureUrl(int userId, int width, int height)
-        {
-            var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
-
-            var childPortalAlias = GetChildPortalAlias();
-            var cdv = GetProfilePictureCdv(userId);
-
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
-                ? childPortalAlias + url + cdv
-                : Globals.ApplicationPath + childPortalAlias + url + cdv;
-        }
-
-        public bool IsValidUserName(string userName)
-        {
-            // Validate username against bad characters; it must not start or end with space,
-            // must not contain control characters, and not contain special punctuations
-            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-            // Fallback to default if there is no host setting configured
-            char[] unallowedAscii = HostController.Instance.GetString("UsernameUnallowedCharacters", Globals.USERNAME_UNALLOWED_ASCII).ToCharArray();
-            return userName.Length >= 5 &&
-                        userName == userName.Trim() &&
-                        userName.All(ch => ch >= ' ') &&
-                        userName.IndexOfAny(unallowedAscii) < 0;
-        }
-
-        public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
-        {
-            var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
-
-            var childPortalAlias = Globals.ResolveUrl(this.GetUserProfilePictureUrl(userId, width, height));
-            var cdv = GetProfilePictureCdv(portalId, userId);
-
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
-                ? childPortalAlias + url + cdv
-                : Globals.ApplicationPath + childPortalAlias + url + cdv;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Update all the Users Display Names.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public void UpdateDisplayNames()
-        {
-            int portalId = GetEffectivePortalId(this.PortalId);
-
-            var arrUsers = GetUsers(this.PortalId);
-            foreach (UserInfo objUser in arrUsers)
-            {
-                objUser.UpdateDisplayName(this.DisplayFormat);
-                UpdateUser(portalId, objUser);
-            }
-        }
-
-        private static string GetChildPortalAlias()
-        {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var currentAlias = settings.PortalAlias.HTTPAlias;
-            var index = currentAlias.IndexOf('/');
-            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : string.Empty;
-            return childPortalAlias;
-        }
-
-        private static string GetProfilePictureCdv(int userId)
-        {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var userInfo = GetUserById(settings.PortalId, userId);
-            if (userInfo?.Profile == null)
-            {
-                return string.Empty;
-            }
-
-            var cdv = string.Empty;
-            var photoProperty = userInfo.Profile.GetProperty("Photo");
-
-            int photoFileId;
-            if (int.TryParse(photoProperty?.PropertyValue, out photoFileId))
-            {
-                var photoFile = FileManager.Instance.GetFile(photoFileId);
-                if (photoFile != null)
-                {
-                    cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
-                }
-            }
-
-            return cdv;
-        }
-
-        private static string GetProfilePictureCdv(int portalId, int userId)
-        {
-            var userInfo = GetUserById(portalId, userId);
-            if (userInfo?.Profile == null)
-            {
-                return string.Empty;
-            }
-
-            var cdv = string.Empty;
-            var photoProperty = userInfo.Profile.GetProperty("Photo");
-
-            int photoFileId;
-            if (int.TryParse(photoProperty?.PropertyValue, out photoFileId))
-            {
-                var photoFile = FileManager.Instance.GetFile(photoFileId);
-                if (photoFile != null)
-                {
-                    cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
-                }
-            }
-
-            return cdv;
-        }
-
         /// <summary>
         /// ApproveUser removes the Unverified Users role from the user and adds the auto assigned roles.
         /// </summary>
@@ -1881,46 +1267,6 @@ namespace DotNetNuke.Entities.Users
             return false;
         }
 
-        /// <summary>
-        /// Delete the contents and folder that belongs to a user in a specific portal.
-        /// </summary>
-        /// <param name="user">The user for whom to delete the folder.
-        /// Note the PortalID is taken to specify which portal to delete the folder from.</param>
-        private static void DeleteUserFolder(UserInfo user)
-        {
-            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
-            var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
-            var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
-            if (userFolder != null)
-            {
-                FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
-                var notDeletedSubfolders = new List<IFolderInfo>();
-                FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
-
-                if (notDeletedSubfolders.Count == 0)
-                {
-                    // try to remove the parent folder if there is no other users use this folder.
-                    var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
-                    FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
-                    if (parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
-                    {
-                        FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
-
-                        if (notDeletedSubfolders.Count == 0)
-                        {
-                            // try to remove the root folder if there is no other users use this folder.
-                            var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
-                            FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
-                            if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
-                            {
-                                FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Resets the password for the specified user.
@@ -2150,67 +1496,6 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   updates a user.
-        /// </summary>
-        /// <param name = "portalId">the portalid of the user.</param>
-        /// <param name = "user">the user object.</param>
-        /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
-        /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
-        /// <param name="clearCache">Whether clear cache after update user.</param>
-        /// <remarks>
-        /// This method is used internal because it should be use carefully, or it will caught cache doesn't clear correctly.
-        /// </remarks>
-        internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
-        {
-            var originalPortalId = user.PortalID;
-            portalId = GetEffectivePortalId(portalId);
-            user.PortalID = portalId;
-
-            // clear the cache so that can get original info from database.
-            DataCache.RemoveCache(string.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
-            var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
-            var oldProfile = oldUser.Profile; // access the profile property to reload data from database.
-
-            // Update the User
-            MembershipProvider.Instance().UpdateUser(user);
-            if (loggedAction)
-            {
-                // if the httpcontext is null, then get portal settings by portal id.
-                PortalSettings portalSettings = null;
-                if (HttpContext.Current != null)
-                {
-                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                }
-                else if (portalId > Null.NullInteger)
-                {
-                    portalSettings = new PortalSettings(portalId);
-                }
-
-                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
-            }
-
-            EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs { User = user, OldUser = oldUser });
-
-            // Reset PortalId
-            FixMemberPortalId(user, originalPortalId);
-
-            // Remove the UserInfo from the Cache, as it has been modified
-            if (clearCache)
-            {
-                DataCache.ClearUserCache(portalId, user.Username);
-            }
-
-            if (!user.Membership.Approving)
-            {
-                return;
-            }
-
-            user.Membership.ConfirmApproved();
-            EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Validates a Password.
         /// </summary>
         /// <param name="password">The password to Validate.</param>
@@ -2428,6 +1713,711 @@ namespace DotNetNuke.Entities.Users
             return GetAbsoluteUrl(portalId, relativePath);
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetUser retrieves a User from the DataStore.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
+        /// <returns>The User as a UserInfo object.</returns>
+        /// -----------------------------------------------------------------------------
+        public UserInfo GetUser(int portalId, int userId)
+        {
+            return GetUserById(portalId, userId);
+        }
+
+        public UserInfo GetUserByDisplayname(int portalId, string displayName)
+        {
+            return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
+        }
+
+        public IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
+            bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames,
+            string propertyValues)
+        {
+            return MembershipProvider.Instance().GetUsersAdvancedSearch(PortalController.GetEffectivePortalId(portalId), userId, filterUserId, filterRoleId, relationTypeId,
+                                                      isAdmin, pageIndex, pageSize, sortColumn,
+                                                      sortAscending, propertyNames, propertyValues);
+        }
+
+        public IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending,
+            string propertyName, string propertyValue)
+        {
+            return MembershipProvider.Instance().GetUsersBasicSearch(PortalController.GetEffectivePortalId(portalId), pageIndex, pageSize, sortColumn,
+                                                       sortAscending, propertyName, propertyValue);
+        }
+
+        /// <summary>
+        /// Return User Profile Picture relative Url.
+        /// </summary>
+        /// <param name="userId">User Id.</param>
+        /// <param name="width">Width in pixel.</param>
+        /// <param name="height">Height in pixel.</param>
+        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal.</returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32).
+        /// </remarks>
+        public string GetUserProfilePictureUrl(int userId, int width, int height)
+        {
+            var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
+
+            var childPortalAlias = GetChildPortalAlias();
+            var cdv = GetProfilePictureCdv(userId);
+
+            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+                ? childPortalAlias + url + cdv
+                : Globals.ApplicationPath + childPortalAlias + url + cdv;
+        }
+
+        public bool IsValidUserName(string userName)
+        {
+            // Validate username against bad characters; it must not start or end with space,
+            // must not contain control characters, and not contain special punctuations
+            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+            // Fallback to default if there is no host setting configured
+            char[] unallowedAscii = HostController.Instance.GetString("UsernameUnallowedCharacters", Globals.USERNAME_UNALLOWED_ASCII).ToCharArray();
+            return userName.Length >= 5 &&
+                        userName == userName.Trim() &&
+                        userName.All(ch => ch >= ' ') &&
+                        userName.IndexOfAny(unallowedAscii) < 0;
+        }
+
+        public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
+        {
+            var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
+
+            var childPortalAlias = Globals.ResolveUrl(this.GetUserProfilePictureUrl(userId, width, height));
+            var cdv = GetProfilePictureCdv(portalId, userId);
+
+            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+                ? childPortalAlias + url + cdv
+                : Globals.ApplicationPath + childPortalAlias + url + cdv;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Update all the Users Display Names.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void UpdateDisplayNames()
+        {
+            int portalId = GetEffectivePortalId(this.PortalId);
+
+            var arrUsers = GetUsers(this.PortalId);
+            foreach (UserInfo objUser in arrUsers)
+            {
+                objUser.UpdateDisplayName(this.DisplayFormat);
+                UpdateUser(portalId, objUser);
+            }
+        }
+
+        internal static Hashtable GetUserSettings(int portalId, Hashtable settings)
+        {
+            portalId = GetEffectivePortalId(portalId);
+
+            if (settings["Column_FirstName"] == null)
+            {
+                settings["Column_FirstName"] = false;
+            }
+
+            if (settings["Column_LastName"] == null)
+            {
+                settings["Column_LastName"] = false;
+            }
+
+            if (settings["Column_DisplayName"] == null)
+            {
+                settings["Column_DisplayName"] = true;
+            }
+
+            if (settings["Column_Address"] == null)
+            {
+                settings["Column_Address"] = true;
+            }
+
+            if (settings["Column_Telephone"] == null)
+            {
+                settings["Column_Telephone"] = true;
+            }
+
+            if (settings["Column_Email"] == null)
+            {
+                settings["Column_Email"] = false;
+            }
+
+            if (settings["Column_CreatedDate"] == null)
+            {
+                settings["Column_CreatedDate"] = true;
+            }
+
+            if (settings["Column_LastLogin"] == null)
+            {
+                settings["Column_LastLogin"] = false;
+            }
+
+            if (settings["Column_Authorized"] == null)
+            {
+                settings["Column_Authorized"] = true;
+            }
+
+            if (settings["Display_Mode"] == null)
+            {
+                settings["Display_Mode"] = DisplayMode.All;
+            }
+            else
+            {
+                settings["Display_Mode"] = (DisplayMode)Convert.ToInt32(settings["Display_Mode"]);
+            }
+
+            if (settings["Display_SuppressPager"] == null)
+            {
+                settings["Display_SuppressPager"] = false;
+            }
+
+            if (settings["Records_PerPage"] == null)
+            {
+                settings["Records_PerPage"] = 10;
+            }
+
+            if (settings["Profile_DefaultVisibility"] == null)
+            {
+                settings["Profile_DefaultVisibility"] = UserVisibilityMode.AdminOnly;
+            }
+            else
+            {
+                settings["Profile_DefaultVisibility"] = (UserVisibilityMode)Convert.ToInt32(settings["Profile_DefaultVisibility"]);
+            }
+
+            if (settings["Profile_DisplayVisibility"] == null)
+            {
+                settings["Profile_DisplayVisibility"] = true;
+            }
+
+            if (settings["Profile_ManageServices"] == null)
+            {
+                settings["Profile_ManageServices"] = true;
+            }
+
+            if (settings["Redirect_AfterLogin"] == null)
+            {
+                settings["Redirect_AfterLogin"] = -1;
+            }
+
+            if (settings["Redirect_AfterRegistration"] == null)
+            {
+                settings["Redirect_AfterRegistration"] = -1;
+            }
+
+            if (settings["Redirect_AfterLogout"] == null)
+            {
+                settings["Redirect_AfterLogout"] = -1;
+            }
+
+            if (settings["Security_CaptchaLogin"] == null)
+            {
+                settings["Security_CaptchaLogin"] = false;
+            }
+
+            if (settings["Security_CaptchaRegister"] == null)
+            {
+                settings["Security_CaptchaRegister"] = false;
+            }
+
+            if (settings["Security_CaptchaChangePassword"] == null)
+            {
+                settings["Security_CaptchaChangePassword"] = false;
+            }
+
+            if (settings["Security_CaptchaRetrivePassword"] == null)
+            {
+                settings["Security_CaptchaRetrivePassword"] = false;
+            }
+
+            if (settings["Security_EmailValidation"] == null)
+            {
+                settings["Security_EmailValidation"] = Globals.glbEmailRegEx;
+            }
+
+            if (settings["Security_UserNameValidation"] == null)
+            {
+                settings["Security_UserNameValidation"] = Globals.glbUserNameRegEx;
+            }
+
+            // Forces a valid profile on registration
+            if (settings["Security_RequireValidProfile"] == null)
+            {
+                settings["Security_RequireValidProfile"] = false;
+            }
+
+            // Forces a valid profile on login
+            if (settings["Security_RequireValidProfileAtLogin"] == null)
+            {
+                settings["Security_RequireValidProfileAtLogin"] = true;
+            }
+
+            if (settings["Security_UsersControl"] == null)
+            {
+                var portal = PortalController.Instance.GetPortal(portalId);
+
+                if (portal != null && portal.Users > 1000)
+                {
+                    settings["Security_UsersControl"] = UsersControl.TextBox;
+                }
+                else
+                {
+                    settings["Security_UsersControl"] = UsersControl.Combo;
+                }
+            }
+            else
+            {
+                settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"]);
+            }
+
+            // Display name format
+            if (settings["Security_DisplayNameFormat"] == null)
+            {
+                settings["Security_DisplayNameFormat"] = string.Empty;
+            }
+
+            if (settings["Registration_RequireConfirmPassword"] == null)
+            {
+                settings["Registration_RequireConfirmPassword"] = true;
+            }
+
+            if (settings["Registration_RandomPassword"] == null)
+            {
+                settings["Registration_RandomPassword"] = false;
+            }
+
+            if (settings["Registration_UseEmailAsUserName"] == null)
+            {
+                settings["Registration_UseEmailAsUserName"] = false;
+            }
+
+            if (settings["Registration_UseAuthProviders"] == null)
+            {
+                settings["Registration_UseAuthProviders"] = false;
+            }
+
+            if (settings["Registration_UseProfanityFilter"] == null)
+            {
+                settings["Registration_UseProfanityFilter"] = false;
+            }
+
+            if (settings["Registration_RegistrationFormType"] == null)
+            {
+                settings["Registration_RegistrationFormType"] = 0;
+            }
+
+            if (settings["Registration_RegistrationFields"] == null)
+            {
+                settings["Registration_RegistrationFields"] = string.Empty;
+            }
+
+            if (settings["Registration_ExcludeTerms"] == null)
+            {
+                settings["Registration_ExcludeTerms"] = string.Empty;
+            }
+
+            if (settings["Registration_RequireUniqueDisplayName"] == null)
+            {
+                settings["Registration_RequireUniqueDisplayName"] = false;
+            }
+
+            return settings;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   updates a user.
+        /// </summary>
+        /// <param name = "portalId">the portalid of the user.</param>
+        /// <param name = "user">the user object.</param>
+        /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
+        /// <param name="clearCache">Whether clear cache after update user.</param>
+        /// <remarks>
+        /// This method is used internal because it should be use carefully, or it will caught cache doesn't clear correctly.
+        /// </remarks>
+        internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
+        {
+            var originalPortalId = user.PortalID;
+            portalId = GetEffectivePortalId(portalId);
+            user.PortalID = portalId;
+
+            // clear the cache so that can get original info from database.
+            DataCache.RemoveCache(string.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
+            var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
+            var oldProfile = oldUser.Profile; // access the profile property to reload data from database.
+
+            // Update the User
+            MembershipProvider.Instance().UpdateUser(user);
+            if (loggedAction)
+            {
+                // if the httpcontext is null, then get portal settings by portal id.
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current != null)
+                {
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                }
+                else if (portalId > Null.NullInteger)
+                {
+                    portalSettings = new PortalSettings(portalId);
+                }
+
+                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
+            }
+
+            EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs { User = user, OldUser = oldUser });
+
+            // Reset PortalId
+            FixMemberPortalId(user, originalPortalId);
+
+            // Remove the UserInfo from the Cache, as it has been modified
+            if (clearCache)
+            {
+                DataCache.ClearUserCache(portalId, user.Username);
+            }
+
+            if (!user.Membership.Approving)
+            {
+                return;
+            }
+
+            user.Membership.ConfirmApproved();
+            EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
+        }
+
+        protected override Func<IUserController> GetFactory()
+        {
+            return () => new UserController();
+        }
+
+        private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
+        {
+            // initialize log record
+            var objSecurity = PortalSecurity.Instance;
+            var log = new LogInfo
+            {
+                LogTypeKey = loginStatus.ToString(),
+                LogPortalID = portalId,
+                LogPortalName = portalName,
+                LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+                LogUserID = userId,
+            };
+            log.AddProperty("IP", ip);
+
+            // create log record
+            LogController.Instance.AddLog(log);
+        }
+
+        private static void AutoAssignUsersToPortalRoles(UserInfo user, int portalId)
+        {
+            foreach (var role in RoleController.Instance.GetRoles(portalId, role => role.AutoAssignment && role.Status == RoleStatus.Approved))
+            {
+                RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            }
+
+            // Clear the roles cache - so the usercount is correct
+            RoleController.Instance.ClearRoleCache(portalId);
+        }
+
+        private static void AutoAssignUsersToRoles(UserInfo user, int portalId)
+        {
+            var thisPortal = PortalController.Instance.GetPortal(portalId);
+
+            if (IsMemberOfPortalGroup(portalId))
+            {
+                foreach (var portal in PortalGroupController.Instance.GetPortalsByGroup(thisPortal.PortalGroupID))
+                {
+                    if (!user.Membership.Approved && portal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+                    {
+                        var role = RoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == "Unverified Users");
+                        RoleController.Instance.AddUserRole(portal.PortalID, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+                    }
+                    else
+                    {
+                        AutoAssignUsersToPortalRoles(user, portal.PortalID);
+                    }
+                }
+            }
+            else
+            {
+                if (!user.Membership.Approved && thisPortal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+                {
+                    var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == "Unverified Users");
+                    RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+                }
+                else
+                {
+                    AutoAssignUsersToPortalRoles(user, portalId);
+                }
+            }
+        }
+
+        // TODO - Handle Portal Groups
+        private static void DeleteUserPermissions(UserInfo user)
+        {
+            FolderPermissionController.DeleteFolderPermissionsByUser(user);
+
+            // Delete Module Permissions
+            ModulePermissionController.DeleteModulePermissionsByUser(user);
+
+            // Delete Tab Permissions
+            TabPermissionController.DeleteTabPermissionsByUser(user);
+        }
+
+        private static void RestoreUserPermissions(UserInfo user)
+        {
+            // restore user's folder permission
+            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+            var userFolder = FolderManager.Instance.GetFolder(portalId, userFolderPath);
+
+            if (userFolder != null)
+            {
+                foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
+                {
+                    if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
+                            || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
+                            || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var folderPermission = new FolderPermissionInfo(permission)
+                        {
+                            FolderID = userFolder.FolderID,
+                            UserID = user.UserID,
+                            RoleID = int.Parse(Globals.glbRoleNothing),
+                            AllowAccess = true,
+                        };
+
+                        userFolder.FolderPermissions.Add(folderPermission, true);
+                    }
+                }
+
+                FolderPermissionController.SaveFolderPermissions((FolderInfo)userFolder);
+            }
+        }
+
+        private static void FixMemberPortalId(UserInfo user, int portalId)
+        {
+            if (user != null)
+            {
+                user.PortalID = portalId;
+            }
+        }
+
+        private static UserInfo GetCurrentUserInternal()
+        {
+            UserInfo user;
+            if (HttpContext.Current == null)
+            {
+                if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
+                {
+                    return new UserInfo();
+                }
+
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                if (portalSettings != null)
+                {
+                    user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
+                    return user ?? new UserInfo();
+                }
+
+                return new UserInfo();
+            }
+
+            user = (UserInfo)HttpContext.Current.Items["UserInfo"];
+            return user ?? new UserInfo();
+        }
+
+        private static int GetEffectivePortalId(int portalId)
+        {
+            return PortalController.GetEffectivePortalId(portalId);
+        }
+
+        private static object GetUserCountByPortalCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            var portalUserCount = MembershipProvider.Instance().GetUserCountByPortal(portalId);
+            DataCache.SetCache(cacheItemArgs.CacheKey, portalUserCount);
+            return portalUserCount;
+        }
+
+        private static SharedDictionary<int, string> GetUserLookupDictionary(int portalId)
+        {
+            var masterPortalId = GetEffectivePortalId(portalId);
+            var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
+            return CBO.GetCachedObject<SharedDictionary<int, string>>(
+                new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut,
+                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(), true);
+        }
+
+        private static bool IsMemberOfPortalGroup(int portalId)
+        {
+            return PortalController.IsMemberOfPortalGroup(portalId);
+        }
+
+        private static void MergeUserProfileProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
+        {
+            foreach (ProfilePropertyDefinition property in userMergeFrom.Profile.ProfileProperties)
+            {
+                if (string.IsNullOrEmpty(userMergeTo.Profile.GetPropertyValue(property.PropertyName)))
+                {
+                    userMergeTo.Profile.SetProfileProperty(property.PropertyName, property.PropertyValue);
+                }
+            }
+        }
+
+        private static void MergeUserProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
+        {
+            if (string.IsNullOrEmpty(userMergeTo.DisplayName))
+            {
+                userMergeTo.DisplayName = userMergeFrom.DisplayName;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.Email))
+            {
+                userMergeTo.Email = userMergeFrom.Email;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.FirstName))
+            {
+                userMergeTo.FirstName = userMergeFrom.FirstName;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.LastName))
+            {
+                userMergeTo.LastName = userMergeFrom.LastName;
+            }
+        }
+
+        private static void SendDeleteEmailNotifications(UserInfo user, PortalSettings portalSettings)
+        {
+            var message = new Message();
+            message.FromUserID = portalSettings.AdministratorId;
+            message.ToUserID = portalSettings.AdministratorId;
+            message.Subject = Localization.GetSystemMessage(
+                user.Profile.PreferredLocale,
+                portalSettings,
+                "EMAIL_USER_UNREGISTER_SUBJECT",
+                user,
+                Localization.GlobalResourceFile,
+                null,
+                string.Empty,
+                portalSettings.AdministratorId);
+            message.Body = Localization.GetSystemMessage(
+                user.Profile.PreferredLocale,
+                portalSettings,
+                "EMAIL_USER_UNREGISTER_BODY",
+                user,
+                Localization.GlobalResourceFile,
+                null,
+                string.Empty,
+                portalSettings.AdministratorId);
+            message.Status = MessageStatusType.Unread;
+            Mail.SendEmail(portalSettings.Email, portalSettings.Email, message.Subject, message.Body);
+        }
+
+        private static string GetChildPortalAlias()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var currentAlias = settings.PortalAlias.HTTPAlias;
+            var index = currentAlias.IndexOf('/');
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : string.Empty;
+            return childPortalAlias;
+        }
+
+        private static string GetProfilePictureCdv(int userId)
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var userInfo = GetUserById(settings.PortalId, userId);
+            if (userInfo?.Profile == null)
+            {
+                return string.Empty;
+            }
+
+            var cdv = string.Empty;
+            var photoProperty = userInfo.Profile.GetProperty("Photo");
+
+            int photoFileId;
+            if (int.TryParse(photoProperty?.PropertyValue, out photoFileId))
+            {
+                var photoFile = FileManager.Instance.GetFile(photoFileId);
+                if (photoFile != null)
+                {
+                    cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
+                }
+            }
+
+            return cdv;
+        }
+
+        private static string GetProfilePictureCdv(int portalId, int userId)
+        {
+            var userInfo = GetUserById(portalId, userId);
+            if (userInfo?.Profile == null)
+            {
+                return string.Empty;
+            }
+
+            var cdv = string.Empty;
+            var photoProperty = userInfo.Profile.GetProperty("Photo");
+
+            int photoFileId;
+            if (int.TryParse(photoProperty?.PropertyValue, out photoFileId))
+            {
+                var photoFile = FileManager.Instance.GetFile(photoFileId);
+                if (photoFile != null)
+                {
+                    cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
+                }
+            }
+
+            return cdv;
+        }
+
+        /// <summary>
+        /// Delete the contents and folder that belongs to a user in a specific portal.
+        /// </summary>
+        /// <param name="user">The user for whom to delete the folder.
+        /// Note the PortalID is taken to specify which portal to delete the folder from.</param>
+        private static void DeleteUserFolder(UserInfo user)
+        {
+            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+            var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
+            if (userFolder != null)
+            {
+                FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
+                var notDeletedSubfolders = new List<IFolderInfo>();
+                FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+
+                if (notDeletedSubfolders.Count == 0)
+                {
+                    // try to remove the parent folder if there is no other users use this folder.
+                    var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                    FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
+                    if (parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
+                    {
+                        FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
+
+                        if (notDeletedSubfolders.Count == 0)
+                        {
+                            // try to remove the root folder if there is no other users use this folder.
+                            var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                            FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
+                            if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
+                            {
+                                FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Returns an absolute url given a relative url.
         /// </summary>
@@ -2460,6 +2450,16 @@ namespace DotNetNuke.Entities.Users
             var user = MembershipProvider.Instance().GetUserByProviderUserKey(masterPortalId, membershipUserKey);
             FixMemberPortalId(user, portalId);
             return user;
+        }
+
+        UserInfo IUserController.GetCurrentUserInfo()
+        {
+            return GetCurrentUserInternal();
+        }
+
+        UserInfo IUserController.GetUserById(int portalId, int userId)
+        {
+            return GetUserById(portalId, userId);
         }
     }
 }

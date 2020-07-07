@@ -55,8 +55,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     public class SiteSettingsController : PersonaBarApiController
     {
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
-        private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
@@ -73,6 +71,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
         private const double DefaultMessagingThrottlingInterval = 0.5; // set default MessagingThrottlingInterval value to 30 seconds.
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
+        private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
+
         public SiteSettingsController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
@@ -3186,6 +3187,40 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
         }
 
+        private static void GetResourceFiles(SortedList fileList, string path)
+        {
+            var folders = Directory.GetDirectories(path);
+
+            foreach (var folder in folders)
+            {
+                var objFolder = new DirectoryInfo(folder);
+
+                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
+                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", "").ToLowerInvariant()) ||
+                                          (folder.ToLowerInvariant().EndsWith("\\portals\\_default"));
+
+                if (resxFilesDirectory)
+                {
+                    var sysLocale = Localization.SystemLocale.ToLowerInvariant();
+                    foreach (var file in Directory.GetFiles(objFolder.FullName, "*.resx"))
+                    {
+                        var fileInfo = new FileInfo(file);
+                        var match = LanguagesController.FileInfoRegex.Match(fileInfo.Name);
+
+                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != sysLocale)
+                        {
+                            continue;
+                        }
+                        fileList.Add(fileInfo.FullName, fileInfo);
+                    }
+                }
+                else
+                {
+                    GetResourceFiles(fileList, folder);
+                }
+            }
+        }
+
         private bool IsLanguagePublished(int portalId, string code)
         {
             bool isPublished = Null.NullBoolean;
@@ -3360,40 +3395,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
             }
             return isValid;
-        }
-
-        private static void GetResourceFiles(SortedList fileList, string path)
-        {
-            var folders = Directory.GetDirectories(path);
-
-            foreach (var folder in folders)
-            {
-                var objFolder = new DirectoryInfo(folder);
-
-                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
-                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", "").ToLowerInvariant()) ||
-                                          (folder.ToLowerInvariant().EndsWith("\\portals\\_default"));
-
-                if (resxFilesDirectory)
-                {
-                    var sysLocale = Localization.SystemLocale.ToLowerInvariant();
-                    foreach (var file in Directory.GetFiles(objFolder.FullName, "*.resx"))
-                    {
-                        var fileInfo = new FileInfo(file);
-                        var match = LanguagesController.FileInfoRegex.Match(fileInfo.Name);
-
-                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != sysLocale)
-                        {
-                            continue;
-                        }
-                        fileList.Add(fileInfo.FullName, fileInfo);
-                    }
-                }
-                else
-                {
-                    GetResourceFiles(fileList, folder);
-                }
-            }
         }
 
         private bool IsLanguageEnabled(int portalId, string code)

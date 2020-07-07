@@ -28,13 +28,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public event WorkCompleted ProcessCompleted;
 
-        public ScheduleHistoryItem ScheduleHistoryItem { get; set; }
-
-        public string SchedulerEventGUID { get; set; }
-
-        public string aProcessMethod { get; set; }
-
-        public string Status { get; set; }
+        public event WorkErrored ProcessErrored;
 
         public int ThreadID
         {
@@ -44,7 +38,13 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        public event WorkErrored ProcessErrored;
+        public ScheduleHistoryItem ScheduleHistoryItem { get; set; }
+
+        public string SchedulerEventGUID { get; set; }
+
+        public string aProcessMethod { get; set; }
+
+        public string Status { get; set; }
 
         public void Started()
         {

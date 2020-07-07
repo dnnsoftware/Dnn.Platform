@@ -35,11 +35,6 @@ namespace DotNetNuke.Web.UI.WebControls
         protected Panel UserRow;
         protected DropDownList cboImages;
         protected DnnPageDropDownList cboTabs;
-        private bool _doChangeURL;
-        private bool _doRenderTypeControls;
-        private bool _doRenderTypes;
-        private string _localResourceFile;
-        private PortalInfo _objPortal;
         protected DropDownList cboUrls;
         protected CheckBox chkLog;
         protected CheckBox chkNewWindow;
@@ -57,6 +52,41 @@ namespace DotNetNuke.Web.UI.WebControls
         protected TextBox txtUrl;
         protected TextBox txtUser;
         protected DnnFilePickerUploader ctlFile;
+        private bool _doChangeURL;
+        private bool _doRenderTypeControls;
+        private bool _doRenderTypes;
+        private string _localResourceFile;
+        private PortalInfo _objPortal;
+
+        public bool Log
+        {
+            get
+            {
+                if (this.chkLog.Visible)
+                {
+                    return this.chkLog.Checked;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool Track
+        {
+            get
+            {
+                if (this.chkTrack.Visible)
+                {
+                    return this.chkTrack.Checked;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         public string FileFilter
         {
@@ -120,21 +150,6 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this._localResourceFile = value;
-            }
-        }
-
-        public bool Log
-        {
-            get
-            {
-                if (this.chkLog.Visible)
-                {
-                    return this.chkLog.Checked;
-                }
-                else
-                {
-                    return false;
-                }
             }
         }
 
@@ -405,21 +420,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public bool Track
-        {
-            get
-            {
-                if (this.chkTrack.Visible)
-                {
-                    return this.chkTrack.Checked;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
         public string Url
         {
             get
@@ -615,6 +615,93 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            try
+            {
+                if (this._doRenderTypes)
+                {
+                    this.DoRenderTypes();
+                }
+
+                if (this._doChangeURL)
+                {
+                    this.DoChangeURL();
+                }
+
+                this.DoCorrectRadioButtonList();
+
+                if (this._doRenderTypeControls)
+                {
+                    this.DoRenderTypeControls();
+                }
+
+                this.ViewState["Url"] = null;
+                this.ViewState["IsUrlControlLoaded"] = "Loaded";
+
+                this.ctlFile.FileFilter = this.FileFilter;
+            }
+            catch (Exception exc)
+            {
+                // Let's detect possible problems
+                Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
+            }
+        }
+
+        protected void cmdAdd_Click(object sender, EventArgs e)
+        {
+            this.cboUrls.Visible = false;
+            this.cmdSelect.Visible = true;
+            this.txtUrl.Visible = true;
+            this.cmdAdd.Visible = false;
+            this.cmdDelete.Visible = false;
+            this._doRenderTypeControls = false; // Must not render on this postback
+            this._doRenderTypes = false;
+            this._doChangeURL = false;
+        }
+
+        protected void cmdDelete_Click(object sender, EventArgs e)
+        {
+            if (this.cboUrls.SelectedItem != null)
+            {
+                var objUrls = new UrlController();
+                objUrls.DeleteUrl(this._objPortal.PortalID, this.cboUrls.SelectedItem.Value);
+                this.LoadUrls(); // we must reload the url list
+            }
+
+            this._doRenderTypeControls = false; // Must not render on this postback
+            this._doRenderTypes = false;
+            this._doChangeURL = false;
+        }
+
+        protected void cmdSelect_Click(object sender, EventArgs e)
+        {
+            this.cboUrls.Visible = true;
+            this.cmdSelect.Visible = false;
+            this.txtUrl.Visible = false;
+            this.cmdAdd.Visible = true;
+            this.cmdDelete.Visible = PortalSecurity.IsInRole(this._objPortal.AdministratorRoleName);
+            this.LoadUrls();
+            if (this.cboUrls.Items.FindByValue(this.txtUrl.Text) != null)
+            {
+                this.cboUrls.ClearSelection();
+                this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
+            }
+
+            this._doRenderTypeControls = false; // Must not render on this postback
+            this._doRenderTypes = false;
+            this._doChangeURL = false;
+        }
+
+        protected void optType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Type changed, render the correct control set
+            this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
+            this._doRenderTypeControls = true;
         }
 
         private void LoadUrls()
@@ -1039,93 +1126,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.FileRow.Visible = false;
                 this.UserRow.Visible = false;
             }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            try
-            {
-                if (this._doRenderTypes)
-                {
-                    this.DoRenderTypes();
-                }
-
-                if (this._doChangeURL)
-                {
-                    this.DoChangeURL();
-                }
-
-                this.DoCorrectRadioButtonList();
-
-                if (this._doRenderTypeControls)
-                {
-                    this.DoRenderTypeControls();
-                }
-
-                this.ViewState["Url"] = null;
-                this.ViewState["IsUrlControlLoaded"] = "Loaded";
-
-                this.ctlFile.FileFilter = this.FileFilter;
-            }
-            catch (Exception exc)
-            {
-                // Let's detect possible problems
-                Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
-            }
-        }
-
-        protected void cmdAdd_Click(object sender, EventArgs e)
-        {
-            this.cboUrls.Visible = false;
-            this.cmdSelect.Visible = true;
-            this.txtUrl.Visible = true;
-            this.cmdAdd.Visible = false;
-            this.cmdDelete.Visible = false;
-            this._doRenderTypeControls = false; // Must not render on this postback
-            this._doRenderTypes = false;
-            this._doChangeURL = false;
-        }
-
-        protected void cmdDelete_Click(object sender, EventArgs e)
-        {
-            if (this.cboUrls.SelectedItem != null)
-            {
-                var objUrls = new UrlController();
-                objUrls.DeleteUrl(this._objPortal.PortalID, this.cboUrls.SelectedItem.Value);
-                this.LoadUrls(); // we must reload the url list
-            }
-
-            this._doRenderTypeControls = false; // Must not render on this postback
-            this._doRenderTypes = false;
-            this._doChangeURL = false;
-        }
-
-        protected void cmdSelect_Click(object sender, EventArgs e)
-        {
-            this.cboUrls.Visible = true;
-            this.cmdSelect.Visible = false;
-            this.txtUrl.Visible = false;
-            this.cmdAdd.Visible = true;
-            this.cmdDelete.Visible = PortalSecurity.IsInRole(this._objPortal.AdministratorRoleName);
-            this.LoadUrls();
-            if (this.cboUrls.Items.FindByValue(this.txtUrl.Text) != null)
-            {
-                this.cboUrls.ClearSelection();
-                this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
-            }
-
-            this._doRenderTypeControls = false; // Must not render on this postback
-            this._doRenderTypes = false;
-            this._doChangeURL = false;
-        }
-
-        protected void optType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Type changed, render the correct control set
-            this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
-            this._doRenderTypeControls = true;
         }
     }
 }

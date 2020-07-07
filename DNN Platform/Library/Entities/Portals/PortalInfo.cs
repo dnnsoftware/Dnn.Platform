@@ -77,6 +77,76 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
+        /// Gets or sets the footer text as specified in the Portal settings.
+        /// </summary>
+        /// <value>Footer text of the portal.</value>
+        /// <returns>Returns the the footer text of the portal.</returns>
+        /// <remarks>
+        /// <example>This show the usage of the <c>FooterText</c> property
+        /// <code lang="vbnet">
+        /// txtFooterText.Text = objPortal.FooterText
+        /// </code>
+        /// </example>
+        /// </remarks>
+        [XmlElement("footertext")]
+        public string FooterText { get; set; }
+
+        /// <summary>
+        /// Gets or sets home directory of the portal (logical path).
+        /// </summary>
+        /// <value>Portal home directory.</value>
+        /// <returns>Portal home directory.</returns>
+        /// <remarks><seealso cref="HomeDirectoryMapPath"></seealso></remarks>
+        [XmlElement("homedirectory")]
+        public string HomeDirectory { get; set; }
+
+        /// <summary>
+        /// Gets home System (local) directory of the portal (logical path).
+        /// </summary>
+        /// <value>Portal home system directory.</value>
+        /// <returns>Portal home system directory in local filesystem.</returns>
+        /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
+        [XmlElement("homesystemdirectory")]
+        public string HomeSystemDirectory
+        {
+            get { return string.Format("{0}-System", this.HomeDirectory); }
+        }
+
+        /// <summary>
+        /// Gets fysical path on disk of the home directory of the portal.
+        /// </summary>
+        /// <value>
+        /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
+        /// </value>
+        /// <returns>Fully qualified path of the home directory.</returns>
+        /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
+        [XmlIgnore]
+        public string HomeDirectoryMapPath
+        {
+            get
+            {
+                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeDirectory.Replace("/", "\\"));
+            }
+        }
+
+        /// <summary>
+        /// Gets fysical path on disk of the home directory of the portal.
+        /// </summary>
+        /// <value>
+        /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
+        /// </value>
+        /// <returns>Fully qualified path of the home system (local) directory.</returns>
+        /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
+        [XmlIgnore]
+        public string HomeSystemDirectoryMapPath
+        {
+            get
+            {
+                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeSystemDirectory.Replace("/", "\\"));
+            }
+        }
+
+        /// <summary>
         /// Gets or sets userID of the user who is the admininistrator of the portal.
         /// </summary>
         /// <value>UserId of the user who is the portal admin.</value>
@@ -226,20 +296,6 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("expirydate")]
         public DateTime ExpiryDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the footer text as specified in the Portal settings.
-        /// </summary>
-        /// <value>Footer text of the portal.</value>
-        /// <returns>Returns the the footer text of the portal.</returns>
-        /// <remarks>
-        /// <example>This show the usage of the <c>FooterText</c> property
-        /// <code lang="vbnet">
-        /// txtFooterText.Text = objPortal.FooterText
-        /// </code>
-        /// </example>
-        /// </remarks>
-        [XmlElement("footertext")]
-        public string FooterText { get; set; }
 
         /// <summary>
         /// Gets or sets gUID of the portal info object.
@@ -250,26 +306,6 @@ namespace DotNetNuke.Entities.Portals
         [XmlIgnore]
         public Guid GUID { get; set; }
 
-        /// <summary>
-        /// Gets or sets home directory of the portal (logical path).
-        /// </summary>
-        /// <value>Portal home directory.</value>
-        /// <returns>Portal home directory.</returns>
-        /// <remarks><seealso cref="HomeDirectoryMapPath"></seealso></remarks>
-        [XmlElement("homedirectory")]
-        public string HomeDirectory { get; set; }
-
-        /// <summary>
-        /// Gets home System (local) directory of the portal (logical path).
-        /// </summary>
-        /// <value>Portal home system directory.</value>
-        /// <returns>Portal home system directory in local filesystem.</returns>
-        /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
-        [XmlElement("homesystemdirectory")]
-        public string HomeSystemDirectory
-        {
-            get { return string.Format("{0}-System", this.HomeDirectory); }
-        }
 
         /// <summary>
         /// Gets or sets tabdId of the Home page.
@@ -659,40 +695,6 @@ namespace DotNetNuke.Entities.Portals
             set
             {
                 this._administratorRoleName = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets fysical path on disk of the home directory of the portal.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
-        /// </value>
-        /// <returns>Fully qualified path of the home directory.</returns>
-        /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
-        [XmlIgnore]
-        public string HomeDirectoryMapPath
-        {
-            get
-            {
-                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeDirectory.Replace("/", "\\"));
-            }
-        }
-
-        /// <summary>
-        /// Gets fysical path on disk of the home directory of the portal.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
-        /// </value>
-        /// <returns>Fully qualified path of the home system (local) directory.</returns>
-        /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
-        [XmlIgnore]
-        public string HomeSystemDirectoryMapPath
-        {
-            get
-            {
-                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeSystemDirectory.Replace("/", "\\"));
             }
         }
 

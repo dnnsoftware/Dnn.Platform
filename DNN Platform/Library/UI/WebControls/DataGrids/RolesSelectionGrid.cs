@@ -40,32 +40,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public bool AutoGenerateColumns
-        {
-            get
-            {
-                return this.dgRoleSelection.AutoGenerateColumns;
-            }
-
-            set
-            {
-                this.dgRoleSelection.AutoGenerateColumns = value;
-            }
-        }
-
-        public int CellSpacing
-        {
-            get
-            {
-                return this.dgRoleSelection.CellSpacing;
-            }
-
-            set
-            {
-                this.dgRoleSelection.CellSpacing = value;
-            }
-        }
-
         public DataGridColumnCollection Columns
         {
             get
@@ -79,19 +53,6 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 return this.dgRoleSelection.FooterStyle;
-            }
-        }
-
-        public GridLines GridLines
-        {
-            get
-            {
-                return this.dgRoleSelection.GridLines;
-            }
-
-            set
-            {
-                this.dgRoleSelection.GridLines = value;
             }
         }
 
@@ -124,6 +85,45 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 return this.dgRoleSelection.SelectedItemStyle;
+            }
+        }
+
+        public bool AutoGenerateColumns
+        {
+            get
+            {
+                return this.dgRoleSelection.AutoGenerateColumns;
+            }
+
+            set
+            {
+                this.dgRoleSelection.AutoGenerateColumns = value;
+            }
+        }
+
+        public int CellSpacing
+        {
+            get
+            {
+                return this.dgRoleSelection.CellSpacing;
+            }
+
+            set
+            {
+                this.dgRoleSelection.CellSpacing = value;
+            }
+        }
+
+        public GridLines GridLines
+        {
+            get
+            {
+                return this.dgRoleSelection.GridLines;
+            }
+
+            set
+            {
+                this.dgRoleSelection.GridLines = value;
             }
         }
 
@@ -273,110 +273,6 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Bind the data to the controls.
-        /// </summary>
-        private void BindData()
-        {
-            this.EnsureChildControls();
-
-            this.BindRolesGrid();
-        }
-
-        /// <summary>
-        /// Bind the Roles data to the Grid.
-        /// </summary>
-        private void BindRolesGrid()
-        {
-            this.dtRolesSelection.Columns.Clear();
-            this.dtRolesSelection.Rows.Clear();
-
-            // Add Roles Column
-            var col = new DataColumn("RoleId", typeof(string));
-            this.dtRolesSelection.Columns.Add(col);
-
-            // Add Roles Column
-            col = new DataColumn("RoleName", typeof(string));
-            this.dtRolesSelection.Columns.Add(col);
-
-            // Add Selected Column
-            col = new DataColumn("Selected", typeof(bool));
-            this.dtRolesSelection.Columns.Add(col);
-
-            this.GetRoles();
-
-            this.UpdateRoleSelections();
-            for (int i = 0; i <= this._roles.Count - 1; i++)
-            {
-                var role = this._roles[i];
-                DataRow row = this.dtRolesSelection.NewRow();
-                row["RoleId"] = role.RoleID;
-                row["RoleName"] = Localization.LocalizeRole(role.RoleName);
-                row["Selected"] = this.GetSelection(role.RoleName);
-
-                this.dtRolesSelection.Rows.Add(row);
-            }
-
-            this.dgRoleSelection.DataSource = this.dtRolesSelection;
-            this.dgRoleSelection.DataBind();
-        }
-
-        private bool GetSelection(string roleName)
-        {
-            return this.CurrentRoleSelection.Any(r => r == roleName);
-        }
-
-        /// <summary>
-        /// Gets the roles from the Database and loads them into the Roles property.
-        /// </summary>
-        private void GetRoles()
-        {
-            int roleGroupId = -2;
-            if ((this.cboRoleGroups != null) && (this.cboRoleGroups.SelectedValue != null))
-            {
-                roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue);
-            }
-
-            this._roles = roleGroupId > -2
-                    ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                    : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
-
-            if (roleGroupId < 0)
-            {
-                if (this.ShowUnauthenticatedUsers)
-                {
-                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
-                }
-
-                if (this.ShowAllUsers)
-                {
-                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
-                }
-            }
-
-            this._roles = this._roles.OrderBy(r => r.RoleName).ToList();
-        }
-
-        /// <summary>
-        /// Sets up the columns for the Grid.
-        /// </summary>
-        private void SetUpRolesGrid()
-        {
-            this.dgRoleSelection.Columns.Clear();
-            var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName" };
-            textCol.ItemStyle.Width = Unit.Parse("150px");
-            this.dgRoleSelection.Columns.Add(textCol);
-            var idCol = new BoundColumn { HeaderText = string.Empty, DataField = "roleid", Visible = false };
-            this.dgRoleSelection.Columns.Add(idCol);
-            var checkCol = new TemplateColumn();
-            var columnTemplate = new CheckBoxColumnTemplate { DataField = "Selected" };
-            checkCol.ItemTemplate = columnTemplate;
-            checkCol.HeaderText = Localization.GetString("SelectedRole");
-            checkCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            checkCol.HeaderStyle.Wrap = true;
-            this.dgRoleSelection.Columns.Add(checkCol);
-        }
-
-        /// <summary>
         /// Creates the Child Controls.
         /// </summary>
         protected override void CreateChildControls()
@@ -485,6 +381,110 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Bind the data to the controls.
+        /// </summary>
+        private void BindData()
+        {
+            this.EnsureChildControls();
+
+            this.BindRolesGrid();
+        }
+
+        /// <summary>
+        /// Bind the Roles data to the Grid.
+        /// </summary>
+        private void BindRolesGrid()
+        {
+            this.dtRolesSelection.Columns.Clear();
+            this.dtRolesSelection.Rows.Clear();
+
+            // Add Roles Column
+            var col = new DataColumn("RoleId", typeof(string));
+            this.dtRolesSelection.Columns.Add(col);
+
+            // Add Roles Column
+            col = new DataColumn("RoleName", typeof(string));
+            this.dtRolesSelection.Columns.Add(col);
+
+            // Add Selected Column
+            col = new DataColumn("Selected", typeof(bool));
+            this.dtRolesSelection.Columns.Add(col);
+
+            this.GetRoles();
+
+            this.UpdateRoleSelections();
+            for (int i = 0; i <= this._roles.Count - 1; i++)
+            {
+                var role = this._roles[i];
+                DataRow row = this.dtRolesSelection.NewRow();
+                row["RoleId"] = role.RoleID;
+                row["RoleName"] = Localization.LocalizeRole(role.RoleName);
+                row["Selected"] = this.GetSelection(role.RoleName);
+
+                this.dtRolesSelection.Rows.Add(row);
+            }
+
+            this.dgRoleSelection.DataSource = this.dtRolesSelection;
+            this.dgRoleSelection.DataBind();
+        }
+
+        private bool GetSelection(string roleName)
+        {
+            return this.CurrentRoleSelection.Any(r => r == roleName);
+        }
+
+        /// <summary>
+        /// Gets the roles from the Database and loads them into the Roles property.
+        /// </summary>
+        private void GetRoles()
+        {
+            int roleGroupId = -2;
+            if ((this.cboRoleGroups != null) && (this.cboRoleGroups.SelectedValue != null))
+            {
+                roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue);
+            }
+
+            this._roles = roleGroupId > -2
+                    ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                    : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+
+            if (roleGroupId < 0)
+            {
+                if (this.ShowUnauthenticatedUsers)
+                {
+                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
+                }
+
+                if (this.ShowAllUsers)
+                {
+                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
+                }
+            }
+
+            this._roles = this._roles.OrderBy(r => r.RoleName).ToList();
+        }
+
+        /// <summary>
+        /// Sets up the columns for the Grid.
+        /// </summary>
+        private void SetUpRolesGrid()
+        {
+            this.dgRoleSelection.Columns.Clear();
+            var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName" };
+            textCol.ItemStyle.Width = Unit.Parse("150px");
+            this.dgRoleSelection.Columns.Add(textCol);
+            var idCol = new BoundColumn { HeaderText = string.Empty, DataField = "roleid", Visible = false };
+            this.dgRoleSelection.Columns.Add(idCol);
+            var checkCol = new TemplateColumn();
+            var columnTemplate = new CheckBoxColumnTemplate { DataField = "Selected" };
+            checkCol.ItemTemplate = columnTemplate;
+            checkCol.HeaderText = Localization.GetString("SelectedRole");
+            checkCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            checkCol.HeaderStyle.Wrap = true;
+            this.dgRoleSelection.Columns.Add(checkCol);
         }
     }
 }

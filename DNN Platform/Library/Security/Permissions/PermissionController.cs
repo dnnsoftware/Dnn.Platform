@@ -73,6 +73,16 @@ namespace DotNetNuke.Security.Permissions
             return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_FOLDER").ToArray());
         }
 
+        public static ArrayList GetPermissionsByPortalDesktopModule()
+        {
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_DESKTOPMODULE").ToArray());
+        }
+
+        public static ArrayList GetPermissionsByTab()
+        {
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_TAB").ToArray());
+        }
+
         public int AddPermission(PermissionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
@@ -97,21 +107,6 @@ namespace DotNetNuke.Security.Permissions
                 EventLogController.EventLogType.PERMISSION_DELETED);
             provider.DeletePermission(permissionID);
             this.ClearCache();
-        }
-
-        private static IEnumerable<PermissionInfo> GetPermissions()
-        {
-            return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
-                new CacheItemArgs(
-                DataCache.PermissionsCacheKey,
-                DataCache.PermissionsCacheTimeout,
-                DataCache.PermissionsCachePriority),
-                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
-        }
-
-        private void ClearCache()
-        {
-            DataCache.RemoveCache(DataCache.PermissionsCacheKey);
         }
 
         public PermissionInfo GetPermission(int permissionID)
@@ -148,16 +143,6 @@ namespace DotNetNuke.Security.Permissions
                 permission.PermissionName,
                 UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearCache();
-        }
-
-        public static ArrayList GetPermissionsByPortalDesktopModule()
-        {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_DESKTOPMODULE").ToArray());
-        }
-
-        public static ArrayList GetPermissionsByTab()
-        {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_TAB").ToArray());
         }
 
         public T RemapPermission<T>(T permission, int portalId)
@@ -227,6 +212,21 @@ namespace DotNetNuke.Security.Permissions
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 
             return this.GetPermissionsByModuleDefID(module.ModuleDefID);
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissions()
+        {
+            return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+                new CacheItemArgs(
+                DataCache.PermissionsCacheKey,
+                DataCache.PermissionsCacheTimeout,
+                DataCache.PermissionsCachePriority),
+                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(DataCache.PermissionsCacheKey);
         }
     }
 }

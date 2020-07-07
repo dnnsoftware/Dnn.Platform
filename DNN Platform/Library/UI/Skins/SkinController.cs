@@ -37,8 +37,8 @@ namespace DotNetNuke.UI.Skins
     {
         private const string GlobalSkinPrefix = "[G]";
         private const string PortalSystemSkinPrefix = "[S]";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinController));
         private const string PortalSkinPrefix = "[L]";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinController));
         private static readonly Regex GdirRegex = new Regex("\\[g]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -68,62 +68,6 @@ namespace DotNetNuke.UI.Skins
         {
             EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_CREATED);
             return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.Instance.GetCurrentUserInfo().UserID);
-        }
-
-        private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, string skinPrefix)
-        {
-            foreach (string skinFile in Directory.GetFiles(skinFolder, "*.ascx"))
-            {
-                string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
-
-                string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ")
-                                + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
-                string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
-                skins.Add(new KeyValuePair<string, string>(key, value));
-            }
-        }
-
-        private static List<KeyValuePair<string, string>> GetHostSkins(string skinRoot)
-        {
-            var skins = new List<KeyValuePair<string, string>>();
-
-            string root = Globals.HostMapPath + skinRoot;
-            if (Directory.Exists(root))
-            {
-                foreach (string skinFolder in Directory.GetDirectories(root))
-                {
-                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder))
-                    {
-                        AddSkinFiles(skins, skinRoot, skinFolder, GlobalSkinPrefix);
-                    }
-                }
-            }
-
-            return skins;
-        }
-
-        private static List<KeyValuePair<string, string>> GetPortalSkins(PortalInfo portalInfo, string skinRoot)
-        {
-            var skins = new List<KeyValuePair<string, string>>();
-
-            if (portalInfo != null)
-            {
-                ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot, PortalSystemSkinPrefix);
-                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot, PortalSkinPrefix); // to be compliant with all versions
-            }
-
-            return skins;
-        }
-
-        private static void ProcessSkinsFolder(List<KeyValuePair<string, string>> skins, string skinsFolder, string skinRoot, string skinPrefix)
-        {
-            if (Directory.Exists(skinsFolder))
-            {
-                foreach (string skinFolder in Directory.GetDirectories(skinsFolder))
-                {
-                    AddSkinFiles(skins, skinRoot, skinFolder, skinPrefix);
-                }
-            }
         }
 
         public static bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
@@ -373,34 +317,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// format skin name.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="skinFolder">The Folder Name.</param>
-        /// <param name="skinFile">The File Name without extension.</param>
-        private static string FormatSkinName(string skinFolder, string skinFile)
-        {
-            if (skinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
-            {
-                // host folder
-                return skinFile;
-            }
-
-            // portal folder
-            switch (skinFile.ToLowerInvariant())
-            {
-                case "skin":
-                case "container":
-                case "default":
-                    return skinFolder;
-                default:
-                    return skinFolder + " - " + skinFile;
-            }
-        }
-
         public static void UpdateSkin(int skinID, string skinSrc)
         {
             DataProvider.Instance().UpdateSkin(skinID, skinSrc);
@@ -573,6 +489,90 @@ namespace DotNetNuke.UI.Skins
             }
 
             return strMessage;
+        }
+
+        private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, string skinPrefix)
+        {
+            foreach (string skinFile in Directory.GetFiles(skinFolder, "*.ascx"))
+            {
+                string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
+
+                string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ")
+                                + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
+                string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
+                skins.Add(new KeyValuePair<string, string>(key, value));
+            }
+        }
+
+        private static List<KeyValuePair<string, string>> GetHostSkins(string skinRoot)
+        {
+            var skins = new List<KeyValuePair<string, string>>();
+
+            string root = Globals.HostMapPath + skinRoot;
+            if (Directory.Exists(root))
+            {
+                foreach (string skinFolder in Directory.GetDirectories(root))
+                {
+                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder))
+                    {
+                        AddSkinFiles(skins, skinRoot, skinFolder, GlobalSkinPrefix);
+                    }
+                }
+            }
+
+            return skins;
+        }
+
+        private static List<KeyValuePair<string, string>> GetPortalSkins(PortalInfo portalInfo, string skinRoot)
+        {
+            var skins = new List<KeyValuePair<string, string>>();
+
+            if (portalInfo != null)
+            {
+                ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot, PortalSystemSkinPrefix);
+                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot, PortalSkinPrefix); // to be compliant with all versions
+            }
+
+            return skins;
+        }
+
+        private static void ProcessSkinsFolder(List<KeyValuePair<string, string>> skins, string skinsFolder, string skinRoot, string skinPrefix)
+        {
+            if (Directory.Exists(skinsFolder))
+            {
+                foreach (string skinFolder in Directory.GetDirectories(skinsFolder))
+                {
+                    AddSkinFiles(skins, skinRoot, skinFolder, skinPrefix);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// format skin name.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="skinFolder">The Folder Name.</param>
+        /// <param name="skinFile">The File Name without extension.</param>
+        private static string FormatSkinName(string skinFolder, string skinFile)
+        {
+            if (skinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
+            {
+                // host folder
+                return skinFile;
+            }
+
+            // portal folder
+            switch (skinFile.ToLowerInvariant())
+            {
+                case "skin":
+                case "container":
+                case "default":
+                    return skinFolder;
+                default:
+                    return skinFolder + " - " + skinFile;
+            }
         }
     }
 }

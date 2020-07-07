@@ -26,10 +26,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("name", "Prompt_AddModule_FlagModuleName", "String", true)]
         private const string FlagModuleName = "name";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
-
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("pageid", "Prompt_AddModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
@@ -38,6 +34,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         [FlagParameter("title", "Prompt_AddModule_FlagModuleTitle", "String")]
         private const string FlagModuleTitle = "title";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string ModuleName { get; set; }
         private int PageId { get; set; }    // the page on which to add the module

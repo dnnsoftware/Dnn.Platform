@@ -18,12 +18,12 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class ModuleAuditControl : UserControl
     {
+        private const string MyFileName = "ModuleAuditControl.ascx";
         protected Label lblCreatedBy;
         protected Label lblUpdatedBy;
-        private const string MyFileName = "ModuleAuditControl.ascx";
-        private string _systemUser;
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
+        private string _systemUser;
 
         public ModuleAuditControl()
         {
@@ -36,20 +36,6 @@ namespace DotNetNuke.UI.UserControls
         public string CreatedDate { private get; set; }
 
         public string CreatedByUser { private get; set; }
-
-        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
-
-        [Serializable]
-        private class EntityInfo
-        {
-            public int CreatedByUserID { get; set; }
-
-            public DateTime CreatedOnDate { get; set; }
-
-            public int LastModifiedByUserID { get; set; }
-
-            public DateTime LastModifiedOnDate { get; set; }
-        }
 
         public string LastModifiedByUser { private get; set; }
 
@@ -75,6 +61,8 @@ namespace DotNetNuke.UI.UserControls
                 }
             }
         }
+
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         private EntityInfo Model
         {
@@ -167,6 +155,18 @@ namespace DotNetNuke.UI.UserControls
 
             string updatedByString = Localization.GetString("UpdatedBy", Localization.GetResourceFile(this, MyFileName));
             this.lblUpdatedBy.Text = string.Format(updatedByString, this.LastModifiedByUser, this.LastModifiedDate);
+        }
+
+        [Serializable]
+        private class EntityInfo
+        {
+            public int CreatedByUserID { get; set; }
+
+            public DateTime CreatedOnDate { get; set; }
+
+            public int LastModifiedByUserID { get; set; }
+
+            public DateTime LastModifiedOnDate { get; set; }
         }
     }
 }

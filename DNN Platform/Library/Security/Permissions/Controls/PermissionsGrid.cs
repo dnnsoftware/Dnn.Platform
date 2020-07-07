@@ -64,75 +64,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        public bool AutoGenerateColumns
-        {
-            get
-            {
-                return this.rolePermissionsGrid.AutoGenerateColumns;
-            }
-
-            set
-            {
-                this.rolePermissionsGrid.AutoGenerateColumns = value;
-                this.userPermissionsGrid.AutoGenerateColumns = value;
-            }
-        }
-
-        public int CellSpacing
-        {
-            get
-            {
-                return this.rolePermissionsGrid.CellSpacing;
-            }
-
-            set
-            {
-                this.rolePermissionsGrid.CellSpacing = value;
-                this.userPermissionsGrid.CellSpacing = value;
-            }
-        }
-
-        protected virtual List<PermissionInfoBase> PermissionsList
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        protected virtual bool RefreshGrid
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        private int UnAuthUsersRoleId
-        {
-            get { return this.unAuthUsersRoleId; }
-        }
-
-        private int AllUsersRoleId
-        {
-            get
-            {
-                return this.allUsersRoleId;
-            }
-        }
-
-        /// <summary>
-        /// Registers the scripts neccesary to make the tri-state controls work inside a RadAjaxPanel.
-        /// </summary>
-        /// <remarks>
-        /// No need to call this unless using the PermissionGrid inside an ajax control that omits scripts on postback
-        /// See DesktopModules/Admin/Tabs.ascx.cs for an example of usage.
-        /// </remarks>
-        public void RegisterScriptsForAjaxPanel()
-        {
-            PermissionTriState.RegisterScripts(this.Page, this);
-        }
-
         public DataGridColumnCollection Columns
         {
             get
@@ -146,20 +77,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             get
             {
                 return this.rolePermissionsGrid.FooterStyle;
-            }
-        }
-
-        public GridLines GridLines
-        {
-            get
-            {
-                return this.rolePermissionsGrid.GridLines;
-            }
-
-            set
-            {
-                this.rolePermissionsGrid.GridLines = value;
-                this.userPermissionsGrid.GridLines = value;
             }
         }
 
@@ -218,6 +135,71 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>
+        /// Gets the Id of the Portal.
+        /// </summary>
+        public int PortalId
+        {
+            get
+            {
+                // Obtain PortalSettings from Current Context
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                int portalID;
+                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID)) // if we are in host filemanager then we need to pass a null portal id
+                {
+                    portalID = Null.NullInteger;
+                }
+                else
+                {
+                    portalID = portalSettings.PortalId;
+                }
+
+                return portalID;
+            }
+        }
+
+        public bool AutoGenerateColumns
+        {
+            get
+            {
+                return this.rolePermissionsGrid.AutoGenerateColumns;
+            }
+
+            set
+            {
+                this.rolePermissionsGrid.AutoGenerateColumns = value;
+                this.userPermissionsGrid.AutoGenerateColumns = value;
+            }
+        }
+
+        public int CellSpacing
+        {
+            get
+            {
+                return this.rolePermissionsGrid.CellSpacing;
+            }
+
+            set
+            {
+                this.rolePermissionsGrid.CellSpacing = value;
+                this.userPermissionsGrid.CellSpacing = value;
+            }
+        }
+
+        public GridLines GridLines
+        {
+            get
+            {
+                return this.rolePermissionsGrid.GridLines;
+            }
+
+            set
+            {
+                this.rolePermissionsGrid.GridLines = value;
+                this.userPermissionsGrid.GridLines = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether gets and Sets whether a Dynamic Column has been added.
         /// </summary>
         public bool DynamicColumnAdded
@@ -244,29 +226,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         public DataTable dtUserPermissions { get; private set; }
 
         /// <summary>
-        /// Gets the Id of the Portal.
-        /// </summary>
-        public int PortalId
-        {
-            get
-            {
-                // Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                int portalID;
-                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID)) // if we are in host filemanager then we need to pass a null portal id
-                {
-                    portalID = Null.NullInteger;
-                }
-                else
-                {
-                    portalID = portalSettings.PortalId;
-                }
-
-                return portalID;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets and Sets the collection of Roles to display.
         /// </summary>
         public ArrayList Roles { get; set; }
@@ -275,6 +234,47 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Gets or sets and Sets the ResourceFile to localize permissions.
         /// </summary>
         public string ResourceFile { get; set; }
+
+        protected virtual List<PermissionInfoBase> PermissionsList
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        protected virtual bool RefreshGrid
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        private int UnAuthUsersRoleId
+        {
+            get { return this.unAuthUsersRoleId; }
+        }
+
+        private int AllUsersRoleId
+        {
+            get
+            {
+                return this.allUsersRoleId;
+            }
+        }
+
+        /// <summary>
+        /// Registers the scripts neccesary to make the tri-state controls work inside a RadAjaxPanel.
+        /// </summary>
+        /// <remarks>
+        /// No need to call this unless using the PermissionGrid inside an ajax control that omits scripts on postback
+        /// See DesktopModules/Admin/Tabs.ascx.cs for an example of usage.
+        /// </remarks>
+        public void RegisterScriptsForAjaxPanel()
+        {
+            PermissionTriState.RegisterScripts(this.Page, this);
+        }
 
         /// <summary>
         /// Generate the Data Grid.
@@ -292,364 +292,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="user">The user to add.</param>
         protected virtual void AddPermission(ArrayList permissions, UserInfo user)
         {
-        }
-
-        private void BindData()
-        {
-            this.EnsureChildControls();
-            this.BindRolesGrid();
-            this.BindUsersGrid();
-        }
-
-        private void BindRolesGrid()
-        {
-            this.dtRolePermissions.Columns.Clear();
-            this.dtRolePermissions.Rows.Clear();
-
-            // Add Roles Column
-            this.dtRolePermissions.Columns.Add(new DataColumn("RoleId"));
-
-            // Add Roles Column
-            this.dtRolePermissions.Columns.Add(new DataColumn("RoleName"));
-
-            for (int i = 0; i <= this._permissions.Count - 1; i++)
-            {
-                var permissionInfo = (PermissionInfo)this._permissions[i];
-
-                // Add Enabled Column
-                this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName + "_Enabled"));
-
-                // Add Permission Column
-                this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName));
-            }
-
-            this.GetRoles();
-
-            this.UpdateRolePermissions();
-            for (int i = 0; i <= this.Roles.Count - 1; i++)
-            {
-                var role = (RoleInfo)this.Roles[i];
-                var row = this.dtRolePermissions.NewRow();
-                row["RoleId"] = role.RoleID;
-                row["RoleName"] = Localization.LocalizeRole(role.RoleName);
-                int j;
-                for (j = 0; j <= this._permissions.Count - 1; j++)
-                {
-                    PermissionInfo objPerm;
-                    objPerm = (PermissionInfo)this._permissions[j];
-                    row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, role, j + 1);
-                    if (this.SupportsDenyPermissions(objPerm))
-                    {
-                        row[objPerm.PermissionName] = this.GetPermission(objPerm, role, j + 1, PermissionTypeNull);
-                    }
-                    else
-                    {
-                        if (this.GetPermission(objPerm, role, j + 1))
-                        {
-                            row[objPerm.PermissionName] = PermissionTypeGrant;
-                        }
-                        else
-                        {
-                            row[objPerm.PermissionName] = PermissionTypeNull;
-                        }
-                    }
-                }
-
-                this.dtRolePermissions.Rows.Add(row);
-            }
-
-            this.rolePermissionsGrid.DataSource = this.dtRolePermissions;
-            this.rolePermissionsGrid.DataBind();
-        }
-
-        private void BindUsersGrid()
-        {
-            this.dtUserPermissions.Columns.Clear();
-            this.dtUserPermissions.Rows.Clear();
-
-            // Add Roles Column
-            var col = new DataColumn("UserId");
-            this.dtUserPermissions.Columns.Add(col);
-
-            // Add Roles Column
-            col = new DataColumn("DisplayName");
-            this.dtUserPermissions.Columns.Add(col);
-            int i;
-            for (i = 0; i <= this._permissions.Count - 1; i++)
-            {
-                PermissionInfo objPerm;
-                objPerm = (PermissionInfo)this._permissions[i];
-
-                // Add Enabled Column
-                col = new DataColumn(objPerm.PermissionName + "_Enabled");
-                this.dtUserPermissions.Columns.Add(col);
-
-                // Add Permission Column
-                col = new DataColumn(objPerm.PermissionName);
-                this.dtUserPermissions.Columns.Add(col);
-            }
-
-            if (this.userPermissionsGrid != null)
-            {
-                this._users = this.GetUsers();
-
-                if (this._users.Count != 0)
-                {
-                    this.userPermissionsGrid.Visible = true;
-                    DataRow row;
-                    for (i = 0; i <= this._users.Count - 1; i++)
-                    {
-                        var user = (UserInfo)this._users[i];
-                        row = this.dtUserPermissions.NewRow();
-                        row["UserId"] = user.UserID;
-                        row["DisplayName"] = user.DisplayName;
-                        int j;
-                        for (j = 0; j <= this._permissions.Count - 1; j++)
-                        {
-                            PermissionInfo objPerm;
-                            objPerm = (PermissionInfo)this._permissions[j];
-                            row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, user, j + 1);
-                            if (this.SupportsDenyPermissions(objPerm))
-                            {
-                                row[objPerm.PermissionName] = this.GetPermission(objPerm, user, j + 1, PermissionTypeNull);
-                            }
-                            else
-                            {
-                                if (this.GetPermission(objPerm, user, j + 1))
-                                {
-                                    row[objPerm.PermissionName] = PermissionTypeGrant;
-                                }
-                                else
-                                {
-                                    row[objPerm.PermissionName] = PermissionTypeNull;
-                                }
-                            }
-                        }
-
-                        this.dtUserPermissions.Rows.Add(row);
-                    }
-
-                    this.userPermissionsGrid.DataSource = this.dtUserPermissions;
-                    this.userPermissionsGrid.DataBind();
-                }
-                else
-                {
-                    this.dtUserPermissions.Rows.Clear();
-                    this.userPermissionsGrid.DataSource = this.dtUserPermissions;
-                    this.userPermissionsGrid.DataBind();
-                    this.userPermissionsGrid.Visible = false;
-                }
-            }
-        }
-
-        private void EnsureRole(RoleInfo role)
-        {
-            if (this.Roles.Cast<RoleInfo>().All(r => r.RoleID != role.RoleID))
-            {
-                this.Roles.Add(role);
-            }
-        }
-
-        private void GetRoles()
-        {
-            var checkedRoles = this.GetCheckedRoles();
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            this.Roles = new ArrayList(RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
-
-            if (checkedRoles.Contains(this.UnAuthUsersRoleId))
-            {
-                this.Roles.Add(new RoleInfo { RoleID = this.UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });
-            }
-
-            if (checkedRoles.Contains(this.AllUsersRoleId))
-            {
-                this.Roles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
-            }
-
-            // Administrators Role always has implicit permissions, then it should be always in
-            this.EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId));
-
-            // Show also default roles
-            this.EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.RegisteredRoleId));
-            this.EnsureRole(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
-
-            this.Roles.Reverse();
-            this.Roles.Sort(new RoleComparer());
-        }
-
-        private IEnumerable<int> GetCheckedRoles()
-        {
-            if (this.PermissionsList == null)
-            {
-                return new List<int>();
-            }
-
-            return this.PermissionsList.Select(r => r.RoleID).Distinct();
-        }
-
-        private void SetUpGrid(DataGrid grid, string nameColumnDataField, string idColumnDataField, string permissionHeaderText)
-        {
-            grid.Columns.Clear();
-            var nameColumn = new BoundColumn
-            {
-                HeaderText = permissionHeaderText,
-                DataField = nameColumnDataField,
-            };
-            nameColumn.ItemStyle.CssClass = "permissionHeader";
-            nameColumn.HeaderStyle.CssClass = "permissionHeader";
-            grid.Columns.Add(nameColumn);
-
-            var idColumn = new BoundColumn
-            {
-                HeaderText = string.Empty,
-                DataField = idColumnDataField,
-                Visible = false,
-            };
-            grid.Columns.Add(idColumn);
-
-            foreach (PermissionInfo permission in this._permissions)
-            {
-                var templateCol = new TemplateColumn();
-                var columnTemplate = new PermissionTriStateTemplate(permission)
-                {
-                    IsFullControl = this.IsFullControl(permission),
-                    IsView = this.IsViewPermisison(permission),
-                    SupportDenyMode = this.SupportsDenyPermissions(permission),
-                };
-                templateCol.ItemTemplate = columnTemplate;
-
-                var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
-                                                            : (!string.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
-                                                                                                    : string.Empty);
-                templateCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
-                templateCol.HeaderStyle.Wrap = true;
-                grid.Columns.Add(templateCol);
-            }
-
-            var actionsColumn = new ImageCommandColumn
-            {
-                CommandName = "Delete/" + nameColumnDataField,
-                KeyField = idColumnDataField,
-                IconKey = "Delete",
-                IconSize = "16x16",
-                IconStyle = "PermissionGrid",
-                HeaderText = Localization.GetString("PermissionActionsHeader.Text", PermissionProvider.Instance().LocalResourceFile),
-            };
-            grid.Columns.Add(actionsColumn);
-            grid.ItemCommand += this.grid_ItemCommand;
-        }
-
-        private void grid_ItemCommand(object source, DataGridCommandEventArgs e)
-        {
-            var entityID = int.Parse(e.CommandArgument.ToString());
-            var command = this.GetGridCommand(e.CommandName);
-            var entityType = this.GetCommandType(e.CommandName);
-            switch (command)
-            {
-                case "DELETE":
-                    if (entityType == "ROLE")
-                    {
-                        this.DeleteRolePermissions(entityID);
-                    }
-                    else if (entityType == "USER")
-                    {
-                        this.DeleteUserPermissions(entityID);
-                    }
-
-                    this.BindData();
-                    break;
-            }
-        }
-
-        private void DeleteRolePermissions(int entityID)
-        {
-            // PermissionsList.RemoveAll(p => p.RoleID == entityID);
-            var permissionToDelete = this.PermissionsList.Where(p => p.RoleID == entityID);
-            foreach (PermissionInfoBase permission in permissionToDelete)
-            {
-                this.RemovePermission(permission.PermissionID, entityID, permission.UserID);
-            }
-        }
-
-        private void DeleteUserPermissions(int entityID)
-        {
-            var permissionToDelete = this.PermissionsList.Where(p => p.UserID == entityID);
-            foreach (PermissionInfoBase permission in permissionToDelete)
-            {
-                this.RemovePermission(permission.PermissionID, permission.RoleID, entityID);
-            }
-        }
-
-        private string GetCommandType(string commandName)
-        {
-            var command = commandName.ToLower(CultureInfo.InvariantCulture);
-            if (command.Contains("rolename"))
-            {
-                return "ROLE";
-            }
-
-            if (command.Contains("displayname"))
-            {
-                return "USER";
-            }
-
-            return Null.NullString;
-        }
-
-        private string GetGridCommand(string commandName)
-        {
-            var commandParts = commandName.Split('/');
-            return commandParts[0].ToUpper(CultureInfo.InvariantCulture);
-        }
-
-        private void SetUpRolesGrid()
-        {
-            this.SetUpGrid(this.rolePermissionsGrid, "RoleName", "roleid", Localization.GetString("PermissionRoleHeader.Text", PermissionProvider.Instance().LocalResourceFile));
-        }
-
-        private void SetUpUsersGrid()
-        {
-            if (this.userPermissionsGrid != null)
-            {
-                this.SetUpGrid(this.userPermissionsGrid, "DisplayName", "userid", Localization.GetString("PermissionUserHeader.Text", PermissionProvider.Instance().LocalResourceFile));
-            }
-        }
-
-        private void FillSelectRoleComboBox(int selectedRoleGroupId)
-        {
-            this.cboSelectRole.Items.Clear();
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var groupRoles = (selectedRoleGroupId > -2) ? RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == selectedRoleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
-
-            if (selectedRoleGroupId < 0)
-            {
-                groupRoles.Add(new RoleInfo { RoleID = this.UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });
-                groupRoles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
-            }
-
-            foreach (var role in groupRoles.OrderBy(r => r.RoleName))
-            {
-                this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
-            }
-
-            int[] defaultRoleIds = { this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId };
-            var itemToSelect = this.cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value)));
-            if (itemToSelect != null)
-            {
-                this.cboSelectRole.SelectedValue = itemToSelect.Value;
-            }
-        }
-
-        private void SetErrorMessage(string errorKey)
-        {
-            this.lblErrorMessage = new Label
-            {
-                // TODO Remove DEBUG test
-                Text = "<br />" + (errorKey.StartsWith("DEBUG") ? errorKey : Localization.GetString(errorKey)),
-                CssClass = "NormalRed",
-            };
-            this.pnlPermissions.Controls.Add(this.lblErrorMessage);
         }
 
         /// <summary>
@@ -803,69 +445,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected virtual bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
         {
             return true;
-        }
-
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            var item = e.Item;
-
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (roleID == PortalSettings.Current.AdministratorRoleId || roleID == this.AllUsersRoleId || roleID == PortalSettings.Current.RegisteredRoleId)
-                {
-                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
-                    if (actionImage != null)
-                    {
-                        actionImage.Visible = false;
-                    }
-                }
-            }
-        }
-
-        private void CreateAddRoleControls()
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
-
-            var addRoleControls = new Panel { CssClass = "dnnFormItem" };
-            var divRoleGroups = new Panel { CssClass = "leftGroup" };
-            var divSelectRole = new Panel { CssClass = "rightGroup" };
-
-            this.lblGroups = new Label { Text = Localization.GetString("RoleGroupFilter") };
-            this.cboRoleGroups = new DropDownList { AutoPostBack = true, ID = "cboRoleGroups", ViewStateMode = ViewStateMode.Disabled };
-            this.lblGroups.AssociatedControlID = this.cboRoleGroups.ID;
-            divRoleGroups.Controls.Add(this.lblGroups);
-
-            this.cboRoleGroups.SelectedIndexChanged += this.RoleGroupsSelectedIndexChanged;
-            this.cboRoleGroups.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
-            var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") { Selected = true };
-            this.cboRoleGroups.Items.Add(liItem);
-            foreach (RoleGroupInfo roleGroup in arrGroups)
-            {
-                this.cboRoleGroups.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString(CultureInfo.InvariantCulture)));
-            }
-
-            divRoleGroups.Controls.Add(this.cboRoleGroups);
-            addRoleControls.Controls.Add(divRoleGroups);
-
-            this.lblSelectRole = new Label { Text = Localization.GetString("RoleSelect") };
-            this.cboSelectRole = new DropDownList { ID = "cboSelectRole", ViewStateMode = ViewStateMode.Disabled };
-            this.lblSelectRole.AssociatedControlID = this.cboSelectRole.ID;
-            divSelectRole.Controls.Add(this.lblSelectRole);
-
-            this.FillSelectRoleComboBox(-1); // Default Role Group is Global Roles
-            divSelectRole.Controls.Add(this.cboSelectRole);
-
-            this.cmdRole = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
-            this.cmdRole.Click += this.AddRole;
-            divSelectRole.Controls.Add(this.cmdRole);
-            this.roleField = new HiddenField() { ID = "roleField" };
-            addRoleControls.Controls.Add(this.roleField);
-
-            addRoleControls.Controls.Add(divSelectRole);
-
-            this.pnlPermissions.Controls.Add(addRoleControls);
         }
 
         /// <summary>
@@ -1249,6 +828,427 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                 this.txtUser.Text = this.hiddenUserIds.Value = string.Empty;
             }
+        }
+
+        private void BindData()
+        {
+            this.EnsureChildControls();
+            this.BindRolesGrid();
+            this.BindUsersGrid();
+        }
+
+        private void BindRolesGrid()
+        {
+            this.dtRolePermissions.Columns.Clear();
+            this.dtRolePermissions.Rows.Clear();
+
+            // Add Roles Column
+            this.dtRolePermissions.Columns.Add(new DataColumn("RoleId"));
+
+            // Add Roles Column
+            this.dtRolePermissions.Columns.Add(new DataColumn("RoleName"));
+
+            for (int i = 0; i <= this._permissions.Count - 1; i++)
+            {
+                var permissionInfo = (PermissionInfo)this._permissions[i];
+
+                // Add Enabled Column
+                this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName + "_Enabled"));
+
+                // Add Permission Column
+                this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName));
+            }
+
+            this.GetRoles();
+
+            this.UpdateRolePermissions();
+            for (int i = 0; i <= this.Roles.Count - 1; i++)
+            {
+                var role = (RoleInfo)this.Roles[i];
+                var row = this.dtRolePermissions.NewRow();
+                row["RoleId"] = role.RoleID;
+                row["RoleName"] = Localization.LocalizeRole(role.RoleName);
+                int j;
+                for (j = 0; j <= this._permissions.Count - 1; j++)
+                {
+                    PermissionInfo objPerm;
+                    objPerm = (PermissionInfo)this._permissions[j];
+                    row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, role, j + 1);
+                    if (this.SupportsDenyPermissions(objPerm))
+                    {
+                        row[objPerm.PermissionName] = this.GetPermission(objPerm, role, j + 1, PermissionTypeNull);
+                    }
+                    else
+                    {
+                        if (this.GetPermission(objPerm, role, j + 1))
+                        {
+                            row[objPerm.PermissionName] = PermissionTypeGrant;
+                        }
+                        else
+                        {
+                            row[objPerm.PermissionName] = PermissionTypeNull;
+                        }
+                    }
+                }
+
+                this.dtRolePermissions.Rows.Add(row);
+            }
+
+            this.rolePermissionsGrid.DataSource = this.dtRolePermissions;
+            this.rolePermissionsGrid.DataBind();
+        }
+
+        private void BindUsersGrid()
+        {
+            this.dtUserPermissions.Columns.Clear();
+            this.dtUserPermissions.Rows.Clear();
+
+            // Add Roles Column
+            var col = new DataColumn("UserId");
+            this.dtUserPermissions.Columns.Add(col);
+
+            // Add Roles Column
+            col = new DataColumn("DisplayName");
+            this.dtUserPermissions.Columns.Add(col);
+            int i;
+            for (i = 0; i <= this._permissions.Count - 1; i++)
+            {
+                PermissionInfo objPerm;
+                objPerm = (PermissionInfo)this._permissions[i];
+
+                // Add Enabled Column
+                col = new DataColumn(objPerm.PermissionName + "_Enabled");
+                this.dtUserPermissions.Columns.Add(col);
+
+                // Add Permission Column
+                col = new DataColumn(objPerm.PermissionName);
+                this.dtUserPermissions.Columns.Add(col);
+            }
+
+            if (this.userPermissionsGrid != null)
+            {
+                this._users = this.GetUsers();
+
+                if (this._users.Count != 0)
+                {
+                    this.userPermissionsGrid.Visible = true;
+                    DataRow row;
+                    for (i = 0; i <= this._users.Count - 1; i++)
+                    {
+                        var user = (UserInfo)this._users[i];
+                        row = this.dtUserPermissions.NewRow();
+                        row["UserId"] = user.UserID;
+                        row["DisplayName"] = user.DisplayName;
+                        int j;
+                        for (j = 0; j <= this._permissions.Count - 1; j++)
+                        {
+                            PermissionInfo objPerm;
+                            objPerm = (PermissionInfo)this._permissions[j];
+                            row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, user, j + 1);
+                            if (this.SupportsDenyPermissions(objPerm))
+                            {
+                                row[objPerm.PermissionName] = this.GetPermission(objPerm, user, j + 1, PermissionTypeNull);
+                            }
+                            else
+                            {
+                                if (this.GetPermission(objPerm, user, j + 1))
+                                {
+                                    row[objPerm.PermissionName] = PermissionTypeGrant;
+                                }
+                                else
+                                {
+                                    row[objPerm.PermissionName] = PermissionTypeNull;
+                                }
+                            }
+                        }
+
+                        this.dtUserPermissions.Rows.Add(row);
+                    }
+
+                    this.userPermissionsGrid.DataSource = this.dtUserPermissions;
+                    this.userPermissionsGrid.DataBind();
+                }
+                else
+                {
+                    this.dtUserPermissions.Rows.Clear();
+                    this.userPermissionsGrid.DataSource = this.dtUserPermissions;
+                    this.userPermissionsGrid.DataBind();
+                    this.userPermissionsGrid.Visible = false;
+                }
+            }
+        }
+
+        private void EnsureRole(RoleInfo role)
+        {
+            if (this.Roles.Cast<RoleInfo>().All(r => r.RoleID != role.RoleID))
+            {
+                this.Roles.Add(role);
+            }
+        }
+
+        private void GetRoles()
+        {
+            var checkedRoles = this.GetCheckedRoles();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            this.Roles = new ArrayList(RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
+
+            if (checkedRoles.Contains(this.UnAuthUsersRoleId))
+            {
+                this.Roles.Add(new RoleInfo { RoleID = this.UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });
+            }
+
+            if (checkedRoles.Contains(this.AllUsersRoleId))
+            {
+                this.Roles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
+            }
+
+            // Administrators Role always has implicit permissions, then it should be always in
+            this.EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId));
+
+            // Show also default roles
+            this.EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.RegisteredRoleId));
+            this.EnsureRole(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
+
+            this.Roles.Reverse();
+            this.Roles.Sort(new RoleComparer());
+        }
+
+        private IEnumerable<int> GetCheckedRoles()
+        {
+            if (this.PermissionsList == null)
+            {
+                return new List<int>();
+            }
+
+            return this.PermissionsList.Select(r => r.RoleID).Distinct();
+        }
+
+        private void SetUpGrid(DataGrid grid, string nameColumnDataField, string idColumnDataField, string permissionHeaderText)
+        {
+            grid.Columns.Clear();
+            var nameColumn = new BoundColumn
+            {
+                HeaderText = permissionHeaderText,
+                DataField = nameColumnDataField,
+            };
+            nameColumn.ItemStyle.CssClass = "permissionHeader";
+            nameColumn.HeaderStyle.CssClass = "permissionHeader";
+            grid.Columns.Add(nameColumn);
+
+            var idColumn = new BoundColumn
+            {
+                HeaderText = string.Empty,
+                DataField = idColumnDataField,
+                Visible = false,
+            };
+            grid.Columns.Add(idColumn);
+
+            foreach (PermissionInfo permission in this._permissions)
+            {
+                var templateCol = new TemplateColumn();
+                var columnTemplate = new PermissionTriStateTemplate(permission)
+                {
+                    IsFullControl = this.IsFullControl(permission),
+                    IsView = this.IsViewPermisison(permission),
+                    SupportDenyMode = this.SupportsDenyPermissions(permission),
+                };
+                templateCol.ItemTemplate = columnTemplate;
+
+                var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
+                                                            : (!string.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
+                                                                                                    : string.Empty);
+                templateCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
+                templateCol.HeaderStyle.Wrap = true;
+                grid.Columns.Add(templateCol);
+            }
+
+            var actionsColumn = new ImageCommandColumn
+            {
+                CommandName = "Delete/" + nameColumnDataField,
+                KeyField = idColumnDataField,
+                IconKey = "Delete",
+                IconSize = "16x16",
+                IconStyle = "PermissionGrid",
+                HeaderText = Localization.GetString("PermissionActionsHeader.Text", PermissionProvider.Instance().LocalResourceFile),
+            };
+            grid.Columns.Add(actionsColumn);
+            grid.ItemCommand += this.grid_ItemCommand;
+        }
+
+        private void grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+            var entityID = int.Parse(e.CommandArgument.ToString());
+            var command = this.GetGridCommand(e.CommandName);
+            var entityType = this.GetCommandType(e.CommandName);
+            switch (command)
+            {
+                case "DELETE":
+                    if (entityType == "ROLE")
+                    {
+                        this.DeleteRolePermissions(entityID);
+                    }
+                    else if (entityType == "USER")
+                    {
+                        this.DeleteUserPermissions(entityID);
+                    }
+
+                    this.BindData();
+                    break;
+            }
+        }
+
+        private void DeleteRolePermissions(int entityID)
+        {
+            // PermissionsList.RemoveAll(p => p.RoleID == entityID);
+            var permissionToDelete = this.PermissionsList.Where(p => p.RoleID == entityID);
+            foreach (PermissionInfoBase permission in permissionToDelete)
+            {
+                this.RemovePermission(permission.PermissionID, entityID, permission.UserID);
+            }
+        }
+
+        private void DeleteUserPermissions(int entityID)
+        {
+            var permissionToDelete = this.PermissionsList.Where(p => p.UserID == entityID);
+            foreach (PermissionInfoBase permission in permissionToDelete)
+            {
+                this.RemovePermission(permission.PermissionID, permission.RoleID, entityID);
+            }
+        }
+
+        private string GetCommandType(string commandName)
+        {
+            var command = commandName.ToLower(CultureInfo.InvariantCulture);
+            if (command.Contains("rolename"))
+            {
+                return "ROLE";
+            }
+
+            if (command.Contains("displayname"))
+            {
+                return "USER";
+            }
+
+            return Null.NullString;
+        }
+
+        private string GetGridCommand(string commandName)
+        {
+            var commandParts = commandName.Split('/');
+            return commandParts[0].ToUpper(CultureInfo.InvariantCulture);
+        }
+
+        private void SetUpRolesGrid()
+        {
+            this.SetUpGrid(this.rolePermissionsGrid, "RoleName", "roleid", Localization.GetString("PermissionRoleHeader.Text", PermissionProvider.Instance().LocalResourceFile));
+        }
+
+        private void SetUpUsersGrid()
+        {
+            if (this.userPermissionsGrid != null)
+            {
+                this.SetUpGrid(this.userPermissionsGrid, "DisplayName", "userid", Localization.GetString("PermissionUserHeader.Text", PermissionProvider.Instance().LocalResourceFile));
+            }
+        }
+
+        private void FillSelectRoleComboBox(int selectedRoleGroupId)
+        {
+            this.cboSelectRole.Items.Clear();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var groupRoles = (selectedRoleGroupId > -2) ? RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == selectedRoleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+
+            if (selectedRoleGroupId < 0)
+            {
+                groupRoles.Add(new RoleInfo { RoleID = this.UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });
+                groupRoles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
+            }
+
+            foreach (var role in groupRoles.OrderBy(r => r.RoleName))
+            {
+                this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
+            }
+
+            int[] defaultRoleIds = { this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId };
+            var itemToSelect = this.cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value)));
+            if (itemToSelect != null)
+            {
+                this.cboSelectRole.SelectedValue = itemToSelect.Value;
+            }
+        }
+
+        private void SetErrorMessage(string errorKey)
+        {
+            this.lblErrorMessage = new Label
+            {
+                // TODO Remove DEBUG test
+                Text = "<br />" + (errorKey.StartsWith("DEBUG") ? errorKey : Localization.GetString(errorKey)),
+                CssClass = "NormalRed",
+            };
+            this.pnlPermissions.Controls.Add(this.lblErrorMessage);
+        }
+
+        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (roleID == PortalSettings.Current.AdministratorRoleId || roleID == this.AllUsersRoleId || roleID == PortalSettings.Current.RegisteredRoleId)
+                {
+                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
+                    if (actionImage != null)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
+        }
+
+        private void CreateAddRoleControls()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
+
+            var addRoleControls = new Panel { CssClass = "dnnFormItem" };
+            var divRoleGroups = new Panel { CssClass = "leftGroup" };
+            var divSelectRole = new Panel { CssClass = "rightGroup" };
+
+            this.lblGroups = new Label { Text = Localization.GetString("RoleGroupFilter") };
+            this.cboRoleGroups = new DropDownList { AutoPostBack = true, ID = "cboRoleGroups", ViewStateMode = ViewStateMode.Disabled };
+            this.lblGroups.AssociatedControlID = this.cboRoleGroups.ID;
+            divRoleGroups.Controls.Add(this.lblGroups);
+
+            this.cboRoleGroups.SelectedIndexChanged += this.RoleGroupsSelectedIndexChanged;
+            this.cboRoleGroups.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
+            var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") { Selected = true };
+            this.cboRoleGroups.Items.Add(liItem);
+            foreach (RoleGroupInfo roleGroup in arrGroups)
+            {
+                this.cboRoleGroups.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString(CultureInfo.InvariantCulture)));
+            }
+
+            divRoleGroups.Controls.Add(this.cboRoleGroups);
+            addRoleControls.Controls.Add(divRoleGroups);
+
+            this.lblSelectRole = new Label { Text = Localization.GetString("RoleSelect") };
+            this.cboSelectRole = new DropDownList { ID = "cboSelectRole", ViewStateMode = ViewStateMode.Disabled };
+            this.lblSelectRole.AssociatedControlID = this.cboSelectRole.ID;
+            divSelectRole.Controls.Add(this.lblSelectRole);
+
+            this.FillSelectRoleComboBox(-1); // Default Role Group is Global Roles
+            divSelectRole.Controls.Add(this.cboSelectRole);
+
+            this.cmdRole = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
+            this.cmdRole.Click += this.AddRole;
+            divSelectRole.Controls.Add(this.cmdRole);
+            this.roleField = new HiddenField() { ID = "roleField" };
+            addRoleControls.Controls.Add(this.roleField);
+
+            addRoleControls.Controls.Add(divSelectRole);
+
+            this.pnlPermissions.Controls.Add(addRoleControls);
         }
 
         /// <summary>

@@ -145,6 +145,22 @@ namespace DotNetNuke.Services.Install
         }
 
         /// <summary>
+        /// Gets a value indicating whether localization is supported.
+        /// </summary>
+        protected bool SupportLocalization
+        {
+            get { return installConfig.SupportLocalization; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the user needs to accept the license terms.
+        /// </summary>
+        protected bool NeedAcceptTerms
+        {
+            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the permissions are valid.
         /// </summary>
         protected bool PermissionsValid
@@ -208,22 +224,6 @@ namespace DotNetNuke.Services.Install
             {
                 this.ViewState["Versions"] = value;
             }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether localization is supported.
-        /// </summary>
-        protected bool SupportLocalization
-        {
-            get { return installConfig.SupportLocalization; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the user needs to accept the license terms.
-        /// </summary>
-        protected bool NeedAcceptTerms
-        {
-            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
         }
 
         private static string StatusFile

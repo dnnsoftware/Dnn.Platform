@@ -29,8 +29,6 @@ namespace DotNetNuke.Common.Lists
             this.Name = Name;
         }
 
-        public int DefinitionID { get; set; }
-
         public string DisplayName
         {
             get
@@ -45,12 +43,6 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        public bool EnableSortOrder { get; set; }
-
-        public int EntryCount { get; set; }
-
-        public bool IsPopulated { get; set; }
-
         public string Key
         {
             get
@@ -64,6 +56,14 @@ namespace DotNetNuke.Common.Lists
                 return _Key + this.Name;
             }
         }
+
+        public int DefinitionID { get; set; }
+
+        public bool EnableSortOrder { get; set; }
+
+        public int EntryCount { get; set; }
+
+        public bool IsPopulated { get; set; }
 
         public int Level { get; set; }
 

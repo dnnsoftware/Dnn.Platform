@@ -25,11 +25,6 @@ namespace DotNetNuke.Services.Search.Internals
 
         private static readonly Regex TypeRegex = new Regex(@"type:([^,]+(,[^,]+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        protected override Func<ISearchQueryStringParser> GetFactory()
-        {
-            return () => new SearchQueryStringParser();
-        }
-
         /// <summary>
         /// Gets the list of tags parsing the search keywords.
         /// </summary>
@@ -128,6 +123,11 @@ namespace DotNetNuke.Services.Search.Internals
 
             outputKeywords = TypeRegex.Replace(keywords, string.Empty).Trim();
             return typesList;
+        }
+
+        protected override Func<ISearchQueryStringParser> GetFactory()
+        {
+            return () => new SearchQueryStringParser();
         }
     }
 }

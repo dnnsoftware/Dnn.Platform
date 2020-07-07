@@ -26,6 +26,7 @@ namespace DotNetNuke.Entities.Urls
     public class ExtensionUrlProviderController
     {
         private static readonly object providersBuildLock = new object();
+
         private static readonly Regex RewrittenUrlRegex = new Regex(
             @"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*",
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
@@ -39,6 +40,255 @@ namespace DotNetNuke.Entities.Urls
         public static void DisableProvider(int providerId, int portalId)
         {
             DataProvider.Instance().UpdateExtensionUrlProvider(providerId, false);
+            ClearCache(portalId);
+        }
+
+        public static void EnableProvider(int providerId, int portalId)
+        {
+            DataProvider.Instance().UpdateExtensionUrlProvider(providerId, true);
+            ClearCache(portalId);
+        }
+
+        public static List<ExtensionUrlProviderInfo> GetProviders(int portalId)
+        {
+            return CBO.FillCollection<ExtensionUrlProviderInfo>(DataProvider.Instance().GetExtensionUrlProviders(portalId));
+        }
+
+        /// <summary>
+        /// Loads the module providers.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns></returns>
+        /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs.</remarks>
+        public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
+        {
+            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
+            var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(
+                new CacheItemArgs(
+                cacheKey,
+                60,
+                CacheItemPriority.High,
+                portalId),
+                c =>
+                                    {
+                                        var id = (int)c.Params[0];
+                                        IDataReader dr = DataProvider.Instance().GetExtensionUrlProviders(id);
+                                        try
+                                        {
+                                            var providers = new List<ExtensionUrlProvider>();
+                                            var providerConfigs = CBO.FillCollection(dr, new List<ExtensionUrlProviderInfo>(), false);
+
+                                            foreach (var providerConfig in providerConfigs)
+                                            {
+                                                var providerType = Reflection.CreateType(providerConfig.ProviderType);
+                                                if (providerType == null)
+                                                {
+                                                    continue;
+                                                }
+
+                                                var provider = Reflection.CreateObject(providerType) as ExtensionUrlProvider;
+                                                if (provider == null)
+                                                {
+                                                    continue;
+                                                }
+
+                                                provider.ProviderConfig = providerConfig;
+                                                provider.ProviderConfig.PortalId = id;
+                                                providers.Add(provider);
+                                            }
+
+                                            if (dr.NextResult())
+                                            {
+                                                // Setup Settings
+                                                while (dr.Read())
+                                                {
+                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
+                                                    var key = Null.SetNullString(dr["SettingName"]);
+                                                    var value = Null.SetNullString(dr["SettingValue"]);
+
+                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
+                                                    if (provider != null)
+                                                    {
+                                                        provider.ProviderConfig.Settings[key] = value;
+                                                    }
+                                                }
+                                            }
+
+                                            if (dr.NextResult())
+                                            {
+                                                // Setup Tabs
+                                                while (dr.Read())
+                                                {
+                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
+                                                    var tabId = Null.SetNullInteger(dr["TabID"]);
+
+                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
+                                                    if (provider != null && !provider.ProviderConfig.TabIds.Contains(tabId))
+                                                    {
+                                                        provider.ProviderConfig.TabIds.Add(tabId);
+                                                    }
+                                                }
+                                            }
+
+                                            return providers;
+                                        }
+                                        finally
+                                        {
+                                            // Close reader
+                                            CBO.CloseDataReader(dr, true);
+                                        }
+                                    });
+
+            return moduleProviders;
+        }
+
+        public static FriendlyUrlOptions GetOptionsFromSettings(FriendlyUrlSettings settings)
+        {
+            return new FriendlyUrlOptions
+            {
+                PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
+                                                ? settings.ReplaceSpaceWith
+                                                : string.Empty,
+                SpaceEncoding = settings.SpaceEncodingValue,
+                MaxUrlPathLength = 200,
+                ConvertDiacriticChars = settings.AutoAsciiConvert,
+                RegexMatch = settings.RegexMatch,
+                IllegalChars = settings.IllegalChars,
+                ReplaceChars = settings.ReplaceChars,
+                ReplaceDoubleChars = settings.ReplaceDoubleChars,
+                ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
+                PageExtension = settings.PageExtensionUsageType == PageExtensionUsageType.Never ? string.Empty : settings.PageExtension,
+            };
+        }
+
+        /// <summary>
+        /// logs an exception related to a module provider once per cache-lifetime.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="status"></param>
+        /// <param name="result"></param>
+        /// <param name="messages"></param>
+        /// <param name="provider"></param>
+        public static void LogModuleProviderExceptionInRequest(Exception ex, string status,
+                                                                ExtensionUrlProvider provider,
+                                                                UrlAction result,
+                                                                List<string> messages)
+        {
+            if (ex != null)
+            {
+                string moduleProviderName = "Unknown Provider";
+                string moduleProviderVersion = "Unknown Version";
+                if (provider != null)
+                {
+                    moduleProviderName = provider.ProviderConfig.ProviderName;
+                    moduleProviderVersion = provider.GetType().Assembly.GetName(false).Version.ToString();
+                }
+
+                // this logic prevents a site logging an exception for every request made.  Instead
+                // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
+                // create a cache key for this exception type
+                string cacheKey = ex.GetType().ToString();
+
+                // see if there is an existing object logged for this exception type
+                object existingEx = DataCache.GetCache(cacheKey);
+                if (existingEx == null)
+                {
+                    // if there was no existing object logged for this exception type, this is a new exception
+                    DateTime expire = DateTime.Now.AddHours(1);
+                    DataCache.SetCache(cacheKey, cacheKey, expire);
+
+                    // just store the cache key - it doesn't really matter
+                    // create a log event
+                    string productVer = DotNetNukeContext.Current.Application.Version.ToString();
+                    var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
+                    log.AddProperty(
+                        "Url Rewriting Extension Url Provider Exception",
+                        "Exception in Url Rewriting Process");
+                    log.AddProperty("Provider Name", moduleProviderName);
+                    log.AddProperty("Provider Version", moduleProviderVersion);
+                    log.AddProperty("Http Status", status);
+                    log.AddProperty("Product Version", productVer);
+                    if (result != null)
+                    {
+                        log.AddProperty("Original Path", result.OriginalPath ?? "null");
+                        log.AddProperty("Raw Url", result.RawUrl ?? "null");
+                        log.AddProperty("Final Url", result.FinalUrl ?? "null");
+
+                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
+                                                                     ? result.RewritePath
+                                                                     : "[no rewrite]");
+                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
+                                                                    ? "[no redirect]"
+                                                                    : result.FinalUrl);
+                        log.AddProperty("Action", result.Action.ToString());
+                        log.AddProperty("Reason", result.Reason.ToString());
+                        log.AddProperty("Portal Id", result.PortalId.ToString());
+                        log.AddProperty("Tab Id", result.TabId.ToString());
+                        log.AddProperty("Http Alias", result.PortalAlias != null ? result.PortalAlias.HTTPAlias : "Null");
+
+                        if (result.DebugMessages != null)
+                        {
+                            int i = 1;
+                            foreach (string debugMessage in result.DebugMessages)
+                            {
+                                string msg = debugMessage;
+                                if (debugMessage == null)
+                                {
+                                    msg = "[message was null]";
+                                }
+
+                                log.AddProperty("Debug Message[result] " + i.ToString(), msg);
+                                i++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        log.AddProperty("Result", "Result value null");
+                    }
+
+                    if (messages != null)
+                    {
+                        int i = 1;
+                        foreach (string msg in messages)
+                        {
+                            log.AddProperty("Debug Message[raw] " + i.ToString(), msg);
+                            i++;
+                        }
+                    }
+
+                    log.AddProperty("Exception Type", ex.GetType().ToString());
+                    log.AddProperty("Message", ex.Message);
+                    log.AddProperty("Stack Trace", ex.StackTrace);
+                    if (ex.InnerException != null)
+                    {
+                        log.AddProperty("Inner Exception Message", ex.InnerException.Message);
+                        log.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
+                    }
+
+                    log.BypassBuffering = true;
+                    LogController.Instance.AddLog(log);
+                }
+            }
+        }
+
+        public static void SaveProvider(ExtensionUrlProviderInfo provider)
+        {
+            provider.ExtensionUrlProviderId = DataProvider.Instance().AddExtensionUrlProvider(
+                                                    provider.ExtensionUrlProviderId,
+                                                    provider.DesktopModuleId,
+                                                    provider.ProviderName,
+                                                    provider.ProviderType,
+                                                    provider.SettingsControlSrc,
+                                                    provider.IsActive,
+                                                    provider.RewriteAllUrls,
+                                                    provider.RedirectAllUrls,
+                                                    provider.ReplaceAllUrls);
+        }
+
+        public static void SaveSetting(int providerId, int portalId, string settingName, string settingValue)
+        {
+            DataProvider.Instance().SaveExtensionUrlProviderSetting(providerId, portalId, settingName, settingValue);
             ClearCache(portalId);
         }
 
@@ -152,79 +402,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return redirected;
-        }
-
-        private static void ClearCache()
-        {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                ClearCache(portal.PortalID);
-            }
-        }
-
-        private static void ClearCache(int portalId)
-        {
-            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
-            DataCache.RemoveCache(cacheKey);
-        }
-
-        /// <summary>
-        /// Returns the providers to call. Returns tabid matches first, and any portal id matches after that.
-        /// </summary>
-        /// <param name="tabId"></param>
-        /// <param name="portalId"></param>
-        /// <param name="settings"></param>
-        /// <param name="parentTraceId"></param>
-        /// <returns></returns>
-        private static List<ExtensionUrlProvider> GetProvidersToCall(
-            int tabId,
-            int portalId,
-            FriendlyUrlSettings settings,
-            Guid parentTraceId)
-        {
-            List<ExtensionUrlProvider> providers;
-
-            // 887 : introduce lockable code to prevent caching race errors
-            lock (providersBuildLock)
-            {
-                bool definitelyNoProvider;
-
-                // 887 : use cached list of tabs instead of per-tab cache of provider
-                // get the list of providers to call based on the tab and the portal
-                var providersToCall = CacheController.GetProvidersForTabAndPortal(
-                    tabId,
-                    portalId,
-                    settings,
-                    out definitelyNoProvider,
-                    parentTraceId);
-                if (definitelyNoProvider == false && providersToCall == null)
-
-                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
-                {
-                    // get all providers for the portal
-                    var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
-
-                    // store the list of tabs for this portal that have a provider attached
-                    CacheController.StoreListOfTabsWithProviders(allProviders, portalId, settings);
-
-                    // stash the provider portals in the cache
-                    CacheController.StoreModuleProvidersForPortal(portalId, settings, allProviders);
-
-                    // now check if there is a provider for this tab/portal combination
-                    if (allProviders.Count > 0)
-                    {
-                        // find if a module is specific to a tab
-                        providersToCall = new List<ExtensionUrlProvider>();
-                        providersToCall.AddRange(allProviders);
-                    }
-                }
-
-                // always return an instantiated provider collection
-                providers = providersToCall ?? new List<ExtensionUrlProvider>();
-            }
-
-            // return the collection of module providers
-            return providers;
         }
 
         /// <summary>
@@ -476,253 +653,77 @@ namespace DotNetNuke.Entities.Urls
             return rewriteDone;
         }
 
-        public static void EnableProvider(int providerId, int portalId)
+        private static void ClearCache()
         {
-            DataProvider.Instance().UpdateExtensionUrlProvider(providerId, true);
-            ClearCache(portalId);
-        }
-
-        public static List<ExtensionUrlProviderInfo> GetProviders(int portalId)
-        {
-            return CBO.FillCollection<ExtensionUrlProviderInfo>(DataProvider.Instance().GetExtensionUrlProviders(portalId));
-        }
-
-        /// <summary>
-        /// Loads the module providers.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
-        /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs.</remarks>
-        public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
-        {
-            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
-            var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(
-                new CacheItemArgs(
-                cacheKey,
-                60,
-                CacheItemPriority.High,
-                portalId),
-                c =>
-                                    {
-                                        var id = (int)c.Params[0];
-                                        IDataReader dr = DataProvider.Instance().GetExtensionUrlProviders(id);
-                                        try
-                                        {
-                                            var providers = new List<ExtensionUrlProvider>();
-                                            var providerConfigs = CBO.FillCollection(dr, new List<ExtensionUrlProviderInfo>(), false);
-
-                                            foreach (var providerConfig in providerConfigs)
-                                            {
-                                                var providerType = Reflection.CreateType(providerConfig.ProviderType);
-                                                if (providerType == null)
-                                                {
-                                                    continue;
-                                                }
-
-                                                var provider = Reflection.CreateObject(providerType) as ExtensionUrlProvider;
-                                                if (provider == null)
-                                                {
-                                                    continue;
-                                                }
-
-                                                provider.ProviderConfig = providerConfig;
-                                                provider.ProviderConfig.PortalId = id;
-                                                providers.Add(provider);
-                                            }
-
-                                            if (dr.NextResult())
-                                            {
-                                                // Setup Settings
-                                                while (dr.Read())
-                                                {
-                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
-                                                    var key = Null.SetNullString(dr["SettingName"]);
-                                                    var value = Null.SetNullString(dr["SettingValue"]);
-
-                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
-                                                    if (provider != null)
-                                                    {
-                                                        provider.ProviderConfig.Settings[key] = value;
-                                                    }
-                                                }
-                                            }
-
-                                            if (dr.NextResult())
-                                            {
-                                                // Setup Tabs
-                                                while (dr.Read())
-                                                {
-                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
-                                                    var tabId = Null.SetNullInteger(dr["TabID"]);
-
-                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
-                                                    if (provider != null && !provider.ProviderConfig.TabIds.Contains(tabId))
-                                                    {
-                                                        provider.ProviderConfig.TabIds.Add(tabId);
-                                                    }
-                                                }
-                                            }
-
-                                            return providers;
-                                        }
-                                        finally
-                                        {
-                                            // Close reader
-                                            CBO.CloseDataReader(dr, true);
-                                        }
-                                    });
-
-            return moduleProviders;
-        }
-
-        public static FriendlyUrlOptions GetOptionsFromSettings(FriendlyUrlSettings settings)
-        {
-            return new FriendlyUrlOptions
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
-                                                ? settings.ReplaceSpaceWith
-                                                : string.Empty,
-                SpaceEncoding = settings.SpaceEncodingValue,
-                MaxUrlPathLength = 200,
-                ConvertDiacriticChars = settings.AutoAsciiConvert,
-                RegexMatch = settings.RegexMatch,
-                IllegalChars = settings.IllegalChars,
-                ReplaceChars = settings.ReplaceChars,
-                ReplaceDoubleChars = settings.ReplaceDoubleChars,
-                ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
-                PageExtension = settings.PageExtensionUsageType == PageExtensionUsageType.Never ? string.Empty : settings.PageExtension,
-            };
-        }
-
-        /// <summary>
-        /// logs an exception related to a module provider once per cache-lifetime.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="status"></param>
-        /// <param name="result"></param>
-        /// <param name="messages"></param>
-        /// <param name="provider"></param>
-        public static void LogModuleProviderExceptionInRequest(Exception ex, string status,
-                                                                ExtensionUrlProvider provider,
-                                                                UrlAction result,
-                                                                List<string> messages)
-        {
-            if (ex != null)
-            {
-                string moduleProviderName = "Unknown Provider";
-                string moduleProviderVersion = "Unknown Version";
-                if (provider != null)
-                {
-                    moduleProviderName = provider.ProviderConfig.ProviderName;
-                    moduleProviderVersion = provider.GetType().Assembly.GetName(false).Version.ToString();
-                }
-
-                // this logic prevents a site logging an exception for every request made.  Instead
-                // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
-                // create a cache key for this exception type
-                string cacheKey = ex.GetType().ToString();
-
-                // see if there is an existing object logged for this exception type
-                object existingEx = DataCache.GetCache(cacheKey);
-                if (existingEx == null)
-                {
-                    // if there was no existing object logged for this exception type, this is a new exception
-                    DateTime expire = DateTime.Now.AddHours(1);
-                    DataCache.SetCache(cacheKey, cacheKey, expire);
-
-                    // just store the cache key - it doesn't really matter
-                    // create a log event
-                    string productVer = DotNetNukeContext.Current.Application.Version.ToString();
-                    var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
-                    log.AddProperty(
-                        "Url Rewriting Extension Url Provider Exception",
-                        "Exception in Url Rewriting Process");
-                    log.AddProperty("Provider Name", moduleProviderName);
-                    log.AddProperty("Provider Version", moduleProviderVersion);
-                    log.AddProperty("Http Status", status);
-                    log.AddProperty("Product Version", productVer);
-                    if (result != null)
-                    {
-                        log.AddProperty("Original Path", result.OriginalPath ?? "null");
-                        log.AddProperty("Raw Url", result.RawUrl ?? "null");
-                        log.AddProperty("Final Url", result.FinalUrl ?? "null");
-
-                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
-                                                                     ? result.RewritePath
-                                                                     : "[no rewrite]");
-                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
-                                                                    ? "[no redirect]"
-                                                                    : result.FinalUrl);
-                        log.AddProperty("Action", result.Action.ToString());
-                        log.AddProperty("Reason", result.Reason.ToString());
-                        log.AddProperty("Portal Id", result.PortalId.ToString());
-                        log.AddProperty("Tab Id", result.TabId.ToString());
-                        log.AddProperty("Http Alias", result.PortalAlias != null ? result.PortalAlias.HTTPAlias : "Null");
-
-                        if (result.DebugMessages != null)
-                        {
-                            int i = 1;
-                            foreach (string debugMessage in result.DebugMessages)
-                            {
-                                string msg = debugMessage;
-                                if (debugMessage == null)
-                                {
-                                    msg = "[message was null]";
-                                }
-
-                                log.AddProperty("Debug Message[result] " + i.ToString(), msg);
-                                i++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        log.AddProperty("Result", "Result value null");
-                    }
-
-                    if (messages != null)
-                    {
-                        int i = 1;
-                        foreach (string msg in messages)
-                        {
-                            log.AddProperty("Debug Message[raw] " + i.ToString(), msg);
-                            i++;
-                        }
-                    }
-
-                    log.AddProperty("Exception Type", ex.GetType().ToString());
-                    log.AddProperty("Message", ex.Message);
-                    log.AddProperty("Stack Trace", ex.StackTrace);
-                    if (ex.InnerException != null)
-                    {
-                        log.AddProperty("Inner Exception Message", ex.InnerException.Message);
-                        log.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
-                    }
-
-                    log.BypassBuffering = true;
-                    LogController.Instance.AddLog(log);
-                }
+                ClearCache(portal.PortalID);
             }
         }
 
-        public static void SaveProvider(ExtensionUrlProviderInfo provider)
+        private static void ClearCache(int portalId)
         {
-            provider.ExtensionUrlProviderId = DataProvider.Instance().AddExtensionUrlProvider(
-                                                    provider.ExtensionUrlProviderId,
-                                                    provider.DesktopModuleId,
-                                                    provider.ProviderName,
-                                                    provider.ProviderType,
-                                                    provider.SettingsControlSrc,
-                                                    provider.IsActive,
-                                                    provider.RewriteAllUrls,
-                                                    provider.RedirectAllUrls,
-                                                    provider.ReplaceAllUrls);
+            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
+            DataCache.RemoveCache(cacheKey);
         }
 
-        public static void SaveSetting(int providerId, int portalId, string settingName, string settingValue)
+        /// <summary>
+        /// Returns the providers to call. Returns tabid matches first, and any portal id matches after that.
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="portalId"></param>
+        /// <param name="settings"></param>
+        /// <param name="parentTraceId"></param>
+        /// <returns></returns>
+        private static List<ExtensionUrlProvider> GetProvidersToCall(
+            int tabId,
+            int portalId,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
         {
-            DataProvider.Instance().SaveExtensionUrlProviderSetting(providerId, portalId, settingName, settingValue);
-            ClearCache(portalId);
+            List<ExtensionUrlProvider> providers;
+
+            // 887 : introduce lockable code to prevent caching race errors
+            lock (providersBuildLock)
+            {
+                bool definitelyNoProvider;
+
+                // 887 : use cached list of tabs instead of per-tab cache of provider
+                // get the list of providers to call based on the tab and the portal
+                var providersToCall = CacheController.GetProvidersForTabAndPortal(
+                    tabId,
+                    portalId,
+                    settings,
+                    out definitelyNoProvider,
+                    parentTraceId);
+                if (definitelyNoProvider == false && providersToCall == null)
+
+                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
+                {
+                    // get all providers for the portal
+                    var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
+
+                    // store the list of tabs for this portal that have a provider attached
+                    CacheController.StoreListOfTabsWithProviders(allProviders, portalId, settings);
+
+                    // stash the provider portals in the cache
+                    CacheController.StoreModuleProvidersForPortal(portalId, settings, allProviders);
+
+                    // now check if there is a provider for this tab/portal combination
+                    if (allProviders.Count > 0)
+                    {
+                        // find if a module is specific to a tab
+                        providersToCall = new List<ExtensionUrlProvider>();
+                        providersToCall.AddRange(allProviders);
+                    }
+                }
+
+                // always return an instantiated provider collection
+                providers = providersToCall ?? new List<ExtensionUrlProvider>();
+            }
+
+            // return the collection of module providers
+            return providers;
         }
     }
 }

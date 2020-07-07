@@ -121,6 +121,95 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
+        /// Gets the item.
+        /// </summary>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <returns>cache content.</returns>
+        public virtual object GetItem(string cacheKey)
+        {
+            return Cache[cacheKey];
+        }
+
+        /// <summary>
+        /// Inserts the specified cache key.
+        /// </summary>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="itemToCache">The object.</param>
+        public virtual void Insert(string cacheKey, object itemToCache)
+        {
+            this.Insert(cacheKey, itemToCache, null as DNNCacheDependency, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
+        }
+
+        /// <summary>
+        /// Inserts the specified cache key.
+        /// </summary>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="itemToCache">The object.</param>
+        /// <param name="dependency">The dependency.</param>
+        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency)
+        {
+            this.Insert(cacheKey, itemToCache, dependency, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
+        }
+
+        /// <summary>
+        /// Inserts the specified cache key.
+        /// </summary>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="itemToCache">The object.</param>
+        /// <param name="dependency">The dependency.</param>
+        /// <param name="absoluteExpiration">The absolute expiration.</param>
+        /// <param name="slidingExpiration">The sliding expiration.</param>
+        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration)
+        {
+            this.Insert(cacheKey, itemToCache, dependency, absoluteExpiration, slidingExpiration, CacheItemPriority.Default, null);
+        }
+
+        /// <summary>
+        /// Inserts the specified cache key.
+        /// </summary>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="itemToCache">The value.</param>
+        /// <param name="dependency">The dependency.</param>
+        /// <param name="absoluteExpiration">The absolute expiration.</param>
+        /// <param name="slidingExpiration">The sliding expiration.</param>
+        /// <param name="priority">The priority.</param>
+        /// <param name="onRemoveCallback">The on remove callback.</param>
+        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
+                                   CacheItemRemovedCallback onRemoveCallback)
+        {
+            Cache.Insert(cacheKey, itemToCache, dependency == null ? null : dependency.SystemCacheDependency, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
+        }
+
+        /// <summary>
+        /// Determines whether is web farm.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if is web farm; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool IsWebFarm()
+        {
+            return ServerController.GetEnabledServers().Count > 1;
+        }
+
+        /// <summary>
+        /// Purges the cache.
+        /// </summary>
+        /// <returns></returns>
+        public virtual string PurgeCache()
+        {
+            return Localization.GetString("PurgeCacheUnsupported.Text", Localization.GlobalResourceFile);
+        }
+
+        /// <summary>
+        /// Removes the specified cache key.
+        /// </summary>
+        /// <param name="CacheKey">The cache key.</param>
+        public virtual void Remove(string CacheKey)
+        {
+            this.RemoveInternal(CacheKey);
+        }
+
+        /// <summary>
         /// Disable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
         /// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
         /// </summary>
@@ -420,95 +509,6 @@ namespace DotNetNuke.Services.Cache
             // because the web request cahcing provider is the only inter-server communication channel
             // that is reliable
             ServicesRoutingManager.RegisterServiceRoutes();
-        }
-
-        /// <summary>
-        /// Gets the item.
-        /// </summary>
-        /// <param name="cacheKey">The cache key.</param>
-        /// <returns>cache content.</returns>
-        public virtual object GetItem(string cacheKey)
-        {
-            return Cache[cacheKey];
-        }
-
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
-        /// <param name="cacheKey">The cache key.</param>
-        /// <param name="itemToCache">The object.</param>
-        public virtual void Insert(string cacheKey, object itemToCache)
-        {
-            this.Insert(cacheKey, itemToCache, null as DNNCacheDependency, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
-        }
-
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
-        /// <param name="cacheKey">The cache key.</param>
-        /// <param name="itemToCache">The object.</param>
-        /// <param name="dependency">The dependency.</param>
-        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency)
-        {
-            this.Insert(cacheKey, itemToCache, dependency, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
-        }
-
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
-        /// <param name="cacheKey">The cache key.</param>
-        /// <param name="itemToCache">The object.</param>
-        /// <param name="dependency">The dependency.</param>
-        /// <param name="absoluteExpiration">The absolute expiration.</param>
-        /// <param name="slidingExpiration">The sliding expiration.</param>
-        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration)
-        {
-            this.Insert(cacheKey, itemToCache, dependency, absoluteExpiration, slidingExpiration, CacheItemPriority.Default, null);
-        }
-
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
-        /// <param name="cacheKey">The cache key.</param>
-        /// <param name="itemToCache">The value.</param>
-        /// <param name="dependency">The dependency.</param>
-        /// <param name="absoluteExpiration">The absolute expiration.</param>
-        /// <param name="slidingExpiration">The sliding expiration.</param>
-        /// <param name="priority">The priority.</param>
-        /// <param name="onRemoveCallback">The on remove callback.</param>
-        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                   CacheItemRemovedCallback onRemoveCallback)
-        {
-            Cache.Insert(cacheKey, itemToCache, dependency == null ? null : dependency.SystemCacheDependency, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
-        }
-
-        /// <summary>
-        /// Determines whether is web farm.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if is web farm; otherwise, <c>false</c>.
-        /// </returns>
-        public virtual bool IsWebFarm()
-        {
-            return ServerController.GetEnabledServers().Count > 1;
-        }
-
-        /// <summary>
-        /// Purges the cache.
-        /// </summary>
-        /// <returns></returns>
-        public virtual string PurgeCache()
-        {
-            return Localization.GetString("PurgeCacheUnsupported.Text", Localization.GlobalResourceFile);
-        }
-
-        /// <summary>
-        /// Removes the specified cache key.
-        /// </summary>
-        /// <param name="CacheKey">The cache key.</param>
-        public virtual void Remove(string CacheKey)
-        {
-            this.RemoveInternal(CacheKey);
         }
     }
 }

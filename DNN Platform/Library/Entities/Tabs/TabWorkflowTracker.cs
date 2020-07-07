@@ -53,11 +53,6 @@ namespace DotNetNuke.Entities.Tabs
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
-        protected override Func<ITabChangeTracker> GetFactory()
-        {
-            return () => new TabWorkflowTracker();
-        }
-
         /// <summary>
         /// Tracks a workflow instance when a module is deleted from a page.
         /// </summary>
@@ -91,6 +86,11 @@ namespace DotNetNuke.Entities.Tabs
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             this.TrackModuleDeletion(module, moduleVersion, userId);
+        }
+
+        protected override Func<ITabChangeTracker> GetFactory()
+        {
+            return () => new TabWorkflowTracker();
         }
 
         private void NotifyWorkflowAboutChanges(int portalId, int tabId, int userId)

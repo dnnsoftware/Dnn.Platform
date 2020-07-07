@@ -20,34 +20,6 @@ namespace DotNetNuke.ExtensionPoints
 
         private static readonly CompositionContainer MefCompositionContainer = InitializeMefCompositionContainer();
 
-#pragma warning disable 649
-
-        [ImportMany]
-        private IEnumerable<Lazy<IScriptItemExtensionPoint, IExtensionPointData>> _scripts;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IEditPageTabExtensionPoint, IExtensionPointData>> _editPageTabExtensionPoint;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IToolBarButtonExtensionPoint, IExtensionPointData>> _toolbarButtonExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IEditPagePanelExtensionPoint, IExtensionPointData>> _editPagePanelExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IContextMenuItemExtensionPoint, IExtensionPointData>> _ctxMenuItemExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IUserControlExtensionPoint, IExtensionPointData>> _userControlExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IMenuItemExtensionPoint, IExtensionPointData>> _menuItems;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IGridColumnExtensionPoint, IExtensionPointData>> _gridColumns;
-
-#pragma warning restore 649
-
         public ExtensionPointManager()
         {
             ComposeParts(this);
@@ -64,14 +36,6 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module)
         {
             return this.GetEditPageTabExtensionPoints(module, null);
-        }
-
-        private static CompositionContainer InitializeMefCompositionContainer()
-        {
-            var catalog = new AggregateCatalog();
-            var path = Path.Combine(Globals.ApplicationMapPath, "bin");
-            catalog.Catalogs.Add(new SafeDirectoryCatalog(path));
-            return new CompositionContainer(catalog, true);
         }
 
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module, string group)
@@ -211,9 +175,45 @@ namespace DotNetNuke.ExtensionPoints
                    select e.Value;
         }
 
+        private static CompositionContainer InitializeMefCompositionContainer()
+        {
+            var catalog = new AggregateCatalog();
+            var path = Path.Combine(Globals.ApplicationMapPath, "bin");
+            catalog.Catalogs.Add(new SafeDirectoryCatalog(path));
+            return new CompositionContainer(catalog, true);
+        }
+
         private bool FilterCondition(IExtensionPointData data, string module, string group)
         {
             return data.Module == module && (string.IsNullOrEmpty(@group) || data.Group == @group);
         }
+
+#pragma warning disable 649
+
+        [ImportMany]
+        private IEnumerable<Lazy<IScriptItemExtensionPoint, IExtensionPointData>> _scripts;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IEditPageTabExtensionPoint, IExtensionPointData>> _editPageTabExtensionPoint;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IToolBarButtonExtensionPoint, IExtensionPointData>> _toolbarButtonExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IEditPagePanelExtensionPoint, IExtensionPointData>> _editPagePanelExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IContextMenuItemExtensionPoint, IExtensionPointData>> _ctxMenuItemExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IUserControlExtensionPoint, IExtensionPointData>> _userControlExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IMenuItemExtensionPoint, IExtensionPointData>> _menuItems;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IGridColumnExtensionPoint, IExtensionPointData>> _gridColumns;
+
+#pragma warning restore 649
     }
 }

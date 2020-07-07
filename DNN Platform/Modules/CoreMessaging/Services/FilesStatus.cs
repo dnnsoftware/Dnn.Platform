@@ -7,11 +7,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     public class FilesStatus
     {
         // ReSharper restore InconsistentNaming
+
         public FilesStatus()
         {
-        }
-
-        // ReSharper disable InconsistentNaming
+        } // ReSharper disable InconsistentNaming
         public bool success { get; set; }
 
         public string name { get; set; }

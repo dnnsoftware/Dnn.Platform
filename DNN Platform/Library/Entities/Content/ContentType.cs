@@ -23,11 +23,11 @@ namespace DotNetNuke.Entities.Content
     {
         private const string desktopModuleContentTypeName = "DesktopModule";
         private const string moduleContentTypeName = "Module";
+        private const string tabContentTypeName = "Tab";
 
         private static ContentType _desktopModule;
         private static ContentType _module;
         private static ContentType _tab;
-        private const string tabContentTypeName = "Tab";
 
         public ContentType()
             : this(Null.NullString)

@@ -118,6 +118,29 @@ namespace DotNetNuke.Entities.Portals
             return retValue;
         }
 
+        /// <summary>
+        /// Validates the alias.
+        /// </summary>
+        /// <param name="portalAlias">The portal alias.</param>
+        /// <param name="ischild">if set to <c>true</c> [ischild].</param>
+        /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
+        public static bool ValidateAlias(string portalAlias, bool ischild)
+        {
+            if (ischild)
+            {
+                return ValidateAlias(portalAlias, true, false);
+            }
+
+            // validate the domain
+            Uri result;
+            if (Uri.TryCreate(Globals.AddHTTP(portalAlias), UriKind.Absolute, out result))
+            {
+                return ValidateAlias(result.Host, false, true) && ValidateAlias(portalAlias, false, false);
+            }
+
+            return false;
+        }
+
         public int AddPortalAlias(PortalAliasInfo portalAlias)
         {
             // Add Alias
@@ -150,6 +173,95 @@ namespace DotNetNuke.Entities.Portals
 
             // clear portal alias cache
             ClearCache(false, portalAlias.PortalID);
+        }
+
+        public PortalAliasInfo GetPortalAlias(string alias)
+        {
+            return this.GetPortalAliasInternal(alias);
+        }
+
+        /// <summary>
+        /// Gets the portal alias.
+        /// </summary>
+        /// <param name="alias">The portal alias.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>Portal Alias Info.</returns>
+        public PortalAliasInfo GetPortalAlias(string alias, int portalId)
+        {
+            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && pa.Value.PortalID == portalId).Value;
+        }
+
+        /// <summary>
+        /// Gets the portal alias by portal alias ID.
+        /// </summary>
+        /// <param name="portalAliasId">The portal alias ID.</param>
+        /// <returns>Portal alias info.</returns>
+        public PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId)
+        {
+            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Value.PortalAliasID == portalAliasId).Value;
+        }
+
+        public PortalAliasCollection GetPortalAliases()
+        {
+            var aliasCollection = new PortalAliasCollection();
+            foreach (var alias in this.GetPortalAliasesInternal().Values)
+            {
+                aliasCollection.Add(alias.HTTPAlias, alias);
+            }
+
+            return aliasCollection;
+        }
+
+        public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId)
+        {
+            return this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalID == portalId).ToList();
+        }
+
+        /// <summary>
+        /// Gets the portal by portal alias ID.
+        /// </summary>
+        /// <param name="PortalAliasId">The portal alias id.</param>
+        /// <returns>Portal info.</returns>
+        public PortalInfo GetPortalByPortalAliasID(int PortalAliasId)
+        {
+            return CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(PortalAliasId));
+        }
+
+        public void UpdatePortalAlias(PortalAliasInfo portalAlias)
+        {
+            // Update Alias
+            DataProvider.Instance().UpdatePortalAliasInfo(
+                portalAlias.PortalAliasID,
+                portalAlias.PortalID,
+                portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
+                portalAlias.CultureCode,
+                portalAlias.Skin,
+                portalAlias.BrowserType.ToString(),
+                portalAlias.IsPrimary,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+
+            // Log Event
+            LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_UPDATED);
+
+            // clear portal alias cache
+            ClearCache(false);
+        }
+
+        internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
+        {
+            return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(
+                new CacheItemArgs(
+                DataCache.PortalAliasCacheKey,
+                DataCache.PortalAliasCacheTimeOut,
+                DataCache.PortalAliasCachePriority),
+                c =>
+                                                                {
+                                                                    var dic = CBO.FillDictionary<string, PortalAliasInfo>(
+                                                                        "HTTPAlias",
+                                                                        DataProvider.Instance().GetPortalAliases());
+                                                                    return dic.Keys.ToDictionary(key => key.ToLowerInvariant(), key => dic[key]);
+                                                                },
+                true);
         }
 
         protected override Func<IPortalAliasController> GetFactory()
@@ -273,118 +385,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return portalAlias;
-        }
-
-        public PortalAliasInfo GetPortalAlias(string alias)
-        {
-            return this.GetPortalAliasInternal(alias);
-        }
-
-        /// <summary>
-        /// Gets the portal alias.
-        /// </summary>
-        /// <param name="alias">The portal alias.</param>
-        /// <param name="portalId">The portal ID.</param>
-        /// <returns>Portal Alias Info.</returns>
-        public PortalAliasInfo GetPortalAlias(string alias, int portalId)
-        {
-            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && pa.Value.PortalID == portalId).Value;
-        }
-
-        /// <summary>
-        /// Gets the portal alias by portal alias ID.
-        /// </summary>
-        /// <param name="portalAliasId">The portal alias ID.</param>
-        /// <returns>Portal alias info.</returns>
-        public PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId)
-        {
-            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Value.PortalAliasID == portalAliasId).Value;
-        }
-
-        public PortalAliasCollection GetPortalAliases()
-        {
-            var aliasCollection = new PortalAliasCollection();
-            foreach (var alias in this.GetPortalAliasesInternal().Values)
-            {
-                aliasCollection.Add(alias.HTTPAlias, alias);
-            }
-
-            return aliasCollection;
-        }
-
-        public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId)
-        {
-            return this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalID == portalId).ToList();
-        }
-
-        internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
-        {
-            return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(
-                new CacheItemArgs(
-                DataCache.PortalAliasCacheKey,
-                DataCache.PortalAliasCacheTimeOut,
-                DataCache.PortalAliasCachePriority),
-                c =>
-                                                                {
-                                                                    var dic = CBO.FillDictionary<string, PortalAliasInfo>(
-                                                                        "HTTPAlias",
-                                                                        DataProvider.Instance().GetPortalAliases());
-                                                                    return dic.Keys.ToDictionary(key => key.ToLowerInvariant(), key => dic[key]);
-                                                                },
-                true);
-        }
-
-        /// <summary>
-        /// Gets the portal by portal alias ID.
-        /// </summary>
-        /// <param name="PortalAliasId">The portal alias id.</param>
-        /// <returns>Portal info.</returns>
-        public PortalInfo GetPortalByPortalAliasID(int PortalAliasId)
-        {
-            return CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(PortalAliasId));
-        }
-
-        public void UpdatePortalAlias(PortalAliasInfo portalAlias)
-        {
-            // Update Alias
-            DataProvider.Instance().UpdatePortalAliasInfo(
-                portalAlias.PortalAliasID,
-                portalAlias.PortalID,
-                portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
-                portalAlias.CultureCode,
-                portalAlias.Skin,
-                portalAlias.BrowserType.ToString(),
-                portalAlias.IsPrimary,
-                UserController.Instance.GetCurrentUserInfo().UserID);
-
-            // Log Event
-            LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_UPDATED);
-
-            // clear portal alias cache
-            ClearCache(false);
-        }
-
-        /// <summary>
-        /// Validates the alias.
-        /// </summary>
-        /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="ischild">if set to <c>true</c> [ischild].</param>
-        /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
-        public static bool ValidateAlias(string portalAlias, bool ischild)
-        {
-            if (ischild)
-            {
-                return ValidateAlias(portalAlias, true, false);
-            }
-
-            // validate the domain
-            Uri result;
-            if (Uri.TryCreate(Globals.AddHTTP(portalAlias), UriKind.Absolute, out result))
-            {
-                return ValidateAlias(result.Host, false, true) && ValidateAlias(portalAlias, false, false);
-            }
-
-            return false;
         }
     }
 }

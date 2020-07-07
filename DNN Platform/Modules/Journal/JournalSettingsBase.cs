@@ -19,6 +19,5 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Entities.Modules;
 
     public class JournalSettingsBase : ModuleSettingsBase
-    {
-    }
+    {}
 }

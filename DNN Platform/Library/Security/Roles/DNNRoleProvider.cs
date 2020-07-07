@@ -90,15 +90,6 @@ namespace DotNetNuke.Security.Roles
             this.dataProvider.DeleteRole(role.RoleID);
         }
 
-        private void AddDNNUserRole(UserRoleInfo userRole)
-        {
-            // Add UserRole to DNN
-            userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
-                                                                (int)userRole.Status, userRole.IsOwner,
-                                                                userRole.EffectiveDate, userRole.ExpiryDate,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID));
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get the roles for a portal.
@@ -336,16 +327,6 @@ namespace DotNetNuke.Security.Roles
             this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 
-        private void ClearRoleGroupCache(int portalId)
-        {
-            DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
-        }
-
-        private string GetRoleGroupsCacheKey(int portalId)
-        {
-            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetRoleGroup gets a RoleGroup from the Data Store.
@@ -389,6 +370,25 @@ namespace DotNetNuke.Security.Roles
             this.dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
+        }
+
+        private void AddDNNUserRole(UserRoleInfo userRole)
+        {
+            // Add UserRole to DNN
+            userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
+                                                                (int)userRole.Status, userRole.IsOwner,
+                                                                userRole.EffectiveDate, userRole.ExpiryDate,
+                                                                UserController.Instance.GetCurrentUserInfo().UserID));
+        }
+
+        private void ClearRoleGroupCache(int portalId)
+        {
+            DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
+        }
+
+        private string GetRoleGroupsCacheKey(int portalId)
+        {
+            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
         }
 
         private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)

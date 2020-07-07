@@ -22,10 +22,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_SetTask_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
-
         [FlagParameter("enabled", "Prompt_SetTask_FlagEnabled", "Boolean", true)]
         private const string FlagEnabled = "enabled";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 

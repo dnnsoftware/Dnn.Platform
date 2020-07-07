@@ -316,6 +316,5 @@ namespace Dnn.PersonaBar.Users.Components
             }
             return regex;
         }
-
     }
 }

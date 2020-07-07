@@ -49,6 +49,25 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Roles for this Role Group.
+        /// </summary>
+        /// <returns>A Boolean.</returns>
+        /// -----------------------------------------------------------------------------
+        public Dictionary<string, RoleInfo> Roles
+        {
+            get
+            {
+                if (this._Roles == null && this.RoleGroupID > Null.NullInteger)
+                {
+                    this.GetRoles();
+                }
+
+                return this._Roles;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the RoleGroup Id.
         /// </summary>
         /// <value>An Integer representing the Id of the RoleGroup.</value>
@@ -120,25 +139,6 @@ namespace DotNetNuke.Security.Roles
             set
             {
                 this._Description = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Roles for this Role Group.
-        /// </summary>
-        /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
-        public Dictionary<string, RoleInfo> Roles
-        {
-            get
-            {
-                if (this._Roles == null && this.RoleGroupID > Null.NullInteger)
-                {
-                    this.GetRoles();
-                }
-
-                return this._Roles;
             }
         }
 

@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         public int UserRoleId { get; set; }
         public string Start { get; set; }
         public string End { get; set; }
+
         public static UserRoleModel FromDnnUserRoleInfo(DotNetNuke.Entities.Users.UserRoleInfo userRoleInfo)
         {
             var userRoleModel = new UserRoleModel

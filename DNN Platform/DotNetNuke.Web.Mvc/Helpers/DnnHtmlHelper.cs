@@ -40,17 +40,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             this.ModuleContext = controller.ModuleContext;
         }
 
-        public ModuleInstanceContext ModuleContext { get; set; }
-
         public RouteCollection RouteCollection => this.HtmlHelper.RouteCollection;
-
-        internal HtmlHelper HtmlHelper { get; set; }
-
-        public MvcHtmlString AntiForgeryToken()
-        {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            return new MvcHtmlString(string.Empty);
-        }
 
         public dynamic ViewBag => this.HtmlHelper.ViewBag;
 
@@ -59,6 +49,16 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public ViewDataDictionary ViewData => this.HtmlHelper.ViewData;
 
         public IViewDataContainer ViewDataContainer => this.HtmlHelper.ViewDataContainer;
+
+        public ModuleInstanceContext ModuleContext { get; set; }
+
+        internal HtmlHelper HtmlHelper { get; set; }
+
+        public MvcHtmlString AntiForgeryToken()
+        {
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            return new MvcHtmlString(string.Empty);
+        }
 
         public string AttributeEncode(string value) => this.HtmlHelper.AttributeEncode(value);
 

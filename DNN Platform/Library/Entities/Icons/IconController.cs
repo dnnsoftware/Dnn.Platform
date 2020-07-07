@@ -43,11 +43,11 @@ namespace DotNetNuke.Entities.Icons
     {
         public const string DefaultIconSize = "16X16";
         public const string DefaultLargeIconSize = "32X32";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
         public const string DefaultIconStyle = "Standard";
         public const string IconKeyName = "IconKey";
         public const string IconSizeName = "IconSize";
         public const string IconStyleName = "IconStyle";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
 
         private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
 

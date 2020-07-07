@@ -25,12 +25,12 @@ namespace DotNetNuke.UI.UserControls
     {
         protected ImageButton imgIcon;
         protected Label lblTitle;
+        protected Panel pnlRule;
         private bool _includeRule;
         private bool _isExpanded = true;
         private string _javaScript = "__dnn_SectionMaxMin";
         private string _maxImageUrl = "images/plus.gif";
         private string _minImageUrl = "images/minus.gif";
-        protected Panel pnlRule;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

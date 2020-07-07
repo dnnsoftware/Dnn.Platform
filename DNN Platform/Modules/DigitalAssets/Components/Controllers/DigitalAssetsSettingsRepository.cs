@@ -83,18 +83,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return !Enum.TryParse(setting, true, out excludeSubfolders) ? SubfolderFilter.IncludeSubfoldersFolderStructure : excludeSubfolders;
         }
 
-        private bool IsGroupMode(int moduleId)
-        {
-            var groupMode = this.GetSettingByKey(moduleId, GroupModeSetting);
-
-            if (string.IsNullOrEmpty(groupMode))
-            {
-                return false;
-            }
-
-            return Convert.ToBoolean(groupMode);
-        }
-
         public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
         {
             ModuleController.Instance.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));
@@ -132,6 +120,18 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 this.SaveFilterCondition(moduleId, FilterCondition.FilterByFolder);
             }
+        }
+
+        private bool IsGroupMode(int moduleId)
+        {
+            var groupMode = this.GetSettingByKey(moduleId, GroupModeSetting);
+
+            if (string.IsNullOrEmpty(groupMode))
+            {
+                return false;
+            }
+
+            return Convert.ToBoolean(groupMode);
         }
 
         private string GetSettingByKey(int moduleId, string key)

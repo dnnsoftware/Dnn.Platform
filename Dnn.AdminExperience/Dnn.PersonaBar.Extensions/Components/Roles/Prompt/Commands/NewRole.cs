@@ -25,18 +25,20 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
         private const string FlagIsPublic = "public";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
-
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("autoassign", "Prompt_NewRole_FlagAutoAssign", "Boolean", "false")]
         private const string FlagAutoAssign = "autoassign";
+
         [FlagParameter("name", "Prompt_NewRole_FlagRoleName", "String", true)]
         private const string FlagRoleName = "name";
+
         [FlagParameter("description", "Prompt_NewRole_FlagDescription", "String")]
         private const string FlagDescription = "description";
+
         [FlagParameter("status", "Prompt_NewRole_FlagStatus", "Boolean", "approved")]
         private const string FlagStatus = "status";
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         public string RoleName { get; set; }
         public string Description { get; set; }
         public bool IsPublic { get; set; }

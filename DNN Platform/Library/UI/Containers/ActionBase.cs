@@ -51,6 +51,31 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ActionManager instance for this Action control.
+        /// </summary>
+        /// <returns>An ActionManager object.</returns>
+        public ActionManager ActionManager
+        {
+            get
+            {
+                if (this._ActionManager == null)
+                {
+                    this._ActionManager = new ActionManager(this);
+                }
+
+                return this._ActionManager;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
+        /// </summary>
+        /// <returns>An IModuleControl object.</returns>
+        public IModuleControl ModuleControl { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the Actions Collection.
         /// </summary>
         /// <returns>A ModuleActionCollection.</returns>
@@ -105,31 +130,6 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.PortalSettings;
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionManager instance for this Action control.
-        /// </summary>
-        /// <returns>An ActionManager object.</returns>
-        public ActionManager ActionManager
-        {
-            get
-            {
-                if (this._ActionManager == null)
-                {
-                    this._ActionManager = new ActionManager(this);
-                }
-
-                return this._ActionManager;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control.
-        /// </summary>
-        /// <returns>An IModuleControl object.</returns>
-        public IModuleControl ModuleControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

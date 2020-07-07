@@ -409,6 +409,26 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return totalRecords;
         }
 
+        public IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
+        {
+            return CBO.FillCollection<MessageRecipient>(this._dataService.GetNextMessagesForInstantDispatch(schedulerInstance, batchSize));
+        }
+
+        public IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize)
+        {
+            return CBO.FillCollection<MessageRecipient>(this._dataService.GetNextMessagesForDigestDispatch(Convert.ToInt32(frequency), schedulerInstance, batchSize));
+        }
+
+        public virtual void MarkMessageAsDispatched(int messageId, int recipientId)
+        {
+            this._dataService.MarkMessageAsDispatched(messageId, recipientId);
+        }
+
+        public virtual void MarkMessageAsSent(int messageId, int recipientId)
+        {
+            this._dataService.MarkMessageAsSent(messageId, recipientId);
+        }
+
         internal virtual DateTime GetDateTimeNow()
         {
             return DateTime.UtcNow;
@@ -443,26 +463,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
-        }
-
-        public IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
-        {
-            return CBO.FillCollection<MessageRecipient>(this._dataService.GetNextMessagesForInstantDispatch(schedulerInstance, batchSize));
-        }
-
-        public IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize)
-        {
-            return CBO.FillCollection<MessageRecipient>(this._dataService.GetNextMessagesForDigestDispatch(Convert.ToInt32(frequency), schedulerInstance, batchSize));
-        }
-
-        public virtual void MarkMessageAsDispatched(int messageId, int recipientId)
-        {
-            this._dataService.MarkMessageAsDispatched(messageId, recipientId);
-        }
-
-        public virtual void MarkMessageAsSent(int messageId, int recipientId)
-        {
-            this._dataService.MarkMessageAsSent(messageId, recipientId);
         }
     }
 }

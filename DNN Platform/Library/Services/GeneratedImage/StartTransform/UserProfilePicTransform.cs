@@ -29,11 +29,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
-        /// Gets or sets the UserID of the profile pic.
-        /// </summary>
-        public int UserID { get; set; }
-
-        /// <summary>
         /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + this.UserID;
@@ -42,6 +37,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Gets a value indicating whether is reusable.
         /// </summary>
         public bool IsReusable => false;
+
+        /// <summary>
+        /// Gets or sets the UserID of the profile pic.
+        /// </summary>
+        public int UserID { get; set; }
 
         /// <summary>
         /// Processes an input image returning the user profile picture.

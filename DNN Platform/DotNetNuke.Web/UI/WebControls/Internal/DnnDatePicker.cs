@@ -39,11 +39,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public DateTime MinDate { get; set; } = new DateTime(1900, 1, 1);
 
+        public DateTime MaxDate { get; set; } = DateTime.MaxValue;
+
         protected virtual string Format => "yyyy-MM-dd";
 
         protected virtual string ClientFormat => "YYYY-MM-DD";
-
-        public DateTime MaxDate { get; set; } = DateTime.MaxValue;
 
         protected override void OnPreRender(EventArgs e)
         {

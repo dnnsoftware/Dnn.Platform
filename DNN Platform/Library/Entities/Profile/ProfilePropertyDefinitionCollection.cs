@@ -57,6 +57,22 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets an item in the collection.
+        /// </summary>
+        /// <remarks>This overload returns the item by its name.</remarks>
+        /// <param name="name">The name of the Property to get.</param>
+        /// <returns>A ProfilePropertyDefinition object.</returns>
+        /// -----------------------------------------------------------------------------
+        public ProfilePropertyDefinition this[string name]
+        {
+            get
+            {
+                return this.GetByName(name);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets and sets an item in the collection.
         /// </summary>
         /// <remarks>This overload returns the item by its index. </remarks>
@@ -73,22 +89,6 @@ namespace DotNetNuke.Entities.Profile
             set
             {
                 this.List[index] = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets an item in the collection.
-        /// </summary>
-        /// <remarks>This overload returns the item by its name.</remarks>
-        /// <param name="name">The name of the Property to get.</param>
-        /// <returns>A ProfilePropertyDefinition object.</returns>
-        /// -----------------------------------------------------------------------------
-        public ProfilePropertyDefinition this[string name]
-        {
-            get
-            {
-                return this.GetByName(name);
             }
         }
 

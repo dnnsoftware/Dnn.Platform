@@ -213,197 +213,6 @@ namespace DotNetNuke.Modules.Html
             ModuleController.SynchronizeModule(ModuleID);
         }
 
-        private static void AddHtmlNotification(string subject, string body, UserInfo user)
-        {
-            var notificationType = NotificationsController.Instance.GetNotificationType("HtmlNotification");
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var sender = UserController.GetUserById(portalSettings.PortalId, portalSettings.AdministratorId);
-
-            var notification = new Notification { NotificationTypeID = notificationType.NotificationTypeId, Subject = subject, Body = body, IncludeDismissAction = true, SenderUserID = sender.UserID };
-            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, null, new List<UserInfo> { user });
-        }
-
-        private void ClearModuleSettings(ModuleInfo objModule)
-        {
-            if (objModule.ModuleDefinition.FriendlyName == "Text/HTML")
-            {
-                ModuleController.Instance.DeleteModuleSetting(objModule.ModuleID, "WorkFlowID");
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   CreateUserNotifications creates HtmlTextUser records and optionally sends email notifications to participants in a Workflow.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="objHtmlText">An HtmlTextInfo object.</param>
-        private void CreateUserNotifications(HtmlTextInfo objHtmlText)
-        {
-            var _htmlTextUserController = new HtmlTextUserController();
-            HtmlTextUserInfo _htmlTextUser = null;
-            UserInfo _user = null;
-
-            // clean up old user notification records
-            _htmlTextUserController.DeleteHtmlTextUsers();
-
-            // ensure we have latest htmltext object loaded
-            objHtmlText = this.GetHtmlText(objHtmlText.ModuleID, objHtmlText.ItemID);
-
-            // build collection of users to notify
-            var objWorkflow = new WorkflowStateController();
-            var arrUsers = new ArrayList();
-
-            // if not published
-            if (objHtmlText.IsPublished == false)
-            {
-                arrUsers.Add(objHtmlText.CreatedByUserID); // include content owner
-            }
-
-            // if not draft and not published
-            if (objHtmlText.StateID != objWorkflow.GetFirstWorkflowStateID(objHtmlText.WorkflowID) && objHtmlText.IsPublished == false)
-            {
-                // get users from permissions for state
-                foreach (WorkflowStatePermissionInfo permission in WorkflowStatePermissionController.GetWorkflowStatePermissions(objHtmlText.StateID))
-                {
-                    if (permission.AllowAccess)
-                    {
-                        if (Null.IsNull(permission.UserID))
-                        {
-                            int roleId = permission.RoleID;
-                            RoleInfo objRole = RoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
-                            if (objRole != null)
-                            {
-                                foreach (UserRoleInfo objUserRole in RoleController.Instance.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))
-                                {
-                                    if (!arrUsers.Contains(objUserRole.UserID))
-                                    {
-                                        arrUsers.Add(objUserRole.UserID);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (!arrUsers.Contains(permission.UserID))
-                            {
-                                arrUsers.Add(permission.UserID);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // process notifications
-            if (arrUsers.Count > 0 || (objHtmlText.IsPublished && objHtmlText.Notify))
-            {
-                // get tabid from module
-                ModuleInfo objModule = ModuleController.Instance.GetModule(objHtmlText.ModuleID, Null.NullInteger, true);
-
-                PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                if (objPortalSettings != null)
-                {
-                    string strResourceFile = string.Format(
-                        "{0}/DesktopModules/{1}/{2}/{3}",
-                        Globals.ApplicationPath,
-                        objModule.DesktopModule.FolderName,
-                        Localization.LocalResourceDirectory,
-                        Localization.LocalSharedResourceFile);
-                    string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
-                    string strBody = Localization.GetString("NotificationBody", strResourceFile);
-                    strBody = strBody.Replace("[URL]", this.NavigationManager.NavigateURL(objModule.TabID));
-                    strBody = strBody.Replace("[STATE]", objHtmlText.StateName);
-
-                    // process user notification collection
-                    foreach (int intUserID in arrUsers)
-                    {
-                        // create user notification record
-                        _htmlTextUser = new HtmlTextUserInfo();
-                        _htmlTextUser.ItemID = objHtmlText.ItemID;
-                        _htmlTextUser.StateID = objHtmlText.StateID;
-                        _htmlTextUser.ModuleID = objHtmlText.ModuleID;
-                        _htmlTextUser.TabID = objModule.TabID;
-                        _htmlTextUser.UserID = intUserID;
-                        _htmlTextUserController.AddHtmlTextUser(_htmlTextUser);
-
-                        // send an email notification to a user if the state indicates to do so
-                        if (objHtmlText.Notify)
-                        {
-                            _user = UserController.GetUserById(objHtmlText.PortalID, intUserID);
-                            if (_user != null)
-                            {
-                                AddHtmlNotification(strSubject, strBody, _user);
-                            }
-                        }
-                    }
-
-                    // if published and the published state specifies to notify members of the workflow
-                    if (objHtmlText.IsPublished && objHtmlText.Notify)
-                    {
-                        // send email notification to the author
-                        _user = UserController.GetUserById(objHtmlText.PortalID, objHtmlText.CreatedByUserID);
-                        if (_user != null)
-                        {
-                            try
-                            {
-                                Services.Mail.Mail.SendEmail(objPortalSettings.Email, objPortalSettings.Email, strSubject, strBody);
-                            }
-                            catch (Exception exc)
-                            {
-                                Exceptions.LogException(exc);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private string DeTokeniseLinks(string content, int portalId)
-        {
-            var portal = PortalController.Instance.GetPortal(portalId);
-            var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
-            if (!portalRoot.StartsWith("/"))
-            {
-                portalRoot = "/" + portalRoot;
-            }
-
-            if (!portalRoot.EndsWith("/"))
-            {
-                portalRoot = portalRoot + "/";
-            }
-
-            content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot, RegexOptions.IgnoreCase);
-
-            return content;
-        }
-
-        private string TokeniseLinks(string content, int portalId)
-        {
-            // Replace any relative portal root reference by a token "{{PortalRoot}}"
-            var portal = PortalController.Instance.GetPortal(portalId);
-            var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
-            if (!portalRoot.StartsWith("/"))
-            {
-                portalRoot = "/" + portalRoot;
-            }
-
-            if (!portalRoot.EndsWith("/"))
-            {
-                portalRoot = portalRoot + "/";
-            }
-
-            // Portal Root regular expression
-            var regex = @"(?<url>
-                        (?<host>
-                        (?<protocol>[A-Za-z]{3,9}:(?:\/\/)?)
-                        (?<domain>(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+))?
-                        (?<portalRoot>" + portalRoot + "))";
-
-            var matchEvaluator = new MatchEvaluator(this.ReplaceWithRootToken);
-            var exp = RegexUtils.GetCachedRegex(regex, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
-            return exp.Replace(content, matchEvaluator);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetAllHtmlText gets a collection of HtmlTextInfo objects for the Module and Workflow.
@@ -851,6 +660,16 @@ namespace DotNetNuke.Modules.Html
             return string.Empty;
         }
 
+        private static void AddHtmlNotification(string subject, string body, UserInfo user)
+        {
+            var notificationType = NotificationsController.Instance.GetNotificationType("HtmlNotification");
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var sender = UserController.GetUserById(portalSettings.PortalId, portalSettings.AdministratorId);
+
+            var notification = new Notification { NotificationTypeID = notificationType.NotificationTypeId, Subject = subject, Body = body, IncludeDismissAction = true, SenderUserID = sender.UserID };
+            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, null, new List<UserInfo> { user });
+        }
+
         private static List<string> CollectHierarchicalTags(List<Term> terms)
         {
             Func<List<Term>, List<string>, List<string>> collectTagsFunc = null;
@@ -869,6 +688,187 @@ namespace DotNetNuke.Modules.Html
             };
 
             return collectTagsFunc(terms, new List<string>());
+        }
+
+        private void ClearModuleSettings(ModuleInfo objModule)
+        {
+            if (objModule.ModuleDefinition.FriendlyName == "Text/HTML")
+            {
+                ModuleController.Instance.DeleteModuleSetting(objModule.ModuleID, "WorkFlowID");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   CreateUserNotifications creates HtmlTextUser records and optionally sends email notifications to participants in a Workflow.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="objHtmlText">An HtmlTextInfo object.</param>
+        private void CreateUserNotifications(HtmlTextInfo objHtmlText)
+        {
+            var _htmlTextUserController = new HtmlTextUserController();
+            HtmlTextUserInfo _htmlTextUser = null;
+            UserInfo _user = null;
+
+            // clean up old user notification records
+            _htmlTextUserController.DeleteHtmlTextUsers();
+
+            // ensure we have latest htmltext object loaded
+            objHtmlText = this.GetHtmlText(objHtmlText.ModuleID, objHtmlText.ItemID);
+
+            // build collection of users to notify
+            var objWorkflow = new WorkflowStateController();
+            var arrUsers = new ArrayList();
+
+            // if not published
+            if (objHtmlText.IsPublished == false)
+            {
+                arrUsers.Add(objHtmlText.CreatedByUserID); // include content owner
+            }
+
+            // if not draft and not published
+            if (objHtmlText.StateID != objWorkflow.GetFirstWorkflowStateID(objHtmlText.WorkflowID) && objHtmlText.IsPublished == false)
+            {
+                // get users from permissions for state
+                foreach (WorkflowStatePermissionInfo permission in WorkflowStatePermissionController.GetWorkflowStatePermissions(objHtmlText.StateID))
+                {
+                    if (permission.AllowAccess)
+                    {
+                        if (Null.IsNull(permission.UserID))
+                        {
+                            int roleId = permission.RoleID;
+                            RoleInfo objRole = RoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
+                            if (objRole != null)
+                            {
+                                foreach (UserRoleInfo objUserRole in RoleController.Instance.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))
+                                {
+                                    if (!arrUsers.Contains(objUserRole.UserID))
+                                    {
+                                        arrUsers.Add(objUserRole.UserID);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (!arrUsers.Contains(permission.UserID))
+                            {
+                                arrUsers.Add(permission.UserID);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // process notifications
+            if (arrUsers.Count > 0 || (objHtmlText.IsPublished && objHtmlText.Notify))
+            {
+                // get tabid from module
+                ModuleInfo objModule = ModuleController.Instance.GetModule(objHtmlText.ModuleID, Null.NullInteger, true);
+
+                PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                if (objPortalSettings != null)
+                {
+                    string strResourceFile = string.Format(
+                        "{0}/DesktopModules/{1}/{2}/{3}",
+                        Globals.ApplicationPath,
+                        objModule.DesktopModule.FolderName,
+                        Localization.LocalResourceDirectory,
+                        Localization.LocalSharedResourceFile);
+                    string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
+                    string strBody = Localization.GetString("NotificationBody", strResourceFile);
+                    strBody = strBody.Replace("[URL]", this.NavigationManager.NavigateURL(objModule.TabID));
+                    strBody = strBody.Replace("[STATE]", objHtmlText.StateName);
+
+                    // process user notification collection
+                    foreach (int intUserID in arrUsers)
+                    {
+                        // create user notification record
+                        _htmlTextUser = new HtmlTextUserInfo();
+                        _htmlTextUser.ItemID = objHtmlText.ItemID;
+                        _htmlTextUser.StateID = objHtmlText.StateID;
+                        _htmlTextUser.ModuleID = objHtmlText.ModuleID;
+                        _htmlTextUser.TabID = objModule.TabID;
+                        _htmlTextUser.UserID = intUserID;
+                        _htmlTextUserController.AddHtmlTextUser(_htmlTextUser);
+
+                        // send an email notification to a user if the state indicates to do so
+                        if (objHtmlText.Notify)
+                        {
+                            _user = UserController.GetUserById(objHtmlText.PortalID, intUserID);
+                            if (_user != null)
+                            {
+                                AddHtmlNotification(strSubject, strBody, _user);
+                            }
+                        }
+                    }
+
+                    // if published and the published state specifies to notify members of the workflow
+                    if (objHtmlText.IsPublished && objHtmlText.Notify)
+                    {
+                        // send email notification to the author
+                        _user = UserController.GetUserById(objHtmlText.PortalID, objHtmlText.CreatedByUserID);
+                        if (_user != null)
+                        {
+                            try
+                            {
+                                Services.Mail.Mail.SendEmail(objPortalSettings.Email, objPortalSettings.Email, strSubject, strBody);
+                            }
+                            catch (Exception exc)
+                            {
+                                Exceptions.LogException(exc);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private string DeTokeniseLinks(string content, int portalId)
+        {
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
+            if (!portalRoot.StartsWith("/"))
+            {
+                portalRoot = "/" + portalRoot;
+            }
+
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
+            }
+
+            content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot, RegexOptions.IgnoreCase);
+
+            return content;
+        }
+
+        private string TokeniseLinks(string content, int portalId)
+        {
+            // Replace any relative portal root reference by a token "{{PortalRoot}}"
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
+            if (!portalRoot.StartsWith("/"))
+            {
+                portalRoot = "/" + portalRoot;
+            }
+
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
+            }
+
+            // Portal Root regular expression
+            var regex = @"(?<url>
+                        (?<host>
+                        (?<protocol>[A-Za-z]{3,9}:(?:\/\/)?)
+                        (?<domain>(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+))?
+                        (?<portalRoot>" + portalRoot + "))";
+
+            var matchEvaluator = new MatchEvaluator(this.ReplaceWithRootToken);
+            var exp = RegexUtils.GetCachedRegex(regex, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+            return exp.Replace(content, matchEvaluator);
         }
 
         private void AddNotificationTypes()

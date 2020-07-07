@@ -22,6 +22,7 @@ namespace DotNetNuke.Entities.Content
         internal const string FilesKey = "Files";
         internal const string ImageKey = "Images";
         internal const string VideoKey = "Videos";
+        internal const string TitleKey = "Title";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AttachmentController));
 
@@ -45,15 +46,6 @@ namespace DotNetNuke.Entities.Content
         public void AddFilesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
-        }
-
-        private void AddToContent(int contentItemId, Action<ContentItem> action)
-        {
-            var contentItem = this._contentController.GetContentItem(contentItemId);
-
-            action(contentItem);
-
-            this._contentController.UpdateContentItem(contentItem);
         }
 
         public void AddVideoToContent(int contentItemId, IFileInfo fileInfo)
@@ -169,6 +161,15 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
+        private void AddToContent(int contentItemId, Action<ContentItem> action)
+        {
+            var contentItem = this._contentController.GetContentItem(contentItemId);
+
+            action(contentItem);
+
+            this._contentController.UpdateContentItem(contentItem);
+        }
+
         private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
         {
             var contentItem = this._contentController.GetContentItem(contentItemId);
@@ -194,6 +195,5 @@ namespace DotNetNuke.Entities.Content
                     string.Format("ContentItem metadata has become corrupt (ID {0}): invalid file ID", contentItemId), ex);
             }
         }
-        internal const string TitleKey = "Title";
     }
 }

@@ -44,6 +44,10 @@ namespace DotNetNuke.Web.Mvp
         {
         }
 
+        protected virtual void SaveSettings()
+        {
+        }
+
         private void OnLoadSettingsInternal(object sender, EventArgs e)
         {
             this.LoadSettings();
@@ -52,10 +56,6 @@ namespace DotNetNuke.Web.Mvp
         private void OnSaveSettingsInternal(object sender, EventArgs e)
         {
             this.SaveSettings();
-        }
-
-        protected virtual void SaveSettings()
-        {
         }
     }
 }

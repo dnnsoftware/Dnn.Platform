@@ -18,8 +18,6 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("name", "Prompt_RestorePage_FlagName", "String")]
         private const string FlagName = "name";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("parentid", "Prompt_RestorePage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
@@ -34,16 +32,18 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
         }
 
-        private int PageId { get; set; }
-        private string PageName { get; set; }
-        private int ParentId { get; set; }
-
         public RestorePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
             this._tabController = tabController;
             this._recyclebinController = recyclebinController;
             this._contentVerifier = contentVerifier;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        private int PageId { get; set; }
+        private string PageName { get; set; }
+        private int ParentId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

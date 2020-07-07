@@ -22,11 +22,11 @@ namespace DotNetNuke.Tests.Core.Common
     {
         private const int TabID = 100;
         private const int PortalID = 7;
-        private INavigationManager _navigationManager;
         private const string DefaultURLPattern = "/Default.aspx?tabid={0}";
         private const string DefaultSuperTabPattern = "&portalid={0}";
         private const string ControlKeyPattern = "&ctl={0}";
         private const string LanguagePattern = "&language={0}";
+        private INavigationManager _navigationManager;
 
         [TestFixtureSetUp]
         public void Setup()

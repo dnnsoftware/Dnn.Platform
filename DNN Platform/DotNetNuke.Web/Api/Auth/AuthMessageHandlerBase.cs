@@ -54,18 +54,6 @@ namespace DotNetNuke.Web.Api.Auth
             return response;
         }
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var response = this.OnInboundRequest(request, cancellationToken);
-            if (response != null)
-            {
-                response.RequestMessage = response.RequestMessage ?? request; // if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
-                return Task<HttpResponseMessage>.Factory.StartNew(() => response, cancellationToken);
-            }
-
-            return base.SendAsync(request, cancellationToken).ContinueWith(x => this.OnOutboundResponse(x.Result, cancellationToken), cancellationToken);
-        }
-
         protected static bool IsXmlHttpRequest(HttpRequestMessage request)
         {
             string value = null;
@@ -83,6 +71,18 @@ namespace DotNetNuke.Web.Api.Auth
         {
             Thread.CurrentPrincipal = principal;
             request.GetHttpContext().User = principal;
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = this.OnInboundRequest(request, cancellationToken);
+            if (response != null)
+            {
+                response.RequestMessage = response.RequestMessage ?? request; // if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
+                return Task<HttpResponseMessage>.Factory.StartNew(() => response, cancellationToken);
+            }
+
+            return base.SendAsync(request, cancellationToken).ContinueWith(x => this.OnOutboundResponse(x.Result, cancellationToken), cancellationToken);
         }
 
         protected bool NeedsAuthentication(HttpRequestMessage request)

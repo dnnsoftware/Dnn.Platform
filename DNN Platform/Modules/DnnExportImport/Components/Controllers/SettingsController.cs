@@ -32,15 +32,15 @@ namespace Dnn.ExportImport.Components.Controllers
             return this.GetAllSettings().ToList().FirstOrDefault(x => x.SettingName == settingName);
         }
 
-        protected override Func<ISettingsController> GetFactory()
-        {
-            return () => new SettingsController();
-        }
-
         public void AddSetting(ExportImportSetting exportImportSetting)
         {
             DataProvider.Instance().AddExportImportSetting(exportImportSetting);
             DataCache.RemoveCache(CacheKey);
+        }
+
+        protected override Func<ISettingsController> GetFactory()
+        {
+            return () => new SettingsController();
         }
     }
 }

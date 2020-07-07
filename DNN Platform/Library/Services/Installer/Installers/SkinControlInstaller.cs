@@ -78,30 +78,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The DeleteSkinControl method deletes the SkinControl from the data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void DeleteSkinControl()
-        {
-            try
-            {
-                // Attempt to get the SkinControl
-                SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(this.Package.PackageID);
-                if (skinControl != null)
-                {
-                    SkinControlController.DeleteSkinControl(skinControl);
-                }
-
-                this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The ReadManifest method reads the manifest file for the SkinControl compoent.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -145,6 +121,30 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void UnInstall()
         {
             this.DeleteSkinControl();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The DeleteSkinControl method deletes the SkinControl from the data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void DeleteSkinControl()
+        {
+            try
+            {
+                // Attempt to get the SkinControl
+                SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(this.Package.PackageID);
+                if (skinControl != null)
+                {
+                    SkinControlController.DeleteSkinControl(skinControl);
+                }
+
+                this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
         }
     }
 }

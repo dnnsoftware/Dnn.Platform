@@ -30,8 +30,6 @@ namespace DotNetNuke.Modules.Groups
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
         private int _tabId;
         private int _moduleId;
-
-        protected INavigationManager NavigationManager { get; }
         private int _roleId;
         private int _memberId;
         private RoleInfo _roleInfo;
@@ -40,6 +38,8 @@ namespace DotNetNuke.Modules.Groups
         {
             this.NavigationManager = navigationManager;
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -176,11 +176,6 @@ namespace DotNetNuke.Modules.Groups
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
 
-        public class NotificationDTO
-        {
-            public int NotificationId { get; set; }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
@@ -315,13 +310,6 @@ namespace DotNetNuke.Modules.Groups
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
 
-        public class RoleDTO
-        {
-            public int RoleId { get; set; }
-
-            public int GroupViewTabId { get; set; }
-        }
-
         private void ParseKey(string key)
         {
             this._tabId = -1;
@@ -351,6 +339,18 @@ namespace DotNetNuke.Modules.Groups
         {
             var objModulePermissions = new ModulePermissionCollection(CBO.FillCollection(DataProvider.Instance().GetModulePermissionsByModuleID(this._moduleId, -1), typeof(ModulePermissionInfo)));
             return ModulePermissionController.HasModulePermission(objModulePermissions, "MODGROUP");
+        }
+
+        public class NotificationDTO
+        {
+            public int NotificationId { get; set; }
+        }
+
+        public class RoleDTO
+        {
+            public int RoleId { get; set; }
+
+            public int GroupViewTabId { get; set; }
         }
     }
 }

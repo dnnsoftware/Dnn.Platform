@@ -25,50 +25,6 @@ namespace DotNetNuke.Services.OutputCache
             return ComponentFactory.GetComponent<OutputCachingProvider>(FriendlyName);
         }
 
-        protected string ByteArrayToString(byte[] arrInput)
-        {
-            int i = 0;
-            var sOutput = new StringBuilder(arrInput.Length);
-            for (i = 0; i <= arrInput.Length - 1; i++)
-            {
-                sOutput.Append(arrInput[i].ToString("X2"));
-            }
-
-            return sOutput.ToString();
-        }
-
-        protected string GenerateCacheKeyHash(int tabId, string cacheKey)
-        {
-            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            using (var sha256 = new SHA256CryptoServiceProvider())
-            {
-                hash = sha256.ComputeHash(hash);
-                return string.Concat(tabId.ToString(), "_", this.ByteArrayToString(hash));
-            }
-        }
-
-        protected void WriteStreamAsText(HttpContext context, Stream stream, long offset, long length)
-        {
-            if (length < 0)
-            {
-                length = stream.Length - offset;
-            }
-
-            if (length > 0)
-            {
-                if (offset > 0)
-                {
-                    stream.Seek(offset, SeekOrigin.Begin);
-                }
-
-                var buffer = new byte[Convert.ToInt32(length)];
-                int count = stream.Read(buffer, 0, Convert.ToInt32(length));
-                char[] output = Encoding.UTF8.GetChars(buffer, 0, count);
-                context.Response.ContentEncoding = Encoding.UTF8;
-                context.Response.Output.Write(output);
-            }
-        }
-
         public static void RemoveItemFromAllProviders(int tabId)
         {
             foreach (KeyValuePair<string, OutputCachingProvider> kvp in GetProviderList())
@@ -114,6 +70,50 @@ namespace DotNetNuke.Services.OutputCache
 
         public virtual void PurgeExpiredItems(int portalId)
         {
+        }
+
+        protected string ByteArrayToString(byte[] arrInput)
+        {
+            int i = 0;
+            var sOutput = new StringBuilder(arrInput.Length);
+            for (i = 0; i <= arrInput.Length - 1; i++)
+            {
+                sOutput.Append(arrInput[i].ToString("X2"));
+            }
+
+            return sOutput.ToString();
+        }
+
+        protected string GenerateCacheKeyHash(int tabId, string cacheKey)
+        {
+            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                hash = sha256.ComputeHash(hash);
+                return string.Concat(tabId.ToString(), "_", this.ByteArrayToString(hash));
+            }
+        }
+
+        protected void WriteStreamAsText(HttpContext context, Stream stream, long offset, long length)
+        {
+            if (length < 0)
+            {
+                length = stream.Length - offset;
+            }
+
+            if (length > 0)
+            {
+                if (offset > 0)
+                {
+                    stream.Seek(offset, SeekOrigin.Begin);
+                }
+
+                var buffer = new byte[Convert.ToInt32(length)];
+                int count = stream.Read(buffer, 0, Convert.ToInt32(length));
+                char[] output = Encoding.UTF8.GetChars(buffer, 0, count);
+                context.Response.ContentEncoding = Encoding.UTF8;
+                context.Response.Output.Write(output);
+            }
         }
     }
 }

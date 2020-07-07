@@ -67,9 +67,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        [XmlElement("folderid")]
-        public int FolderID { get; set; }
-
         [XmlElement("uniqueid")]
         public Guid UniqueId { get; set; }
 
@@ -102,6 +99,81 @@ namespace DotNetNuke.Services.FileSystem
                 return FolderManager.Instance.GetFolders(this).Any();
             }
         }
+
+        /// <summary>
+        /// Gets or sets a reference to the active Workflow for the folder.
+        /// </summary>
+        [XmlElement("workflowid")]
+        public int WorkflowID { get; set; }
+
+        /// <summary>
+        /// Gets or sets a reference to the parent folder.
+        /// </summary>
+        [XmlElement("parentid")]
+        public int ParentID { get; set; }
+
+        [XmlElement("physicalpath")]
+        public string PhysicalPath
+        {
+            get
+            {
+                string physicalPath;
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current != null)
+                {
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                }
+
+                if (this.PortalID == Null.NullInteger)
+                {
+                    physicalPath = Globals.HostMapPath + this.FolderPath;
+                }
+                else
+                {
+                    if (portalSettings == null || portalSettings.PortalId != this.PortalID)
+                    {
+                        // Get the PortalInfo  based on the Portalid
+                        var portal = PortalController.Instance.GetPortal(this.PortalID);
+
+                        physicalPath = portal.HomeDirectoryMapPath + this.FolderPath;
+                    }
+                    else
+                    {
+                        physicalPath = portalSettings.HomeDirectoryMapPath + this.FolderPath;
+                    }
+                }
+
+                return physicalPath.Replace("/", "\\");
+            }
+        }
+
+        [XmlElement("portalid")]
+        public int PortalID { get; set; }
+
+        [XmlElement("storagelocation")]
+        public int StorageLocation { get; set; }
+
+        [XmlElement("folderpermissions")]
+        public FolderPermissionCollection FolderPermissions
+        {
+            get
+            {
+                return this._folderPermissions ?? (this._folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
+            }
+        }
+
+        public bool IsStorageSecure
+        {
+            get
+            {
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalID, this.FolderMappingID);
+                return FolderProvider.Instance(folderMapping.FolderProviderType).IsStorageSecure;
+            }
+        }
+
+        [XmlElement("folderid")]
+        public int FolderID { get; set; }
+
 
         [XmlElement("displayname")]
         public string DisplayName
@@ -162,70 +234,10 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("mappedpath")]
         public string MappedPath { get; set; }
 
-        /// <summary>
-        /// Gets or sets a reference to the active Workflow for the folder.
-        /// </summary>
-        [XmlElement("workflowid")]
-        public int WorkflowID { get; set; }
 
         [XmlIgnore]
         public DateTime LastUpdated { get; set; }
 
-        /// <summary>
-        /// Gets or sets a reference to the parent folder.
-        /// </summary>
-        [XmlElement("parentid")]
-        public int ParentID { get; set; }
-
-        [XmlElement("physicalpath")]
-        public string PhysicalPath
-        {
-            get
-            {
-                string physicalPath;
-                PortalSettings portalSettings = null;
-                if (HttpContext.Current != null)
-                {
-                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                }
-
-                if (this.PortalID == Null.NullInteger)
-                {
-                    physicalPath = Globals.HostMapPath + this.FolderPath;
-                }
-                else
-                {
-                    if (portalSettings == null || portalSettings.PortalId != this.PortalID)
-                    {
-                        // Get the PortalInfo  based on the Portalid
-                        var portal = PortalController.Instance.GetPortal(this.PortalID);
-
-                        physicalPath = portal.HomeDirectoryMapPath + this.FolderPath;
-                    }
-                    else
-                    {
-                        physicalPath = portalSettings.HomeDirectoryMapPath + this.FolderPath;
-                    }
-                }
-
-                return physicalPath.Replace("/", "\\");
-            }
-        }
-
-        [XmlElement("portalid")]
-        public int PortalID { get; set; }
-
-        [XmlElement("storagelocation")]
-        public int StorageLocation { get; set; }
-
-        [XmlElement("folderpermissions")]
-        public FolderPermissionCollection FolderPermissions
-        {
-            get
-            {
-                return this._folderPermissions ?? (this._folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
-            }
-        }
 
         public int FolderMappingID
         {
@@ -256,15 +268,6 @@ namespace DotNetNuke.Services.FileSystem
             set
             {
                 this._folderMappingId = value;
-            }
-        }
-
-        public bool IsStorageSecure
-        {
-            get
-            {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalID, this.FolderMappingID);
-                return FolderProvider.Instance(folderMapping.FolderProviderType).IsStorageSecure;
             }
         }
 

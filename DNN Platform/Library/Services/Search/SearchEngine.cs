@@ -118,11 +118,6 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        private void AddIdexingResults(string description, int count)
-        {
-            this.SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
-        }
-
         /// <summary>
         /// Deletes all deleted items from the system that are added to deletions table.
         /// </summary>
@@ -221,6 +216,11 @@ namespace DotNetNuke.Services.Search
             }
 
             InternalSearchController.Instance.AddSearchDocuments(searchDocumentList);
+        }
+
+        private void AddIdexingResults(string description, int count)
+        {
+            this.SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
         }
 
         /// -----------------------------------------------------------------------------

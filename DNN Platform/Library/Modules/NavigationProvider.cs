@@ -49,9 +49,9 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public abstract Control NavigationControl { get; }
 
-        public abstract string ControlID { get; set; }
-
         public abstract bool SupportsPopulateOnDemand { get; }
+
+        public abstract string ControlID { get; set; }
 
         public virtual string PathImage
         {

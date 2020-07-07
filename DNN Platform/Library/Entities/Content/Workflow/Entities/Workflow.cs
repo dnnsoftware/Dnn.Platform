@@ -20,6 +20,30 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     public class Workflow
     {
         /// <summary>
+        /// Gets first workflow state.
+        /// </summary>
+        [IgnoreColumn]
+        public WorkflowState FirstState
+        {
+            get
+            {
+                return this.States == null || !this.States.Any() ? null : this.States.OrderBy(s => s.Order).FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Gets last workflow state.
+        /// </summary>
+        [IgnoreColumn]
+        public WorkflowState LastState
+        {
+            get
+            {
+                return this.States == null || !this.States.Any() ? null : this.States.OrderBy(s => s.Order).LastOrDefault();
+            }
+        }
+
+        /// <summary>
         /// Gets or sets workflow Id.
         /// </summary>
         public int WorkflowID { get; set; }
@@ -58,29 +82,5 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         /// </summary>
         [IgnoreColumn]
         public IEnumerable<WorkflowState> States { get; internal set; }
-
-        /// <summary>
-        /// Gets first workflow state.
-        /// </summary>
-        [IgnoreColumn]
-        public WorkflowState FirstState
-        {
-            get
-            {
-                return this.States == null || !this.States.Any() ? null : this.States.OrderBy(s => s.Order).FirstOrDefault();
-            }
-        }
-
-        /// <summary>
-        /// Gets last workflow state.
-        /// </summary>
-        [IgnoreColumn]
-        public WorkflowState LastState
-        {
-            get
-            {
-                return this.States == null || !this.States.Any() ? null : this.States.OrderBy(s => s.Order).LastOrDefault();
-            }
-        }
     }
 }

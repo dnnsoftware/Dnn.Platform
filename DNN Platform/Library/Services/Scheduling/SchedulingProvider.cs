@@ -116,6 +116,30 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
+        public static bool Enabled
+        {
+            get
+            {
+                return SchedulerMode != SchedulerMode.DISABLED;
+            }
+        }
+
+        public static bool ReadyForPoll
+        {
+            get
+            {
+                return DataCache.GetCache("ScheduleLastPolled") == null;
+            }
+        }
+
+        public static SchedulerMode SchedulerMode
+        {
+            get
+            {
+                return Host.SchedulerMode;
+            }
+        }
+
         /// <summary>
         /// Gets the number of seconds since application start where no timer-initiated
         /// schedulers are allowed to run before. This safeguards against ovelapped
@@ -126,23 +150,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public static bool Debug { get; private set; }
 
-        public static bool Enabled
-        {
-            get
-            {
-                return SchedulerMode != SchedulerMode.DISABLED;
-            }
-        }
-
         public static int MaxThreads { get; private set; }
-
-        public static bool ReadyForPoll
-        {
-            get
-            {
-                return DataCache.GetCache("ScheduleLastPolled") == null;
-            }
-        }
 
         public static DateTime ScheduleLastPolled
         {
@@ -161,16 +169,6 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        public string ProviderPath { get; private set; }
-
-        public static SchedulerMode SchedulerMode
-        {
-            get
-            {
-                return Host.SchedulerMode;
-            }
-        }
-
         public virtual Dictionary<string, string> Settings
         {
             get
@@ -178,6 +176,8 @@ namespace DotNetNuke.Services.Scheduling
                 return new Dictionary<string, string>();
             }
         }
+
+        public string ProviderPath { get; private set; }
 
         public static SchedulingProvider Instance()
         {

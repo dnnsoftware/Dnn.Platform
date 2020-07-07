@@ -31,13 +31,6 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Type of Authentication associated with this control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string AuthenticationType { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets a value indicating whether gets whether the control is Enabled.
         /// </summary>
         /// <remarks>This property must be overriden in the inherited class.</remarks>
@@ -61,6 +54,24 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a value indicating whether gets whether the control supports Registration.
+        /// </summary>
+        /// <remarks>This property may be overriden in the inherited class.</remarks>
+        /// -----------------------------------------------------------------------------
+        public virtual bool SupportsRegistration
+        {
+            get { return false; }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and Sets the Type of Authentication associated with this control.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string AuthenticationType { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets the Authentication mode of the control (Login or Register).
         /// </summary>
         /// <remarks>This property may be overriden in the inherited class.</remarks>
@@ -73,17 +84,6 @@ namespace DotNetNuke.Services.Authentication
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string RedirectURL { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the control supports Registration.
-        /// </summary>
-        /// <remarks>This property may be overriden in the inherited class.</remarks>
-        /// -----------------------------------------------------------------------------
-        public virtual bool SupportsRegistration
-        {
-            get { return false; }
-        }
 
         [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
         public static string GetIPAddress()
