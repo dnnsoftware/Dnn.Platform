@@ -1,21 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+namespace DotNetNuke.Services.Tokens
+{
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Threading;
 
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
 
-namespace DotNetNuke.Services.Tokens {
     /// <summary>
     /// The context in which tokenization should happen. 
     /// </summary>
-    public class TokenContext {
-
+    public class TokenContext 
+    {
         /// <summary>
         /// Gets/sets the user object representing the currently accessing user (permission)
         /// </summary>

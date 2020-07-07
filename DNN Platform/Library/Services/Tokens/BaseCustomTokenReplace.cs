@@ -1,12 +1,17 @@
-﻿using System.Globalization;
-using DotNetNuke.ComponentModel;
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Tokens
 {
-using System;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Users;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>
     /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.
@@ -194,10 +199,4 @@ using System;
             return Provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : Provider.Tokenize(sourceText, TokenContext);
         }
     }
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using DotNetNuke.Entities.Users;
-
-    using Localization = DotNetNuke.Services.Localization.Localization;
 }

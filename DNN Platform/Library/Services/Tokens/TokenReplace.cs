@@ -1,10 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Tokens
 {
-using System.Collections;
+    using System.Collections;
+    using System.Data;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
 
     /// <summary>
     /// The TokenReplace class provides the option to replace tokens formatted
@@ -17,7 +24,6 @@ using System.Collections;
     /// <remarks></remarks>
     public class TokenReplace : BaseCustomTokenReplace
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenReplace"/> class.
         /// creates a new TokenReplace object for default context.
@@ -307,11 +313,4 @@ using System.Collections;
             }
         }
     }
-using System.Data;
-using System.Web;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 }
