@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Website.Deprecated" type="Library" isSystem="true" version="09.06.01">
+    <package name="DotNetNuke.Website.Deprecated" type="Library" isSystem="true" version="09.06.02">
       <friendlyName>DNN Deprecated Website Codebehind files</friendlyName>
       <description>DNN Deprecated Website Codebehind files for backward compability.</description>
       <dependencies/>

@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" type="Provider" isSystem="true" version="09.06.01">
+    <package name="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" type="Provider" isSystem="true" version="09.06.02">
       <friendlyName>DotNetNuke Simple Web Farm Caching Provider</friendlyName>
       <description>DotNetNuke Simple Web Farm Caching Provider</description>
       <dependencies/>
