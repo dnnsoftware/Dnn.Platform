@@ -20,6 +20,14 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:VersionEditControl runat=server></{0}:VersionEditControl>")]
     public class VersionEditControl : EditControl
     {
+        protected Version Version
+        {
+            get
+            {
+                return this.Value as Version;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets stringValue is the value of the control expressed as a String.
@@ -36,14 +44,6 @@ namespace DotNetNuke.UI.WebControls
             set
             {
                 this.Value = new Version(value);
-            }
-        }
-
-        protected Version Version
-        {
-            get
-            {
-                return this.Value as Version;
             }
         }
 

@@ -36,6 +36,28 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a value indicating whether returns whether the.
+        /// </summary>
+        /// <value>A boolean.</value>
+        /// -----------------------------------------------------------------------------
+        public virtual bool IsValid
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public virtual string EditControlClientId
+        {
+            get
+            {
+                return this.ClientID;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the Custom Attributes for this Control.
         /// </summary>
         /// <value>An array of Attributes.</value>
@@ -64,20 +86,6 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A boolean.</value>
         /// -----------------------------------------------------------------------------
         public PropertyEditorMode EditMode { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether returns whether the.
-        /// </summary>
-        /// <value>A boolean.</value>
-        /// -----------------------------------------------------------------------------
-        public virtual bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -141,14 +149,6 @@ namespace DotNetNuke.UI.WebControls
         public string DataField { get; set; }
 
         public UserInfo User { get; set; }
-
-        public virtual string EditControlClientId
-        {
-            get
-            {
-                return this.ClientID;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

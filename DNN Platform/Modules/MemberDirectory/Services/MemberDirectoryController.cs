@@ -75,6 +75,127 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetMember(int userId)
+        {
+            try
+            {
+                var users = new List<UserInfo>();
+                var user = UserController.GetUserById(this.PortalSettings.PortalId, userId);
+                users.Add(user);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetSuggestions(int groupId, string displayName)
+        {
+            try
+            {
+                var names = (from UserInfo user in this.GetUsers(-1, groupId, displayName.Trim(), 0, 10, string.Empty, string.Empty)
+                             select new { label = user.DisplayName, value = user.DisplayName, userId = user.UserID })
+                                .ToList();
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, names);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage AcceptFriend(FriendDTO postData)
+        {
+            try
+            {
+                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                FriendsController.Instance.AcceptFriend(friend);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage AddFriend(FriendDTO postData)
+        {
+            try
+            {
+                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                FriendsController.Instance.AddFriend(friend);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage Follow(FollowDTO postData)
+        {
+            try
+            {
+                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
+                FollowersController.Instance.FollowUser(follow);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RemoveFriend(FriendDTO postData)
+        {
+            try
+            {
+                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                FriendsController.Instance.DeleteFriend(friend);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UnFollow(FollowDTO postData)
+        {
+            try
+            {
+                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
+                FollowersController.Instance.UnFollowUser(follow);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -237,127 +358,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         private IEnumerable<UserInfo> FilterExcludedUsers(IEnumerable<UserInfo> users)
         {
             return users.Where(u => !u.IsSuperUser).Select(u => u).ToList();
-        }
-
-        [HttpGet]
-        public HttpResponseMessage GetMember(int userId)
-        {
-            try
-            {
-                var users = new List<UserInfo>();
-                var user = UserController.GetUserById(this.PortalSettings.PortalId, userId);
-                users.Add(user);
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpGet]
-        public HttpResponseMessage GetSuggestions(int groupId, string displayName)
-        {
-            try
-            {
-                var names = (from UserInfo user in this.GetUsers(-1, groupId, displayName.Trim(), 0, 10, string.Empty, string.Empty)
-                             select new { label = user.DisplayName, value = user.DisplayName, userId = user.UserID })
-                                .ToList();
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, names);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage AcceptFriend(FriendDTO postData)
-        {
-            try
-            {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
-                FriendsController.Instance.AcceptFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage AddFriend(FriendDTO postData)
-        {
-            try
-            {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
-                FriendsController.Instance.AddFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage Follow(FollowDTO postData)
-        {
-            try
-            {
-                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
-                FollowersController.Instance.FollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage RemoveFriend(FriendDTO postData)
-        {
-            try
-            {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
-                FriendsController.Instance.DeleteFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage UnFollow(FollowDTO postData)
-        {
-            try
-            {
-                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
-                FollowersController.Instance.UnFollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
         }
 
         public class FollowDTO

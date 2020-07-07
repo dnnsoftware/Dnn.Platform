@@ -94,6 +94,33 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Cache Item's Parameter List.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public ArrayList ParamList
+        {
+            get
+            {
+                if (this._paramList == null)
+                {
+                    this._paramList = new ArrayList();
+
+                    // add additional params to this list if its not null
+                    if (this.Params != null)
+                    {
+                        foreach (object param in this.Params)
+                        {
+                            this._paramList.Add(param);
+                        }
+                    }
+                }
+
+                return this._paramList;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the Cache Item's CacheItemRemovedCallback delegate.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -128,33 +155,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int CacheTimeOut { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Cache Item's Parameter List.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public ArrayList ParamList
-        {
-            get
-            {
-                if (this._paramList == null)
-                {
-                    this._paramList = new ArrayList();
-
-                    // add additional params to this list if its not null
-                    if (this.Params != null)
-                    {
-                        foreach (object param in this.Params)
-                        {
-                            this._paramList.Add(param);
-                        }
-                    }
-                }
-
-                return this._paramList;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

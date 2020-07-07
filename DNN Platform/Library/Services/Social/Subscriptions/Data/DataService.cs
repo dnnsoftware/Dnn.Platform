@@ -29,11 +29,6 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
             return this.provider.ExecuteReader("CoreMessaging_GetSubscriptionTypes");
         }
 
-        protected override Func<IDataService> GetFactory()
-        {
-            return () => new DataService();
-        }
-
         public bool DeleteSubscriptionType(int subscriptionTypeId)
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_DeleteSubscriptionType", subscriptionTypeId) == 0;
@@ -92,6 +87,11 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         public void DeleteSubscriptionsByObjectKey(int portalId, string objectKey)
         {
             this.provider.ExecuteNonQuery("CoreMessaging_DeleteSubscriptionsByObjectKey", portalId, objectKey);
+        }
+
+        protected override Func<IDataService> GetFactory()
+        {
+            return () => new DataService();
         }
     }
 }

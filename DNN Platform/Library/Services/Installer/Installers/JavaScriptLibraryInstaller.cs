@@ -45,26 +45,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        private void DeleteLibrary()
-        {
-            try
-            {
-                // Attempt to get the Library
-                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
-
-                if (library != null)
-                {
-                    JavaScriptLibraryController.Instance.DeleteLibrary(library);
-
-                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the JavaScript Library from the manifest
@@ -95,6 +75,26 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void UnInstall()
         {
             this.DeleteLibrary();
+        }
+
+        private void DeleteLibrary()
+        {
+            try
+            {
+                // Attempt to get the Library
+                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
+
+                if (library != null)
+                {
+                    JavaScriptLibraryController.Instance.DeleteLibrary(library);
+
+                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
         }
     }
 }

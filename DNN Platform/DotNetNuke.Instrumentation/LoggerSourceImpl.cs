@@ -32,6 +32,7 @@ namespace DotNetNuke.Instrumentation
         private class Logger : LoggerWrapperImpl, ILog
         {
             private const string ConfigFile = "DotNetNuke.log4net.config";
+            private static readonly object ConfigLock = new object();
             private static Level _levelTrace;
             private static Level _levelDebug;
             private static Level _levelInfo;
@@ -44,7 +45,6 @@ namespace DotNetNuke.Instrumentation
             //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
             //            internal static Level LevelLogError = new Level(10002, "LogError");
             private readonly Type _stackBoundary = typeof(DnnLogger);
-            private static readonly object ConfigLock = new object();
 
             internal Logger(ILogger logger, Type type)
                 : base(logger)
@@ -67,85 +67,6 @@ namespace DotNetNuke.Instrumentation
             public bool IsTraceEnabled
             {
                 get { return this.Logger.IsEnabledFor(_levelTrace); }
-            }
-
-            private static void EnsureConfig()
-            {
-                if (!_configured)
-                {
-                    lock (ConfigLock)
-                    {
-                        if (!_configured)
-                        {
-                            var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
-                            var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
-                            if (!File.Exists(configPath) && File.Exists(originalPath))
-                            {
-                                File.Copy(originalPath, configPath);
-                            }
-
-                            if (File.Exists(configPath))
-                            {
-                                AddGlobalContext();
-                                XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
-                            }
-
-                            _configured = true;
-                        }
-                    }
-                }
-            }
-
-            private static void ReloadLevels(ILoggerRepository repository)
-            {
-                LevelMap levelMap = repository.LevelMap;
-
-                _levelTrace = levelMap.LookupWithDefault(Level.Trace);
-                _levelDebug = levelMap.LookupWithDefault(Level.Debug);
-                _levelInfo = levelMap.LookupWithDefault(Level.Info);
-                _levelWarn = levelMap.LookupWithDefault(Level.Warn);
-                _levelError = levelMap.LookupWithDefault(Level.Error);
-                _levelFatal = levelMap.LookupWithDefault(Level.Fatal);
-
-                // LevelLogError = levelMap.LookupWithDefault(LevelLogError);
-                //                LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
-
-                //// Register custom logging levels with the default LoggerRepository
-                //                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
-                //                LogManager.GetRepository().LevelMap.Add(LevelLogError);
-            }
-
-            private static void AddGlobalContext()
-            {
-                try
-                {
-                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
-
-                    // bool isFullTrust = false;
-                    // try
-                    // {
-                    //    CodeAccessPermission securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
-                    //    securityTest.Demand();
-                    //    isFullTrust = true;
-                    // }
-                    // catch
-                    // {
-                    //    //code access security error
-                    //    isFullTrust = false;
-                    // }
-                    // if (isFullTrust)
-                    // {
-                    //    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
-                    // }
-                }
-
-                // ReSharper disable EmptyGeneralCatchClause
-                catch
-
-                // ReSharper restore EmptyGeneralCatchClause
-                {
-                    // do nothing but just make sure no exception here.
-                }
             }
 
             public bool IsWarnEnabled
@@ -281,6 +202,85 @@ namespace DotNetNuke.Instrumentation
             public void FatalFormat(IFormatProvider provider, string format, params object[] args)
             {
                 this.Logger.Log(this._stackBoundary, _levelFatal, new SystemStringFormat(provider, format, args), null);
+            }
+
+            private static void EnsureConfig()
+            {
+                if (!_configured)
+                {
+                    lock (ConfigLock)
+                    {
+                        if (!_configured)
+                        {
+                            var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
+                            var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
+                            if (!File.Exists(configPath) && File.Exists(originalPath))
+                            {
+                                File.Copy(originalPath, configPath);
+                            }
+
+                            if (File.Exists(configPath))
+                            {
+                                AddGlobalContext();
+                                XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
+                            }
+
+                            _configured = true;
+                        }
+                    }
+                }
+            }
+
+            private static void ReloadLevels(ILoggerRepository repository)
+            {
+                LevelMap levelMap = repository.LevelMap;
+
+                _levelTrace = levelMap.LookupWithDefault(Level.Trace);
+                _levelDebug = levelMap.LookupWithDefault(Level.Debug);
+                _levelInfo = levelMap.LookupWithDefault(Level.Info);
+                _levelWarn = levelMap.LookupWithDefault(Level.Warn);
+                _levelError = levelMap.LookupWithDefault(Level.Error);
+                _levelFatal = levelMap.LookupWithDefault(Level.Fatal);
+
+                // LevelLogError = levelMap.LookupWithDefault(LevelLogError);
+                //                LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
+
+                //// Register custom logging levels with the default LoggerRepository
+                //                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
+                //                LogManager.GetRepository().LevelMap.Add(LevelLogError);
+            }
+
+            private static void AddGlobalContext()
+            {
+                try
+                {
+                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
+
+                    // bool isFullTrust = false;
+                    // try
+                    // {
+                    //    CodeAccessPermission securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
+                    //    securityTest.Demand();
+                    //    isFullTrust = true;
+                    // }
+                    // catch
+                    // {
+                    //    //code access security error
+                    //    isFullTrust = false;
+                    // }
+                    // if (isFullTrust)
+                    // {
+                    //    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
+                    // }
+                }
+
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+
+                    // ReSharper restore EmptyGeneralCatchClause
+                {
+                    // do nothing but just make sure no exception here.
+                }
             }
         }
     }

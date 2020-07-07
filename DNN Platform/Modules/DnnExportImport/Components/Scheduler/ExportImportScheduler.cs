@@ -24,8 +24,6 @@ namespace Dnn.ExportImport.Components.Scheduler
     {
         private const int EmergencyScheduleFrequency = 120;
         private const int DefaultScheduleFrequency = 1;
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
         private const string EmergencyScheduleFrequencyUnit = "m";
         private const string DefaultScheduleFrequencyUnit = "d";
 
@@ -36,6 +34,8 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         private const int EmergencyHistoryNumber = 1;
         private const int DefaultHistoryNumber = 60;
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
 
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {

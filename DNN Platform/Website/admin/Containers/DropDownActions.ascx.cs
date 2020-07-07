@@ -17,6 +17,14 @@ namespace DotNetNuke.UI.Containers
         private NavigationProvider m_objControl;
         private string m_strProviderName = "DNNDropDownNavigationProvider";
 
+        public NavigationProvider Control
+        {
+            get
+            {
+                return this.m_objControl;
+            }
+        }
+
         public string ProviderName
         {
             get
@@ -26,14 +34,6 @@ namespace DotNetNuke.UI.Containers
 
             set
             {
-            }
-        }
-
-        public NavigationProvider Control
-        {
-            get
-            {
-                return this.m_objControl;
             }
         }
 

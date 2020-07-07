@@ -39,48 +39,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string DataField { get; set; }
 
-        protected PropertyInfo ChildProperty
-        {
-            get
-            {
-                Type type = this.Property.PropertyType;
-                IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
-                return props.SingleOrDefault(p => p.Name == this.DataField);
-            }
-        }
-
-        protected PortalSettings PortalSettings
-        {
-            get { return PortalController.Instance.GetCurrentPortalSettings(); }
-        }
-
-        protected PropertyInfo Property
-        {
-            get
-            {
-                Type type = this.DataSource.GetType();
-                IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
-                return !string.IsNullOrEmpty(this.DataMember)
-                           ? props.SingleOrDefault(p => p.Name == this.DataMember)
-                           : props.SingleOrDefault(p => p.Name == this.DataField);
-            }
-        }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
-
         public string DataMember { get; set; }
 
         public DnnFormMode FormMode { get; set; }
 
         public bool IsValid { get; private set; }
-
-        internal object DataSource { get; set; }
 
         public string OnClientClicked { get; set; }
 
@@ -122,6 +85,43 @@ namespace DotNetNuke.Web.UI.WebControls
         public List<IValidator> Validators { get; private set; }
 
         public string ValidationExpression { get; set; }
+
+        internal object DataSource { get; set; }
+
+        protected PropertyInfo ChildProperty
+        {
+            get
+            {
+                Type type = this.Property.PropertyType;
+                IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
+                return props.SingleOrDefault(p => p.Name == this.DataField);
+            }
+        }
+
+        protected PortalSettings PortalSettings
+        {
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
+        }
+
+        protected PropertyInfo Property
+        {
+            get
+            {
+                Type type = this.DataSource.GetType();
+                IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
+                return !string.IsNullOrEmpty(this.DataMember)
+                    ? props.SingleOrDefault(p => p.Name == this.DataMember)
+                    : props.SingleOrDefault(p => p.Name == this.DataField);
+            }
+        }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
 
         public void CheckIsValid()
         {
@@ -190,52 +190,6 @@ namespace DotNetNuke.Web.UI.WebControls
             WebControl inputControl = this.CreateControlInternal(this);
             label.AssociatedControlID = inputControl.ID;
             this.AddValidators(inputControl.ID);
-        }
-
-        private void AddValidators(string controlId)
-        {
-            var value = this.Value as string;
-            this.Validators.Clear();
-
-            // Add Validators
-            if (this.Required)
-            {
-                var requiredValidator = new RequiredFieldValidator
-                {
-                    ID = this.ID + "_Required",
-                    ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix,
-                };
-                this.Validators.Add(requiredValidator);
-            }
-
-            if (!string.IsNullOrEmpty(this.ValidationExpression))
-            {
-                var regexValidator = new RegularExpressionValidator
-                {
-                    ID = this.ID + "_RegEx",
-                    ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
-                    ValidationExpression = this.ValidationExpression,
-                };
-                if (!string.IsNullOrEmpty(value))
-                {
-                    regexValidator.IsValid = Regex.IsMatch(value, this.ValidationExpression);
-                    this.IsValid = regexValidator.IsValid;
-                }
-
-                this.Validators.Add(regexValidator);
-            }
-
-            if (this.Validators.Count > 0)
-            {
-                foreach (BaseValidator validator in this.Validators)
-                {
-                    validator.ControlToValidate = controlId;
-                    validator.Display = ValidatorDisplay.Dynamic;
-                    validator.ErrorMessage = this.LocalizeString(validator.ErrorMessage);
-                    validator.CssClass = "dnnFormMessage dnnFormError";
-                    this.Controls.Add(validator);
-                }
-            }
         }
 
         /// <summary>
@@ -319,6 +273,68 @@ namespace DotNetNuke.Web.UI.WebControls
             this._value = state;
         }
 
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.Page.RegisterRequiresControlState(this);
+            base.OnInit(e);
+        }
+
+        protected override object SaveControlState()
+        {
+            return this._value;
+        }
+
+        private void AddValidators(string controlId)
+        {
+            var value = this.Value as string;
+            this.Validators.Clear();
+
+            // Add Validators
+            if (this.Required)
+            {
+                var requiredValidator = new RequiredFieldValidator
+                {
+                    ID = this.ID + "_Required",
+                    ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix,
+                };
+                this.Validators.Add(requiredValidator);
+            }
+
+            if (!string.IsNullOrEmpty(this.ValidationExpression))
+            {
+                var regexValidator = new RegularExpressionValidator
+                {
+                    ID = this.ID + "_RegEx",
+                    ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
+                    ValidationExpression = this.ValidationExpression,
+                };
+                if (!string.IsNullOrEmpty(value))
+                {
+                    regexValidator.IsValid = Regex.IsMatch(value, this.ValidationExpression);
+                    this.IsValid = regexValidator.IsValid;
+                }
+
+                this.Validators.Add(regexValidator);
+            }
+
+            if (this.Validators.Count > 0)
+            {
+                foreach (BaseValidator validator in this.Validators)
+                {
+                    validator.ControlToValidate = controlId;
+                    validator.Display = ValidatorDisplay.Dynamic;
+                    validator.ErrorMessage = this.LocalizeString(validator.ErrorMessage);
+                    validator.CssClass = "dnnFormMessage dnnFormError";
+                    this.Controls.Add(validator);
+                }
+            }
+        }
+
         private void UpdateDataSourceInternal(object oldValue, object newValue, string dataField)
         {
             if (this.DataSource != null)
@@ -391,22 +407,6 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
             }
-        }
-
-        protected string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            this.Page.RegisterRequiresControlState(this);
-            base.OnInit(e);
-        }
-
-        protected override object SaveControlState()
-        {
-            return this._value;
         }
     }
 }

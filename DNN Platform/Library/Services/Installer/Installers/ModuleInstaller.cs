@@ -172,6 +172,84 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// The ReadManifest method reads the manifest file for the Module compoent.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void ReadManifest(XPathNavigator manifestNav)
+        {
+            // Load the Desktop Module from the manifest
+            this._desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
+
+            this._desktopModule.FriendlyName = this.Package.FriendlyName;
+            this._desktopModule.Description = this.Package.Description;
+            this._desktopModule.Version = Globals.FormatVersion(this.Package.Version, "00", 4, ".");
+            this._desktopModule.CompatibleVersions = Null.NullString;
+            this._desktopModule.Dependencies = Null.NullString;
+            this._desktopModule.Permissions = Null.NullString;
+            if (string.IsNullOrEmpty(this._desktopModule.BusinessControllerClass))
+            {
+                this._desktopModule.SupportedFeatures = 0;
+            }
+
+            this._eventMessage = this.ReadEventMessageNode(manifestNav);
+
+            // Load permissions (to add)
+            foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))
+            {
+                string friendlyName = Util.ReadElement(moduleDefinitionNav, "friendlyName");
+                foreach (XPathNavigator permissionNav in moduleDefinitionNav.Select("permissions/permission"))
+                {
+                    var permission = new PermissionInfo();
+                    permission.PermissionCode = Util.ReadAttribute(permissionNav, "code");
+                    permission.PermissionKey = Util.ReadAttribute(permissionNav, "key");
+                    permission.PermissionName = Util.ReadAttribute(permissionNav, "name");
+                    ModuleDefinitionInfo moduleDefinition = this._desktopModule.ModuleDefinitions[friendlyName];
+                    if (moduleDefinition != null)
+                    {
+                        moduleDefinition.Permissions.Add(permission.PermissionKey, permission);
+                    }
+                }
+            }
+
+            if (this.Log.Valid)
+            {
+                this.Log.AddInfo(Util.MODULE_ReadSuccess);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Rollback method undoes the installation of the component in the event
+        /// that one of the other components fails.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Rollback()
+        {
+            // If Temp Module exists then we need to update the DataStore with this
+            if (this._installedDesktopModule == null)
+            {
+                // No Temp Module - Delete newly added module
+                this.DeleteModule();
+            }
+            else
+            {
+                // Temp Module - Rollback to Temp
+                DesktopModuleController.SaveDesktopModule(this._installedDesktopModule, true, false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstall method uninstalls the Module component.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void UnInstall()
+        {
+            this.DeleteModule();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// The DeleteModule method deletes the Module from the data Store.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -253,84 +331,6 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Log.AddFailure(ex);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file for the Module compoent.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void ReadManifest(XPathNavigator manifestNav)
-        {
-            // Load the Desktop Module from the manifest
-            this._desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
-
-            this._desktopModule.FriendlyName = this.Package.FriendlyName;
-            this._desktopModule.Description = this.Package.Description;
-            this._desktopModule.Version = Globals.FormatVersion(this.Package.Version, "00", 4, ".");
-            this._desktopModule.CompatibleVersions = Null.NullString;
-            this._desktopModule.Dependencies = Null.NullString;
-            this._desktopModule.Permissions = Null.NullString;
-            if (string.IsNullOrEmpty(this._desktopModule.BusinessControllerClass))
-            {
-                this._desktopModule.SupportedFeatures = 0;
-            }
-
-            this._eventMessage = this.ReadEventMessageNode(manifestNav);
-
-            // Load permissions (to add)
-            foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))
-            {
-                string friendlyName = Util.ReadElement(moduleDefinitionNav, "friendlyName");
-                foreach (XPathNavigator permissionNav in moduleDefinitionNav.Select("permissions/permission"))
-                {
-                    var permission = new PermissionInfo();
-                    permission.PermissionCode = Util.ReadAttribute(permissionNav, "code");
-                    permission.PermissionKey = Util.ReadAttribute(permissionNav, "key");
-                    permission.PermissionName = Util.ReadAttribute(permissionNav, "name");
-                    ModuleDefinitionInfo moduleDefinition = this._desktopModule.ModuleDefinitions[friendlyName];
-                    if (moduleDefinition != null)
-                    {
-                        moduleDefinition.Permissions.Add(permission.PermissionKey, permission);
-                    }
-                }
-            }
-
-            if (this.Log.Valid)
-            {
-                this.Log.AddInfo(Util.MODULE_ReadSuccess);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Rollback method undoes the installation of the component in the event
-        /// that one of the other components fails.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Rollback()
-        {
-            // If Temp Module exists then we need to update the DataStore with this
-            if (this._installedDesktopModule == null)
-            {
-                // No Temp Module - Delete newly added module
-                this.DeleteModule();
-            }
-            else
-            {
-                // Temp Module - Rollback to Temp
-                DesktopModuleController.SaveDesktopModule(this._installedDesktopModule, true, false);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the Module component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void UnInstall()
-        {
-            this.DeleteModule();
         }
     }
 }

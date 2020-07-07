@@ -28,11 +28,6 @@ namespace DotNetNuke.UI.UserControls
         protected Label Label7;
         protected LinkButton cmdDisplay;
         protected HyperLink cmdEndCalendar;
-        private string _FormattedURL = string.Empty;
-        private int _ModuleID = -2;
-        private string _TrackingURL = string.Empty;
-        private string _URL = string.Empty;
-        private string _localResourceFile;
         protected HyperLink cmdStartCalendar;
         protected DataGrid grdLog;
         protected Label lblClicks;
@@ -47,6 +42,11 @@ namespace DotNetNuke.UI.UserControls
         protected TextBox txtStartDate;
         protected CompareValidator valEndDate;
         protected CompareValidator valStartDate;
+        private string _FormattedURL = string.Empty;
+        private int _ModuleID = -2;
+        private string _TrackingURL = string.Empty;
+        private string _URL = string.Empty;
+        private string _localResourceFile;
 
         public string FormattedURL
         {

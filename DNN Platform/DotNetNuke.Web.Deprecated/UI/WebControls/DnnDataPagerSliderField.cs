@@ -6,6 +6,5 @@ namespace DotNetNuke.Web.UI.WebControls
     using Telerik.Web.UI;
 
     public class DnnDataPagerSliderField : RadDataPagerSliderField
-    {
-    }
+    {}
 }

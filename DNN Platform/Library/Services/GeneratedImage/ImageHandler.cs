@@ -31,6 +31,8 @@ namespace DotNetNuke.Services.GeneratedImage
             this.Implementation = implementation;
         }
 
+        public virtual bool IsReusable => false;
+
         /// <summary>
         /// Gets or sets a value indicating whether enables server-side caching of the result.
         /// </summary>
@@ -48,8 +50,6 @@ namespace DotNetNuke.Services.GeneratedImage
             get { return this.Implementation.EnableClientCache; }
             set { this.Implementation.EnableClientCache = value; }
         }
-
-        private ImageHandlerInternal Implementation { get; set; }
 
         /// <summary>
         /// Gets or sets the client-side cache expiration time.
@@ -127,12 +127,12 @@ namespace DotNetNuke.Services.GeneratedImage
             set { this.Implementation.IpCountPurgeInterval = value; }
         }
 
-        public virtual bool IsReusable => false;
-
         /// <summary>
         /// Gets a list of image transforms that will be applied successively to the image.
         /// </summary>
         protected List<ImageTransform> ImageTransforms => this.Implementation.ImageTransforms;
+
+        private ImageHandlerInternal Implementation { get; set; }
 
         public abstract ImageInfo GenerateImage(NameValueCollection parameters);
 

@@ -116,22 +116,6 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public string AllowableFiles { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
-        public Dictionary<string, InstallFile> Files { get; private set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets a value indicating whether gets whether the package contains Valid Files.
         /// </summary>
         /// <value>A Boolean.</value>
@@ -149,6 +133,57 @@ namespace DotNetNuke.Services.Installer
                 return _HasValidFiles;
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Invalid File Extensions.
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public string InvalidFileExtensions
+        {
+            get
+            {
+                string _InvalidFileExtensions = this.Files.Values.Where(file => !Util.IsFileValid(file, this.AllowableFiles))
+                                                            .Aggregate(Null.NullString, (current, file) => current + (", " + file.Extension));
+                if (!string.IsNullOrEmpty(_InvalidFileExtensions))
+                {
+                    _InvalidFileExtensions = _InvalidFileExtensions.Substring(2);
+                }
+
+                return _InvalidFileExtensions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether the InstallerInfo instance is Valid.
+        /// </summary>
+        /// <value>A Boolean value.</value>
+        /// -----------------------------------------------------------------------------
+        public bool IsValid
+        {
+            get
+            {
+                return this.Log.Valid;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets a list of allowable file extensions (in addition to the Host's List).
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public string AllowableFiles { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a Dictionary of Files that are included in the Package.
+        /// </summary>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
+        /// -----------------------------------------------------------------------------
+        public Dictionary<string, InstallFile> Files { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -176,45 +211,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Invalid File Extensions.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public string InvalidFileExtensions
-        {
-            get
-            {
-                string _InvalidFileExtensions = this.Files.Values.Where(file => !Util.IsFileValid(file, this.AllowableFiles))
-                                                            .Aggregate(Null.NullString, (current, file) => current + (", " + file.Extension));
-                if (!string.IsNullOrEmpty(_InvalidFileExtensions))
-                {
-                    _InvalidFileExtensions = _InvalidFileExtensions.Substring(2);
-                }
-
-                return _InvalidFileExtensions;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets a value indicating whether gets whether the Installer is in legacy mode.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsLegacyMode { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the InstallerInfo instance is Valid.
-        /// </summary>
-        /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
-        public bool IsValid
-        {
-            get
-            {
-                return this.Log.Valid;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

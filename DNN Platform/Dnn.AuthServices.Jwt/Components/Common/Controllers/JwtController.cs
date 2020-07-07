@@ -28,16 +28,16 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     internal class JwtController : ServiceLocator<IJwtController, JwtController>, IJwtController
     {
         public const string AuthScheme = "Bearer";
-
         public readonly IDataService DataProvider = DataService.Instance;
 
         private const int ClockSkew = 5; // in minutes; default for clock skew
         private const int SessionTokenTtl = 60; // in minutes = 1 hour
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtController));
-        private static readonly HashAlgorithm Hasher = SHA384.Create();
         private const int RenewalTokenTtl = 14; // in days = 2 weeks
         private const string SessionClaimType = "sid";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtController));
+        private static readonly HashAlgorithm Hasher = SHA384.Create();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
         public string SchemeType => "JWT";
@@ -88,11 +88,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             this.DataProvider.DeleteToken(sessionId);
             return true;
-        }
-
-        protected override Func<IJwtController> GetFactory()
-        {
-            return () => new JwtController();
         }
 
         /// <summary>
@@ -263,6 +258,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return this.UpdateToken(renewalToken, ptoken, userInfo);
         }
 
+        protected override Func<IJwtController> GetFactory()
+        {
+            return () => new JwtController();
+        }
+
         private static LoginResultData EmptyWithError(string error)
         {
             return new LoginResultData { Error = error };
@@ -285,35 +285,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(issuer, null, claimsIdentity, notBefore, notAfter, credentials);
             return token;
-        }
-
-        private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
-        {
-            var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtl);
-            if (expiry > ptoken.RenewalExpiry)
-            {
-                // don't extend beyond renewal expiry and make sure it is marked in UTC
-                expiry = new DateTime(ptoken.RenewalExpiry.Ticks, DateTimeKind.Utc);
-            }
-
-            ptoken.TokenExpiry = expiry;
-
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var secret = ObtainSecret(ptoken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
-            var accessToken = jwt.RawData;
-
-            // save hash values in DB so no one with access can create JWT header from existing data
-            ptoken.TokenHash = GetHashedStr(accessToken);
-            this.DataProvider.UpdateToken(ptoken);
-
-            return new LoginResultData
-            {
-                UserId = userInfo.UserID,
-                DisplayName = userInfo.DisplayName,
-                AccessToken = accessToken,
-                RenewalToken = renewalToken,
-            };
         }
 
         private static JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
@@ -368,6 +339,57 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // The secret should contain unpredictable components that can't be inferred from the JWT string.
             var stext = string.Join(".", sessionId, portalGuid.ToString("N"), userCreationDate.ToUniversalTime().ToString("O"));
             return TextEncoder.GetBytes(stext);
+        }
+
+        private static string DecodeBase64(string b64Str)
+        {
+            // fix Base64 string padding
+            var mod = b64Str.Length % 4;
+            if (mod != 0)
+            {
+                b64Str += new string('=', 4 - mod);
+            }
+
+            return TextEncoder.GetString(Convert.FromBase64String(b64Str));
+        }
+
+        private static string EncodeBase64(byte[] data)
+        {
+            return Convert.ToBase64String(data).TrimEnd('=');
+        }
+
+        private static string GetHashedStr(string data)
+        {
+            return EncodeBase64(Hasher.ComputeHash(TextEncoder.GetBytes(data)));
+        }
+
+        private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
+        {
+            var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtl);
+            if (expiry > ptoken.RenewalExpiry)
+            {
+                // don't extend beyond renewal expiry and make sure it is marked in UTC
+                expiry = new DateTime(ptoken.RenewalExpiry.Ticks, DateTimeKind.Utc);
+            }
+
+            ptoken.TokenExpiry = expiry;
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var secret = ObtainSecret(ptoken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
+            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var accessToken = jwt.RawData;
+
+            // save hash values in DB so no one with access can create JWT header from existing data
+            ptoken.TokenHash = GetHashedStr(accessToken);
+            this.DataProvider.UpdateToken(ptoken);
+
+            return new LoginResultData
+            {
+                UserId = userInfo.UserID,
+                DisplayName = userInfo.DisplayName,
+                AccessToken = accessToken,
+                RenewalToken = renewalToken,
+            };
         }
 
         /// <summary>
@@ -532,28 +554,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             return userInfo;
-        }
-
-        private static string DecodeBase64(string b64Str)
-        {
-            // fix Base64 string padding
-            var mod = b64Str.Length % 4;
-            if (mod != 0)
-            {
-                b64Str += new string('=', 4 - mod);
-            }
-
-            return TextEncoder.GetString(Convert.FromBase64String(b64Str));
-        }
-
-        private static string EncodeBase64(byte[] data)
-        {
-            return Convert.ToBase64String(data).TrimEnd('=');
-        }
-
-        private static string GetHashedStr(string data)
-        {
-            return EncodeBase64(Hasher.ComputeHash(TextEncoder.GetBytes(data)));
         }
     }
 }

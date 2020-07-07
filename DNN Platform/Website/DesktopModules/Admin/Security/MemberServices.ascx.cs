@@ -140,78 +140,6 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatPrice formats the Fee amount and filters out null-values.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        ///     <param name="price">The price to format.</param>
-        ///     <returns>The correctly formatted price.</returns>
-        /// -----------------------------------------------------------------------------
-        private string FormatPrice(float price)
-        {
-            string formatPrice = Null.NullString;
-            try
-            {
-                if (price != Null.NullSingle)
-                {
-                    formatPrice = price.ToString("##0.00");
-                }
-                else
-                {
-                    formatPrice = string.Empty;
-                }
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-
-            return formatPrice;
-        }
-
-        private void Subscribe(int roleID, bool cancel)
-        {
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
-
-            if (objRole.IsPublic && objRole.ServiceFee == 0.0)
-            {
-                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
-
-                // Raise SubscriptionUpdated Event
-                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
-            }
-            else
-            {
-                if (!cancel)
-                {
-                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
-                }
-                else
-                {
-                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID + "&cancel=1", true);
-                }
-            }
-        }
-
-        private void UseTrial(int roleID)
-        {
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
-
-            if (objRole.IsPublic && objRole.TrialFee == 0.0)
-            {
-                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
-
-                // Raise SubscriptionUpdated Event
-                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
-            }
-            else
-            {
-                this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// FormatTrial formats the Trial Fee amount and filters out null-values.
         /// </summary>
         /// <remarks>
@@ -399,6 +327,78 @@ namespace DotNetNuke.Modules.Admin.Security
 
             // Rebind Grid
             this.DataBind();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FormatPrice formats the Fee amount and filters out null-values.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        ///     <param name="price">The price to format.</param>
+        ///     <returns>The correctly formatted price.</returns>
+        /// -----------------------------------------------------------------------------
+        private string FormatPrice(float price)
+        {
+            string formatPrice = Null.NullString;
+            try
+            {
+                if (price != Null.NullSingle)
+                {
+                    formatPrice = price.ToString("##0.00");
+                }
+                else
+                {
+                    formatPrice = string.Empty;
+                }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+
+            return formatPrice;
+        }
+
+        private void Subscribe(int roleID, bool cancel)
+        {
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
+
+            if (objRole.IsPublic && objRole.ServiceFee == 0.0)
+            {
+                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
+
+                // Raise SubscriptionUpdated Event
+                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
+            }
+            else
+            {
+                if (!cancel)
+                {
+                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
+                }
+                else
+                {
+                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID + "&cancel=1", true);
+                }
+            }
+        }
+
+        private void UseTrial(int roleID)
+        {
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
+
+            if (objRole.IsPublic && objRole.TrialFee == 0.0)
+            {
+                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
+
+                // Raise SubscriptionUpdated Event
+                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
+            }
+            else
+            {
+                this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
+            }
         }
 
         /// -----------------------------------------------------------------------------

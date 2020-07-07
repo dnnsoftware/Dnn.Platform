@@ -22,12 +22,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("page", "Prompt_ListRoles_FlagPage", "Integer", "1")]
         private const string FlagPage = "page";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));
-
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         public int Page { get; set; }
         public int Max { get; set; } = 10;
 

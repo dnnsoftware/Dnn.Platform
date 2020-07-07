@@ -62,15 +62,6 @@ namespace DotNetNuke.Services.Localization
             return locales.Values.Select(locale => new CultureInfo(locale.Code)).ToList();
         }
 
-        private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
-                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
-                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
-            return locales;
-        }
-
         /// <summary>
         /// Gets the current locale for current request to the portal.
         /// </summary>
@@ -311,6 +302,15 @@ namespace DotNetNuke.Services.Localization
                     TabController.Instance.PublishTabs(TabController.GetTabsBySortOrder(portalid, cultureCode, false));
                 }
             }
+        }
+
+        private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
+                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
+                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
+            return locales;
         }
     }
 }

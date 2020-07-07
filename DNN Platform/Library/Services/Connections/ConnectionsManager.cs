@@ -20,11 +20,6 @@ namespace DotNetNuke.Services.Connections
         private static readonly object LockerObject = new object();
         private static IDictionary<string, IConnector> _processors;
 
-        protected override Func<IConnectionsManager> GetFactory()
-        {
-            return () => new ConnectionsManager();
-        }
-
         public void RegisterConnections()
         {
             if (_processors == null)
@@ -42,6 +37,11 @@ namespace DotNetNuke.Services.Connections
         public IList<IConnector> GetConnectors()
         {
             return _processors.Values.Where(x => this.IsPackageInstalled(x.GetType().Assembly)).ToList();
+        }
+
+        protected override Func<IConnectionsManager> GetFactory()
+        {
+            return () => new ConnectionsManager();
         }
 
         private void LoadProcessors()

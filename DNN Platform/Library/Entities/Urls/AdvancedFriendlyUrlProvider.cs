@@ -137,31 +137,6 @@ namespace DotNetNuke.Entities.Urls
             return friendlyPath;
         }
 
-        internal override string FriendlyUrl(TabInfo tab, string path)
-        {
-            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
-        {
-            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
-        {
-            if (portalSettings == null)
-            {
-                throw new ArgumentNullException("portalSettings");
-            }
-
-            return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
-        {
-            return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
-        }
-
         internal static string GetCultureOfPath(string path)
         {
             string code = string.Empty;
@@ -217,6 +192,31 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return url;
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path)
+        {
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
+        {
+            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
+        {
+            if (portalSettings == null)
+            {
+                throw new ArgumentNullException("portalSettings");
+            }
+
+            return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
+        {
+            return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
         }
 
         private static string AddPage(string path, string pageName)
@@ -490,82 +490,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return cultureCode;
-        }
-
-        private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
-        {
-            Guid parentTraceId = Guid.Empty;
-            int portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
-            bool cultureSpecificAlias;
-            var localSettings = new FriendlyUrlSettings(portalId);
-
-            // Call GetFriendlyAlias to get the Alias part of the url
-            if (string.IsNullOrEmpty(portalAlias) && portalSettings != null)
-            {
-                portalAlias = portalSettings.PortalAlias.HTTPAlias;
-            }
-
-            string friendlyPath = GetFriendlyAlias(
-                path,
-                ref portalAlias,
-                portalId,
-                localSettings,
-                portalSettings,
-                out cultureSpecificAlias);
-
-            if (portalSettings != null)
-            {
-                portalSettings = CheckAndUpdatePortalSettingsForNewAlias(portalSettings, cultureSpecificAlias, portalAlias);
-            }
-
-            if (tab == null && path == "~/" && string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                // this is a request for the site root for he dnn logo skin object (642)
-                // do nothing, the friendly alias is already correct - we don't want to append 'default.aspx' on the end
-            }
-            else
-            {
-                // Get friendly path gets the standard dnn-style friendly path
-                friendlyPath = GetFriendlyQueryString(tab, friendlyPath, pageName, localSettings);
-
-                if (portalSettings == null)
-                {
-                    PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
-
-                    portalSettings = new PortalSettings(tab.TabID, alias);
-                }
-
-                // ImproveFriendlyUrl will attempt to remove tabid/nn and other information from the Url
-                friendlyPath = ImproveFriendlyUrl(
-                    tab,
-                    friendlyPath,
-                    pageName,
-                    portalSettings,
-                    false,
-                    cultureSpecificAlias,
-                    localSettings,
-                    parentTraceId);
-            }
-
-            // set it to lower case if so allowed by settings
-            friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, localSettings);
-
-            // Replace http:// by https:// if SSL is enabled and site is marked as secure
-            // (i.e. requests to http://... will be redirected to https://...)
-            if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
-                friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
-            {
-                friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
-
-                // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
-                var sslUrl = portalSettings.SSLURL;
-                if (!string.IsNullOrEmpty(sslUrl))
-                {
-                    friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
-                }
-            }
-
-            return friendlyPath;
         }
 
         private static string GetFriendlyAlias(
@@ -1463,6 +1387,82 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return builtInUrl;
+        }
+
+        private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
+        {
+            Guid parentTraceId = Guid.Empty;
+            int portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
+            bool cultureSpecificAlias;
+            var localSettings = new FriendlyUrlSettings(portalId);
+
+            // Call GetFriendlyAlias to get the Alias part of the url
+            if (string.IsNullOrEmpty(portalAlias) && portalSettings != null)
+            {
+                portalAlias = portalSettings.PortalAlias.HTTPAlias;
+            }
+
+            string friendlyPath = GetFriendlyAlias(
+                path,
+                ref portalAlias,
+                portalId,
+                localSettings,
+                portalSettings,
+                out cultureSpecificAlias);
+
+            if (portalSettings != null)
+            {
+                portalSettings = CheckAndUpdatePortalSettingsForNewAlias(portalSettings, cultureSpecificAlias, portalAlias);
+            }
+
+            if (tab == null && path == "~/" && string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                // this is a request for the site root for he dnn logo skin object (642)
+                // do nothing, the friendly alias is already correct - we don't want to append 'default.aspx' on the end
+            }
+            else
+            {
+                // Get friendly path gets the standard dnn-style friendly path
+                friendlyPath = GetFriendlyQueryString(tab, friendlyPath, pageName, localSettings);
+
+                if (portalSettings == null)
+                {
+                    PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
+
+                    portalSettings = new PortalSettings(tab.TabID, alias);
+                }
+
+                // ImproveFriendlyUrl will attempt to remove tabid/nn and other information from the Url
+                friendlyPath = ImproveFriendlyUrl(
+                    tab,
+                    friendlyPath,
+                    pageName,
+                    portalSettings,
+                    false,
+                    cultureSpecificAlias,
+                    localSettings,
+                    parentTraceId);
+            }
+
+            // set it to lower case if so allowed by settings
+            friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, localSettings);
+
+            // Replace http:// by https:// if SSL is enabled and site is marked as secure
+            // (i.e. requests to http://... will be redirected to https://...)
+            if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
+                friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            {
+                friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
+
+                // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
+                var sslUrl = portalSettings.SSLURL;
+                if (!string.IsNullOrEmpty(sslUrl))
+                {
+                    friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
+                }
+            }
+
+            return friendlyPath;
         }
     }
 }

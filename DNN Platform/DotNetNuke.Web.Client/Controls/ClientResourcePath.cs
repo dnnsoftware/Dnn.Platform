@@ -10,6 +10,5 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// Defines the path to a client resource.
     /// </summary>
     public class ClientResourcePath : ClientDependencyPath
-    {
-    }
+    {}
 }

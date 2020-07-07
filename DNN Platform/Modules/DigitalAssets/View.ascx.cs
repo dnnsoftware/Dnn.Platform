@@ -46,9 +46,9 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private readonly IDigitalAssetsController controller;
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
-        private NameValueCollection damState;
 
         private readonly INavigationManager _navigationManager;
+        private NameValueCollection damState;
 
         public View()
         {
@@ -92,30 +92,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             get
             {
                 return this.IsHostMenu || this.controller.GetCurrentPortalId(this.ModuleId) == Null.NullInteger;
-            }
-        }
-
-        private IExtensionPointFilter Filter
-        {
-            get
-            {
-                return new CompositeFilter()
-                    .And(new FilterByHostMenu(this.IsHostPortal))
-                    .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
-            }
-        }
-
-        private NameValueCollection DAMState
-        {
-            get
-            {
-                if (this.damState == null)
-                {
-                    var stateCookie = this.Request.Cookies["damState-" + this.UserId];
-                    this.damState = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : string.Empty));
-                }
-
-                return this.damState;
             }
         }
 
@@ -187,6 +163,30 @@ namespace DotNetNuke.Modules.DigitalAssets
         protected string ActiveView { get; private set; }
 
         protected FolderViewModel RootFolderViewModel { get; private set; }
+
+        private IExtensionPointFilter Filter
+        {
+            get
+            {
+                return new CompositeFilter()
+                    .And(new FilterByHostMenu(this.IsHostPortal))
+                    .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
+            }
+        }
+
+        private NameValueCollection DAMState
+        {
+            get
+            {
+                if (this.damState == null)
+                {
+                    var stateCookie = this.Request.Cookies["damState-" + this.UserId];
+                    this.damState = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : string.Empty));
+                }
+
+                return this.damState;
+            }
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -302,6 +302,35 @@ namespace DotNetNuke.Modules.DigitalAssets
             catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void GridOnItemCreated(object sender, GridItemEventArgs e)
+        {
+            if (!(e.Item is GridPagerItem))
+            {
+                return;
+            }
+
+            var items = new[]
+            {
+                new RadComboBoxItem { Text = "10", Value = "10" },
+                new RadComboBoxItem { Text = "25", Value = "25" },
+                new RadComboBoxItem { Text = "50", Value = "50" },
+                new RadComboBoxItem { Text = "100", Value = "100" },
+                new RadComboBoxItem
+                    {
+                        Text = Localization.GetString("All", this.LocalResourceFile),
+                        Value = int.MaxValue.ToString(CultureInfo.InvariantCulture)
+                    },
+            };
+
+            var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");
+            dropDown.Items.Clear();
+            foreach (var item in items)
+            {
+                item.Attributes.Add("ownerTableViewId", e.Item.OwnerTableView.ClientID);
+                dropDown.Items.Add(item);
             }
         }
 
@@ -661,35 +690,6 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             var dataSource = (FolderMappingViewModel)e.Item.DataItem;
             e.Item.Attributes["SupportsMappedPaths"] = FolderProvider.GetProviderList()[dataSource.FolderTypeName].SupportsMappedPaths.ToString().ToLowerInvariant();
-        }
-
-        protected void GridOnItemCreated(object sender, GridItemEventArgs e)
-        {
-            if (!(e.Item is GridPagerItem))
-            {
-                return;
-            }
-
-            var items = new[]
-            {
-                new RadComboBoxItem { Text = "10", Value = "10" },
-                new RadComboBoxItem { Text = "25", Value = "25" },
-                new RadComboBoxItem { Text = "50", Value = "50" },
-                new RadComboBoxItem { Text = "100", Value = "100" },
-                new RadComboBoxItem
-                    {
-                        Text = Localization.GetString("All", this.LocalResourceFile),
-                        Value = int.MaxValue.ToString(CultureInfo.InvariantCulture)
-                    },
-            };
-
-            var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");
-            dropDown.Items.Clear();
-            foreach (var item in items)
-            {
-                item.Attributes.Add("ownerTableViewId", e.Item.OwnerTableView.ClientID);
-                dropDown.Items.Add(item);
-            }
         }
     }
 }

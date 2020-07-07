@@ -209,6 +209,22 @@ namespace DotNetNuke.Services.Search.Controllers
             return snippet;
         }
 
+        private static SearchResult GetPartialSearchResult(Document doc, SearchQuery searchQuery)
+        {
+            var result = new SearchResult { SearchContext = searchQuery.SearchContext };
+            var localeField = doc.GetField(Constants.LocaleTag);
+
+            if (localeField != null)
+            {
+                int id;
+                result.CultureCode = int.TryParse(localeField.StringValue, out id) && id >= 0
+                    ? LocaleController.Instance.GetLocale(id).Code : Null.NullString;
+            }
+
+            FillTagsValues(doc, result);
+            return result;
+        }
+
         private Tuple<int, IList<SearchResult>> GetResults(SearchQuery searchQuery)
         {
             Requires.NotNull("Query", searchQuery);
@@ -444,22 +460,6 @@ namespace DotNetNuke.Services.Search.Controllers
 
             FillTagsValues(doc, result);
             result.Snippet = GetSnippet(result, luceneResult);
-            return result;
-        }
-
-        private static SearchResult GetPartialSearchResult(Document doc, SearchQuery searchQuery)
-        {
-            var result = new SearchResult { SearchContext = searchQuery.SearchContext };
-            var localeField = doc.GetField(Constants.LocaleTag);
-
-            if (localeField != null)
-            {
-                int id;
-                result.CultureCode = int.TryParse(localeField.StringValue, out id) && id >= 0
-                    ? LocaleController.Instance.GetLocale(id).Code : Null.NullString;
-            }
-
-            FillTagsValues(doc, result);
             return result;
         }
 

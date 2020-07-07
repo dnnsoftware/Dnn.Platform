@@ -35,12 +35,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string LocalResourceFile { get; set; }
 
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            base.Render(writer);
-        }
-
         public virtual void LocalizeStrings()
         {
             if (this.Localize && (!string.IsNullOrEmpty(this.ResourceKey)))
@@ -60,6 +54,12 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.ToolTip = Utilities.GetLocalizedStringFromParent(string.Format("{0}.ToolTip", this.ResourceKey), this);
                 }
             }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
         }
     }
 }

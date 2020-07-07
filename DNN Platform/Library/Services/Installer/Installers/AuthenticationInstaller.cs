@@ -93,30 +93,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The DeleteAuthentiation method deletes the Authentication System
-        /// from the data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void DeleteAuthentiation()
-        {
-            try
-            {
-                AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.Package.PackageID);
-                if (authSystem != null)
-                {
-                    AuthenticationController.DeleteAuthentication(authSystem);
-                }
-
-                this.Log.AddInfo(string.Format(Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The ReadManifest method reads the manifest file for the Authentication compoent.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -171,6 +147,30 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void UnInstall()
         {
             this.DeleteAuthentiation();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The DeleteAuthentiation method deletes the Authentication System
+        /// from the data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void DeleteAuthentiation()
+        {
+            try
+            {
+                AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.Package.PackageID);
+                if (authSystem != null)
+                {
+                    AuthenticationController.DeleteAuthentication(authSystem);
+                }
+
+                this.Log.AddInfo(string.Format(Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     {
         private static readonly Dictionary<string, string> aliases = new Dictionary<string, string>
                                                                      { { "page", "node" }, { "name", "text" } };
+
         private static readonly Regex TemplatesRegex =
                 new Regex(
                     @"(\[(?<directive>(\*|\*\>|\/\*|\>|\/\>|\?|\?!|\/\?|\=))(?<nodename>[A-Z]*)(-(?<modename>[0-9A-Z]*))?\])",

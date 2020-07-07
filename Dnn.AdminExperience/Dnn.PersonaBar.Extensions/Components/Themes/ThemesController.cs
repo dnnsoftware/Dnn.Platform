@@ -27,9 +27,9 @@ namespace Dnn.PersonaBar.Themes.Components
     {
         internal static readonly IList<string> ImageExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
         internal static readonly IList<string> DefaultLayoutNames = new List<string>() { "Default", "2-Col", "Home", "Index", "Main" };
         internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default" };
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
 
         private static readonly object _threadLocker = new object();
 
@@ -58,11 +58,6 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             return themes;
-        }
-
-        protected override Func<IThemesController> GetFactory()
-        {
-            return () => new ThemesController();
         }
 
         /// <summary>
@@ -511,6 +506,11 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
+        protected override Func<IThemesController> GetFactory()
+        {
+            return () => new ThemesController();
+        }
+
         private static IList<ThemeInfo> GetThemes(ThemeType type, string strRoot)
         {
             var themes = new List<ThemeInfo>();
@@ -539,74 +539,6 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             return themes;
-        }
-
-        private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
-        {
-            var themePath = SkinController.FormatSkinSrc(updateTheme.Path, portalSettings);
-            if (File.Exists(themePath.Replace(".ascx", ".htm")))
-            {
-                var strFile = themePath.Replace(".ascx", ".xml");
-                if (File.Exists(strFile) == false)
-                {
-                    strFile = strFile.Replace(Path.GetFileName(strFile), "skin.xml");
-                }
-                XmlDocument xmlDoc = null;
-                try
-                {
-                    xmlDoc = new XmlDocument { XmlResolver = null };
-                    xmlDoc.Load(strFile);
-                }
-                catch
-                {
-                    xmlDoc.InnerXml = "<Objects></Objects>";
-                }
-                var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
-                if (xmlToken == null)
-                {
-                    //add token
-                    string strToken = "<Token>[" + updateTheme.Token + "]</Token><Settings></Settings>";
-                    xmlToken = xmlDoc.CreateElement("Object");
-                    xmlToken.InnerXml = strToken;
-                    xmlDoc.SelectSingleNode("Objects").AppendChild(xmlToken);
-                    xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
-                }
-                var strValue = updateTheme.Value;
-
-                var blnUpdate = false;
-                foreach (XmlNode xmlSetting in xmlToken.SelectNodes(".//Settings/Setting"))
-                {
-                    if (xmlSetting.SelectSingleNode("Name").InnerText == updateTheme.Setting)
-                    {
-                        xmlSetting.SelectSingleNode("Value").InnerText = strValue;
-                        blnUpdate = true;
-                    }
-                }
-                if (blnUpdate == false)
-                {
-                    var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
-                    XmlNode xmlSetting = xmlDoc.CreateElement("Setting");
-                    xmlSetting.InnerXml = strSetting;
-                    xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
-                }
-                try
-                {
-                    if (File.Exists(strFile))
-                    {
-                        File.SetAttributes(strFile, FileAttributes.Normal);
-                    }
-                    var objStream = File.CreateText(strFile);
-                    var strXML = xmlDoc.InnerXml;
-                    strXML = strXML.Replace("><", ">" + Environment.NewLine + "<");
-                    objStream.WriteLine(strXML);
-                    objStream.Close();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-            }
-
         }
 
         private static string GetDefaultThemeFileName(string themePath, ThemeType type)
@@ -699,6 +631,74 @@ namespace Dnn.PersonaBar.Themes.Components
                         .TrimStart('/');
 
             return "[" + strSkinType + "]" + strUrl;
+        }
+
+        private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
+        {
+            var themePath = SkinController.FormatSkinSrc(updateTheme.Path, portalSettings);
+            if (File.Exists(themePath.Replace(".ascx", ".htm")))
+            {
+                var strFile = themePath.Replace(".ascx", ".xml");
+                if (File.Exists(strFile) == false)
+                {
+                    strFile = strFile.Replace(Path.GetFileName(strFile), "skin.xml");
+                }
+                XmlDocument xmlDoc = null;
+                try
+                {
+                    xmlDoc = new XmlDocument { XmlResolver = null };
+                    xmlDoc.Load(strFile);
+                }
+                catch
+                {
+                    xmlDoc.InnerXml = "<Objects></Objects>";
+                }
+                var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
+                if (xmlToken == null)
+                {
+                    //add token
+                    string strToken = "<Token>[" + updateTheme.Token + "]</Token><Settings></Settings>";
+                    xmlToken = xmlDoc.CreateElement("Object");
+                    xmlToken.InnerXml = strToken;
+                    xmlDoc.SelectSingleNode("Objects").AppendChild(xmlToken);
+                    xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
+                }
+                var strValue = updateTheme.Value;
+
+                var blnUpdate = false;
+                foreach (XmlNode xmlSetting in xmlToken.SelectNodes(".//Settings/Setting"))
+                {
+                    if (xmlSetting.SelectSingleNode("Name").InnerText == updateTheme.Setting)
+                    {
+                        xmlSetting.SelectSingleNode("Value").InnerText = strValue;
+                        blnUpdate = true;
+                    }
+                }
+                if (blnUpdate == false)
+                {
+                    var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
+                    XmlNode xmlSetting = xmlDoc.CreateElement("Setting");
+                    xmlSetting.InnerXml = strSetting;
+                    xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
+                }
+                try
+                {
+                    if (File.Exists(strFile))
+                    {
+                        File.SetAttributes(strFile, FileAttributes.Normal);
+                    }
+                    var objStream = File.CreateText(strFile);
+                    var strXML = xmlDoc.InnerXml;
+                    strXML = strXML.Replace("><", ">" + Environment.NewLine + "<");
+                    objStream.WriteLine(strXML);
+                    objStream.Close();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+
         }
     }
 }

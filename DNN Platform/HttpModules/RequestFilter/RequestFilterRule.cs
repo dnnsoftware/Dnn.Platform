@@ -41,6 +41,14 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
         }
 
+        public string RawValue
+        {
+            get
+            {
+                return string.Join(" ", this._Values.ToArray());
+            }
+        }
+
         public string ServerVariable
         {
             get
@@ -64,14 +72,6 @@ namespace DotNetNuke.HttpModules.RequestFilter
             set
             {
                 this._Values = value;
-            }
-        }
-
-        public string RawValue
-        {
-            get
-            {
-                return string.Join(" ", this._Values.ToArray());
             }
         }
 

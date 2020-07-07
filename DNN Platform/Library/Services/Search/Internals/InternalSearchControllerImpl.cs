@@ -40,17 +40,20 @@ namespace DotNetNuke.Services.Search.Internals
     {
         private const string SearchableModuleDefsKey = "{0}-{1}";
         private const string SearchableModuleDefsCacheKey = "SearchableModuleDefs";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InternalSearchControllerImpl));
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
         private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
 
         private const string AttrText = "[\"'](?<text>.*?)[\"']";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InternalSearchControllerImpl));
 
         private static readonly string[] HtmlAttributesToRetain = { "alt", "title" };
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
         private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex AttrTextRegex = new Regex(AttrText, RegexOptions.Compiled);
 
         private readonly int _titleBoost;
         private readonly int _tagBoost;
@@ -58,9 +61,6 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly int _descriptionBoost;
         private readonly int _authorBoost;
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
-        private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex AttrTextRegex = new Regex(AttrText, RegexOptions.Compiled);
 
         public InternalSearchControllerImpl()
         {
@@ -97,6 +97,83 @@ namespace DotNetNuke.Services.Search.Internals
         public void AddSearchDocument(SearchDocument searchDocument)
         {
             this.AddSearchDocumentInternal(searchDocument, false);
+        }
+
+        public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
+        {
+            var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
+            if (searchDocs.Any())
+            {
+                const int commitBatchSize = 1024 * 16;
+                var idx = 0;
+
+                // var added = false;
+                foreach (var searchDoc in searchDocs)
+                {
+                    try
+                    {
+                        this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
+
+                        // added = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.ErrorFormat("Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
+                    }
+                }
+
+                // Note: modified to do commit only once at the end of scheduler job
+                // check so we don't commit again
+                // if (added && (idx % commitBatchSize) != 0)
+                // {
+                //    Commit();
+                // }
+            }
+        }
+
+        public void DeleteSearchDocument(SearchDocument searchDocument)
+        {
+            this.DeleteSearchDocumentInternal(searchDocument, false);
+        }
+
+        public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
+        {
+            Requires.NotNegative("PortalId", portalId);
+
+            this.DeleteSearchDocument(new SearchDocument
+            {
+                PortalId = portalId,
+                ModuleId = moduleId,
+                ModuleDefId = moduleDefId,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
+            });
+        }
+
+        public void DeleteAllDocuments(int portalId, int searchTypeId)
+        {
+            Requires.NotNegative("SearchTypeId", searchTypeId);
+
+            this.DeleteSearchDocument(new SearchDocument
+            {
+                PortalId = portalId,
+                SearchTypeId = searchTypeId,
+            });
+        }
+
+        public void Commit()
+        {
+            LuceneController.Instance.Commit();
+        }
+
+        public bool OptimizeSearchIndex()
+        {
+            // run optimization in background
+            return LuceneController.Instance.OptimizeSearchIndex(true);
+        }
+
+        public SearchStatistics GetSearchStatistics()
+        {
+            return LuceneController.Instance.GetSearchStatistics();
         }
 
         internal virtual object SearchContentSourceCallback(CacheItemArgs cacheItem)
@@ -169,6 +246,79 @@ namespace DotNetNuke.Services.Search.Internals
             return results;
         }
 
+        private static Query NumericValueQuery(string numericName, int numericVal)
+        {
+            return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
+        }
+
+        /// <summary>
+        /// Add Field to Doc when supplied fieldValue > 0.
+        /// </summary>
+        private static void AddIntField(Document doc, int fieldValue, string fieldTag)
+        {
+            if (fieldValue > 0)
+            {
+                doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
+            }
+        }
+
+        private static string StripTagsRetainAttributes(string html, IEnumerable<string> attributes, bool decoded, bool retainSpace)
+        {
+            var attributesList = attributes as IList<string> ?? attributes.ToList();
+            var strippedString = html;
+            var emptySpace = retainSpace ? " " : string.Empty;
+
+            if (!string.IsNullOrEmpty(strippedString))
+            {
+                // Remove all opening HTML Tags with no attributes
+                strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
+
+                // Remove all closing HTML Tags
+                strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
+            }
+
+            if (!string.IsNullOrEmpty(strippedString))
+            {
+                var list = new List<string>();
+
+                foreach (var match in HtmlTagsRegex.Matches(strippedString).Cast<Match>())
+                {
+                    var captures = match.Groups["attr"].Captures;
+                    foreach (var capture in captures.Cast<Capture>())
+                    {
+                        var val = capture.Value.Trim();
+                        var pos = val.IndexOf('=');
+                        if (pos > 0)
+                        {
+                            var attr = val.Substring(0, pos).Trim();
+                            if (attributesList.Contains(attr))
+                            {
+                                var text = AttrTextRegex.Match(val).Groups["text"].Value.Trim();
+                                if (text.Length > 0 && !list.Contains(text))
+                                {
+                                    list.Add(text);
+                                }
+                            }
+                        }
+                    }
+
+                    if (list.Count > 0)
+                    {
+                        strippedString = strippedString.Replace(match.ToString(), string.Join(" ", list));
+                        list.Clear();
+                    }
+                }
+            }
+
+            // If not decoded, decode and strip again. Becareful with recursive
+            if (!decoded)
+            {
+                strippedString = StripTagsRetainAttributes(HttpUtility.HtmlDecode(strippedString), attributesList, true, retainSpace);
+            }
+
+            return strippedString;
+        }
+
         private object SearchDocumentTypeDisplayNameCallBack(CacheItemArgs cacheItem)
         {
             var data = new Dictionary<string, string>();
@@ -186,43 +336,6 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return data;
-        }
-
-        public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
-        {
-            var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
-            if (searchDocs.Any())
-            {
-                const int commitBatchSize = 1024 * 16;
-                var idx = 0;
-
-                // var added = false;
-                foreach (var searchDoc in searchDocs)
-                {
-                    try
-                    {
-                        this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
-
-                        // added = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.ErrorFormat("Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
-                    }
-                }
-
-                // Note: modified to do commit only once at the end of scheduler job
-                // check so we don't commit again
-                // if (added && (idx % commitBatchSize) != 0)
-                // {
-                //    Commit();
-                // }
-            }
-        }
-
-        public void DeleteSearchDocument(SearchDocument searchDocument)
-        {
-            this.DeleteSearchDocumentInternal(searchDocument, false);
         }
 
         private void AddSearchDocumentInternal(SearchDocument searchDocument, bool autoCommit)
@@ -299,35 +412,6 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
-        {
-            Requires.NotNegative("PortalId", portalId);
-
-            this.DeleteSearchDocument(new SearchDocument
-            {
-                PortalId = portalId,
-                ModuleId = moduleId,
-                ModuleDefId = moduleDefId,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
-            });
-        }
-
-        public void DeleteAllDocuments(int portalId, int searchTypeId)
-        {
-            Requires.NotNegative("SearchTypeId", searchTypeId);
-
-            this.DeleteSearchDocument(new SearchDocument
-            {
-                PortalId = portalId,
-                SearchTypeId = searchTypeId,
-            });
-        }
-
-        private static Query NumericValueQuery(string numericName, int numericVal)
-        {
-            return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
-        }
-
         private void DeleteSearchDocumentInternal(SearchDocument searchDocument, bool autoCommit)
         {
             var query = new BooleanQuery();
@@ -387,33 +471,6 @@ namespace DotNetNuke.Services.Search.Internals
             if (autoCommit)
             {
                 this.Commit();
-            }
-        }
-
-        public void Commit()
-        {
-            LuceneController.Instance.Commit();
-        }
-
-        public bool OptimizeSearchIndex()
-        {
-            // run optimization in background
-            return LuceneController.Instance.OptimizeSearchIndex(true);
-        }
-
-        public SearchStatistics GetSearchStatistics()
-        {
-            return LuceneController.Instance.GetSearchStatistics();
-        }
-
-        /// <summary>
-        /// Add Field to Doc when supplied fieldValue > 0.
-        /// </summary>
-        private static void AddIntField(Document doc, int fieldValue, string fieldTag)
-        {
-            if (fieldValue > 0)
-            {
-                doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
             }
         }
 
@@ -563,63 +620,6 @@ namespace DotNetNuke.Services.Search.Internals
                     field.Boost = this._contentBoost / 10f;
                 }
             }
-        }
-
-        private static string StripTagsRetainAttributes(string html, IEnumerable<string> attributes, bool decoded, bool retainSpace)
-        {
-            var attributesList = attributes as IList<string> ?? attributes.ToList();
-            var strippedString = html;
-            var emptySpace = retainSpace ? " " : string.Empty;
-
-            if (!string.IsNullOrEmpty(strippedString))
-            {
-                // Remove all opening HTML Tags with no attributes
-                strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
-
-                // Remove all closing HTML Tags
-                strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
-            }
-
-            if (!string.IsNullOrEmpty(strippedString))
-            {
-                var list = new List<string>();
-
-                foreach (var match in HtmlTagsRegex.Matches(strippedString).Cast<Match>())
-                {
-                    var captures = match.Groups["attr"].Captures;
-                    foreach (var capture in captures.Cast<Capture>())
-                    {
-                        var val = capture.Value.Trim();
-                        var pos = val.IndexOf('=');
-                        if (pos > 0)
-                        {
-                            var attr = val.Substring(0, pos).Trim();
-                            if (attributesList.Contains(attr))
-                            {
-                                var text = AttrTextRegex.Match(val).Groups["text"].Value.Trim();
-                                if (text.Length > 0 && !list.Contains(text))
-                                {
-                                    list.Add(text);
-                                }
-                            }
-                        }
-                    }
-
-                    if (list.Count > 0)
-                    {
-                        strippedString = strippedString.Replace(match.ToString(), string.Join(" ", list));
-                        list.Clear();
-                    }
-                }
-            }
-
-            // If not decoded, decode and strip again. Becareful with recursive
-            if (!decoded)
-            {
-                strippedString = StripTagsRetainAttributes(HttpUtility.HtmlDecode(strippedString), attributesList, true, retainSpace);
-            }
-
-            return strippedString;
         }
     }
 }

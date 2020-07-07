@@ -29,24 +29,6 @@ namespace DesktopModules.Admin.Security
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the EditorMode.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public PropertyEditorMode EditorMode
-        {
-            get
-            {
-                return this.ProfileProperties.EditMode;
-            }
-
-            set
-            {
-                this.ProfileProperties.EditMode = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets a value indicating whether gets whether the User is valid.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -60,15 +42,38 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to display the Visibility controls.
+        /// Gets the UserProfile associated with this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        protected bool ShowVisibility
+        public UserProfile UserProfile
         {
             get
             {
-                object setting = GetSetting(this.PortalId, "Profile_DisplayVisibility");
-                return Convert.ToBoolean(setting) && this.IsUser;
+                UserProfile _Profile = null;
+                if (this.User != null)
+                {
+                    _Profile = this.User.Profile;
+                }
+
+                return _Profile;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the EditorMode.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public PropertyEditorMode EditorMode
+        {
+            get
+            {
+                return this.ProfileProperties.EditMode;
+            }
+
+            set
+            {
+                this.ProfileProperties.EditMode = value;
             }
         }
 
@@ -92,20 +97,15 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserProfile associated with this control.
+        /// Gets a value indicating whether gets whether to display the Visibility controls.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public UserProfile UserProfile
+        protected bool ShowVisibility
         {
             get
             {
-                UserProfile _Profile = null;
-                if (this.User != null)
-                {
-                    _Profile = this.User.Profile;
-                }
-
-                return _Profile;
+                object setting = GetSetting(this.PortalId, "Profile_DisplayVisibility");
+                return Convert.ToBoolean(setting) && this.IsUser;
             }
         }
 

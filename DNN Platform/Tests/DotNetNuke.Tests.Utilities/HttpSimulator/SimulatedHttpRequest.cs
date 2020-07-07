@@ -16,11 +16,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
     /// </summary>
     public class SimulatedHttpRequest : SimpleWorkerRequest
     {
-        private Uri _referer;
         private readonly string _host;
         private readonly string _verb;
         private readonly int _port;
         private readonly string _physicalFilePath;
+        private Uri _referer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulatedHttpRequest"/> class.
@@ -99,11 +99,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this._host;
         }
 
-        internal void SetReferer(Uri referer)
-        {
-            this._referer = referer;
-        }
-
         public override int GetLocalPort()
         {
             return this._port;
@@ -176,6 +171,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public override bool IsEntireEntityBodyIsPreloaded()
         {
             return true;
+        }
+
+        internal void SetReferer(Uri referer)
+        {
+            this._referer = referer;
         }
     }
 }

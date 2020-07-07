@@ -10,6 +10,5 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// Represents an included client resource.
     /// </summary>
     public class ClientResourceInclude : ClientDependencyInclude
-    {
-    }
+    {}
 }

@@ -16,9 +16,9 @@ namespace DotNetNuke.Tests.Core.Services.Localization
     [TestFixture]
     public class LocalizationTests
     {
+        private readonly string[] _standardCultureCodes = new[] { "en-US", "de-DE", "fr-CA", "Lt-sr-SP", "kok-IN" };
         private Mock<HttpContextBase> _mockHttpContext;
         private HttpContextBase _httpContext;
-        private readonly string[] _standardCultureCodes = new[] { "en-US", "de-DE", "fr-CA", "Lt-sr-SP", "kok-IN" };
 
         [SetUp]
         public void Setup()

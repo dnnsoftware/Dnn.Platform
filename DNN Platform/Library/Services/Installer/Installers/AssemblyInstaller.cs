@@ -213,51 +213,6 @@ namespace DotNetNuke.Services.Installer.Installers
             return PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
         }
 
-        /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
-        /// <param name="file">The assembly file.</param>
-        private void AddOrUpdateBindingRedirect(InstallFile file)
-        {
-            if (this.ApplyXmlMerge(file, "BindingRedirect.config"))
-            {
-                this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
-            }
-        }
-
-        /// <summary>Removes the binding redirect for the assembly file, if the assembly is strong-named.</summary>
-        /// <param name="file">The assembly file.</param>
-        private void RemoveBindingRedirect(InstallFile file)
-        {
-            if (this.ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
-            {
-                this.Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
-            }
-        }
-
-        /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
-        /// <param name="file">The assembly file.</param>
-        /// <param name="xmlMergeFile">The XML merge file name.</param>
-        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
-        private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
-        {
-            var assemblyName = ReadAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
-            var publicKeyToken = ReadPublicKey(assemblyName);
-            if (string.IsNullOrEmpty(publicKeyToken))
-            {
-                return false;
-            }
-
-            var name = assemblyName.Name;
-            var assemblyVersion = assemblyName.Version;
-            var newVersion = assemblyVersion.ToString();
-
-            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
-            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
-            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
-            xmlMerge.UpdateConfigs();
-
-            return true;
-        }
-
         /// <summary>Gets the XML merge document to create the binding redirect.</summary>
         /// <param name="xmlMergePath">The path to the template binding redirect XML Merge document.</param>
         /// <param name="name">The assembly name.</param>
@@ -307,6 +262,51 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             var attribute = parentNode.SelectSingleNode(xpath, namespaceManager);
             attribute.Value = attribute.Value.Replace(oldValue, newValue);
+        }
+
+        /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
+        /// <param name="file">The assembly file.</param>
+        private void AddOrUpdateBindingRedirect(InstallFile file)
+        {
+            if (this.ApplyXmlMerge(file, "BindingRedirect.config"))
+            {
+                this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
+            }
+        }
+
+        /// <summary>Removes the binding redirect for the assembly file, if the assembly is strong-named.</summary>
+        /// <param name="file">The assembly file.</param>
+        private void RemoveBindingRedirect(InstallFile file)
+        {
+            if (this.ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
+            {
+                this.Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
+            }
+        }
+
+        /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
+        /// <param name="file">The assembly file.</param>
+        /// <param name="xmlMergeFile">The XML merge file name.</param>
+        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
+        private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
+        {
+            var assemblyName = ReadAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
+            var publicKeyToken = ReadPublicKey(assemblyName);
+            if (string.IsNullOrEmpty(publicKeyToken))
+            {
+                return false;
+            }
+
+            var name = assemblyName.Name;
+            var assemblyVersion = assemblyName.Version;
+            var newVersion = assemblyVersion.ToString();
+
+            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
+            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
+            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
+            xmlMerge.UpdateConfigs();
+
+            return true;
         }
     }
 }

@@ -195,16 +195,6 @@ namespace DotNetNuke.Common.Utils
         }
 
         /// <summary>
-        /// Masks from cidr.
-        /// </summary>
-        /// <param name="cidr">The Classless Inter-Domain Routing (cidr).</param>
-        /// <returns></returns>
-        private static long MaskFromCidr(int cidr)
-        {
-            return Convert.ToInt64(Math.Pow(2, 32 - cidr) - 1) ^ 4294967295L;
-        }
-
-        /// <summary>
         /// Convert IP to Integer.
         /// </summary>
         /// <param name="ipNumber">The ip number.</param>
@@ -286,6 +276,16 @@ namespace DotNetNuke.Common.Utils
             }
 
             return ipAddress;
+        }
+
+        /// <summary>
+        /// Masks from cidr.
+        /// </summary>
+        /// <param name="cidr">The Classless Inter-Domain Routing (cidr).</param>
+        /// <returns></returns>
+        private static long MaskFromCidr(int cidr)
+        {
+            return Convert.ToInt64(Math.Pow(2, 32 - cidr) - 1) ^ 4294967295L;
         }
     }
 }

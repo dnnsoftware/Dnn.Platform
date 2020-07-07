@@ -19,11 +19,11 @@ namespace DotNetNuke.Services.GeneratedImage
     {
         private const string TempFileExtension = ".tmp";
         private const string CacheAppRelativePath = @"~\App_Data\_ipcount\";
-        private static string _cachePath;
         private static readonly object PurgeQueuedLock = new object();
+        private static readonly object FileLock = new object();
+        private static string _cachePath;
         private static bool _purgeQueued;
         private static TimeSpan _purgeInterval;
-        private static readonly object FileLock = new object();
 
         static IPCount()
         {

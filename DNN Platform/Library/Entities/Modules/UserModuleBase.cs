@@ -311,6 +311,77 @@ namespace DotNetNuke.Entities.Modules
             this.AddLocalizedModuleMessage(Localization.GetString(message, this.LocalResourceFile), type, display);
         }
 
+        protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)
+        {
+            var strMessage = string.Empty;
+            var message = ModuleMessage.ModuleMessageType.RedError;
+            if (register)
+            {
+                // send notification to portal administrator of new user registration
+                // check the receive notification setting first, but if register type is Private, we will always send the notification email.
+                // because the user need administrators to do the approve action so that he can continue use the website.
+                if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
+                {
+                    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
+                    this.SendAdminNotification(newUser, this.PortalSettings);
+                }
+
+                var loginStatus = UserLoginStatus.LOGIN_FAILURE;
+
+                // complete registration
+                switch (this.PortalSettings.UserRegistration)
+                {
+                    case (int)Globals.PortalRegistrationType.PrivateRegistration:
+                        strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, this.PortalSettings);
+
+                        // show a message that a portal administrator has to verify the user credentials
+                        if (string.IsNullOrEmpty(strMessage))
+                        {
+                            strMessage += Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile);
+                            message = ModuleMessage.ModuleMessageType.GreenSuccess;
+                        }
+
+                        break;
+                    case (int)Globals.PortalRegistrationType.PublicRegistration:
+                        Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
+                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
+                        break;
+                    case (int)Globals.PortalRegistrationType.VerifiedRegistration:
+                        Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
+                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
+                        break;
+                }
+
+                // store preferredlocale in cookie
+                Localization.SetLanguage(newUser.Profile.PreferredLocale);
+                if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
+                {
+                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !string.IsNullOrEmpty(strMessage));
+                }
+                else
+                {
+                    this.AddLocalizedModuleMessage(strMessage, message, !string.IsNullOrEmpty(strMessage));
+                }
+            }
+            else
+            {
+                if (notify)
+                {
+                    // Send Notification to User
+                    if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+                    {
+                        strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
+                    }
+                    else
+                    {
+                        strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
+                    }
+                }
+            }
+
+            return strMessage;
+        }
+
         /// <summary>
         /// InitialiseUser initialises a "new" user.
         /// </summary>
@@ -424,77 +495,6 @@ namespace DotNetNuke.Entities.Modules
             }
 
             return country;
-        }
-
-        protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)
-        {
-            var strMessage = string.Empty;
-            var message = ModuleMessage.ModuleMessageType.RedError;
-            if (register)
-            {
-                // send notification to portal administrator of new user registration
-                // check the receive notification setting first, but if register type is Private, we will always send the notification email.
-                // because the user need administrators to do the approve action so that he can continue use the website.
-                if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
-                {
-                    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
-                    this.SendAdminNotification(newUser, this.PortalSettings);
-                }
-
-                var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-
-                // complete registration
-                switch (this.PortalSettings.UserRegistration)
-                {
-                    case (int)Globals.PortalRegistrationType.PrivateRegistration:
-                        strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, this.PortalSettings);
-
-                        // show a message that a portal administrator has to verify the user credentials
-                        if (string.IsNullOrEmpty(strMessage))
-                        {
-                            strMessage += Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile);
-                            message = ModuleMessage.ModuleMessageType.GreenSuccess;
-                        }
-
-                        break;
-                    case (int)Globals.PortalRegistrationType.PublicRegistration:
-                        Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
-                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
-                        break;
-                    case (int)Globals.PortalRegistrationType.VerifiedRegistration:
-                        Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
-                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
-                        break;
-                }
-
-                // store preferredlocale in cookie
-                Localization.SetLanguage(newUser.Profile.PreferredLocale);
-                if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
-                {
-                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !string.IsNullOrEmpty(strMessage));
-                }
-                else
-                {
-                    this.AddLocalizedModuleMessage(strMessage, message, !string.IsNullOrEmpty(strMessage));
-                }
-            }
-            else
-            {
-                if (notify)
-                {
-                    // Send Notification to User
-                    if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
-                    {
-                        strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
-                    }
-                    else
-                    {
-                        strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
-                    }
-                }
-            }
-
-            return strMessage;
         }
 
         private void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)

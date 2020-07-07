@@ -87,6 +87,25 @@ namespace DotNetNuke.Services.Connections
                 return base.TryGetIndex(binder, indexes, out result);
             }
 
+            private static object WrapResultObject(object result)
+            {
+                var dictionary = result as IDictionary<string, object>;
+                if (dictionary != null)
+                {
+                    return new DynamicJsonObject(dictionary);
+                }
+
+                var arrayList = result as ArrayList;
+                if (arrayList != null && arrayList.Count > 0)
+                {
+                    return arrayList[0] is IDictionary<string, object>
+                        ? new List<object>(arrayList.Cast<IDictionary<string, object>>().Select(x => new DynamicJsonObject(x)))
+                        : new List<object>(arrayList.Cast<object>());
+                }
+
+                return result;
+            }
+
             private void ToString(StringBuilder sb)
             {
                 var firstInDictionary = true;
@@ -144,25 +163,6 @@ namespace DotNetNuke.Services.Connections
                 }
 
                 sb.Append("}");
-            }
-
-            private static object WrapResultObject(object result)
-            {
-                var dictionary = result as IDictionary<string, object>;
-                if (dictionary != null)
-                {
-                    return new DynamicJsonObject(dictionary);
-                }
-
-                var arrayList = result as ArrayList;
-                if (arrayList != null && arrayList.Count > 0)
-                {
-                    return arrayList[0] is IDictionary<string, object>
-                        ? new List<object>(arrayList.Cast<IDictionary<string, object>>().Select(x => new DynamicJsonObject(x)))
-                        : new List<object>(arrayList.Cast<object>());
-                }
-
-                return result;
             }
         }
     }

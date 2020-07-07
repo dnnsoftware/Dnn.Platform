@@ -105,11 +105,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             CollectionAssert.AreEquivalent(expectedDic.Values, settingsDic.Values);
         }
 
-        private string GetValue(string key)
-        {
-            return this._hostSettingsTable.Rows.Find(key)["SettingValue"].ToString();
-        }
-
         [Test]
         public void HostController_Update_ExistingValue()
         {
@@ -397,6 +392,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         public void HostController_GetDouble_NullEmpty(string key)
         {
             HostController.Instance.GetDouble(key);
+        }
+
+        private string GetValue(string key)
+        {
+            return this._hostSettingsTable.Rows.Find(key)["SettingValue"].ToString();
         }
     }
 }

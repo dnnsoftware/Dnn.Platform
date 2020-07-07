@@ -156,6 +156,21 @@ namespace Dnn.Modules.Console
             }
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.tabs.ItemDataBound += this.tabs_ItemDataBound;
+            this.modeList.SelectedIndexChanged += this.modeList_SelectedIndexChanged;
+
+            this.ParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
+        }
+
+        protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.BindTabs(this.ParentTab.SelectedItemValueAsInt, this.IncludeParent.Checked);
+        }
+
         private void BindTabs(int tabId, bool includeParent)
         {
             List<TabInfo> tempTabs = TabController.GetTabsBySortOrder(this.PortalId).OrderBy(t => t.Level).ThenBy(t => t.HasChildren).ToList();
@@ -177,8 +192,8 @@ namespace Dnn.Modules.Console
             foreach (TabInfo tab in tempTabs)
             {
                 bool canShowTab = TabPermissionController.CanViewPage(tab) &&
-                        !tab.IsDeleted &&
-                        (tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate);
+                                  !tab.IsDeleted &&
+                                  (tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate);
 
                 if (!canShowTab)
                 {
@@ -230,21 +245,6 @@ namespace Dnn.Modules.Console
 
             this.ParentTab.SelectedPage = TabController.Instance.GetTab(parentTabId, this.PortalId);
             this.BindTabs(parentTabId, this.IncludeParent.Checked);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.tabs.ItemDataBound += this.tabs_ItemDataBound;
-            this.modeList.SelectedIndexChanged += this.modeList_SelectedIndexChanged;
-
-            this.ParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
-        }
-
-        protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.BindTabs(this.ParentTab.SelectedItemValueAsInt, this.IncludeParent.Checked);
         }
 
         private void modeList_SelectedIndexChanged(object sender, EventArgs e)

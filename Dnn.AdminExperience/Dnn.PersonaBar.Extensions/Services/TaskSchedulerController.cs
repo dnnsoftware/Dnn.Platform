@@ -589,19 +589,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             return nextTime;
         }
 
-        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
-        {
-            if (retryTimeLapse == 0) return true;
-
-            var frequency = CalculateTime(Convert.ToInt32(timeLapse), timeLapseMeasurement);
-            var retry = CalculateTime(Convert.ToInt32(retryTimeLapse), retryTimeLapseMeasurement);
-            if (retry > frequency)
-            {
-                return false;
-            }
-            return true;
-        }
-
         private static void Halt()
         {
             SchedulingProvider.Instance().Halt("Host Settings");
@@ -623,6 +610,19 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 return $"{time.Minutes} {Localization.GetString(time.Minutes == 1 ? "MinuteSingular" : "MinutePlural", localResourcesFile)}";
             }
             return Localization.GetString("LessThanMinute", localResourcesFile);
+        }
+
+        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
+        {
+            if (retryTimeLapse == 0) return true;
+
+            var frequency = CalculateTime(Convert.ToInt32(timeLapse), timeLapseMeasurement);
+            var retry = CalculateTime(Convert.ToInt32(retryTimeLapse), retryTimeLapseMeasurement);
+            if (retry > frequency)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

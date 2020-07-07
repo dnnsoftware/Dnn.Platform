@@ -37,11 +37,6 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const int ConstMaxTo = 2000;
         internal const int ConstMaxSubject = 400;
         internal const int ConstDefaultPageIndex = 0;
-
-        protected override Func<IMessagingController> GetFactory()
-        {
-            return () => new MessagingController();
-        }
         internal const int ConstDefaultPageSize = 10;
         internal const string ConstSortColumnDate = "CreatedOnDate";
         internal const string ConstSortColumnFrom = "From";
@@ -267,6 +262,11 @@ namespace DotNetNuke.Services.Social.Messaging
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
             return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
+        }
+
+        protected override Func<IMessagingController> GetFactory()
+        {
+            return () => new MessagingController();
         }
 
         private bool CanViewFile(int fileId)

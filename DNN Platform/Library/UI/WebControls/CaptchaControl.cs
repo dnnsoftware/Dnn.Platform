@@ -38,9 +38,9 @@ namespace DotNetNuke.UI.WebControls
         internal const string KEY = "captcha";
         private const int EXPIRATION_DEFAULT = 120;
         private const int LENGTH_DEFAULT = 6;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
         private const string RENDERURL_DEFAULT = "ImageChallenge.captcha.aspx";
         private const string CHARS_DEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
         private static readonly string[] _FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" };
 
         private static readonly Random _Rand = new Random();
@@ -68,6 +68,51 @@ namespace DotNetNuke.UI.WebControls
         }
 
         public event ServerValidateEventHandler UserValidated;
+
+        /// <summary>
+        /// Gets and sets the BackGroundColor.
+        /// </summary>
+        [Browsable(true)]
+        [Category("Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Error Message Control.")]
+        public Style ErrorStyle
+        {
+            get
+            {
+                return this._ErrorStyle;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether gets whether the control is valid.
+        /// </summary>
+        [Category("Validation")]
+        [Description("Returns True if the user was CAPTCHA validated after a postback.")]
+        public bool IsValid
+        {
+            get
+            {
+                return this._IsValid;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Style to use for the Text Box.
+        /// </summary>
+        [Browsable(true)]
+        [Category("Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Text Box Control.")]
+        public Style TextBoxStyle
+        {
+            get
+            {
+                return this._TextBoxStyle;
+            }
+        }
 
         /// <summary>
         /// Gets or sets and sets the BackGroundColor.
@@ -102,14 +147,6 @@ namespace DotNetNuke.UI.WebControls
             set
             {
                 this._BackGroundImage = value;
-            }
-        }
-
-        private bool IsDesignMode
-        {
-            get
-            {
-                return HttpContext.Current == null;
             }
         }
 
@@ -213,22 +250,6 @@ namespace DotNetNuke.UI.WebControls
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        /// Gets and sets the BackGroundColor.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Appearance")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Description("Set the Style for the Error Message Control.")]
-        public Style ErrorStyle
-        {
-            get
-            {
-                return this._ErrorStyle;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets and sets the Expiration time in seconds.
         /// </summary>
         [Category("Behavior")]
@@ -244,19 +265,6 @@ namespace DotNetNuke.UI.WebControls
             set
             {
                 this._Expiration = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether gets whether the control is valid.
-        /// </summary>
-        [Category("Validation")]
-        [Description("Returns True if the user was CAPTCHA validated after a postback.")]
-        public bool IsValid
-        {
-            get
-            {
-                return this._IsValid;
             }
         }
 
@@ -287,19 +295,11 @@ namespace DotNetNuke.UI.WebControls
         [Description("Instructional text displayed next to CAPTCHA image.")]
         public string Text { get; set; }
 
-        /// <summary>
-        /// Gets the Style to use for the Text Box.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Appearance")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Description("Set the Style for the Text Box Control.")]
-        public Style TextBoxStyle
+        private bool IsDesignMode
         {
             get
             {
-                return this._TextBoxStyle;
+                return HttpContext.Current == null;
             }
         }
 
@@ -456,260 +456,6 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Creates the Image.
-        /// </summary>
-        /// <param name="width">The width of the image.</param>
-        /// <param name="height">The height of the image.</param>
-        private static Bitmap CreateImage(int width, int height)
-        {
-            var bmp = new Bitmap(width, height);
-            Graphics g;
-            var rect = new Rectangle(0, 0, width, height);
-            var rectF = new RectangleF(0, 0, width, height);
-
-            g = Graphics.FromImage(bmp);
-
-            Brush b = new LinearGradientBrush(
-                rect,
-                Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
-                Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
-                Convert.ToSingle(_Rand.NextDouble()) * 360,
-                false);
-            g.FillRectangle(b, rectF);
-
-            if (_Rand.Next(2) == 1)
-            {
-                DistortImage(ref bmp, _Rand.Next(5, 20));
-            }
-            else
-            {
-                DistortImage(ref bmp, -_Rand.Next(5, 20));
-            }
-
-            return bmp;
-        }
-
-        /// <summary>
-        /// Creates the Text.
-        /// </summary>
-        /// <param name="text">The text to display.</param>
-        /// <param name="width">The width of the image.</param>
-        /// <param name="height">The height of the image.</param>
-        /// <param name="g">Graphic draw context.</param>
-        private static GraphicsPath CreateText(string text, int width, int height, Graphics g)
-        {
-            var textPath = new GraphicsPath();
-            var ff = GetFont();
-            var emSize = Convert.ToInt32(width * 2 / text.Length);
-            Font f = null;
-            try
-            {
-                var measured = new SizeF(0, 0);
-                var workingSize = new SizeF(width, height);
-                while (emSize > 2)
-                {
-                    f = new Font(ff, emSize);
-                    measured = g.MeasureString(text, f);
-                    if (!(measured.Width > workingSize.Width || measured.Height > workingSize.Height))
-                    {
-                        break;
-                    }
-
-                    f.Dispose();
-                    emSize -= 2;
-                }
-
-                emSize += 8;
-                f = new Font(ff, emSize);
-
-                var fmt = new StringFormat();
-                fmt.Alignment = StringAlignment.Center;
-                fmt.LineAlignment = StringAlignment.Center;
-
-                textPath.AddString(text, f.FontFamily, Convert.ToInt32(f.Style), f.Size, new RectangleF(0, 0, width, height), fmt);
-                WarpText(ref textPath, new Rectangle(0, 0, width, height));
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-            finally
-            {
-                f.Dispose();
-            }
-
-            return textPath;
-        }
-
-        /// <summary>
-        /// Builds the url for the Handler.
-        /// </summary>
-        private string GetUrl()
-        {
-            var url = this.ResolveUrl(this.RenderUrl);
-            url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
-
-            // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
-            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            url += "&alias=" + _portalSettings.PortalAlias.HTTPAlias;
-            return url;
-        }
-
-        /// <summary>
-        /// Encodes the querystring to pass to the Handler.
-        /// </summary>
-        private string EncodeTicket()
-        {
-            var sb = new StringBuilder();
-
-            sb.Append(this.CaptchaWidth.Value.ToString());
-            sb.Append(_Separator + this.CaptchaHeight.Value);
-            sb.Append(_Separator + this._CaptchaText);
-            sb.Append(_Separator + this.BackGroundImage);
-
-            return sb.ToString();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Decrypts the CAPTCHA Text.
-        /// </summary>
-        /// <param name="encryptedContent">The encrypted text.</param>
-        /// -----------------------------------------------------------------------------
-        private static string Decrypt(string encryptedContent)
-        {
-            string decryptedText = string.Empty;
-            try
-            {
-                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(encryptedContent);
-                if (!ticket.Expired)
-                {
-                    decryptedText = ticket.UserData;
-                }
-            }
-            catch (ArgumentException exc)
-            {
-                Logger.Debug(exc);
-            }
-
-            return decryptedText;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DistortImage distorts the captcha image.
-        /// </summary>
-        /// <param name="b">The Image to distort.</param>
-        /// <param name="distortion">Distortion.</param>
-        /// -----------------------------------------------------------------------------
-        private static void DistortImage(ref Bitmap b, double distortion)
-        {
-            int width = b.Width;
-            int height = b.Height;
-
-            var copy = (Bitmap)b.Clone();
-            for (int y = 0; y <= height - 1; y++)
-            {
-                for (int x = 0; x <= width - 1; x++)
-                {
-                    int newX = Convert.ToInt32(x + (distortion * Math.Sin(Math.PI * y / 64.0)));
-                    int newY = Convert.ToInt32(y + (distortion * Math.Cos(Math.PI * x / 64.0)));
-                    if (newX < 0 || newX >= width)
-                    {
-                        newX = 0;
-                    }
-
-                    if (newY < 0 || newY >= height)
-                    {
-                        newY = 0;
-                    }
-
-                    b.SetPixel(x, y, copy.GetPixel(newX, newY));
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Encrypts the CAPTCHA Text.
-        /// </summary>
-        /// <param name="content">The text to encrypt.</param>
-        /// <param name="expiration">The time the ticket expires.</param>
-        /// -----------------------------------------------------------------------------
-        private static string Encrypt(string content, DateTime expiration)
-        {
-            var ticket = new FormsAuthenticationTicket(1, HttpContext.Current.Request.UserHostAddress, DateTime.Now, expiration, false, content);
-            return FormsAuthentication.Encrypt(ticket);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetFont gets a random font to use for the Captcha Text.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private static FontFamily GetFont()
-        {
-            FontFamily _font = null;
-            while (_font == null)
-            {
-                try
-                {
-                    _font = new FontFamily(_FontFamilies[_Rand.Next(_FontFamilies.Length)]);
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-
-                    _font = null;
-                }
-            }
-
-            return _font;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Generates a random point.
-        /// </summary>
-        /// <param name="xmin">The minimum x value.</param>
-        /// <param name="xmax">The maximum x value.</param>
-        /// <param name="ymin">The minimum y value.</param>
-        /// <param name="ymax">The maximum y value.</param>
-        /// -----------------------------------------------------------------------------
-        private static PointF RandomPoint(int xmin, int xmax, int ymin, int ymax)
-        {
-            return new PointF(_Rand.Next(xmin, xmax), _Rand.Next(ymin, ymax));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Warps the Text.
-        /// </summary>
-        /// <param name="textPath">The Graphics Path for the text.</param>
-        /// <param name="rect">a rectangle which defines the image.</param>
-        /// -----------------------------------------------------------------------------
-        private static void WarpText(ref GraphicsPath textPath, Rectangle rect)
-        {
-            int intWarpDivisor;
-            var rectF = new RectangleF(0, 0, rect.Width, rect.Height);
-
-            intWarpDivisor = _Rand.Next(4, 8);
-
-            int intHrange = Convert.ToInt32(rect.Height / intWarpDivisor);
-            int intWrange = Convert.ToInt32(rect.Width / intWarpDivisor);
-
-            PointF p1 = RandomPoint(0, intWrange, 0, intHrange);
-            PointF p2 = RandomPoint(rect.Width - (intWrange - Convert.ToInt32(p1.X)), rect.Width, 0, intHrange);
-            PointF p3 = RandomPoint(0, intWrange, rect.Height - (intHrange - Convert.ToInt32(p1.Y)), rect.Height);
-            PointF p4 = RandomPoint(rect.Width - (intWrange - Convert.ToInt32(p3.X)), rect.Width, rect.Height - (intHrange - Convert.ToInt32(p2.Y)), rect.Height);
-
-            var points = new[] { p1, p2, p3, p4 };
-            var m = new Matrix();
-            m.Translate(0, 0);
-            textPath.Warp(points, rectF, m, WarpMode.Perspective, 0);
-        }
-
-        /// <summary>
         /// Loads the previously saved Viewstate.
         /// </summary>
         /// <param name="savedState">The saved state.</param>
@@ -859,6 +605,260 @@ namespace DotNetNuke.UI.WebControls
             allStates[1] = this._CaptchaText;
 
             return allStates;
+        }
+
+        /// <summary>
+        /// Creates the Image.
+        /// </summary>
+        /// <param name="width">The width of the image.</param>
+        /// <param name="height">The height of the image.</param>
+        private static Bitmap CreateImage(int width, int height)
+        {
+            var bmp = new Bitmap(width, height);
+            Graphics g;
+            var rect = new Rectangle(0, 0, width, height);
+            var rectF = new RectangleF(0, 0, width, height);
+
+            g = Graphics.FromImage(bmp);
+
+            Brush b = new LinearGradientBrush(
+                rect,
+                Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
+                Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
+                Convert.ToSingle(_Rand.NextDouble()) * 360,
+                false);
+            g.FillRectangle(b, rectF);
+
+            if (_Rand.Next(2) == 1)
+            {
+                DistortImage(ref bmp, _Rand.Next(5, 20));
+            }
+            else
+            {
+                DistortImage(ref bmp, -_Rand.Next(5, 20));
+            }
+
+            return bmp;
+        }
+
+        /// <summary>
+        /// Creates the Text.
+        /// </summary>
+        /// <param name="text">The text to display.</param>
+        /// <param name="width">The width of the image.</param>
+        /// <param name="height">The height of the image.</param>
+        /// <param name="g">Graphic draw context.</param>
+        private static GraphicsPath CreateText(string text, int width, int height, Graphics g)
+        {
+            var textPath = new GraphicsPath();
+            var ff = GetFont();
+            var emSize = Convert.ToInt32(width * 2 / text.Length);
+            Font f = null;
+            try
+            {
+                var measured = new SizeF(0, 0);
+                var workingSize = new SizeF(width, height);
+                while (emSize > 2)
+                {
+                    f = new Font(ff, emSize);
+                    measured = g.MeasureString(text, f);
+                    if (!(measured.Width > workingSize.Width || measured.Height > workingSize.Height))
+                    {
+                        break;
+                    }
+
+                    f.Dispose();
+                    emSize -= 2;
+                }
+
+                emSize += 8;
+                f = new Font(ff, emSize);
+
+                var fmt = new StringFormat();
+                fmt.Alignment = StringAlignment.Center;
+                fmt.LineAlignment = StringAlignment.Center;
+
+                textPath.AddString(text, f.FontFamily, Convert.ToInt32(f.Style), f.Size, new RectangleF(0, 0, width, height), fmt);
+                WarpText(ref textPath, new Rectangle(0, 0, width, height));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+            finally
+            {
+                f.Dispose();
+            }
+
+            return textPath;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Decrypts the CAPTCHA Text.
+        /// </summary>
+        /// <param name="encryptedContent">The encrypted text.</param>
+        /// -----------------------------------------------------------------------------
+        private static string Decrypt(string encryptedContent)
+        {
+            string decryptedText = string.Empty;
+            try
+            {
+                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(encryptedContent);
+                if (!ticket.Expired)
+                {
+                    decryptedText = ticket.UserData;
+                }
+            }
+            catch (ArgumentException exc)
+            {
+                Logger.Debug(exc);
+            }
+
+            return decryptedText;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DistortImage distorts the captcha image.
+        /// </summary>
+        /// <param name="b">The Image to distort.</param>
+        /// <param name="distortion">Distortion.</param>
+        /// -----------------------------------------------------------------------------
+        private static void DistortImage(ref Bitmap b, double distortion)
+        {
+            int width = b.Width;
+            int height = b.Height;
+
+            var copy = (Bitmap)b.Clone();
+            for (int y = 0; y <= height - 1; y++)
+            {
+                for (int x = 0; x <= width - 1; x++)
+                {
+                    int newX = Convert.ToInt32(x + (distortion * Math.Sin(Math.PI * y / 64.0)));
+                    int newY = Convert.ToInt32(y + (distortion * Math.Cos(Math.PI * x / 64.0)));
+                    if (newX < 0 || newX >= width)
+                    {
+                        newX = 0;
+                    }
+
+                    if (newY < 0 || newY >= height)
+                    {
+                        newY = 0;
+                    }
+
+                    b.SetPixel(x, y, copy.GetPixel(newX, newY));
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Encrypts the CAPTCHA Text.
+        /// </summary>
+        /// <param name="content">The text to encrypt.</param>
+        /// <param name="expiration">The time the ticket expires.</param>
+        /// -----------------------------------------------------------------------------
+        private static string Encrypt(string content, DateTime expiration)
+        {
+            var ticket = new FormsAuthenticationTicket(1, HttpContext.Current.Request.UserHostAddress, DateTime.Now, expiration, false, content);
+            return FormsAuthentication.Encrypt(ticket);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetFont gets a random font to use for the Captcha Text.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static FontFamily GetFont()
+        {
+            FontFamily _font = null;
+            while (_font == null)
+            {
+                try
+                {
+                    _font = new FontFamily(_FontFamilies[_Rand.Next(_FontFamilies.Length)]);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+
+                    _font = null;
+                }
+            }
+
+            return _font;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Generates a random point.
+        /// </summary>
+        /// <param name="xmin">The minimum x value.</param>
+        /// <param name="xmax">The maximum x value.</param>
+        /// <param name="ymin">The minimum y value.</param>
+        /// <param name="ymax">The maximum y value.</param>
+        /// -----------------------------------------------------------------------------
+        private static PointF RandomPoint(int xmin, int xmax, int ymin, int ymax)
+        {
+            return new PointF(_Rand.Next(xmin, xmax), _Rand.Next(ymin, ymax));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Warps the Text.
+        /// </summary>
+        /// <param name="textPath">The Graphics Path for the text.</param>
+        /// <param name="rect">a rectangle which defines the image.</param>
+        /// -----------------------------------------------------------------------------
+        private static void WarpText(ref GraphicsPath textPath, Rectangle rect)
+        {
+            int intWarpDivisor;
+            var rectF = new RectangleF(0, 0, rect.Width, rect.Height);
+
+            intWarpDivisor = _Rand.Next(4, 8);
+
+            int intHrange = Convert.ToInt32(rect.Height / intWarpDivisor);
+            int intWrange = Convert.ToInt32(rect.Width / intWarpDivisor);
+
+            PointF p1 = RandomPoint(0, intWrange, 0, intHrange);
+            PointF p2 = RandomPoint(rect.Width - (intWrange - Convert.ToInt32(p1.X)), rect.Width, 0, intHrange);
+            PointF p3 = RandomPoint(0, intWrange, rect.Height - (intHrange - Convert.ToInt32(p1.Y)), rect.Height);
+            PointF p4 = RandomPoint(rect.Width - (intWrange - Convert.ToInt32(p3.X)), rect.Width, rect.Height - (intHrange - Convert.ToInt32(p2.Y)), rect.Height);
+
+            var points = new[] { p1, p2, p3, p4 };
+            var m = new Matrix();
+            m.Translate(0, 0);
+            textPath.Warp(points, rectF, m, WarpMode.Perspective, 0);
+        }
+
+        /// <summary>
+        /// Builds the url for the Handler.
+        /// </summary>
+        private string GetUrl()
+        {
+            var url = this.ResolveUrl(this.RenderUrl);
+            url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
+
+            // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
+            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            url += "&alias=" + _portalSettings.PortalAlias.HTTPAlias;
+            return url;
+        }
+
+        /// <summary>
+        /// Encodes the querystring to pass to the Handler.
+        /// </summary>
+        private string EncodeTicket()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append(this.CaptchaWidth.Value.ToString());
+            sb.Append(_Separator + this.CaptchaHeight.Value);
+            sb.Append(_Separator + this._CaptchaText);
+            sb.Append(_Separator + this.BackGroundImage);
+
+            return sb.ToString();
         }
     }
 }

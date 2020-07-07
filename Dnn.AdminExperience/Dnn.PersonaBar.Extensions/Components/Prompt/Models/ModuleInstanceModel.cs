@@ -17,13 +17,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int ModuleId { get; set; }
         public string Title { get; set; }
         public string Pane { get; set; }
+
         public string ModuleName { get; set; }
+
         // command link
         public string __ModuleName { get; set; }
         public string FriendlyName { get; set; }
         public int ModuleDefId { get; set; }
         public int TabModuleId { get; set; }
         public bool IsDeleted { get; set; }
+
         public static ModuleInstanceModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule)
         {
             var mim = new ModuleInstanceModel

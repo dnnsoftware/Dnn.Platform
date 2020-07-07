@@ -88,11 +88,6 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
-        }
-
         /// <summary>
         /// Retrieves authentication information for an user.
         /// </summary>
@@ -408,6 +403,11 @@ namespace DotNetNuke.Services.Authentication
                 authSystem.LogoffControlSrc,
                 UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_UPDATED);
+        }
+
+        private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
         }
     }
 }

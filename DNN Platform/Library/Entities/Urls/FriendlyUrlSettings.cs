@@ -16,6 +16,50 @@ namespace DotNetNuke.Entities.Urls
         public const string SpaceEncodingPlus = "+";
         public const string SpaceEncodingHex = "%20";
 
+        // Settings Keys
+        public const string DeletedTabHandlingTypeSetting = "AUM_DeletedTabHandlingType";
+        public const string ForceLowerCaseSetting = "AUM_ForceLowerCase";
+        public const string PageExtensionSetting = "AUM_PageExtension";
+        public const string PageExtensionUsageSetting = "AUM_PageExtensionUsage";
+        public const string RedirectOldProfileUrlSetting = "AUM_RedirectOldProfileUrl";
+        public const string RedirectUnfriendlySetting = "AUM_RedirectUnfriendly";
+        public const string ReplaceSpaceWithSetting = "AUM_ReplaceSpaceWith";
+        public const string UrlFormatSetting = "AUM_UrlFormat";
+        public const string RedirectMixedCaseSetting = "AUM_RedirectMixedCase";
+        public const string SpaceEncodingValueSetting = "AUM_SpaceEncodingValue";
+        public const string AutoAsciiConvertSetting = "AUM_AutoAsciiConvert";
+        public const string ReplaceCharsSetting = "AUM_ReplaceChars";
+        public const string CheckForDuplicatedUrlsSetting = "AUM_CheckForDuplicatedUrls";
+        public const string FriendlyAdminHostUrlsSetting = "AUM_FriendlyAdminHostUrls";
+        public const string EnableCustomProvidersSetting = "AUM_EnableCustomProviders";
+        public const string ReplaceCharWithCharSetting = "AUM_ReplaceCharWithChar";
+        public const string IgnoreRegexSetting = "AUM_IgnoreUrlRegex";
+        public const string SiteUrlsOnlyRegexSetting = "AUM_SiteUrlsOnlyRegex";
+        public const string DoNotRedirectUrlRegexSetting = "AUM_DoNotRedirectUrlRegex";
+        public const string DoNotRedirectHttpsUrlRegexSetting = "AUM_DoNotRedirectHttpsUrlRegex";
+        public const string PreventLowerCaseUrlRegexSetting = "AUM_PreventLowerCaseUrlRegex";
+        public const string DoNotUseFriendlyUrlRegexSetting = "AUM_DoNotUseFriendlyUrlRegex";
+        public const string KeepInQueryStringRegexSetting = "AUM_KeepInQueryStringRegex";
+        public const string UrlsWithNoExtensionRegexSetting = "AUM_UrlsWithNoExtensionRegex";
+        public const string ValidFriendlyUrlRegexSetting = "AUM_ValidFriendlyUrlRegex";
+        public const string DoNotRewriteRegExSetting = "AUM_DoNotRewriteRegEx";
+        public const string UsePortalDefaultLanguageSetting = "AUM_UsePortalDefaultLanguage";
+        public const string AllowDebugCodeSetting = "AUM_AllowDebugCode";
+        public const string LogCacheMessagesSetting = "AUM_LogCacheMessages";
+        public const string VanityUrlPrefixSetting = "AUM_VanityUrlPrefix";
+        public const string RedirectDefaultPageSetting = "AUM_RedirectDefaultPage";
+        public const string SslClientRedirectSetting = "AUM_SSLClientRedirect";
+        public const string IllegalCharsSetting = "AUM_IllegalChars";
+        public const string ReplaceDoubleCharsSetting = "AUM_ReplaceDoubleChars";
+        public const string Regex404Setting = "AUM_Regex404";
+        public const string Url404Setting = "AUM_Url404";
+        public const string Url500Setting = "AUM_Url500";
+        public const string UseBaseFriendlyUrlsSetting = "AUM_UseBaseFriendlyUrls";
+        public const string InternalAliasesSetting = "AUM_InternalAliases";
+        public const string ProcessRequestsSetting = "AUM_ProcessRequests";
+        public const string CacheTimeSetting = "AUM_CacheTime";
+        public const string IncludePageNameSetting = "AUM_IncludePageName";
+
         private readonly IHostController _hostControllerInstance = HostController.Instance;
 
         // 894 : new switch to disable custom url provider
@@ -62,52 +106,6 @@ namespace DotNetNuke.Entities.Urls
         private List<string> _processRequestList;
         private Dictionary<string, string> _replaceCharacterDictionary;
 
-        internal List<string> PortalValues { get; private set; }
-
-        // Settings Keys
-        public const string DeletedTabHandlingTypeSetting = "AUM_DeletedTabHandlingType";
-        public const string ForceLowerCaseSetting = "AUM_ForceLowerCase";
-        public const string PageExtensionSetting = "AUM_PageExtension";
-        public const string PageExtensionUsageSetting = "AUM_PageExtensionUsage";
-        public const string RedirectOldProfileUrlSetting = "AUM_RedirectOldProfileUrl";
-        public const string RedirectUnfriendlySetting = "AUM_RedirectUnfriendly";
-        public const string ReplaceSpaceWithSetting = "AUM_ReplaceSpaceWith";
-        public const string UrlFormatSetting = "AUM_UrlFormat";
-        public const string RedirectMixedCaseSetting = "AUM_RedirectMixedCase";
-        public const string SpaceEncodingValueSetting = "AUM_SpaceEncodingValue";
-        public const string AutoAsciiConvertSetting = "AUM_AutoAsciiConvert";
-        public const string ReplaceCharsSetting = "AUM_ReplaceChars";
-        public const string CheckForDuplicatedUrlsSetting = "AUM_CheckForDuplicatedUrls";
-        public const string FriendlyAdminHostUrlsSetting = "AUM_FriendlyAdminHostUrls";
-        public const string EnableCustomProvidersSetting = "AUM_EnableCustomProviders";
-        public const string ReplaceCharWithCharSetting = "AUM_ReplaceCharWithChar";
-        public const string IgnoreRegexSetting = "AUM_IgnoreUrlRegex";
-        public const string SiteUrlsOnlyRegexSetting = "AUM_SiteUrlsOnlyRegex";
-        public const string DoNotRedirectUrlRegexSetting = "AUM_DoNotRedirectUrlRegex";
-        public const string DoNotRedirectHttpsUrlRegexSetting = "AUM_DoNotRedirectHttpsUrlRegex";
-        public const string PreventLowerCaseUrlRegexSetting = "AUM_PreventLowerCaseUrlRegex";
-        public const string DoNotUseFriendlyUrlRegexSetting = "AUM_DoNotUseFriendlyUrlRegex";
-        public const string KeepInQueryStringRegexSetting = "AUM_KeepInQueryStringRegex";
-        public const string UrlsWithNoExtensionRegexSetting = "AUM_UrlsWithNoExtensionRegex";
-        public const string ValidFriendlyUrlRegexSetting = "AUM_ValidFriendlyUrlRegex";
-        public const string DoNotRewriteRegExSetting = "AUM_DoNotRewriteRegEx";
-        public const string UsePortalDefaultLanguageSetting = "AUM_UsePortalDefaultLanguage";
-        public const string AllowDebugCodeSetting = "AUM_AllowDebugCode";
-        public const string LogCacheMessagesSetting = "AUM_LogCacheMessages";
-        public const string VanityUrlPrefixSetting = "AUM_VanityUrlPrefix";
-        public const string RedirectDefaultPageSetting = "AUM_RedirectDefaultPage";
-        public const string SslClientRedirectSetting = "AUM_SSLClientRedirect";
-        public const string IllegalCharsSetting = "AUM_IllegalChars";
-        public const string ReplaceDoubleCharsSetting = "AUM_ReplaceDoubleChars";
-        public const string Regex404Setting = "AUM_Regex404";
-        public const string Url404Setting = "AUM_Url404";
-        public const string Url500Setting = "AUM_Url500";
-        public const string UseBaseFriendlyUrlsSetting = "AUM_UseBaseFriendlyUrls";
-        public const string InternalAliasesSetting = "AUM_InternalAliases";
-        public const string ProcessRequestsSetting = "AUM_ProcessRequests";
-        public const string CacheTimeSetting = "AUM_CacheTime";
-        public const string IncludePageNameSetting = "AUM_IncludePageName";
-
         public FriendlyUrlSettings(int portalId)
         {
             this.PortalId = portalId < -1 ? -1 : portalId;
@@ -130,8 +128,6 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        public List<InternalAlias> InternalAliasList { get; private set; }
-
         public List<string> ProcessRequestList
         {
             get
@@ -152,12 +148,6 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        public int PortalId { get; private set; }
-
-        public bool IsDirty { get; private set; }
-
-        public bool IsLoading { get; private set; }
-
         public bool AllowDebugCode
         {
             get
@@ -170,22 +160,6 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._allowDebugCode.Value;
             }
-        }
-
-        public bool AutoAsciiConvert
-        {
-            get
-            {
-                if (!this._autoAsciiConvert.HasValue)
-                {
-                    // urls to be modified in the output html stream
-                    this._autoAsciiConvert = this.GetBooleanSetting(AutoAsciiConvertSetting, false);
-                }
-
-                return this._autoAsciiConvert.Value;
-            }
-
-            internal set { this._autoAsciiConvert = value; }
         }
 
         public TimeSpan CacheTime
@@ -213,6 +187,126 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._checkForDuplicateUrls.Value;
             }
+        }
+
+        public DNNPageForwardType ForwardExternalUrlsType
+        {
+            get
+            {
+                return DNNPageForwardType.Redirect301;
+            }
+        }
+
+        public bool EnableCustomProviders
+        {
+            get
+            {
+                if (!this._enableCustomProviders.HasValue)
+                {
+                    // 894 : new switch to disable custom providers if necessary
+                    this._enableCustomProviders = this.GetBooleanSetting(EnableCustomProvidersSetting, true);
+                }
+
+                return this._enableCustomProviders.Value;
+            }
+        }
+
+        public string IllegalChars
+        {
+            get
+            {
+                // 922 : new options for allowing user-configured replacement of characters
+                return this._illegalChars ?? (this._illegalChars = this.GetStringSetting(IllegalCharsSetting, @"<>/\?:&=+|%#"));
+            }
+        }
+
+        public bool LogCacheMessages
+        {
+            get
+            {
+                if (!this._logCacheMessages.HasValue)
+                {
+                    this._logCacheMessages = this.GetBooleanSetting(LogCacheMessagesSetting, false);
+                }
+
+                return this._logCacheMessages.Value;
+            }
+        }
+
+        public string Regex404
+        {
+            get { return this._regex404 ?? (this._regex404 = this.GetStringSetting(Regex404Setting, string.Empty)); }
+        }
+
+        public Dictionary<string, string> ReplaceCharacterDictionary
+        {
+            get
+            {
+                if (this._replaceCharacterDictionary == null)
+                {
+                    var replaceCharwithChar = this.GetStringSetting(ReplaceCharWithCharSetting, string.Empty);
+                    this._replaceCharacterDictionary = CollectionExtensions.CreateDictionaryFromString(replaceCharwithChar == "[]" ? string.Empty : replaceCharwithChar, ';', ',');
+                }
+
+                return this._replaceCharacterDictionary;
+            }
+        }
+
+        public string ReplaceChars
+        {
+            get
+            {
+                // 922 : new options for allowing user-configured replacement of characters
+                return this._replaceChars ?? (this._replaceChars = this.GetStringSetting(ReplaceCharsSetting, @" &$+,/?~#<>()¿¡«»!"""));
+            }
+        }
+
+        public bool ReplaceDoubleChars
+        {
+            get
+            {
+                if (!this._replaceDoubleChars.HasValue)
+                {
+                    // 922 : new options for allowing user-configured replacement of characters
+                    this._replaceDoubleChars = this.GetBooleanSetting(ReplaceDoubleCharsSetting, true);
+                }
+
+                return this._replaceDoubleChars.Value;
+            }
+        }
+
+        public string Url404
+        {
+            get { return this._url404 ?? (this._url404 = this.GetStringSetting(Url404Setting, string.Empty)); }
+        }
+
+        public string Url500
+        {
+            get { return this._url500 ?? (this._url500 = this.GetStringSetting(Url500Setting, null) ?? this.Url404); }
+        }
+
+        public List<InternalAlias> InternalAliasList { get; private set; }
+
+        public int PortalId { get; private set; }
+
+        public bool IsDirty { get; private set; }
+
+        public bool IsLoading { get; private set; }
+
+        public bool AutoAsciiConvert
+        {
+            get
+            {
+                if (!this._autoAsciiConvert.HasValue)
+                {
+                    // urls to be modified in the output html stream
+                    this._autoAsciiConvert = this.GetBooleanSetting(AutoAsciiConvertSetting, false);
+                }
+
+                return this._autoAsciiConvert.Value;
+            }
+
+            internal set { this._autoAsciiConvert = value; }
         }
 
         public DeletedTabHandlingType DeletedTabHandlingType
@@ -326,14 +420,6 @@ namespace DotNetNuke.Entities.Urls
             internal set { this._forcePortalDefaultLanguage = value; }
         }
 
-        public DNNPageForwardType ForwardExternalUrlsType
-        {
-            get
-            {
-                return DNNPageForwardType.Redirect301;
-            }
-        }
-
         public bool FriendlyAdminHostUrls
         {
             get
@@ -347,20 +433,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             internal set { this._friendlyAdminHostUrls = value; }
-        }
-
-        public bool EnableCustomProviders
-        {
-            get
-            {
-                if (!this._enableCustomProviders.HasValue)
-                {
-                    // 894 : new switch to disable custom providers if necessary
-                    this._enableCustomProviders = this.GetBooleanSetting(EnableCustomProvidersSetting, true);
-                }
-
-                return this._enableCustomProviders.Value;
-            }
         }
 
         public string IgnoreRegex
@@ -377,15 +449,6 @@ namespace DotNetNuke.Entities.Urls
             internal set { this._ignoreRegex = value; }
         }
 
-        public string IllegalChars
-        {
-            get
-            {
-                // 922 : new options for allowing user-configured replacement of characters
-                return this._illegalChars ?? (this._illegalChars = this.GetStringSetting(IllegalCharsSetting, @"<>/\?:&=+|%#"));
-            }
-        }
-
         public bool IncludePageName
         {
             get
@@ -399,19 +462,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             internal set { this._includePageName = value; }
-        }
-
-        public bool LogCacheMessages
-        {
-            get
-            {
-                if (!this._logCacheMessages.HasValue)
-                {
-                    this._logCacheMessages = this.GetBooleanSetting(LogCacheMessagesSetting, false);
-                }
-
-                return this._logCacheMessages.Value;
-            }
         }
 
         public string NoFriendlyUrlRegex
@@ -528,52 +578,10 @@ namespace DotNetNuke.Entities.Urls
             internal set { this._redirectWrongCase = value; }
         }
 
-        public string Regex404
-        {
-            get { return this._regex404 ?? (this._regex404 = this.GetStringSetting(Regex404Setting, string.Empty)); }
-        }
-
         public string RegexMatch
         {
             get { return this._regexMatch ?? (this._regexMatch = this.GetStringSetting(ValidFriendlyUrlRegexSetting, @"[^\w\d _-]")); }
             internal set { this._regexMatch = value; }
-        }
-
-        public Dictionary<string, string> ReplaceCharacterDictionary
-        {
-            get
-            {
-                if (this._replaceCharacterDictionary == null)
-                {
-                    var replaceCharwithChar = this.GetStringSetting(ReplaceCharWithCharSetting, string.Empty);
-                    this._replaceCharacterDictionary = CollectionExtensions.CreateDictionaryFromString(replaceCharwithChar == "[]" ? string.Empty : replaceCharwithChar, ';', ',');
-                }
-
-                return this._replaceCharacterDictionary;
-            }
-        }
-
-        public string ReplaceChars
-        {
-            get
-            {
-                // 922 : new options for allowing user-configured replacement of characters
-                return this._replaceChars ?? (this._replaceChars = this.GetStringSetting(ReplaceCharsSetting, @" &$+,/?~#<>()¿¡«»!"""));
-            }
-        }
-
-        public bool ReplaceDoubleChars
-        {
-            get
-            {
-                if (!this._replaceDoubleChars.HasValue)
-                {
-                    // 922 : new options for allowing user-configured replacement of characters
-                    this._replaceDoubleChars = this.GetBooleanSetting(ReplaceDoubleCharsSetting, true);
-                }
-
-                return this._replaceDoubleChars.Value;
-            }
         }
 
         public string ReplaceSpaceWith
@@ -611,16 +619,6 @@ namespace DotNetNuke.Entities.Urls
         public int TabId404 { get; private set; }
 
         public int TabId500 { get; private set; }
-
-        public string Url404
-        {
-            get { return this._url404 ?? (this._url404 = this.GetStringSetting(Url404Setting, string.Empty)); }
-        }
-
-        public string Url500
-        {
-            get { return this._url500 ?? (this._url500 = this.GetStringSetting(Url500Setting, null) ?? this.Url404); }
-        }
 
         public string UrlFormat
         {
@@ -702,6 +700,8 @@ namespace DotNetNuke.Entities.Urls
             get { return this._vanityUrlPrefix ?? (this._vanityUrlPrefix = this.GetStringSetting(VanityUrlPrefixSetting, "users")); }
             internal set { this._vanityUrlPrefix = value; }
         }
+
+        internal List<string> PortalValues { get; private set; }
 
         private bool GetBooleanSetting(string key, bool defaultValue)
         {

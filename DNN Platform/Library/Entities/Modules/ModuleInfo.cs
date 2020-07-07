@@ -89,33 +89,6 @@ namespace DotNetNuke.Entities.Modules
             this._defaultLanguageGuid = Null.NullGuid;
         }
 
-        [XmlElement("alignment")]
-        public string Alignment { get; set; }
-
-        [XmlIgnore]
-        public bool AllModules { get; set; }
-
-        [XmlElement("alltabs")]
-        public bool AllTabs { get; set; }
-
-        [XmlElement("border")]
-        public string Border { get; set; }
-
-        [XmlElement("cachemethod")]
-        public string CacheMethod { get; set; }
-
-        [XmlElement("cachetime")]
-        public int CacheTime { get; set; }
-
-        [XmlElement("color")]
-        public string Color { get; set; }
-
-        [XmlIgnore]
-        public string ContainerPath { get; set; }
-
-        [XmlElement("containersrc")]
-        public string ContainerSrc { get; set; }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Associated Desktop Module.
@@ -134,33 +107,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ID of the Associated Desktop Module.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public int DesktopModuleID { get; set; }
-
-        [XmlElement("displayprint")]
-        public bool DisplayPrint { get; set; }
-
-        [XmlElement("displaysyndicate")]
-        public bool DisplaySyndicate { get; set; }
-
-        [XmlElement("displaytitle")]
-        public bool DisplayTitle { get; set; }
-
-        [XmlElement("enddate")]
-        public DateTime EndDate { get; set; }
-
-        [XmlElement("footer")]
-        public string Footer { get; set; }
-
-        [XmlElement("header")]
-        public string Header { get; set; }
-
         [XmlIgnore]
         public bool HideAdminBorder
         {
@@ -178,35 +124,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [XmlElement("iconfile")]
-        public string IconFile { get; set; }
-
-        [XmlElement("inheritviewpermissions")]
-        public bool InheritViewPermissions { get; set; }
-
-        [XmlIgnore]
-        public bool IsDefaultModule { get; set; }
-
-        [XmlElement("isdeleted")]
-        public bool IsDeleted { get; set; }
-
-        [XmlIgnore]
-        public bool IsShareable { get; set; }
-
         [XmlIgnore]
         public bool IsShared
         {
             get { return this.OwnerPortalID != this.PortalID; }
         }
-
-        [XmlIgnore]
-        public bool IsShareableViewOnly { get; set; }
-
-        [XmlElement("iswebslice")]
-        public bool IsWebSlice { get; set; }
-
-        [XmlIgnore]
-        public DateTime LastContentModifiedOnDate { get; set; }
 
         public ModuleControlInfo ModuleControl
         {
@@ -218,18 +140,6 @@ namespace DotNetNuke.Entities.Modules
                             : new ModuleControlInfo());
             }
         }
-
-        [XmlIgnore]
-        public int ModuleControlId { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ID of the Associated Module Definition.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -246,34 +156,6 @@ namespace DotNetNuke.Entities.Modules
                        (this._moduleDefinition = this.ModuleDefID > Null.NullInteger
                             ? ModuleDefinitionController.GetModuleDefinitionByID(this.ModuleDefID)
                             : new ModuleDefinitionInfo());
-            }
-        }
-
-        [XmlElement("moduleorder")]
-        public int ModuleOrder { get; set; }
-
-        /// <summary>
-        /// Gets or sets get the ModulePermissions for the Module DO NOT USE THE SETTTER.
-        /// <remarks>
-        /// Since 5.0 the setter has been obsolete, directly setting the ModulePermissionCollection is likely an error, change the contenst of the collection instead.
-        /// The setter still exists to preserve binary compatibility without the obsolete attribute since c# will not allow only a setter to be obsolete.
-        /// </remarks>
-        /// </summary>
-        [XmlArray("modulepermissions")]
-        [XmlArrayItem("permission")]
-        public ModulePermissionCollection ModulePermissions
-        {
-            get
-            {
-                return this._modulePermissions ??
-                    (this._modulePermissions = this.ModuleID > 0
-                            ? new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabID))
-                            : new ModulePermissionCollection());
-            }
-
-            set
-            {
-                this._modulePermissions = value;
             }
         }
 
@@ -298,33 +180,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [XmlElement("title")]
-        public string ModuleTitle { get; set; }
-
-        [XmlIgnore]
-        public int ModuleVersion { get; set; }
-
-        [XmlIgnore]
-        public int OwnerPortalID { get; set; }
-
-        [XmlIgnore]
-        public int PaneModuleCount { get; set; }
-
-        [XmlIgnore]
-        public int PaneModuleIndex { get; set; }
-
-        [XmlElement("panename")]
-        public string PaneName { get; set; }
-
-        [XmlElement("portalid")]
-        public int PortalID { get; set; }
-
-        [XmlElement("startdate")]
-        public DateTime StartDate { get; set; }
-
-        [XmlElement("tabmoduleid")]
-        public int TabModuleID { get; set; }
-
         [XmlIgnore]
         public Hashtable TabModuleSettings
         {
@@ -343,52 +198,6 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 return this._tabModuleSettings;
-            }
-        }
-
-        [XmlElement("uniqueId")]
-        public Guid UniqueId { get; set; }
-
-        [XmlElement("versionGuid")]
-        public Guid VersionGuid { get; set; }
-
-        [XmlElement("visibility")]
-        public VisibilityState Visibility { get; set; }
-
-        [XmlElement("websliceexpirydate")]
-        public DateTime WebSliceExpiryDate { get; set; }
-
-        [XmlElement("webslicetitle")]
-        public string WebSliceTitle { get; set; }
-
-        [XmlElement("webslicettl")]
-        public int WebSliceTTL { get; set; }
-
-        [XmlElement("cultureCode")]
-        public string CultureCode
-        {
-            get
-            {
-                return this._cultureCode;
-            }
-
-            set
-            {
-                this._cultureCode = value;
-            }
-        }
-
-        [XmlElement("defaultLanguageGuid")]
-        public Guid DefaultLanguageGuid
-        {
-            get
-            {
-                return this._defaultLanguageGuid;
-            }
-
-            set
-            {
-                this._defaultLanguageGuid = value;
             }
         }
 
@@ -480,20 +289,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [XmlElement("localizedVersionGuid")]
-        public Guid LocalizedVersionGuid
-        {
-            get
-            {
-                return this._localizedVersionGuid;
-            }
-
-            set
-            {
-                this._localizedVersionGuid = value;
-            }
-        }
-
         public TabInfo ParentTab
         {
             get
@@ -515,6 +310,219 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
+        [XmlElement("alignment")]
+        public string Alignment { get; set; }
+
+        [XmlIgnore]
+        public bool AllModules { get; set; }
+
+        [XmlElement("alltabs")]
+        public bool AllTabs { get; set; }
+
+        [XmlElement("border")]
+        public string Border { get; set; }
+
+        [XmlElement("cachemethod")]
+        public string CacheMethod { get; set; }
+
+        [XmlElement("cachetime")]
+        public int CacheTime { get; set; }
+
+        [XmlElement("color")]
+        public string Color { get; set; }
+
+        [XmlIgnore]
+        public string ContainerPath { get; set; }
+
+        [XmlElement("containersrc")]
+        public string ContainerSrc { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the ID of the Associated Desktop Module.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public int DesktopModuleID { get; set; }
+
+        [XmlElement("displayprint")]
+        public bool DisplayPrint { get; set; }
+
+        [XmlElement("displaysyndicate")]
+        public bool DisplaySyndicate { get; set; }
+
+        [XmlElement("displaytitle")]
+        public bool DisplayTitle { get; set; }
+
+        [XmlElement("enddate")]
+        public DateTime EndDate { get; set; }
+
+        [XmlElement("footer")]
+        public string Footer { get; set; }
+
+        [XmlElement("header")]
+        public string Header { get; set; }
+
+        [XmlElement("iconfile")]
+        public string IconFile { get; set; }
+
+        [XmlElement("inheritviewpermissions")]
+        public bool InheritViewPermissions { get; set; }
+
+        [XmlIgnore]
+        public bool IsDefaultModule { get; set; }
+
+        [XmlElement("isdeleted")]
+        public bool IsDeleted { get; set; }
+
+        [XmlIgnore]
+        public bool IsShareable { get; set; }
+
+        [XmlIgnore]
+        public bool IsShareableViewOnly { get; set; }
+
+        [XmlElement("iswebslice")]
+        public bool IsWebSlice { get; set; }
+
+        [XmlIgnore]
+        public DateTime LastContentModifiedOnDate { get; set; }
+
+        [XmlIgnore]
+        public int ModuleControlId { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the ID of the Associated Module Definition.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public int ModuleDefID { get; set; }
+
+        [XmlElement("moduleorder")]
+        public int ModuleOrder { get; set; }
+
+        /// <summary>
+        /// Gets or sets get the ModulePermissions for the Module DO NOT USE THE SETTTER.
+        /// <remarks>
+        /// Since 5.0 the setter has been obsolete, directly setting the ModulePermissionCollection is likely an error, change the contenst of the collection instead.
+        /// The setter still exists to preserve binary compatibility without the obsolete attribute since c# will not allow only a setter to be obsolete.
+        /// </remarks>
+        /// </summary>
+        [XmlArray("modulepermissions")]
+        [XmlArrayItem("permission")]
+        public ModulePermissionCollection ModulePermissions
+        {
+            get
+            {
+                return this._modulePermissions ??
+                    (this._modulePermissions = this.ModuleID > 0
+                            ? new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabID))
+                            : new ModulePermissionCollection());
+            }
+
+            set
+            {
+                this._modulePermissions = value;
+            }
+        }
+
+        [XmlElement("title")]
+        public string ModuleTitle { get; set; }
+
+        [XmlIgnore]
+        public int ModuleVersion { get; set; }
+
+        [XmlIgnore]
+        public int OwnerPortalID { get; set; }
+
+        [XmlIgnore]
+        public int PaneModuleCount { get; set; }
+
+        [XmlIgnore]
+        public int PaneModuleIndex { get; set; }
+
+        [XmlElement("panename")]
+        public string PaneName { get; set; }
+
+        [XmlElement("portalid")]
+        public int PortalID { get; set; }
+
+        [XmlElement("startdate")]
+        public DateTime StartDate { get; set; }
+
+        [XmlElement("tabmoduleid")]
+        public int TabModuleID { get; set; }
+
+        [XmlElement("uniqueId")]
+        public Guid UniqueId { get; set; }
+
+        [XmlElement("versionGuid")]
+        public Guid VersionGuid { get; set; }
+
+        [XmlElement("visibility")]
+        public VisibilityState Visibility { get; set; }
+
+        [XmlElement("websliceexpirydate")]
+        public DateTime WebSliceExpiryDate { get; set; }
+
+        [XmlElement("webslicetitle")]
+        public string WebSliceTitle { get; set; }
+
+        [XmlElement("webslicettl")]
+        public int WebSliceTTL { get; set; }
+
+        [XmlElement("cultureCode")]
+        public string CultureCode
+        {
+            get
+            {
+                return this._cultureCode;
+            }
+
+            set
+            {
+                this._cultureCode = value;
+            }
+        }
+
+        [XmlElement("defaultLanguageGuid")]
+        public Guid DefaultLanguageGuid
+        {
+            get
+            {
+                return this._defaultLanguageGuid;
+            }
+
+            set
+            {
+                this._defaultLanguageGuid = value;
+            }
+        }
+
+        [XmlElement("localizedVersionGuid")]
+        public Guid LocalizedVersionGuid
+        {
+            get
+            {
+                return this._localizedVersionGuid;
+            }
+
+            set
+            {
+                this._localizedVersionGuid = value;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Key ID.
@@ -532,14 +540,6 @@ namespace DotNetNuke.Entities.Modules
             set
             {
                 this.ModuleID = value;
-            }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
             }
         }
 

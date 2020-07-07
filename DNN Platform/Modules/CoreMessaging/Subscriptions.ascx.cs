@@ -150,33 +150,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             return HttpContext.Current.Server.HtmlEncode(moduleName.ToLowerInvariant().Replace(" ", string.Empty));
         }
 
-        /// <summary>
-        /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
-        /// values that are automatically retrieved by Social Library such as portalId and moduleId.
-        /// </summary>
-        private Hashtable GetViewSettings()
-        {
-            var portalSettings = PortalSettings.Current;
-            var userPreferenceController = UserPreferencesController.Instance;
-            var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
-            UserPreference userPreference = null;
-            if (user != null)
-            {
-                userPreference = userPreferenceController.GetUserPreference(user);
-            }
-
-            const int notifyFrequency = 2;
-            const int messageFrequency = 0;
-
-            return new Hashtable
-                   {
-                       { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
-                       { "pageSize", 25 },
-                       { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
-                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency },
-                   };
-        }
-
         private static TimeSpan GetSessionTimeout()
         {
             try
@@ -224,6 +197,33 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
 
             return returnUrl;
+        }
+
+        /// <summary>
+        /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
+        /// values that are automatically retrieved by Social Library such as portalId and moduleId.
+        /// </summary>
+        private Hashtable GetViewSettings()
+        {
+            var portalSettings = PortalSettings.Current;
+            var userPreferenceController = UserPreferencesController.Instance;
+            var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
+            UserPreference userPreference = null;
+            if (user != null)
+            {
+                userPreference = userPreferenceController.GetUserPreference(user);
+            }
+
+            const int notifyFrequency = 2;
+            const int messageFrequency = 0;
+
+            return new Hashtable
+                   {
+                       { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
+                       { "pageSize", 25 },
+                       { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
+                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency },
+                   };
         }
     }
 }

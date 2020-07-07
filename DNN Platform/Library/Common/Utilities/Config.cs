@@ -357,11 +357,6 @@ namespace DotNetNuke.Common.Utilities
             return databaseOwner;
         }
 
-        private static bool Iis7AndAbove()
-        {
-            return Environment.OSVersion.Version.Major >= 6;
-        }
-
         public static Provider GetDefaultProvider(string type)
         {
             ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
@@ -901,6 +896,11 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return string.Empty;
+        }
+
+        private static bool Iis7AndAbove()
+        {
+            return Environment.OSVersion.Version.Major >= 6;
         }
 
         private static string EnumToFileName(ConfigFileType file)

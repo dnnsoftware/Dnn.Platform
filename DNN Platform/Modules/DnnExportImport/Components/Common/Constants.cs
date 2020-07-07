@@ -18,6 +18,14 @@ namespace Dnn.ExportImport.Components.Common
         // these are set by the API caller
         public const string Category_Users = "USERS";
         public const string Category_Vocabularies = "VOCABULARIES";
+        public const string Category_Roles = "ROLES";
+        public const string Category_ProfileProps = "PROFILE_PROPERTIES";
+        public const string Category_Content = "CONTENT";
+        public const string Category_Templates = "TEMPLATES";
+        public const string Category_Assets = "ASSETS";
+        public const string Category_Packages = "PACKAGES";
+        public const string Category_Themes = "THEMES";
+        public const string Category_Workflows = "WORKFLOW";
 
         internal const string ExportFolder = @"\App_Data\ExportImport\";
         internal const string ExportManifestName = "export.json"; // export manifest file name
@@ -42,21 +50,13 @@ namespace Dnn.ExportImport.Components.Common
 
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
 
-        internal static DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        internal static int MaxZipFilesMemory = 104857600; // 100 MB
-        public const string Category_Roles = "ROLES";
-        public const string Category_ProfileProps = "PROFILE_PROPERTIES";
-        public const string Category_Content = "CONTENT";
-        public const string Category_Templates = "TEMPLATES";
-        public const string Category_Assets = "ASSETS";
-        public const string Category_Packages = "PACKAGES";
-        public const string Category_Themes = "THEMES";
-        public const string Category_Workflows = "WORKFLOW";
-
         // these are added internally by the engine
         internal const string Category_Portal = "PORTAL";
         internal const string Category_Pages = "PAGES";
         internal const string Category_UsersData = "USERS_DATA";
+
+        internal static DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static int MaxZipFilesMemory = 104857600; // 100 MB
     }
 }

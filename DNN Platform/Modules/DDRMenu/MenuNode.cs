@@ -35,81 +35,6 @@ namespace DotNetNuke.Web.DDRMenu
             this.Children.ForEach(c => c.Parent = this);
         }
 
-        public int TabId { get; set; }
-
-        public string Text { get; set; }
-
-        public string Title { get; set; }
-
-        public static List<MenuNode> ConvertDNNNodeCollection(DNNNodeCollection dnnNodes, MenuNode parent)
-        {
-            var result = new List<MenuNode>();
-            foreach (DNNNode node in dnnNodes)
-            {
-                result.Add(new MenuNode(node, parent));
-            }
-
-            return result;
-        }
-
-        public string Url { get; set; }
-
-        public bool Enabled { get; set; }
-
-        public bool Selected { get; set; }
-
-        public bool Breadcrumb { get; set; }
-
-        public bool Separator { get; set; }
-
-        public string Icon { get; set; }
-
-        public string LargeImage { get; set; }
-
-        public string CommandName { get; set; }
-
-        public string CommandArgument { get; set; }
-
-        public bool First
-        {
-            get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
-        }
-
-        public bool Last
-        {
-            get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); }
-        }
-
-        public string Target { get; set; }
-
-        public int Depth
-        {
-            get
-            {
-                var result = -1;
-                var current = this;
-                while (current.Parent != null)
-                {
-                    result++;
-                    current = current.Parent;
-                }
-
-                return result;
-            }
-        }
-
-        public string Keywords { get; set; }
-
-        public string Description { get; set; }
-
-        public List<MenuNode> Children
-        {
-            get { return this._Children ?? (this._Children = new List<MenuNode>()); }
-            set { this._Children = value; }
-        }
-
-        public MenuNode Parent { get; set; }
-
         public MenuNode(DNNNode dnnNode, MenuNode parent)
         {
             this.TabId = Convert.ToInt32(dnnNode.ID);
@@ -136,6 +61,81 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 this.Children = ConvertDNNNodeCollection(dnnNode.DNNNodes, this);
             }
+        }
+
+        public bool First
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
+        }
+
+        public bool Last
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); }
+        }
+
+        public int Depth
+        {
+            get
+            {
+                var result = -1;
+                var current = this;
+                while (current.Parent != null)
+                {
+                    result++;
+                    current = current.Parent;
+                }
+
+                return result;
+            }
+        }
+
+        public int TabId { get; set; }
+
+        public string Text { get; set; }
+
+        public string Title { get; set; }
+
+        public string Url { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public bool Selected { get; set; }
+
+        public bool Breadcrumb { get; set; }
+
+        public bool Separator { get; set; }
+
+        public string Icon { get; set; }
+
+        public string LargeImage { get; set; }
+
+        public string CommandName { get; set; }
+
+        public string CommandArgument { get; set; }
+
+        public string Target { get; set; }
+
+        public string Keywords { get; set; }
+
+        public string Description { get; set; }
+
+        public List<MenuNode> Children
+        {
+            get { return this._Children ?? (this._Children = new List<MenuNode>()); }
+            set { this._Children = value; }
+        }
+
+        public MenuNode Parent { get; set; }
+
+        public static List<MenuNode> ConvertDNNNodeCollection(DNNNodeCollection dnnNodes, MenuNode parent)
+        {
+            var result = new List<MenuNode>();
+            foreach (DNNNode node in dnnNodes)
+            {
+                result.Add(new MenuNode(node, parent));
+            }
+
+            return result;
         }
 
         public MenuNode FindById(int tabId)
@@ -325,47 +325,6 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        internal void RemoveAll(List<MenuNode> filteredNodes)
-        {
-            this.Children.RemoveAll(filteredNodes.Contains);
-            foreach (var child in this.Children)
-            {
-                child.RemoveAll(filteredNodes);
-            }
-        }
-
-        internal void ApplyContext(string defaultImagePath)
-        {
-            this.Icon = this.ApplyContextToImagePath(this.Icon, defaultImagePath);
-            this.LargeImage = this.ApplyContextToImagePath(this.LargeImage, defaultImagePath);
-
-            if (this.Url != null && this.Url.StartsWith("postback:"))
-            {
-                var postbackControl = DNNContext.Current.HostControl;
-                this.Url = postbackControl.Page.ClientScript.GetPostBackClientHyperlink(postbackControl, this.Url.Substring(9));
-            }
-
-            this.Children.ForEach(c => c.ApplyContext(defaultImagePath));
-        }
-
-        private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
-        {
-            var result = imagePath;
-            if (!string.IsNullOrEmpty(result))
-            {
-                if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    result = Globals.ResolveUrl(result);
-                }
-                else if (!(result.Contains("://") || result.StartsWith("/")))
-                {
-                    result = defaultImagePath + result;
-                }
-            }
-
-            return result;
-        }
-
         public void WriteXml(XmlWriter writer)
         {
             if (this.Parent != null)
@@ -401,6 +360,29 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        internal void RemoveAll(List<MenuNode> filteredNodes)
+        {
+            this.Children.RemoveAll(filteredNodes.Contains);
+            foreach (var child in this.Children)
+            {
+                child.RemoveAll(filteredNodes);
+            }
+        }
+
+        internal void ApplyContext(string defaultImagePath)
+        {
+            this.Icon = this.ApplyContextToImagePath(this.Icon, defaultImagePath);
+            this.LargeImage = this.ApplyContextToImagePath(this.LargeImage, defaultImagePath);
+
+            if (this.Url != null && this.Url.StartsWith("postback:"))
+            {
+                var postbackControl = DNNContext.Current.HostControl;
+                this.Url = postbackControl.Page.ClientScript.GetPostBackClientHyperlink(postbackControl, this.Url.Substring(9));
+            }
+
+            this.Children.ForEach(c => c.ApplyContext(defaultImagePath));
+        }
+
         private static void AddXmlAttribute(XmlWriter writer, string name, string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -425,6 +407,24 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 writer.WriteElementString(name, value);
             }
+        }
+
+        private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
+        {
+            var result = imagePath;
+            if (!string.IsNullOrEmpty(result))
+            {
+                if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    result = Globals.ResolveUrl(result);
+                }
+                else if (!(result.Contains("://") || result.StartsWith("/")))
+                {
+                    result = defaultImagePath + result;
+                }
+            }
+
+            return result;
         }
     }
 }

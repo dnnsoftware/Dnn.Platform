@@ -58,6 +58,8 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this.Services.Parameters["filter"] = value; }
         }
 
+        public bool IncludeNoneSpecificItem { get; set; }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -83,7 +85,5 @@ namespace DotNetNuke.Web.UI.WebControls
 
             base.OnPreRender(e);
         }
-
-        public bool IncludeNoneSpecificItem { get; set; }
     }
 }

@@ -96,47 +96,6 @@ namespace DotNetNuke.UI.Modules
         }
 
         [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
-        private static IModuleControlFactory GetModuleControlFactory(string controlSrc)
-        {
-            string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
-
-            IModuleControlFactory controlFactory = null;
-            Type factoryType;
-            switch (extension)
-            {
-                case ".ascx":
-                    controlFactory = new WebFormsModuleControlFactory();
-                    break;
-                case ".html":
-                case ".htm":
-                    controlFactory = new Html5ModuleControlFactory();
-                    break;
-                case ".cshtml":
-                case ".vbhtml":
-                    factoryType = Reflection.CreateType("DotNetNuke.Web.Razor.RazorModuleControlFactory");
-                    if (factoryType != null)
-                    {
-                        controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
-                    }
-
-                    break;
-                case ".mvc":
-                    factoryType = Reflection.CreateType("DotNetNuke.Web.Mvc.MvcModuleControlFactory");
-                    if (factoryType != null)
-                    {
-                        controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
-                    }
-
-                    break;
-                default:
-                    controlFactory = new ReflectedModuleControlFactory();
-                    break;
-            }
-
-            return controlFactory;
-        }
-
-        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
         public static Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -212,6 +171,47 @@ namespace DotNetNuke.UI.Modules
             }
 
             return moduleControl;
+        }
+
+        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
+        private static IModuleControlFactory GetModuleControlFactory(string controlSrc)
+        {
+            string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
+
+            IModuleControlFactory controlFactory = null;
+            Type factoryType;
+            switch (extension)
+            {
+                case ".ascx":
+                    controlFactory = new WebFormsModuleControlFactory();
+                    break;
+                case ".html":
+                case ".htm":
+                    controlFactory = new Html5ModuleControlFactory();
+                    break;
+                case ".cshtml":
+                case ".vbhtml":
+                    factoryType = Reflection.CreateType("DotNetNuke.Web.Razor.RazorModuleControlFactory");
+                    if (factoryType != null)
+                    {
+                        controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
+                    }
+
+                    break;
+                case ".mvc":
+                    factoryType = Reflection.CreateType("DotNetNuke.Web.Mvc.MvcModuleControlFactory");
+                    if (factoryType != null)
+                    {
+                        controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
+                    }
+
+                    break;
+                default:
+                    controlFactory = new ReflectedModuleControlFactory();
+                    break;
+            }
+
+            return controlFactory;
         }
     }
 }

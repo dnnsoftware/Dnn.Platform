@@ -60,91 +60,6 @@ namespace DotNetNuke.ComponentModel
             return this.GetComponent(builder);
         }
 
-        private void AddBuilder(Type contractType, IComponentBuilder builder)
-        {
-            ComponentType componentType = this.GetComponentType(contractType);
-            if (componentType != null)
-            {
-                ComponentBuilderCollection builders = componentType.ComponentBuilders;
-
-                using (builders.GetWriteLock())
-                {
-                    builders.AddBuilder(builder, true);
-                }
-
-                using (this._componentBuilders.GetWriteLock())
-                {
-                    this._componentBuilders.AddBuilder(builder, false);
-                }
-            }
-        }
-
-        private void AddComponentType(Type contractType)
-        {
-            ComponentType componentType = this.GetComponentType(contractType);
-
-            if (componentType == null)
-            {
-                componentType = new ComponentType(contractType);
-
-                using (this._componentTypes.GetWriteLock())
-                {
-                    this._componentTypes[componentType.BaseType] = componentType;
-                }
-            }
-        }
-
-        private object GetComponent(IComponentBuilder builder)
-        {
-            object component;
-            if (builder == null)
-            {
-                component = null;
-            }
-            else
-            {
-                component = builder.BuildComponent();
-            }
-
-            return component;
-        }
-
-        private IComponentBuilder GetComponentBuilder(string name)
-        {
-            IComponentBuilder builder;
-
-            using (this._componentBuilders.GetReadLock())
-            {
-                this._componentBuilders.TryGetValue(name, out builder);
-            }
-
-            return builder;
-        }
-
-        private IComponentBuilder GetDefaultComponentBuilder(ComponentType componentType)
-        {
-            IComponentBuilder builder;
-
-            using (componentType.ComponentBuilders.GetReadLock())
-            {
-                builder = componentType.ComponentBuilders.DefaultBuilder;
-            }
-
-            return builder;
-        }
-
-        private ComponentType GetComponentType(Type contractType)
-        {
-            ComponentType componentType;
-
-            using (this._componentTypes.GetReadLock())
-            {
-                this._componentTypes.TryGetValue(contractType, out componentType);
-            }
-
-            return componentType;
-        }
-
         public override object GetComponent(Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -249,6 +164,91 @@ namespace DotNetNuke.ComponentModel
             {
                 this._componentDependencies[name] = dependencies;
             }
+        }
+
+        private void AddBuilder(Type contractType, IComponentBuilder builder)
+        {
+            ComponentType componentType = this.GetComponentType(contractType);
+            if (componentType != null)
+            {
+                ComponentBuilderCollection builders = componentType.ComponentBuilders;
+
+                using (builders.GetWriteLock())
+                {
+                    builders.AddBuilder(builder, true);
+                }
+
+                using (this._componentBuilders.GetWriteLock())
+                {
+                    this._componentBuilders.AddBuilder(builder, false);
+                }
+            }
+        }
+
+        private void AddComponentType(Type contractType)
+        {
+            ComponentType componentType = this.GetComponentType(contractType);
+
+            if (componentType == null)
+            {
+                componentType = new ComponentType(contractType);
+
+                using (this._componentTypes.GetWriteLock())
+                {
+                    this._componentTypes[componentType.BaseType] = componentType;
+                }
+            }
+        }
+
+        private object GetComponent(IComponentBuilder builder)
+        {
+            object component;
+            if (builder == null)
+            {
+                component = null;
+            }
+            else
+            {
+                component = builder.BuildComponent();
+            }
+
+            return component;
+        }
+
+        private IComponentBuilder GetComponentBuilder(string name)
+        {
+            IComponentBuilder builder;
+
+            using (this._componentBuilders.GetReadLock())
+            {
+                this._componentBuilders.TryGetValue(name, out builder);
+            }
+
+            return builder;
+        }
+
+        private IComponentBuilder GetDefaultComponentBuilder(ComponentType componentType)
+        {
+            IComponentBuilder builder;
+
+            using (componentType.ComponentBuilders.GetReadLock())
+            {
+                builder = componentType.ComponentBuilders.DefaultBuilder;
+            }
+
+            return builder;
+        }
+
+        private ComponentType GetComponentType(Type contractType)
+        {
+            ComponentType componentType;
+
+            using (this._componentTypes.GetReadLock())
+            {
+                this._componentTypes.TryGetValue(contractType, out componentType);
+            }
+
+            return componentType;
         }
     }
 }

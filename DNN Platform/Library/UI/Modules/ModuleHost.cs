@@ -53,10 +53,11 @@ namespace DotNetNuke.UI.Modules
         private static readonly Regex CdfMatchRegex = new Regex(
             @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private readonly ModuleInfo _moduleConfiguration;
+        private readonly IModuleControlPipeline _moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
         private Control _control;
         private bool _isCached;
-        private readonly IModuleControlPipeline _moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -72,8 +73,6 @@ namespace DotNetNuke.UI.Modules
             this._moduleConfiguration = moduleConfiguration;
             this.Skin = skin;
         }
-
-        public Containers.Container Container { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -101,6 +100,8 @@ namespace DotNetNuke.UI.Modules
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
+
+        public Containers.Container Container { get; private set; }
 
         public Skins.Skin Skin { get; private set; }
 
@@ -172,6 +173,50 @@ namespace DotNetNuke.UI.Modules
                 }
 
                 this.Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RenderContents renders the contents of the control to the output stream.
+        /// </summary>
+        protected override void RenderContents(HtmlTextWriter writer)
+        {
+            if (this._isCached)
+            {
+                // Render the cached control to the output stream
+                base.RenderContents(writer);
+            }
+            else
+            {
+                if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !this.IsVersionRequest())
+                {
+                    // Render to cache
+                    var tempWriter = new StringWriter();
+
+                    this._control.RenderControl(new HtmlTextWriter(tempWriter));
+                    string cachedOutput = tempWriter.ToString();
+
+                    if (!string.IsNullOrEmpty(cachedOutput) && (!HttpContext.Current.Request.Browser.Crawler))
+                    {
+                        // Save content to cache
+                        var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
+                        var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
+
+                        var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() } };
+
+                        var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
+                        cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);
+                    }
+
+                    // Render the cached content to Response
+                    writer.Write(cachedOutput);
+                }
+                else
+                {
+                    // Render the control to Response
+                    base.RenderContents(writer);
+                }
             }
         }
 
@@ -524,50 +569,6 @@ namespace DotNetNuke.UI.Modules
                         }
 
                         break;
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderContents renders the contents of the control to the output stream.
-        /// </summary>
-        protected override void RenderContents(HtmlTextWriter writer)
-        {
-            if (this._isCached)
-            {
-                // Render the cached control to the output stream
-                base.RenderContents(writer);
-            }
-            else
-            {
-                if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !this.IsVersionRequest())
-                {
-                    // Render to cache
-                    var tempWriter = new StringWriter();
-
-                    this._control.RenderControl(new HtmlTextWriter(tempWriter));
-                    string cachedOutput = tempWriter.ToString();
-
-                    if (!string.IsNullOrEmpty(cachedOutput) && (!HttpContext.Current.Request.Browser.Crawler))
-                    {
-                        // Save content to cache
-                        var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
-                        var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
-
-                        var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() } };
-
-                        var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
-                        cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);
-                    }
-
-                    // Render the cached content to Response
-                    writer.Write(cachedOutput);
-                }
-                else
-                {
-                    // Render the control to Response
-                    base.RenderContents(writer);
                 }
             }
         }

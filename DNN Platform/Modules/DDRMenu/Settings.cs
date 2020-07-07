@@ -85,6 +85,16 @@ namespace DotNetNuke.Web.DDRMenu
             return result;
         }
 
+        public static string ToSettingString(List<ClientOption> clientOptions)
+        {
+            return string.Join("\r\n", clientOptions.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
+        }
+
+        public static string ToSettingString(List<TemplateArgument> templateArguments)
+        {
+            return string.Join("\r\n", templateArguments.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
+        }
+
         public string ToXml()
         {
             var sb = new StringBuilder();
@@ -107,16 +117,6 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 return exc.ToString();
             }
-        }
-
-        public static string ToSettingString(List<ClientOption> clientOptions)
-        {
-            return string.Join("\r\n", clientOptions.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
-        }
-
-        public static string ToSettingString(List<TemplateArgument> templateArguments)
-        {
-            return string.Join("\r\n", templateArguments.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
         }
 
         private static IEnumerable<string> SplitIntoStrings(string fullString)

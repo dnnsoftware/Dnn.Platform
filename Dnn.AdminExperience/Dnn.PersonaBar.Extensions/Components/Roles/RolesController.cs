@@ -45,11 +45,6 @@ namespace Dnn.PersonaBar.Roles.Components
             return roleInfos.Skip(startIndex).Take(pageSize);
         }
 
-        protected override Func<IRolesController> GetFactory()
-        {
-            return () => new RolesController();
-        }
-
         /// <summary>
         /// Gets a list (not paginated) of Roles given a comma separated list of Roles' names.
         /// </summary>
@@ -178,6 +173,11 @@ namespace Dnn.PersonaBar.Roles.Components
             RoleController.Instance.DeleteRole(role);
             DataCache.RemoveCache("GetRoles");
             return role.RoleName;
+        }
+
+        protected override Func<IRolesController> GetFactory()
+        {
+            return () => new RolesController();
         }
 
         private bool IsAdmin(PortalSettings portalSettings)

@@ -177,6 +177,21 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        protected override void WriteFilesToManifest(XmlWriter writer)
+        {
+            LanguageComponentWriter languageFileWriter;
+            if (this.LanguagePack == null)
+            {
+                languageFileWriter = new LanguageComponentWriter(this.Language, this.BasePath, this.Files, this.Package);
+            }
+            else
+            {
+                languageFileWriter = new LanguageComponentWriter(this.LanguagePack, this.BasePath, this.Files, this.Package);
+            }
+
+            languageFileWriter.WriteManifest(writer);
+        }
+
         private void ReadLegacyManifest(XPathNavigator manifestNav)
         {
             string fileName = Null.NullString;
@@ -541,21 +556,6 @@ namespace DotNetNuke.Services.Installer.Writers
                     this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
                 }
             }
-        }
-
-        protected override void WriteFilesToManifest(XmlWriter writer)
-        {
-            LanguageComponentWriter languageFileWriter;
-            if (this.LanguagePack == null)
-            {
-                languageFileWriter = new LanguageComponentWriter(this.Language, this.BasePath, this.Files, this.Package);
-            }
-            else
-            {
-                languageFileWriter = new LanguageComponentWriter(this.LanguagePack, this.BasePath, this.Files, this.Package);
-            }
-
-            languageFileWriter.WriteManifest(writer);
         }
     }
 }

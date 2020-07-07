@@ -13,11 +13,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         {
         }
 
-        public int ScheduleId { get; set; }
-        public string FriendlyName { get; set; }
-        public string NextStart { get; set; }
-        public bool Enabled { get; set; }
-
         public TaskModelBase(ScheduleItem item)
         {
             this.Enabled = item.Enabled;
@@ -25,5 +20,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
             this.NextStart = item.NextStart.ToPromptShortDateAndTimeString();
             this.ScheduleId = item.ScheduleID;
         }
+
+        public int ScheduleId { get; set; }
+        public string FriendlyName { get; set; }
+        public string NextStart { get; set; }
+        public bool Enabled { get; set; }
     }
 }

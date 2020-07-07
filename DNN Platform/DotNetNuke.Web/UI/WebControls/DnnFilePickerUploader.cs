@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
@@ -28,14 +27,13 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         protected DnnFileDropDownList FilesComboBox;
         protected DnnFolderDropDownList FoldersComboBox;
+        protected Label FoldersLabel;
+        protected DnnFileUpload FileUploadControl;
         private const string MyFileName = "filepickeruploader.ascx";
         private int? _portalId = null;
-
         private string _fileFilter;
         private string _folderPath = string.Empty;
         private bool _folderPathSet = false;
-        protected Label FoldersLabel;
-        protected DnnFileUpload FileUploadControl;
 
         public bool UsePersonalFolder { get; set; }
 
@@ -73,38 +71,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     this.LoadFolders();
                 }
-            }
-        }
-
-        protected string FolderLabel
-        {
-            get
-            {
-                return Localization.GetString("Folder", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        protected string FileLabel
-        {
-            get
-            {
-                return Localization.GetString("File", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        protected string UploadFileLabel
-        {
-            get
-            {
-                return Localization.GetString("UploadFile", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        protected string DropFileLabel
-        {
-            get
-            {
-                return Localization.GetString("DropFile", Localization.GetResourceFile(this, MyFileName));
             }
         }
 
@@ -189,6 +155,38 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get { return this.FileUploadControl.SupportHost; }
             set { this.FileUploadControl.SupportHost = value; }
+        }
+
+        protected string FolderLabel
+        {
+            get
+            {
+                return Localization.GetString("Folder", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        protected string FileLabel
+        {
+            get
+            {
+                return Localization.GetString("File", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        protected string UploadFileLabel
+        {
+            get
+            {
+                return Localization.GetString("UploadFile", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        protected string DropFileLabel
+        {
+            get
+            {
+                return Localization.GetString("DropFile", Localization.GetResourceFile(this, MyFileName));
+            }
         }
 
         protected override void OnLoad(EventArgs e)

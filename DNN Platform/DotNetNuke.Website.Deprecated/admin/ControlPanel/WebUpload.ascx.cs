@@ -47,12 +47,13 @@ namespace DotNetNuke.Modules.Admin.FileManager
         private UploadType _FileType;
         private string _FileTypeName;
 
+        private string _RootFolder;
+        private string _UploadRoles;
+
         public WebUpload()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-        private string _RootFolder;
-        private string _UploadRoles;
 
         public string DestinationFolder
         {
@@ -187,49 +188,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine checks the Access Security.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void CheckSecurity()
-        {
-            if (!ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
-            {
-                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This routine populates the Folder List Drop Down
-        /// There is no reference to permissions here as all folders should be available to the admin.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void LoadFolders()
-        {
-            var user = UserController.Instance.GetCurrentUserInfo();
-
-            var folders = FolderManager.Instance.GetFolders(this.FolderPortalID, "ADD", user.UserID);
-            this.ddlFolders.Services.Parameters.Add("permission", "ADD");
-            if (!string.IsNullOrEmpty(this.DestinationFolder))
-            {
-                this.ddlFolders.SelectedFolder = folders.SingleOrDefault(f => f.FolderPath == this.DestinationFolder);
-            }
-            else
-            {
-                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == string.Empty);
-                if (rootFolder != null)
-                {
-                    this.ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The Page_Load runs when the page loads.
         /// </summary>
         /// <param name="e"></param>
@@ -283,6 +241,49 @@ namespace DotNetNuke.Modules.Admin.FileManager
             catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine checks the Access Security.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void CheckSecurity()
+        {
+            if (!ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
+            {
+                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine populates the Folder List Drop Down
+        /// There is no reference to permissions here as all folders should be available to the admin.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void LoadFolders()
+        {
+            var user = UserController.Instance.GetCurrentUserInfo();
+
+            var folders = FolderManager.Instance.GetFolders(this.FolderPortalID, "ADD", user.UserID);
+            this.ddlFolders.Services.Parameters.Add("permission", "ADD");
+            if (!string.IsNullOrEmpty(this.DestinationFolder))
+            {
+                this.ddlFolders.SelectedFolder = folders.SingleOrDefault(f => f.FolderPath == this.DestinationFolder);
+            }
+            else
+            {
+                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == string.Empty);
+                if (rootFolder != null)
+                {
+                    this.ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
+                }
             }
         }
 

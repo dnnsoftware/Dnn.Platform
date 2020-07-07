@@ -86,14 +86,6 @@ namespace DotNetNuke.Tests.Web.Mvp
             Assert.AreEqual(_tabModuleSettingCount, view.Object.Model.TabModuleSettings.Count);
         }
 
-        public class TestSettingsPresenter : ModuleSettingsPresenter<ISettingsView<SettingsModel>, SettingsModel>
-        {
-            public TestSettingsPresenter(ISettingsView<SettingsModel> view)
-                : base(view)
-            {
-            }
-        }
-
         [Test]
         public void ModuleSettingsPresenter_SaveSettings_Saves_ModuleSettings()
         {
@@ -158,6 +150,14 @@ namespace DotNetNuke.Tests.Web.Mvp
             }
 
             return context;
+        }
+
+        public class TestSettingsPresenter : ModuleSettingsPresenter<ISettingsView<SettingsModel>, SettingsModel>
+        {
+            public TestSettingsPresenter(ISettingsView<SettingsModel> view)
+                : base(view)
+            {
+            }
         }
     }
 }

@@ -87,6 +87,19 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the PortalSettings of the Portal.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the name (ID) of the Pane.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -98,19 +111,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected HtmlContainerControl PaneControl { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the PortalSettings of the Portal.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

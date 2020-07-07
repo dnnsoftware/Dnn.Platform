@@ -49,11 +49,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             cachePolicy.AddValidationCallback(this.CacheValidateHandler, null /* data */);
         }
 
-        private void CacheValidateHandler(HttpContext context, object data, ref HttpValidationStatus validationStatus)
-        {
-            validationStatus = this.OnCacheAuthorization(new HttpContextWrapper(context));
-        }
-
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             const string failureMessage = "Authorization has been denied for this request.";
@@ -79,6 +74,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         protected virtual bool SkipAuthorization(AuthorizationContext filterContext)
         {
             return IsAnonymousAttributePresent(filterContext);
+        }
+
+        private void CacheValidateHandler(HttpContext context, object data, ref HttpValidationStatus validationStatus)
+        {
+            validationStatus = this.OnCacheAuthorization(new HttpContextWrapper(context));
         }
     }
 }

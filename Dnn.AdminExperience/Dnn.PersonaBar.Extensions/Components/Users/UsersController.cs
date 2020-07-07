@@ -55,6 +55,7 @@ namespace Dnn.PersonaBar.Users.Components
                 user = UserController.Instance.GetUserById(Null.NullInteger, userId);
             return user;
         }
+
         public static bool IsAdmin(PortalSettings portalSettings)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -64,11 +65,6 @@ namespace Dnn.PersonaBar.Users.Components
         public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             return this.GetUsersFromDb(usersContract, isSuperUser, out totalRecords) ?? new List<UserBasicDto>();
-        }
-
-        protected override Func<IUsersController> GetFactory()
-        {
-            return () => new UsersController();
         }
 
         public IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false)
@@ -374,6 +370,11 @@ namespace Dnn.PersonaBar.Users.Components
             }
         }
 
+        protected override Func<IUsersController> GetFactory()
+        {
+            return () => new UsersController();
+        }
+
         protected virtual IDataReader CallGetUsersBySearchTerm(GetUsersContract usersContract,
             bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
             bool? hasAgreedToTerms, bool? requestsRemoval)
@@ -414,6 +415,17 @@ namespace Dnn.PersonaBar.Users.Components
                         ? users.OrderBy(x => x.CreatedOnDate)
                         : users.OrderByDescending(x => x.CreatedOnDate);
             }
+        }
+
+        private static IEnumerable<UserInfo> GetPagedUsers(IEnumerable<UserInfo> users, int pageSize, int pageIndex)
+        {
+            return
+                users.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
+        private static bool IsAdmin(UserInfo user, PortalSettings portalSettings)
+        {
+            return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
 
         private IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
@@ -475,17 +487,6 @@ namespace Dnn.PersonaBar.Users.Components
                     throw new ArgumentOutOfRangeException();
             }
             return users;
-        }
-
-        private static IEnumerable<UserInfo> GetPagedUsers(IEnumerable<UserInfo> users, int pageSize, int pageIndex)
-        {
-            return
-                users.Skip(pageIndex * pageSize).Take(pageSize);
-        }
-
-        private static bool IsAdmin(UserInfo user, PortalSettings portalSettings)
-        {
-            return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
 
         private bool CanUpdateUsername(UserInfo user)

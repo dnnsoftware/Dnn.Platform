@@ -97,11 +97,6 @@ namespace Dnn.PersonaBar.Prompt.Components
             return moduleList;
         }
 
-        protected override Func<IModulesController> GetFactory()
-        {
-            return () => new ModulesController();
-        }
-
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
             var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
@@ -237,6 +232,11 @@ namespace Dnn.PersonaBar.Prompt.Components
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
+        protected override Func<IModulesController> GetFactory()
+        {
+            return () => new ModulesController();
         }
     }
 }

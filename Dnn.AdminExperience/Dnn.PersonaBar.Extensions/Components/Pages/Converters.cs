@@ -28,6 +28,7 @@ namespace Dnn.PersonaBar.Pages.Components
     public static class Converters
     {
         private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+
         public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs) where T : PageItem, new()
         {
             return new T

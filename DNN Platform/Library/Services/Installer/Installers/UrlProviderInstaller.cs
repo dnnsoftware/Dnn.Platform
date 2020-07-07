@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
@@ -78,24 +77,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        private void DeleteProvider()
-        {
-            try
-            {
-                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
-                if (tempUrlProvider != null)
-                {
-                    ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
-
-                    this.Log.AddInfo(string.Format(Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadManifest method reads the manifest file for the compoent.
@@ -150,6 +131,24 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void UnInstall()
         {
             this.DeleteProvider();
+        }
+
+        private void DeleteProvider()
+        {
+            try
+            {
+                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
+                if (tempUrlProvider != null)
+                {
+                    ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
+
+                    this.Log.AddInfo(string.Format(Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
         }
     }
 }

@@ -154,527 +154,6 @@ namespace DotNetNuke.Entities.Urls
             return changed;
         }
 
-        private static string AddQueryStringToRewritePath(string rewritePath, string queryString)
-        {
-            // now add back querystring if they existed
-            if (queryString != string.Empty)
-            {
-                bool rewritePathHasQuery = rewritePath.IndexOf("?", StringComparison.Ordinal) != -1;
-                if (queryString.StartsWith("?"))
-                {
-                    queryString = queryString.Substring(1);
-                }
-
-                string[] parms = queryString.Split('&');
-
-                // iterate through the array of parameters
-                for (int i = 0; i < parms.Length; i++)
-                {
-                    bool hasValue = false;
-
-                    // get parameter name
-                    string parmName = parms[i];
-
-                    // check if parm name contains a value as well
-                    if (parmName.IndexOf("=", StringComparison.Ordinal) != -1)
-                    {
-                        // snip off the =value part of the parm
-                        parmName = parmName.Substring(0, parmName.IndexOf("=", StringComparison.Ordinal));
-                        hasValue = true;
-                    }
-
-                    // 597 : do a compare with the '=' on the end to only
-                    // compare the entire parmname, not just the start
-                    string comparePath1 = "?" + parmName.ToLowerInvariant();
-                    string comparePath2 = "&" + parmName.ToLowerInvariant();
-                    if (hasValue)
-                    {
-                        comparePath1 += "=";
-                        comparePath2 += "=";
-                    }
-
-                    // check if parameter already exists in the rewrite path
-                    // we only want to add the querystring back on if the
-                    // query string keys were not already shown in the friendly
-                    // url path
-                    if (!rewritePath.ToLowerInvariant().Contains(comparePath1)
-                        && !rewritePath.ToLowerInvariant().Contains(comparePath2))
-                    {
-                        // 622 : remove encoding from querystring paths
-                        // 699 : reverses 622 because works from Request.QUeryString instead of Request.Url.Query
-                        // string queryStringPiece = System.Web.HttpUtility.UrlDecode(parms[i]);
-                        string queryStringPiece = parms[i];
-
-                        // no decoding - querystring passes through rewriting process untouched
-                        // add parameter to SendTo value
-                        if (rewritePathHasQuery)
-                        {
-                            rewritePath = rewritePath + "&" + queryStringPiece;
-                        }
-                        else
-                        {
-                            rewritePath = rewritePath + "?" + queryStringPiece;
-                            rewritePathHasQuery = true;
-                        }
-                    }
-                }
-            }
-
-            return rewritePath;
-        }
-
-        private static string CheckIfPortalAlias(string url, NameValueCollection querystringCol, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict)
-        {
-            string newUrl = url;
-            bool reWritten = false;
-
-            string defaultPage = Globals.glbDefaultPage.ToLowerInvariant();
-            string portalAliasUrl = url.ToLowerInvariant().Replace("/" + defaultPage, string.Empty);
-
-            // if there is a straight match on a portal alias, it's the home page for that portal requested
-            var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
-            if (portalAlias != null)
-            {
-                // special case : sometimes, some servers issue root/default.aspx when root/ was requested, sometimes not.  It depends
-                // on other server software installed (apparently)
-                // so check the raw Url and the url, and see if they are the same except for the /default.aspx
-                string rawUrl = result.RawUrl;
-                if (url.ToLowerInvariant().EndsWith(rawUrl + defaultPage.ToLowerInvariant()))
-                {
-                    // special case - change the url to be equal to the raw Url
-                    url = url.Substring(0, url.Length - defaultPage.Length);
-                }
-
-                if (settings.RedirectDefaultPage
-                    && url.EndsWith("/" + defaultPage, StringComparison.InvariantCultureIgnoreCase)
-                    && result.RedirectAllowed)
-                {
-                    result.Reason = RedirectReason.Site_Root_Home;
-                    result.FinalUrl = Globals.AddHTTP(portalAliasUrl + "/");
-                    result.Action = ActionType.Redirect301;
-                }
-                else
-                {
-                    // special case -> look in the tabdict for a blank intercept
-                    // 735 : switch to custom method for getting portal
-                    PortalInfo portal = CacheController.GetPortal(portalAlias.PortalID, true);
-                    if (portal.HomeTabId == -1)
-                    {
-                        string tabKey = url;
-                        if (tabKey.EndsWith("/"))
-                        {
-                            tabKey = tabKey.TrimEnd('/');
-                        }
-
-                        tabKey += "::";
-                        using (tabDict.GetReadLock())
-                        {
-                            if (tabDict.ContainsKey(tabKey))
-                            {
-                                newUrl = tabDict[tabKey];
-                                reWritten = true;
-                            }
-                        }
-
-                        // if no home tab, but matched a portal alias, and no trailing /default.aspx
-                        // and no 'newUrl' value because not rewritten, then append the /default.aspx
-                        // and ask for a rewrite on that one.
-                        // DNNDEV-27291
-                        if (reWritten == false)
-                        {
-                            // Need to determine if this is a child alias
-                            newUrl = "/" + Globals.glbDefaultPage;
-                            reWritten = true;
-                        }
-                    }
-                    else
-                    {
-                        // set rewrite to home page of site
-                        // 760: check for portal alias specific culture before choosing home tabid
-                        bool checkForCustomAlias = false;
-                        bool customTabAlias = false;
-
-                        // check for culture-specific aliases
-                        string culture = null;
-                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
-
-                        // if there are chosen portal aliases, check to see if the found alias is one of them
-                        // if not, then will check for a custom alias per tab
-                        if (!portalAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias))
-                        {
-                            checkForCustomAlias = true;
-                        }
-                        else
-                        {
-                            // check for a specific culture for the alias
-                            culture = portalAliases.GetCultureByPortalIdAndAlias(portal.PortalID, portalAlias.HTTPAlias);
-                        }
-
-                        if (checkForCustomAlias)
-                        {
-                            // ok, this isnt' a chosen portal alias, check the list of custom aliases
-                            List<string> customAliasesForTabs = TabIndexController.GetCustomPortalAliases(settings);
-                            if (customAliasesForTabs != null && customAliasesForTabs.Contains(portalAlias.HTTPAlias.ToLowerInvariant()))
-                            {
-                                // ok, the alias is used as a custom tab, so now look in the dictionary to see if it's used a 'root' context
-                                string tabKey = url.ToLowerInvariant();
-                                if (tabKey.EndsWith("/"))
-                                {
-                                    tabKey = tabKey.TrimEnd('/');
-                                }
-
-                                if (tabKey.EndsWith("/default.aspx"))
-                                {
-                                    tabKey = tabKey.Substring(0, tabKey.Length - 13); // 13 = "/default.aspx".length
-                                }
-
-                                tabKey += "::";
-                                using (tabDict.GetReadLock())
-                                {
-                                    if (tabDict.ContainsKey(tabKey))
-                                    {
-                                        newUrl = tabDict[tabKey];
-                                        reWritten = true;
-                                        customTabAlias = true; // this alias is used as the alias for a custom tab
-                                    }
-                                }
-                            }
-                        }
-
-                        if (customTabAlias == false)
-                        {
-                            int tabId;
-                            if (!string.IsNullOrEmpty(querystringCol["TabId"]))
-                            {
-                                tabId = Convert.ToInt32(querystringCol["TabId"]);
-                                result.Action = ActionType.CheckFor301;
-                            }
-                            else
-                            {
-                                // not a custom alias for a specific tab, so it must be the home page for the portal we identified,
-                                // if its first request and splash page defined, then redirec to splash page.
-                                if (portal.SplashTabId > Null.NullInteger && HttpContext.Current != null &&
-                                    !HttpContext.Current.Request.Cookies.AllKeys.Contains("SplashPageView"))
-                                {
-                                    tabId = portal.SplashTabId;
-                                    HttpContext.Current.Response.Cookies.Add(
-                                        new HttpCookie("SplashPageView", "true") { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
-                                    result.Action = ActionType.Redirect302;
-                                    result.Reason = RedirectReason.Requested_SplashPage;
-                                }
-                                else
-                                {
-                                    tabId = portal.HomeTabId;
-                                }
-
-                                if (culture == null)
-                                {
-                                    culture = portal.DefaultLanguage; // set culture to default if not found specifically
-                                }
-                                else
-                                {
-                                    // if there is a specific culture for this alias, and it's different to the default language, then
-                                    // go check for a specific culture home page (5.5 and later)
-                                    tabId = TabPathHelper.GetHomePageTabIdForCulture(
-                                        portal.DefaultLanguage,
-                                        portal.PortalID,
-                                        culture,
-                                        tabId);
-                                }
-                            }
-
-                            // see if there is a skin for the alias/culture combination
-                            string skin = TabPathHelper.GetTabAliasSkinForTabAndAlias(
-                                portalAlias.PortalID,
-                                portalAlias.HTTPAlias, culture);
-                            if (string.IsNullOrEmpty(skin) == false)
-                            {
-                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty, "skinSrc=" + skin);
-                            }
-                            else
-                            {
-                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty);
-                            }
-
-                            // DNN-3789 always call this method as culture is defined by GetPageLocale
-                            AddLanguageCodeToRewritePath(ref newUrl, culture);
-
-                            // add on language specified by current portal alias
-                            reWritten = true;
-                        }
-                    }
-                }
-
-                if (reWritten)
-                {
-                    // check for replaced to site root from /default.aspx
-                    // 838  set redirect reason and action from result
-                    SetRewriteParameters(ref result, newUrl);
-                    ActionType action;
-                    RedirectReason reason;
-                    string resultingUrl;
-                    RedirectTokens.DetermineRedirectReasonAndAction(newUrl, result, true, settings, out resultingUrl, out reason, out action);
-                    newUrl = resultingUrl;
-                    result.Action = action;
-                    result.Reason = reason;
-                }
-            }
-
-            return newUrl;
-        }
-
-        private static bool CheckSpecialCase(string tabKeyVal, SharedDictionary<string, string> tabDict)
-        {
-            bool found = false;
-            int pathStart = tabKeyVal.LastIndexOf("::", StringComparison.Ordinal); // look for portal alias separator
-            int lastPath = tabKeyVal.LastIndexOf('/');
-
-            // get any path separator in the tab path portion
-            if (pathStart > lastPath)
-            {
-                lastPath = pathStart;
-            }
-
-            if (lastPath >= 0)
-            {
-                int defaultStart = tabKeyVal.IndexOf("default", lastPath, StringComparison.OrdinalIgnoreCase);
-
-                // no .aspx on the end anymore
-                if (defaultStart > 0 && defaultStart > lastPath)
-
-                // there is a default in the path, and it's not the entire path (ie pagnamedefault and not default)
-                {
-                    tabKeyVal = tabKeyVal.Substring(0, defaultStart);
-
-                    // get rid of the default.aspx part
-                    using (tabDict.GetReadLock())
-                    {
-                        found = tabDict.ContainsKey(tabKeyVal);
-
-                        // lookup the tabpath in the tab dictionary again
-                    }
-                }
-            }
-
-            return found;
-        }
-
-        private static UserInfo GetUser(int portalId, string vanityUrl)
-        {
-            string cacheKey = string.Format(CacheController.VanityUrlLookupKey, portalId);
-            var vanityUrlLookupDictionary = CBO.GetCachedObject<Dictionary<string, UserInfo>>(
-                new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId),
-                c => new Dictionary<string, UserInfo>());
-
-            if (!vanityUrlLookupDictionary.ContainsKey(vanityUrl))
-            {
-                vanityUrlLookupDictionary[vanityUrl] = UserController.GetUserByVanityUrl(portalId, vanityUrl);
-            }
-
-            return vanityUrlLookupDictionary[vanityUrl];
-        }
-
-        private static bool CheckTabPath(string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)
-        {
-            bool found;
-            string userParam = string.Empty;
-            string tabLookUpKey = tabKeyVal;
-            using (tabDict.GetReadLock())
-            {
-                found = tabDict.ContainsKey(tabLookUpKey); // lookup the tabpath in the tab dictionary
-            }
-
-            // special case, if no extensions and the last part of the tabKeyVal contains default.aspx, then
-            // split off the default.aspx part and try again - compensating for gemini issue http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=8651&PROJID=39
-            if (!found && settings.PageExtensionUsageType != PageExtensionUsageType.AlwaysUse)
-            {
-                found = CheckSpecialCase(tabLookUpKey, tabDict);
-            }
-
-            // Check for VanityUrl
-            var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
-            if (!found && !Globals.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
-            {
-                string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
-                if (urlParams.Length > 1)
-                {
-                    // Extract the first Url parameter
-                    string tabPath = urlParams[1];
-
-                    var urlSegments = tabPath.Split('/');
-
-                    string prefix = urlSegments[0];
-
-                    if (prefix == settings.VanityUrlPrefix && urlSegments.Length > 1)
-                    {
-                        string vanityUrl = urlSegments[1];
-
-                        // check if its a vanityUrl
-                        var user = GetUser(PortalController.GetEffectivePortalId(result.PortalId), vanityUrl);
-                        if (user != null)
-                        {
-                            userParam = "UserId=" + user.UserID.ToString();
-
-                            // Get the User profile Tab
-                            var portal = PortalController.Instance.GetPortal(result.PortalId);
-                            var profilePage = TabController.Instance.GetTab(portal.UserTabId, result.PortalId, false);
-
-                            FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
-                            string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
-
-                            // modify lookup key;
-                            tabLookUpKey = tabLookUpKey.Replace("::" + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), "::" + profilePagePath.TrimStart('/').ToLowerInvariant());
-
-                            using (tabDict.GetReadLock())
-                            {
-                                found = tabDict.ContainsKey(tabLookUpKey); // lookup the tabpath in the tab dictionary
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (found)
-            {
-                using (tabDict.GetReadLock())
-                {
-                    // determine what the rewritten URl will be
-                    newUrl = tabDict[tabLookUpKey];
-                }
-
-                // DNN-6747: if found match doesn't match current culture, then try to find correct match.
-                if (result.PortalId != Null.NullInteger && newUrl.Contains("language="))
-                {
-                    var currentLocale = result.CultureCode;
-                    if (string.IsNullOrEmpty(currentLocale))
-                    {
-                        currentLocale = Localization.GetPageLocale(new PortalSettings(result.PortalId)).Name;
-                    }
-
-                    if (!newUrl.Contains(currentLocale))
-                    {
-                        var tabPath = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None)[1];
-                        using (tabDict.GetReadLock())
-                        {
-                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith("::" + tabPath)))
-                            {
-                                if (tabDict[key].Contains("language=" + currentLocale))
-                                {
-                                    newUrl = tabDict[key];
-                                    tabKeyVal = key;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(userParam))
-                {
-                    newUrl = newUrl + "&" + userParam;
-                }
-
-                // if this is a match on the trigger dictionary rebuild,
-                // then temporarily store this value in case it's a page name change
-                // 677 : only match if is on actual tabKeyVal match, to prevent site root redirects
-                // statements were moved into this 'if' statement
-                result.dictVal = newUrl;
-                result.dictKey = tabKeyVal;
-            }
-
-            return found;
-        }
-
-        private static string ReplaceDefaultPage(string newUrl, string requestUrl, IEnumerable<string> list)
-        {
-            string url = newUrl; // fall back case: we don't change anything
-
-            // iterate the list and replace in the url is a match is found
-            foreach (string requestPage in list)
-            {
-                if (requestUrl.ToLowerInvariant().Contains(requestPage))
-                {
-                    url = newUrl.Replace(Globals.glbDefaultPage, requestPage);
-                    break;
-                }
-            }
-
-            return url;
-        }
-
-        private static string RewriteParametersFromModuleProvider(
-            string newUrl,
-            string tabKeyVal,
-            string[] urlParms,
-            bool isSiteRootMatch,
-            UrlAction result,
-            FriendlyUrlSettings settings,
-            out bool rewriteParms,
-            out bool newAction,
-            ref List<string> messages,
-            Guid parentTraceId)
-        {
-            string rewrittenUrl;
-            rewriteParms = ExtensionUrlProviderController.TransformFriendlyUrlPath(
-                newUrl,
-                tabKeyVal,
-                urlParms,
-                isSiteRootMatch,
-                ref result,
-                settings,
-                out rewrittenUrl,
-                out newAction,
-                ref messages,
-                parentTraceId);
-            if (rewriteParms)
-            {
-                result.CustomParmRewrite = true;
-            }
-
-            return rewrittenUrl;
-        }
-
-        private static void SetRewriteParameters(ref UrlAction result, string rewritePath)
-        {
-            // split out found replaced and store tabid, rulePortalId and do301 if found
-            result.RewritePath = rewritePath;
-            MatchCollection qsItems = RewriteParamsRegex.Matches(rewritePath);
-            foreach (Match itemMatch in qsItems)
-            {
-                string val = itemMatch.Groups["val"].Value;
-                string key = itemMatch.Groups["key"].Value;
-                switch (key.ToLowerInvariant())
-                {
-                    case "tabid":
-                        int tabidtemp;
-                        if (int.TryParse(val, out tabidtemp))
-                        {
-                            result.TabId = tabidtemp;
-                        }
-
-                        break;
-                    case "portalid":
-                        int pid;
-                        if (int.TryParse(val, out pid))
-                        {
-                            result.PortalId = pid;
-                        }
-
-                        break;
-                    case "language":
-                        result.CultureCode = val;
-                        break;
-                    case "ctl":
-                        // 786: force redirect for ctl/terms or ctl/privacy
-                        RequestRedirectOnBuiltInUrl(val, rewritePath, result);
-                        break;
-                }
-            }
-
-            // remove the application path
-            result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", string.Empty);
-        }
-
         /// <summary>
         /// Checks for exclusions on Rewriting the path, based on a regex pattern.
         /// </summary>
@@ -1942,6 +1421,527 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return result;
+        }
+
+        private static string AddQueryStringToRewritePath(string rewritePath, string queryString)
+        {
+            // now add back querystring if they existed
+            if (queryString != string.Empty)
+            {
+                bool rewritePathHasQuery = rewritePath.IndexOf("?", StringComparison.Ordinal) != -1;
+                if (queryString.StartsWith("?"))
+                {
+                    queryString = queryString.Substring(1);
+                }
+
+                string[] parms = queryString.Split('&');
+
+                // iterate through the array of parameters
+                for (int i = 0; i < parms.Length; i++)
+                {
+                    bool hasValue = false;
+
+                    // get parameter name
+                    string parmName = parms[i];
+
+                    // check if parm name contains a value as well
+                    if (parmName.IndexOf("=", StringComparison.Ordinal) != -1)
+                    {
+                        // snip off the =value part of the parm
+                        parmName = parmName.Substring(0, parmName.IndexOf("=", StringComparison.Ordinal));
+                        hasValue = true;
+                    }
+
+                    // 597 : do a compare with the '=' on the end to only
+                    // compare the entire parmname, not just the start
+                    string comparePath1 = "?" + parmName.ToLowerInvariant();
+                    string comparePath2 = "&" + parmName.ToLowerInvariant();
+                    if (hasValue)
+                    {
+                        comparePath1 += "=";
+                        comparePath2 += "=";
+                    }
+
+                    // check if parameter already exists in the rewrite path
+                    // we only want to add the querystring back on if the
+                    // query string keys were not already shown in the friendly
+                    // url path
+                    if (!rewritePath.ToLowerInvariant().Contains(comparePath1)
+                        && !rewritePath.ToLowerInvariant().Contains(comparePath2))
+                    {
+                        // 622 : remove encoding from querystring paths
+                        // 699 : reverses 622 because works from Request.QUeryString instead of Request.Url.Query
+                        // string queryStringPiece = System.Web.HttpUtility.UrlDecode(parms[i]);
+                        string queryStringPiece = parms[i];
+
+                        // no decoding - querystring passes through rewriting process untouched
+                        // add parameter to SendTo value
+                        if (rewritePathHasQuery)
+                        {
+                            rewritePath = rewritePath + "&" + queryStringPiece;
+                        }
+                        else
+                        {
+                            rewritePath = rewritePath + "?" + queryStringPiece;
+                            rewritePathHasQuery = true;
+                        }
+                    }
+                }
+            }
+
+            return rewritePath;
+        }
+
+        private static string CheckIfPortalAlias(string url, NameValueCollection querystringCol, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict)
+        {
+            string newUrl = url;
+            bool reWritten = false;
+
+            string defaultPage = Globals.glbDefaultPage.ToLowerInvariant();
+            string portalAliasUrl = url.ToLowerInvariant().Replace("/" + defaultPage, string.Empty);
+
+            // if there is a straight match on a portal alias, it's the home page for that portal requested
+            var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
+            if (portalAlias != null)
+            {
+                // special case : sometimes, some servers issue root/default.aspx when root/ was requested, sometimes not.  It depends
+                // on other server software installed (apparently)
+                // so check the raw Url and the url, and see if they are the same except for the /default.aspx
+                string rawUrl = result.RawUrl;
+                if (url.ToLowerInvariant().EndsWith(rawUrl + defaultPage.ToLowerInvariant()))
+                {
+                    // special case - change the url to be equal to the raw Url
+                    url = url.Substring(0, url.Length - defaultPage.Length);
+                }
+
+                if (settings.RedirectDefaultPage
+                    && url.EndsWith("/" + defaultPage, StringComparison.InvariantCultureIgnoreCase)
+                    && result.RedirectAllowed)
+                {
+                    result.Reason = RedirectReason.Site_Root_Home;
+                    result.FinalUrl = Globals.AddHTTP(portalAliasUrl + "/");
+                    result.Action = ActionType.Redirect301;
+                }
+                else
+                {
+                    // special case -> look in the tabdict for a blank intercept
+                    // 735 : switch to custom method for getting portal
+                    PortalInfo portal = CacheController.GetPortal(portalAlias.PortalID, true);
+                    if (portal.HomeTabId == -1)
+                    {
+                        string tabKey = url;
+                        if (tabKey.EndsWith("/"))
+                        {
+                            tabKey = tabKey.TrimEnd('/');
+                        }
+
+                        tabKey += "::";
+                        using (tabDict.GetReadLock())
+                        {
+                            if (tabDict.ContainsKey(tabKey))
+                            {
+                                newUrl = tabDict[tabKey];
+                                reWritten = true;
+                            }
+                        }
+
+                        // if no home tab, but matched a portal alias, and no trailing /default.aspx
+                        // and no 'newUrl' value because not rewritten, then append the /default.aspx
+                        // and ask for a rewrite on that one.
+                        // DNNDEV-27291
+                        if (reWritten == false)
+                        {
+                            // Need to determine if this is a child alias
+                            newUrl = "/" + Globals.glbDefaultPage;
+                            reWritten = true;
+                        }
+                    }
+                    else
+                    {
+                        // set rewrite to home page of site
+                        // 760: check for portal alias specific culture before choosing home tabid
+                        bool checkForCustomAlias = false;
+                        bool customTabAlias = false;
+
+                        // check for culture-specific aliases
+                        string culture = null;
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
+
+                        // if there are chosen portal aliases, check to see if the found alias is one of them
+                        // if not, then will check for a custom alias per tab
+                        if (!portalAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias))
+                        {
+                            checkForCustomAlias = true;
+                        }
+                        else
+                        {
+                            // check for a specific culture for the alias
+                            culture = portalAliases.GetCultureByPortalIdAndAlias(portal.PortalID, portalAlias.HTTPAlias);
+                        }
+
+                        if (checkForCustomAlias)
+                        {
+                            // ok, this isnt' a chosen portal alias, check the list of custom aliases
+                            List<string> customAliasesForTabs = TabIndexController.GetCustomPortalAliases(settings);
+                            if (customAliasesForTabs != null && customAliasesForTabs.Contains(portalAlias.HTTPAlias.ToLowerInvariant()))
+                            {
+                                // ok, the alias is used as a custom tab, so now look in the dictionary to see if it's used a 'root' context
+                                string tabKey = url.ToLowerInvariant();
+                                if (tabKey.EndsWith("/"))
+                                {
+                                    tabKey = tabKey.TrimEnd('/');
+                                }
+
+                                if (tabKey.EndsWith("/default.aspx"))
+                                {
+                                    tabKey = tabKey.Substring(0, tabKey.Length - 13); // 13 = "/default.aspx".length
+                                }
+
+                                tabKey += "::";
+                                using (tabDict.GetReadLock())
+                                {
+                                    if (tabDict.ContainsKey(tabKey))
+                                    {
+                                        newUrl = tabDict[tabKey];
+                                        reWritten = true;
+                                        customTabAlias = true; // this alias is used as the alias for a custom tab
+                                    }
+                                }
+                            }
+                        }
+
+                        if (customTabAlias == false)
+                        {
+                            int tabId;
+                            if (!string.IsNullOrEmpty(querystringCol["TabId"]))
+                            {
+                                tabId = Convert.ToInt32(querystringCol["TabId"]);
+                                result.Action = ActionType.CheckFor301;
+                            }
+                            else
+                            {
+                                // not a custom alias for a specific tab, so it must be the home page for the portal we identified,
+                                // if its first request and splash page defined, then redirec to splash page.
+                                if (portal.SplashTabId > Null.NullInteger && HttpContext.Current != null &&
+                                    !HttpContext.Current.Request.Cookies.AllKeys.Contains("SplashPageView"))
+                                {
+                                    tabId = portal.SplashTabId;
+                                    HttpContext.Current.Response.Cookies.Add(
+                                        new HttpCookie("SplashPageView", "true") { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
+                                    result.Action = ActionType.Redirect302;
+                                    result.Reason = RedirectReason.Requested_SplashPage;
+                                }
+                                else
+                                {
+                                    tabId = portal.HomeTabId;
+                                }
+
+                                if (culture == null)
+                                {
+                                    culture = portal.DefaultLanguage; // set culture to default if not found specifically
+                                }
+                                else
+                                {
+                                    // if there is a specific culture for this alias, and it's different to the default language, then
+                                    // go check for a specific culture home page (5.5 and later)
+                                    tabId = TabPathHelper.GetHomePageTabIdForCulture(
+                                        portal.DefaultLanguage,
+                                        portal.PortalID,
+                                        culture,
+                                        tabId);
+                                }
+                            }
+
+                            // see if there is a skin for the alias/culture combination
+                            string skin = TabPathHelper.GetTabAliasSkinForTabAndAlias(
+                                portalAlias.PortalID,
+                                portalAlias.HTTPAlias, culture);
+                            if (string.IsNullOrEmpty(skin) == false)
+                            {
+                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty, "skinSrc=" + skin);
+                            }
+                            else
+                            {
+                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty);
+                            }
+
+                            // DNN-3789 always call this method as culture is defined by GetPageLocale
+                            AddLanguageCodeToRewritePath(ref newUrl, culture);
+
+                            // add on language specified by current portal alias
+                            reWritten = true;
+                        }
+                    }
+                }
+
+                if (reWritten)
+                {
+                    // check for replaced to site root from /default.aspx
+                    // 838  set redirect reason and action from result
+                    SetRewriteParameters(ref result, newUrl);
+                    ActionType action;
+                    RedirectReason reason;
+                    string resultingUrl;
+                    RedirectTokens.DetermineRedirectReasonAndAction(newUrl, result, true, settings, out resultingUrl, out reason, out action);
+                    newUrl = resultingUrl;
+                    result.Action = action;
+                    result.Reason = reason;
+                }
+            }
+
+            return newUrl;
+        }
+
+        private static bool CheckSpecialCase(string tabKeyVal, SharedDictionary<string, string> tabDict)
+        {
+            bool found = false;
+            int pathStart = tabKeyVal.LastIndexOf("::", StringComparison.Ordinal); // look for portal alias separator
+            int lastPath = tabKeyVal.LastIndexOf('/');
+
+            // get any path separator in the tab path portion
+            if (pathStart > lastPath)
+            {
+                lastPath = pathStart;
+            }
+
+            if (lastPath >= 0)
+            {
+                int defaultStart = tabKeyVal.IndexOf("default", lastPath, StringComparison.OrdinalIgnoreCase);
+
+                // no .aspx on the end anymore
+                if (defaultStart > 0 && defaultStart > lastPath)
+
+                // there is a default in the path, and it's not the entire path (ie pagnamedefault and not default)
+                {
+                    tabKeyVal = tabKeyVal.Substring(0, defaultStart);
+
+                    // get rid of the default.aspx part
+                    using (tabDict.GetReadLock())
+                    {
+                        found = tabDict.ContainsKey(tabKeyVal);
+
+                        // lookup the tabpath in the tab dictionary again
+                    }
+                }
+            }
+
+            return found;
+        }
+
+        private static UserInfo GetUser(int portalId, string vanityUrl)
+        {
+            string cacheKey = string.Format(CacheController.VanityUrlLookupKey, portalId);
+            var vanityUrlLookupDictionary = CBO.GetCachedObject<Dictionary<string, UserInfo>>(
+                new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId),
+                c => new Dictionary<string, UserInfo>());
+
+            if (!vanityUrlLookupDictionary.ContainsKey(vanityUrl))
+            {
+                vanityUrlLookupDictionary[vanityUrl] = UserController.GetUserByVanityUrl(portalId, vanityUrl);
+            }
+
+            return vanityUrlLookupDictionary[vanityUrl];
+        }
+
+        private static bool CheckTabPath(string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)
+        {
+            bool found;
+            string userParam = string.Empty;
+            string tabLookUpKey = tabKeyVal;
+            using (tabDict.GetReadLock())
+            {
+                found = tabDict.ContainsKey(tabLookUpKey); // lookup the tabpath in the tab dictionary
+            }
+
+            // special case, if no extensions and the last part of the tabKeyVal contains default.aspx, then
+            // split off the default.aspx part and try again - compensating for gemini issue http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=8651&PROJID=39
+            if (!found && settings.PageExtensionUsageType != PageExtensionUsageType.AlwaysUse)
+            {
+                found = CheckSpecialCase(tabLookUpKey, tabDict);
+            }
+
+            // Check for VanityUrl
+            var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
+            if (!found && !Globals.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
+            {
+                string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
+                if (urlParams.Length > 1)
+                {
+                    // Extract the first Url parameter
+                    string tabPath = urlParams[1];
+
+                    var urlSegments = tabPath.Split('/');
+
+                    string prefix = urlSegments[0];
+
+                    if (prefix == settings.VanityUrlPrefix && urlSegments.Length > 1)
+                    {
+                        string vanityUrl = urlSegments[1];
+
+                        // check if its a vanityUrl
+                        var user = GetUser(PortalController.GetEffectivePortalId(result.PortalId), vanityUrl);
+                        if (user != null)
+                        {
+                            userParam = "UserId=" + user.UserID.ToString();
+
+                            // Get the User profile Tab
+                            var portal = PortalController.Instance.GetPortal(result.PortalId);
+                            var profilePage = TabController.Instance.GetTab(portal.UserTabId, result.PortalId, false);
+
+                            FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
+                            string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
+
+                            // modify lookup key;
+                            tabLookUpKey = tabLookUpKey.Replace("::" + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), "::" + profilePagePath.TrimStart('/').ToLowerInvariant());
+
+                            using (tabDict.GetReadLock())
+                            {
+                                found = tabDict.ContainsKey(tabLookUpKey); // lookup the tabpath in the tab dictionary
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (found)
+            {
+                using (tabDict.GetReadLock())
+                {
+                    // determine what the rewritten URl will be
+                    newUrl = tabDict[tabLookUpKey];
+                }
+
+                // DNN-6747: if found match doesn't match current culture, then try to find correct match.
+                if (result.PortalId != Null.NullInteger && newUrl.Contains("language="))
+                {
+                    var currentLocale = result.CultureCode;
+                    if (string.IsNullOrEmpty(currentLocale))
+                    {
+                        currentLocale = Localization.GetPageLocale(new PortalSettings(result.PortalId)).Name;
+                    }
+
+                    if (!newUrl.Contains(currentLocale))
+                    {
+                        var tabPath = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None)[1];
+                        using (tabDict.GetReadLock())
+                        {
+                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith("::" + tabPath)))
+                            {
+                                if (tabDict[key].Contains("language=" + currentLocale))
+                                {
+                                    newUrl = tabDict[key];
+                                    tabKeyVal = key;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(userParam))
+                {
+                    newUrl = newUrl + "&" + userParam;
+                }
+
+                // if this is a match on the trigger dictionary rebuild,
+                // then temporarily store this value in case it's a page name change
+                // 677 : only match if is on actual tabKeyVal match, to prevent site root redirects
+                // statements were moved into this 'if' statement
+                result.dictVal = newUrl;
+                result.dictKey = tabKeyVal;
+            }
+
+            return found;
+        }
+
+        private static string ReplaceDefaultPage(string newUrl, string requestUrl, IEnumerable<string> list)
+        {
+            string url = newUrl; // fall back case: we don't change anything
+
+            // iterate the list and replace in the url is a match is found
+            foreach (string requestPage in list)
+            {
+                if (requestUrl.ToLowerInvariant().Contains(requestPage))
+                {
+                    url = newUrl.Replace(Globals.glbDefaultPage, requestPage);
+                    break;
+                }
+            }
+
+            return url;
+        }
+
+        private static string RewriteParametersFromModuleProvider(
+            string newUrl,
+            string tabKeyVal,
+            string[] urlParms,
+            bool isSiteRootMatch,
+            UrlAction result,
+            FriendlyUrlSettings settings,
+            out bool rewriteParms,
+            out bool newAction,
+            ref List<string> messages,
+            Guid parentTraceId)
+        {
+            string rewrittenUrl;
+            rewriteParms = ExtensionUrlProviderController.TransformFriendlyUrlPath(
+                newUrl,
+                tabKeyVal,
+                urlParms,
+                isSiteRootMatch,
+                ref result,
+                settings,
+                out rewrittenUrl,
+                out newAction,
+                ref messages,
+                parentTraceId);
+            if (rewriteParms)
+            {
+                result.CustomParmRewrite = true;
+            }
+
+            return rewrittenUrl;
+        }
+
+        private static void SetRewriteParameters(ref UrlAction result, string rewritePath)
+        {
+            // split out found replaced and store tabid, rulePortalId and do301 if found
+            result.RewritePath = rewritePath;
+            MatchCollection qsItems = RewriteParamsRegex.Matches(rewritePath);
+            foreach (Match itemMatch in qsItems)
+            {
+                string val = itemMatch.Groups["val"].Value;
+                string key = itemMatch.Groups["key"].Value;
+                switch (key.ToLowerInvariant())
+                {
+                    case "tabid":
+                        int tabidtemp;
+                        if (int.TryParse(val, out tabidtemp))
+                        {
+                            result.TabId = tabidtemp;
+                        }
+
+                        break;
+                    case "portalid":
+                        int pid;
+                        if (int.TryParse(val, out pid))
+                        {
+                            result.PortalId = pid;
+                        }
+
+                        break;
+                    case "language":
+                        result.CultureCode = val;
+                        break;
+                    case "ctl":
+                        // 786: force redirect for ctl/terms or ctl/privacy
+                        RequestRedirectOnBuiltInUrl(val, rewritePath, result);
+                        break;
+                }
+            }
+
+            // remove the application path
+            result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", string.Empty);
         }
     }
 }

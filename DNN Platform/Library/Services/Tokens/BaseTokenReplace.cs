@@ -54,8 +54,6 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        protected bool UseObjectLessExpression { get; set; }
-
         /// <summary>
         /// Gets the Format provider as Culture info from stored language or current culture.
         /// </summary>
@@ -84,6 +82,8 @@ namespace DotNetNuke.Services.Tokens
                 return tokenizer;
             }
         }
+
+        protected bool UseObjectLessExpression { get; set; }
 
         // ReSharper disable once InconsistentNaming
         protected abstract string replacedTokenValue(string objectName, string propertyName, string format);

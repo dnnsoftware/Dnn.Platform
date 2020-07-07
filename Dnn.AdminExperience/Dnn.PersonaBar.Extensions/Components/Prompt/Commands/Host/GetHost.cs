@@ -51,7 +51,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
 
             return new ConsoleResultModel(string.Empty) { Data = lst, Output = this.LocalizeString("Prompt_GetHost_OkMessage") };
         }
-
     }
 }
 

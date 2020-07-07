@@ -37,48 +37,6 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can add a folder or file.
-        /// </summary>
-        /// <param name="folder">The page.</param>
-        /// <returns>A flag indicating whether the user has permission.</returns>
-        bool IFolderPermissionController.CanAddFolder(IFolderInfo folder)
-        {
-            return provider.CanAddFolder((FolderInfo)folder);
-        }
-
-        /// <summary>
-        /// Returns a flag indicating whether the current user can addmister a folder.
-        /// </summary>
-        /// <param name="folder">The page.</param>
-        /// <returns>A flag indicating whether the user has permission.</returns>
-        bool IFolderPermissionController.CanAdminFolder(IFolderInfo folder)
-        {
-            return provider.CanAdminFolder((FolderInfo)folder);
-        }
-
-        protected override Func<IFolderPermissionController> GetFactory()
-        {
-            return () => new FolderPermissionController();
-        }
-
-        /// <summary>
-        /// Returns a flag indicating whether the current user can view a folder or file.
-        /// </summary>
-        /// <param name="folder">The page.</param>
-        /// <returns>A flag indicating whether the user has permission.</returns>
-        bool IFolderPermissionController.CanViewFolder(IFolderInfo folder)
-        {
-            return provider.CanViewFolder((FolderInfo)folder);
-        }
-
-        private static void ClearPermissionCache(int PortalID)
-        {
-            DataCache.ClearFolderPermissionsCache(PortalID);
-            DataCache.ClearCache(string.Format("Folders|{0}|", PortalID));
-            DataCache.ClearFolderCache(PortalID);
-        }
-
-        /// <summary>
         /// Returns a flag indicating whether the current user can addmister a folder.
         /// </summary>
         /// <param name="folder">The page.</param>
@@ -214,6 +172,18 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache(folder.PortalID);
         }
 
+        protected override Func<IFolderPermissionController> GetFactory()
+        {
+            return () => new FolderPermissionController();
+        }
+
+        private static void ClearPermissionCache(int PortalID)
+        {
+            DataCache.ClearFolderPermissionsCache(PortalID);
+            DataCache.ClearCache(string.Format("Folders|{0}|", PortalID));
+            DataCache.ClearFolderCache(PortalID);
+        }
+
         private static bool CopyPermissionsToSubfoldersRecursive(IFolderInfo folder, FolderPermissionCollection newPermissions)
         {
             bool clearCache = Null.NullBoolean;
@@ -232,6 +202,36 @@ namespace DotNetNuke.Security.Permissions
             }
 
             return clearCache;
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add a folder or file.
+        /// </summary>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        bool IFolderPermissionController.CanAddFolder(IFolderInfo folder)
+        {
+            return provider.CanAddFolder((FolderInfo)folder);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can addmister a folder.
+        /// </summary>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        bool IFolderPermissionController.CanAdminFolder(IFolderInfo folder)
+        {
+            return provider.CanAdminFolder((FolderInfo)folder);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can view a folder or file.
+        /// </summary>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        bool IFolderPermissionController.CanViewFolder(IFolderInfo folder)
+        {
+            return provider.CanViewFolder((FolderInfo)folder);
         }
     }
 }

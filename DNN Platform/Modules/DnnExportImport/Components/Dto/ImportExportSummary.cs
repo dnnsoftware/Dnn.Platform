@@ -24,6 +24,16 @@ namespace Dnn.ExportImport.Components.Dto
         }
 
         /// <summary>
+        /// Gets formatted Date from which data was taken to perform export.
+        /// </summary>
+        public string FromDateString => Util.GetDateTimeString(this.FromDate);
+
+        /// <summary>
+        /// Gets formatted Date till which data was taken to perform export.
+        /// </summary>
+        public string ToDateString => Util.GetDateTimeString(this.ToDate);
+
+        /// <summary>
         /// Gets or sets a value indicating whether does this import/export includes the properties definitions or not.
         /// </summary>
         public bool IncludeProfileProperties { get; set; }
@@ -59,19 +69,9 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTime? FromDate { get; set; }
 
         /// <summary>
-        /// Gets formatted Date from which data was taken to perform export.
-        /// </summary>
-        public string FromDateString => Util.GetDateTimeString(this.FromDate);
-
-        /// <summary>
         /// Gets or sets date till which data was taken to perform export.
         /// </summary>
         public DateTime ToDate { get; set; }
-
-        /// <summary>
-        /// Gets formatted Date till which data was taken to perform export.
-        /// </summary>
-        public string ToDateString => Util.GetDateTimeString(this.ToDate);
 
         /// <summary>
         /// Gets or sets summary of each item export.

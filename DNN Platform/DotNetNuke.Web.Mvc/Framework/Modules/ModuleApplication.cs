@@ -21,7 +21,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     public class ModuleApplication
     {
         internal static readonly string MvcVersion = GetMvcVersionString();
-
         protected const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         protected const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
@@ -37,10 +36,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             : this(null, false)
         {
         }
-
-        public RequestContext RequestContext { get; private set; }
-
-        private static bool DisableMvcResponseHeader { get; set; }
 
         public ModuleApplication(bool disableMvcResponseHeader)
             : this(null, disableMvcResponseHeader)
@@ -59,6 +54,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             // ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
 
+        public RequestContext RequestContext { get; private set; }
+
         public virtual IControllerFactory ControllerFactory { get; set; }
 
         public string DefaultActionName { get; set; }
@@ -72,6 +69,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public string ModuleName { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
+        private static bool DisableMvcResponseHeader { get; set; }
 
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)
         {
@@ -166,6 +164,20 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             });
         }
 
+        protected internal virtual void AddVersionHeader(HttpContextBase httpContext)
+        {
+            if (!DisableMvcResponseHeader)
+            {
+                httpContext.Response.AppendHeader(MvcVersionHeaderName, MvcVersion);
+            }
+        }
+
+        protected static string NormalizeFolderPath(string path)
+        {
+            // Remove leading and trailing slashes
+            return !string.IsNullOrEmpty(path) ? path.Trim('/') : path;
+        }
+
         protected void EnsureInitialized()
         {
             // Double-check lock to wait for initialization
@@ -185,20 +197,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 this.Init();
                 this._initialized = true;
             }
-        }
-
-        protected internal virtual void AddVersionHeader(HttpContextBase httpContext)
-        {
-            if (!DisableMvcResponseHeader)
-            {
-                httpContext.Response.AppendHeader(MvcVersionHeaderName, MvcVersion);
-            }
-        }
-
-        protected static string NormalizeFolderPath(string path)
-        {
-            // Remove leading and trailing slashes
-            return !string.IsNullOrEmpty(path) ? path.Trim('/') : path;
         }
 
         private static string GetMvcVersionString()

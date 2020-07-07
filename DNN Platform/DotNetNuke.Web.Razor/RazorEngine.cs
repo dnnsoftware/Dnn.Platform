@@ -48,6 +48,12 @@ namespace DotNetNuke.Web.Razor
         public DotNetNukeWebPage Webpage { get; set; }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        protected HttpContextBase HttpContext
+        {
+            get { return new HttpContextWrapper(System.Web.HttpContext.Current); }
+        }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile { get; set; }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -55,12 +61,6 @@ namespace DotNetNuke.Web.Razor
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string LocalResourceFile { get; set; }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected HttpContextBase HttpContext
-        {
-            get { return new HttpContextWrapper(System.Web.HttpContext.Current); }
-        }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public Type RequestedModelType()

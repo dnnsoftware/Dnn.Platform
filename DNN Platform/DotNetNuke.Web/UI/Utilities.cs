@@ -34,11 +34,6 @@ namespace DotNetNuke.Web.UI
             ApplySkin(telerikControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
         }
 
-        private static void AddMessageWindow(Control ctrl)
-        {
-            ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
-        }
-
         public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName)
         {
             ApplySkin(telerikControl, string.Empty, controlName, fallBackEmbeddedSkinName);
@@ -283,6 +278,11 @@ namespace DotNetNuke.Web.UI
         public static void RegisterAlertOnPageLoad(Control ctrl, MessageWindowParameters message)
         {
             ctrl.Page.ClientScript.RegisterClientScriptBlock(ctrl.GetType(), ctrl.ID + "_AlertOnPageLoad", GetClientAlert(ctrl, message), true);
+        }
+
+        private static void AddMessageWindow(Control ctrl)
+        {
+            ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
         }
     }
 }

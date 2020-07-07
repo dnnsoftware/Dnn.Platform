@@ -72,13 +72,6 @@ namespace DotNetNuke.Services.Search.Internals
             return CBO.GetCachedObject<IList<SynonymsGroup>>(cachArg, this.GetSynonymsGroupsCallBack);
         }
 
-        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
-        {
-            var cacheKey = string.Format("{0}_{1}_{2}", SynonymTermsCacheKey, portalId, cultureCode);
-            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cachArg, this.SynonymTermsCallBack);
-        }
-
         public int AddSynonymsGroup(string synonymsTags, int portalId, string cultureCode, out string duplicateWord)
         {
             duplicateWord = null;
@@ -548,6 +541,13 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return datim;
+        }
+
+        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
+        {
+            var cacheKey = string.Format("{0}_{1}_{2}", SynonymTermsCacheKey, portalId, cultureCode);
+            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
+            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cachArg, this.SynonymTermsCallBack);
         }
 
         private string FixLastWord(string lastWord, bool allowLeadingWildcard)

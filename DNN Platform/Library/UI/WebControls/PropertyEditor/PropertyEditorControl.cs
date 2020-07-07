@@ -60,6 +60,36 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a value indicating whether gets whether any of the properties have been changed.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        public bool IsDirty
+        {
+            get
+            {
+                return this.Fields.Cast<FieldEditorControl>().Any(editor => editor.Visible && editor.IsDirty);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether all of the properties are Valid.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        public bool IsValid
+        {
+            get
+            {
+                return this.Fields.Cast<FieldEditorControl>().All(editor => !editor.Visible || editor.IsValid);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the editor Autogenerates its editors.
         /// </summary>
         /// <value>The DataSource object.</value>
@@ -76,25 +106,6 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(false)]
         [Category("Data")]
         public object DataSource { get; set; }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Underlying DataSource.
-        /// </summary>
-        /// <value>An IEnumerable Boolean.</value>
-        /// -----------------------------------------------------------------------------
-        protected virtual IEnumerable UnderlyingDataSource
-        {
-            get { return this.GetProperties(); }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -142,36 +153,6 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A HelpDisplayMode enum.</value>
         /// -----------------------------------------------------------------------------
         public HelpDisplayMode HelpDisplayMode { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether any of the properties have been changed.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
-        [Browsable(false)]
-        public bool IsDirty
-        {
-            get
-            {
-                return this.Fields.Cast<FieldEditorControl>().Any(editor => editor.Visible && editor.IsDirty);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether all of the properties are Valid.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
-        [Browsable(false)]
-        public bool IsValid
-        {
-            get
-            {
-                return this.Fields.Cast<FieldEditorControl>().All(editor => !editor.Visible || editor.IsValid);
-            }
-        }
 
         public LabelMode LabelMode { get; set; }
 
@@ -357,6 +338,25 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Underlying DataSource.
+        /// </summary>
+        /// <value>An IEnumerable Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        protected virtual IEnumerable UnderlyingDataSource
+        {
+            get { return this.GetProperties(); }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Binds the controls to the DataSource.
@@ -435,74 +435,6 @@ namespace DotNetNuke.UI.WebControls
             this.AddEditorRow(editor, container);
 
             this.Fields.Add(editor);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetProperties returns an array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see>.
-        /// </summary>
-        /// <returns>An array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see> objects
-        /// for the current DataSource object.</returns>
-        /// <remarks>
-        /// GetProperties will return an array of public properties for the current DataSource
-        /// object.  The properties will be sorted according to the SortMode property.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private IEnumerable<PropertyInfo> GetProperties()
-        {
-            if (this.DataSource != null)
-            {
-                // TODO:  We need to add code to support using the cache in the future
-                const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
-
-                var properties = this.DataSource.GetType().GetProperties(bindings);
-
-                // Apply sort method
-                switch (this.SortMode)
-                {
-                    case PropertySortType.Alphabetical:
-                        Array.Sort(properties, new PropertyNameComparer());
-                        break;
-                    case PropertySortType.Category:
-                        Array.Sort(properties, new PropertyCategoryComparer());
-                        break;
-                    case PropertySortType.SortOrderAttribute:
-                        Array.Sort(properties, new PropertySortOrderComparer());
-                        break;
-                }
-
-                return properties;
-            }
-
-            return null;
-        }
-
-        private void AddEditorRow(FieldEditorControl editor, WebControl container)
-        {
-            editor.ControlStyle.CopyFrom(this.ItemStyle);
-            editor.LabelStyle.CopyFrom(this.LabelStyle);
-            editor.HelpStyle.CopyFrom(this.HelpStyle);
-            editor.ErrorStyle.CopyFrom(this.ErrorStyle);
-            editor.VisibilityStyle.CopyFrom(this.VisibilityStyle);
-            editor.EditControlStyle.CopyFrom(this.EditControlStyle);
-            if (editor.EditControlWidth == Unit.Empty)
-            {
-                editor.EditControlWidth = this.EditControlWidth;
-            }
-
-            editor.LocalResourceFile = this.LocalResourceFile;
-            editor.RequiredUrl = this.RequiredUrl;
-            editor.ShowRequired = this.ShowRequired;
-            editor.ShowVisibility = this.ShowVisibility;
-            editor.User = this.User;
-            editor.Width = this.Width;
-            editor.ItemAdded += this.CollectionItemAdded;
-            editor.ItemChanged += this.ListItemChanged;
-            editor.ItemCreated += this.EditorItemCreated;
-            editor.ItemDeleted += this.CollectionItemDeleted;
-
-            editor.DataBind();
-            container.Controls.Add(editor);
         }
 
         /// -----------------------------------------------------------------------------
@@ -985,6 +917,74 @@ namespace DotNetNuke.UI.WebControls
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
         {
             this._itemChanged = true;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetProperties returns an array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see>.
+        /// </summary>
+        /// <returns>An array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see> objects
+        /// for the current DataSource object.</returns>
+        /// <remarks>
+        /// GetProperties will return an array of public properties for the current DataSource
+        /// object.  The properties will be sorted according to the SortMode property.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private IEnumerable<PropertyInfo> GetProperties()
+        {
+            if (this.DataSource != null)
+            {
+                // TODO:  We need to add code to support using the cache in the future
+                const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+
+                var properties = this.DataSource.GetType().GetProperties(bindings);
+
+                // Apply sort method
+                switch (this.SortMode)
+                {
+                    case PropertySortType.Alphabetical:
+                        Array.Sort(properties, new PropertyNameComparer());
+                        break;
+                    case PropertySortType.Category:
+                        Array.Sort(properties, new PropertyCategoryComparer());
+                        break;
+                    case PropertySortType.SortOrderAttribute:
+                        Array.Sort(properties, new PropertySortOrderComparer());
+                        break;
+                }
+
+                return properties;
+            }
+
+            return null;
+        }
+
+        private void AddEditorRow(FieldEditorControl editor, WebControl container)
+        {
+            editor.ControlStyle.CopyFrom(this.ItemStyle);
+            editor.LabelStyle.CopyFrom(this.LabelStyle);
+            editor.HelpStyle.CopyFrom(this.HelpStyle);
+            editor.ErrorStyle.CopyFrom(this.ErrorStyle);
+            editor.VisibilityStyle.CopyFrom(this.VisibilityStyle);
+            editor.EditControlStyle.CopyFrom(this.EditControlStyle);
+            if (editor.EditControlWidth == Unit.Empty)
+            {
+                editor.EditControlWidth = this.EditControlWidth;
+            }
+
+            editor.LocalResourceFile = this.LocalResourceFile;
+            editor.RequiredUrl = this.RequiredUrl;
+            editor.ShowRequired = this.ShowRequired;
+            editor.ShowVisibility = this.ShowVisibility;
+            editor.User = this.User;
+            editor.Width = this.Width;
+            editor.ItemAdded += this.CollectionItemAdded;
+            editor.ItemChanged += this.ListItemChanged;
+            editor.ItemCreated += this.EditorItemCreated;
+            editor.ItemDeleted += this.CollectionItemDeleted;
+
+            editor.DataBind();
+            container.Controls.Add(editor);
         }
     }
 }

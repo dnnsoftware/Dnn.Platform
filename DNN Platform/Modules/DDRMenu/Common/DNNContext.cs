@@ -40,12 +40,6 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             Current = this;
         }
 
-        public static DNNContext Current
-        {
-            get { return (DNNContext)HttpContext.Current.Items[DataName]; }
-            private set { HttpContext.Current.Items[DataName] = value; }
-        }
-
         public static string ModuleName
         {
             get { return _ModuleName ?? (_ModuleName = GetModuleNameFromAssembly()); }
@@ -62,7 +56,11 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             }
         }
 
-        public Control HostControl { get; private set; }
+        public static DNNContext Current
+        {
+            get { return (DNNContext)HttpContext.Current.Items[DataName]; }
+            private set { HttpContext.Current.Items[DataName] = value; }
+        }
 
         public Page Page
         {
@@ -83,6 +81,8 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         {
             get { return this._SkinPath ?? (this._SkinPath = this.ActiveTab.SkinPath); }
         }
+
+        public Control HostControl { get; private set; }
 
         private static string DataName
         {

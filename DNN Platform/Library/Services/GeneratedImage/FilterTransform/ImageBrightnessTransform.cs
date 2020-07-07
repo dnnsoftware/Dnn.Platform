@@ -22,14 +22,14 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets or sets the brightness value. Defaultvalue is 0. Range is -255 .. 255.
-        /// </summary>
-        public int Brightness { get; set; }
-
-        /// <summary>
         /// Gets provides an Unique String for this class.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Brightness;
+
+        /// <summary>
+        /// Gets or sets the brightness value. Defaultvalue is 0. Range is -255 .. 255.
+        /// </summary>
+        public int Brightness { get; set; }
 
         /// <summary>
         /// Processes an input image applying a brightness image transformation.

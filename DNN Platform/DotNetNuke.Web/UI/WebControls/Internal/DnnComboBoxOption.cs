@@ -30,6 +30,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         [DataMember(Name = "searchField")]
         public string SearchField { get; } = "text";
 
+        [DataMember(Name = "options")]
+        public IEnumerable<OptionItem> Options
+        {
+            get { return this.Items?.Select(i => new OptionItem { Text = i.Text, Value = i.Value, Selected = i.Selected }); }
+        }
+
         [DataMember(Name = "create")]
         public bool Create { get; set; } = false;
 
@@ -56,12 +62,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         [IgnoreDataMember]
         public IEnumerable<ListItem> Items { get; set; }
-
-        [DataMember(Name = "options")]
-        public IEnumerable<OptionItem> Options
-        {
-            get { return this.Items?.Select(i => new OptionItem { Text = i.Text, Value = i.Value, Selected = i.Selected }); }
-        }
 
         [DataMember(Name = "localization")]
         public IDictionary<string, string> Localization { get; set; } = new Dictionary<string, string>();

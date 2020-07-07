@@ -96,10 +96,56 @@ export default class Browse extends Component {
         sf.get("GetFolderDescendants", { parentId }, this.addChildFolders.bind(this, parentId), this.handleError.bind(this));
     }
 
+    getExtensions(fileFormats) {
+        let result = "";
+        
+        const extensions = {
+            "text/html": "htm,html",
+            "text/css": "css",
+            "text/xml": "xml",
+            "image/gif": "gif",
+            "image/jpeg": "jpeg,jpg",
+            "application/x-javascript": "js",
+            "text/plain": "txt",
+            "image/png": "png",
+            "image/tiff": "tif,tiff",
+            "image/x-icon": "ico",
+            "image/x-ms-bmp": "bmp",
+            "image/svg+xml": "svg",
+            "image/webp": "webp",
+            "application/msword": "doc",
+            "application/pdf": "pdf",
+            "application/rtf": "rtf",
+            "application/vnd.ms-excel": "xls",
+            "application.vnd.ms-powerpoint": "ppt",
+            "application/x-shockwave-flash": "swf",
+            "appliation/zip": "zip",
+            "audio/mpeg": "mp3",
+            "audio/ogg": "ogg",
+            "video/3gpp": "3gpp,3gp",
+            "video/mpeg": "mpeg,mpg",
+            "video/quicktime": "mov",
+            "video/x-flv": "flv",
+            "video/x-ms-wmv": "wmv",
+            "video/x-msvideo": "avi",
+            "video/mp4": "m4v,mp4",
+        };
+
+        fileFormats.map(fileFormat => {
+            if (extensions[fileFormat]) {
+                result += extensions[fileFormat] + ",";
+            }
+            else {
+                result += fileFormat.split("/")[1] + ",";
+            }
+        });
+        return result;
+    }
+
     getFiles() {
         const sf = this.getServiceFramework();
         let parentId = this.state.selectedFolder ? this.state.selectedFolder.key : null;
-        const extensions = this.props.fileFormats.map(format => format.split("/")[1]).join(",");
+        const extensions = this.getExtensions(this.props.fileFormats);
         if (parentId) {
             sf.get("GetFiles", { parentId, filter: extensions }, this.setFiles.bind(this), this.handleError.bind(this));
         } else if (this.state.selectedFolder) {
@@ -111,7 +157,7 @@ export default class Browse extends Component {
 
     setFolderId(result) {
         const selectedFolder = result.Tree.children[0].data;
-        const extensions = this.props.fileFormats.map(format => format.split("/")[1]).join(",");
+        const extensions = this.getExtensions(this.props.fileFormats);
         const sf = this.getServiceFramework();
         sf.get("GetFiles", { parentId: selectedFolder.key, filter: extensions }, this.setFiles.bind(this), this.handleError.bind(this));
     }

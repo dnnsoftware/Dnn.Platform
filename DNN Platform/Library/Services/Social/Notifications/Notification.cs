@@ -37,6 +37,23 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
+        /// Gets a pretty printed string with the time since the message was created.
+        /// </summary>
+        [XmlAttribute]
+        public string DisplayDate
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this._displayDate))
+                {
+                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
+                }
+
+                return this._displayDate;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets notificationID - The primary key.
         /// </summary>
         [XmlAttribute]
@@ -94,23 +111,6 @@ namespace DotNetNuke.Services.Social.Notifications
         /// </summary>
         [XmlAttribute]
         public int SenderUserID { get; set; }
-
-        /// <summary>
-        /// Gets a pretty printed string with the time since the message was created.
-        /// </summary>
-        [XmlAttribute]
-        public string DisplayDate
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this._displayDate))
-                {
-                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
-                }
-
-                return this._displayDate;
-            }
-        }
 
         /// <summary>
         /// Gets or sets for notifications, this field indicates when it has to be removed (or not displayed).

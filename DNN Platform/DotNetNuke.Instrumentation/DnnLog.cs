@@ -16,12 +16,12 @@ namespace DotNetNuke.Instrumentation
     public static class DnnLog
     {
         private const string ConfigFile = "DotNetNuke.log4net.config";
-        private static bool _configured;
-
-        // use a single static logger to avoid the performance impact of type reflection on every call for logging
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(DnnLog));
 
         private static readonly object ConfigLock = new object();
+        private static bool _configured;
+
+        // use a single static logger to avoid the performance impact of type reflection on every call for logging
 
         private static StackFrame CallingFrame
         {
@@ -83,32 +83,6 @@ namespace DotNetNuke.Instrumentation
                 }
 
                 Logger.TraceFormat("Method [{0}] Returned [{1}]", CallingFrame.GetMethod().Name, returnObject);
-            }
-        }
-
-        private static void EnsureConfig()
-        {
-            if (!_configured)
-            {
-                lock (ConfigLock)
-                {
-                    if (!_configured)
-                    {
-                        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
-                        var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
-                        if (!File.Exists(configPath) && File.Exists(originalPath))
-                        {
-                            File.Copy(originalPath, configPath);
-                        }
-
-                        if (File.Exists(configPath))
-                        {
-                            XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
-                        }
-
-                        _configured = true;
-                    }
-                }
             }
         }
 
@@ -361,6 +335,32 @@ namespace DotNetNuke.Instrumentation
                 else
                 {
                     Logger.FatalFormat(format, args);
+                }
+            }
+        }
+
+        private static void EnsureConfig()
+        {
+            if (!_configured)
+            {
+                lock (ConfigLock)
+                {
+                    if (!_configured)
+                    {
+                        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
+                        var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
+                        if (!File.Exists(configPath) && File.Exists(originalPath))
+                        {
+                            File.Copy(originalPath, configPath);
+                        }
+
+                        if (File.Exists(configPath))
+                        {
+                            XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
+                        }
+
+                        _configured = true;
+                    }
                 }
             }
         }

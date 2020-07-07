@@ -36,6 +36,7 @@ namespace DotNetNuke.Entities.Profile
         private int _length;
         private int _moduleDefId = Null.NullInteger;
         private int _portalId;
+
         private ProfileVisibility _profileVisibility = new ProfileVisibility
         {
             VisibilityMode = UserVisibilityMode.AdminOnly,

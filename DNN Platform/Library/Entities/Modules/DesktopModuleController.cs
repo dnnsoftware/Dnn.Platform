@@ -121,88 +121,6 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module.
-        /// </summary>
-        /// <param name="objDesktopModule">Desktop Module Info.</param>
-        /// -----------------------------------------------------------------------------
-        public void DeleteDesktopModule(DesktopModuleInfo objDesktopModule)
-        {
-            this.DeleteDesktopModule(objDesktopModule.DesktopModuleID);
-        }
-
-        private static Dictionary<int, DesktopModuleInfo> GetDesktopModulesInternal(int portalID)
-        {
-            string cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalID);
-            var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalID);
-            Dictionary<int, DesktopModuleInfo> desktopModules = (portalID == Null.NullInteger)
-                                        ? CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(args, GetDesktopModulesCallBack)
-                                        : CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(args, GetDesktopModulesByPortalCallBack);
-            return desktopModules;
-        }
-
-        private static object GetDesktopModulesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillDictionary("DesktopModuleID", DataProvider.GetDesktopModules(), new Dictionary<int, DesktopModuleInfo>());
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulesByPortalCallBack gets a Dictionary of Desktop Modules by
-        /// Portal from the the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
-        private static object GetDesktopModulesByPortalCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillDictionary("DesktopModuleID", DataProvider.GetDesktopModulesByPortal(portalId), new Dictionary<int, DesktopModuleInfo>());
-        }
-
-        private static object GetPortalDesktopModulesByPortalIDCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillDictionary("PortalDesktopModuleID", DataProvider.Instance().GetPortalDesktopModules(portalId, Null.NullInteger), new Dictionary<int, PortalDesktopModuleInfo>());
-        }
-
-        private static void CreateContentItem(DesktopModuleInfo desktopModule)
-        {
-            IContentTypeController typeController = new ContentTypeController();
-            ContentType contentType = ContentType.DesktopModule;
-
-            if (contentType == null)
-            {
-                contentType = new ContentType { ContentType = "DesktopModule" };
-                contentType.ContentTypeId = typeController.AddContentType(contentType);
-            }
-
-            IContentController contentController = Util.GetContentController();
-            desktopModule.Content = desktopModule.FriendlyName;
-            desktopModule.Indexed = false;
-            desktopModule.ContentTypeId = contentType.ContentTypeId;
-            desktopModule.ContentItemId = contentController.AddContentItem(desktopModule);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module By ID.
-        /// </summary>
-        /// <param name="desktopModuleID">The ID of the Desktop Module to delete.</param>
-        /// -----------------------------------------------------------------------------
-        public void DeleteDesktopModule(int desktopModuleID)
-        {
-            DataProvider.DeleteDesktopModule(desktopModuleID);
-            EventLogController.Instance.AddLog(
-                "DesktopModuleID",
-                desktopModuleID.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
-            DataCache.ClearHostCache(true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.
         /// </summary>
         /// <param name="packageID">The ID of the Package.</param>
@@ -344,137 +262,6 @@ namespace DotNetNuke.Entities.Modules
             return portalDesktopModuleID;
         }
 
-        public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo)
-        {
-            this.UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? string.Empty : UserController.Instance.GetCurrentUserInfo().Username, true);
-        }
-
-        public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo, string sender, bool forceAppRestart)
-        {
-            this.CheckInterfacesImplementation(ref desktopModuleInfo);
-            var oAppStartMessage = new EventMessage
-            {
-                Sender = sender,
-                Priority = MessagePriority.High,
-                ExpirationDate = DateTime.Now.AddYears(-1),
-                SentDate = DateTime.Now,
-                Body = string.Empty,
-                ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
-                ProcessorCommand = "UpdateSupportedFeatures",
-            };
-            oAppStartMessage.Attributes.Add("BusinessControllerClass", desktopModuleInfo.BusinessControllerClass);
-            oAppStartMessage.Attributes.Add("DesktopModuleId", desktopModuleInfo.DesktopModuleID.ToString());
-            EventQueueController.SendMessage(oAppStartMessage, "Application_Start");
-            if (forceAppRestart)
-            {
-                Config.Touch();
-            }
-        }
-
-        internal static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache, bool saveTerms)
-        {
-            var desktopModuleID = desktopModule.DesktopModuleID;
-            if (desktopModuleID == Null.NullInteger)
-            {
-                CreateContentItem(desktopModule);
-                desktopModuleID = DataProvider.AddDesktopModule(
-                    desktopModule.PackageID,
-                    desktopModule.ModuleName,
-                    desktopModule.FolderName,
-                    desktopModule.FriendlyName,
-                    desktopModule.Description,
-                    desktopModule.Version,
-                    desktopModule.IsPremium,
-                    desktopModule.IsAdmin,
-                    desktopModule.BusinessControllerClass,
-                    desktopModule.SupportedFeatures,
-                    (int)desktopModule.Shareable,
-                    desktopModule.CompatibleVersions,
-                    desktopModule.Dependencies,
-                    desktopModule.Permissions,
-                    desktopModule.ContentItemId,
-                    UserController.Instance.GetCurrentUserInfo().UserID,
-                    desktopModule.AdminPage, desktopModule.HostPage);
-                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_CREATED);
-            }
-            else
-            {
-                // Update ContentItem If neccessary
-                if (desktopModule.ContentItemId == Null.NullInteger)
-                {
-                    CreateContentItem(desktopModule);
-                }
-
-                DataProvider.UpdateDesktopModule(
-                    desktopModule.DesktopModuleID,
-                    desktopModule.PackageID,
-                    desktopModule.ModuleName,
-                    desktopModule.FolderName,
-                    desktopModule.FriendlyName,
-                    desktopModule.Description,
-                    desktopModule.Version,
-                    desktopModule.IsPremium,
-                    desktopModule.IsAdmin,
-                    desktopModule.BusinessControllerClass,
-                    desktopModule.SupportedFeatures,
-                    (int)desktopModule.Shareable,
-                    desktopModule.CompatibleVersions,
-                    desktopModule.Dependencies,
-                    desktopModule.Permissions,
-                    desktopModule.ContentItemId,
-                    UserController.Instance.GetCurrentUserInfo().UserID,
-                    desktopModule.AdminPage,
-                    desktopModule.HostPage);
-
-                // Update Tags
-                if (saveTerms)
-                {
-                    var termController = Util.GetTermController();
-                    termController.RemoveTermsFromContent(desktopModule);
-                    foreach (var term in desktopModule.Terms)
-                    {
-                        termController.AddTermToContent(term, desktopModule);
-                    }
-                }
-
-                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
-            }
-
-            if (saveChildren)
-            {
-                foreach (var definition in desktopModule.ModuleDefinitions.Values)
-                {
-                    definition.DesktopModuleID = desktopModuleID;
-                    var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByDefinitionName(definition.DefinitionName, desktopModuleID);
-                    if (moduleDefinition != null)
-                    {
-                        definition.ModuleDefID = moduleDefinition.ModuleDefID;
-                    }
-
-                    ModuleDefinitionController.SaveModuleDefinition(definition, true, clearCache);
-                }
-            }
-
-            if (clearCache)
-            {
-                DataCache.ClearHostCache(true);
-            }
-
-            return desktopModuleID;
-        }
-
-        private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
-        {
-            var businessController = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
-            var controller = Reflection.CreateObject(desktopModuleInfo.BusinessControllerClass, desktopModuleInfo.BusinessControllerClass);
-
-            desktopModuleInfo.IsPortable = businessController.GetInterfaces().Contains(typeof(IPortable));
-#pragma warning disable 0618
-            desktopModuleInfo.IsSearchable = (controller is ModuleSearchBase) || businessController.GetInterfaces().Contains(typeof(ISearchable));
-#pragma warning restore 0618
-            desktopModuleInfo.IsUpgradeable = businessController.GetInterfaces().Contains(typeof(IUpgradeable));
-        }
-
         public static void AddDesktopModuleToPortals(int desktopModuleId)
         {
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
@@ -603,6 +390,154 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeleteDesktopModule deletes a Desktop Module.
+        /// </summary>
+        /// <param name="objDesktopModule">Desktop Module Info.</param>
+        /// -----------------------------------------------------------------------------
+        public void DeleteDesktopModule(DesktopModuleInfo objDesktopModule)
+        {
+            this.DeleteDesktopModule(objDesktopModule.DesktopModuleID);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeleteDesktopModule deletes a Desktop Module By ID.
+        /// </summary>
+        /// <param name="desktopModuleID">The ID of the Desktop Module to delete.</param>
+        /// -----------------------------------------------------------------------------
+        public void DeleteDesktopModule(int desktopModuleID)
+        {
+            DataProvider.DeleteDesktopModule(desktopModuleID);
+            EventLogController.Instance.AddLog(
+                "DesktopModuleID",
+                desktopModuleID.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
+            DataCache.ClearHostCache(true);
+        }
+
+        public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo)
+        {
+            this.UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? string.Empty : UserController.Instance.GetCurrentUserInfo().Username, true);
+        }
+
+        public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo, string sender, bool forceAppRestart)
+        {
+            this.CheckInterfacesImplementation(ref desktopModuleInfo);
+            var oAppStartMessage = new EventMessage
+            {
+                Sender = sender,
+                Priority = MessagePriority.High,
+                ExpirationDate = DateTime.Now.AddYears(-1),
+                SentDate = DateTime.Now,
+                Body = string.Empty,
+                ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
+                ProcessorCommand = "UpdateSupportedFeatures",
+            };
+            oAppStartMessage.Attributes.Add("BusinessControllerClass", desktopModuleInfo.BusinessControllerClass);
+            oAppStartMessage.Attributes.Add("DesktopModuleId", desktopModuleInfo.DesktopModuleID.ToString());
+            EventQueueController.SendMessage(oAppStartMessage, "Application_Start");
+            if (forceAppRestart)
+            {
+                Config.Touch();
+            }
+        }
+
+        internal static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache, bool saveTerms)
+        {
+            var desktopModuleID = desktopModule.DesktopModuleID;
+            if (desktopModuleID == Null.NullInteger)
+            {
+                CreateContentItem(desktopModule);
+                desktopModuleID = DataProvider.AddDesktopModule(
+                    desktopModule.PackageID,
+                    desktopModule.ModuleName,
+                    desktopModule.FolderName,
+                    desktopModule.FriendlyName,
+                    desktopModule.Description,
+                    desktopModule.Version,
+                    desktopModule.IsPremium,
+                    desktopModule.IsAdmin,
+                    desktopModule.BusinessControllerClass,
+                    desktopModule.SupportedFeatures,
+                    (int)desktopModule.Shareable,
+                    desktopModule.CompatibleVersions,
+                    desktopModule.Dependencies,
+                    desktopModule.Permissions,
+                    desktopModule.ContentItemId,
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    desktopModule.AdminPage, desktopModule.HostPage);
+                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_CREATED);
+            }
+            else
+            {
+                // Update ContentItem If neccessary
+                if (desktopModule.ContentItemId == Null.NullInteger)
+                {
+                    CreateContentItem(desktopModule);
+                }
+
+                DataProvider.UpdateDesktopModule(
+                    desktopModule.DesktopModuleID,
+                    desktopModule.PackageID,
+                    desktopModule.ModuleName,
+                    desktopModule.FolderName,
+                    desktopModule.FriendlyName,
+                    desktopModule.Description,
+                    desktopModule.Version,
+                    desktopModule.IsPremium,
+                    desktopModule.IsAdmin,
+                    desktopModule.BusinessControllerClass,
+                    desktopModule.SupportedFeatures,
+                    (int)desktopModule.Shareable,
+                    desktopModule.CompatibleVersions,
+                    desktopModule.Dependencies,
+                    desktopModule.Permissions,
+                    desktopModule.ContentItemId,
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    desktopModule.AdminPage,
+                    desktopModule.HostPage);
+
+                // Update Tags
+                if (saveTerms)
+                {
+                    var termController = Util.GetTermController();
+                    termController.RemoveTermsFromContent(desktopModule);
+                    foreach (var term in desktopModule.Terms)
+                    {
+                        termController.AddTermToContent(term, desktopModule);
+                    }
+                }
+
+                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
+            }
+
+            if (saveChildren)
+            {
+                foreach (var definition in desktopModule.ModuleDefinitions.Values)
+                {
+                    definition.DesktopModuleID = desktopModuleID;
+                    var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByDefinitionName(definition.DefinitionName, desktopModuleID);
+                    if (moduleDefinition != null)
+                    {
+                        definition.ModuleDefID = moduleDefinition.ModuleDefID;
+                    }
+
+                    ModuleDefinitionController.SaveModuleDefinition(definition, true, clearCache);
+                }
+            }
+
+            if (clearCache)
+            {
+                DataCache.ClearHostCache(true);
+            }
+
+            return desktopModuleID;
+        }
+
         internal static void AddDesktopModulePageToPortal(DesktopModuleInfo desktopModule, string pageName, int portalId, ref bool createdNewPage, ref bool addedNewModule)
         {
             var tabPath = string.Format("//{0}//{1}", portalId == Null.NullInteger ? "Host" : "Admin", pageName);
@@ -667,6 +602,71 @@ namespace DotNetNuke.Entities.Modules
                     addedNewModule = true;
                 }
             }
+        }
+
+        private static Dictionary<int, DesktopModuleInfo> GetDesktopModulesInternal(int portalID)
+        {
+            string cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalID);
+            var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalID);
+            Dictionary<int, DesktopModuleInfo> desktopModules = (portalID == Null.NullInteger)
+                                        ? CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(args, GetDesktopModulesCallBack)
+                                        : CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(args, GetDesktopModulesByPortalCallBack);
+            return desktopModules;
+        }
+
+        private static object GetDesktopModulesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillDictionary("DesktopModuleID", DataProvider.GetDesktopModules(), new Dictionary<int, DesktopModuleInfo>());
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulesByPortalCallBack gets a Dictionary of Desktop Modules by
+        /// Portal from the the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private static object GetDesktopModulesByPortalCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            return CBO.FillDictionary("DesktopModuleID", DataProvider.GetDesktopModulesByPortal(portalId), new Dictionary<int, DesktopModuleInfo>());
+        }
+
+        private static object GetPortalDesktopModulesByPortalIDCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            return CBO.FillDictionary("PortalDesktopModuleID", DataProvider.Instance().GetPortalDesktopModules(portalId, Null.NullInteger), new Dictionary<int, PortalDesktopModuleInfo>());
+        }
+
+        private static void CreateContentItem(DesktopModuleInfo desktopModule)
+        {
+            IContentTypeController typeController = new ContentTypeController();
+            ContentType contentType = ContentType.DesktopModule;
+
+            if (contentType == null)
+            {
+                contentType = new ContentType { ContentType = "DesktopModule" };
+                contentType.ContentTypeId = typeController.AddContentType(contentType);
+            }
+
+            IContentController contentController = Util.GetContentController();
+            desktopModule.Content = desktopModule.FriendlyName;
+            desktopModule.Indexed = false;
+            desktopModule.ContentTypeId = contentType.ContentTypeId;
+            desktopModule.ContentItemId = contentController.AddContentItem(desktopModule);
+        }
+
+        private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
+        {
+            var businessController = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
+            var controller = Reflection.CreateObject(desktopModuleInfo.BusinessControllerClass, desktopModuleInfo.BusinessControllerClass);
+
+            desktopModuleInfo.IsPortable = businessController.GetInterfaces().Contains(typeof(IPortable));
+#pragma warning disable 0618
+            desktopModuleInfo.IsSearchable = (controller is ModuleSearchBase) || businessController.GetInterfaces().Contains(typeof(ISearchable));
+#pragma warning restore 0618
+            desktopModuleInfo.IsUpgradeable = businessController.GetInterfaces().Contains(typeof(IUpgradeable));
         }
     }
 }

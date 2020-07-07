@@ -16,9 +16,6 @@ namespace DotNetNuke.Entities.Modules
         private DesktopModulePermissionCollection _permissions;
 
         [XmlIgnore]
-        public int PortalDesktopModuleID { get; set; }
-
-        [XmlIgnore]
         public DesktopModuleInfo DesktopModule
         {
             get
@@ -32,11 +29,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [XmlIgnore]
-        public int DesktopModuleID { get; set; }
-
-        public string FriendlyName { get; set; }
-
         public DesktopModulePermissionCollection Permissions
         {
             get
@@ -49,6 +41,14 @@ namespace DotNetNuke.Entities.Modules
                 return this._permissions;
             }
         }
+
+        [XmlIgnore]
+        public int PortalDesktopModuleID { get; set; }
+
+        [XmlIgnore]
+        public int DesktopModuleID { get; set; }
+
+        public string FriendlyName { get; set; }
 
         [XmlIgnore]
         public int PortalID { get; set; }

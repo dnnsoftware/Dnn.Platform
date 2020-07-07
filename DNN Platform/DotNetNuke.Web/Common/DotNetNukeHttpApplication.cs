@@ -73,6 +73,18 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
+        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
+        {
+            var url = request.Url.LocalPath.ToLowerInvariant();
+
+            return url.EndsWith("webresource.axd")
+                   || url.EndsWith("scriptresource.axd")
+                   || url.EndsWith("captcha.aspx")
+                   || url.Contains("upgradewizard.aspx")
+                   || url.Contains("installwizard.aspx")
+                   || url.EndsWith("install.aspx");
+        }
+
         private void Application_Error(object sender, EventArgs eventArgs)
         {
             // Code that runs when an unhandled error occurs
@@ -138,18 +150,6 @@ namespace DotNetNuke.Web.Common.Internal
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
 
             // DotNetNukeSecurity.Initialize();
-        }
-
-        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
-        {
-            var url = request.Url.LocalPath.ToLowerInvariant();
-
-            return url.EndsWith("webresource.axd")
-                   || url.EndsWith("scriptresource.axd")
-                   || url.EndsWith("captcha.aspx")
-                   || url.Contains("upgradewizard.aspx")
-                   || url.Contains("installwizard.aspx")
-                   || url.EndsWith("install.aspx");
         }
 
         private void Application_End(object sender, EventArgs eventArgs)

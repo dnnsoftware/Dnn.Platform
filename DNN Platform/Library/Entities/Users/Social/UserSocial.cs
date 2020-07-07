@@ -24,10 +24,10 @@ namespace DotNetNuke.Entities.Users.Social
     [Serializable]
     public class UserSocial
     {
+        private readonly UserInfo _userInfo;
         private IList<Relationship> _relationships;
         private IList<UserRelationship> _userRelationships;
         private IList<UserRoleInfo> _roles;
-        private readonly UserInfo _userInfo;
 
         public UserSocial(UserInfo userInfo)
         {

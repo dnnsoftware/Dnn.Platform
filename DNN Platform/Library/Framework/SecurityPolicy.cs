@@ -62,66 +62,6 @@ namespace DotNetNuke.Framework
             return m_ReflectionPermission;
         }
 
-        private static void GetPermissions()
-        {
-            if (!m_Initialized)
-            {
-                // test RelectionPermission
-                CodeAccessPermission securityTest;
-                try
-                {
-                    securityTest = new ReflectionPermission(PermissionState.Unrestricted);
-                    securityTest.Demand();
-                    m_ReflectionPermission = true;
-                }
-                catch
-                {
-                    // code access security error
-                    m_ReflectionPermission = false;
-                }
-
-                // test WebPermission
-                try
-                {
-                    securityTest = new WebPermission(PermissionState.Unrestricted);
-                    securityTest.Demand();
-                    m_WebPermission = true;
-                }
-                catch
-                {
-                    // code access security error
-                    m_WebPermission = false;
-                }
-
-                // test WebHosting Permission (Full Trust)
-                try
-                {
-                    securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
-                    securityTest.Demand();
-                    m_AspNetHostingPermission = true;
-                }
-                catch
-                {
-                    // code access security error
-                    m_AspNetHostingPermission = false;
-                }
-
-                m_Initialized = true;
-
-                // Test for Unmanaged Code permission
-                try
-                {
-                    securityTest = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
-                    securityTest.Demand();
-                    m_UnManagedCodePermission = true;
-                }
-                catch (Exception)
-                {
-                    m_UnManagedCodePermission = false;
-                }
-            }
-        }
-
         public static bool HasWebPermission()
         {
             GetPermissions();
@@ -187,6 +127,66 @@ namespace DotNetNuke.Framework
         {
             GetPermissions();
             return m_ReflectionPermission;
+        }
+
+        private static void GetPermissions()
+        {
+            if (!m_Initialized)
+            {
+                // test RelectionPermission
+                CodeAccessPermission securityTest;
+                try
+                {
+                    securityTest = new ReflectionPermission(PermissionState.Unrestricted);
+                    securityTest.Demand();
+                    m_ReflectionPermission = true;
+                }
+                catch
+                {
+                    // code access security error
+                    m_ReflectionPermission = false;
+                }
+
+                // test WebPermission
+                try
+                {
+                    securityTest = new WebPermission(PermissionState.Unrestricted);
+                    securityTest.Demand();
+                    m_WebPermission = true;
+                }
+                catch
+                {
+                    // code access security error
+                    m_WebPermission = false;
+                }
+
+                // test WebHosting Permission (Full Trust)
+                try
+                {
+                    securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
+                    securityTest.Demand();
+                    m_AspNetHostingPermission = true;
+                }
+                catch
+                {
+                    // code access security error
+                    m_AspNetHostingPermission = false;
+                }
+
+                m_Initialized = true;
+
+                // Test for Unmanaged Code permission
+                try
+                {
+                    securityTest = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
+                    securityTest.Demand();
+                    m_UnManagedCodePermission = true;
+                }
+                catch (Exception)
+                {
+                    m_UnManagedCodePermission = false;
+                }
+            }
         }
     }
 }

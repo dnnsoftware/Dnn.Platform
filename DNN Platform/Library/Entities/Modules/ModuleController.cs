@@ -229,6 +229,140 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
+        /// SerializeModule.
+        /// </summary>
+        /// <param name="xmlModule">The Xml Document to use for the Module.</param>
+        /// <param name="module">The ModuleInfo object to serialize.</param>
+        /// <param name="includeContent">A flak that determines whether the content of the module is serialised.</param>
+        /// <returns></returns>
+        public static XmlNode SerializeModule(XmlDocument xmlModule, ModuleInfo module, bool includeContent)
+        {
+            var serializer = new XmlSerializer(typeof(ModuleInfo));
+            var sw = new StringWriter();
+            serializer.Serialize(sw, module);
+            xmlModule.LoadXml(sw.GetStringBuilder().ToString());
+            XmlNode moduleNode = xmlModule.SelectSingleNode("module");
+            if (moduleNode != null)
+            {
+                // ReSharper disable AssignNullToNotNullAttribute
+                if (moduleNode.Attributes != null)
+                {
+                    moduleNode.Attributes.Remove(moduleNode.Attributes["xmlns:xsd"]);
+                    moduleNode.Attributes.Remove(moduleNode.Attributes["xmlns:xsi"]);
+                }
+
+                // remove unwanted elements
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("portalid"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("tabid"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("tabmoduleid"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("moduleorder"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("panename"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("isdeleted"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("versionGuid"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("localizedVersionGuid"));
+                moduleNode.RemoveChild(moduleNode.SelectSingleNode("content"));
+
+                // support for localized templates
+                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("uniqueId"));
+                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
+                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("cultureCode"));
+                if (Null.IsNull(module.DefaultLanguageGuid))
+                {
+                    moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
+                }
+
+                var xmlNodeList = moduleNode.SelectNodes("modulepermissions/permission");
+                if (xmlNodeList != null)
+                {
+                    foreach (XmlNode nodePermission in xmlNodeList)
+                    {
+                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("modulepermissionid"));
+                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("permissionid"));
+                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("moduleid"));
+                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("roleid"));
+                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("userid"));
+                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("username"));
+                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("displayname"));
+                    }
+                }
+
+                if (includeContent)
+                {
+                    AddContent(moduleNode, module);
+                }
+
+                // serialize ModuleSettings and TabModuleSettings
+                XmlUtils.SerializeHashtable(module.ModuleSettings, xmlModule, moduleNode, "modulesetting", "settingname", "settingvalue");
+                XmlUtils.SerializeHashtable(module.TabModuleSettings, xmlModule, moduleNode, "tabmodulesetting", "settingname", "settingvalue");
+
+                // ReSharper restore AssignNullToNotNullAttribute
+            }
+
+            XmlNode newNode = xmlModule.CreateElement("definition");
+            ModuleDefinitionInfo objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
+            newNode.InnerText = DesktopModuleController.GetDesktopModule(objModuleDef.DesktopModuleID, module.PortalID).ModuleName;
+            if (moduleNode != null)
+            {
+                moduleNode.AppendChild(newNode);
+            }
+
+            // Add Module Definition Info
+            XmlNode definitionNode = xmlModule.CreateElement("moduledefinition");
+            definitionNode.InnerText = objModuleDef.FriendlyName;
+            if (moduleNode != null)
+            {
+                moduleNode.AppendChild(definitionNode);
+            }
+
+            return moduleNode;
+        }
+
+        /// <summary>
+        /// Synchronizes the module content between cache and database.
+        /// </summary>
+        /// <param name="moduleID">The module ID.</param>
+        public static void SynchronizeModule(int moduleID)
+        {
+            var modules = Instance.GetTabModulesByModule(moduleID);
+            foreach (ModuleInfo module in modules)
+            {
+                Hashtable tabSettings = TabController.Instance.GetTabSettings(module.TabID);
+                if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
+                {
+                    var outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
+                    if (outputProvider != null)
+                    {
+                        outputProvider.Remove(module.TabID);
+                    }
+                }
+
+                if (module.CacheTime > 0)
+                {
+                    var moduleProvider = ModuleCachingProvider.Instance(module.GetEffectiveCacheMethod());
+                    if (moduleProvider != null)
+                    {
+                        moduleProvider.Remove(module.TabModuleID);
+                    }
+                }
+
+                // Synchronize module is called when a module needs to indicate that the content
+                // has changed and the cache's should be refreshed.  So we can update the Version
+                // and also the LastContentModificationDate
+                UpdateTabModuleVersion(module.TabModuleID);
+                dataProvider.UpdateModuleLastContentModifiedOnDate(module.ModuleID);
+
+                // We should also indicate that the Transalation Status has changed
+                if (PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", module.PortalID, false))
+                {
+                    Instance.UpdateTranslationStatus(module, false);
+                }
+
+                // and clear the cache
+                Instance.ClearCache(module.TabID);
+            }
+        }
+
+        /// <summary>
         /// Check if a ModuleInfo belongs to the referenced Tab or not.
         /// </summary>
         /// <param name="module">A ModuleInfo object to be checked.</param>
@@ -250,906 +384,6 @@ namespace DotNetNuke.Entities.Modules
             var contentController = Util.GetContentController();
             var content = contentController.GetContentItem(module.ContentItemId);
             return content.TabID;
-        }
-
-        internal Hashtable GetModuleSettings(int moduleId, int tabId)
-        {
-            string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tabId);
-
-            var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.ModuleCacheTimeOut,
-                DataCache.ModuleCachePriority),
-                c =>
-                            {
-                                var moduleSettingsDic = new Dictionary<int, Hashtable>();
-                                IDataReader dr = DataProvider.Instance().GetModuleSettingsByTab(tabId);
-                                while (dr.Read())
-                                {
-                                    int mId = dr.GetInt32(0);
-                                    Hashtable settings;
-                                    if (!moduleSettingsDic.TryGetValue(mId, out settings))
-                                    {
-                                        settings = new Hashtable();
-                                        moduleSettingsDic[mId] = settings;
-                                    }
-
-                                    if (!dr.IsDBNull(2))
-                                    {
-                                        settings[dr.GetString(1)] = dr.GetString(2);
-                                    }
-                                    else
-                                    {
-                                        settings[dr.GetString(1)] = string.Empty;
-                                    }
-                                }
-
-                                CBO.CloseDataReader(dr, true);
-                                return moduleSettingsDic;
-                            });
-
-            return moduleSettings.ContainsKey(moduleId) ? moduleSettings[moduleId] : new Hashtable();
-        }
-
-        internal Hashtable GetTabModuleSettings(int tabmoduleId, int tabId)
-        {
-            string cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tabId);
-
-            var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.TabModuleCacheTimeOut,
-                DataCache.TabModuleCachePriority),
-                c =>
-                            {
-                                var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
-                                using (IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId))
-                                {
-                                    while (dr.Read())
-                                    {
-                                        int tMId = dr.GetInt32(0);
-                                        Hashtable settings;
-                                        if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
-                                        {
-                                            settings = new Hashtable();
-                                            tabModuleSettingsDic[tMId] = settings;
-                                        }
-
-                                        if (!dr.IsDBNull(2))
-                                        {
-                                            settings[dr.GetString(1)] = dr.GetString(2);
-                                        }
-                                        else
-                                        {
-                                            settings[dr.GetString(1)] = string.Empty;
-                                        }
-                                    }
-                                }
-
-                                return tabModuleSettingsDic;
-                            });
-
-            return tabModuleSettings.ContainsKey(tabmoduleId) ? tabModuleSettings[tabmoduleId] : new Hashtable();
-        }
-
-        protected override Func<IModuleController> GetFactory()
-        {
-            return () => new ModuleController();
-        }
-
-        private static void AddContent(XmlNode nodeModule, ModuleInfo module)
-        {
-            if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
-            {
-                try
-                {
-                    object businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                    var controller = businessController as IPortable;
-                    if (controller != null)
-                    {
-                        string content = Convert.ToString(controller.ExportModule(module.ModuleID));
-                        if (!string.IsNullOrEmpty(content))
-                        {
-                            content = XmlUtils.RemoveInvalidXmlCharacters(content);
-
-                            // add attributes to XML document
-                            if (nodeModule.OwnerDocument != null)
-                            {
-                                var existing = nodeModule.OwnerDocument.GetElementById("content");
-                                if (existing != null)
-                                {
-                                    nodeModule.OwnerDocument.RemoveChild(existing);
-                                }
-
-                                XmlNode newnode = nodeModule.OwnerDocument.CreateElement("content");
-                                XmlAttribute xmlattr = nodeModule.OwnerDocument.CreateAttribute("type");
-                                xmlattr.Value = Globals.CleanName(module.DesktopModule.ModuleName);
-                                if (newnode.Attributes != null)
-                                {
-                                    newnode.Attributes.Append(xmlattr);
-                                }
-
-                                xmlattr = nodeModule.OwnerDocument.CreateAttribute("version");
-                                xmlattr.Value = module.DesktopModule.Version;
-                                if (newnode.Attributes != null)
-                                {
-                                    newnode.Attributes.Append(xmlattr);
-                                }
-
-                                content = HttpContext.Current.Server.HtmlEncode(content);
-                                newnode.InnerXml = XmlUtils.XMLEncode(content);
-                                nodeModule.AppendChild(newnode);
-                            }
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
-            }
-        }
-
-        private static void AddModulePermission(ref ModuleInfo module, int portalId, string roleName, PermissionInfo permission, string permissionKey)
-        {
-            var perm = module.ModulePermissions.Where(tp => tp.RoleName == roleName && tp.PermissionKey == permissionKey).SingleOrDefault();
-            if (permission != null && perm == null)
-            {
-                var modulePermission = new ModulePermissionInfo(permission);
-
-                // ReSharper disable ImplicitlyCapturedClosure
-                var role = RoleController.Instance.GetRole(portalId, r => (r.RoleName == roleName));
-
-                // ReSharper restore ImplicitlyCapturedClosure
-                if (role != null)
-                {
-                    modulePermission.RoleID = role.RoleID;
-                    modulePermission.AllowAccess = true;
-
-                    module.ModulePermissions.Add(modulePermission);
-                }
-            }
-        }
-
-        private static bool CheckIsInstance(int templateModuleID, Hashtable hModules)
-        {
-            // will be instance or module?
-            bool IsInstance = false;
-            if (templateModuleID > 0)
-            {
-                if (hModules[templateModuleID] != null)
-                {
-                    // this module has already been processed -> process as instance
-                    IsInstance = true;
-                }
-            }
-
-            return IsInstance;
-        }
-
-        private static void ClearModuleSettingsCache(int moduleId)
-        {
-            foreach (var tab in TabController.Instance.GetTabsByModuleID(moduleId).Values)
-            {
-                string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
-                DataCache.RemoveCache(cacheKey);
-            }
-        }
-
-        private void AddModuleInternal(ModuleInfo module)
-        {
-            // add module
-            if (Null.IsNull(module.ModuleID))
-            {
-                var currentUser = UserController.Instance.GetCurrentUserInfo();
-                this.CreateContentItem(module);
-
-                // Add Module
-                module.ModuleID = dataProvider.AddModule(
-                    module.ContentItemId,
-                    module.PortalID,
-                    module.ModuleDefID,
-                    module.AllTabs,
-                    module.StartDate,
-                    module.EndDate,
-                    module.InheritViewPermissions,
-                    module.IsShareable,
-                    module.IsShareableViewOnly,
-                    module.IsDeleted,
-                    currentUser.UserID);
-
-                // Now we have the ModuleID - update the contentItem
-                var contentController = Util.GetContentController();
-                contentController.UpdateContentItem(module);
-
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
-
-                // set module permissions
-                ModulePermissionController.SaveModulePermissions(module);
-            }
-
-            // Save ModuleSettings
-            this.UpdateModuleSettings(module);
-
-            EventManager.Instance.OnModuleCreated(new ModuleEventArgs { Module = module });
-        }
-
-        private ModulePermissionInfo AddModulePermission(ModuleInfo module, PermissionInfo permission, int roleId, int userId, bool allowAccess)
-        {
-            var modulePermission = new ModulePermissionInfo
-            {
-                ModuleID = module.ModuleID,
-                PermissionID = permission.PermissionID,
-                RoleID = roleId,
-                UserID = userId,
-                PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess,
-            };
-
-            // add the permission to the collection
-            if (!module.ModulePermissions.Contains(modulePermission))
-            {
-                module.ModulePermissions.Add(modulePermission);
-            }
-
-            return modulePermission;
-        }
-
-        private static void ClearTabModuleSettingsCache(int tabModuleId, string settingName)
-        {
-            var portalId = -1;
-            foreach (var tab in TabController.Instance.GetTabsByTabModuleID(tabModuleId).Values)
-            {
-                var cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
-                DataCache.RemoveCache(cacheKey);
-
-                if (portalId != tab.PortalID)
-                {
-                    portalId = tab.PortalID;
-                    cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? string.Empty);
-                    DataCache.RemoveCache(cacheKey);
-                }
-            }
-        }
-
-        private static ModuleInfo DeserializeModule(XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, int moduleDefId)
-        {
-            // Create New Module
-            var module = new ModuleInfo
-            {
-                PortalID = portalId,
-                TabID = tabId,
-                ModuleOrder = -1,
-                ModuleTitle = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "title"),
-                PaneName = XmlUtils.GetNodeValue(nodePane.CreateNavigator(), "name"),
-                ModuleDefID = moduleDefId,
-                CacheTime = XmlUtils.GetNodeValueInt(nodeModule, "cachetime"),
-                CacheMethod = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "cachemethod"),
-                Alignment = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "alignment"),
-                IconFile = Globals.ImportFile(portalId, XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "iconfile")),
-                AllTabs = XmlUtils.GetNodeValueBoolean(nodeModule, "alltabs"),
-                CultureCode = XmlUtils.GetNodeValue(nodeModule, "cultureCode"),
-            };
-
-            // Localization
-            var oldGuid = XmlUtils.GetNodeValue(nodeModule, "defaultLanguageGuid");
-            if (!string.IsNullOrEmpty(oldGuid))
-            {
-                // get new default module language guid
-                if (ParsedLocalizedModuleGuid.ContainsKey(oldGuid))
-                {
-                    module.DefaultLanguageGuid = new Guid(ParsedLocalizedModuleGuid[oldGuid].ToString());
-                }
-            }
-
-            switch (XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "visibility"))
-            {
-                case "Maximized":
-                    module.Visibility = VisibilityState.Maximized;
-                    break;
-                case "Minimized":
-                    module.Visibility = VisibilityState.Minimized;
-                    break;
-                case "None":
-                    module.Visibility = VisibilityState.None;
-                    break;
-            }
-
-            module.Color = XmlUtils.GetNodeValue(nodeModule, "color", string.Empty);
-            module.Border = XmlUtils.GetNodeValue(nodeModule, "border", string.Empty);
-            module.Header = XmlUtils.GetNodeValue(nodeModule, "header", string.Empty);
-            module.Footer = XmlUtils.GetNodeValue(nodeModule, "footer", string.Empty);
-            module.InheritViewPermissions = XmlUtils.GetNodeValueBoolean(nodeModule, "inheritviewpermissions", false);
-            module.IsShareable = XmlUtils.GetNodeValueBoolean(nodeModule, "isshareable", true);
-            module.IsShareableViewOnly = XmlUtils.GetNodeValueBoolean(nodeModule, "isshareableviewonly", true);
-            module.StartDate = XmlUtils.GetNodeValueDate(nodeModule, "startdate", Null.NullDate);
-            module.EndDate = XmlUtils.GetNodeValueDate(nodeModule, "enddate", Null.NullDate);
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule, "containersrc", string.Empty)))
-            {
-                module.ContainerSrc = XmlUtils.GetNodeValue(nodeModule, "containersrc", string.Empty);
-            }
-
-            module.DisplayTitle = XmlUtils.GetNodeValueBoolean(nodeModule, "displaytitle", true);
-            module.DisplayPrint = XmlUtils.GetNodeValueBoolean(nodeModule, "displayprint", true);
-            module.DisplaySyndicate = XmlUtils.GetNodeValueBoolean(nodeModule, "displaysyndicate", false);
-            module.IsWebSlice = XmlUtils.GetNodeValueBoolean(nodeModule, "iswebslice", false);
-            if (module.IsWebSlice)
-            {
-                module.WebSliceTitle = XmlUtils.GetNodeValue(nodeModule, "webslicetitle", module.ModuleTitle);
-                module.WebSliceExpiryDate = XmlUtils.GetNodeValueDate(nodeModule, "websliceexpirydate", module.EndDate);
-                module.WebSliceTTL = XmlUtils.GetNodeValueInt(nodeModule, "webslicettl", module.CacheTime / 60);
-            }
-
-            return module;
-        }
-
-        private static void DeserializeModulePermissions(XmlNodeList nodeModulePermissions, int portalId, ModuleInfo module)
-        {
-            var permissionController = new PermissionController();
-            foreach (XmlNode node in nodeModulePermissions)
-            {
-                string permissionKey = XmlUtils.GetNodeValue(node.CreateNavigator(), "permissionkey");
-                string permissionCode = XmlUtils.GetNodeValue(node.CreateNavigator(), "permissioncode");
-                string roleName = XmlUtils.GetNodeValue(node.CreateNavigator(), "rolename");
-                int roleID = int.MinValue;
-                switch (roleName)
-                {
-                    case Globals.glbRoleAllUsersName:
-                        roleID = Convert.ToInt32(Globals.glbRoleAllUsers);
-                        break;
-                    case Globals.glbRoleUnauthUserName:
-                        roleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
-                        break;
-                    default:
-                        var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
-                        if (role != null)
-                        {
-                            roleID = role.RoleID;
-                        }
-
-                        break;
-                }
-
-                if (roleID != int.MinValue)
-                {
-                    int permissionID = -1;
-                    ArrayList permissions = permissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey);
-                    for (int i = 0; i <= permissions.Count - 1; i++)
-                    {
-                        var permission = (PermissionInfo)permissions[i];
-                        permissionID = permission.PermissionID;
-                    }
-
-                    // if role was found add, otherwise ignore
-                    if (permissionID != -1)
-                    {
-                        var modulePermission = new ModulePermissionInfo
-                        {
-                            ModuleID = module.ModuleID,
-                            PermissionID = permissionID,
-                            RoleID = roleID,
-                            AllowAccess = Convert.ToBoolean(XmlUtils.GetNodeValue(node.CreateNavigator(), "allowaccess")),
-                        };
-
-                        // do not add duplicate ModulePermissions
-                        bool canAdd = !module.ModulePermissions.Cast<ModulePermissionInfo>()
-                                                    .Any(mp => mp.ModuleID == modulePermission.ModuleID
-                                                            && mp.PermissionID == modulePermission.PermissionID
-                                                            && mp.RoleID == modulePermission.RoleID
-                                                            && mp.UserID == modulePermission.UserID);
-                        if (canAdd)
-                        {
-                            module.ModulePermissions.Add(modulePermission);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void CopyTabModuleSettingsInternal(ModuleInfo fromModule, ModuleInfo toModule)
-        {
-            // Copy each setting to the new TabModule instance
-            foreach (DictionaryEntry setting in fromModule.TabModuleSettings)
-            {
-                this.UpdateTabModuleSetting(toModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
-            }
-        }
-
-        /// <summary>
-        /// Checks whether module VIEW permission is inherited from its tab.
-        /// </summary>
-        /// <param name="module">The module.</param>
-        /// <param name="permission">The module permission.</param>
-        private bool IsModuleViewPermissionInherited(ModuleInfo module, ModulePermissionInfo permission)
-        {
-            Requires.NotNull(module);
-
-            Requires.NotNull(permission);
-
-            var permissionViewKey = "VIEW";
-
-            if (!module.InheritViewPermissions || permission.PermissionKey != permissionViewKey)
-            {
-                return false;
-            }
-
-            var tabPermissions = TabPermissionController.GetTabPermissions(module.TabID, module.PortalID);
-
-            return tabPermissions?.Where(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey).Any() == true;
-        }
-
-        /// <summary>
-        /// Checks whether given permission is granted for translator role.
-        /// </summary>
-        /// <param name="permission">The module permission.</param>
-        /// <param name="portalId">The portal ID.</param>
-        /// <param name="culture">The culture code.</param>
-        private bool IsTranslatorRolePermission(ModulePermissionInfo permission, int portalId, string culture)
-        {
-            Requires.NotNull(permission);
-
-            if (string.IsNullOrWhiteSpace(culture) || portalId == Null.NullInteger)
-            {
-                return false;
-            }
-
-            var translatorSettingKey = $"DefaultTranslatorRoles-{culture}";
-
-            var translatorSettingValue =
-                PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ??
-                HostController.Instance.GetString(translatorSettingKey, null);
-
-            var translatorRoles =
-                translatorSettingValue?.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-            return translatorRoles?.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase)) == true;
-        }
-
-        /// <summary>
-        /// Copies permissions from source to new tab.
-        /// </summary>
-        /// <param name="sourceModule">Source module.</param>
-        /// <param name="newModule">New module.</param>
-        private void CopyModulePermisions(ModuleInfo sourceModule, ModuleInfo newModule)
-        {
-            Requires.NotNull(sourceModule);
-
-            Requires.NotNull(newModule);
-
-            foreach (ModulePermissionInfo permission in sourceModule.ModulePermissions)
-            {
-                // skip inherited view and translator permissions
-                if (this.IsModuleViewPermissionInherited(newModule, permission) ||
-                    this.IsTranslatorRolePermission(permission, sourceModule.PortalID, sourceModule.CultureCode))
-                {
-                    continue;
-                }
-
-                // need to force vew permission to be copied
-                permission.PermissionKey = newModule.InheritViewPermissions && permission.PermissionKey == "VIEW" ?
-                    null :
-                    permission.PermissionKey;
-
-                this.AddModulePermission(
-                    newModule,
-                    permission,
-                    permission.RoleID,
-                    permission.UserID,
-                    permission.AllowAccess);
-            }
-        }
-
-        private static void DeserializeModuleSettings(XmlNodeList nodeModuleSettings, ModuleInfo objModule)
-        {
-            foreach (XmlNode moduleSettingNode in nodeModuleSettings)
-            {
-                string key = XmlUtils.GetNodeValue(moduleSettingNode.CreateNavigator(), "settingname");
-                string value = XmlUtils.GetNodeValue(moduleSettingNode.CreateNavigator(), "settingvalue");
-                objModule.ModuleSettings[key] = value;
-            }
-        }
-
-        private static void DeserializeTabModuleSettings(XmlNodeList nodeTabModuleSettings, ModuleInfo objModule)
-        {
-            foreach (XmlNode tabModuleSettingNode in nodeTabModuleSettings)
-            {
-                string key = XmlUtils.GetNodeValue(tabModuleSettingNode.CreateNavigator(), "settingname");
-                string value = XmlUtils.GetNodeValue(tabModuleSettingNode.CreateNavigator(), "settingvalue");
-                objModule.TabModuleSettings[key] = value;
-            }
-        }
-
-        private static bool FindModule(XmlNode nodeModule, int tabId, PortalTemplateModuleAction mergeTabs)
-        {
-            var modules = Instance.GetTabModules(tabId);
-
-            bool moduleFound = false;
-            string modTitle = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "title");
-            if (mergeTabs == PortalTemplateModuleAction.Merge)
-            {
-                if (modules.Select(kvp => kvp.Value).Any(module => modTitle == module.ModuleTitle))
-                {
-                    moduleFound = true;
-                }
-            }
-
-            return moduleFound;
-        }
-
-        private static void GetModuleContent(XmlNode nodeModule, int ModuleId, int TabId, int PortalId)
-        {
-            ModuleInfo module = Instance.GetModule(ModuleId, TabId, true);
-            if (nodeModule != null)
-            {
-                // ReSharper disable PossibleNullReferenceException
-                string version = nodeModule.SelectSingleNode("content").Attributes["version"].Value;
-                string content = nodeModule.SelectSingleNode("content").InnerXml;
-                content = content.Substring(9, content.Length - 12);
-                if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && !string.IsNullOrEmpty(content))
-                {
-                    var portal = PortalController.Instance.GetPortal(PortalId);
-
-                    // Determine if the Module is copmpletely installed
-                    // (ie are we running in the same request that installed the module).
-                    if (module.DesktopModule.SupportedFeatures == Null.NullInteger)
-                    {
-                        // save content in eventqueue for processing after an app restart,
-                        // as modules Supported Features are not updated yet so we
-                        // cannot determine if the module supports IsPortable
-                        EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
-                    }
-                    else
-                    {
-                        if (module.DesktopModule.IsPortable)
-                        {
-                            try
-                            {
-                                object businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                                var controller = businessController as IPortable;
-                                if (controller != null)
-                                {
-                                    var decodedContent = HttpContext.Current.Server.HtmlDecode(content);
-                                    controller.ImportModule(module.ModuleID, decodedContent, version, portal.AdministratorId);
-                                }
-                            }
-                            catch
-                            {
-                                // if there is an error then the type cannot be loaded at this time, so add to EventQueue
-                                EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
-                            }
-                        }
-                    }
-                }
-
-                // ReSharper restore PossibleNullReferenceException
-            }
-        }
-
-        private static ModuleDefinitionInfo GetModuleDefinition(XmlNode nodeModule)
-        {
-            ModuleDefinitionInfo moduleDefinition = null;
-
-            // Templates prior to v4.3.5 only have the <definition> node to define the Module Type
-            // This <definition> node was populated with the DesktopModuleInfo.ModuleName property
-            // Thus there is no mechanism to determine to which module definition the module belongs.
-            //
-            // Template from v4.3.5 on also have the <moduledefinition> element that is populated
-            // with the ModuleDefinitionInfo.FriendlyName.  Therefore the module Instance identifies
-            // which Module Definition it belongs to.
-
-            // Get the DesktopModule defined by the <definition> element
-            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "definition"), Null.NullInteger);
-            if (desktopModule != null)
-            {
-                // Get the moduleDefinition from the <moduledefinition> element
-                string friendlyName = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "moduledefinition");
-                if (string.IsNullOrEmpty(friendlyName))
-                {
-                    // Module is pre 4.3.5 so get the first Module Definition (at least it won't throw an error then)
-                    foreach (ModuleDefinitionInfo md in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModule.DesktopModuleID).Values)
-                    {
-                        moduleDefinition = md;
-                        break;
-                    }
-                }
-                else
-                {
-                    // Module is 4.3.5 or later so get the Module Defeinition by its friendly name
-                    moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(friendlyName, desktopModule.DesktopModuleID);
-                }
-            }
-
-            return moduleDefinition;
-        }
-
-        private static void SetCloneModuleContext(bool cloneModuleContext)
-        {
-            Thread.SetData(
-                Thread.GetNamedDataSlot("CloneModuleContext"),
-                cloneModuleContext ? bool.TrueString : bool.FalseString);
-        }
-
-        private static void UpdateTabModuleVersion(int tabModuleId)
-        {
-            dataProvider.UpdateTabModuleVersion(tabModuleId, Guid.NewGuid());
-        }
-
-        private int LocalizeModuleInternal(ModuleInfo sourceModule)
-        {
-            int moduleId = Null.NullInteger;
-
-            if (sourceModule != null)
-            {
-                // clone the module object ( to avoid creating an object reference to the data cache )
-                var newModule = sourceModule.Clone();
-                newModule.ModuleID = Null.NullInteger;
-
-                string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", sourceModule.CultureCode), sourceModule.PortalID, string.Empty).TrimEnd(';');
-
-                // Add the default translators for this language, view and edit permissions
-                var permissionController = new PermissionController();
-                var viewPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
-                var editPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
-                PermissionInfo viewPermisison = null;
-                PermissionInfo editPermisison = null;
-
-                // View
-                if (viewPermissionsList != null && viewPermissionsList.Count > 0)
-                {
-                    viewPermisison = (PermissionInfo)viewPermissionsList[0];
-                }
-
-                // Edit
-                if (editPermissionsList != null && editPermissionsList.Count > 0)
-                {
-                    editPermisison = (PermissionInfo)editPermissionsList[0];
-                }
-
-                if (viewPermisison != null || editPermisison != null)
-                {
-                    foreach (string translatorRole in translatorRoles.Split(';'))
-                    {
-                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, viewPermisison, "VIEW");
-                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, editPermisison, "EDIT");
-                    }
-                }
-
-                // copy permisions from source to new module
-                this.CopyModulePermisions(sourceModule, newModule);
-
-                // Add Module
-                this.AddModuleInternal(newModule);
-
-                // copy module settings
-                DataCache.RemoveCache(string.Format(DataCache.ModuleSettingsCacheKey, sourceModule.TabID));
-                var settings = this.GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
-
-                // update tabmodule
-                var currentUser = UserController.Instance.GetCurrentUserInfo();
-                dataProvider.UpdateTabModule(
-                    newModule.TabModuleID,
-                    newModule.TabID,
-                    newModule.ModuleID,
-                    newModule.ModuleTitle,
-                    newModule.Header,
-                    newModule.Footer,
-                    newModule.ModuleOrder,
-                    newModule.PaneName,
-                    newModule.CacheTime,
-                    newModule.CacheMethod,
-                    newModule.Alignment,
-                    newModule.Color,
-                    newModule.Border,
-                    newModule.IconFile,
-                    (int)newModule.Visibility,
-                    newModule.ContainerSrc,
-                    newModule.DisplayTitle,
-                    newModule.DisplayPrint,
-                    newModule.DisplaySyndicate,
-                    newModule.IsWebSlice,
-                    newModule.WebSliceTitle,
-                    newModule.WebSliceExpiryDate,
-                    newModule.WebSliceTTL,
-                    newModule.VersionGuid,
-                    newModule.DefaultLanguageGuid,
-                    newModule.LocalizedVersionGuid,
-                    newModule.CultureCode,
-                    currentUser.UserID);
-
-                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
-
-                // Copy each setting to the new TabModule instance
-                foreach (DictionaryEntry setting in settings)
-                {
-                    this.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
-                }
-
-                if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
-                {
-                    try
-                    {
-                        object businessController = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                        var portableModule = businessController as IPortable;
-                        if (portableModule != null)
-                        {
-                            try
-                            {
-                                SetCloneModuleContext(true);
-                                string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
-                                if (!string.IsNullOrEmpty(moduleContent))
-                                {
-                                    portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
-                                }
-                            }
-                            finally
-                            {
-                                SetCloneModuleContext(false);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Exceptions.LogException(ex);
-                    }
-                }
-
-                moduleId = newModule.ModuleID;
-
-                // Clear Caches
-                this.ClearCache(newModule.TabID);
-                this.ClearCache(sourceModule.TabID);
-            }
-
-            return moduleId;
-        }
-
-        private void UpdateModuleSettingInternal(int moduleId, string settingName, string settingValue, bool updateVersion)
-        {
-            IDataReader dr = null;
-            try
-            {
-                var currentUser = UserController.Instance.GetCurrentUserInfo();
-                dr = dataProvider.GetModuleSetting(moduleId, settingName);
-
-                string existValue = null;
-                if (dr.Read())
-                {
-                    existValue = dr.GetString(1);
-                }
-
-                dr.Close();
-
-                if (existValue == null)
-                {
-                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(
-                        EventLogController.EventLogType.MODULE_SETTING_CREATED,
-                        "ModuleId", moduleId, settingName, settingValue,
-                        currentUser.UserID);
-                }
-                else if (existValue != settingValue)
-                {
-                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(
-                        EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                        "ModuleId", moduleId, settingName, settingValue,
-                        currentUser.UserID);
-                }
-
-                if (updateVersion)
-                {
-                    this.UpdateTabModuleVersionsByModuleID(moduleId);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-            finally
-            {
-                // Ensure DataReader is closed
-                if (dr != null && !dr.IsClosed)
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-            }
-
-            ClearModuleSettingsCache(moduleId);
-        }
-
-        private void UpdateModuleSettings(ModuleInfo updatedModule)
-        {
-            foreach (string key in updatedModule.ModuleSettings.Keys)
-            {
-                string sKey = key;
-                this.UpdateModuleSettingInternal(updatedModule.ModuleID, sKey, Convert.ToString(updatedModule.ModuleSettings[sKey]), false);
-            }
-
-            this.UpdateTabModuleVersionsByModuleID(updatedModule.ModuleID);
-        }
-
-        private void UpdateTabModuleSettings(ModuleInfo updatedTabModule)
-        {
-            foreach (string sKey in updatedTabModule.TabModuleSettings.Keys)
-            {
-                this.UpdateTabModuleSetting(updatedTabModule.TabModuleID, sKey, Convert.ToString(updatedTabModule.TabModuleSettings[sKey]));
-            }
-        }
-
-        private void UpdateTabModuleVersionsByModuleID(int moduleID)
-        {
-            // Update the version guid of each TabModule linked to the updated module
-            foreach (ModuleInfo modInfo in this.GetAllTabsModulesByModuleID(moduleID))
-            {
-                this.ClearCache(modInfo.TabID);
-            }
-
-            dataProvider.UpdateTabModuleVersionByModule(moduleID);
-        }
-
-        private bool HasModuleOrderOrPaneChanged(ModuleInfo module)
-        {
-            var storedModuleInfo = this.GetTabModule(module.TabModuleID);
-            return storedModuleInfo == null || storedModuleInfo.ModuleOrder != module.ModuleOrder || storedModuleInfo.PaneName != module.PaneName;
-        }
-
-        private void UncopyModule(int tabId, int moduleId, bool softDelete, int originalTabId)
-        {
-            ModuleInfo moduleInfo = this.GetModule(moduleId, tabId, false);
-            this.DeleteTabModuleInternal(moduleInfo, softDelete, true);
-            var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            TabChangeTracker.Instance.TrackModuleUncopy(moduleInfo, Null.NullInteger, originalTabId, userId);
-        }
-
-        private void DeleteTabModuleInternal(ModuleInfo moduleInfo, bool softDelete, bool uncopy = false)
-        {
-            // save moduleinfo
-            if (moduleInfo != null)
-            {
-                // delete the module instance for the tab
-                dataProvider.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, softDelete, UserController.Instance.GetCurrentUserInfo().UserID);
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.TABMODULE_DELETED.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("tabId", moduleInfo.TabID.ToString(CultureInfo.InvariantCulture)));
-                log.LogProperties.Add(new LogDetailInfo("moduleId", moduleInfo.ModuleID.ToString(CultureInfo.InvariantCulture)));
-                LogController.Instance.AddLog(log);
-
-                // reorder all modules on tab
-                if (!uncopy)
-                {
-                    this.UpdateTabModuleOrder(moduleInfo.TabID);
-
-                    // ModuleRemove is only raised when doing a soft delete of the module
-                    if (softDelete)
-                    {
-                        EventManager.Instance.OnModuleRemoved(new ModuleEventArgs { Module = moduleInfo });
-                    }
-                }
-
-                // check if all modules instances have been deleted
-                if (this.GetModule(moduleInfo.ModuleID, Null.NullInteger, true).TabID == Null.NullInteger)
-                {
-                    // hard delete the module
-                    this.DeleteModule(moduleInfo.ModuleID);
-                }
-
-                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID));
-                this.ClearCache(moduleInfo.TabID);
-            }
-        }
-
-        /// <summary>
-        /// Update content item when the module title changed.
-        /// </summary>
-        /// <param name="module"></param>
-        private void UpdateContentItem(ModuleInfo module)
-        {
-            IContentController contentController = Util.GetContentController();
-            if (module.Content != module.ModuleTitle)
-            {
-                module.Content = module.ModuleTitle;
-                contentController.UpdateContentItem(module);
-            }
         }
 
         /// <summary>
@@ -2016,19 +1250,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
-        {
-            var modules = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
-
-            var dictionary = new Dictionary<int, ModuleInfo>();
-            foreach (var module in modules)
-            {
-                dictionary[module.ModuleID] = module;
-            }
-
-            return dictionary;
-        }
-
         public void LocalizeModule(ModuleInfo sourceModule, Locale locale)
         {
             try
@@ -2496,138 +1717,917 @@ namespace DotNetNuke.Entities.Modules
             this.ClearCache(localizedModule.TabID);
         }
 
-        /// <summary>
-        /// SerializeModule.
-        /// </summary>
-        /// <param name="xmlModule">The Xml Document to use for the Module.</param>
-        /// <param name="module">The ModuleInfo object to serialize.</param>
-        /// <param name="includeContent">A flak that determines whether the content of the module is serialised.</param>
-        /// <returns></returns>
-        public static XmlNode SerializeModule(XmlDocument xmlModule, ModuleInfo module, bool includeContent)
+        internal Hashtable GetModuleSettings(int moduleId, int tabId)
         {
-            var serializer = new XmlSerializer(typeof(ModuleInfo));
-            var sw = new StringWriter();
-            serializer.Serialize(sw, module);
-            xmlModule.LoadXml(sw.GetStringBuilder().ToString());
-            XmlNode moduleNode = xmlModule.SelectSingleNode("module");
-            if (moduleNode != null)
+            string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tabId);
+
+            var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.ModuleCacheTimeOut,
+                DataCache.ModuleCachePriority),
+                c =>
+                            {
+                                var moduleSettingsDic = new Dictionary<int, Hashtable>();
+                                IDataReader dr = DataProvider.Instance().GetModuleSettingsByTab(tabId);
+                                while (dr.Read())
+                                {
+                                    int mId = dr.GetInt32(0);
+                                    Hashtable settings;
+                                    if (!moduleSettingsDic.TryGetValue(mId, out settings))
+                                    {
+                                        settings = new Hashtable();
+                                        moduleSettingsDic[mId] = settings;
+                                    }
+
+                                    if (!dr.IsDBNull(2))
+                                    {
+                                        settings[dr.GetString(1)] = dr.GetString(2);
+                                    }
+                                    else
+                                    {
+                                        settings[dr.GetString(1)] = string.Empty;
+                                    }
+                                }
+
+                                CBO.CloseDataReader(dr, true);
+                                return moduleSettingsDic;
+                            });
+
+            return moduleSettings.ContainsKey(moduleId) ? moduleSettings[moduleId] : new Hashtable();
+        }
+
+        internal Hashtable GetTabModuleSettings(int tabmoduleId, int tabId)
+        {
+            string cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tabId);
+
+            var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.TabModuleCacheTimeOut,
+                DataCache.TabModuleCachePriority),
+                c =>
+                            {
+                                var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
+                                using (IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId))
+                                {
+                                    while (dr.Read())
+                                    {
+                                        int tMId = dr.GetInt32(0);
+                                        Hashtable settings;
+                                        if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
+                                        {
+                                            settings = new Hashtable();
+                                            tabModuleSettingsDic[tMId] = settings;
+                                        }
+
+                                        if (!dr.IsDBNull(2))
+                                        {
+                                            settings[dr.GetString(1)] = dr.GetString(2);
+                                        }
+                                        else
+                                        {
+                                            settings[dr.GetString(1)] = string.Empty;
+                                        }
+                                    }
+                                }
+
+                                return tabModuleSettingsDic;
+                            });
+
+            return tabModuleSettings.ContainsKey(tabmoduleId) ? tabModuleSettings[tabmoduleId] : new Hashtable();
+        }
+
+        protected override Func<IModuleController> GetFactory()
+        {
+            return () => new ModuleController();
+        }
+
+        private static void AddContent(XmlNode nodeModule, ModuleInfo module)
+        {
+            if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
             {
-                // ReSharper disable AssignNullToNotNullAttribute
-                if (moduleNode.Attributes != null)
+                try
                 {
-                    moduleNode.Attributes.Remove(moduleNode.Attributes["xmlns:xsd"]);
-                    moduleNode.Attributes.Remove(moduleNode.Attributes["xmlns:xsi"]);
-                }
-
-                // remove unwanted elements
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("portalid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("tabid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("tabmoduleid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("moduleorder"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("panename"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("isdeleted"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("versionGuid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("localizedVersionGuid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("content"));
-
-                // support for localized templates
-                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("uniqueId"));
-                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
-                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("cultureCode"));
-                if (Null.IsNull(module.DefaultLanguageGuid))
-                {
-                    moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
-                }
-
-                var xmlNodeList = moduleNode.SelectNodes("modulepermissions/permission");
-                if (xmlNodeList != null)
-                {
-                    foreach (XmlNode nodePermission in xmlNodeList)
+                    object businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
+                    var controller = businessController as IPortable;
+                    if (controller != null)
                     {
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("modulepermissionid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("permissionid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("moduleid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("roleid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("userid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("username"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("displayname"));
+                        string content = Convert.ToString(controller.ExportModule(module.ModuleID));
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            content = XmlUtils.RemoveInvalidXmlCharacters(content);
+
+                            // add attributes to XML document
+                            if (nodeModule.OwnerDocument != null)
+                            {
+                                var existing = nodeModule.OwnerDocument.GetElementById("content");
+                                if (existing != null)
+                                {
+                                    nodeModule.OwnerDocument.RemoveChild(existing);
+                                }
+
+                                XmlNode newnode = nodeModule.OwnerDocument.CreateElement("content");
+                                XmlAttribute xmlattr = nodeModule.OwnerDocument.CreateAttribute("type");
+                                xmlattr.Value = Globals.CleanName(module.DesktopModule.ModuleName);
+                                if (newnode.Attributes != null)
+                                {
+                                    newnode.Attributes.Append(xmlattr);
+                                }
+
+                                xmlattr = nodeModule.OwnerDocument.CreateAttribute("version");
+                                xmlattr.Value = module.DesktopModule.Version;
+                                if (newnode.Attributes != null)
+                                {
+                                    newnode.Attributes.Append(xmlattr);
+                                }
+
+                                content = HttpContext.Current.Server.HtmlEncode(content);
+                                newnode.InnerXml = XmlUtils.XMLEncode(content);
+                                nodeModule.AppendChild(newnode);
+                            }
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+                }
+            }
+        }
+
+        private static void AddModulePermission(ref ModuleInfo module, int portalId, string roleName, PermissionInfo permission, string permissionKey)
+        {
+            var perm = module.ModulePermissions.Where(tp => tp.RoleName == roleName && tp.PermissionKey == permissionKey).SingleOrDefault();
+            if (permission != null && perm == null)
+            {
+                var modulePermission = new ModulePermissionInfo(permission);
+
+                // ReSharper disable ImplicitlyCapturedClosure
+                var role = RoleController.Instance.GetRole(portalId, r => (r.RoleName == roleName));
+
+                // ReSharper restore ImplicitlyCapturedClosure
+                if (role != null)
+                {
+                    modulePermission.RoleID = role.RoleID;
+                    modulePermission.AllowAccess = true;
+
+                    module.ModulePermissions.Add(modulePermission);
+                }
+            }
+        }
+
+        private static bool CheckIsInstance(int templateModuleID, Hashtable hModules)
+        {
+            // will be instance or module?
+            bool IsInstance = false;
+            if (templateModuleID > 0)
+            {
+                if (hModules[templateModuleID] != null)
+                {
+                    // this module has already been processed -> process as instance
+                    IsInstance = true;
+                }
+            }
+
+            return IsInstance;
+        }
+
+        private static void ClearModuleSettingsCache(int moduleId)
+        {
+            foreach (var tab in TabController.Instance.GetTabsByModuleID(moduleId).Values)
+            {
+                string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
+                DataCache.RemoveCache(cacheKey);
+            }
+        }
+
+        private static void ClearTabModuleSettingsCache(int tabModuleId, string settingName)
+        {
+            var portalId = -1;
+            foreach (var tab in TabController.Instance.GetTabsByTabModuleID(tabModuleId).Values)
+            {
+                var cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
+                DataCache.RemoveCache(cacheKey);
+
+                if (portalId != tab.PortalID)
+                {
+                    portalId = tab.PortalID;
+                    cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? string.Empty);
+                    DataCache.RemoveCache(cacheKey);
+                }
+            }
+        }
+
+        private static ModuleInfo DeserializeModule(XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, int moduleDefId)
+        {
+            // Create New Module
+            var module = new ModuleInfo
+            {
+                PortalID = portalId,
+                TabID = tabId,
+                ModuleOrder = -1,
+                ModuleTitle = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "title"),
+                PaneName = XmlUtils.GetNodeValue(nodePane.CreateNavigator(), "name"),
+                ModuleDefID = moduleDefId,
+                CacheTime = XmlUtils.GetNodeValueInt(nodeModule, "cachetime"),
+                CacheMethod = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "cachemethod"),
+                Alignment = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "alignment"),
+                IconFile = Globals.ImportFile(portalId, XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "iconfile")),
+                AllTabs = XmlUtils.GetNodeValueBoolean(nodeModule, "alltabs"),
+                CultureCode = XmlUtils.GetNodeValue(nodeModule, "cultureCode"),
+            };
+
+            // Localization
+            var oldGuid = XmlUtils.GetNodeValue(nodeModule, "defaultLanguageGuid");
+            if (!string.IsNullOrEmpty(oldGuid))
+            {
+                // get new default module language guid
+                if (ParsedLocalizedModuleGuid.ContainsKey(oldGuid))
+                {
+                    module.DefaultLanguageGuid = new Guid(ParsedLocalizedModuleGuid[oldGuid].ToString());
+                }
+            }
+
+            switch (XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "visibility"))
+            {
+                case "Maximized":
+                    module.Visibility = VisibilityState.Maximized;
+                    break;
+                case "Minimized":
+                    module.Visibility = VisibilityState.Minimized;
+                    break;
+                case "None":
+                    module.Visibility = VisibilityState.None;
+                    break;
+            }
+
+            module.Color = XmlUtils.GetNodeValue(nodeModule, "color", string.Empty);
+            module.Border = XmlUtils.GetNodeValue(nodeModule, "border", string.Empty);
+            module.Header = XmlUtils.GetNodeValue(nodeModule, "header", string.Empty);
+            module.Footer = XmlUtils.GetNodeValue(nodeModule, "footer", string.Empty);
+            module.InheritViewPermissions = XmlUtils.GetNodeValueBoolean(nodeModule, "inheritviewpermissions", false);
+            module.IsShareable = XmlUtils.GetNodeValueBoolean(nodeModule, "isshareable", true);
+            module.IsShareableViewOnly = XmlUtils.GetNodeValueBoolean(nodeModule, "isshareableviewonly", true);
+            module.StartDate = XmlUtils.GetNodeValueDate(nodeModule, "startdate", Null.NullDate);
+            module.EndDate = XmlUtils.GetNodeValueDate(nodeModule, "enddate", Null.NullDate);
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule, "containersrc", string.Empty)))
+            {
+                module.ContainerSrc = XmlUtils.GetNodeValue(nodeModule, "containersrc", string.Empty);
+            }
+
+            module.DisplayTitle = XmlUtils.GetNodeValueBoolean(nodeModule, "displaytitle", true);
+            module.DisplayPrint = XmlUtils.GetNodeValueBoolean(nodeModule, "displayprint", true);
+            module.DisplaySyndicate = XmlUtils.GetNodeValueBoolean(nodeModule, "displaysyndicate", false);
+            module.IsWebSlice = XmlUtils.GetNodeValueBoolean(nodeModule, "iswebslice", false);
+            if (module.IsWebSlice)
+            {
+                module.WebSliceTitle = XmlUtils.GetNodeValue(nodeModule, "webslicetitle", module.ModuleTitle);
+                module.WebSliceExpiryDate = XmlUtils.GetNodeValueDate(nodeModule, "websliceexpirydate", module.EndDate);
+                module.WebSliceTTL = XmlUtils.GetNodeValueInt(nodeModule, "webslicettl", module.CacheTime / 60);
+            }
+
+            return module;
+        }
+
+        private static void DeserializeModulePermissions(XmlNodeList nodeModulePermissions, int portalId, ModuleInfo module)
+        {
+            var permissionController = new PermissionController();
+            foreach (XmlNode node in nodeModulePermissions)
+            {
+                string permissionKey = XmlUtils.GetNodeValue(node.CreateNavigator(), "permissionkey");
+                string permissionCode = XmlUtils.GetNodeValue(node.CreateNavigator(), "permissioncode");
+                string roleName = XmlUtils.GetNodeValue(node.CreateNavigator(), "rolename");
+                int roleID = int.MinValue;
+                switch (roleName)
+                {
+                    case Globals.glbRoleAllUsersName:
+                        roleID = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        break;
+                    case Globals.glbRoleUnauthUserName:
+                        roleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        break;
+                    default:
+                        var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                        if (role != null)
+                        {
+                            roleID = role.RoleID;
+                        }
+
+                        break;
+                }
+
+                if (roleID != int.MinValue)
+                {
+                    int permissionID = -1;
+                    ArrayList permissions = permissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey);
+                    for (int i = 0; i <= permissions.Count - 1; i++)
+                    {
+                        var permission = (PermissionInfo)permissions[i];
+                        permissionID = permission.PermissionID;
+                    }
+
+                    // if role was found add, otherwise ignore
+                    if (permissionID != -1)
+                    {
+                        var modulePermission = new ModulePermissionInfo
+                        {
+                            ModuleID = module.ModuleID,
+                            PermissionID = permissionID,
+                            RoleID = roleID,
+                            AllowAccess = Convert.ToBoolean(XmlUtils.GetNodeValue(node.CreateNavigator(), "allowaccess")),
+                        };
+
+                        // do not add duplicate ModulePermissions
+                        bool canAdd = !module.ModulePermissions.Cast<ModulePermissionInfo>()
+                                                    .Any(mp => mp.ModuleID == modulePermission.ModuleID
+                                                            && mp.PermissionID == modulePermission.PermissionID
+                                                            && mp.RoleID == modulePermission.RoleID
+                                                            && mp.UserID == modulePermission.UserID);
+                        if (canAdd)
+                        {
+                            module.ModulePermissions.Add(modulePermission);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void DeserializeModuleSettings(XmlNodeList nodeModuleSettings, ModuleInfo objModule)
+        {
+            foreach (XmlNode moduleSettingNode in nodeModuleSettings)
+            {
+                string key = XmlUtils.GetNodeValue(moduleSettingNode.CreateNavigator(), "settingname");
+                string value = XmlUtils.GetNodeValue(moduleSettingNode.CreateNavigator(), "settingvalue");
+                objModule.ModuleSettings[key] = value;
+            }
+        }
+
+        private static void DeserializeTabModuleSettings(XmlNodeList nodeTabModuleSettings, ModuleInfo objModule)
+        {
+            foreach (XmlNode tabModuleSettingNode in nodeTabModuleSettings)
+            {
+                string key = XmlUtils.GetNodeValue(tabModuleSettingNode.CreateNavigator(), "settingname");
+                string value = XmlUtils.GetNodeValue(tabModuleSettingNode.CreateNavigator(), "settingvalue");
+                objModule.TabModuleSettings[key] = value;
+            }
+        }
+
+        private static bool FindModule(XmlNode nodeModule, int tabId, PortalTemplateModuleAction mergeTabs)
+        {
+            var modules = Instance.GetTabModules(tabId);
+
+            bool moduleFound = false;
+            string modTitle = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "title");
+            if (mergeTabs == PortalTemplateModuleAction.Merge)
+            {
+                if (modules.Select(kvp => kvp.Value).Any(module => modTitle == module.ModuleTitle))
+                {
+                    moduleFound = true;
+                }
+            }
+
+            return moduleFound;
+        }
+
+        private static void GetModuleContent(XmlNode nodeModule, int ModuleId, int TabId, int PortalId)
+        {
+            ModuleInfo module = Instance.GetModule(ModuleId, TabId, true);
+            if (nodeModule != null)
+            {
+                // ReSharper disable PossibleNullReferenceException
+                string version = nodeModule.SelectSingleNode("content").Attributes["version"].Value;
+                string content = nodeModule.SelectSingleNode("content").InnerXml;
+                content = content.Substring(9, content.Length - 12);
+                if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && !string.IsNullOrEmpty(content))
+                {
+                    var portal = PortalController.Instance.GetPortal(PortalId);
+
+                    // Determine if the Module is copmpletely installed
+                    // (ie are we running in the same request that installed the module).
+                    if (module.DesktopModule.SupportedFeatures == Null.NullInteger)
+                    {
+                        // save content in eventqueue for processing after an app restart,
+                        // as modules Supported Features are not updated yet so we
+                        // cannot determine if the module supports IsPortable
+                        EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
+                    }
+                    else
+                    {
+                        if (module.DesktopModule.IsPortable)
+                        {
+                            try
+                            {
+                                object businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
+                                var controller = businessController as IPortable;
+                                if (controller != null)
+                                {
+                                    var decodedContent = HttpContext.Current.Server.HtmlDecode(content);
+                                    controller.ImportModule(module.ModuleID, decodedContent, version, portal.AdministratorId);
+                                }
+                            }
+                            catch
+                            {
+                                // if there is an error then the type cannot be loaded at this time, so add to EventQueue
+                                EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
+                            }
+                        }
                     }
                 }
 
-                if (includeContent)
+                // ReSharper restore PossibleNullReferenceException
+            }
+        }
+
+        private static ModuleDefinitionInfo GetModuleDefinition(XmlNode nodeModule)
+        {
+            ModuleDefinitionInfo moduleDefinition = null;
+
+            // Templates prior to v4.3.5 only have the <definition> node to define the Module Type
+            // This <definition> node was populated with the DesktopModuleInfo.ModuleName property
+            // Thus there is no mechanism to determine to which module definition the module belongs.
+            //
+            // Template from v4.3.5 on also have the <moduledefinition> element that is populated
+            // with the ModuleDefinitionInfo.FriendlyName.  Therefore the module Instance identifies
+            // which Module Definition it belongs to.
+
+            // Get the DesktopModule defined by the <definition> element
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "definition"), Null.NullInteger);
+            if (desktopModule != null)
+            {
+                // Get the moduleDefinition from the <moduledefinition> element
+                string friendlyName = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "moduledefinition");
+                if (string.IsNullOrEmpty(friendlyName))
                 {
-                    AddContent(moduleNode, module);
+                    // Module is pre 4.3.5 so get the first Module Definition (at least it won't throw an error then)
+                    foreach (ModuleDefinitionInfo md in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModule.DesktopModuleID).Values)
+                    {
+                        moduleDefinition = md;
+                        break;
+                    }
                 }
-
-                // serialize ModuleSettings and TabModuleSettings
-                XmlUtils.SerializeHashtable(module.ModuleSettings, xmlModule, moduleNode, "modulesetting", "settingname", "settingvalue");
-                XmlUtils.SerializeHashtable(module.TabModuleSettings, xmlModule, moduleNode, "tabmodulesetting", "settingname", "settingvalue");
-
-                // ReSharper restore AssignNullToNotNullAttribute
+                else
+                {
+                    // Module is 4.3.5 or later so get the Module Defeinition by its friendly name
+                    moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(friendlyName, desktopModule.DesktopModuleID);
+                }
             }
 
-            XmlNode newNode = xmlModule.CreateElement("definition");
-            ModuleDefinitionInfo objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
-            newNode.InnerText = DesktopModuleController.GetDesktopModule(objModuleDef.DesktopModuleID, module.PortalID).ModuleName;
-            if (moduleNode != null)
+            return moduleDefinition;
+        }
+
+        private static void SetCloneModuleContext(bool cloneModuleContext)
+        {
+            Thread.SetData(
+                Thread.GetNamedDataSlot("CloneModuleContext"),
+                cloneModuleContext ? bool.TrueString : bool.FalseString);
+        }
+
+        private static void UpdateTabModuleVersion(int tabModuleId)
+        {
+            dataProvider.UpdateTabModuleVersion(tabModuleId, Guid.NewGuid());
+        }
+
+        private void AddModuleInternal(ModuleInfo module)
+        {
+            // add module
+            if (Null.IsNull(module.ModuleID))
             {
-                moduleNode.AppendChild(newNode);
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                this.CreateContentItem(module);
+
+                // Add Module
+                module.ModuleID = dataProvider.AddModule(
+                    module.ContentItemId,
+                    module.PortalID,
+                    module.ModuleDefID,
+                    module.AllTabs,
+                    module.StartDate,
+                    module.EndDate,
+                    module.InheritViewPermissions,
+                    module.IsShareable,
+                    module.IsShareableViewOnly,
+                    module.IsDeleted,
+                    currentUser.UserID);
+
+                // Now we have the ModuleID - update the contentItem
+                var contentController = Util.GetContentController();
+                contentController.UpdateContentItem(module);
+
+                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
+
+                // set module permissions
+                ModulePermissionController.SaveModulePermissions(module);
             }
 
-            // Add Module Definition Info
-            XmlNode definitionNode = xmlModule.CreateElement("moduledefinition");
-            definitionNode.InnerText = objModuleDef.FriendlyName;
-            if (moduleNode != null)
+            // Save ModuleSettings
+            this.UpdateModuleSettings(module);
+
+            EventManager.Instance.OnModuleCreated(new ModuleEventArgs { Module = module });
+        }
+
+        private ModulePermissionInfo AddModulePermission(ModuleInfo module, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        {
+            var modulePermission = new ModulePermissionInfo
             {
-                moduleNode.AppendChild(definitionNode);
+                ModuleID = module.ModuleID,
+                PermissionID = permission.PermissionID,
+                RoleID = roleId,
+                UserID = userId,
+                PermissionKey = permission.PermissionKey,
+                AllowAccess = allowAccess,
+            };
+
+            // add the permission to the collection
+            if (!module.ModulePermissions.Contains(modulePermission))
+            {
+                module.ModulePermissions.Add(modulePermission);
             }
 
-            return moduleNode;
+            return modulePermission;
+        }
+
+        private void CopyTabModuleSettingsInternal(ModuleInfo fromModule, ModuleInfo toModule)
+        {
+            // Copy each setting to the new TabModule instance
+            foreach (DictionaryEntry setting in fromModule.TabModuleSettings)
+            {
+                this.UpdateTabModuleSetting(toModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+            }
         }
 
         /// <summary>
-        /// Synchronizes the module content between cache and database.
+        /// Checks whether module VIEW permission is inherited from its tab.
         /// </summary>
-        /// <param name="moduleID">The module ID.</param>
-        public static void SynchronizeModule(int moduleID)
+        /// <param name="module">The module.</param>
+        /// <param name="permission">The module permission.</param>
+        private bool IsModuleViewPermissionInherited(ModuleInfo module, ModulePermissionInfo permission)
         {
-            var modules = Instance.GetTabModulesByModule(moduleID);
-            foreach (ModuleInfo module in modules)
+            Requires.NotNull(module);
+
+            Requires.NotNull(permission);
+
+            var permissionViewKey = "VIEW";
+
+            if (!module.InheritViewPermissions || permission.PermissionKey != permissionViewKey)
             {
-                Hashtable tabSettings = TabController.Instance.GetTabSettings(module.TabID);
-                if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
-                {
-                    var outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
-                    if (outputProvider != null)
-                    {
-                        outputProvider.Remove(module.TabID);
-                    }
-                }
-
-                if (module.CacheTime > 0)
-                {
-                    var moduleProvider = ModuleCachingProvider.Instance(module.GetEffectiveCacheMethod());
-                    if (moduleProvider != null)
-                    {
-                        moduleProvider.Remove(module.TabModuleID);
-                    }
-                }
-
-                // Synchronize module is called when a module needs to indicate that the content
-                // has changed and the cache's should be refreshed.  So we can update the Version
-                // and also the LastContentModificationDate
-                UpdateTabModuleVersion(module.TabModuleID);
-                dataProvider.UpdateModuleLastContentModifiedOnDate(module.ModuleID);
-
-                // We should also indicate that the Transalation Status has changed
-                if (PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", module.PortalID, false))
-                {
-                    Instance.UpdateTranslationStatus(module, false);
-                }
-
-                // and clear the cache
-                Instance.ClearCache(module.TabID);
+                return false;
             }
+
+            var tabPermissions = TabPermissionController.GetTabPermissions(module.TabID, module.PortalID);
+
+            return tabPermissions?.Where(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey).Any() == true;
+        }
+
+        /// <summary>
+        /// Checks whether given permission is granted for translator role.
+        /// </summary>
+        /// <param name="permission">The module permission.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="culture">The culture code.</param>
+        private bool IsTranslatorRolePermission(ModulePermissionInfo permission, int portalId, string culture)
+        {
+            Requires.NotNull(permission);
+
+            if (string.IsNullOrWhiteSpace(culture) || portalId == Null.NullInteger)
+            {
+                return false;
+            }
+
+            var translatorSettingKey = $"DefaultTranslatorRoles-{culture}";
+
+            var translatorSettingValue =
+                PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ??
+                HostController.Instance.GetString(translatorSettingKey, null);
+
+            var translatorRoles =
+                translatorSettingValue?.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            return translatorRoles?.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase)) == true;
+        }
+
+        /// <summary>
+        /// Copies permissions from source to new tab.
+        /// </summary>
+        /// <param name="sourceModule">Source module.</param>
+        /// <param name="newModule">New module.</param>
+        private void CopyModulePermisions(ModuleInfo sourceModule, ModuleInfo newModule)
+        {
+            Requires.NotNull(sourceModule);
+
+            Requires.NotNull(newModule);
+
+            foreach (ModulePermissionInfo permission in sourceModule.ModulePermissions)
+            {
+                // skip inherited view and translator permissions
+                if (this.IsModuleViewPermissionInherited(newModule, permission) ||
+                    this.IsTranslatorRolePermission(permission, sourceModule.PortalID, sourceModule.CultureCode))
+                {
+                    continue;
+                }
+
+                // need to force vew permission to be copied
+                permission.PermissionKey = newModule.InheritViewPermissions && permission.PermissionKey == "VIEW" ?
+                    null :
+                    permission.PermissionKey;
+
+                this.AddModulePermission(
+                    newModule,
+                    permission,
+                    permission.RoleID,
+                    permission.UserID,
+                    permission.AllowAccess);
+            }
+        }
+
+        private int LocalizeModuleInternal(ModuleInfo sourceModule)
+        {
+            int moduleId = Null.NullInteger;
+
+            if (sourceModule != null)
+            {
+                // clone the module object ( to avoid creating an object reference to the data cache )
+                var newModule = sourceModule.Clone();
+                newModule.ModuleID = Null.NullInteger;
+
+                string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", sourceModule.CultureCode), sourceModule.PortalID, string.Empty).TrimEnd(';');
+
+                // Add the default translators for this language, view and edit permissions
+                var permissionController = new PermissionController();
+                var viewPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
+                var editPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                PermissionInfo viewPermisison = null;
+                PermissionInfo editPermisison = null;
+
+                // View
+                if (viewPermissionsList != null && viewPermissionsList.Count > 0)
+                {
+                    viewPermisison = (PermissionInfo)viewPermissionsList[0];
+                }
+
+                // Edit
+                if (editPermissionsList != null && editPermissionsList.Count > 0)
+                {
+                    editPermisison = (PermissionInfo)editPermissionsList[0];
+                }
+
+                if (viewPermisison != null || editPermisison != null)
+                {
+                    foreach (string translatorRole in translatorRoles.Split(';'))
+                    {
+                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, viewPermisison, "VIEW");
+                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, editPermisison, "EDIT");
+                    }
+                }
+
+                // copy permisions from source to new module
+                this.CopyModulePermisions(sourceModule, newModule);
+
+                // Add Module
+                this.AddModuleInternal(newModule);
+
+                // copy module settings
+                DataCache.RemoveCache(string.Format(DataCache.ModuleSettingsCacheKey, sourceModule.TabID));
+                var settings = this.GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
+
+                // update tabmodule
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                dataProvider.UpdateTabModule(
+                    newModule.TabModuleID,
+                    newModule.TabID,
+                    newModule.ModuleID,
+                    newModule.ModuleTitle,
+                    newModule.Header,
+                    newModule.Footer,
+                    newModule.ModuleOrder,
+                    newModule.PaneName,
+                    newModule.CacheTime,
+                    newModule.CacheMethod,
+                    newModule.Alignment,
+                    newModule.Color,
+                    newModule.Border,
+                    newModule.IconFile,
+                    (int)newModule.Visibility,
+                    newModule.ContainerSrc,
+                    newModule.DisplayTitle,
+                    newModule.DisplayPrint,
+                    newModule.DisplaySyndicate,
+                    newModule.IsWebSlice,
+                    newModule.WebSliceTitle,
+                    newModule.WebSliceExpiryDate,
+                    newModule.WebSliceTTL,
+                    newModule.VersionGuid,
+                    newModule.DefaultLanguageGuid,
+                    newModule.LocalizedVersionGuid,
+                    newModule.CultureCode,
+                    currentUser.UserID);
+
+                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
+
+                // Copy each setting to the new TabModule instance
+                foreach (DictionaryEntry setting in settings)
+                {
+                    this.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+                }
+
+                if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
+                {
+                    try
+                    {
+                        object businessController = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
+                        var portableModule = businessController as IPortable;
+                        if (portableModule != null)
+                        {
+                            try
+                            {
+                                SetCloneModuleContext(true);
+                                string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
+                                if (!string.IsNullOrEmpty(moduleContent))
+                                {
+                                    portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
+                                }
+                            }
+                            finally
+                            {
+                                SetCloneModuleContext(false);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Exceptions.LogException(ex);
+                    }
+                }
+
+                moduleId = newModule.ModuleID;
+
+                // Clear Caches
+                this.ClearCache(newModule.TabID);
+                this.ClearCache(sourceModule.TabID);
+            }
+
+            return moduleId;
+        }
+
+        private void UpdateModuleSettingInternal(int moduleId, string settingName, string settingValue, bool updateVersion)
+        {
+            IDataReader dr = null;
+            try
+            {
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                dr = dataProvider.GetModuleSetting(moduleId, settingName);
+
+                string existValue = null;
+                if (dr.Read())
+                {
+                    existValue = dr.GetString(1);
+                }
+
+                dr.Close();
+
+                if (existValue == null)
+                {
+                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+                    EventLogController.AddSettingLog(
+                        EventLogController.EventLogType.MODULE_SETTING_CREATED,
+                        "ModuleId", moduleId, settingName, settingValue,
+                        currentUser.UserID);
+                }
+                else if (existValue != settingValue)
+                {
+                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+                    EventLogController.AddSettingLog(
+                        EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                        "ModuleId", moduleId, settingName, settingValue,
+                        currentUser.UserID);
+                }
+
+                if (updateVersion)
+                {
+                    this.UpdateTabModuleVersionsByModuleID(moduleId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+            finally
+            {
+                // Ensure DataReader is closed
+                if (dr != null && !dr.IsClosed)
+                {
+                    CBO.CloseDataReader(dr, true);
+                }
+            }
+
+            ClearModuleSettingsCache(moduleId);
+        }
+
+        private void UpdateModuleSettings(ModuleInfo updatedModule)
+        {
+            foreach (string key in updatedModule.ModuleSettings.Keys)
+            {
+                string sKey = key;
+                this.UpdateModuleSettingInternal(updatedModule.ModuleID, sKey, Convert.ToString(updatedModule.ModuleSettings[sKey]), false);
+            }
+
+            this.UpdateTabModuleVersionsByModuleID(updatedModule.ModuleID);
+        }
+
+        private void UpdateTabModuleSettings(ModuleInfo updatedTabModule)
+        {
+            foreach (string sKey in updatedTabModule.TabModuleSettings.Keys)
+            {
+                this.UpdateTabModuleSetting(updatedTabModule.TabModuleID, sKey, Convert.ToString(updatedTabModule.TabModuleSettings[sKey]));
+            }
+        }
+
+        private void UpdateTabModuleVersionsByModuleID(int moduleID)
+        {
+            // Update the version guid of each TabModule linked to the updated module
+            foreach (ModuleInfo modInfo in this.GetAllTabsModulesByModuleID(moduleID))
+            {
+                this.ClearCache(modInfo.TabID);
+            }
+
+            dataProvider.UpdateTabModuleVersionByModule(moduleID);
+        }
+
+        private bool HasModuleOrderOrPaneChanged(ModuleInfo module)
+        {
+            var storedModuleInfo = this.GetTabModule(module.TabModuleID);
+            return storedModuleInfo == null || storedModuleInfo.ModuleOrder != module.ModuleOrder || storedModuleInfo.PaneName != module.PaneName;
+        }
+
+        private void UncopyModule(int tabId, int moduleId, bool softDelete, int originalTabId)
+        {
+            ModuleInfo moduleInfo = this.GetModule(moduleId, tabId, false);
+            this.DeleteTabModuleInternal(moduleInfo, softDelete, true);
+            var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            TabChangeTracker.Instance.TrackModuleUncopy(moduleInfo, Null.NullInteger, originalTabId, userId);
+        }
+
+        private void DeleteTabModuleInternal(ModuleInfo moduleInfo, bool softDelete, bool uncopy = false)
+        {
+            // save moduleinfo
+            if (moduleInfo != null)
+            {
+                // delete the module instance for the tab
+                dataProvider.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, softDelete, UserController.Instance.GetCurrentUserInfo().UserID);
+                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.TABMODULE_DELETED.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("tabId", moduleInfo.TabID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("moduleId", moduleInfo.ModuleID.ToString(CultureInfo.InvariantCulture)));
+                LogController.Instance.AddLog(log);
+
+                // reorder all modules on tab
+                if (!uncopy)
+                {
+                    this.UpdateTabModuleOrder(moduleInfo.TabID);
+
+                    // ModuleRemove is only raised when doing a soft delete of the module
+                    if (softDelete)
+                    {
+                        EventManager.Instance.OnModuleRemoved(new ModuleEventArgs { Module = moduleInfo });
+                    }
+                }
+
+                // check if all modules instances have been deleted
+                if (this.GetModule(moduleInfo.ModuleID, Null.NullInteger, true).TabID == Null.NullInteger)
+                {
+                    // hard delete the module
+                    this.DeleteModule(moduleInfo.ModuleID);
+                }
+
+                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID));
+                this.ClearCache(moduleInfo.TabID);
+            }
+        }
+
+        /// <summary>
+        /// Update content item when the module title changed.
+        /// </summary>
+        /// <param name="module"></param>
+        private void UpdateContentItem(ModuleInfo module)
+        {
+            IContentController contentController = Util.GetContentController();
+            if (module.Content != module.ModuleTitle)
+            {
+                module.Content = module.ModuleTitle;
+                contentController.UpdateContentItem(module);
+            }
+        }
+
+        private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
+        {
+            var modules = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
+
+            var dictionary = new Dictionary<int, ModuleInfo>();
+            foreach (var module in modules)
+            {
+                dictionary[module.ModuleID] = module;
+            }
+
+            return dictionary;
         }
     }
 }

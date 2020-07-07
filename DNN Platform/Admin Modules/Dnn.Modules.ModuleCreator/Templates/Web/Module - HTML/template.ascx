@@ -7,8 +7,6 @@
 <%@ Import Namespace="System.IO" %>
 
 <script runat="server">
-
-
     #region Copyright
 
     // 
@@ -53,7 +51,6 @@
     }
 
     #endregion
-
 </script>
 
 

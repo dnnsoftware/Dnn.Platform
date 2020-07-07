@@ -27,8 +27,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public event EventHandler ItemChanged;
 
-        public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
-
         public int ItemCount
         {
             get
@@ -52,6 +50,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 return this._moduleCombo.ClientID;
             }
         }
+
+        public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
         public override bool Enabled
         {
@@ -82,6 +82,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.BindTabModuleImages(tabID);
         }
 
+        public void SetModule(string code)
+        {
+            this._moduleCombo.SelectedIndex = this._moduleCombo.FindItemIndexByValue(code);
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -95,6 +100,25 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
             this._originalValue = this.SelectedValue;
+        }
+
+        protected virtual void OnItemChanged()
+        {
+            if (this.ItemChanged != null)
+            {
+                this.ItemChanged(this, new EventArgs());
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            if (this._moduleCombo.Items.FindItemByValue(this._originalValue) != null)
+            {
+                this._moduleCombo.Items.FindItemByValue(this._originalValue).Selected = true;
+            }
+
+            this._moduleCombo.Width = this.Width;
+            base.OnPreRender(e);
         }
 
         private static Dictionary<int, string> GetTabModules(int tabID)
@@ -177,30 +201,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 item.ImageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             }
-        }
-
-        protected virtual void OnItemChanged()
-        {
-            if (this.ItemChanged != null)
-            {
-                this.ItemChanged(this, new EventArgs());
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            if (this._moduleCombo.Items.FindItemByValue(this._originalValue) != null)
-            {
-                this._moduleCombo.Items.FindItemByValue(this._originalValue).Selected = true;
-            }
-
-            this._moduleCombo.Width = this.Width;
-            base.OnPreRender(e);
-        }
-
-        public void SetModule(string code)
-        {
-            this._moduleCombo.SelectedIndex = this._moduleCombo.FindItemIndexByValue(code);
         }
     }
 }

@@ -72,12 +72,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        protected string ReturnUrl
-        {
-            get { return (string)this.ViewState["ReturnUrl"]; }
-            set { this.ViewState["ReturnUrl"] = value; }
-        }
-
         protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         protected PackageInfo Package
@@ -120,6 +114,12 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
                 return viewMode;
             }
+        }
+
+        protected string ReturnUrl
+        {
+            get { return (string)this.ViewState["ReturnUrl"]; }
+            set { this.ViewState["ReturnUrl"] = value; }
         }
 
         protected override void OnInit(EventArgs e)
@@ -178,6 +178,41 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 case "settings":
                     this.cmdCancel.Visible = this.cmdCancel.Enabled = false;
                     break;
+            }
+        }
+
+        protected void OnCancelClick(object sender, EventArgs e)
+        {
+            this.Response.Redirect(this.ReturnUrl);
+        }
+
+        protected void OnDeleteClick(object sender, EventArgs e)
+        {
+            this.Response.Redirect(Util.UnInstallURL(this.ModuleContext.TabId, this.PackageID));
+        }
+
+        protected void OnPackageClick(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdatePackage(false);
+                this.Response.Redirect(Util.PackageWriterURL(this.ModuleContext, this.PackageID));
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
+        }
+
+        protected void OnUpdateClick(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdatePackage(true);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
 
@@ -290,41 +325,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             if (this.PackageEditor != null)
             {
                 this.PackageEditor.UpdatePackage();
-            }
-        }
-
-        protected void OnCancelClick(object sender, EventArgs e)
-        {
-            this.Response.Redirect(this.ReturnUrl);
-        }
-
-        protected void OnDeleteClick(object sender, EventArgs e)
-        {
-            this.Response.Redirect(Util.UnInstallURL(this.ModuleContext.TabId, this.PackageID));
-        }
-
-        protected void OnPackageClick(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdatePackage(false);
-                this.Response.Redirect(Util.PackageWriterURL(this.ModuleContext, this.PackageID));
-            }
-            catch (Exception ex)
-            {
-                Exceptions.ProcessModuleLoadException(this, ex);
-            }
-        }
-
-        protected void OnUpdateClick(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdatePackage(true);
-            }
-            catch (Exception ex)
-            {
-                Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
     }

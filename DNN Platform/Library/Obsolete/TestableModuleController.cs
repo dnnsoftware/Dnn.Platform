@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Modules.Internal
 {
     using System;
@@ -24,14 +23,14 @@ namespace DotNetNuke.Entities.Modules.Internal
             ModuleController.Instance.UpdateModuleSetting(moduleId, settingName, settingValue);
         }
 
-        protected override Func<IModuleController> GetFactory()
-        {
-            return () => new TestableModuleController();
-        }
-
         public void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue)
         {
             ModuleController.Instance.UpdateTabModuleSetting(tabModuleId, settingName, settingValue);
+        }
+
+        protected override Func<IModuleController> GetFactory()
+        {
+            return () => new TestableModuleController();
         }
     }
 }

@@ -16,6 +16,12 @@ namespace DotNetNuke.Framework.Reflections
     {
         private IAssemblyLocator _assemblyLocator;
 
+        internal IAssemblyLocator AssemblyLocator
+        {
+            get { return this._assemblyLocator ?? (this._assemblyLocator = this); }
+            set { this._assemblyLocator = value; }
+        }
+
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
         {
             // this method is not readily testable as the assemblies in the current app domain
@@ -26,12 +32,6 @@ namespace DotNetNuke.Framework.Reflections
                        where this.CanScan(assembly)
                        select new AssemblyWrapper(assembly);
             }
-        }
-
-        internal IAssemblyLocator AssemblyLocator
-        {
-            get { return this._assemblyLocator ?? (this._assemblyLocator = this); }
-            set { this._assemblyLocator = value; }
         }
 
         public IEnumerable<Type> GetAllMatchingTypes(Predicate<Type> predicate)

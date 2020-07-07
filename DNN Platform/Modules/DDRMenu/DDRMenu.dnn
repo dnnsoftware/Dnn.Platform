@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DDRMenu" type="Module" version="09.06.01">
+		<package name="DDRMenu" type="Module" version="09.06.02">
 			<friendlyName>DDR Menu</friendlyName>
 			<description>DotNetNuke Navigation Provider.</description>
 			<owner>

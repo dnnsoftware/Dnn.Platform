@@ -39,6 +39,25 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ActionManager instance for this Action control.
+        /// </summary>
+        /// <returns>An ActionManager object.</returns>
+        /// -----------------------------------------------------------------------------
+        public ActionManager ActionManager
+        {
+            get
+            {
+                if (this._ActionManager == null)
+                {
+                    this._ActionManager = new ActionManager(this);
+                }
+
+                return this._ActionManager;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and Sets the Expansion Depth for the Control.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -68,6 +87,41 @@ namespace DotNetNuke.UI.Containers
         /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string PathSystemScript { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client.
+        /// </summary>
+        /// <returns>A Boolean.</returns>
+        /// -----------------------------------------------------------------------------
+        public bool PopulateNodesFromClient { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and Sets the Name of the provider to use.
+        /// </summary>
+        /// <returns>A String.</returns>
+        /// -----------------------------------------------------------------------------
+        public string ProviderName
+        {
+            get
+            {
+                return this._ProviderName;
+            }
+
+            set
+            {
+                this._ProviderName = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
+        /// </summary>
+        /// <returns>An IModuleControl object.</returns>
+        /// -----------------------------------------------------------------------------
+        public IModuleControl ModuleControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -104,60 +158,6 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client.
-        /// </summary>
-        /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
-        public bool PopulateNodesFromClient { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the Name of the provider to use.
-        /// </summary>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
-        public string ProviderName
-        {
-            get
-            {
-                return this._ProviderName;
-            }
-
-            set
-            {
-                this._ProviderName = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionManager instance for this Action control.
-        /// </summary>
-        /// <returns>An ActionManager object.</returns>
-        /// -----------------------------------------------------------------------------
-        public ActionManager ActionManager
-        {
-            get
-            {
-                if (this._ActionManager == null)
-                {
-                    this._ActionManager = new ActionManager(this);
-                }
-
-                return this._ActionManager;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control.
-        /// </summary>
-        /// <returns>An IModuleControl object.</returns>
-        /// -----------------------------------------------------------------------------
-        public IModuleControl ModuleControl { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// BindMenu binds the Navigation Provider to the Node Collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -177,6 +177,48 @@ namespace DotNetNuke.UI.Containers
             {
                 this.Action(this, e);
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnInit runs during the controls initialisation phase.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnInit(EventArgs e)
+        {
+            this._ProviderControl = NavigationProvider.Instance(this.ProviderName);
+            this.ProviderControl.PopulateOnDemand += this.ProviderControl_PopulateOnDemand;
+            base.OnInit(e);
+            this.ProviderControl.ControlID = "ctl" + this.ID;
+            this.ProviderControl.Initialize();
+            this.Controls.Add(this.ProviderControl.NavigationControl);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnLoad runs during the controls load phase.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            // Add the Actions to the Action Root
+            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions);
+
+            // Set Menu Defaults
+            this.SetMenuDefaults();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnPreRender runs during the controls pre-render phase.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            this.BindMenu();
         }
 
         /// -----------------------------------------------------------------------------
@@ -257,48 +299,6 @@ namespace DotNetNuke.UI.Containers
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnInit runs during the controls initialisation phase.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnInit(EventArgs e)
-        {
-            this._ProviderControl = NavigationProvider.Instance(this.ProviderName);
-            this.ProviderControl.PopulateOnDemand += this.ProviderControl_PopulateOnDemand;
-            base.OnInit(e);
-            this.ProviderControl.ControlID = "ctl" + this.ID;
-            this.ProviderControl.Initialize();
-            this.Controls.Add(this.ProviderControl.NavigationControl);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs during the controls load phase.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            // Add the Actions to the Action Root
-            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions);
-
-            // Set Menu Defaults
-            this.SetMenuDefaults();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnPreRender runs during the controls pre-render phase.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            this.BindMenu();
         }
 
         /// -----------------------------------------------------------------------------

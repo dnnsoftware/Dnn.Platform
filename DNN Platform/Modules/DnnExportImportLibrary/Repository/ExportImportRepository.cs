@@ -51,16 +51,6 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        private void Dispose(bool isDisposing)
-        {
-            var temp = Interlocked.Exchange(ref this._liteDb, null);
-            temp?.Dispose();
-            if (isDisposing)
-            {
-                GC.SuppressFinalize(this);
-            }
-        }
-
         public T GetSingleItem<T>()
             where T : class
         {
@@ -166,25 +156,6 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate);
         }
 
-        private IEnumerable<T> InternalGetItems<T>(
-            Expression<Func<T, bool>> predicate,
-            Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
-            where T : BasicExportImportDto
-        {
-            var collection = this.DbCollection<T>();
-
-            var result = predicate != null
-                ? collection.Find(predicate, skip ?? 0, max ?? int.MaxValue)
-                : collection.Find(Query.All(), skip ?? 0, max ?? int.MaxValue);
-
-            if (orderKeySelector != null)
-            {
-                result = asc ? result.OrderBy(orderKeySelector) : result.OrderByDescending(orderKeySelector);
-            }
-
-            return result.AsEnumerable();
-        }
-
         public IEnumerable<T> GetRelatedItems<T>(int referenceId)
             where T : BasicExportImportDto
         {
@@ -266,6 +237,35 @@ namespace Dnn.ExportImport.Repository
                 x["LocalId"] = null;
             });
             collection.Update(documentsToUpdate);
+        }
+
+        private void Dispose(bool isDisposing)
+        {
+            var temp = Interlocked.Exchange(ref this._liteDb, null);
+            temp?.Dispose();
+            if (isDisposing)
+            {
+                GC.SuppressFinalize(this);
+            }
+        }
+
+        private IEnumerable<T> InternalGetItems<T>(
+            Expression<Func<T, bool>> predicate,
+            Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
+            where T : BasicExportImportDto
+        {
+            var collection = this.DbCollection<T>();
+
+            var result = predicate != null
+                ? collection.Find(predicate, skip ?? 0, max ?? int.MaxValue)
+                : collection.Find(Query.All(), skip ?? 0, max ?? int.MaxValue);
+
+            if (orderKeySelector != null)
+            {
+                result = asc ? result.OrderBy(orderKeySelector) : result.OrderByDescending(orderKeySelector);
+            }
+
+            return result.AsEnumerable();
         }
 
         private LiteCollection<T> DbCollection<T>()

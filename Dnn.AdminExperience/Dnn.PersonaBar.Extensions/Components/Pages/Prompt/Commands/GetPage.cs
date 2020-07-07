@@ -21,12 +21,13 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     {
         [FlagParameter("name", "Prompt_GetPage_FlagName", "String")]
         private const string FlagName = "name";
+
         [FlagParameter("id", "Prompt_GetPage_FlagId", "Integer")]
         private const string FlagId = "id";
+
         [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
-        public override string LocalResourceFile => Constants.LocalResourceFile;
         private readonly ITabController _tabController;
         private readonly ISecurityService _securityService;
         private readonly IContentVerifier _contentVerifier;
@@ -36,20 +37,22 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         {
         }
 
-        private int PageId { get; set; } = -1;
-        private string PageName { get; set; }
-        private int ParentId { get; set; } = -1;
-
         public GetPage(
             ITabController tabController,
             ISecurityService securityService,
             IContentVerifier contentVerifier
-            )
+        )
         {
             this._tabController = tabController;
             this._securityService = securityService;
             this._contentVerifier = contentVerifier;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+
+        private int PageId { get; set; } = -1;
+        private string PageName { get; set; }
+        private int ParentId { get; set; } = -1;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

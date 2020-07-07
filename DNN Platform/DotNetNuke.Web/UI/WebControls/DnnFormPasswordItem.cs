@@ -85,11 +85,6 @@ namespace DotNetNuke.Web.UI.WebControls
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
-        private void TextChanged(object sender, EventArgs e)
-        {
-            this.UpdateDataSource(this.Value, this._password.Text, this.DataField);
-        }
-
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -109,6 +104,11 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
             }
+        }
+
+        private void TextChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this.Value, this._password.Text, this.DataField);
         }
     }
 }

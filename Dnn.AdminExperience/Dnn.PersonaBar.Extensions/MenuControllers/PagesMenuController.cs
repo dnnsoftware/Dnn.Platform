@@ -17,6 +17,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
     public class PagesMenuController : IMenuItemController
     {
         private readonly ISecurityService _securityService;
+
         public PagesMenuController()
         {
             this._securityService = SecurityService.Instance;

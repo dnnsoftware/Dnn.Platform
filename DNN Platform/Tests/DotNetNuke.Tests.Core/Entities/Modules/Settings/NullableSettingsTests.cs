@@ -47,25 +47,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
         }
 
-        public class MyNullableSettings
-        {
-            [ModuleSetting]
-            public string StringProperty { get; set; } = "Default Value";
-
-            [PortalSetting]
-            public int? IntegerProperty { get; set; } = 500;
-
-            [ModuleSetting]
-            public DateTime? DateTimeProperty { get; set; } = DateTime.MaxValue;
-
-            [TabModuleSetting]
-            public TimeSpan? TimeSpanProperty { get; set; } = TimeSpan.FromHours(12);
-        }
-
-        public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings>
-        {
-        }
-
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("en-US")]
@@ -141,38 +122,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.MockRepository.VerifyAll();
         }
 
-        private void SaveSettings_CallsUpdateSetting_WithRightParameters(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
-        {
-            // Arrange
-            var moduleInfo = GetModuleInfo;
-            var settings = new MyNullableSettings
-            {
-                StringProperty = stringValue,
-                IntegerProperty = integerValue,
-                DateTimeProperty = datetimeValue,
-                TimeSpanProperty = timeSpanValue,
-            };
-
-            this.MockModuleSettings(moduleInfo, new Hashtable());
-            this.MockTabModuleSettings(moduleInfo, new Hashtable());
-            var expectedStringValue = stringValue ?? string.Empty;
-            this.MockModuleController.Setup(pc => pc.UpdateModuleSetting(ModuleId, "StringProperty", expectedStringValue));
-            var integerString = integerValue?.ToString() ?? string.Empty;
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, "IntegerProperty", integerString, true, Null.NullString, false));
-            var dateTimeString = datetimeValue?.ToString("o", CultureInfo.InvariantCulture) ?? string.Empty;
-            this.MockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, "DateTimeProperty", dateTimeString));
-            var timeSpanString = timeSpanValue?.ToString("c", CultureInfo.InvariantCulture) ?? string.Empty;
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, "TimeSpanProperty", timeSpanString));
-
-            var settingsRepository = new MyNullableSettingsRepository();
-
-            // Act
-            settingsRepository.SaveSettings(moduleInfo, settings);
-
-            // Assert
-            this.MockRepository.VerifyAll();
-        }
-
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("ar-JO")]
@@ -237,6 +186,38 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
         }
 
+        private void SaveSettings_CallsUpdateSetting_WithRightParameters(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
+        {
+            // Arrange
+            var moduleInfo = GetModuleInfo;
+            var settings = new MyNullableSettings
+            {
+                StringProperty = stringValue,
+                IntegerProperty = integerValue,
+                DateTimeProperty = datetimeValue,
+                TimeSpanProperty = timeSpanValue,
+            };
+
+            this.MockModuleSettings(moduleInfo, new Hashtable());
+            this.MockTabModuleSettings(moduleInfo, new Hashtable());
+            var expectedStringValue = stringValue ?? string.Empty;
+            this.MockModuleController.Setup(pc => pc.UpdateModuleSetting(ModuleId, "StringProperty", expectedStringValue));
+            var integerString = integerValue?.ToString() ?? string.Empty;
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, "IntegerProperty", integerString, true, Null.NullString, false));
+            var dateTimeString = datetimeValue?.ToString("o", CultureInfo.InvariantCulture) ?? string.Empty;
+            this.MockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, "DateTimeProperty", dateTimeString));
+            var timeSpanString = timeSpanValue?.ToString("c", CultureInfo.InvariantCulture) ?? string.Empty;
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, "TimeSpanProperty", timeSpanString));
+
+            var settingsRepository = new MyNullableSettingsRepository();
+
+            // Act
+            settingsRepository.SaveSettings(moduleInfo, settings);
+
+            // Assert
+            this.MockRepository.VerifyAll();
+        }
+
         private void GetSettings_GetsValues_FromCorrectSettings(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             // Arrange
@@ -262,5 +243,23 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             Assert.AreEqual(timeSpanValue, settings.TimeSpanProperty, "The retrieved timespan property value is not equal to the stored one");
             this.MockRepository.VerifyAll();
         }
+
+        public class MyNullableSettings
+        {
+            [ModuleSetting]
+            public string StringProperty { get; set; } = "Default Value";
+
+            [PortalSetting]
+            public int? IntegerProperty { get; set; } = 500;
+
+            [ModuleSetting]
+            public DateTime? DateTimeProperty { get; set; } = DateTime.MaxValue;
+
+            [TabModuleSetting]
+            public TimeSpan? TimeSpanProperty { get; set; } = TimeSpan.FromHours(12);
+        }
+
+        public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings>
+        {}
     }
 }

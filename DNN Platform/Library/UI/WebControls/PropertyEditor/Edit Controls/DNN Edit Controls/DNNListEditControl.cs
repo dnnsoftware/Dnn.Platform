@@ -45,20 +45,6 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether determines whether the List Auto Posts Back.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected bool AutoPostBack { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether if true the list will be sorted on the value of Text before rendering.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected bool SortAlphabetically { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets integerValue returns the Integer representation of the Value.
         /// </summary>
         /// <value>An integer representing the Value.</value>
@@ -126,29 +112,6 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets listName is the name of the List to display.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual string ListName
-        {
-            get
-            {
-                if (this._listName == Null.NullString)
-                {
-                    this._listName = this.DataField;
-                }
-
-                return this._listName;
-            }
-
-            set
-            {
-                this._listName = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets oldIntegerValue returns the Integer representation of the OldValue.
         /// </summary>
         /// <value>An integer representing the OldValue.</value>
@@ -177,11 +140,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the parent key of the List to display.
-        /// </summary>
-        protected virtual string ParentKey { get; set; }
-
         protected int PortalId
         {
             get
@@ -189,16 +147,6 @@ namespace DotNetNuke.UI.WebControls
                 return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
             }
         }
-
-        /// <summary>
-        /// Gets or sets the field to display in the combo.
-        /// </summary>
-        protected virtual ListBoundField TextField { get; set; }
-
-        /// <summary>
-        /// Gets or sets the field to use as the combo item values.
-        /// </summary>
-        protected virtual ListBoundField ValueField { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -213,6 +161,58 @@ namespace DotNetNuke.UI.WebControls
                 return Convert.ToString(this.OldValue);
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether determines whether the List Auto Posts Back.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected bool AutoPostBack { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether if true the list will be sorted on the value of Text before rendering.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected bool SortAlphabetically { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets listName is the name of the List to display.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual string ListName
+        {
+            get
+            {
+                if (this._listName == Null.NullString)
+                {
+                    this._listName = this.DataField;
+                }
+
+                return this._listName;
+            }
+
+            set
+            {
+                this._listName = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the parent key of the List to display.
+        /// </summary>
+        protected virtual string ParentKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the field to display in the combo.
+        /// </summary>
+        protected virtual ListBoundField TextField { get; set; }
+
+        /// <summary>
+        /// Gets or sets the field to use as the combo item values.
+        /// </summary>
+        protected virtual ListBoundField ValueField { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -284,26 +284,6 @@ namespace DotNetNuke.UI.WebControls
         protected override void OnDataChanged(EventArgs e)
         {
             this.OnValueChanged(this.GetEventArgs());
-        }
-
-        private PropertyEditorEventArgs GetEventArgs()
-        {
-            var args = new PropertyEditorEventArgs(this.Name);
-            if (this.ValueField == ListBoundField.Id)
-            {
-                // This is an Integer Value
-                args.Value = this.IntegerValue;
-                args.OldValue = this.OldIntegerValue;
-            }
-            else
-            {
-                // This is a String Value
-                args.Value = this.StringValue;
-                args.OldValue = this.OldStringValue;
-            }
-
-            args.StringValue = this.StringValue;
-            return args;
         }
 
         /// -----------------------------------------------------------------------------
@@ -458,6 +438,26 @@ namespace DotNetNuke.UI.WebControls
 
             // Close Select Tag
             writer.RenderEndTag();
+        }
+
+        private PropertyEditorEventArgs GetEventArgs()
+        {
+            var args = new PropertyEditorEventArgs(this.Name);
+            if (this.ValueField == ListBoundField.Id)
+            {
+                // This is an Integer Value
+                args.Value = this.IntegerValue;
+                args.OldValue = this.OldIntegerValue;
+            }
+            else
+            {
+                // This is a String Value
+                args.Value = this.StringValue;
+                args.OldValue = this.OldStringValue;
+            }
+
+            args.StringValue = this.StringValue;
+            return args;
         }
     }
 }
