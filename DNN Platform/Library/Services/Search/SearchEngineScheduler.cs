@@ -1,19 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using DotNetNuke.Common;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search.Internals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search.Internals;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
@@ -32,12 +28,12 @@ namespace DotNetNuke.Services.Search
 
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DoWork runs the scheduled item
+        /// DoWork runs the scheduled item.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -46,35 +42,35 @@ namespace DotNetNuke.Services.Search
         {
             try
             {
-                var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID);
+                var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID);
                 Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
-                ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
-                var searchEngine = new SearchEngine(ScheduleHistoryItem, lastSuccessFulDateTime);
+                var searchEngine = new SearchEngine(this.ScheduleHistoryItem, lastSuccessFulDateTime);
                 try
                 {
                     searchEngine.DeleteOldDocsBeforeReindex();
                     searchEngine.DeleteRemovedObjects();
                     searchEngine.IndexContent();
-                    searchEngine.CompactSearchIndexIfNeeded(ScheduleHistoryItem);
+                    searchEngine.CompactSearchIndexIfNeeded(this.ScheduleHistoryItem);
                 }
                 finally
                 {
                     searchEngine.Commit();
                 }
 
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.AddLogNote("<br/><b>Indexing Successful</b>");
-                SearchHelper.Instance.SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.AddLogNote("<br/><b>Indexing Successful</b>");
+                SearchHelper.Instance.SetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID, this.ScheduleHistoryItem.StartDate);
 
                 Logger.Trace("Search: Site Crawler - Indexing Successful");
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("<br/>EXCEPTION: " + ex.Message);
-                Errored(ref ex);
-                if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote("<br/>EXCEPTION: " + ex.Message);
+                this.Errored(ref ex);
+                if (this.ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
                 {
                     Exceptions.Exceptions.LogException(ex);
                 }

@@ -1,18 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Net.Http;
-using Dnn.AuthServices.Jwt.Components.Entity;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 {
+    using System.Net.Http;
+
+    using Dnn.AuthServices.Jwt.Components.Entity;
+
     public interface IJwtController
     {
         string SchemeType { get; }
+
         string ValidateToken(HttpRequestMessage request);
+
         bool LogoutUser(HttpRequestMessage request);
+
         LoginResultData LoginUser(HttpRequestMessage request, LoginData loginData);
+
         LoginResultData RenewToken(HttpRequestMessage request, string renewalToken);
     }
 }

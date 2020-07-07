@@ -1,23 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.HttpModules.UrlRewrite;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.Url.FriendlyUrl
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.HttpModules.UrlRewrite;
+
     public class DNNFriendlyUrlProvider : FriendlyUrlProvider
     {
         internal const string ProviderName = "DNNFriendlyUrl";
@@ -31,72 +28,73 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 
         public DNNFriendlyUrlProvider()
         {
-            //Read the configuration specific information for this provider
-            var objProvider = (Provider)_providerConfiguration.Providers[ProviderName];
+            // Read the configuration specific information for this provider
+            var objProvider = (Provider)this._providerConfiguration.Providers[ProviderName];
 
-            if (!String.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
+            if (!string.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
             {
                 switch (objProvider.Attributes["urlFormat"].ToLowerInvariant())
                 {
                     case "searchfriendly":
-                        _urlFormat = UrlFormatType.SearchFriendly;
+                        this._urlFormat = UrlFormatType.SearchFriendly;
                         break;
                     case "humanfriendly":
-                        _urlFormat = UrlFormatType.HumanFriendly;
+                        this._urlFormat = UrlFormatType.HumanFriendly;
                         break;
                     case "advanced":
                     case "customonly":
-                        _urlFormat = UrlFormatType.Advanced;
+                        this._urlFormat = UrlFormatType.Advanced;
                         break;
                     default:
-                        _urlFormat = UrlFormatType.SearchFriendly;
+                        this._urlFormat = UrlFormatType.SearchFriendly;
                         break;
                 }
             }
-            //instance the correct provider implementation
-            switch (_urlFormat)
+
+            // instance the correct provider implementation
+            switch (this._urlFormat)
             {
                 case UrlFormatType.Advanced:
-                    _providerInstance = new AdvancedFriendlyUrlProvider(objProvider.Attributes);
+                    this._providerInstance = new AdvancedFriendlyUrlProvider(objProvider.Attributes);
                     break;
                 case UrlFormatType.HumanFriendly:
                 case UrlFormatType.SearchFriendly:
-                    _providerInstance = new BasicFriendlyUrlProvider(objProvider.Attributes);
+                    this._providerInstance = new BasicFriendlyUrlProvider(objProvider.Attributes);
                     break;
             }
 
-            string extensions = !String.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
-            _validExtensions = extensions.Split(',');
+            string extensions = !string.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
+            this._validExtensions = extensions.Split(',');
         }
 
         public string[] ValidExtensions
         {
-            get { return _validExtensions; }
+            get { return this._validExtensions; }
         }
 
         public UrlFormatType UrlFormat
         {
-            get { return _urlFormat; }
+            get { return this._urlFormat; }
         }
 
         public override string FriendlyUrl(TabInfo tab, string path)
         {
-            return _providerInstance.FriendlyUrl(tab, path);
+            return this._providerInstance.FriendlyUrl(tab, path);
         }
 
         public override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            return _providerInstance.FriendlyUrl(tab, path, pageName);
+            return this._providerInstance.FriendlyUrl(tab, path, pageName);
         }
 
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
-            return _providerInstance.FriendlyUrl(tab, path, pageName, settings);
+            return this._providerInstance.FriendlyUrl(tab, path, pageName, settings);
         }
 
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
-            return _providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);
+            return this._providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);
         }
     }
 }

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AspNetClientCapabilityProvider" type="Provider" version="09.06.01">
+    <package name="AspNetClientCapabilityProvider" type="Provider" version="09.06.02">
       <friendlyName>DotNetNuke ASP.NET Client Capability Provider</friendlyName>
       <description>ASP.NET Device Detection / Client Capability Provider</description>
       <iconFile>~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/Images/mobiledevicedet_32X32.png</iconFile>

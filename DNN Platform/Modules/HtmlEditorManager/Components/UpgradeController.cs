@@ -1,38 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.IO;
-using System.Text;
-using System.Xml;
-using DotNetNuke.Common;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Installer.Packages;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.HtmlEditorManager.Components
 {
     using System;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
     /// <summary>
-    /// Class that contains upgrade procedures
+    /// Class that contains upgrade procedures.
     /// </summary>
     public class UpgradeController : IUpgradeable
     {
-        /// <summary>The module folder location</summary>
+        /// <summary>The module folder location.</summary>
         private const string ModuleFolder = "~/DesktopModules/Admin/HtmlEditorManager";
 
         /// <summary>Called when a module is upgraded.</summary>
         /// <param name="version">The version.</param>
-        /// <returns>Success if all goes well, otherwise, Failed</returns>
+        /// <returns>Success if all goes well, otherwise, Failed.</returns>
         public string UpgradeModule(string version)
         {
             try
@@ -67,26 +66,30 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
                         break;
                     case "09.01.01":
-                        if (RadEditorProviderInstalled())
+                        if (this.RadEditorProviderInstalled())
                         {
                             UpdateRadCfgFiles();
                         }
-                        if (TelerikAssemblyExists())
+
+                        if (this.TelerikAssemblyExists())
                         {
                             UpdateWebConfigFile();
                         }
+
                         break;
                     case "09.02.00":
-                        if (TelerikAssemblyExists())
+                        if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                         }
+
                         break;
                     case "09.02.01":
-                        if (TelerikAssemblyExists())
+                        if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Upload.ConfigurationHashKey");
                         }
+
                         break;
                 }
             }
@@ -101,10 +104,67 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             return "Success";
         }
 
+        private static void UpdateRadCfgFiles()
+        {
+            var folder = Path.Combine(Globals.ApplicationMapPath, @"DesktopModules\Admin\RadEditorProvider\ConfigFile");
+            UpdateRadCfgFiles(folder, "*ConfigFile*.xml");
+        }
+
+        private static void UpdateRadCfgFiles(string folder, string mask)
+        {
+            var allowedDocExtensions = "doc|docx|xls|xlsx|ppt|pptx|pdf|txt".Split('|');
+
+            var files = Directory.GetFiles(folder, mask);
+            foreach (var fname in files)
+            {
+                if (fname.Contains(".Original.xml"))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var doc = new XmlDocument { XmlResolver = null };
+                    doc.Load(fname);
+                    var root = doc.DocumentElement;
+                    var docFilters = root?.SelectNodes("/configuration/property[@name='DocumentsFilters']");
+                    if (docFilters != null)
+                    {
+                        var changed = false;
+                        foreach (XmlNode filter in docFilters)
+                        {
+                            if (filter.InnerText == "*.*")
+                            {
+                                changed = true;
+                                filter.InnerXml = string.Empty;
+                                foreach (var extension in allowedDocExtensions)
+                                {
+                                    var node = doc.CreateElement("item");
+                                    node.InnerText = "*." + extension;
+                                    filter.AppendChild(node);
+                                }
+                            }
+                        }
+
+                        if (changed)
+                        {
+                            File.Copy(fname, fname + ".bak.resources", true);
+                            doc.Save(fname);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var xlc = new ExceptionLogController();
+                    xlc.AddLog(ex);
+                }
+            }
+        }
+
         /// <summary>Gets the module definition identifier.</summary>
         /// <param name="moduleName">Name of the module.</param>
         /// <param name="moduleDefinitionName">Name of the module definition.</param>
-        /// <returns>The Module Id for the HTML Editor Management module</returns>
+        /// <returns>The Module Id for the HTML Editor Management module.</returns>
         private int GetModuleDefinitionID(string moduleName, string moduleDefinitionName)
         {
             // get desktop module
@@ -136,60 +196,6 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
         }
 
-        private static void UpdateRadCfgFiles()
-        {
-            var folder = Path.Combine(Globals.ApplicationMapPath, @"DesktopModules\Admin\RadEditorProvider\ConfigFile");
-            UpdateRadCfgFiles(folder, "*ConfigFile*.xml");
-        }
-
-        private static void UpdateRadCfgFiles(string folder, string mask)
-        {
-            var allowedDocExtensions = "doc|docx|xls|xlsx|ppt|pptx|pdf|txt".Split('|');
-
-            var files = Directory.GetFiles(folder, mask);
-            foreach (var fname in files)
-            {
-                if (fname.Contains(".Original.xml")) continue;
-
-                try
-                {
-                    var doc = new XmlDocument { XmlResolver = null };
-                    doc.Load(fname);
-                    var root = doc.DocumentElement;
-                    var docFilters = root?.SelectNodes("/configuration/property[@name='DocumentsFilters']");
-                    if (docFilters != null)
-                    {
-                        var changed = false;
-                        foreach (XmlNode filter in docFilters)
-                        {
-                            if (filter.InnerText == "*.*")
-                            {
-                                changed = true;
-                                filter.InnerXml = "";
-                                foreach (var extension in allowedDocExtensions)
-                                {
-                                    var node = doc.CreateElement("item");
-                                    node.InnerText = "*." + extension;
-                                    filter.AppendChild(node);
-                                }
-                            }
-                        }
-
-                        if (changed)
-                        {
-                            File.Copy(fname, fname + ".bak.resources", true);
-                            doc.Save(fname);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    var xlc = new ExceptionLogController();
-                    xlc.AddLog(ex);
-                }
-            }
-        }
-
         private static string UpdateWebConfigFile()
         {
             return UpdateTelerikEncryptionKey("Telerik.AsyncUpload.ConfigurationEncryptionKey");
@@ -199,28 +205,28 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         {
             const string defaultValue = "MDEyMzQ1Njc4OUFCQ0RFRjAxMjM0NTY3ODlBQkNERUYwMTIzNDU2Nzg5QUJDREVG";
 
-            var strError = "";
+            var strError = string.Empty;
             var currentKey = Config.GetSetting(keyName);
             if (string.IsNullOrEmpty(currentKey) || defaultValue.Equals(currentKey) || currentKey.Length < 40)
             {
                 try
                 {
-                    //open the web.config
+                    // open the web.config
                     var xmlConfig = Config.Load();
 
-                    //save the current config file
+                    // save the current config file
                     Config.BackupConfig();
 
-                    //create a random Telerik encryption key and add it under <appSettings>
+                    // create a random Telerik encryption key and add it under <appSettings>
                     var newKey = PortalSecurity.Instance.CreateKey(32);
                     newKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(newKey));
                     Config.AddAppSetting(xmlConfig, keyName, newKey);
 
-                    //save a copy of the exitsing web.config
+                    // save a copy of the exitsing web.config
                     var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                     strError += Config.Save(xmlConfig, backupFolder + "web_.config") + Environment.NewLine;
 
-                    //save the web.config
+                    // save the web.config
                     strError += Config.Save(xmlConfig) + Environment.NewLine;
                 }
                 catch (Exception ex)
@@ -228,7 +234,8 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                     strError += ex.Message;
                 }
             }
+
             return strError;
         }
-    } 
+    }
 }

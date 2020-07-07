@@ -1,12 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Runtime.Serialization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Runtime.Serialization;
+
     [DataContract]
     public class DnnConfirmPasswordOptions
     {
@@ -34,9 +34,8 @@ namespace DotNetNuke.Web.UI.WebControls
         public DnnConfirmPasswordOptions()
         {
             // all the Confirm Password related resources are located under the Website\App_GlobalResources\WebControls.resx
-            ConfirmPasswordUnmatchedText = Utilities.GetLocalizedString("ConfirmPasswordUnmatched");
-            ConfirmPasswordMatchedText = Utilities.GetLocalizedString("ConfirmPasswordMatched");
+            this.ConfirmPasswordUnmatchedText = Utilities.GetLocalizedString("ConfirmPasswordUnmatched");
+            this.ConfirmPasswordMatchedText = Utilities.GetLocalizedString("ConfirmPasswordMatched");
         }
-
     }
 }

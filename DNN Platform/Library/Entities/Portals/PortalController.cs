@@ -1,127 +1,442 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Cryptography;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-//using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Web.Client;
-using ICSharpCode.SharpZipLib.Zip;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Linq;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals.Internal;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Cryptography;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Web.Client;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+    using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
+
     /// <summary>
-	/// PoralController provides business layer of poatal.
-	/// </summary>
-	/// <remarks>
-	/// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites, 
-	/// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
-	/// </remarks>
+    /// PoralController provides business layer of poatal.
+    /// </summary>
+    /// <remarks>
+    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
+    /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
+    /// </remarks>
     public partial class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
-
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
+
+        /// <summary>
+        /// Adds the portal dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="tabId">The tab id.</param>
+        public static void AddPortalDictionary(int portalId, int tabId)
+        {
+            var portalDic = GetPortalDictionary();
+            portalDic[tabId] = portalId;
+            DataCache.SetCache(DataCache.PortalDictionaryCacheKey, portalDic);
+        }
+
+        /// <summary>
+        /// Creates the root folder for a child portal.
+        /// </summary>
+        /// <remarks>
+        /// If call this method, it will create the specific folder if the folder doesn't exist;
+        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx'.
+        /// </remarks>
+        /// <param name="ChildPath">The child path.</param>
+        /// <returns>
+        /// If the method executed successful, it will return NullString, otherwise return error message.
+        /// </returns>
+        /// <example>
+        /// <code lang="C#">
+        /// string childPhysicalPath = Server.MapPath(childPath);
+        /// message = PortalController.CreateChildPortalFolder(childPhysicalPath);
+        /// </code>
+        /// </example>
+        public static string CreateChildPortalFolder(string ChildPath)
+        {
+            string message = Null.NullString;
+
+            // Set up Child Portal
+            try
+            {
+                // create the subdirectory for the new portal
+                if (!Directory.Exists(ChildPath))
+                {
+                    Directory.CreateDirectory(ChildPath);
+                }
+
+                // create the subhost default.aspx file
+                if (!File.Exists(ChildPath + "\\" + Globals.glbDefaultPage))
+                {
+                    File.Copy(Globals.HostMapPath + "subhost.aspx", ChildPath + "\\" + Globals.glbDefaultPage);
+                }
+            }
+            catch (Exception Exc)
+            {
+                Logger.Error(Exc);
+                message += Localization.GetString("ChildPortal.Error") + Exc.Message + Exc.StackTrace;
+            }
+
+            return message;
+        }
+
+        /// <summary>
+        /// Creates a new portal alias.
+        /// </summary>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalAlias">Portal Alias to be created.</param>
+        public void AddPortalAlias(int portalId, string portalAlias)
+        {
+            // Check if the Alias exists
+            PortalAliasInfo portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
+
+            // If alias does not exist add new
+            if (portalAliasInfo == null)
+            {
+                portalAliasInfo = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true };
+                PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
+            }
+        }
+
+        /// <summary>
+        /// Copies the page template.
+        /// </summary>
+        /// <param name="templateFile">The template file.</param>
+        /// <param name="mappedHomeDirectory">The mapped home directory.</param>
+        public void CopyPageTemplate(string templateFile, string mappedHomeDirectory)
+        {
+            string hostTemplateFile = string.Format("{0}Templates\\{1}", Globals.HostMapPath, templateFile);
+            if (File.Exists(hostTemplateFile))
+            {
+                string portalTemplateFolder = string.Format("{0}Templates\\", mappedHomeDirectory);
+                if (!Directory.Exists(portalTemplateFolder))
+                {
+                    // Create Portal Templates folder
+                    Directory.CreateDirectory(portalTemplateFolder);
+                }
+
+                string portalTemplateFile = portalTemplateFolder + templateFile;
+                if (!File.Exists(portalTemplateFile))
+                {
+                    File.Copy(hostTemplateFile, portalTemplateFile);
+                }
+            }
+        }
+
+        internal static void EnsureRequiredEventLogTypesExist()
+        {
+            if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
+            {
+                // Add 404 Log
+                var logTypeInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                // Add LogType
+                var logTypeConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()))
+            {
+                // Add IP filter log type
+                var logTypeFilterInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeFilterInfo);
+
+                // Add LogType
+                var logTypeFilterConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.TABURL_CREATED.ToString()))
+            {
+                var logTypeInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    LogTypeFriendlyName = "TabURL created",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationSuccess",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                logTypeInfo.LogTypeFriendlyName = "TabURL updated";
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                // Add LogType
+                var logTypeUrlConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = false,
+                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
+
+                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
+
+                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
+            {
+                // Add IP filter log type
+                var logTypeFilterInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    LogTypeFriendlyName = "Javscript library registration resolved script collision",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeFilterInfo);
+
+                // Add LogType
+                var logTypeFilterConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
+            }
+        }
 
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
         }
 
-        #region Private Methods
+        private static void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
+        {
+            // create required roles if not already created
+            if (administratorRoleId == -1)
+            {
+                administratorRoleId = CreateRole(portalId, "Administrators", "Administrators of this Website", 0, 0, "M", 0, 0, "N", false, false);
+            }
+
+            if (registeredRoleId == -1)
+            {
+                registeredRoleId = CreateRole(portalId, "Registered Users", "Registered Users", 0, 0, "M", 0, 0, "N", false, true);
+            }
+
+            if (subscriberRoleId == -1)
+            {
+                subscriberRoleId = CreateRole(portalId, "Subscribers", "A public role for site subscriptions", 0, 0, "M", 0, 0, "N", true, true);
+            }
+
+            if (unverifiedRoleId == -1)
+            {
+                CreateRole(portalId, "Unverified Users", "Unverified Users", 0, 0, "M", 0, 0, "N", false, false);
+            }
+
+            RoleController.Instance.AddUserRole(portalId, administratorId, administratorRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(portalId, administratorId, registeredRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+        }
+
+        private static string CreateProfileDefinitions(int portalId, string templateFilePath)
+        {
+            string strMessage = Null.NullString;
+            try
+            {
+                // add profile definitions
+                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
+
+                // open the XML template file
+                try
+                {
+                    xmlDoc.Load(templateFilePath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+
+                // parse profile definitions if available
+                var node = xmlDoc.SelectSingleNode("//portal/profiledefinitions");
+                if (node != null)
+                {
+                    ParseProfileDefinitions(node, portalId);
+                }
+                else // template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
+                {
+                    ProfileController.AddDefaultDefinitions(portalId);
+                }
+            }
+            catch (Exception ex)
+            {
+                strMessage = Localization.GetString("CreateProfileDefinitions.Error");
+                Exceptions.LogException(ex);
+            }
+
+            return strMessage;
+        }
+
+        private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
+        {
+            // add portal
+            int PortalId = -1;
+            try
+            {
+                // Use host settings as default values for these parameters
+                // This can be overwritten on the portal template
+                var datExpiryDate = Host.Host.DemoPeriod > Null.NullInteger
+                    ? Convert.ToDateTime(Globals.GetMediumDate(DateTime.Now.AddDays(Host.Host.DemoPeriod).ToString(CultureInfo.InvariantCulture)))
+                    : Null.NullDate;
+
+                PortalId = DataProvider.Instance().CreatePortal(
+                    portalName,
+                    Host.Host.HostCurrency,
+                    datExpiryDate,
+                    Host.Host.HostFee,
+                    Host.Host.HostSpace,
+                    Host.Host.PageQuota,
+                    Host.Host.UserQuota,
+                    0, // site log history function has been removed.
+                    homeDirectory,
+                    cultureCode,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
+
+                // clear portal cache
+                DataCache.ClearHostCache(true);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
+            try
+            {
+                EnsureRequiredEventLogTypesExist();
+            }
+            catch (Exception)
+            {
+                // should be no exception, but suppress just in case
+            }
+
+            return PortalId;
+        }
 
         private void AddFolderPermissions(int portalId, int folderId)
         {
-            var portal = GetPortal(portalId);
+            var portal = this.GetPortal(portalId);
             var folderManager = FolderManager.Instance;
             var folder = folderManager.GetFolder(folderId);
             var permissionController = new PermissionController();
-            foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", ""))
+            foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", string.Empty))
             {
                 var folderPermission = new FolderPermissionInfo(permission)
                 {
                     FolderID = folder.FolderID,
                     RoleID = portal.AdministratorRoleId,
-                    AllowAccess = true
+                    AllowAccess = true,
                 };
 
                 folder.FolderPermissions.Add(folderPermission);
                 if (permission.PermissionKey == "READ")
                 {
-                    //add READ permissions to the All Users Role
+                    // add READ permissions to the All Users Role
                     folderManager.AddAllUserReadPermission(folder, permission);
                 }
             }
-            FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
-        }
 
-        private static void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
-        {
-            //create required roles if not already created
-            if (administratorRoleId == -1)
-            {
-                administratorRoleId = CreateRole(portalId, "Administrators", "Administrators of this Website", 0, 0, "M", 0, 0, "N", false, false);
-            }
-            if (registeredRoleId == -1)
-            {
-                registeredRoleId = CreateRole(portalId, "Registered Users", "Registered Users", 0, 0, "M", 0, 0, "N", false, true);
-            }
-            if (subscriberRoleId == -1)
-            {
-                subscriberRoleId = CreateRole(portalId, "Subscribers", "A public role for site subscriptions", 0, 0, "M", 0, 0, "N", true, true);
-            }
-            if (unverifiedRoleId == -1)
-            {
-                CreateRole(portalId, "Unverified Users", "Unverified Users", 0, 0, "M", 0, 0, "N", false, false);
-            }
-            RoleController.Instance.AddUserRole(portalId, administratorId, administratorRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-            RoleController.Instance.AddUserRole(portalId, administratorId, registeredRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-            RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
         private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
@@ -138,14 +453,15 @@ namespace DotNetNuke.Entities.Portals
             }
 
             string templatePath, templateFile;
-            PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
+            this.PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
             string mergedTemplatePath = Path.Combine(templatePath, templateFile);
 
-            if (String.IsNullOrEmpty(homeDirectory))
+            if (string.IsNullOrEmpty(homeDirectory))
             {
                 homeDirectory = "Portals/" + portalId;
             }
-            string mappedHomeDirectory = String.Format(Globals.ApplicationMapPath + "\\" + homeDirectory + "\\").Replace("/", "\\");
+
+            string mappedHomeDirectory = string.Format(Globals.ApplicationMapPath + "\\" + homeDirectory + "\\").Replace("/", "\\");
 
             if (Directory.Exists(mappedHomeDirectory))
             {
@@ -155,11 +471,11 @@ namespace DotNetNuke.Entities.Portals
 
             message += CreateProfileDefinitions(portalId, mergedTemplatePath);
 
-            if (String.IsNullOrEmpty(message))
+            if (string.IsNullOrEmpty(message))
             {
                 try
                 {
-                    //the upload directory may already exist if this is a new DB working with a previously installed application
+                    // the upload directory may already exist if this is a new DB working with a previously installed application
                     if (Directory.Exists(mappedHomeDirectory))
                     {
                         Globals.DeleteFolderRecursive(mappedHomeDirectory);
@@ -171,7 +487,7 @@ namespace DotNetNuke.Entities.Portals
                     message += Localization.GetString("DeleteUploadFolder.Error") + Exc.Message + Exc.StackTrace;
                 }
 
-                //Set up Child Portal
+                // Set up Child Portal
                 if (message == Null.NullString)
                 {
                     if (isChildPortal)
@@ -188,29 +504,30 @@ namespace DotNetNuke.Entities.Portals
                 {
                     try
                     {
-                        //create the upload directory for the new portal
+                        // create the upload directory for the new portal
                         Directory.CreateDirectory(mappedHomeDirectory);
-                        //ensure that the Templates folder exists
-                        string templateFolder = String.Format("{0}Templates", mappedHomeDirectory);
+
+                        // ensure that the Templates folder exists
+                        string templateFolder = string.Format("{0}Templates", mappedHomeDirectory);
                         if (!Directory.Exists(templateFolder))
                         {
                             Directory.CreateDirectory(templateFolder);
                         }
 
-                        //ensure that the Users folder exists
-                        string usersFolder = String.Format("{0}Users", mappedHomeDirectory);
+                        // ensure that the Users folder exists
+                        string usersFolder = string.Format("{0}Users", mappedHomeDirectory);
                         if (!Directory.Exists(usersFolder))
                         {
                             Directory.CreateDirectory(usersFolder);
                         }
 
-                        //copy the default page template
-                        CopyPageTemplate("Default.page.template", mappedHomeDirectory);
+                        // copy the default page template
+                        this.CopyPageTemplate("Default.page.template", mappedHomeDirectory);
 
                         // process zip resource file if present
                         if (File.Exists(template.ResourceFilePath))
                         {
-                            ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
+                            this.ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
                         }
                     }
                     catch (Exception Exc)
@@ -246,8 +563,8 @@ namespace DotNetNuke.Entities.Portals
                 {
                     try
                     {
-                        CreatePredefinedFolderTypes(portalId);
-                        ParseTemplateInternal(portalId, templatePath, templateFile, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
+                        this.CreatePredefinedFolderTypes(portalId);
+                        this.ParseTemplateInternal(portalId, templatePath, templateFile, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
                     }
                     catch (Exception Exc)
                     {
@@ -259,10 +576,10 @@ namespace DotNetNuke.Entities.Portals
                 {
                     throw new Exception(message);
                 }
+
                 if (message == Null.NullString)
                 {
-
-                    var portal = GetPortal(portalId);
+                    var portal = this.GetPortal(portalId);
                     portal.Description = description;
                     portal.KeyWords = keyWords;
                     portal.UserTabId = TabController.GetTabByTabPath(portal.PortalID, "//UserProfile", portal.CultureCode);
@@ -270,8 +587,9 @@ namespace DotNetNuke.Entities.Portals
                     {
                         portal.UserTabId = TabController.GetTabByTabPath(portal.PortalID, "//ActivityFeed", portal.CultureCode);
                     }
+
                     portal.SearchTabId = TabController.GetTabByTabPath(portal.PortalID, "//SearchResults", portal.CultureCode);
-                    UpdatePortalInfo(portal);
+                    this.UpdatePortalInfo(portal);
 
                     adminUser.Profile.PreferredLocale = portal.DefaultLanguage;
                     var portalSettings = new PortalSettings(portal);
@@ -280,7 +598,7 @@ namespace DotNetNuke.Entities.Portals
 
                     DesktopModuleController.AddDesktopModulesToPortal(portalId);
 
-                    AddPortalAlias(portalId, portalAlias);
+                    this.AddPortalAlias(portalId, portalAlias);
 
                     UpdatePortalSetting(portalId, "DefaultPortalAlias", portalAlias, false);
 
@@ -293,7 +611,7 @@ namespace DotNetNuke.Entities.Portals
                             Localization.AddLanguageToPortal(portalId, newPortalLocale.LanguageId, false);
                             if (portalSettings.ContentLocalizationEnabled)
                             {
-                                MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
+                                this.MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
                             }
                         }
                     }
@@ -307,7 +625,7 @@ namespace DotNetNuke.Entities.Portals
                         Logger.Error(Exc);
                     }
 
-                    //add profanity list to new portal
+                    // add profanity list to new portal
                     try
                     {
                         const string listName = "ProfanityFilter";
@@ -316,17 +634,16 @@ namespace DotNetNuke.Entities.Portals
                         {
                             PortalID = portalId,
                             SystemList = false,
-                            ListName = listName + "-" + portalId
+                            ListName = listName + "-" + portalId,
                         };
                         listController.AddListEntry(entry);
-
                     }
                     catch (Exception Exc)
                     {
                         Logger.Error(Exc);
                     }
 
-                    //add banned password list to new portal
+                    // add banned password list to new portal
                     try
                     {
                         const string listName = "BannedPasswords";
@@ -335,10 +652,9 @@ namespace DotNetNuke.Entities.Portals
                         {
                             PortalID = portalId,
                             SystemList = false,
-                            ListName = listName + "-" + portalId
+                            ListName = listName + "-" + portalId,
                         };
                         listController.AddListEntry(entry);
-
                     }
                     catch (Exception Exc)
                     {
@@ -352,7 +668,7 @@ namespace DotNetNuke.Entities.Portals
                         var log = new LogInfo
                         {
                             BypassBuffering = true,
-                            LogTypeKey = EventLogController.EventLogType.PORTAL_CREATED.ToString()
+                            LogTypeKey = EventLogController.EventLogType.PORTAL_CREATED.ToString(),
                         };
                         log.LogProperties.Add(new LogDetailInfo("Install Portal:", portalName));
                         log.LogProperties.Add(new LogDetailInfo("FirstName:", adminUser.FirstName));
@@ -389,90 +705,11 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static string CreateProfileDefinitions(int portalId, string templateFilePath)
-        {
-            string strMessage = Null.NullString;
-            try
-            {
-                //add profile definitions
-                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
-                //open the XML template file
-                try
-                {
-                    xmlDoc.Load(templateFilePath);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-                //parse profile definitions if available
-                var node = xmlDoc.SelectSingleNode("//portal/profiledefinitions");
-                if (node != null)
-                {
-                    ParseProfileDefinitions(node, portalId);
-                }
-                else //template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
-                {
-                    ProfileController.AddDefaultDefinitions(portalId);
-                }
-            }
-            catch (Exception ex)
-            {
-                strMessage = Localization.GetString("CreateProfileDefinitions.Error");
-                Exceptions.LogException(ex);
-            }
-            return strMessage;
-        }
-
-        private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
-        {
-            //add portal
-            int PortalId = -1;
-            try
-            {
-                //Use host settings as default values for these parameters
-                //This can be overwritten on the portal template
-                var datExpiryDate = Host.Host.DemoPeriod > Null.NullInteger
-                    ? Convert.ToDateTime(Globals.GetMediumDate(DateTime.Now.AddDays(Host.Host.DemoPeriod).ToString(CultureInfo.InvariantCulture)))
-                    : Null.NullDate;
-
-                PortalId = DataProvider.Instance().CreatePortal(portalName,
-                                                                Host.Host.HostCurrency,
-                                                                datExpiryDate,
-                                                                Host.Host.HostFee,
-                                                                Host.Host.HostSpace,
-                                                                Host.Host.PageQuota,
-                                                                Host.Host.UserQuota,
-                                                                0, //site log history function has been removed.
-                                                                homeDirectory,
-                                                                cultureCode,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID);
-
-                //clear portal cache
-                DataCache.ClearHostCache(true);
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-
-            try
-            {
-                EnsureRequiredEventLogTypesExist();
-            }
-            catch (Exception)
-            {
-                //should be no exception, but suppress just in case
-            }
-
-            return PortalId;
-        }
-
         private static int CreateRole(RoleInfo role)
         {
             int roleId;
 
-            //First check if the role exists
+            // First check if the role exists
             var objRoleInfo = RoleController.Instance.GetRole(role.PortalID, r => r.RoleName == role.RoleName);
             if (objRoleInfo == null)
             {
@@ -482,6 +719,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 roleId = objRoleInfo.RoleID;
             }
+
             return roleId;
         }
 
@@ -506,7 +744,7 @@ namespace DotNetNuke.Entities.Portals
 
         private static void CreateRoleGroup(RoleGroupInfo roleGroup)
         {
-            //First check if the role exists
+            // First check if the role exists
             var objRoleGroupInfo = RoleController.GetRoleGroupByName(roleGroup.PortalID, roleGroup.RoleGroupName);
 
             if (objRoleGroupInfo == null)
@@ -532,7 +770,7 @@ namespace DotNetNuke.Entities.Portals
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.PORTAL_DELETED.ToString()
+                    LogTypeKey = EventLogController.EventLogType.PORTAL_DELETED.ToString(),
                 };
                 log.LogProperties.Add(new LogDetailInfo("Delete Portal:", portal.PortalName));
                 log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalID.ToString()));
@@ -563,141 +801,8 @@ namespace DotNetNuke.Entities.Portals
             {
                 return false;
             }
+
             return true;
-        }
-
-        internal static void EnsureRequiredEventLogTypesExist()
-        {
-            if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
-            {
-                //Add 404 Log
-                var logTypeInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                    LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
-                    LogTypeDescription = "",
-                    LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
-                };
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                //Add LogType
-                var logTypeConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
-            }
-
-
-            if (!DoesLogTypeExists(EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()))
-            {
-                //Add IP filter log type
-                var logTypeFilterInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
-                    LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
-                    LogTypeDescription = "",
-                    LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
-                };
-                LogController.Instance.AddLogType(logTypeFilterInfo);
-
-                //Add LogType
-                var logTypeFilterConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
-            }
-
-            if (!DoesLogTypeExists(EventLogController.EventLogType.TABURL_CREATED.ToString()))
-            {
-                var logTypeInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
-                    LogTypeFriendlyName = "TabURL created",
-                    LogTypeDescription = "",
-                    LogTypeCSSClass = "OperationSuccess",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
-                };
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
-                logTypeInfo.LogTypeFriendlyName = "TabURL updated";
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
-                logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                //Add LogType
-                var logTypeUrlConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = false,
-                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
-
-                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
-                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
-
-                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
-                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
-            }
-
-            if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
-            {
-                //Add IP filter log type
-                var logTypeFilterInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
-                    LogTypeFriendlyName = "Javscript library registration resolved script collision",
-                    LogTypeDescription = "",
-                    LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
-                };
-                LogController.Instance.AddLogType(logTypeFilterInfo);
-
-                //Add LogType
-                var logTypeFilterConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
-            }
-
         }
 
         private static PortalSettings GetCurrentPortalSettingsInternal()
@@ -707,6 +812,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
+
             return objPortalSettings;
         }
 
@@ -726,14 +832,14 @@ namespace DotNetNuke.Entities.Portals
             var portalDic = new Dictionary<int, int>();
             if (Host.Host.PerformanceSetting != Globals.PerformanceSettings.NoCaching)
             {
-                //get all tabs
+                // get all tabs
                 int intField = 0;
                 IDataReader dr = DataProvider.Instance().GetTabPaths(Null.NullInteger, Null.NullString);
                 try
                 {
                     while (dr.Read())
                     {
-                        //add to dictionary
+                        // add to dictionary
                         portalDic[Convert.ToInt32(Null.SetNull(dr["TabID"], intField))] = Convert.ToInt32(Null.SetNull(dr["PortalID"], intField));
                     }
                 }
@@ -743,10 +849,11 @@ namespace DotNetNuke.Entities.Portals
                 }
                 finally
                 {
-                    //close datareader
+                    // close datareader
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return portalDic;
         }
 
@@ -755,19 +862,26 @@ namespace DotNetNuke.Entities.Portals
             var portalId = (int)cacheItemArgs.ParamList[0];
             var dicSettings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
-            if (portalId <= -1) return dicSettings;
+            if (portalId <= -1)
+            {
+                return dicSettings;
+            }
 
             var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
             if (string.IsNullOrEmpty(cultureCode))
             {
                 cultureCode = GetActivePortalLanguage(portalId);
             }
+
             var dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
             try
             {
                 while (dr.Read())
                 {
-                    if (dr.IsDBNull(1)) continue;
+                    if (dr.IsDBNull(1))
+                    {
+                        continue;
+                    }
 
                     var key = dr.GetString(0);
                     if (dicSettings.ContainsKey(key))
@@ -775,7 +889,7 @@ namespace DotNetNuke.Entities.Portals
                         dicSettings[key] = dr.GetString(1);
                         var log = new LogInfo
                         {
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         log.AddProperty("Duplicate PortalSettings Key", key);
                         LogController.Instance.AddLog(log);
@@ -794,6 +908,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return dicSettings;
         }
 
@@ -805,10 +920,13 @@ namespace DotNetNuke.Entities.Portals
             {
                 var fileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "filename");
 
-                //First check if the file exists
+                // First check if the file exists
                 var file = fileManager.GetFile(folder, fileName);
 
-                if (file != null) continue;
+                if (file != null)
+                {
+                    continue;
+                }
 
                 file = new FileInfo
                 {
@@ -822,17 +940,17 @@ namespace DotNetNuke.Entities.Portals
                     SHA1Hash = XmlUtils.GetNodeValue(node.CreateNavigator(), "sha1hash"),
                     FolderId = folder.FolderID,
                     Folder = folder.FolderPath,
-                    Title = "",
+                    Title = string.Empty,
                     StartDate = DateTime.Now,
                     EndDate = Null.NullDate,
                     EnablePublishPeriod = false,
-                    ContentItemID = Null.NullInteger
+                    ContentItemID = Null.NullInteger,
                 };
 
-                //Save new File
+                // Save new File
                 try
                 {
-                    //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
+                    // Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider
                     using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
                     {
                         var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
@@ -842,7 +960,7 @@ namespace DotNetNuke.Entities.Portals
 
                     fileManager.UpdateFile(file);
                 }
-                catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
+                catch (InvalidFileExtensionException ex) // when the file is not allowed, we should not break parse process, but just log the error.
                 {
                     Logger.Error(ex.Message);
                 }
@@ -854,7 +972,7 @@ namespace DotNetNuke.Entities.Portals
             PermissionController permissionController = new PermissionController();
             int permissionId = 0;
 
-            //Clear the current folder permissions
+            // Clear the current folder permissions
             folder.FolderPermissions.Clear();
             foreach (XmlNode xmlFolderPermission in nodeFolderPermissions)
             {
@@ -866,6 +984,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     permissionId = permission.PermissionID;
                 }
+
                 int roleId = int.MinValue;
                 switch (roleName)
                 {
@@ -881,10 +1000,11 @@ namespace DotNetNuke.Entities.Portals
                         {
                             roleId = objRole.RoleID;
                         }
+
                         break;
                 }
 
-                //if role was found add, otherwise ignore
+                // if role was found add, otherwise ignore
                 if (roleId != int.MinValue)
                 {
                     var folderPermission = new FolderPermissionInfo
@@ -893,7 +1013,7 @@ namespace DotNetNuke.Entities.Portals
                         PermissionID = permissionId,
                         RoleID = roleId,
                         UserID = Null.NullInteger,
-                        AllowAccess = allowAccess
+                        AllowAccess = allowAccess,
                     };
 
                     bool canAdd = !folder.FolderPermissions.Cast<FolderPermissionInfo>()
@@ -907,33 +1027,8 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
-            FolderPermissionController.SaveFolderPermissions(folder);
-        }
 
-        private void CreatePredefinedFolderTypes(int portalId)
-        {
-            try
-            {
-                EnsureRequiredProvidersForFolderTypes();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error"), ex);
-            }
-            var webConfig = Config.Load();
-            foreach (FolderTypeConfig folderTypeConfig in FolderMappingsConfigController.Instance.FolderTypes)
-            {
-                try
-                {
-                    EnsureFolderProviderRegistration<FolderProvider>(folderTypeConfig, webConfig);
-                    FolderMappingController.Instance.AddFolderMapping(GetFolderMappingFromConfig(folderTypeConfig,
-                        portalId));
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error") + ": " + folderTypeConfig.Name, ex);
-                }
-            }
+            FolderPermissionController.SaveFolderPermissions(folder);
         }
 
         private static void EnsureRequiredProvidersForFolderTypes()
@@ -955,6 +1050,117 @@ namespace DotNetNuke.Entities.Portals
             {
                 ComponentFactory.RegisterComponentInstance<TAbstract>(folderTypeConfig.Provider, Activator.CreateInstance(typeClass));
             }
+        }
+
+        private void CreatePredefinedFolderTypes(int portalId)
+        {
+            try
+            {
+                EnsureRequiredProvidersForFolderTypes();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error"), ex);
+            }
+
+            var webConfig = Config.Load();
+            foreach (FolderTypeConfig folderTypeConfig in FolderMappingsConfigController.Instance.FolderTypes)
+            {
+                try
+                {
+                    EnsureFolderProviderRegistration<FolderProvider>(folderTypeConfig, webConfig);
+                    FolderMappingController.Instance.AddFolderMapping(this.GetFolderMappingFromConfig(
+                        folderTypeConfig,
+                        portalId));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error") + ": " + folderTypeConfig.Name, ex);
+                }
+            }
+        }
+
+        private static bool EnableBrowserLanguageInDefault(int portalId)
+        {
+            bool retValue = Null.NullBoolean;
+            try
+            {
+                string setting;
+                GetPortalSettingsDictionary(portalId, Localization.SystemLocale).TryGetValue("EnableBrowserLanguage", out setting);
+                if (string.IsNullOrEmpty(setting))
+                {
+                    retValue = Host.Host.EnableBrowserLanguage;
+                }
+                else
+                {
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+
+            return retValue;
+        }
+
+        private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
+        {
+            var httpContext = HttpContext.Current;
+
+            if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
+            {
+                cultureCode = GetActivePortalLanguageFromHttpContext(httpContext, portalId);
+            }
+
+            // Get PortalSettings from Context or from cache
+            var dictionaryKey = string.Format(HttpContextKeyPortalSettingsDictionary, portalId, cultureCode);
+            Dictionary<string, string> dictionary = null;
+            if (httpContext != null)
+            {
+                dictionary = httpContext.Items[dictionaryKey] as Dictionary<string, string>;
+            }
+
+            if (dictionary == null)
+            {
+                var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
+                dictionary = CBO.GetCachedObject<Dictionary<string, string>>(
+                    new CacheItemArgs(
+                    cacheKey,
+                    DataCache.PortalSettingsCacheTimeOut,
+                    DataCache.PortalSettingsCachePriority, portalId, cultureCode),
+                    GetPortalSettingsDictionaryCallback,
+                    true);
+                if (httpContext != null)
+                {
+                    httpContext.Items[dictionaryKey] = dictionary;
+                }
+            }
+
+            return dictionary;
+        }
+
+        private static string GetActivePortalLanguageFromHttpContext(HttpContext httpContext, int portalId)
+        {
+            var cultureCode = string.Empty;
+
+            // Lookup culturecode but cache it in the HttpContext for performance
+            var activeLanguageKey = string.Format("ActivePortalLanguage{0}", portalId);
+            if (httpContext != null)
+            {
+                cultureCode = (string)httpContext.Items[activeLanguageKey];
+            }
+
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = GetActivePortalLanguage(portalId);
+                if (httpContext != null)
+                {
+                    httpContext.Items[activeLanguageKey] = cultureCode;
+                }
+            }
+
+            return cultureCode;
         }
 
         private void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
@@ -993,29 +1199,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static bool EnableBrowserLanguageInDefault(int portalId)
-        {
-            bool retValue = Null.NullBoolean;
-            try
-            {
-                string setting;
-                GetPortalSettingsDictionary(portalId, Localization.SystemLocale).TryGetValue("EnableBrowserLanguage", out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = Host.Host.EnableBrowserLanguage;
-                }
-                else
-                {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-            return retValue;
-        }
-
         private string EnsureSettingValue(string folderProviderType, FolderTypeSettingConfig settingNode, int portalId)
         {
             var ensuredSettingValue =
@@ -1023,14 +1206,16 @@ namespace DotNetNuke.Entities.Portals
             if (settingNode.Encrypt)
             {
                 return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
-                //return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
+
+                // return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
             }
+
             return ensuredSettingValue;
         }
 
         private string GetCultureCode(string languageFileName)
         {
-            //e.g. "default template.template.en-US.resx"
+            // e.g. "default template.template.en-US.resx"
             return languageFileName.GetLocaleCodeFromFileName();
         }
 
@@ -1040,12 +1225,12 @@ namespace DotNetNuke.Entities.Portals
             {
                 PortalID = portalId,
                 MappingName = node.Name,
-                FolderProviderType = node.Provider
+                FolderProviderType = node.Provider,
             };
 
             foreach (FolderTypeSettingConfig settingNode in node.Settings)
             {
-                var settingValue = EnsureSettingValue(folderMapping.FolderProviderType, settingNode, portalId);
+                var settingValue = this.EnsureSettingValue(folderMapping.FolderProviderType, settingNode, portalId);
                 folderMapping.FolderMappingSettings.Add(settingNode.Name, settingValue);
             }
 
@@ -1065,66 +1250,6 @@ namespace DotNetNuke.Entities.Portals
                 default:
                     return FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
             }
-        }
-
-        private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
-        {
-            var httpContext = HttpContext.Current;
-
-            if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
-            {
-                cultureCode = GetActivePortalLanguageFromHttpContext(httpContext, portalId);
-            }
-
-            //Get PortalSettings from Context or from cache
-            var dictionaryKey = String.Format(HttpContextKeyPortalSettingsDictionary, portalId, cultureCode);
-            Dictionary<string, string> dictionary = null;
-            if (httpContext != null)
-            {
-                dictionary = httpContext.Items[dictionaryKey] as Dictionary<string, string>;
-            }
-            if (dictionary == null)
-            {
-                var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
-                dictionary = CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey,
-                                                                                DataCache.PortalSettingsCacheTimeOut,
-                                                                                DataCache.PortalSettingsCachePriority, portalId, cultureCode),
-                                                                            GetPortalSettingsDictionaryCallback,
-                                                                            true);
-                if (httpContext != null)
-                {
-                    httpContext.Items[dictionaryKey] = dictionary;
-                }
-            }
-            return dictionary;
-        }
-
-        private static string GetActivePortalLanguageFromHttpContext(HttpContext httpContext, int portalId)
-        {
-            var cultureCode = string.Empty;
-
-            //Lookup culturecode but cache it in the HttpContext for performance
-            var activeLanguageKey = String.Format("ActivePortalLanguage{0}", portalId);
-            if (httpContext != null)
-            {
-                cultureCode = (string)httpContext.Items[activeLanguageKey];
-            }
-            if (string.IsNullOrEmpty(cultureCode))
-            {
-                cultureCode = GetActivePortalLanguage(portalId);
-                if (httpContext != null)
-                {
-                    httpContext.Items[activeLanguageKey] = cultureCode;
-                }
-            }
-
-            return cultureCode;
-        }
-
-        private string GetTemplateName(string languageFileName)
-        {
-            //e.g. "default template.template.en-US.resx"
-            return languageFileName.GetFileNameFromLocalizedResxFile();
         }
 
         private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int portalId)
@@ -1149,75 +1274,13 @@ namespace DotNetNuke.Entities.Portals
                     returnCollection.Add(locale.Code, locale);
                 }
             }
+
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
             }
+
             return returnCollection;
-        }
-
-        private void ParseFolders(XmlNode nodeFolders, int portalId)
-        {
-            var folderManager = FolderManager.Instance;
-            var folderMappingController = FolderMappingController.Instance;
-            var xmlNodeList = nodeFolders.SelectNodes("//folder");
-            if (xmlNodeList != null)
-            {
-                foreach (XmlNode node in xmlNodeList)
-                {
-                    HtmlUtils.WriteKeepAlive();
-                    var folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
-
-                    //First check if the folder exists
-                    var objInfo = folderManager.GetFolder(portalId, folderPath);
-
-                    if (objInfo == null)
-                    {
-                        FolderMappingInfo folderMapping;
-                        try
-                        {
-                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath)
-                                            ?? GetFolderMappingFromStorageLocation(portalId, node);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                            folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
-                        }
-                        var isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
-
-                        try
-                        {
-                            //Save new folder
-                            objInfo = folderManager.AddFolder(folderMapping, folderPath);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                            //Retry with default folderMapping
-                            var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
-                            if (folderMapping.FolderMappingID != defaultFolderMapping.FolderMappingID)
-                            {
-                                objInfo = folderManager.AddFolder(defaultFolderMapping, folderPath);
-                            }
-                            else
-                            {
-                                throw;
-                            }
-                        }
-                        objInfo.IsProtected = isProtected;
-
-                        folderManager.UpdateFolder(objInfo);
-                    }
-
-                    var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
-                    ParseFolderPermissions(nodeFolderPermissions, portalId, (FolderInfo)objInfo);
-
-                    var nodeFiles = node.SelectNodes("files/file");
-
-                    ParseFiles(nodeFiles, portalId, (FolderInfo)objInfo);
-                }
-            }
         }
 
         private static void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int portalId)
@@ -1236,9 +1299,10 @@ namespace DotNetNuke.Entities.Portals
                 {
                     typeInfo = colDataTypes["DataType:Unknown"];
                 }
+
                 objProfileDefinition = new ProfilePropertyDefinition(portalId);
                 objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = "";
+                objProfileDefinition.DefaultValue = string.Empty;
                 objProfileDefinition.ModuleDefId = Null.NullInteger;
                 objProfileDefinition.PropertyCategory = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertycategory");
                 objProfileDefinition.PropertyName = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertyname");
@@ -1268,7 +1332,7 @@ namespace DotNetNuke.Entities.Portals
                 ProfileController.AddPropertyDefinition(objProfileDefinition);
             }
 
-            //6.0 requires the old TimeZone property to be marked as Deleted
+            // 6.0 requires the old TimeZone property to be marked as Deleted
             ProfilePropertyDefinition pdf = ProfileController.GetPropertyDefinitionByName(portalId, "TimeZone");
             if (pdf != null)
             {
@@ -1289,7 +1353,7 @@ namespace DotNetNuke.Entities.Portals
 
                 objProfileDefinition = new ProfilePropertyDefinition(portalId);
                 objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = "";
+                objProfileDefinition.DefaultValue = string.Empty;
                 objProfileDefinition.ModuleDefId = Null.NullInteger;
                 objProfileDefinition.PropertyCategory = "Preferences";
                 objProfileDefinition.PropertyName = "PreferredTimeZone";
@@ -1313,7 +1377,7 @@ namespace DotNetNuke.Entities.Portals
                     var desktopModule = DesktopModuleController.GetDesktopModuleByFriendlyName(friendlyName);
                     if (desktopModule != null)
                     {
-                        //Parse the permissions
+                        // Parse the permissions
                         DesktopModulePermissionCollection permissions = new DesktopModulePermissionCollection();
                         foreach (XPathNavigator permissionNav in
                             desktopModuleNav.Select("portalDesktopModulePermissions/portalDesktopModulePermission"))
@@ -1330,6 +1394,7 @@ namespace DotNetNuke.Entities.Portals
                                     desktopModulePermission = new DesktopModulePermissionInfo(permission);
                                 }
                             }
+
                             desktopModulePermission.AllowAccess = bool.Parse(XmlUtils.GetNodeValue(permissionNav, "allowaccess"));
                             string rolename = XmlUtils.GetNodeValue(permissionNav, "rolename");
                             if (!string.IsNullOrEmpty(rolename))
@@ -1340,102 +1405,214 @@ namespace DotNetNuke.Entities.Portals
                                     desktopModulePermission.RoleID = role.RoleID;
                                 }
                             }
+
                             permissions.Add(desktopModulePermission);
                         }
+
                         DesktopModuleController.AddDesktopModuleToPortal(portalID, desktopModule, permissions, false);
                     }
                 }
             }
         }
 
+        private string GetTemplateName(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetFileNameFromLocalizedResxFile();
+        }
+
+        private void ParseFolders(XmlNode nodeFolders, int portalId)
+        {
+            var folderManager = FolderManager.Instance;
+            var folderMappingController = FolderMappingController.Instance;
+            var xmlNodeList = nodeFolders.SelectNodes("//folder");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode node in xmlNodeList)
+                {
+                    HtmlUtils.WriteKeepAlive();
+                    var folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
+
+                    // First check if the folder exists
+                    var objInfo = folderManager.GetFolder(portalId, folderPath);
+
+                    if (objInfo == null)
+                    {
+                        FolderMappingInfo folderMapping;
+                        try
+                        {
+                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath)
+                                            ?? this.GetFolderMappingFromStorageLocation(portalId, node);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                            folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
+                        }
+
+                        var isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
+
+                        try
+                        {
+                            // Save new folder
+                            objInfo = folderManager.AddFolder(folderMapping, folderPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+
+                            // Retry with default folderMapping
+                            var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
+                            if (folderMapping.FolderMappingID != defaultFolderMapping.FolderMappingID)
+                            {
+                                objInfo = folderManager.AddFolder(defaultFolderMapping, folderPath);
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+
+                        objInfo.IsProtected = isProtected;
+
+                        folderManager.UpdateFolder(objInfo);
+                    }
+
+                    var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
+                    ParseFolderPermissions(nodeFolderPermissions, portalId, (FolderInfo)objInfo);
+
+                    var nodeFiles = node.SelectNodes("files/file");
+
+                    ParseFiles(nodeFiles, portalId, (FolderInfo)objInfo);
+                }
+            }
+        }
+
+        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
+        {
+            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
+
+            if (currentSetting != settingValue)
+            {
+                if (isSecure && !string.IsNullOrEmpty(settingName) && !string.IsNullOrEmpty(settingValue))
+                {
+                    settingValue = Security.FIPSCompliant.EncryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
+                }
+
+                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode, isSecure);
+                EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                if (clearCache)
+                {
+                    DataCache.ClearPortalCache(portalID, false);
+                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+
+                    var httpContext = HttpContext.Current;
+                    if (httpContext != null)
+                    {
+                        var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(httpContext, portalID);
+                        var dictionaryKey = string.Format(HttpContextKeyPortalSettingsDictionary, portalID, cultureCodeForKey);
+                        httpContext.Items[dictionaryKey] = null;
+                    }
+                }
+
+                EventManager.Instance.OnPortalSettingUpdated(new PortalSettingUpdatedEventArgs
+                {
+                    PortalId = portalID,
+                    SettingName = settingName,
+                    SettingValue = settingValue,
+                });
+            }
+        }
+
         private void ParsePortalSettings(XmlNode nodeSettings, int portalId)
         {
-            String currentCulture = GetActivePortalLanguage(portalId);
-            var objPortal = GetPortal(portalId);
+            string currentCulture = GetActivePortalLanguage(portalId);
+            var objPortal = this.GetPortal(portalId);
             objPortal.LogoFile = Globals.ImportFile(portalId, XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "logofile"));
             objPortal.FooterText = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "footertext");
             if (nodeSettings.SelectSingleNode("expirydate") != null)
             {
                 objPortal.ExpiryDate = XmlUtils.GetNodeValueDate(nodeSettings, "expirydate", Null.NullDate);
             }
+
             objPortal.UserRegistration = XmlUtils.GetNodeValueInt(nodeSettings, "userregistration");
             objPortal.BannerAdvertising = XmlUtils.GetNodeValueInt(nodeSettings, "banneradvertising");
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "currency")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "currency")))
             {
                 objPortal.Currency = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "currency");
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "hostfee")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "hostfee")))
             {
                 objPortal.HostFee = XmlUtils.GetNodeValueSingle(nodeSettings, "hostfee");
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "hostspace")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "hostspace")))
             {
                 objPortal.HostSpace = XmlUtils.GetNodeValueInt(nodeSettings, "hostspace");
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "pagequota")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "pagequota")))
             {
                 objPortal.PageQuota = XmlUtils.GetNodeValueInt(nodeSettings, "pagequota");
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "userquota")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "userquota")))
             {
                 objPortal.UserQuota = XmlUtils.GetNodeValueInt(nodeSettings, "userquota");
             }
+
             objPortal.BackgroundFile = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "backgroundfile");
             objPortal.PaymentProcessor = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "paymentprocessor");
 
             objPortal.DefaultLanguage = XmlUtils.GetNodeValue(nodeSettings, "defaultlanguage", "en-US");
-            UpdatePortalInfo(objPortal);
+            this.UpdatePortalInfo(objPortal);
 
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrc", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrc", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", ""), true, currentCulture);
-            }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", "")))
-            {
-                UpdatePortalSetting(portalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", ""), true, currentCulture);
-            }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrc", "")))
-            {
-                UpdatePortalSetting(portalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", ""), true, currentCulture);
-            }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", "")))
-            {
-                UpdatePortalSetting(portalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", ""), true, currentCulture);
+                UpdatePortalSetting(portalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", string.Empty), true, currentCulture);
             }
 
-            //Enable Skin Widgets Setting
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", ""));
+                UpdatePortalSetting(portalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", string.Empty), true, currentCulture);
             }
 
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrc", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "False"));
-            }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", "")))
-            {
-                UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", ""), true, currentCulture);
+                UpdatePortalSetting(portalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", string.Empty), true, currentCulture);
             }
 
-            //Enable AutoSAve feature
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", string.Empty)))
             {
-                UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", ""));
-                //Time to autosave, only if enableautosave exists
-                if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", "")))
+                UpdatePortalSetting(portalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", string.Empty), true, currentCulture);
+            }
+
+            // Enable Skin Widgets Setting
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", string.Empty));
+            }
+
+            // Enable AutoSAve feature
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", string.Empty));
+
+                // Time to autosave, only if enableautosave exists
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", string.Empty)))
                 {
-                    UpdatePortalSetting(portalId, HtmlText_TimeToAutoSave, XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", ""));
+                    UpdatePortalSetting(portalId, HtmlText_TimeToAutoSave, XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", string.Empty));
                 }
             }
 
-            //Set Auto alias mapping
-
+            // Set Auto alias mapping
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "portalaliasmapping", "CANONICALURL")))
             {
                 UpdatePortalSetting(portalId, "PortalAliasMapping", XmlUtils.GetNodeValue(nodeSettings, "portalaliasmapping", "CANONICALURL").ToUpperInvariant());
             }
-            //Set Time Zone maping
+
+            // Set Time Zone maping
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timezone", Localization.SystemTimeZone)))
             {
                 UpdatePortalSetting(portalId, "TimeZone", XmlUtils.GetNodeValue(nodeSettings, "timezone", Localization.SystemTimeZone));
@@ -1475,26 +1652,72 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", "")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", ""));
+                UpdatePortalSetting(portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty));
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", "")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", ""));
+                UpdatePortalSetting(portalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty));
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", "")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", ""));
+                UpdatePortalSetting(portalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", string.Empty));
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", "")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "AllowUserUICulture", XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", ""));
+                UpdatePortalSetting(portalId, "AllowUserUICulture", XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", string.Empty));
             }
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", "")))
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "EnableBrowserLanguage", XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", ""));
+                UpdatePortalSetting(portalId, "EnableBrowserLanguage", XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", string.Empty));
             }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "False"));
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", string.Empty), true, currentCulture);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "dataconsentactive", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "DataConsentActive", XmlUtils.GetNodeValue(nodeSettings, "dataconsentactive", "False"));
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "dataconsenttermslastchange", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "DataConsentTermsLastChange", XmlUtils.GetNodeValue(nodeSettings, "dataconsenttermslastchange", string.Empty), true, currentCulture);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "dataconsentconsentredirect", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "DataConsentConsentRedirect", XmlUtils.GetNodeValue(nodeSettings, "dataconsentconsentredirect", string.Empty), true, currentCulture);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "dataconsentuserdeleteaction", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "DataConsentUserDeleteAction", XmlUtils.GetNodeValue(nodeSettings, "dataconsentuserdeleteaction", string.Empty), true, currentCulture);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "dataconsentdelay", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "DataConsentDelay", XmlUtils.GetNodeValue(nodeSettings, "dataconsentdelay", string.Empty), true, currentCulture);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "dataconsentdelaymeasurement", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "DataConsentDelayMeasurement", XmlUtils.GetNodeValue(nodeSettings, "dataconsentdelaymeasurement", string.Empty), true, currentCulture);
+            }
+
         }
 
         private void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)
@@ -1513,6 +1736,7 @@ namespace DotNetNuke.Entities.Portals
                     roleGroup.PortalID = portalID;
                     CreateRoleGroup(roleGroup);
                 }
+
                 foreach (var role in roleGroup.Roles.Values)
                 {
                     role.PortalID = portalID;
@@ -1538,26 +1762,28 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             CreateDefaultPortalRoles(portalID, administratorId, ref administratorRoleId, ref registeredRoleId, ref subscriberRoleId, unverifiedRoleId);
 
-            //update portal setup
-            var portal = GetPortal(portalID);
-            UpdatePortalSetup(portalID,
-                              administratorId,
-                              administratorRoleId,
-                              registeredRoleId,
-                              portal.SplashTabId,
-                              portal.HomeTabId,
-                              portal.LoginTabId,
-                              portal.RegisterTabId,
-                              portal.UserTabId,
-                              portal.SearchTabId,
-                              portal.Custom404TabId,
-                              portal.Custom500TabId,
-                              portal.TermsTabId,
-                              portal.PrivacyTabId,
-                              portal.AdminTabId,
-                              GetActivePortalLanguage(portalID));
+            // update portal setup
+            var portal = this.GetPortal(portalID);
+            this.UpdatePortalSetup(
+                portalID,
+                administratorId,
+                administratorRoleId,
+                registeredRoleId,
+                portal.SplashTabId,
+                portal.HomeTabId,
+                portal.LoginTabId,
+                portal.RegisterTabId,
+                portal.UserTabId,
+                portal.SearchTabId,
+                portal.Custom404TabId,
+                portal.Custom500TabId,
+                portal.TermsTabId,
+                portal.PrivacyTabId,
+                portal.AdminTabId,
+                GetActivePortalLanguage(portalID));
         }
 
         private void ParseRoles(XPathNavigator nav, int portalID, int administratorId)
@@ -1593,61 +1819,65 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
 
-            //create required roles if not already created
+            // create required roles if not already created
             CreateDefaultPortalRoles(portalID, administratorId, ref administratorRoleId, ref registeredRoleId, ref subscriberRoleId, unverifiedRoleId);
 
-            //update portal setup
-            var portal = GetPortal(portalID);
-            UpdatePortalSetup(portalID,
-                              administratorId,
-                              administratorRoleId,
-                              registeredRoleId,
-                              portal.SplashTabId,
-                              portal.HomeTabId,
-                              portal.LoginTabId,
-                              portal.RegisterTabId,
-                              portal.UserTabId,
-                              portal.SearchTabId,
-                              portal.Custom404TabId,
-                              portal.Custom500TabId,
-                              portal.TermsTabId,
-                              portal.PrivacyTabId,
-                              portal.AdminTabId,
-                              GetActivePortalLanguage(portalID));
+            // update portal setup
+            var portal = this.GetPortal(portalID);
+            this.UpdatePortalSetup(
+                portalID,
+                administratorId,
+                administratorRoleId,
+                registeredRoleId,
+                portal.SplashTabId,
+                portal.HomeTabId,
+                portal.LoginTabId,
+                portal.RegisterTabId,
+                portal.UserTabId,
+                portal.SearchTabId,
+                portal.Custom404TabId,
+                portal.Custom500TabId,
+                portal.TermsTabId,
+                portal.PrivacyTabId,
+                portal.AdminTabId,
+                GetActivePortalLanguage(portalID));
         }
 
         private void ParseTab(XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
         {
             TabInfo tab = null;
             string strName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "name");
-            var portal = GetPortal(portalId);
-            if (!String.IsNullOrEmpty(strName))
+            var portal = this.GetPortal(portalId);
+            if (!string.IsNullOrEmpty(strName))
             {
-                if (!isNewPortal)  //running from wizard: try to find the tab by path
+                if (!isNewPortal) // running from wizard: try to find the tab by path
                 {
-                    string parenttabname = "";
-                    if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent")))
+                    string parenttabname = string.Empty;
+                    if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent")))
                     {
                         parenttabname = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent") + "/";
                     }
+
                     if (hTabs[parenttabname + strName] != null)
                     {
                         tab = TabController.Instance.GetTab(Convert.ToInt32(hTabs[parenttabname + strName]), portalId, false);
                     }
                 }
+
                 if (tab == null || isNewPortal)
                 {
                     tab = TabController.DeserializeTab(nodeTab, null, hTabs, portalId, isAdminTemplate, mergeTabs, hModules);
                 }
 
-                //when processing the template we should try and identify the Admin tab
+                // when processing the template we should try and identify the Admin tab
                 var logType = "AdminTab";
                 if (tab.TabName == "Admin")
                 {
                     portal.AdminTabId = tab.TabID;
                 }
-                //when processing the template we can find: hometab, usertab, logintab
-                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", "").ToLowerInvariant())
+
+                // when processing the template we can find: hometab, usertab, logintab
+                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", string.Empty).ToLowerInvariant())
                 {
                     case "splashtab":
                         portal.SplashTabId = tab.TabID;
@@ -1677,42 +1907,53 @@ namespace DotNetNuke.Entities.Portals
                         portal.Custom500TabId = tab.TabID;
                         logType = "Custom500Tab";
                         break;
+                    case "termstab":
+                        portal.TermsTabId = tab.TabID;
+                        logType = "TermsTabId";
+                        break;
+                    case "privacytab":
+                        portal.PrivacyTabId = tab.TabID;
+                        logType = "PrivacyTabId";
+                        break;
                 }
-                UpdatePortalSetup(portalId,
-                                  portal.AdministratorId,
-                                  portal.AdministratorRoleId,
-                                  portal.RegisteredRoleId,
-                                  portal.SplashTabId,
-                                  portal.HomeTabId,
-                                  portal.LoginTabId,
-                                  portal.RegisterTabId,
-                                  portal.UserTabId,
-                                  portal.SearchTabId,
-                                  portal.Custom404TabId,
-                                  portal.Custom500TabId,
-                                  portal.TermsTabId,
-                                  portal.PrivacyTabId,
-                                  portal.AdminTabId,
-                                  GetActivePortalLanguage(portalId));
-                EventLogController.Instance.AddLog(logType,
-                                   tab.TabID.ToString(),
-                                   GetCurrentPortalSettingsInternal(),
-                                   UserController.Instance.GetCurrentUserInfo().UserID,
-                                   EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+
+                this.UpdatePortalSetup(
+                    portalId,
+                    portal.AdministratorId,
+                    portal.AdministratorRoleId,
+                    portal.RegisteredRoleId,
+                    portal.SplashTabId,
+                    portal.HomeTabId,
+                    portal.LoginTabId,
+                    portal.RegisterTabId,
+                    portal.UserTabId,
+                    portal.SearchTabId,
+                    portal.Custom404TabId,
+                    portal.Custom500TabId,
+                    portal.TermsTabId,
+                    portal.PrivacyTabId,
+                    portal.AdminTabId,
+                    GetActivePortalLanguage(portalId));
+                EventLogController.Instance.AddLog(
+                    logType,
+                    tab.TabID.ToString(),
+                    GetCurrentPortalSettingsInternal(),
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
             }
         }
 
         private void ParseTabs(XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            //used to control if modules are true modules or instances
-            //will hold module ID from template / new module ID so new instances can reference right moduleid
-            //only first one from the template will be create as a true module, 
-            //others will be moduleinstances (tabmodules)
+            // used to control if modules are true modules or instances
+            // will hold module ID from template / new module ID so new instances can reference right moduleid
+            // only first one from the template will be create as a true module,
+            // others will be moduleinstances (tabmodules)
             Hashtable hModules = new Hashtable();
             Hashtable hTabs = new Hashtable();
 
-            //if running from wizard we need to pre populate htabs with existing tabs so ParseTab 
-            //can find all existing ones
+            // if running from wizard we need to pre populate htabs with existing tabs so ParseTab
+            // can find all existing ones
             if (!isNewPortal)
             {
                 Hashtable hTabNames = new Hashtable();
@@ -1726,11 +1967,12 @@ namespace DotNetNuke.Entities.Portals
                         {
                             tabname = Convert.ToString(hTabNames[objTab.ParentId]) + "/" + objTab.TabName;
                         }
+
                         hTabNames.Add(objTab.TabID, tabname);
                     }
                 }
 
-                //when parsing tabs we will need tabid given tabname
+                // when parsing tabs we will need tabid given tabname
                 foreach (int i in hTabNames.Keys)
                 {
                     if (hTabs[hTabNames[i]] == null)
@@ -1738,15 +1980,17 @@ namespace DotNetNuke.Entities.Portals
                         hTabs.Add(hTabNames[i], i);
                     }
                 }
+
                 hTabNames.Clear();
             }
+
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
-                ParseTab(nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
+                this.ParseTab(nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
             }
 
-            //Process tabs that are linked to tabs
+            // Process tabs that are linked to tabs
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab[url/@type = 'Tab']"))
             {
                 HtmlUtils.WriteKeepAlive();
@@ -1759,9 +2003,11 @@ namespace DotNetNuke.Entities.Portals
                     TabController.Instance.UpdateTab(objTab);
                 }
             }
+
             var folderManager = FolderManager.Instance;
             var fileManager = FileManager.Instance;
-            //Process tabs that are linked to files
+
+            // Process tabs that are linked to files
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab[url/@type = 'File']"))
             {
                 HtmlUtils.WriteKeepAlive();
@@ -1787,7 +2033,7 @@ namespace DotNetNuke.Entities.Portals
         private void ParseTemplateInternal(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             LocaleCollection localeCollection;
-            ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
+            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
         }
 
         private void ParseTemplateInternal(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
@@ -1804,12 +2050,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(ex);
             }
+
             var node = xmlPortal.SelectSingleNode("//portal/settings");
             if (node != null && isNewPortal)
             {
                 HtmlUtils.WriteKeepAlive();
-                ParsePortalSettings(node, portalId);
+                this.ParsePortalSettings(node, portalId);
             }
+
             node = xmlPortal.SelectSingleNode("//locales");
             if (node != null && isNewPortal)
             {
@@ -1825,18 +2073,22 @@ namespace DotNetNuke.Entities.Portals
                     defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(portalInfo.DefaultLanguage).NativeName };
                     Localization.SaveLanguage(defaultLocale, false);
                 }
+
                 localeCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
             }
+
             node = xmlPortal.SelectSingleNode("//portal/rolegroups");
             if (node != null)
             {
-                ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
+                this.ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
             }
+
             node = xmlPortal.SelectSingleNode("//portal/roles");
             if (node != null)
             {
-                ParseRoles(node.CreateNavigator(), portalId, administratorId);
+                this.ParseRoles(node.CreateNavigator(), portalId, administratorId);
             }
+
             node = xmlPortal.SelectSingleNode("//portal/portalDesktopModules");
             if (node != null)
             {
@@ -1846,23 +2098,24 @@ namespace DotNetNuke.Entities.Portals
             node = xmlPortal.SelectSingleNode("//portal/folders");
             if (node != null)
             {
-                ParseFolders(node, portalId);
+                this.ParseFolders(node, portalId);
             }
+
             node = xmlPortal.SelectSingleNode("//portal/extensionUrlProviders");
             if (node != null)
             {
-                ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
+                this.ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
             }
 
             var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
 
-            if (FolderManager.Instance.GetFolder(portalId, "") == null)
+            if (FolderManager.Instance.GetFolder(portalId, string.Empty) == null)
             {
-                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "");
+                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, string.Empty);
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                AddFolderPermissions(portalId, objFolder.FolderID);
+                this.AddFolderPermissions(portalId, objFolder.FolderID);
             }
 
             if (FolderManager.Instance.GetFolder(portalId, "Templates/") == null)
@@ -1872,7 +2125,7 @@ namespace DotNetNuke.Entities.Portals
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                //AddFolderPermissions(PortalId, objFolder.FolderID);
+                // AddFolderPermissions(PortalId, objFolder.FolderID);
             }
 
             // force creation of users folder if not present on template
@@ -1883,7 +2136,7 @@ namespace DotNetNuke.Entities.Portals
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                //AddFolderPermissions(PortalId, objFolder.FolderID);
+                // AddFolderPermissions(PortalId, objFolder.FolderID);
             }
 
             if (mergeTabs == PortalTemplateModuleAction.Replace)
@@ -1902,6 +2155,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             node = xmlPortal.SelectSingleNode("//portal/tabs");
             if (node != null)
             {
@@ -1914,8 +2168,8 @@ namespace DotNetNuke.Entities.Portals
                         string path = Path.Combine(templatePath, "admin.template");
                         if (!File.Exists(path))
                         {
-                            //if the template is a merged copy of a localized templte the
-                            //admin.template may be one director up
+                            // if the template is a merged copy of a localized templte the
+                            // admin.template may be one director up
                             path = Path.Combine(templatePath, "..\admin.template");
                         }
 
@@ -1932,7 +2186,8 @@ namespace DotNetNuke.Entities.Portals
                         Logger.Error(ex);
                     }
                 }
-                ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
+
+                this.ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
             }
 
             CachingProvider.EnableCacheExpiration();
@@ -1942,7 +2197,7 @@ namespace DotNetNuke.Entities.Portals
         {
             if (string.IsNullOrEmpty(template.LanguageFilePath))
             {
-                //no language to merge
+                // no language to merge
                 templatePath = Path.GetDirectoryName(template.TemplateFilePath) + @"\";
                 templateFile = Path.GetFileName(template.TemplateFilePath);
                 return;
@@ -1990,158 +2245,77 @@ namespace DotNetNuke.Entities.Portals
                 processorPassword = Security.FIPSCompliant.EncryptAES(processorPassword, Config.GetDecryptionkey(), Host.Host.GUID);
             }
 
-            DataProvider.Instance().UpdatePortalInfo(portal.PortalID,
-                                            portal.PortalGroupID,
-                                            portal.PortalName,
-                                            portal.LogoFile,
-                                            portal.FooterText,
-                                            portal.ExpiryDate,
-                                            portal.UserRegistration,
-                                            portal.BannerAdvertising,
-                                            portal.Currency,
-                                            portal.AdministratorId,
-                                            portal.HostFee,
-                                            portal.HostSpace,
-                                            portal.PageQuota,
-                                            portal.UserQuota,
-                                            portal.PaymentProcessor,
-                                            portal.ProcessorUserId,
-                                            processorPassword,
-                                            portal.Description,
-                                            portal.KeyWords,
-                                            portal.BackgroundFile,
-                                            0, //site log history function has been removed.
-                                            portal.SplashTabId,
-                                            portal.HomeTabId,
-                                            portal.LoginTabId,
-                                            portal.RegisterTabId,
-                                            portal.UserTabId,
-                                            portal.SearchTabId,
-                                            portal.Custom404TabId,
-                                            portal.Custom500TabId,
-                                            portal.TermsTabId,
-                                            portal.PrivacyTabId,
-                                            portal.DefaultLanguage,
-                                            portal.HomeDirectory,
-                                            UserController.Instance.GetCurrentUserInfo().UserID,
-                                            portal.CultureCode);
+            DataProvider.Instance().UpdatePortalInfo(
+                portal.PortalID,
+                portal.PortalGroupID,
+                portal.PortalName,
+                portal.LogoFile,
+                portal.FooterText,
+                portal.ExpiryDate,
+                portal.UserRegistration,
+                portal.BannerAdvertising,
+                portal.Currency,
+                portal.AdministratorId,
+                portal.HostFee,
+                portal.HostSpace,
+                portal.PageQuota,
+                portal.UserQuota,
+                portal.PaymentProcessor,
+                portal.ProcessorUserId,
+                processorPassword,
+                portal.Description,
+                portal.KeyWords,
+                portal.BackgroundFile,
+                0, // site log history function has been removed.
+                portal.SplashTabId,
+                portal.HomeTabId,
+                portal.LoginTabId,
+                portal.RegisterTabId,
+                portal.UserTabId,
+                portal.SearchTabId,
+                portal.Custom404TabId,
+                portal.Custom500TabId,
+                portal.TermsTabId,
+                portal.PrivacyTabId,
+                portal.DefaultLanguage,
+                portal.HomeDirectory,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                portal.CultureCode);
 
             EventLogController.Instance.AddLog("PortalId", portal.PortalID.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
 
-            //ensure a localization item exists (in case a new default language has been set)
+            // ensure a localization item exists (in case a new default language has been set)
             DataProvider.Instance().EnsureLocalizationExists(portal.PortalID, portal.DefaultLanguage);
 
-            //clear portal cache
+            // clear portal cache
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
             }
         }
 
-        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
-        {
-            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
-
-            if (currentSetting != settingValue)
-            {
-                if (isSecure && !string.IsNullOrEmpty(settingName) && !string.IsNullOrEmpty(settingValue))
-                {
-                    settingValue = Security.FIPSCompliant.EncryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
-                }
-
-                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode, isSecure);
-                EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
-                if (clearCache)
-                {
-                    DataCache.ClearPortalCache(portalID, false);
-                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
-
-                    var httpContext = HttpContext.Current;
-                    if (httpContext != null)
-                    {
-                        var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(httpContext, portalID);
-                        var dictionaryKey = String.Format(HttpContextKeyPortalSettingsDictionary, portalID, cultureCodeForKey);
-                        httpContext.Items[dictionaryKey] = null;
-                    }
-                }
-
-                EventManager.Instance.OnPortalSettingUpdated(new PortalSettingUpdatedEventArgs
-                {
-                    PortalId = portalID,
-                    SettingName = settingName,
-                    SettingValue = settingValue
-                });
-            }
-        }
-
         private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
                                        int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
-            DataProvider.Instance().UpdatePortalSetup(portalId,
-                                                      administratorId,
-                                                      administratorRoleId,
-                                                      registeredRoleId,
-                                                      splashTabId,
-                                                      homeTabId,
-                                                      loginTabId,
-                                                      registerTabId,
-                                                      userTabId,
-                                                      searchTabId,
-                                                      custom404TabId,
-                                                      custom500TabId,
-                                                      termsTabId,
-                                                      privacyTabId,
-                                                      adminTabId,
-                                                      cultureCode);
+            DataProvider.Instance().UpdatePortalSetup(
+                portalId,
+                administratorId,
+                administratorRoleId,
+                registeredRoleId,
+                splashTabId,
+                homeTabId,
+                loginTabId,
+                registerTabId,
+                userTabId,
+                searchTabId,
+                custom404TabId,
+                custom500TabId,
+                termsTabId,
+                privacyTabId,
+                adminTabId,
+                cultureCode);
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Creates a new portal alias
-        /// </summary>
-        /// <param name="portalId">Id of the portal</param>
-        /// <param name="portalAlias">Portal Alias to be created</param>
-        public void AddPortalAlias(int portalId, string portalAlias)
-        {
-
-            //Check if the Alias exists
-            PortalAliasInfo portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
-
-            //If alias does not exist add new
-            if (portalAliasInfo == null)
-            {
-                portalAliasInfo = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true };
-                PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
-            }
-        }
-
-        /// <summary>
-        /// Copies the page template.
-        /// </summary>
-        /// <param name="templateFile">The template file.</param>
-        /// <param name="mappedHomeDirectory">The mapped home directory.</param>
-        public void CopyPageTemplate(string templateFile, string mappedHomeDirectory)
-        {
-            string hostTemplateFile = string.Format("{0}Templates\\{1}", Globals.HostMapPath, templateFile);
-            if (File.Exists(hostTemplateFile))
-            {
-                string portalTemplateFolder = string.Format("{0}Templates\\", mappedHomeDirectory);
-                if (!Directory.Exists(portalTemplateFolder))
-                {
-                    //Create Portal Templates folder
-                    Directory.CreateDirectory(portalTemplateFolder);
-                }
-                string portalTemplateFile = portalTemplateFolder + templateFile;
-                if (!File.Exists(portalTemplateFile))
-                {
-                    File.Copy(hostTemplateFile, portalTemplateFile);
-                }
-            }
         }
 
         /// <summary>
@@ -2161,10 +2335,10 @@ namespace DotNetNuke.Entities.Portals
         public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
-            //Attempt to create a new portal
+            // Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
-            //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
+            // Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
             if (HttpContext.Current != null)
             {
                 HttpContext.Current.Items.Add("CreatingPortalId", portalId);
@@ -2174,14 +2348,14 @@ namespace DotNetNuke.Entities.Portals
 
             if (portalId != -1)
             {
-                //add administrator
+                // add administrator
                 int administratorId = adminUserId;
                 var adminUser = new UserInfo();
 
-                //add userportal record
+                // add userportal record
                 UserController.AddUserPortal(portalId, administratorId);
 
-                //retrieve existing administrator
+                // retrieve existing administrator
                 try
                 {
                     adminUser = UserController.GetUserById(portalId, administratorId);
@@ -2193,7 +2367,7 @@ namespace DotNetNuke.Entities.Portals
 
                 if (administratorId > 0)
                 {
-                    CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
+                    this.CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
                 }
             }
             else
@@ -2201,16 +2375,17 @@ namespace DotNetNuke.Entities.Portals
                 message += Localization.GetString("CreatePortal.Error");
                 throw new Exception(message);
             }
+
             try
             {
                 EnsureRequiredEventLogTypesExist();
             }
             catch (Exception)
             {
-                //should be no exception, but suppress just in case
+                // should be no exception, but suppress just in case
             }
 
-            //remove the portal id from http context as there is no exception.
+            // remove the portal id from http context as there is no exception.
             if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
             {
                 HttpContext.Current.Items.Remove("CreatingPortalId");
@@ -2236,10 +2411,10 @@ namespace DotNetNuke.Entities.Portals
         public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
-            //Attempt to create a new portal
+            // Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
-            //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
+            // Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
             if (HttpContext.Current != null)
             {
                 HttpContext.Current.Items.Add("CreatingPortalId", portalId);
@@ -2249,7 +2424,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (portalId != -1)
             {
-                //add administrator
+                // add administrator
                 int administratorId = Null.NullInteger;
                 adminUser.PortalID = portalId;
                 try
@@ -2258,8 +2433,9 @@ namespace DotNetNuke.Entities.Portals
                     if (createStatus == UserCreateStatus.Success)
                     {
                         administratorId = adminUser.UserID;
-                        //reload the UserInfo as when it was first created, it had no portal id and therefore
-                        //used host profile definitions
+
+                        // reload the UserInfo as when it was first created, it had no portal id and therefore
+                        // used host profile definitions
                         adminUser = UserController.GetUserById(adminUser.PortalID, adminUser.UserID);
                     }
                     else
@@ -2275,7 +2451,7 @@ namespace DotNetNuke.Entities.Portals
 
                 if (administratorId > 0)
                 {
-                    CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
+                    this.CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
                 }
             }
             else
@@ -2283,16 +2459,17 @@ namespace DotNetNuke.Entities.Portals
                 message += Localization.GetString("CreatePortal.Error");
                 throw new Exception(message);
             }
+
             try
             {
                 EnsureRequiredEventLogTypesExist();
             }
             catch (Exception)
             {
-                //should be no exception, but suppress just in case
+                // should be no exception, but suppress just in case
             }
 
-            //remove the portal id from http context as there is no exception.
+            // remove the portal id from http context as there is no exception.
             if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
             {
                 HttpContext.Current.Items.Remove("CreatingPortalId");
@@ -2302,9 +2479,9 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Get all the available portal templates grouped by culture
+        /// Get all the available portal templates grouped by culture.
         /// </summary>
-        /// <returns>List of PortalTemplateInfo objects</returns>
+        /// <returns>List of PortalTemplateInfo objects.</returns>
         public IList<PortalTemplateInfo> GetAvailablePortalTemplates()
         {
             var list = new List<PortalTemplateInfo>();
@@ -2315,7 +2492,7 @@ namespace DotNetNuke.Entities.Portals
             foreach (string templateFilePath in templateFilePaths)
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
-                var langs = languageFileNames.Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => GetCultureCode(x)).Distinct().ToList();
+                var langs = languageFileNames.Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => this.GetCultureCode(x)).Distinct().ToList();
 
                 if (langs.Any())
                 {
@@ -2323,7 +2500,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use portal's default language.
+                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use portal's default language.
                     var portalSettings = PortalSettings.Current;
                     var cultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                     list.Add(new PortalTemplateInfo(templateFilePath, cultureCode));
@@ -2348,10 +2525,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        ///   Gets information of a portal
+        ///   Gets information of a portal.
         /// </summary>
-        /// <param name = "portalId">Id of the portal</param>
-        /// <returns>PortalInfo object with portal definition</returns>
+        /// <param name = "portalId">Id of the portal.</param>
+        /// <returns>PortalInfo object with portal definition.</returns>
         public PortalInfo GetPortal(int portalId)
         {
             if (portalId == -1)
@@ -2360,21 +2537,23 @@ namespace DotNetNuke.Entities.Portals
             }
 
             string defaultLanguage = GetActivePortalLanguage(portalId);
-            PortalInfo portal = GetPortal(portalId, defaultLanguage);
+            PortalInfo portal = this.GetPortal(portalId, defaultLanguage);
             if (portal == null)
             {
-                //Active language may not be valid, so fallback to default language
+                // Active language may not be valid, so fallback to default language
                 defaultLanguage = GetPortalDefaultLanguage(portalId);
-                portal = GetPortal(portalId, defaultLanguage);
+                portal = this.GetPortal(portalId, defaultLanguage);
             }
+
             return portal;
         }
 
         /// <summary>
-        ///   Gets information of a portal
+        ///   Gets information of a portal.
         /// </summary>
-        /// <param name = "portalId">Id of the portal</param>
+        /// <param name = "portalId">Id of the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
+        /// <returns></returns>
         public PortalInfo GetPortal(int portalId, string cultureCode)
         {
             if (portalId == -1)
@@ -2388,22 +2567,28 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (portal == null)
                 {
-                    //Get Fallback language
+                    // Get Fallback language
                     string fallbackLanguage = string.Empty;
 
-                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = GetPortalDefaultLanguage(portalId);
+                    if (string.IsNullOrEmpty(cultureCode))
+                    {
+                        cultureCode = GetPortalDefaultLanguage(portalId);
+                    }
 
                     Locale userLocale = LocaleController.Instance.GetLocale(cultureCode);
                     if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))
                     {
                         fallbackLanguage = userLocale.Fallback;
                     }
-                    if (String.IsNullOrEmpty(fallbackLanguage))
+
+                    if (string.IsNullOrEmpty(fallbackLanguage))
                     {
                         fallbackLanguage = Localization.SystemLocale;
                     }
+
                     portal = GetPortalInternal(portalId, fallbackLanguage);
-                    //if we cannot find any fallback, it mean's it's a non portal default langauge
+
+                    // if we cannot find any fallback, it mean's it's a non portal default langauge
                     if (portal == null)
                     {
                         DataProvider.Instance().EnsureLocalizationExists(portalId, GetActivePortalLanguage(portalId));
@@ -2412,6 +2597,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             return portal;
         }
 
@@ -2422,16 +2608,16 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal info.</returns>
         public PortalInfo GetPortal(Guid uniqueId)
         {
-            return GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
+            return this.GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
         }
 
         /// <summary>
-        /// Gets information from all portals
+        /// Gets information from all portals.
         /// </summary>
-        /// <returns>ArrayList of PortalInfo objects</returns>
+        /// <returns>ArrayList of PortalInfo objects.</returns>
         public ArrayList GetPortals()
         {
-            return new ArrayList(GetPortalList(Null.NullString));
+            return new ArrayList(this.GetPortalList(Null.NullString));
         }
 
         /// <summary>
@@ -2441,10 +2627,10 @@ namespace DotNetNuke.Entities.Portals
         /// <returns></returns>
         public List<PortalInfo> GetPortalList(string cultureCode)
         {
-            string cacheKey = String.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
-            return CBO.GetCachedObject<List<PortalInfo>>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
-                                                                c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode))
-                                                        );
+            string cacheKey = string.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
+            return CBO.GetCachedObject<List<PortalInfo>>(
+                new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
+                c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode)));
         }
 
         /// <summary>
@@ -2461,7 +2647,7 @@ namespace DotNetNuke.Entities.Portals
         /// Gets the portal settings dictionary.
         /// </summary>
         /// <param name="portalId">The portal ID.</param>
-        /// <param name="cultureCode">The culture code</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <returns>portal settings.</returns>
         public Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode)
         {
@@ -2469,11 +2655,11 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Load info for a portal template
+        /// Load info for a portal template.
         /// </summary>
-        /// <param name="templatePath">Full path to the portal template</param>
-        /// <param name="cultureCode">the culture code if any for the localization of the portal template</param>
-        /// <returns>A portal template</returns>
+        /// <param name="templatePath">Full path to the portal template.</param>
+        /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
+        /// <returns>A portal template.</returns>
         public PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
         {
             var template = new PortalTemplateInfo(templatePath, cultureCode);
@@ -2487,10 +2673,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal space used bytes.
-		/// </summary>
-		/// <param name="portalId">The portal id.</param>
-		/// <returns>Space used in bytes</returns>
+        /// Gets the portal space used bytes.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>Space used in bytes.</returns>
         public long GetPortalSpaceUsedBytes(int portalId)
         {
             long size = 0;
@@ -2513,15 +2699,16 @@ namespace DotNetNuke.Entities.Portals
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return size;
         }
 
         /// <summary>
-        /// Verifies if there's enough space to upload a new file on the given portal
+        /// Verifies if there's enough space to upload a new file on the given portal.
         /// </summary>
-		/// <param name="portalId">Id of the portal</param>
-        /// <param name="fileSizeBytes">Size of the file being uploaded</param>
-        /// <returns>True if there's enough space available to upload the file</returns>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="fileSizeBytes">Size of the file being uploaded.</param>
+        /// <returns>True if there's enough space available to upload the file.</returns>
         public bool HasSpaceAvailable(int portalId, long fileSizeBytes)
         {
             int hostSpace;
@@ -2538,16 +2725,17 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    PortalInfo portal = GetPortal(portalId);
+                    PortalInfo portal = this.GetPortal(portalId);
                     hostSpace = portal.HostSpace;
                 }
             }
-            return (((GetPortalSpaceUsedBytes(portalId) + fileSizeBytes) / Math.Pow(1024, 2)) <= hostSpace) || hostSpace == 0;
+
+            return (((this.GetPortalSpaceUsedBytes(portalId) + fileSizeBytes) / Math.Pow(1024, 2)) <= hostSpace) || hostSpace == 0;
         }
 
         /// <summary>
         ///   Remaps the Special Pages such as Home, Profile, Search
-        ///   to their localized versions
+        ///   to their localized versions.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -2556,8 +2744,8 @@ namespace DotNetNuke.Entities.Portals
             DataCache.ClearHostCache(true);
             DataProvider.Instance().EnsureLocalizationExists(portalId, cultureCode);
 
-            PortalInfo defaultPortal = GetPortal(portalId, GetPortalDefaultLanguage(portalId));
-            PortalInfo targetPortal = GetPortal(portalId, cultureCode);
+            PortalInfo defaultPortal = this.GetPortal(portalId, GetPortalDefaultLanguage(portalId));
+            PortalInfo targetPortal = this.GetPortal(portalId, cultureCode);
 
             Locale targetLocale = LocaleController.Instance.GetLocale(cultureCode);
             TabInfo tempTab;
@@ -2569,6 +2757,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.HomeTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.LoginTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.LoginTabId, portalId, targetLocale);
@@ -2577,6 +2766,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.LoginTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.RegisterTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.RegisterTabId, portalId, targetLocale);
@@ -2585,6 +2775,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.RegisterTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.SplashTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.SplashTabId, portalId, targetLocale);
@@ -2593,6 +2784,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.SplashTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.UserTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.UserTabId, portalId, targetLocale);
@@ -2601,6 +2793,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.UserTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.SearchTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.SearchTabId, portalId, targetLocale);
@@ -2609,6 +2802,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.SearchTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.Custom404TabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.Custom404TabId, portalId, targetLocale);
@@ -2617,6 +2811,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.Custom404TabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.Custom500TabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.Custom500TabId, portalId, targetLocale);
@@ -2625,6 +2820,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.Custom500TabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.TermsTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.TermsTabId, portalId, targetLocale);
@@ -2633,6 +2829,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.TermsTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.PrivacyTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.PrivacyTabId, portalId, targetLocale);
@@ -2642,11 +2839,11 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
 
-            UpdatePortalInternal(targetPortal, false);
+            this.UpdatePortalInternal(targetPortal, false);
         }
 
         /// <summary>
-        /// Removes the related PortalLocalization record from the database, adds optional clear cache
+        /// Removes the related PortalLocalization record from the database, adds optional clear cache.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
@@ -2663,9 +2860,9 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Processess a template file for the new portal.
         /// </summary>
-        /// <param name="portalId">PortalId of the new portal</param>
-        /// <param name="template">The template</param>
-        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="portalId">PortalId of the new portal.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
         /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
         /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
         /// <remarks>
@@ -2674,16 +2871,16 @@ namespace DotNetNuke.Entities.Portals
         public void ParseTemplate(int portalId, PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             string templatePath, templateFile;
-            PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
+            this.PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
 
-            ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
+            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
         }
 
         /// <summary>
-        /// Processes the resource file for the template file selected
+        /// Processes the resource file for the template file selected.
         /// </summary>
-        /// <param name="portalPath">New portal's folder</param>
-        /// <param name="resoureceFile">full path to the resource file</param>
+        /// <param name="portalPath">New portal's folder.</param>
+        /// <param name="resoureceFile">full path to the resource file.</param>
         /// <remarks>
         /// The resource file is a zip file with the same name as the selected template file and with
         /// an extension of .resources (to disable this file being downloaded).
@@ -2708,24 +2905,25 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="cultureCode">The culture code.</param>
         public void UpdatePortalExpiry(int portalId, string cultureCode)
         {
-            var portal = GetPortal(portalId, cultureCode);
+            var portal = this.GetPortal(portalId, cultureCode);
 
             if (portal.ExpiryDate == Null.NullDate)
             {
                 portal.ExpiryDate = DateTime.Now;
             }
+
             portal.ExpiryDate = portal.ExpiryDate.AddMonths(1);
 
-            UpdatePortalInfo(portal);
+            this.UpdatePortalInfo(portal);
         }
 
         /// <summary>
-        /// Updates basic portal information
+        /// Updates basic portal information.
         /// </summary>
         /// <param name="portal"></param>
         public void UpdatePortalInfo(PortalInfo portal)
         {
-            UpdatePortalInternal(portal, true);
+            this.UpdatePortalInternal(portal, true);
         }
 
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
@@ -2740,67 +2938,6 @@ namespace DotNetNuke.Entities.Portals
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
-        }
-
-        #endregion
-
-        #region Public Static Methods
-
-        /// <summary>
-        /// Adds the portal dictionary.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="tabId">The tab id.</param>
-        public static void AddPortalDictionary(int portalId, int tabId)
-        {
-            var portalDic = GetPortalDictionary();
-            portalDic[tabId] = portalId;
-            DataCache.SetCache(DataCache.PortalDictionaryCacheKey, portalDic);
-        }
-
-        /// <summary>
-        /// Creates the root folder for a child portal.
-        /// </summary>
-        /// <remarks>
-        /// If call this method, it will create the specific folder if the folder doesn't exist;
-        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx';
-        /// </remarks>
-        /// <param name="ChildPath">The child path.</param>
-        /// <returns>
-        /// If the method executed successful, it will return NullString, otherwise return error message.
-        /// </returns>
-        /// <example>
-        /// <code lang="C#">
-        /// string childPhysicalPath = Server.MapPath(childPath);
-        /// message = PortalController.CreateChildPortalFolder(childPhysicalPath);
-        /// </code>
-        /// </example>
-        public static string CreateChildPortalFolder(string ChildPath)
-        {
-            string message = Null.NullString;
-
-            //Set up Child Portal
-            try
-            {
-                // create the subdirectory for the new portal
-                if (!Directory.Exists(ChildPath))
-                {
-                    Directory.CreateDirectory(ChildPath);
-                }
-
-                // create the subhost default.aspx file
-                if (!File.Exists(ChildPath + "\\" + Globals.glbDefaultPage))
-                {
-                    File.Copy(Globals.HostMapPath + "subhost.aspx", ChildPath + "\\" + Globals.glbDefaultPage);
-                }
-            }
-            catch (Exception Exc)
-            {
-                Logger.Error(Exc);
-                message += Localization.GetString("ChildPortal.Error") + Exc.Message + Exc.StackTrace;
-            }
-
-            return message;
         }
 
         /// <summary>
@@ -2825,16 +2962,16 @@ namespace DotNetNuke.Entities.Portals
         {
             string message = string.Empty;
 
-            //check if this is the last portal
+            // check if this is the last portal
             var portals = Instance.GetPortals();
             if (portals.Count > 1)
             {
                 if (portal != null)
                 {
-                    //delete custom resource files
+                    // delete custom resource files
                     Globals.DeleteFilesRecursive(serverPath, ".Portal-" + portal.PortalID + ".resx");
 
-                    //If child portal delete child folder
+                    // If child portal delete child folder
                     var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
                     if (arr.Count > 0)
                     {
@@ -2844,15 +2981,18 @@ namespace DotNetNuke.Entities.Portals
                         {
                             portalName = GetPortalFolder(portalAliasInfo.HTTPAlias);
                         }
-                        if (!String.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
+
+                        if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
                         {
                             DeletePortalFolder(serverPath, portalName);
                         }
                     }
-                    //delete upload directory
+
+                    // delete upload directory
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
                         var homeDirectory = portal.HomeDirectoryMapPath;
+
                         // check whether home directory is not used by other portal
                         // it happens when new portal creation failed, but home directory defined by user is already in use with other portal
                         var homeDirectoryInUse = portals.OfType<PortalInfo>().Any(x =>
@@ -2867,7 +3007,8 @@ namespace DotNetNuke.Entities.Portals
                             }
                         }
                     }
-                    //remove database references
+
+                    // remove database references
                     DeletePortalInternal(portal.PortalID);
                 }
             }
@@ -2875,6 +3016,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 message = Localization.GetString("LastPortal");
             }
+
             return message;
         }
 
@@ -2903,7 +3045,7 @@ namespace DotNetNuke.Entities.Portals
             var physicalPath = serverPath + portalFolder;
             Globals.DeleteFolderRecursive(physicalPath);
 
-            //remove parent folder if its empty.
+            // remove parent folder if its empty.
             var parentFolder = Directory.GetParent(physicalPath);
             while (parentFolder != null && !parentFolder.FullName.Equals(serverPath.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
             {
@@ -2931,13 +3073,13 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetPortalsByName gets all the portals whose name matches a provided filter expression
+        /// GetPortalsByName gets all the portals whose name matches a provided filter expression.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="nameToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of PortalInfo objects.</returns>
         /// -----------------------------------------------------------------------------
@@ -2948,6 +3090,7 @@ namespace DotNetNuke.Entities.Portals
                 pageIndex = 0;
                 pageSize = int.MaxValue;
             }
+
             Type type = typeof(PortalInfo);
             return CBO.FillCollection(DataProvider.Instance().GetPortalsByName(nameToMatch, pageIndex, pageSize), ref type, ref totalRecords);
         }
@@ -3006,11 +3149,13 @@ namespace DotNetNuke.Entities.Portals
                 {
                     portalName = GetPortalFolder(portalAlias.HTTPAlias);
                 }
-                if (!String.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
+
+                if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
                 {
                     isChild = true;
                 }
             }
+
             return isChild;
         }
 
@@ -3032,15 +3177,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Deletes the portal setting in this language.
-		/// </summary>
+        /// Deletes the portal setting in this language.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
-		/// <param name="cultureCode">The culture code.</param>
-		public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
+        /// <param name="cultureCode">The culture code.</param>
+        public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
         {
             DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLowerInvariant());
-            EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -3060,15 +3205,15 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSettings(int portalID, string cultureCode)
         {
             DataProvider.Instance().DeletePortalSettings(portalID, cultureCode);
-            EventLogController.Instance.AddLog("PortalID", portalID.ToString() + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            EventLogController.Instance.AddLog("PortalID", portalID.ToString() + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
         /// <summary>
-        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
+        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.
         /// </summary>
-        /// <param name="settingName">the setting to read</param>
-        /// <param name="passPhrase">the pass phrase used for encryption/decryption</param>
+        /// <param name="settingName">the setting to read.</param>
+        /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
         /// <returns></returns>
         public static string GetEncryptedString(string settingName, int portalID, string passPhrase)
         {
@@ -3100,18 +3245,19 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
         /// <summary>
-		/// Gets the portal setting for a specific language (or neutral).
-		/// </summary>
-		/// <param name="settingName">Name of the setting.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">The default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
-		public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
+        /// Gets the portal setting for a specific language (or neutral).
+        /// </summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
+        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
         {
             var retValue = Null.NullString;
             try
@@ -3124,6 +3270,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3147,25 +3294,26 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
         /// <summary>
-		/// Gets the portal setting as boolean for a specific language (or neutral).
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
-		public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
+        /// Gets the portal setting as boolean for a specific language (or neutral).
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
+        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
         {
             bool retValue = Null.NullBoolean;
             try
@@ -3178,13 +3326,14 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3215,11 +3364,12 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
         /// <summary>
-		/// Gets the portal setting as double.
+        /// Gets the portal setting as double.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="portalId">The portal Id.</param>
@@ -3245,18 +3395,19 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
         /// <summary>
-		/// Gets the portal setting as integer for a specific language (or neutral).
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">The default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
-		public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
+        /// Gets the portal setting as integer for a specific language (or neutral).
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
+        /// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
+        public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
         {
             int retValue = Null.NullInteger;
             try
@@ -3276,15 +3427,17 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
+
         /// <summary>
-        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores
+        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        /// <param name="settingName">host settings key</param>
-        /// <param name="settingValue">host settings value</param>
-        /// <param name="passPhrase">pass phrase to allow encryption/decryption</param>
+        /// <param name="settingName">host settings key.</param>
+        /// <param name="settingValue">host settings value.</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
         public static void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", settingName);
@@ -3308,8 +3461,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
-		/// </summary>
+        /// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
@@ -3333,30 +3486,30 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Updates a language specific or neutral portal setting and optionally clears it from the cache.
-		/// </summary>
+        /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
-		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
+        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
             UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, false);
         }
 
         /// <summary>
-		/// Updates a language specific or neutral portal setting and optionally clears it from the cache.
+        /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
         /// All overloaded methors will not encrypt the setting value. Therefore, call this method whenever
         /// there is a need to encrypt the setting value before storing it in the datanbase.
-		/// </summary>
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
-		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-		/// <param name="isSecure">When true it encrypt the value before storing it in the database</param>
-		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
+        /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
+        /// <param name="isSecure">When true it encrypt the value before storing it in the database.</param>
+        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
         }
@@ -3381,8 +3534,8 @@ namespace DotNetNuke.Entities.Portals
                     desktopModule = DesktopModuleController.GetDesktopModuleByFriendlyName(friendlyName);
                     if (desktopModule == null)
                     {
-                        //PE and EE templates have HTML as friendly name so check to make sure
-                        //there is really no HTML module installed
+                        // PE and EE templates have HTML as friendly name so check to make sure
+                        // there is really no HTML module installed
                         if (friendlyName == "HTML")
                         {
                             desktopModule = DesktopModuleController.GetDesktopModuleByFriendlyName("HTML Pro");
@@ -3400,12 +3553,13 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             return modulesNotInstalled.ToString();
         }
 
         /// <summary>
         ///   function provides the language for portalinfo requests
-        ///   in case where language has not been installed yet, will return the core install default of en-us
+        ///   in case where language has not been installed yet, will return the core install default of en-us.
         /// </summary>
         /// <param name = "portalID"></param>
         /// <returns></returns>
@@ -3417,41 +3571,43 @@ namespace DotNetNuke.Entities.Portals
             string Language = Localization.SystemLocale;
             string tmpLanguage = GetPortalDefaultLanguage(portalID);
             var isDefaultLanguage = false;
-            if (!String.IsNullOrEmpty(tmpLanguage))
+            if (!string.IsNullOrEmpty(tmpLanguage))
             {
                 Language = tmpLanguage;
                 isDefaultLanguage = true;
             }
-            //handles case where portalcontroller methods invoked before a language is installed
+
+            // handles case where portalcontroller methods invoked before a language is installed
             if (portalID > Null.NullInteger && Globals.Status == Globals.UpgradeStatus.None && Localization.ActiveLanguagesByPortalID(portalID) == 1)
             {
                 return Language;
             }
+
             if (HttpContext.Current != null && Globals.Status == Globals.UpgradeStatus.None)
             {
-                if ((HttpContext.Current.Request.QueryString["language"] != null))
+                if (HttpContext.Current.Request.QueryString["language"] != null)
                 {
                     Language = HttpContext.Current.Request.QueryString["language"];
                 }
                 else
                 {
                     PortalSettings _PortalSettings = GetCurrentPortalSettingsInternal();
-                    if (_PortalSettings != null && _PortalSettings.ActiveTab != null && !String.IsNullOrEmpty(_PortalSettings.ActiveTab.CultureCode))
+                    if (_PortalSettings != null && _PortalSettings.ActiveTab != null && !string.IsNullOrEmpty(_PortalSettings.ActiveTab.CultureCode))
                     {
                         Language = _PortalSettings.ActiveTab.CultureCode;
                     }
                     else
                     {
-                        //PortalSettings IS Nothing - probably means we haven't set it yet (in Begin Request)
-                        //so try detecting the user's cookie
+                        // PortalSettings IS Nothing - probably means we haven't set it yet (in Begin Request)
+                        // so try detecting the user's cookie
                         if (HttpContext.Current.Request["language"] != null)
                         {
                             Language = HttpContext.Current.Request["language"];
                             isDefaultLanguage = false;
                         }
 
-                        //if no cookie - try detecting browser
-                        if ((String.IsNullOrEmpty(Language) || isDefaultLanguage) && EnableBrowserLanguageInDefault(portalID))
+                        // if no cookie - try detecting browser
+                        if ((string.IsNullOrEmpty(Language) || isDefaultLanguage) && EnableBrowserLanguageInDefault(portalID))
                         {
                             CultureInfo Culture = Localization.GetBrowserCulture(portalID);
 
@@ -3468,7 +3624,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        ///   return the current DefaultLanguage value from the Portals table for the requested Portalid
+        ///   return the current DefaultLanguage value from the Portals table for the requested Portalid.
         /// </summary>
         /// <param name = "portalID"></param>
         /// <returns></returns>
@@ -3476,13 +3632,13 @@ namespace DotNetNuke.Entities.Portals
         /// </remarks>
         public static string GetPortalDefaultLanguage(int portalID)
         {
-            string cacheKey = String.Format("PortalDefaultLanguage_{0}", portalID);
+            string cacheKey = string.Format("PortalDefaultLanguage_{0}", portalID);
             return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, portalID), GetPortalDefaultLanguageCallBack);
         }
 
         /// <summary>
         ///   set the required DefaultLanguage in the Portals table for a particular portal
-        ///   saves having to update an entire PortalInfo object
+        ///   saves having to update an entire PortalInfo object.
         /// </summary>
         /// <param name = "portalID"></param>
         /// <param name = "CultureCode"></param>
@@ -3491,8 +3647,9 @@ namespace DotNetNuke.Entities.Portals
         public static void UpdatePortalDefaultLanguage(int portalID, string CultureCode)
         {
             DataProvider.Instance().UpdatePortalDefaultLanguage(portalID, CultureCode);
-            //ensure localization record exists as new portal default language may be relying on fallback chain
-            //of which it is now the final part
+
+            // ensure localization record exists as new portal default language may be relying on fallback chain
+            // of which it is now the final part
             DataProvider.Instance().EnsureLocalizationExists(portalID, CultureCode);
         }
 
@@ -3523,36 +3680,47 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        #endregion
-
         public class PortalTemplateInfo
         {
-            private string _resourceFilePath;
             private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+            private string _resourceFilePath;
 
             public PortalTemplateInfo(string templateFilePath, string cultureCode)
             {
-                TemplateFilePath = templateFilePath;
+                this.TemplateFilePath = templateFilePath;
 
-                InitLocalizationFields(cultureCode);
-                InitNameAndDescription();
+                this.InitLocalizationFields(cultureCode);
+                this.InitNameAndDescription();
+            }
+
+            public string Name { get; private set; }
+
+            public string CultureCode { get; private set; }
+
+            public string TemplateFilePath { get; private set; }
+
+            private static string ReadLanguageFileValue(XDocument xmlDoc, string name)
+            {
+                return (from f in xmlDoc.Descendants("data")
+                        where (string)f.Attribute("name") == name
+                        select (string)f.Element("value")).SingleOrDefault();
             }
 
             private void InitNameAndDescription()
             {
-                if (!String.IsNullOrEmpty(LanguageFilePath))
+                if (!string.IsNullOrEmpty(this.LanguageFilePath))
                 {
-                    LoadNameAndDescriptionFromLanguageFile();
+                    this.LoadNameAndDescriptionFromLanguageFile();
                 }
 
-                if (String.IsNullOrEmpty(Name))
+                if (string.IsNullOrEmpty(this.Name))
                 {
-                    Name = Path.GetFileNameWithoutExtension(TemplateFilePath);
+                    this.Name = Path.GetFileNameWithoutExtension(this.TemplateFilePath);
                 }
 
-                if (String.IsNullOrEmpty(Description))
+                if (string.IsNullOrEmpty(this.Description))
                 {
-                    LoadDescriptionFromTemplateFile();
+                    this.LoadDescriptionFromTemplateFile();
                 }
             }
 
@@ -3561,16 +3729,16 @@ namespace DotNetNuke.Entities.Portals
                 try
                 {
                     XDocument xmlDoc;
-                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(TemplateFilePath))
+                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(this.TemplateFilePath))
                     {
                         xmlDoc = XDocument.Load(reader);
                     }
 
-                    Description = xmlDoc.Elements("portal").Elements("description").SingleOrDefault().Value;
+                    this.Description = xmlDoc.Elements("portal").Elements("description").SingleOrDefault().Value;
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Error while parsing: " + TemplateFilePath, e);
+                    Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
                 }
             }
 
@@ -3578,58 +3746,50 @@ namespace DotNetNuke.Entities.Portals
             {
                 try
                 {
-                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(LanguageFilePath))
+                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(this.LanguageFilePath))
                     {
                         var xmlDoc = XDocument.Load(reader);
 
-                        Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
-                        Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
+                        this.Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
+                        this.Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
                     }
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Error while parsing: " + TemplateFilePath, e);
+                    Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
                 }
-            }
-
-            static string ReadLanguageFileValue(XDocument xmlDoc, string name)
-            {
-                return (from f in xmlDoc.Descendants("data")
-                        where (string)f.Attribute("name") == name
-                        select (string)f.Element("value")).SingleOrDefault();
             }
 
             private void InitLocalizationFields(string cultureCode)
             {
-                LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(TemplateFilePath, cultureCode);
-                if (!String.IsNullOrEmpty(LanguageFilePath))
+                this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
+                if (!string.IsNullOrEmpty(this.LanguageFilePath))
                 {
-                    CultureCode = cultureCode;
+                    this.CultureCode = cultureCode;
                 }
                 else
                 {
                     var portalSettings = PortalSettings.Current;
-                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
-                    CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+
+                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
+                    this.CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                 }
             }
 
-            public string Name { get; private set; }
-            public string CultureCode { get; private set; }
-            public string TemplateFilePath { get; private set; }
             public string LanguageFilePath { get; private set; }
+
             public string Description { get; private set; }
 
             public string ResourceFilePath
             {
                 get
                 {
-                    if (_resourceFilePath == null)
+                    if (this._resourceFilePath == null)
                     {
-                        _resourceFilePath = PortalTemplateIO.Instance.GetResourceFilePath(TemplateFilePath);
+                        this._resourceFilePath = PortalTemplateIO.Instance.GetResourceFilePath(this.TemplateFilePath);
                     }
 
-                    return _resourceFilePath;
+                    return this._resourceFilePath;
                 }
             }
         }

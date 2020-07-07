@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
     /// <summary>
-    ///   Helper class to enable the data binding logic generate column names at runtime
+    ///   Helper class to enable the data binding logic generate column names at runtime.
     /// </summary>
     internal class RssElementCustomTypeDescriptor : ICustomTypeDescriptor
     {
@@ -21,10 +16,8 @@ namespace DotNetNuke.Services.Syndication
 
         public RssElementCustomTypeDescriptor(Dictionary<string, string> attributes)
         {
-            _attributes = attributes;
+            this._attributes = attributes;
         }
-
-        #region ICustomTypeDescriptor Members
 
         AttributeCollection ICustomTypeDescriptor.GetAttributes()
         {
@@ -33,7 +26,7 @@ namespace DotNetNuke.Services.Syndication
 
         string ICustomTypeDescriptor.GetClassName()
         {
-            return GetType().Name;
+            return this.GetType().Name;
         }
 
         string ICustomTypeDescriptor.GetComponentName()
@@ -73,12 +66,12 @@ namespace DotNetNuke.Services.Syndication
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
-            return GetPropertyDescriptors();
+            return this.GetPropertyDescriptors();
         }
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
-            return GetPropertyDescriptors();
+            return this.GetPropertyDescriptors();
         }
 
         object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
@@ -86,14 +79,12 @@ namespace DotNetNuke.Services.Syndication
             return (pd is RssElementCustomPropertyDescriptor) ? this : null;
         }
 
-        #endregion
-
         private PropertyDescriptorCollection GetPropertyDescriptors()
         {
-            var propertyDescriptors = new PropertyDescriptor[_attributes.Count];
+            var propertyDescriptors = new PropertyDescriptor[this._attributes.Count];
             int i = 0;
 
-            foreach (KeyValuePair<string, string> a in _attributes)
+            foreach (KeyValuePair<string, string> a in this._attributes)
             {
                 propertyDescriptors[i++] = new RssElementCustomPropertyDescriptor(a.Key);
             }
@@ -101,11 +92,10 @@ namespace DotNetNuke.Services.Syndication
             return new PropertyDescriptorCollection(propertyDescriptors);
         }
 
-        #region Nested type: RssElementCustomPropertyDescriptor
-
         private class RssElementCustomPropertyDescriptor : PropertyDescriptor
         {
-            public RssElementCustomPropertyDescriptor(string propertyName) : base(propertyName, null)
+            public RssElementCustomPropertyDescriptor(string propertyName)
+                : base(propertyName, null)
             {
             }
 
@@ -113,7 +103,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 get
                 {
-                    return typeof (RssElementCustomTypeDescriptor);
+                    return typeof(RssElementCustomTypeDescriptor);
                 }
             }
 
@@ -129,7 +119,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 get
                 {
-                    return typeof (string);
+                    return typeof(string);
                 }
             }
 
@@ -159,7 +149,7 @@ namespace DotNetNuke.Services.Syndication
                 {
                     string propertyValue;
 
-                    if (element._attributes.TryGetValue(Name, out propertyValue))
+                    if (element._attributes.TryGetValue(this.Name, out propertyValue))
                     {
                         return propertyValue;
                     }
@@ -168,7 +158,5 @@ namespace DotNetNuke.Services.Syndication
                 return string.Empty;
             }
         }
-
-        #endregion
     }
 }

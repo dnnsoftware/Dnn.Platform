@@ -612,6 +612,7 @@
     </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <Content Include="Install\InstallWizard.aspx" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
     <Content Include="Licenses\Microsoft Data Access Application Block %28Custom%29.txt.resources" />
@@ -626,6 +627,9 @@
     <Content Include="Licenses\PetaPoco %28Apache%29.txt.resources" />
     <Content Include="Licenses\Pikaday %28MIT%29.txt.resources" />
     <Content Include="Licenses\QuickIO.NET %28Ms-PL%29.txt.resources" />
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -787,6 +791,13 @@
     </Compile>
     <Compile Include="Install\Install.aspx.designer.cs">
       <DependentUpon>install.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Install\InstallWizard.aspx.cs">
+      <DependentUpon>InstallWizard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\InstallWizard.aspx.designer.cs">
+      <DependentUpon>InstallWizard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Install\UpgradeWizard.aspx.cs">
       <DependentUpon>UpgradeWizard.aspx</DependentUpon>
@@ -2144,7 +2155,6 @@
     <Content Include="images\bottom.gif" />
     <Content Include="images\Branding\DNN_logo.png" />
     <Content Include="images\Branding\iconbar_logo.png" />
-    <Content Include="images\Branding\logo.gif" />
     <Content Include="images\Branding\Logo.png" />
     <Content Include="images\breadcrumb.gif" />
     <Content Include="images\calendar.png" />
@@ -2766,6 +2776,12 @@
     <Content Include="images\xml.gif" />
     <Content Include="images\yellow-warning.gif" />
     <Content Include="images\yellow-warning_16px.gif" />
+    <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DesktopModules\Admin\Portals\portal.template.xsx">
+      <DependentUpon>portal.template.xsd</DependentUpon>
+    </Content>
     <None Include="Install\App_LocalResources\Locales.xml" />
     <Content Include="Install\AuthSystem\PlaceHolder.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
@@ -3326,7 +3342,11 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.03.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.06.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.04.04.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\09.05.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.05.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.06.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.06.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
@@ -3401,6 +3421,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DesktopModules\Admin\Security\App_LocalResources\DataConsent.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

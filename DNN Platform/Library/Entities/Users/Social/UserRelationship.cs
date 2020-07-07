@@ -1,27 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Users.Social
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      UserRelationship
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The UserRelationship class defines the membership of the relationship. 
-    /// The user initiating the relationship is UserId. 
-    /// The target of the relationship is RelatedUserId.  
+    /// The UserRelationship class defines the membership of the relationship.
+    /// The user initiating the relationship is UserId.
+    /// The target of the relationship is RelatedUserId.
     /// Status tracks relationship status as Initiated, Approved, Rejected etc.
     /// </summary>
     /// -----------------------------------------------------------------------------
@@ -34,37 +30,37 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// UserRelationshipId - The primary key
+        /// Gets or sets userRelationshipId - The primary key.
         /// </summary>
         [XmlAttribute]
         public int UserRelationshipId { get; set; }
 
         /// <summary>
-        /// UserId of the User that owns the relationship
+        /// Gets or sets userId of the User that owns the relationship.
         /// </summary>
         [XmlAttribute]
         public int UserId { get; set; }
 
         /// <summary>
-        /// The UserId of the Related User 
+        /// Gets or sets the UserId of the Related User.
         /// </summary>
         [XmlAttribute]
         public int RelatedUserId { get; set; }
 
         /// <summary>
-        /// The ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers)
+        /// Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).
         /// </summary>
         [XmlAttribute]
         public int RelationshipId { get; set; }
 
         /// <summary>
-        /// The Status of the Relationship (e.g. Initiated, Accepted, Rejected)
+        /// Gets or sets the Status of the Relationship (e.g. Initiated, Accepted, Rejected).
         /// </summary>
         [XmlAttribute]
         public RelationshipStatus Status { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID
@@ -73,6 +69,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 return this.UserRelationshipId;
             }
+
             set
             {
                 this.UserRelationshipId = value;
@@ -91,8 +88,8 @@ namespace DotNetNuke.Entities.Users.Social
             this.RelationshipId = Convert.ToInt32(dr["RelationshipID"]);
             this.Status = (RelationshipStatus)Convert.ToInt32(dr["Status"]);
 
-            //add audit column data
-            FillInternal(dr);
+            // add audit column data
+            this.FillInternal(dr);
         }
     }
 }

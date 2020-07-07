@@ -1,24 +1,33 @@
+import moment from "moment";
 import serviceFramework from "./serviceFramework";
 
 const getLogs = function () {
-    return serviceFramework.get("ServerSettingsLogs", "GetLogs")
+    return serviceFramework
+        .get("ServerSettingsLogs", "GetLogs")
         .then(response => {
-            const logList = response.Results.LogList.map((log) => {
-                return {
-                    value: log,
-                    label: log
-                };
-            });
+            const logList = response.Results.LogList.map(
+                ({ Name, LastWriteTimeUtc, Size }) => {
+                    return {
+                        name: Name,
+                        lastWriteTimeUtc: LastWriteTimeUtc,
+                        size: Size,
+                        upgradeLog: false
+                    };
+                });
             
-            const upgradeLogList = response.Results.UpgradeLogList.map((log) => {
-                return {
-                    value: log,
-                    label: log,
-                    upgradeLog: true
-                };
-            });
+            const upgradeLogList = response.Results.UpgradeLogList.map(
+                ({ Name, LastWriteTimeUtc, Size }) => {
+                    return {
+                        name: Name,
+                        lastWriteTimeUtc: LastWriteTimeUtc,
+                        size: Size,
+                        upgradeLog: true
+                    };
+                });
             
-            return logList.concat(upgradeLogList);
+            return logList
+                .concat(upgradeLogList)
+                .sort((a, b) => moment(b.lastWriteTimeUtc) - moment(a.lastWriteTimeUtc));
         });
 };
 

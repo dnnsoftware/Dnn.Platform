@@ -1,22 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Reflection;
-using System.Xml.XPath;
-
-using DotNetNuke.Application;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Dependencies
 {
+    using System;
+    using System.Reflection;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Application;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CoreVersionDependency determines whether the CoreVersion is correct
+    /// The CoreVersionDependency determines whether the CoreVersion is correct.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -29,7 +24,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return string.Format(Util.INSTALL_Compatibility,minVersion);
+                return string.Format(Util.INSTALL_Compatibility, this.minVersion);
             }
         }
 
@@ -38,17 +33,18 @@ namespace DotNetNuke.Services.Installer.Dependencies
             get
             {
                 bool _IsValid = true;
-                if (Assembly.GetExecutingAssembly().GetName().Version < minVersion)
+                if (Assembly.GetExecutingAssembly().GetName().Version < this.minVersion)
                 {
                     _IsValid = false;
                 }
+
                 return _IsValid;
             }
         }
 
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            minVersion = new Version(dependencyNav.Value);
+            this.minVersion = new Version(dependencyNav.Value);
         }
     }
 }

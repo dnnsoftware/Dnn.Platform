@@ -1,65 +1,69 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class List : GroupsModuleBase
     {
-        public INavigationManager _navigationManager { get; }
         public List()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        public INavigationManager _navigationManager { get; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            panelSearch.Visible = GroupListSearchEnabled;
+            this.panelSearch.Visible = this.GroupListSearchEnabled;
 
-            ctlGroupList.TabId = TabId;
-            ctlGroupList.GroupViewTabId = GroupViewTabId;
-            ctlGroupList.RoleGroupId = DefaultRoleGroupId;
-            ctlGroupList.PageSize = GroupListPageSize;
-            ctlGroupList.DisplayCurrentUserGroups = GroupListUserGroupsOnly;
-            ctlGroupList.SearchFilter = GroupListFilter;
-            ctlGroupList.SortField = GroupListSortField;
-            ctlGroupList.SortDirection = GroupListSortDirection;
+            this.ctlGroupList.TabId = this.TabId;
+            this.ctlGroupList.GroupViewTabId = this.GroupViewTabId;
+            this.ctlGroupList.RoleGroupId = this.DefaultRoleGroupId;
+            this.ctlGroupList.PageSize = this.GroupListPageSize;
+            this.ctlGroupList.DisplayCurrentUserGroups = this.GroupListUserGroupsOnly;
+            this.ctlGroupList.SearchFilter = this.GroupListFilter;
+            this.ctlGroupList.SortField = this.GroupListSortField;
+            this.ctlGroupList.SortDirection = this.GroupListSortDirection;
 
-            if (!string.IsNullOrEmpty(GroupListSortField))
+            if (!string.IsNullOrEmpty(this.GroupListSortField))
             {
-                ctlGroupList.SortField = GroupListSortField;
+                this.ctlGroupList.SortField = this.GroupListSortField;
             }
 
-            if (!string.IsNullOrEmpty(GroupListSortDirection))
+            if (!string.IsNullOrEmpty(this.GroupListSortDirection))
             {
-                ctlGroupList.SortDirection = GroupListSortDirection;
+                this.ctlGroupList.SortDirection = this.GroupListSortDirection;
             }
 
-
-            if (!String.IsNullOrEmpty(GroupListTemplate))
+            if (!string.IsNullOrEmpty(this.GroupListTemplate))
             {
-                ctlGroupList.ItemTemplate = GroupListTemplate;
+                this.ctlGroupList.ItemTemplate = this.GroupListTemplate;
             }
 
-            if (!string.IsNullOrEmpty(GroupListFilter))
+            if (!string.IsNullOrEmpty(this.GroupListFilter))
             {
-                txtFilter.Text = GroupListFilter;
+                this.txtFilter.Text = this.GroupListFilter;
             }
-
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            if(!Page.IsValid) return;
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
-            Response.Redirect(_navigationManager.NavigateURL(TabId, "", "filter=" + txtFilter.Text.Trim()));
+            this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, string.Empty, "filter=" + this.txtFilter.Text.Trim()));
         }
     }
 }

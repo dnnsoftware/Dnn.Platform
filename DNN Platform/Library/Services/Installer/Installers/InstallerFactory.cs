@@ -1,38 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallerFactory is a factory class that is used to instantiate the
-    /// appropriate Component Installer
+    /// appropriate Component Installer.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class InstallerFactory
     {
-		#region Public Shared Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The GetInstaller method instantiates the relevant Component Installer
+        /// The GetInstaller method instantiates the relevant Component Installer.
         /// </summary>
-        /// <param name="installerType">The type of Installer</param>
+        /// <param name="installerType">The type of Installer.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(string installerType)
         {
@@ -95,26 +89,29 @@ namespace DotNetNuke.Services.Installer.Installers
                     installer = new JavaScriptFileInstaller();
                     break;
                 default:
-                    //Installer type is defined in the List
+                    // Installer type is defined in the List
                     var listController = new ListController();
                     ListEntryInfo entry = listController.GetListEntryInfo("Installer", installerType);
 
                     if (entry != null && !string.IsNullOrEmpty(entry.Text))
                     {
-						//The class for the Installer is specified in the Text property
-                        installer = (ComponentInstallerBase) Reflection.CreateObject(entry.Text, "Installer_" + entry.Value);
+                        // The class for the Installer is specified in the Text property
+                        installer = (ComponentInstallerBase)Reflection.CreateObject(entry.Text, "Installer_" + entry.Value);
                     }
+
                     break;
             }
+
             return installer;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The GetInstaller method instantiates the relevant Component Installer
+        /// The GetInstaller method instantiates the relevant Component Installer.
         /// </summary>
-        /// <param name="manifestNav">The manifest (XPathNavigator) for the component</param>
-        /// <param name="package">The associated PackageInfo instance</param>
+        /// <param name="manifestNav">The manifest (XPathNavigator) for the component.</param>
+        /// <param name="package">The associated PackageInfo instance.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)
         {
@@ -124,10 +121,10 @@ namespace DotNetNuke.Services.Installer.Installers
             ComponentInstallerBase installer = GetInstaller(installerType);
             if (installer != null)
             {
-                //Set package
+                // Set package
                 installer.Package = package;
 
-                //Set type
+                // Set type
                 installer.Type = installerType;
 
                 if (!string.IsNullOrEmpty(componentVersion))
@@ -138,16 +135,15 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     installer.Version = package.Version;
                 }
-				
-                //Read Manifest
+
+                // Read Manifest
                 if (package.InstallerInfo.InstallMode != InstallMode.ManifestOnly || installer.SupportsManifestOnlyInstall)
                 {
                     installer.ReadManifest(manifestNav);
                 }
             }
+
             return installer;
         }
-		
-		#endregion
     }
 }

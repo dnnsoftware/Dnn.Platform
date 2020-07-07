@@ -1,30 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Lists
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+
     [Serializable]
     public class ListEntryInfo
     {
+        private string _Text = Null.NullString;
+
         public ListEntryInfo()
         {
-            ParentKey = Null.NullString;
-            Parent = Null.NullString;
-            Description = Null.NullString;
-            Text = Null.NullString;
-            Value = Null.NullString;
-            ListName = Null.NullString;
+            this.ParentKey = Null.NullString;
+            this.Parent = Null.NullString;
+            this.Description = Null.NullString;
+            this.Text = Null.NullString;
+            this.Value = Null.NullString;
+            this.ListName = Null.NullString;
         }
 
         public int EntryID { get; set; }
@@ -35,12 +32,13 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                string _Key = ParentKey.Replace(":", ".");
+                string _Key = this.ParentKey.Replace(":", ".");
                 if (!string.IsNullOrEmpty(_Key))
                 {
                     _Key += ".";
                 }
-                return _Key + ListName + ":" + Value;
+
+                return _Key + this.ListName + ":" + this.Value;
             }
         }
 
@@ -50,19 +48,18 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                return ListName + ":" + Text;
+                return this.ListName + ":" + this.Text;
             }
         }
 
         public string Value { get; set; }
 
-        private string _Text = Null.NullString;
         /// <summary>
-        /// Localized text value of the list entry item. An attempt is made to look up the key "[ParentKey].[Value].Text" in the resource file 
+        /// Gets or sets localized text value of the list entry item. An attempt is made to look up the key "[ParentKey].[Value].Text" in the resource file
         /// "App_GlobalResources/List_[ListName]". If not found the original (database) value is used.
         /// </summary>
         /// <value>
-        /// Localized text value
+        /// Localized text value.
         /// </value>
         public string Text
         {
@@ -72,27 +69,33 @@ namespace DotNetNuke.Common.Lists
                 try
                 {
                     string key;
-                    if (string.IsNullOrEmpty(ParentKey))
+                    if (string.IsNullOrEmpty(this.ParentKey))
                     {
-                        key = Value + ".Text";
+                        key = this.Value + ".Text";
                     }
                     else
                     {
-                        key = ParentKey + '.' + Value + ".Text";
+                        key = this.ParentKey + '.' + this.Value + ".Text";
                     }
 
-                    res = Services.Localization.Localization.GetString(key, ResourceFileRoot);
+                    res = Services.Localization.Localization.GetString(key, this.ResourceFileRoot);
                 }
                 catch
                 {
-                    //ignore
+                    // ignore
                 }
-                if (string.IsNullOrEmpty(res)) { res = _Text; };
+
+                if (string.IsNullOrEmpty(res))
+                {
+                    res = this._Text;
+                }
+
                 return res;
             }
+
             set
             {
-                _Text = value;
+                this._Text = value;
             }
         }
 
@@ -106,7 +109,7 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                return _Text;
+                return this._Text;
             }
         }
 
@@ -128,18 +131,18 @@ namespace DotNetNuke.Common.Lists
 
         public bool SystemList { get; set; }
 
-	    internal string ResourceFileRoot
-	    {
-		    get
-		    {
-				var listName = ListName.Replace(":", ".");
-				if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
-				{
-					listName = Globals.CleanFileName(listName);
-				}
+        internal string ResourceFileRoot
+        {
+            get
+            {
+                var listName = this.ListName.Replace(":", ".");
+                if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                {
+                    listName = Globals.CleanFileName(listName);
+                }
 
-				return "~/App_GlobalResources/List_" + listName + ".resx";
-		    }
-	    }
+                return "~/App_GlobalResources/List_" + listName + ".resx";
+            }
+        }
     }
 }

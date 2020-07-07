@@ -1,30 +1,26 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using DotNetNuke.Data;
-using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Tests.Data.Models;
-using DotNetNuke.Tests.Utilities;
-using NUnit.Framework;
-
-using PetaPoco;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.Tests.Data.Models;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+    using PetaPoco;
+
     [TestFixture]
     public class PetaPocoDataContextTests
     {
-        // ReSharper disable InconsistentNaming
-        #region Setup/Teardown
+        private const string connectionStringName = "PetaPoco";
+        private const string tablePrefix = "dnn_";
 
+        // ReSharper disable InconsistentNaming
         [SetUp]
         public void SetUp()
         {
@@ -35,19 +31,12 @@ namespace DotNetNuke.Tests.Data
         {
         }
 
-        #endregion
-
-        private const string connectionStringName = "PetaPoco";
-        private const string tablePrefix = "dnn_";
-
-        #region Constructor Tests
-
         [Test]
         public void PetaPocoDataContext_Constructors_Throw_On_Null_ConnectionString()
         {
-            //Arrange
+            // Arrange
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(null));
             Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(null, tablePrefix));
         }
@@ -55,46 +44,46 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void PetaPocoDataContext_Constructors_Throw_On_Empty_ConnectionString()
         {
-            //Arrange
+            // Arrange
 
-            //Act, Assert
-            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(String.Empty));
-            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(String.Empty, tablePrefix));
+            // Act, Assert
+            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(string.Empty));
+            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(string.Empty, tablePrefix));
         }
 
         [Test]
         public void PetaPocoDataContext_Constructor_Initialises_Database_Property()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var context = new PetaPocoDataContext(connectionStringName);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<Database>(Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database"));
         }
 
         [Test]
         public void PetaPocoDataContext_Constructor_Initialises_TablePrefix_Property()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var context = new PetaPocoDataContext(connectionStringName, tablePrefix);
 
-            //Assert
+            // Assert
             Assert.AreEqual(tablePrefix, context.TablePrefix);
         }
 
         [Test]
         public void PetaPocoDataContext_Constructor_Initialises_Mapper_Property()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var context = new PetaPocoDataContext(connectionStringName);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoDataContext, IMapper>(context, "_mapper"));
             Assert.IsInstanceOf<PetaPocoMapper>(Util.GetPrivateMember<PetaPocoDataContext, PetaPocoMapper>(context, "_mapper"));
         }
@@ -102,137 +91,121 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void PetaPocoDataContext_Constructor_Initialises_FluentMappers_Property()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var context = new PetaPocoDataContext(connectionStringName);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<Dictionary<Type, IMapper>>(context.FluentMappers);
-            Assert.AreEqual(0,context.FluentMappers.Count);
+            Assert.AreEqual(0, context.FluentMappers.Count);
         }
 
         [Test]
         public void PetaPocoDataContext_Constructor_Initialises_Database_Property_With_Correct_Connection()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var context = new PetaPocoDataContext(connectionStringName);
 
-            //Assert
+            // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
 
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }
 
-        #endregion
-
-        #region BeginTransaction Tests
-
         [Test]
         public void PetaPocoDataContext_BeginTransaction_Increases_Database_Transaction_Count()
         {
-            //Arrange
+            // Arrange
             const int transactionDepth = 1;
             var context = new PetaPocoDataContext(connectionStringName);
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Util.SetPrivateMember(db, "_transactionDepth", transactionDepth);
 
-            //Act
+            // Act
             context.BeginTransaction();
 
-            //Assert
+            // Assert
             Assert.AreEqual(transactionDepth + 1, Util.GetPrivateMember<Database, int>(db, "_transactionDepth"));
         }
-
-        #endregion
-
-        #region Commit Tests
 
         [Test]
         public void PetaPocoDataContext_Commit_Decreases_Database_Transaction_Count()
         {
-            //Arrange
+            // Arrange
             const int transactionDepth = 2;
             var context = new PetaPocoDataContext(connectionStringName);
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Util.SetPrivateMember(db, "_transactionDepth", transactionDepth);
 
-            //Act
+            // Act
             context.Commit();
 
-            //Assert
+            // Assert
             Assert.AreEqual(transactionDepth - 1, Util.GetPrivateMember<Database, int>(db, "_transactionDepth"));
         }
 
         [Test]
         public void PetaPocoDataContext_Commit_Sets_Database_TransactionCancelled_False()
         {
-            //Arrange
+            // Arrange
             const int transactionDepth = 2;
             var context = new PetaPocoDataContext(connectionStringName);
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Util.SetPrivateMember(db, "_transactionDepth", transactionDepth);
 
-            //Act
+            // Act
             context.Commit();
 
-            //Assert
+            // Assert
             Assert.AreEqual(false, Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"));
         }
-
-        #endregion
-
-        #region RollbackTransaction Tests
 
         [Test]
         public void PetaPocoDataContext_RollbackTransaction_Decreases_Database_Transaction_Count()
         {
-            //Arrange
+            // Arrange
             const int transactionDepth = 2;
             var context = new PetaPocoDataContext(connectionStringName);
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Util.SetPrivateMember(db, "_transactionDepth", transactionDepth);
 
-            //Act
+            // Act
             context.RollbackTransaction();
 
-            //Assert
+            // Assert
             Assert.AreEqual(transactionDepth - 1, Util.GetPrivateMember<Database, int>(db, "_transactionDepth"));
         }
 
         [Test]
         public void PetaPocoDataContext_RollbackTransaction_Sets_Database_TransactionCancelled_True()
         {
-            //Arrange
+            // Arrange
             const int transactionDepth = 2;
             var context = new PetaPocoDataContext(connectionStringName);
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Util.SetPrivateMember(db, "_transactionDepth", transactionDepth);
 
-            //Act
+            // Act
             context.RollbackTransaction();
 
-            //Assert
+            // Assert
             Assert.AreEqual(true, Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"));
         }
-
-        #endregion
-
-        #region GetRepository Tests
 
         [Test]
         public void PetaPocoDataContext_GetRepository_Returns_Repository()
         {
-            //Arrange
+            // Arrange
             var context = new PetaPocoDataContext(connectionStringName);
 
-            //Act
+            // Act
             var repo = context.GetRepository<Dog>();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IRepository<Dog>>(repo);
             Assert.IsInstanceOf<PetaPocoRepository<Dog>>(repo);
         }
@@ -240,26 +213,26 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void PetaPocoDataContext_GetRepository_Sets_Repository_Database_Property()
         {
-            //Arrange
+            // Arrange
             var context = new PetaPocoDataContext(connectionStringName);
 
-            //Act
+            // Act
             var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<Database>(Util.GetPrivateMember<PetaPocoRepository<Dog>, Database>(repo, "_database"));
         }
 
         [Test]
         public void PetaPocoDataContext_GetRepository_Uses_PetaPocoMapper_If_No_FluentMapper()
         {
-            //Arrange
+            // Arrange
             var context = new PetaPocoDataContext(connectionStringName);
 
-            //Act
+            // Act
             var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
             Assert.IsInstanceOf<PetaPocoMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
         }
@@ -267,19 +240,17 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void PetaPocoDataContext_GetRepository_Uses_FluentMapper_If_FluentMapper_Defined()
         {
-            //Arrange
+            // Arrange
             var context = new PetaPocoDataContext(connectionStringName);
             context.AddFluentMapper<Dog>();
 
-            //Act
+            // Act
             var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
             Assert.IsInstanceOf<FluentMapper<Dog>>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
         }
-
-        #endregion
 
         // ReSharper restore InconsistentNaming
     }

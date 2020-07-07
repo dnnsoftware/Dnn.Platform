@@ -1,21 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Profile
-{    
+{
+    using System;
+
+    using DotNetNuke.Entities.Users;
+
     public class ProfileEventArgs : EventArgs
     {
         /// <summary>
-        /// The user whom's profile has been changed. This includes the Profile property with the updated profile
+        /// Gets or sets the user whom's profile has been changed. This includes the Profile property with the updated profile.
         /// </summary>
         public UserInfo User { get; set; }
 
         /// <summary>
-        /// The user's profile, as it was before the change
+        /// Gets or sets the user's profile, as it was before the change.
         /// </summary>
         public UserProfile OldProfile { get; set; }
     }

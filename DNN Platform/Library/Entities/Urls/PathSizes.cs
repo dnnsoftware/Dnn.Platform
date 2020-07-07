@@ -1,45 +1,45 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+
     [Serializable]
     public class PathSizes
     {
         public int MaxAliasDepth { get; set; }
-        public int MaxTabPathDepth{ get; set; }
+
+        public int MaxTabPathDepth { get; set; }
+
         public int MinAliasDepth { get; set; }
+
         public int MinTabPathDepth { get; set; }
 
         public void SetAliasDepth(string httpAlias)
         {
-            int aliasPathDepth = httpAlias.Length - httpAlias.Replace("/", "").Length;
-            if (aliasPathDepth > MaxAliasDepth)
+            int aliasPathDepth = httpAlias.Length - httpAlias.Replace("/", string.Empty).Length;
+            if (aliasPathDepth > this.MaxAliasDepth)
             {
-                MaxAliasDepth = aliasPathDepth;
+                this.MaxAliasDepth = aliasPathDepth;
             }
-            if (aliasPathDepth < MinAliasDepth)
+
+            if (aliasPathDepth < this.MinAliasDepth)
             {
-                MinAliasDepth = aliasPathDepth;
+                this.MinAliasDepth = aliasPathDepth;
             }
         }
 
         public void SetTabPathDepth(int tabPathDepth)
         {
-            if (tabPathDepth > MaxTabPathDepth)
+            if (tabPathDepth > this.MaxTabPathDepth)
             {
-                MaxTabPathDepth = tabPathDepth;
+                this.MaxTabPathDepth = tabPathDepth;
             }
-            if (tabPathDepth < MinTabPathDepth)
+
+            if (tabPathDepth < this.MinTabPathDepth)
             {
-                MinTabPathDepth = tabPathDepth;
+                this.MinTabPathDepth = tabPathDepth;
             }
         }
     }

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_FacebookAuthentication" type="Auth_System" version="09.06.01" >
+    <package name="DNN_FacebookAuthentication" type="Auth_System" version="09.06.02" >
       <friendlyName>DotNetNuke Facebook Authentication Project</friendlyName>
       <description>The DotNetNuke Facebook Authentication Project is an Authentication provider for DotNetNuke that uses 
         Facebook authentication to authenticate users.

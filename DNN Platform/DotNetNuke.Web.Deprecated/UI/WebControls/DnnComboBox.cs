@@ -1,37 +1,41 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-
-using Telerik.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using Telerik.Web.UI;
+
     public class DnnComboBox : RadComboBox
     {
+        public void AddItem(string text, string value)
+        {
+            this.Items.Add(new DnnComboBoxItem(text, value));
+        }
+
+        public void InsertItem(int index, string text, string value)
+        {
+            this.Items.Insert(index, new DnnComboBoxItem(text, value));
+        }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
-            OnClientLoad = "$.dnnComboBoxLoaded";
-            OnClientFocus = "$.dnnComboBoxHack";
-            OnClientDropDownOpened = "$.dnnComboBoxScroll";
-            OnClientItemsRequested = "$.dnnComboBoxItemRequested";
-            MaxHeight = 240;
-            ZIndex = 100010;
-            Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
-            Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
-            Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
-            Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
-            Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
+            this.EnableEmbeddedBaseStylesheet = false;
+            this.OnClientLoad = "$.dnnComboBoxLoaded";
+            this.OnClientFocus = "$.dnnComboBoxHack";
+            this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
+            this.OnClientItemsRequested = "$.dnnComboBoxItemRequested";
+            this.MaxHeight = 240;
+            this.ZIndex = 100010;
+            this.Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            this.Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            this.Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            this.Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            this.Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -41,44 +45,34 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
         }
 
-        public void AddItem(string text, string value)
-        {
-            Items.Add(new DnnComboBoxItem(text, value));
-        }
-
-        public void InsertItem(int index, string text, string value)
-        {
-            Items.Insert(index, new DnnComboBoxItem(text, value));
-        }
-
         public void DataBind(string initialValue)
         {
-            DataBind(initialValue, false);
+            this.DataBind(initialValue, false);
         }
 
         public void DataBind(string initial, bool findByText)
         {
-            DataBind();
+            this.DataBind();
 
-            Select(initial, findByText);
+            this.Select(initial, findByText);
         }
 
         public void Select(string initial, bool findByText)
         {
             if (findByText)
             {
-                if (FindItemByText(initial, true) != null)
+                if (this.FindItemByText(initial, true) != null)
                 {
-					FindItemByText(initial, true).Selected = true;
+                    this.FindItemByText(initial, true).Selected = true;
                 }
             }
             else
             {
-				if (FindItemByValue(initial, true) != null)
+                if (this.FindItemByValue(initial, true) != null)
                 {
-					FindItemByValue(initial, true).Selected = true;
+                    this.FindItemByValue(initial, true).Selected = true;
                 }
-            } 
+            }
         }
     }
 }

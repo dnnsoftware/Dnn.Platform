@@ -1,95 +1,89 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using Telerik.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using Telerik.Web.UI;
+
     public class DnnFormToggleButtonItem : DnnFormItemBase
     {
-        #region CheckBoxMode enum
+        // private DnnRadButton _checkBox;
+        private CheckBox _checkBox;
+
+        public DnnFormToggleButtonItem()
+        {
+            this.Mode = CheckBoxMode.TrueFalse;
+        }
 
         public enum CheckBoxMode
         {
             TrueFalse = 0,
             YN = 1,
-            YesNo = 2
-        }
-
-        #endregion
-
-        //private DnnRadButton _checkBox;
-        private CheckBox _checkBox;
-
-        public DnnFormToggleButtonItem()
-        {
-            Mode = CheckBoxMode.TrueFalse;
+            YesNo = 2,
         }
 
         public CheckBoxMode Mode { get; set; }
 
-        private void CheckedChanged(object sender, EventArgs e)
-        {
-            string newValue;
-            switch (Mode)
-            {
-                case CheckBoxMode.YN:
-                    newValue = (_checkBox.Checked) ? "Y" : "N";
-                    break;
-                case CheckBoxMode.YesNo:
-                    newValue = (_checkBox.Checked) ? "Yes" : "No";
-                    break;
-                default:
-                    newValue = (_checkBox.Checked) ? "true" : "false";
-                    break;
-            }
-            UpdateDataSource(Value, newValue, DataField);
-        }
-
         protected override WebControl CreateControlInternal(Control container)
         {
-            //_checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
-            _checkBox = new CheckBox{ ID = ID + "_CheckBox", AutoPostBack = false };
+            // _checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
+            this._checkBox = new CheckBox { ID = this.ID + "_CheckBox", AutoPostBack = false };
 
-            _checkBox.CheckedChanged += CheckedChanged;
-            container.Controls.Add(_checkBox);
+            this._checkBox.CheckedChanged += this.CheckedChanged;
+            container.Controls.Add(this._checkBox);
 
-            //Load from ControlState
-            if (!_checkBox.Page.IsPostBack)
+            // Load from ControlState
+            if (!this._checkBox.Page.IsPostBack)
             {
             }
-            switch (Mode)
+
+            switch (this.Mode)
             {
                 case CheckBoxMode.YN:
                 case CheckBoxMode.YesNo:
-                    var stringValue = Value as string;
+                    var stringValue = this.Value as string;
                     if (stringValue != null)
                     {
-                        _checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
+                        this._checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
                     }
+
                     break;
                 default:
-                    _checkBox.Checked = Convert.ToBoolean(Value);
+                    this._checkBox.Checked = Convert.ToBoolean(this.Value);
                     break;
             }
 
-            return _checkBox;
+            return this._checkBox;
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            FormMode = DnnFormMode.Short;
+            this.FormMode = DnnFormMode.Short;
+        }
+
+        private void CheckedChanged(object sender, EventArgs e)
+        {
+            string newValue;
+            switch (this.Mode)
+            {
+                case CheckBoxMode.YN:
+                    newValue = this._checkBox.Checked ? "Y" : "N";
+                    break;
+                case CheckBoxMode.YesNo:
+                    newValue = this._checkBox.Checked ? "Yes" : "No";
+                    break;
+                default:
+                    newValue = this._checkBox.Checked ? "true" : "false";
+                    break;
+            }
+
+            this.UpdateDataSource(this.Value, newValue, this.DataField);
         }
     }
 }

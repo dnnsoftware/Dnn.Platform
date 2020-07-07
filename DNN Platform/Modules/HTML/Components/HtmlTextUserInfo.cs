@@ -1,35 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextUserInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlTextUser object
+    ///   Defines an instance of an HtmlTextUser object.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class HtmlTextUserInfo
     {
-        #region Private Member
         // local property declarations
         private ModuleInfo _Module;
 
-        #endregion
-
-        #region Public Properties
         public int ItemID { get; set; }
 
         public int StateID { get; set; }
@@ -43,10 +38,11 @@ namespace DotNetNuke.Modules.Html
             get
             {
                 string _ModuleTitle = Null.NullString;
-                if (Module != null)
+                if (this.Module != null)
                 {
-                    _ModuleTitle = Module.ModuleTitle;
+                    _ModuleTitle = this.Module.ModuleTitle;
                 }
+
                 return _ModuleTitle;
             }
         }
@@ -55,20 +51,19 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                if (_Module == null)
+                if (this._Module == null)
                 {
-                    _Module = ModuleController.Instance.GetModule(ModuleID, TabID, false);
+                    this._Module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
                 }
-                return _Module;
+
+                return this._Module;
             }
         }
-
 
         public int TabID { get; set; }
 
         public int UserID { get; set; }
 
         public DateTime CreatedOnDate { get; set; }
-        #endregion
     }
 }

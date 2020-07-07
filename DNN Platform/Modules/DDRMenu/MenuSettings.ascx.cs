@@ -1,50 +1,51 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Entities.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.DDRMenu
 {
-	partial class MenuSettings : ModuleSettingsBase
-	{
-		public override void LoadSettings()
-		{
-			if (IsPostBack)
-			{
-				return;
-			}
-			MenuStyle.Value = Settings["MenuStyle"] ?? "";
-			NodeXmlPath.Value = Settings["NodeXmlPath"] ?? "";
-			NodeSelector.Value = Settings["NodeSelector"] ?? "";
-			IncludeNodes.Value = Settings["IncludeNodes"] ?? "";
-			ExcludeNodes.Value = Settings["ExcludeNodes"] ?? "";
-			NodeManipulator.Value = Settings["NodeManipulator"] ?? "";
-			IncludeContext.Value = Convert.ToBoolean(Settings["IncludeContext"] ?? "false");
-			IncludeHidden.Value = Convert.ToBoolean(Settings["IncludeHidden"] ?? "false");
-			TemplateArguments.Value = Settings["TemplateArguments"] ?? "";
-			ClientOptions.Value = Settings["ClientOptions"] ?? "";
-		}
+    using System;
 
-		public override void UpdateSettings()
-		{
+    using DotNetNuke.Entities.Modules;
 
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "MenuStyle", (MenuStyle.Value ?? "").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "NodeXmlPath", (NodeXmlPath.Value ?? "").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "NodeSelector", (NodeSelector.Value ?? "").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeNodes", (IncludeNodes.Value ?? "").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "ExcludeNodes", (ExcludeNodes.Value ?? "").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "NodeManipulator", (NodeManipulator.Value ?? "").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeContext", (IncludeContext.Value ?? "false").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeHidden", (IncludeHidden.Value ?? "false").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "TemplateArguments", (TemplateArguments.Value ?? "").ToString());
-			ModuleController.Instance.UpdateModuleSetting(ModuleId, "ClientOptions", (ClientOptions.Value ?? "").ToString());
-		}
+    public partial class MenuSettings : ModuleSettingsBase
+    {
+        public override void LoadSettings()
+        {
+            if (this.IsPostBack)
+            {
+                return;
+            }
 
-		protected override void OnPreRender(EventArgs e)
-		{
-			IncludeHiddenSection.Visible = DNNAbstract.IncludeHiddenSupported();
-		}
-	}
+            this.MenuStyle.Value = this.Settings["MenuStyle"] ?? string.Empty;
+            this.NodeXmlPath.Value = this.Settings["NodeXmlPath"] ?? string.Empty;
+            this.NodeSelector.Value = this.Settings["NodeSelector"] ?? string.Empty;
+            this.IncludeNodes.Value = this.Settings["IncludeNodes"] ?? string.Empty;
+            this.ExcludeNodes.Value = this.Settings["ExcludeNodes"] ?? string.Empty;
+            this.NodeManipulator.Value = this.Settings["NodeManipulator"] ?? string.Empty;
+            this.IncludeContext.Value = Convert.ToBoolean(this.Settings["IncludeContext"] ?? "false");
+            this.IncludeHidden.Value = Convert.ToBoolean(this.Settings["IncludeHidden"] ?? "false");
+            this.TemplateArguments.Value = this.Settings["TemplateArguments"] ?? string.Empty;
+            this.ClientOptions.Value = this.Settings["ClientOptions"] ?? string.Empty;
+        }
+
+        public override void UpdateSettings()
+        {
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "MenuStyle", (this.MenuStyle.Value ?? string.Empty).ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "NodeXmlPath", (this.NodeXmlPath.Value ?? string.Empty).ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "NodeSelector", (this.NodeSelector.Value ?? string.Empty).ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "IncludeNodes", (this.IncludeNodes.Value ?? string.Empty).ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ExcludeNodes", (this.ExcludeNodes.Value ?? string.Empty).ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "NodeManipulator", (this.NodeManipulator.Value ?? string.Empty).ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "IncludeContext", (this.IncludeContext.Value ?? "false").ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "IncludeHidden", (this.IncludeHidden.Value ?? "false").ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "TemplateArguments", (this.TemplateArguments.Value ?? string.Empty).ToString());
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ClientOptions", (this.ClientOptions.Value ?? string.Empty).ToString());
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            this.IncludeHiddenSection.Visible = DNNAbstract.IncludeHiddenSupported();
+        }
+    }
 }

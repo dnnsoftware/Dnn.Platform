@@ -1,36 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Abstractions;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.UI.MenuControllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class LinkMenuController : IMenuItemController
     {
-        protected INavigationManager NavigationManager { get; }
         public LinkMenuController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         public void UpdateParameters(MenuItem menuItem)
         {
-            if (Visible(menuItem))
+            if (this.Visible(menuItem))
             {
-                var query = GetPathQuery(menuItem);
+                var query = this.GetPathQuery(menuItem);
 
                 int tabId, portalId;
                 if (query.ContainsKey("path"))
@@ -44,7 +45,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                     tabId = Convert.ToInt32(query["tabId"]);
                 }
 
-                var tabUrl = NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
+                var tabUrl = this.NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
                 var alias = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias);
                 tabUrl = tabUrl.Replace(alias, string.Empty).TrimStart('/');
 
@@ -54,7 +55,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            var query = GetPathQuery(menuItem);
+            var query = this.GetPathQuery(menuItem);
             if (PortalSettings.Current == null || query == null)
             {
                 return false;

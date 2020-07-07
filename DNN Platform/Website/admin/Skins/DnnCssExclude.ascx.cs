@@ -1,15 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-using System;
-using ClientDependency.Core.Controls;
-using ClientDependency.Core;
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+
+    using ClientDependency.Core;
+    using ClientDependency.Core.Controls;
+
     public partial class DnnCssExclude : SkinObjectBase
     {
         public string Name { get; set; }
@@ -17,7 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ctlExclude.Name = Name;
+            this.ctlExclude.Name = this.Name;
         }
     }
 }

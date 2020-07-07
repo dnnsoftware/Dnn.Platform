@@ -1,24 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <returns></returns>
@@ -27,56 +22,62 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Logo : SkinObjectBase
     {
         private readonly INavigationManager _navigationManager;
-        public string BorderWidth { get; set; }
-        public string CssClass { get; set; }
 
         public Logo()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        public string BorderWidth { get; set; }
+
+        public string CssClass { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(BorderWidth))
+                if (!string.IsNullOrEmpty(this.BorderWidth))
                 {
-                    imgLogo.BorderWidth = Unit.Parse(BorderWidth);
+                    this.imgLogo.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
-                if (!String.IsNullOrEmpty(CssClass))
+
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
-                    imgLogo.CssClass = CssClass;
+                    this.imgLogo.CssClass = this.CssClass;
                 }
+
                 bool logoVisible = false;
-                if (!String.IsNullOrEmpty(PortalSettings.LogoFile))
+                if (!string.IsNullOrEmpty(this.PortalSettings.LogoFile))
                 {
-                    var fileInfo = GetLogoFileInfo();
+                    var fileInfo = this.GetLogoFileInfo();
                     if (fileInfo != null)
                     {
                         string imageUrl = FileManager.Instance.GetUrl(fileInfo);
-                        if (!String.IsNullOrEmpty(imageUrl))
+                        if (!string.IsNullOrEmpty(imageUrl))
                         {
-                            imgLogo.ImageUrl = imageUrl;
+                            this.imgLogo.ImageUrl = imageUrl;
                             logoVisible = true;
                         }
                     }
                 }
-                imgLogo.Visible = logoVisible;
-                imgLogo.AlternateText = PortalSettings.PortalName;
-                hypLogo.ToolTip = PortalSettings.PortalName;
 
-                if (!imgLogo.Visible)
+                this.imgLogo.Visible = logoVisible;
+                this.imgLogo.AlternateText = this.PortalSettings.PortalName;
+                this.hypLogo.ToolTip = this.PortalSettings.PortalName;
+
+                if (!this.imgLogo.Visible)
                 {
-                    hypLogo.Attributes.Add("aria-label", PortalSettings.PortalName);
+                    this.hypLogo.Attributes.Add("aria-label", this.PortalSettings.PortalName);
                 }
-                if (PortalSettings.HomeTabId != -1)
+
+                if (this.PortalSettings.HomeTabId != -1)
                 {
-                    hypLogo.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.HomeTabId);
+                    this.hypLogo.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
                 }
                 else
                 {
-                    hypLogo.NavigateUrl = Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias);
+                    this.hypLogo.NavigateUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
                 }
             }
             catch (Exception exc)
@@ -87,16 +88,17 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private IFileInfo GetLogoFileInfo()
         {
-            string cacheKey = String.Format(DataCache.PortalCacheKey, PortalSettings.PortalId, PortalSettings.CultureCode) + "LogoFile";
-            var file = CBO.GetCachedObject<FileInfo>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority),
-                                                    GetLogoFileInfoCallBack);
+            string cacheKey = string.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
+            var file = CBO.GetCachedObject<FileInfo>(
+                new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority),
+                this.GetLogoFileInfoCallBack);
 
             return file;
         }
 
         private IFileInfo GetLogoFileInfoCallBack(CacheItemArgs itemArgs)
         {
-            return FileManager.Instance.GetFile(PortalSettings.PortalId, PortalSettings.LogoFile);
+            return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.LogoFile);
         }
     }
 }

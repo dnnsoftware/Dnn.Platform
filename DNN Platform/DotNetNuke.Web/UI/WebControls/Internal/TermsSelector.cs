@@ -1,30 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Globals = DotNetNuke.Common.Globals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Globals = DotNetNuke.Common.Globals;
+
+    /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     public class TermsSelector : DnnComboBox
     {
-        #region Public Properties
-
         public int PortalId { get; set; }
 
         public bool IncludeSystemVocabularies { get; set; } = false;
@@ -36,11 +31,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             get
             {
                 var terms = new List<Term>();
-                if (!string.IsNullOrEmpty(Value))
+                if (!string.IsNullOrEmpty(this.Value))
                 {
                     var termRep = Util.GetTermController();
 
-                    var termIds = Value.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                    var termIds = this.Value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var i in termIds)
                     {
                         if (!string.IsNullOrEmpty(i.Trim()))
@@ -57,46 +52,43 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                 return terms;
             }
+
             set
             {
-                Value = string.Join(",", value.Select(t => t.TermId.ToString()));
+                this.Value = string.Join(",", value.Select(t => t.TermId.ToString()));
 
-                Items.Clear();
-                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) {Selected = true}).ToList().ForEach(Items.Add);
+                this.Items.Clear();
+                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) { Selected = true }).ToList().ForEach(this.Items.Add);
             }
         }
 
         public override bool MultipleSelect { get; set; } = true;
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            if (!string.IsNullOrEmpty(CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                CssClass = string.Format("{0} TermsSelector", CssClass);
+                this.CssClass = string.Format("{0} TermsSelector", this.CssClass);
             }
             else
             {
-                CssClass = "TermsSelector";
+                this.CssClass = "TermsSelector";
             }
 
-            var includeSystem = IncludeSystemVocabularies.ToString().ToLowerInvariant();
-            var includeTags = IncludeTags.ToString().ToLowerInvariant();
+            var includeSystem = this.IncludeSystemVocabularies.ToString().ToLowerInvariant();
+            var includeTags = this.IncludeTags.ToString().ToLowerInvariant();
             var apiPath = Globals.ResolveUrl($"~/API/InternalServices/ItemListService/GetTerms?includeSystem={includeSystem}&includeTags={includeTags}&q=");
 
-            Options.Preload = "focus";
-            Options.Plugins.Add("remove_button");
-            Options.Render = new RenderOption
-                {
-                    Option = "function(item, escape) {return '<div>' + item.text + '</div>';}"
-                };
+            this.Options.Preload = "focus";
+            this.Options.Plugins.Add("remove_button");
+            this.Options.Render = new RenderOption
+            {
+                Option = "function(item, escape) {return '<div>' + item.text + '</div>';}",
+            };
 
-            Options.Load = $@"function(query, callback) {{
+            this.Options.Load = $@"function(query, callback) {{
                                 $.ajax({{
                                         url: '{apiPath}' + encodeURIComponent(query),
                                     type: 'GET',
@@ -110,12 +102,5 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                             }}
 ";
         }
-
-        #endregion
-
-        #region Private Methods
-
-
-        #endregion
     }
 }

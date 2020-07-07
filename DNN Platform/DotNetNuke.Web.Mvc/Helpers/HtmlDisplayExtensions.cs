@@ -1,15 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using System.Web.Mvc;
+    using System.Web.Mvc.Html;
+
     /// <summary>
     /// Represents support for rendering object values as HTML.
     /// </summary>
@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by a string expression.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by a string expression, using additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the expression, using the specified template.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the expression, using the specified template and additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the expression, using the specified template and an HTML field ID.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the expression, using the specified template, HTML field ID, and additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns a string that contains each property value in the object that is represented by the specified expression, using additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -122,7 +122,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns a string that contains each property value in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/>, using the specified template.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns a string that contains each property value in the object that is represented by the specified expression, using the specified template and additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/>, using the specified template and an HTML field ID.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -161,7 +161,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the specified expression, using the template, an HTML field ID, and additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -174,20 +174,20 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the model.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the model.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param>
         public static MvcHtmlString DisplayForModel(this DnnHtmlHelper html)
         {
-            return html.HtmlHelper.DisplayForModel( html.ViewData.ModelMetadata);
+            return html.HtmlHelper.DisplayForModel(html.ViewData.ModelMetadata);
         }
 
         /// <summary>
         /// Returns HTML markup for each property in the model, using additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the model.
         /// </returns>
@@ -200,7 +200,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the model using the specified template.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the model.
         /// </returns>
@@ -213,7 +213,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the model, using the specified template and additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the model.
         /// </returns>
@@ -226,7 +226,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the model using the specified template and HTML field ID.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the model.
         /// </returns>
@@ -239,7 +239,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the model, using the specified template, an HTML field ID, and additional view data.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the model.
         /// </returns>

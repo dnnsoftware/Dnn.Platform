@@ -1,29 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-using Dnn.PersonaBar.CssEditor.Services.Dto;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.CssEditor.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.CssEditor.Services.Dto;
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class CssEditorController : PersonaBarApiController
     {
@@ -31,10 +32,10 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
         /// GET: api/CssEditor/GetStyleSheet
         /// <summary>
-        /// Gets portal.css of specific portal
+        /// Gets portal.css of specific portal.
         /// </summary>
-        /// <param name="portalId">Id of portal</param>
-        /// <returns>Content of portal.css</returns>
+        /// <param name="portalId">Id of portal.</param>
+        /// <returns>Content of portal.css.</returns>
         [HttpGet]
         public HttpResponseMessage GetStyleSheet(int portalId)
         {
@@ -65,21 +66,21 @@ namespace Dnn.PersonaBar.CssEditor.Services
                         }
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Content = styleSheetContent });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = styleSheetContent });
                 }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/CssEditor/UpdateStyleSheet
         /// <summary>
-        /// Updates portal.css of specific portal
+        /// Updates portal.css of specific portal.
         /// </summary>
-        /// <param name="request">Content of portal css</param>
+        /// <param name="request">Content of portal css.</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -136,22 +137,22 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                     ClientResourceManager.ClearFileExistsCache(relativePath);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
                 }
             }
         }
 
         /// POST: api/CssEditor/RestoreStyleSheet
         /// <summary>
-        /// Restores portal.css of specific portal
+        /// Restores portal.css of specific portal.
         /// </summary>
-        /// <param name="request">Id of portal</param>
-        /// <returns>Content of portal.css</returns>
+        /// <param name="request">Id of portal.</param>
+        /// <returns>Content of portal.css.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RestoreStyleSheet(RestoreCssRequest request)
@@ -182,19 +183,17 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                         ClientResourceManager.ClearFileExistsCache($"{Globals.ApplicationPath}/{portal.HomeDirectory}/portal.css");
                     }
-                    var content = LoadStyleSheet(request.PortalId);
+                    var content = this.LoadStyleSheet(request.PortalId);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, StyleSheetContent = content});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, StyleSheetContent = content });
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
                 }
             }
         }
-
-        #region Private Methods
 
         private string LoadStyleSheet(int portalId)
         {
@@ -219,7 +218,5 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
             return styleSheetContent;
         }
-
-        #endregion
     }
 }

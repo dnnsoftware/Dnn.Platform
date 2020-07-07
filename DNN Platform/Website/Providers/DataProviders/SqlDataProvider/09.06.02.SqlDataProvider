@@ -1,0 +1,139 @@
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentItems_MetaData]') AND name = N'IX_{objectQualifier}ContentItems_MetaData_MetaDataID')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_MetaData_MetaDataID] ON {databaseOwner}[{objectQualifier}ContentItems_MetaData]
+(
+	[ContentItemID] ASC,
+	[MetaDataID] ASC
+)
+INCLUDE([MetaDataValue])
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Files]') AND name = N'IX_{objectQualifier}Files_FolderId_FileName')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_FolderId_FileName] ON {databaseOwner}[{objectQualifier}Files]
+(
+	[FolderID] ASC,
+	[FileName] ASC
+)
+INCLUDE([ContentItemID],[ContentType],[CreatedByUserID],[CreatedOnDate],[EnablePublishPeriod],[EndDate],[Extension],[FileId],[Height],[LastModificationTime],[LastModifiedByUserID],[LastModifiedOnDate],[PortalId],[PublishedVersion],[SHA1Hash],[Size],[StartDate],[Title],[UniqueId],[VersionGuid],[Width])
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModulePermission]') AND name = N'IX_{objectQualifier}ModulePermission_Portal')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ModulePermission_Portal] ON {databaseOwner}[{objectQualifier}ModulePermission]
+(
+	[PortalID] ASC
+)
+INCLUDE([AllowAccess],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate],[ModuleID],[ModulePermissionID],[PermissionID],[RoleID],[UserID])
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_Status_EffectiveDate')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_Status_EffectiveDate] ON {databaseOwner}[{objectQualifier}UserRoles]
+(
+	[Status] ASC,
+	[EffectiveDate] ASC
+)
+INCLUDE([ExpiryDate],[RoleID])
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_PasswordResetToken')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_PasswordResetToken] ON {databaseOwner}[{objectQualifier}Users]
+(
+	[PasswordResetToken] ASC
+)
+GO
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF OBJECT_ID('tempdb..#ScheduleHistoryIDsToDelete') IS NOT NULL DROP TABLE #ScheduleHistoryIDsToDelete
+
+	CREATE TABLE #ScheduleHistoryIDsToDelete (ScheduleHistoryID int NOT NULL);
+
+	;WITH ScheduleHistoryWithRowNumber (ScheduleID, ScheduleHistoryID, StartDate, RowNumber) AS (
+		SELECT
+			ScheduleID,
+			ScheduleHistoryID,
+			StartDate,
+			ROW_NUMBER() OVER (
+				PARTITION BY ScheduleID
+				ORDER BY StartDate
+			)
+		FROM {databaseOwner}[{objectQualifier}ScheduleHistory]
+	)
+	INSERT INTO #ScheduleHistoryIDsToDelete (ScheduleHistoryID)
+	SELECT ScheduleHistoryID FROM (
+		   SELECT s.ScheduleID, COUNT(*) - s.RetainHistoryNum AS ItemsToDelete
+		   FROM {databaseOwner}[{objectQualifier}Schedule] s
+		   INNER JOIN {databaseOwner}[{objectQualifier}ScheduleHistory] sh ON s.ScheduleID = sh.ScheduleID
+		   WHERE s.Enabled = 1 AND s.RetainHistoryNum <> -1
+		   GROUP BY s.ScheduleID, s.RetainHistoryNum
+		   HAVING COUNT(*) > s.RetainHistoryNum
+	) s
+	INNER JOIN ScheduleHistoryWithRowNumber sh ON s.ScheduleID = sh.ScheduleID
+	WHERE sh.RowNumber <= s.ItemsToDelete
+	ORDER BY ScheduleHistoryID;
+
+	DECLARE @rowsDeleted int = 1;
+
+	WHILE @rowsDeleted > 0
+	BEGIN
+		BEGIN TRANSACTION;
+
+		DELETE FROM {databaseOwner}[{objectQualifier}ScheduleHistory]
+		WHERE ScheduleHistoryID IN (SELECT TOP (1000) ScheduleHistoryID FROM #ScheduleHistoryIDsToDelete);
+
+		DELETE TOP (1000) FROM #ScheduleHistoryIDsToDelete;
+
+		SET @rowsDeleted = @@ROWCOUNT;
+
+		COMMIT TRANSACTION;
+	END
+
+	DROP TABLE #ScheduleHistoryIDsToDelete
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetTabCustomAliases') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetTabCustomAliases
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetTabCustomAliases
+(
+	 @PortalID		int 
+)
+AS
+	SELECT 
+		t.TabId, 
+		Coalesce(trp.CultureCode, '') as CultureCode, 
+		pa.HttpAlias
+	FROM {databaseOwner}{objectQualifier}Tabs t
+		INNER JOIN {databaseOwner}{objectQualifier}TabUrls trp ON trp.TabId = t.ParentId	
+		INNER JOIN {databaseOwner}{objectQualifier}PortalAlias pa ON trp.PortalAliasId = pa.PortalAliasId
+		WHERE trp.PortalAliasUsage = 1 /* child tabs inherit */
+		  AND (@portalId = t.PortalId OR @portalId = -1)
+		  AND NOT EXISTS (SELECT tr2.TabId 
+							FROM {databaseOwner}{objectQualifier}TabUrls tr2 
+							WHERE tr2.TabId = t.TabId 
+								AND tr2.CultureCode = trp.CultureCode
+							)
+    UNION
+	SELECT 
+		t.TabId, 
+		Coalesce(trp.CultureCode, '') as CultureCode, 
+		pa.HttpAlias
+	FROM {databaseOwner}{objectQualifier}Tabs t
+		INNER JOIN {databaseOwner}{objectQualifier}TabUrls trp ON trp.TabId = t.Tabid	
+		INNER JOIN {databaseOwner}{objectQualifier}PortalAlias pa ON trp.PortalAliasId = pa.PortalAliasId
+		WHERE (@portalId = t.PortalId OR @portalId = -1)
+          AND t.CultureCode IS NULL OR t.CultureCode = trp.CultureCode
+GO

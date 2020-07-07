@@ -1,18 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.Caching;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.OutputCache.Providers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.Caching;
+
     /// <summary>
     /// MemoryResponseFilter implements the OutputCachingProvider for memory storage.
     /// </summary>
@@ -21,45 +21,37 @@ namespace DotNetNuke.Services.OutputCache.Providers
         protected const string cachePrefix = "DNN_OUTPUT:";
         private static System.Web.Caching.Cache runtimeCache;
 
-        #region Friend Properties
-
         internal static System.Web.Caching.Cache Cache
         {
             get
             {
-                //create singleton of the cache object
+                // create singleton of the cache object
                 if (runtimeCache == null)
                 {
                     runtimeCache = HttpRuntime.Cache;
                 }
+
                 return runtimeCache;
             }
         }
 
-    	internal static string CachePrefix
-    	{
-    		get
-    		{
-    			return cachePrefix;
-    		}
-    	}
-
-        #endregion
-
-        #region Private Methods
-
-        private string GetCacheKey(string CacheKey)
+        internal static string CachePrefix
         {
-            if (string.IsNullOrEmpty(CacheKey))
+            get
             {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+                return cachePrefix;
             }
-            return string.Concat(cachePrefix, CacheKey);
         }
 
-        #endregion
+        public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
+        {
+            return this.GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
+        }
 
-        #region Friend Methods
+        public override int GetItemCount(int tabId)
+        {
+            return GetCacheKeys(tabId).Count();
+        }
 
         internal static List<string> GetCacheKeys()
         {
@@ -72,6 +64,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     keys.Add(CacheEnum.Key.ToString());
                 }
             }
+
             return keys;
         }
 
@@ -86,21 +79,18 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     keys.Add(CacheEnum.Key.ToString());
                 }
             }
+
             return keys;
         }
 
-        #endregion
-
-        #region Abstract Method Implementation
-
-        public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
+        private string GetCacheKey(string CacheKey)
         {
-            return GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
-        }
+            if (string.IsNullOrEmpty(CacheKey))
+            {
+                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+            }
 
-        public override int GetItemCount(int tabId)
-        {
-            return GetCacheKeys(tabId).Count();
+            return string.Concat(cachePrefix, CacheKey);
         }
 
         public override byte[] GetOutput(int tabId, string cacheKey)
@@ -108,7 +98,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             object output = Cache[cacheKey];
             if (output != null)
             {
-                return (byte[]) output;
+                return (byte[])output;
             }
             else
             {
@@ -154,10 +144,8 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 return false;
             }
 
-			context.Response.BinaryWrite(Encoding.Default.GetBytes(Cache[cacheKey].ToString()));
-        	return true;
+            context.Response.BinaryWrite(Encoding.Default.GetBytes(Cache[cacheKey].ToString()));
+            return true;
         }
-
-        #endregion
     }
 }

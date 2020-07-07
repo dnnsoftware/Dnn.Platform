@@ -1,14 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Common;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Web.Http;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc
 {
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+
     public static class HttpConfigurationExtensions
     {
         private const string Key = "MvcTabAndModuleInfoProvider";
@@ -29,11 +30,6 @@ namespace DotNetNuke.Web.Mvc
             providers.Enqueue(tabAndModuleInfoProvider);
         }
 
-        private static object InitValue(object o)
-        {
-            return new ConcurrentQueue<ITabAndModuleInfoProvider>();
-        }
-
         public static IEnumerable<ITabAndModuleInfoProvider> GetTabAndModuleInfoProviders(this HttpConfiguration configuration)
         {
             Requires.NotNull("configuration", configuration);
@@ -42,11 +38,16 @@ namespace DotNetNuke.Web.Mvc
 
             if (providers == null)
             {
-                //shouldn't ever happen outside of unit tests
+                // shouldn't ever happen outside of unit tests
                 return new ITabAndModuleInfoProvider[] { };
             }
 
             return providers.ToArray();
+        }
+
+        private static object InitValue(object o)
+        {
+            return new ConcurrentQueue<ITabAndModuleInfoProvider>();
         }
     }
 }

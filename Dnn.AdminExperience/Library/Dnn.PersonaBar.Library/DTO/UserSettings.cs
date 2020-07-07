@@ -1,18 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.DTO
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+
     /// <summary>
     /// Persona Bar Settings For User.
     /// </summary>
@@ -26,10 +27,11 @@ namespace Dnn.PersonaBar.Library.DTO
             {
                 return Convert.ToBoolean(this["expandPersonaBar"]);
             }
+
             set
             {
                 this["expandPersonaBar"] = value;
-            } 
+            }
         }
 
         public XmlSchema GetSchema()
@@ -43,22 +45,23 @@ namespace Dnn.PersonaBar.Library.DTO
             reader.Read();
 
             if (wasEmpty)
+            {
                 return;
+            }
 
             switch (reader.Name)
             {
                 case "data":
-                    ReadSettings(reader);
+                    this.ReadSettings(reader);
                     break;
                 default:
-                    ReadLegacySettings(reader);
+                    this.ReadLegacySettings(reader);
                     break;
-
             }
         }
 
         public void WriteXml(XmlWriter writer)
-        {            
+        {
             writer.WriteStartElement("data");
             writer.WriteCData(Json.Serialize(this));
             writer.WriteEndElement();
@@ -81,7 +84,7 @@ namespace Dnn.PersonaBar.Library.DTO
         [Obsolete("The method add for backward compatible, should remove this in future release.")]
         private void ReadLegacySettings(XmlReader reader)
         {
-            while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
+            while (!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
             {
                 if (reader.NodeType != XmlNodeType.Element)
                 {

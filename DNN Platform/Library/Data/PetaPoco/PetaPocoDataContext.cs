@@ -1,35 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using DotNetNuke.Common;
-using PetaPoco;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+
+    using DotNetNuke.Common;
+    using global::PetaPoco;
+
     [CLSCompliant(false)]
     public class PetaPocoDataContext : IDataContext
     {
-        #region Private Members
-
         private readonly Database _database;
         private readonly IMapper _mapper;
 
-        #endregion
-
-        #region Constructors
-
         public PetaPocoDataContext()
-            : this(ConfigurationManager.ConnectionStrings[0].Name, String.Empty)
+            : this(ConfigurationManager.ConnectionStrings[0].Name, string.Empty)
         {
         }
 
         public PetaPocoDataContext(string connectionStringName)
-            : this(connectionStringName, String.Empty, new Dictionary<Type, IMapper>())
+            : this(connectionStringName, string.Empty, new Dictionary<Type, IMapper>())
         {
         }
 
@@ -42,34 +37,30 @@ namespace DotNetNuke.Data.PetaPoco
         {
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
 
-            _database = new Database(connectionStringName);
-            _mapper = new PetaPocoMapper(tablePrefix);
-            TablePrefix = tablePrefix;
-            FluentMappers = mappers;
+            this._database = new Database(connectionStringName);
+            this._mapper = new PetaPocoMapper(tablePrefix);
+            this.TablePrefix = tablePrefix;
+            this.FluentMappers = mappers;
         }
-
-        #endregion
 
         public Dictionary<Type, IMapper> FluentMappers { get; private set; }
 
         public string TablePrefix { get; private set; }
 
-        #region Implementation of IDataContext
+        public bool EnableAutoSelect
+        {
+            get { return this._database.EnableAutoSelect; }
+            set { this._database.EnableAutoSelect = value; }
+        }
 
         public void BeginTransaction()
         {
-            _database.BeginTransaction();
+            this._database.BeginTransaction();
         }
 
         public void Commit()
         {
-            _database.CompleteTransaction();
-        }
-
-        public bool EnableAutoSelect
-        {
-            get { return _database.EnableAutoSelect; }
-            set { _database.EnableAutoSelect = value; }
+            this._database.CompleteTransaction();
         }
 
         public void Execute(CommandType type, string sql, params object[] args)
@@ -79,18 +70,18 @@ namespace DotNetNuke.Data.PetaPoco
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            _database.Execute(DataUtil.ReplaceTokens(sql), args);
+            this._database.Execute(DataUtil.ReplaceTokens(sql), args);
         }
 
         public IEnumerable<T> ExecuteQuery<T>(CommandType type, string sql, params object[] args)
         {
-            PetaPocoMapper.SetMapper<T>(_mapper);
+            PetaPocoMapper.SetMapper<T>(this._mapper);
             if (type == CommandType.StoredProcedure)
             {
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            return _database.Fetch<T>(DataUtil.ReplaceTokens(sql), args);
+            return this._database.Fetch<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
         public T ExecuteScalar<T>(CommandType type, string sql, params object[] args)
@@ -100,37 +91,38 @@ namespace DotNetNuke.Data.PetaPoco
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            return _database.ExecuteScalar<T>(DataUtil.ReplaceTokens(sql), args);
+            return this._database.ExecuteScalar<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
         public T ExecuteSingleOrDefault<T>(CommandType type, string sql, params object[] args)
         {
-            PetaPocoMapper.SetMapper<T>(_mapper);
+            PetaPocoMapper.SetMapper<T>(this._mapper);
             if (type == CommandType.StoredProcedure)
             {
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            return _database.SingleOrDefault<T>(DataUtil.ReplaceTokens(sql), args);
+            return this._database.SingleOrDefault<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
-        public IRepository<T> GetRepository<T>() where T : class
+        public IRepository<T> GetRepository<T>()
+            where T : class
         {
             PetaPocoRepository<T> rep = null;
 
-            //Determine whether to use a Fluent Mapper
-            if (FluentMappers.ContainsKey(typeof (T)))
+            // Determine whether to use a Fluent Mapper
+            if (this.FluentMappers.ContainsKey(typeof(T)))
             {
-                var fluentMapper = FluentMappers[typeof(T)] as FluentMapper<T>;
+                var fluentMapper = this.FluentMappers[typeof(T)] as FluentMapper<T>;
                 if (fluentMapper != null)
                 {
-                    rep = new PetaPocoRepository<T>(_database, fluentMapper);
+                    rep = new PetaPocoRepository<T>(this._database, fluentMapper);
                     rep.Initialize(fluentMapper.CacheKey, fluentMapper.CacheTimeOut, fluentMapper.CachePriority, fluentMapper.Scope);
                 }
             }
             else
             {
-                rep = new PetaPocoRepository<T>(_database, _mapper);
+                rep = new PetaPocoRepository<T>(this._database, this._mapper);
             }
 
             return rep;
@@ -138,18 +130,12 @@ namespace DotNetNuke.Data.PetaPoco
 
         public void RollbackTransaction()
         {
-            _database.AbortTransaction();
+            this._database.AbortTransaction();
         }
-
-        #endregion
-
-        #region Implementation of IDisposable
 
         public void Dispose()
         {
-            _database.Dispose();
+            this._database.Dispose();
         }
-
-        #endregion
     }
 }

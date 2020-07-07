@@ -1,21 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Globalization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Localization
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     /// <summary>
     ///   <para>The Locale class is a custom business object that represents a locale, which is the language and country combination.</para>
     /// </summary>
@@ -24,12 +19,10 @@ namespace DotNetNuke.Services.Localization
     {
         public Locale()
         {
-            PortalId = Null.NullInteger;
-            LanguageId = Null.NullInteger;
-            IsPublished = Null.NullBoolean;
+            this.PortalId = Null.NullInteger;
+            this.LanguageId = Null.NullInteger;
+            this.IsPublished = Null.NullBoolean;
         }
-
-        #region Public Properties
 
         public string Code { get; set; }
 
@@ -37,7 +30,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return CultureInfo.GetCultureInfo(Code);
+                return CultureInfo.GetCultureInfo(this.Code);
             }
         }
 
@@ -46,10 +39,11 @@ namespace DotNetNuke.Services.Localization
             get
             {
                 string _Name = Null.NullString;
-                if (Culture != null)
+                if (this.Culture != null)
                 {
-                    _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Culture.EnglishName);
+                    _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.EnglishName);
                 }
+
                 return _Name;
             }
         }
@@ -61,10 +55,11 @@ namespace DotNetNuke.Services.Localization
             get
             {
                 Locale _FallbackLocale = null;
-                if (!string.IsNullOrEmpty(Fallback))
+                if (!string.IsNullOrEmpty(this.Fallback))
                 {
-                    _FallbackLocale = LocaleController.Instance.GetLocale(PortalId, Fallback);
+                    _FallbackLocale = LocaleController.Instance.GetLocale(this.PortalId, this.Fallback);
                 }
+
                 return _FallbackLocale;
             }
         }
@@ -78,10 +73,11 @@ namespace DotNetNuke.Services.Localization
             get
             {
                 string _Name = Null.NullString;
-                if (Culture != null)
+                if (this.Culture != null)
                 {
-                    _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Culture.NativeName);
+                    _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.NativeName);
                 }
+
                 return _Name;
             }
         }
@@ -90,44 +86,38 @@ namespace DotNetNuke.Services.Localization
 
         public string Text { get; set; }
 
-        #endregion
-
-        #region IHydratable Implementation
-
-        public void Fill(IDataReader dr)
-        {
-            LanguageId = Null.SetNullInteger(dr["LanguageID"]);
-            Code = Null.SetNullString(dr["CultureCode"]);
-            Text = Null.SetNullString(dr["CultureName"]);
-            Fallback = Null.SetNullString(dr["FallbackCulture"]);
-
-            //These fields may not be populated (for Host level locales)
-            DataTable schemaTable = dr.GetSchemaTable();
-            bool hasColumns = schemaTable.Select("ColumnName = 'IsPublished' Or ColumnName = 'PortalID'").Length == 2;
-            
-            if(hasColumns)
-            {
-                IsPublished = Null.SetNullBoolean(dr["IsPublished"]);
-                PortalId = Null.SetNullInteger(dr["PortalID"]);
-            }
-            
-            //Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
-        }
-
         public int KeyID
         {
             get
             {
-                return LanguageId;
+                return this.LanguageId;
             }
+
             set
             {
-                LanguageId = value;
+                this.LanguageId = value;
             }
         }
 
-        #endregion
+        public void Fill(IDataReader dr)
+        {
+            this.LanguageId = Null.SetNullInteger(dr["LanguageID"]);
+            this.Code = Null.SetNullString(dr["CultureCode"]);
+            this.Text = Null.SetNullString(dr["CultureName"]);
+            this.Fallback = Null.SetNullString(dr["FallbackCulture"]);
 
-	}
+            // These fields may not be populated (for Host level locales)
+            DataTable schemaTable = dr.GetSchemaTable();
+            bool hasColumns = schemaTable.Select("ColumnName = 'IsPublished' Or ColumnName = 'PortalID'").Length == 2;
+
+            if (hasColumns)
+            {
+                this.IsPublished = Null.SetNullBoolean(dr["IsPublished"]);
+                this.PortalId = Null.SetNullInteger(dr["PortalID"]);
+            }
+
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
+        }
+    }
 }

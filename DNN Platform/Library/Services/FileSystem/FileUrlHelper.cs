@@ -1,14 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-using DotNetNuke.Common.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common.Utilities;
+
     public class FileUrlHelper
     {
         private static readonly Regex RegexStandardFile =
@@ -27,9 +28,11 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     portalId = int.Parse(portal);
                 }
+
                 fileRequested = FileManager.Instance.GetFile(portalId, filePath);
                 return true;
             }
+
             fileRequested = null;
             return false;
         }
@@ -42,6 +45,7 @@ namespace DotNetNuke.Services.FileSystem
                 fileRequested = FileManager.Instance.GetFile(fileId);
                 return true;
             }
+
             fileRequested = null;
             return false;
         }

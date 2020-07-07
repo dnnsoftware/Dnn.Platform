@@ -1,36 +1,41 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Common;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Data
 {
-    public abstract class ControllerBase<TEntity, TContract, TSelf> : ServiceLocator<TContract, TSelf> where TSelf : ServiceLocator<TContract, TSelf>, new() where TEntity : class
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework;
+
+    public abstract class ControllerBase<TEntity, TContract, TSelf> : ServiceLocator<TContract, TSelf>
+        where TSelf : ServiceLocator<TContract, TSelf>, new()
+        where TEntity : class
     {
         protected readonly IDataContext DataContext;
 
-        protected ControllerBase() { }
+        protected ControllerBase()
+        {
+        }
 
         protected ControllerBase(IDataContext dataContext)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("dataContext", dataContext);
 
-            DataContext = dataContext;
+            this.DataContext = dataContext;
         }
 
         public void Add(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 rep.Insert(entity);
             }
@@ -38,16 +43,16 @@ namespace DotNetNuke.Data
 
         public void Delete(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
-            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
+            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), string.Empty);
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 rep.Delete(entity);
             }
@@ -56,23 +61,22 @@ namespace DotNetNuke.Data
         public IEnumerable<TEntity> Find(string sqlCondition, params object[] args)
         {
             IEnumerable<TEntity> entities;
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 entities = rep.Find(sqlCondition, args);
             }
 
             return entities;
-
         }
 
         public IEnumerable<TEntity> Get()
         {
             IEnumerable<TEntity> entities;
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 entities = rep.Get();
             }
@@ -83,9 +87,9 @@ namespace DotNetNuke.Data
         public IEnumerable<TEntity> Get<TScope>(TScope scope)
         {
             IEnumerable<TEntity> contentTypes;
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 contentTypes = rep.Get(scope);
             }
@@ -95,16 +99,16 @@ namespace DotNetNuke.Data
 
         public void Update(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
-            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
+            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), string.Empty);
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 rep.Update(entity);
             }

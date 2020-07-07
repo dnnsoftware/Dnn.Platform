@@ -1,45 +1,40 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.Serialization;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging
     /// Class:      MessageThreadsView
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The MessageThreadsView class contains collection of MessageThreadView and other meta data
+    /// The MessageThreadsView class contains collection of MessageThreadView and other meta data.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class MessageThreadsView
     {
         /// <summary>
-        /// Total Number of Threads
+        /// Gets or sets total Number of Threads.
         /// </summary>
         public int TotalThreads { get; set; }
 
         /// <summary>
-        /// Total Number of New (Unread) Threads
+        /// Gets or sets total Number of New (Unread) Threads.
         /// </summary>
         public int TotalNewThreads { get; set; }
 
         /// <summary>
-        /// Total Number of Archived Threads
+        /// Gets or sets total Number of Archived Threads.
         /// </summary>
         public int TotalArchivedThreads { get; set; }
 
         /// <summary>
-        /// List of Conversations
+        /// Gets or sets list of Conversations.
         /// </summary>
         public List<MessageThreadView> Conversations { get; set; }
     }

@@ -263,6 +263,9 @@ export default class FileUpload extends Component {
         if (this.props.folderName && typeof this.props.folderName === "string") {
             formData.append("folder", this.props.folderName);
         }
+        if (this.props.validationCode && typeof this.props.validationCode === "string") {
+            formData.append("validationCode", this.props.validationCode);
+        }
         sf.postfile(`UploadFromLocal${this.props.portalId === -1 ? "" : "?portalId=" + this.props.portalId}` , formData, this.uploadComplete.bind(this), this.handleError.bind(this));
         this.setState({ uploading: true, uploadComplete: false });
 
@@ -427,6 +430,7 @@ FileUpload.propTypes = {
     //---REQUIRED PROPS---
     utils: PropTypes.object.isRequired,
     onSelectFile: PropTypes.func.isRequired,
+    validationCode: PropTypes.string.isRequired,
 
     //---OPTIONAL PROPS---
     selectedFile: PropTypes.object,
@@ -463,7 +467,6 @@ FileUpload.defaultProps = {
     cropImagePreview: false,
     portalId: -1,
     fileFormats: [],
-
     browseButtonText: "Browse Filesystem",
     uploadButtonText: "Upload a File",
     linkButtonText: "Enter URL Link",

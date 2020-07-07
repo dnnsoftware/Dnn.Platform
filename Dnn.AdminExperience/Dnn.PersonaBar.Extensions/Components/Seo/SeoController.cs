@@ -1,40 +1,36 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Sitemap;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Seo.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Sitemap;
+
     public class SeoController
     {
         private PortalSettings _portalSettings;
 
         public SeoController()
         {
-            _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
         }
 
         public IEnumerable<SitemapProvider> GetSitemapProviders()
         {
-            var builder = new SitemapBuilder(_portalSettings);
+            var builder = new SitemapBuilder(this._portalSettings);
             return builder.Providers;
         }
 
         public void ResetCache()
         {
-            var cacheFolder = new DirectoryInfo(_portalSettings.HomeSystemDirectoryMapPath + "sitemap\\");
+            var cacheFolder = new DirectoryInfo(this._portalSettings.HomeSystemDirectoryMapPath + "sitemap\\");
 
             if (cacheFolder.Exists)
             {
@@ -54,17 +50,17 @@ namespace Dnn.PersonaBar.Seo.Components
                 case "google":
                     strURL += "http://www.google.com/addurl?q=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)));
                     strURL += "&dq=";
-                    if (!string.IsNullOrEmpty(_portalSettings.PortalName))
+                    if (!string.IsNullOrEmpty(this._portalSettings.PortalName))
                     {
-                        strURL += Globals.HTTPPOSTEncode(_portalSettings.PortalName);
+                        strURL += Globals.HTTPPOSTEncode(this._portalSettings.PortalName);
                     }
-                    if (!string.IsNullOrEmpty(_portalSettings.Description))
+                    if (!string.IsNullOrEmpty(this._portalSettings.Description))
                     {
-                        strURL += Globals.HTTPPOSTEncode(_portalSettings.Description);
+                        strURL += Globals.HTTPPOSTEncode(this._portalSettings.Description);
                     }
-                    if (!string.IsNullOrEmpty(_portalSettings.KeyWords))
+                    if (!string.IsNullOrEmpty(this._portalSettings.KeyWords))
                     {
-                        strURL += Globals.HTTPPOSTEncode(_portalSettings.KeyWords);
+                        strURL += Globals.HTTPPOSTEncode(this._portalSettings.KeyWords);
                     }
                     strURL += "&submit=Add+URL";
                     break;
@@ -84,9 +80,9 @@ namespace Dnn.PersonaBar.Seo.Components
             {
                 if (!File.Exists(Globals.ApplicationMapPath + "\\" + verification))
                 {
-                    string portalAlias = !String.IsNullOrEmpty(_portalSettings.DefaultPortalAlias)
-                                        ? _portalSettings.DefaultPortalAlias
-                                        : _portalSettings.PortalAlias.HTTPAlias;
+                    string portalAlias = !String.IsNullOrEmpty(this._portalSettings.DefaultPortalAlias)
+                                        ? this._portalSettings.DefaultPortalAlias
+                                        : this._portalSettings.PortalAlias.HTTPAlias;
 
                     //write SiteMap verification file
                     var objStream = File.CreateText(Globals.ApplicationMapPath + "\\" + verification);

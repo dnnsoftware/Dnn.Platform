@@ -1,39 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
-using Telerik.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+    using Telerik.Web.UI;
+
     public class DnnFormComboBoxItem : DnnFormListItemBase
     {
-        //public DropDownList ComboBox { get; set; }
+        // public DropDownList ComboBox { get; set; }
         public DnnComboBox ComboBox { get; set; }
 
-        private void IndexChanged(object sender, EventArgs e)
-        {
-            UpdateDataSource(Value, ComboBox.SelectedValue, DataField);
-        }
-
-        protected override void BindList()
-        {
-            BindListInternal(ComboBox, Value, ListSource, ListTextField, ListValueField);
-        }
-
-        //internal static void BindListInternal(DropDownList comboBox, object value, IEnumerable listSource, string textField, string valueField)
+        // internal static void BindListInternal(DropDownList comboBox, object value, IEnumerable listSource, string textField, string valueField)
         internal static void BindListInternal(DnnComboBox comboBox, object value, IEnumerable listSource, string textField, string valueField)
         {
             if (comboBox != null)
@@ -45,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     var items = listSource as Dictionary<string, string>;
                     foreach (var item in items)
                     {
-                        //comboBox.Items.Add(new ListItem(item.Key, item.Value));
+                        // comboBox.Items.Add(new ListItem(item.Key, item.Value));
                         comboBox.AddItem(item.Key, item.Value);
                     }
                 }
@@ -58,27 +42,39 @@ namespace DotNetNuke.Web.UI.WebControls
                     comboBox.DataBind();
                 }
 
-                //Reset SelectedValue
-                //comboBox.Select(selectedValue);
+                // Reset SelectedValue
+                // comboBox.Select(selectedValue);
                 var selectedItem = comboBox.FindItemByValue(selectedValue);
                 if (selectedItem != null)
-                    selectedItem.Selected = true;                
+                {
+                    selectedItem.Selected = true;
+                }
             }
+        }
+
+        protected override void BindList()
+        {
+            BindListInternal(this.ComboBox, this.Value, this.ListSource, this.ListTextField, this.ListValueField);
         }
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            //ComboBox = new DropDownList { ID = ID + "_ComboBox" };
-            ComboBox = new DnnComboBox { ID = ID + "_ComboBox" };
-            ComboBox.SelectedIndexChanged += IndexChanged;
-            container.Controls.Add(ComboBox);
+            // ComboBox = new DropDownList { ID = ID + "_ComboBox" };
+            this.ComboBox = new DnnComboBox { ID = this.ID + "_ComboBox" };
+            this.ComboBox.SelectedIndexChanged += this.IndexChanged;
+            container.Controls.Add(this.ComboBox);
 
-            if (ListSource != null)
+            if (this.ListSource != null)
             {
-                BindList();
+                this.BindList();
             }
 
-            return ComboBox;
+            return this.ComboBox;
+        }
+
+        private void IndexChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this.Value, this.ComboBox.SelectedValue, this.DataField);
         }
     }
 }

@@ -1,33 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Data.SqlClient;
-using System.Text;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
+    using System.Data.SqlClient;
+    using System.Text;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The SqlUtils class provides Shared/Static methods for working with SQL Server related code
+    ///   The SqlUtils class provides Shared/Static methods for working with SQL Server related code.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class SqlUtils
     {
-        #region "Public Methods"
-
-        #endregion
-
         /// <summary>
-        ///   function to translate sql exceptions to readable messages. 
+        ///   function to translate sql exceptions to readable messages.
         ///   It also captures cases where sql server is not available and guards against
-        ///   database connection details being leaked
+        ///   database connection details being leaked.
         /// </summary>
         /// <param name = "exc"></param>
         /// <returns></returns>
@@ -63,6 +54,7 @@ namespace DotNetNuke.Common.Utilities
                 errorMessages.Append("<b>Index #:</b> " + i + "<br/>" + "<b>Source:</b> " + sqlError.Source + "<br/>" + "<b>Class:</b> " + sqlError.Class + "<br/>" + "<b>Number:</b> " +
                                      sqlError.Number + "<br/>" + "<b>Procedure:</b> " + sqlError.Procedure + "<br/>" + "<b>Message:</b> " + filteredMessage + "<br/>");
             }
+
             return errorMessages.ToString();
         }
     }

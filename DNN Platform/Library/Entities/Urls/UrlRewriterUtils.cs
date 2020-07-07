@@ -1,57 +1,53 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Log.EventLog;
+
     public static class UrlRewriterUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UrlRewriterUtils));
 
         /// <summary>
-        /// Return a FriendlyUrlOptions object from the provider settings
+        /// Return a FriendlyUrlOptions object from the provider settings.
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
         public static FriendlyUrlOptions GetOptionsFromSettings(FriendlyUrlSettings settings)
         {
             var options = new FriendlyUrlOptions
-                {
-                    PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing) 
-                                                    ? settings.ReplaceSpaceWith 
-                                                    : String.Empty,
-                    SpaceEncoding = settings.SpaceEncodingValue,
-                    MaxUrlPathLength = 200,
-                    ConvertDiacriticChars = settings.AutoAsciiConvert,
-                    RegexMatch = settings.RegexMatch,
-                    IllegalChars = settings.IllegalChars,
-                    ReplaceChars = settings.ReplaceChars,
-                    ReplaceDoubleChars = settings.ReplaceDoubleChars,
-                    ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
-                    PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never) 
-                                            ? "" 
-                                            : settings.PageExtension
-                };
+            {
+                PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
+                                                    ? settings.ReplaceSpaceWith
+                                                    : string.Empty,
+                SpaceEncoding = settings.SpaceEncodingValue,
+                MaxUrlPathLength = 200,
+                ConvertDiacriticChars = settings.AutoAsciiConvert,
+                RegexMatch = settings.RegexMatch,
+                IllegalChars = settings.IllegalChars,
+                ReplaceChars = settings.ReplaceChars,
+                ReplaceDoubleChars = settings.ReplaceDoubleChars,
+                ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
+                PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never)
+                                            ? string.Empty
+                                            : settings.PageExtension,
+            };
             return options;
         }
 
         /// <summary>
-        /// Return an extended FriendlyUrlOptions object for Custom URLs checkings
+        /// Return an extended FriendlyUrlOptions object for Custom URLs checkings.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -64,17 +60,17 @@ namespace DotNetNuke.Entities.Urls
                 MaxUrlPathLength = options.MaxUrlPathLength,
                 ConvertDiacriticChars = options.ConvertDiacriticChars,
                 RegexMatch = options.RegexMatch.Replace("[^", "[^./"),
-                IllegalChars = options.IllegalChars.Replace("/", ""),
-                ReplaceChars = options.ReplaceChars.Replace("/", ""),
+                IllegalChars = options.IllegalChars.Replace("/", string.Empty),
+                ReplaceChars = options.ReplaceChars.Replace("/", string.Empty),
                 ReplaceDoubleChars = options.ReplaceDoubleChars,
                 ReplaceCharWithChar = options.ReplaceCharWithChar,
-                PageExtension = options.PageExtension
+                PageExtension = options.PageExtension,
             };
             return result;
         }
 
         /// <summary>
-        /// Logs the 404 error to a table for later checking 
+        /// Logs the 404 error to a table for later checking.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="settings"></param>
@@ -82,13 +78,13 @@ namespace DotNetNuke.Entities.Urls
         public static void Log404(HttpRequest request, FriendlyUrlSettings settings, UrlAction result)
         {
             var log = new LogInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                    LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1
-                };
-            log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : String.Empty));
-            log.LogProperties.Add(new LogDetailInfo("PortalAlias",  (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : String.Empty));
-            log.LogProperties.Add(new LogDetailInfo("OriginalUrl",  result.RawUrl));
+            {
+                LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1,
+            };
+            log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : string.Empty));
+            log.LogProperties.Add(new LogDetailInfo("PortalAlias", (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : string.Empty));
+            log.LogProperties.Add(new LogDetailInfo("OriginalUrl", result.RawUrl));
 
             if (request != null)
             {
@@ -103,6 +99,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     log.LogProperties.Add(new LogDetailInfo("Referer", request.Headers["Referer"]));
                 }
+
                 log.LogProperties.Add(new LogDetailInfo("Url", request.Url.AbsoluteUri));
                 log.LogProperties.Add(new LogDetailInfo("UserAgent", request.UserAgent));
                 log.LogProperties.Add(new LogDetailInfo("HostAddress", request.UserHostAddress));
@@ -113,7 +110,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// logs an exception once per cache-lifetime
+        /// logs an exception once per cache-lifetime.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="status"></param>
@@ -122,20 +119,22 @@ namespace DotNetNuke.Entities.Urls
         {
             if (ex != null)
             {
-                //831 : improve exception logging by logging custom properties instead of just the raw exception
-                //this logic prevents a site logging an exception for every request made.  Instead 
-                //the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
-                //create a cache key for this exception type
+                // 831 : improve exception logging by logging custom properties instead of just the raw exception
+                // this logic prevents a site logging an exception for every request made.  Instead
+                // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
+                // create a cache key for this exception type
                 string cacheKey = ex.GetType().ToString();
-                //see if there is an existing object logged for this exception type
+
+                // see if there is an existing object logged for this exception type
                 object existingEx = DataCache.GetCache(cacheKey);
                 if (existingEx == null)
                 {
-                    //if there was no existing object logged for this exception type, this is a new exception
+                    // if there was no existing object logged for this exception type, this is a new exception
                     DateTime expire = DateTime.Now.AddHours(1);
                     DataCache.SetCache(cacheKey, cacheKey, expire);
-                    //just store the cache key - it doesn't really matter
-                    //create a log event
+
+                    // just store the cache key - it doesn't really matter
+                    // create a log event
                     var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
                     log.AddProperty("Url Processing Exception", "Exception in Url Rewriting Process");
                     log.AddProperty("Http Status", status);
@@ -173,6 +172,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         log.AddProperty("Result", "Result value null");
                     }
+
                     log.AddProperty("Exception Type", ex.GetType().ToString());
                     log.AddProperty("Message", ex.Message);
                     log.AddProperty("Stack Trace", ex.StackTrace);
@@ -181,26 +181,27 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Inner Exception Message", ex.InnerException.Message);
                         log.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
                     }
+
                     log.BypassBuffering = true;
                     LogController.Instance.AddLog(log);
 
-                    //Log this error in lig4net
+                    // Log this error in lig4net
                     Logger.Error(ex);
                 }
             }
         }
 
-		/// <summary>
-		/// Clean Page name to remove page extension.
-		/// </summary>
-		/// <param name="value">page name.</param>
-		/// <param name="settings">friendly url settings.</param>
-		/// <param name="langParms">language.</param>
-		/// <returns></returns>
-	    public static string CleanExtension(string value, FriendlyUrlSettings settings, string langParms)
-		{
-			bool replaced;
-		    return RewriteController.CleanExtension(value, settings, langParms, out replaced);
-	    }
+        /// <summary>
+        /// Clean Page name to remove page extension.
+        /// </summary>
+        /// <param name="value">page name.</param>
+        /// <param name="settings">friendly url settings.</param>
+        /// <param name="langParms">language.</param>
+        /// <returns></returns>
+        public static string CleanExtension(string value, FriendlyUrlSettings settings, string langParms)
+        {
+            bool replaced;
+            return RewriteController.CleanExtension(value, settings, langParms, out replaced);
+        }
     }
 }

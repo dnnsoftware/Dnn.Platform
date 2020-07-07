@@ -1,24 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Localization;
+
     public class DnnTextButton : LinkButton, ILocalizable
     {
         private bool _localize = true;
-
-        #region "Public Properties"
 
         [Bindable(true)]
         [Category("Appearance")]
@@ -28,11 +22,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["ConfirmMessage"] == null ? string.Empty : (string) ViewState["ConfirmMessage"];
+                return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string)this.ViewState["ConfirmMessage"];
             }
+
             set
             {
-                ViewState["ConfirmMessage"] = value;
+                this.ViewState["ConfirmMessage"] = value;
             }
         }
 
@@ -44,11 +39,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["CssClass"] == null ? string.Empty : (string) ViewState["CssClass"];
+                return this.ViewState["CssClass"] == null ? string.Empty : (string)this.ViewState["CssClass"];
             }
+
             set
             {
-                ViewState["CssClass"] = value;
+                this.ViewState["CssClass"] = value;
             }
         }
 
@@ -60,11 +56,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["DisabledCssClass"] == null ? string.Empty : (string) ViewState["DisabledCssClass"];
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
             }
+
             set
             {
-                ViewState["DisabledCssClass"] = value;
+                this.ViewState["DisabledCssClass"] = value;
             }
         }
 
@@ -76,45 +73,25 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["Text"] == null ? string.Empty : (string) ViewState["Text"];
+                return this.ViewState["Text"] == null ? string.Empty : (string)this.ViewState["Text"];
             }
+
             set
             {
-                ViewState["Text"] = value;
+                this.ViewState["Text"] = value;
             }
         }
-
-        #endregion
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            LocalizeStrings();
-            if (!Enabled && !string.IsNullOrEmpty(DisabledCssClass))
-            {
-                CssClass = DisabledCssClass;
-            }
-            writer.AddAttribute("class", CssClass.Trim());
-            base.Render(writer);
-        }
-
-        #region "ILocalizable Implementation"
 
         public bool Localize
         {
             get
             {
-                return _localize;
+                return this._localize;
             }
+
             set
             {
-                _localize = value;
+                this._localize = value;
             }
         }
 
@@ -122,30 +99,47 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(ToolTip)))
+                if (!string.IsNullOrEmpty(this.ToolTip))
                 {
-                    ToolTip = Localization.GetString(ToolTip, LocalResourceFile);
+                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
                 }
 
-                if ((!string.IsNullOrEmpty(Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
-                    Text = Localization.GetString(Text, LocalResourceFile);
+                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
 
-                    if ((string.IsNullOrEmpty(ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
-                        ToolTip = Localization.GetString(string.Format("{0}.ToolTip", Text), LocalResourceFile);
+                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
                     }
 
-                    if ((string.IsNullOrEmpty(ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
-                        ToolTip = Text;
+                        this.ToolTip = this.Text;
                     }
                 }
             }
         }
 
-        #endregion
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            if (!this.Enabled && !string.IsNullOrEmpty(this.DisabledCssClass))
+            {
+                this.CssClass = this.DisabledCssClass;
+            }
+
+            writer.AddAttribute("class", this.CssClass.Trim());
+            base.Render(writer);
+        }
     }
 }

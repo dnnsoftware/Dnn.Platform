@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     internal static class DictionaryExtensions
     {
         /// <summary>
@@ -19,7 +19,8 @@ namespace DotNetNuke.Web.Mvc.Common
         public static void RemoveFromDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, bool> removeCondition)
         {
             // Pass the delegate as the state to avoid a delegate and closure
-            dictionary.RemoveFromDictionary((entry, innerCondition) =>
+            dictionary.RemoveFromDictionary(
+                (entry, innerCondition) =>
             {
                 return innerCondition(entry);
             },
@@ -46,6 +47,7 @@ namespace DotNetNuke.Web.Mvc.Common
                     removeCount++;
                 }
             }
+
             for (int i = 0; i < removeCount; i++)
             {
                 dictionary.Remove(keys[i]);
@@ -54,7 +56,7 @@ namespace DotNetNuke.Web.Mvc.Common
 
         /// <summary>
         /// Gets the value of <typeparamref name="T"/> associated with the specified key or <c>default</c> value if
-        /// either the key is not present or the value is not of type <typeparamref name="T"/>. 
+        /// either the key is not present or the value is not of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of the value associated with the specified key.</typeparam>
         /// <param name="collection">The <see cref="IDictionary{TKey,TValue}"/> instance where <c>TValue</c> is <c>object</c>.</param>

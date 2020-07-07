@@ -1,15 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.OutputCache;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.OutputCache;
+
     public class PerformanceController
     {
         public object GetPageStatePersistenceOptions()
@@ -23,24 +24,24 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 
         public IEnumerable<KeyValuePair<string, string>> GetModuleCacheProviders()
         {
-            return GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
+            return this.GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetPageCacheProviders()
         {
-            return GetFilteredProviders(OutputCachingProvider.GetProviderList(), "OutputCachingProvider");
+            return this.GetFilteredProviders(OutputCachingProvider.GetProviderList(), "OutputCachingProvider");
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetCachingProviderOptions()
         {
             var providers = ProviderConfiguration.GetProviderConfiguration("caching").Providers;
 
-            return (from object key in providers.Keys select new KeyValuePair<string, string>((string) key, (string) key)).ToList();
+            return (from object key in providers.Keys select new KeyValuePair<string, string>((string)key, (string)key)).ToList();
         }
 
         public object GetCacheSettingOptions()
         {
-            return new []
+            return new[]
             {
                 new KeyValuePair<string, int>("NoCaching", 0),
                 new KeyValuePair<string, int>("LightCaching", 1),
@@ -51,7 +52,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 
         public object GetCacheabilityOptions()
         {
-            return new []
+            return new[]
             {
                 new KeyValuePair<string, string>("NoCache", "0"),
                 new KeyValuePair<string, string>("Private", "1"),
@@ -62,15 +63,15 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
             };
         }
 
-        private IEnumerable<KeyValuePair<string, string>> GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
-        {
-            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new KeyValuePair<string, string> (filteredkey, provider.Key);
-            return providers;
-        }
-
         public string GetCachingProvider()
         {
             return ProviderConfiguration.GetProviderConfiguration("caching").DefaultProvider;
+        }
+
+        private IEnumerable<KeyValuePair<string, string>> GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
+        {
+            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new KeyValuePair<string, string>(filteredkey, provider.Key);
+            return providers;
         }
     }
 }

@@ -1,26 +1,26 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs.Dto;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs.Dto;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework;
+
     public class TabChangeSettings : ServiceLocator<ITabChangeSettings, TabChangeSettings>, ITabChangeSettings
     {
-
-        #region Public Methods
         public bool IsChangeControlEnabled(int portalId, int tabId)
         {
             if (portalId == Null.NullInteger)
             {
                 return false;
             }
-            var isVersioningEnabled =  TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId);
+
+            var isVersioningEnabled = TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId);
             var isWorkflowEnable = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId);
             return isVersioningEnabled || isWorkflowEnable;
         }
@@ -32,17 +32,13 @@ namespace DotNetNuke.Entities.Tabs
                 PortalId = portalId,
                 TabId = tabId,
                 IsVersioningEnabledForTab = TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId),
-                IsWorkflowEnabledForTab = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId)
+                IsWorkflowEnabledForTab = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId),
             };
         }
 
-        #endregion
-
-        #region Service Locator
         protected override Func<ITabChangeSettings> GetFactory()
         {
             return () => new TabChangeSettings();
         }
-        #endregion
     }
 }

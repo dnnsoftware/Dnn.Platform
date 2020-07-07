@@ -1,35 +1,36 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http.Tracing;
-using DotNetNuke.Instrumentation;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web.Http.Tracing;
+
+    using DotNetNuke.Instrumentation;
+
     internal sealed class TraceWriter : ITraceWriter
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (TraceWriter));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
         private readonly bool _enabled;
 
         public TraceWriter(bool isTracingEnabled)
         {
-            _enabled = isTracingEnabled;
+            this._enabled = isTracingEnabled;
         }
 
         public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
-            if(!_enabled || level == TraceLevel.Off)
+            if (!this._enabled || level == TraceLevel.Off)
             {
                 return;
             }
 
             var rec = new TraceRecord(request, category, level);
             traceAction(rec);
-            Log(rec);
+            this.Log(rec);
         }
 
         private void Log(TraceRecord rec)
@@ -61,7 +62,7 @@ namespace DotNetNuke.Web.Api
 
             string output = message.ToString();
 
-            if (!String.IsNullOrEmpty(output))
+            if (!string.IsNullOrEmpty(output))
             {
                 switch (rec.Level)
                 {

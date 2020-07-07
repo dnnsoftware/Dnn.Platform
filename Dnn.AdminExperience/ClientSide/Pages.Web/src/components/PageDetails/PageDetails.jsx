@@ -23,12 +23,10 @@ class PageDetail extends Component {
 
     render() {
         const DetailComponent = this.getDetail(this.props.page.pageType);
-
-
         return (
             <div>
                 <DetailComponent onChangeField={this.props.onChangeField} errors={this.props.errors} onSelectParentPageId={this.props.onSelectParentPageId}/>
-                <PageIcons components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} page={this.props.page} />
+                <PageIcons components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} page={this.props.page} validationCode={this.props.page.validationCode} />
                 <PageDetailsFooter components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} />
             </div>
         );

@@ -1,17 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using DotNetNuke.Tests.Integration.Executers;
-using DotNetNuke.Tests.Integration.Executers.Builders;
-using Newtonsoft.Json;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
 {
+    using System;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Tests.Integration.Executers;
+    using DotNetNuke.Tests.Integration.Executers.Builders;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PageUrlsTests : IntegrationTestBase
     {
@@ -24,14 +25,13 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         private const string EnglishLanguageCode = "en-US";
         private const string SpainishLanguageCode = "es-ES";
 
-        #region Tests
         [Test]
         public void Page_Url_Should_Able_To_Add_On_English_Disabled_Site()
         {
             var isEnglishEnabled = true;
             dynamic languageSettings = null;
 
-            //set default language to Spanish and disable en-US if it's enabled
+            // set default language to Spanish and disable en-US if it's enabled
             var connector = PrepareTest(out isEnglishEnabled, out languageSettings);
             var postData = new
             {
@@ -39,25 +39,21 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 saveUrl = new
                 {
                     SiteAliasKey = 1,
-                    Path = "/Path" + Guid.NewGuid().ToString().Replace("-", ""),
+                    Path = "/Path" + Guid.NewGuid().ToString().Replace("-", string.Empty),
                     QueryString = string.Empty,
                     LocaleKey = 1,
                     StatusCodeKey = 200,
                     SiteAliasUsage = 2
-                }
+                },
             };
             var response = connector.PostJson(CreateCustomUrlApi, postData, null).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
 
-            //reset changes
+            // reset changes
             ResetChanges(connector, isEnglishEnabled, languageSettings);
 
             Assert.IsTrue(bool.Parse(result.Success.ToString()));
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static IWebApiConnector PrepareTest(out bool isEnglishEnabled, out dynamic languageSettings)
         {
@@ -76,10 +72,12 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 connector.PostJson(AddLanguageApi, new { Code = SpainishLanguageCode });
                 UpdateLanguageSettings(connector, languageSettings, SpainishLanguageCode);
             }
+
             if (isEnglishEnabled)
             {
                 EnableEnglish(connector, false);
             }
+
             return connector;
         }
 
@@ -89,6 +87,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             {
                 EnableEnglish(connector, true);
             }
+
             if (string.Compare(languageSettings.SiteDefaultLanguage.Value, EnglishLanguageCode, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 UpdateLanguageSettings(connector, languageSettings, EnglishLanguageCode);
@@ -105,7 +104,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 languageSettings.EnableBrowserLanguage,
                 languageSettings.AllowUserUICulture,
                 languageSettings.CultureCode,
-                languageSettings.AllowContentLocalization
+                languageSettings.AllowContentLocalization,
             });
         }
 
@@ -115,7 +114,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             {
                 LanguageId = 1,
                 Code = EnglishLanguageCode,
-                Enabled = enabled
+                Enabled = enabled,
             });
         }
 
@@ -128,7 +127,5 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             Assert.NotNull(pageDetail.Page, "The system must create the page and return its details in the response");
             return (int)pageDetail.Page.id;
         }
-
-        #endregion
     }
 }

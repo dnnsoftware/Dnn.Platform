@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Threading;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Threading;
+
     internal class ReaderWriterSlimLock : ISharedCollectionLock
     {
         private bool _disposed;
@@ -18,59 +13,55 @@ namespace DotNetNuke.Collections.Internal
 
         public ReaderWriterSlimLock(ReaderWriterLockSlim @lock)
         {
-            _lock = @lock;
-        }
-
-        #region ISharedCollectionLock Members
-
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
-
-        private void EnsureNotDisposed()
-        {
-            if (_disposed)
-            {
-                throw new ObjectDisposedException("ReaderWriterSlimLock");
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    //free managed resources here
-                }
-
-                //free unmanaged resrources here
-                if (_lock.IsReadLockHeld)
-                {
-                    _lock.ExitReadLock();
-                }
-                else if (_lock.IsWriteLockHeld)
-                {
-                    _lock.ExitWriteLock();
-                }
-                else if (_lock.IsUpgradeableReadLockHeld)
-                {
-                    _lock.ExitUpgradeableReadLock();
-                }
-
-                _lock = null;
-                _disposed = true;
-            }
+            this._lock = @lock;
         }
 
         ~ReaderWriterSlimLock()
         {
-            Dispose(false);
+            this.Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    // free managed resources here
+                }
+
+                // free unmanaged resrources here
+                if (this._lock.IsReadLockHeld)
+                {
+                    this._lock.ExitReadLock();
+                }
+                else if (this._lock.IsWriteLockHeld)
+                {
+                    this._lock.ExitWriteLock();
+                }
+                else if (this._lock.IsUpgradeableReadLockHeld)
+                {
+                    this._lock.ExitUpgradeableReadLock();
+                }
+
+                this._lock = null;
+                this._disposed = true;
+            }
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (this._disposed)
+            {
+                throw new ObjectDisposedException("ReaderWriterSlimLock");
+            }
         }
     }
 }

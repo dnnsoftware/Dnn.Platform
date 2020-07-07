@@ -1,23 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http.Controllers;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http.Controllers;
+
     public class AuthFilterContext
     {
         public AuthFilterContext(HttpActionContext actionContext, string authFailureMessage)
         {
-            ActionContext = actionContext;
-            AuthFailureMessage = authFailureMessage;
+            this.ActionContext = actionContext;
+            this.AuthFailureMessage = authFailureMessage;
         }
 
         public HttpActionContext ActionContext { get; private set; }
+
         public string AuthFailureMessage { get; set; }
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
-            ActionContext.Response = ActionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+            this.ActionContext.Response = this.ActionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, this.AuthFailureMessage);
         }
     }
 }

@@ -1,78 +1,80 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Installer.Packages;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using System;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Installer.Packages;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinControlPackageWriter class
+    /// The SkinControlPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class SkinControlPackageWriter : PackageWriterBase
     {
-		#region "Constructors"
-		
-        public SkinControlPackageWriter(PackageInfo package) : base(package)
+        public SkinControlPackageWriter(PackageInfo package)
+            : base(package)
         {
-            SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
-            BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
-            AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
+            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
-        public SkinControlPackageWriter(SkinControlInfo skinControl, PackageInfo package) : base(package)
+        public SkinControlPackageWriter(SkinControlInfo skinControl, PackageInfo package)
+            : base(package)
         {
-            SkinControl = skinControl;
-            BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
-            AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.SkinControl = skinControl;
+            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
         public SkinControlPackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
-            SkinControl = new SkinControlInfo();
+            this.SkinControl = new SkinControlInfo();
 
-            //Create a Package
-            Package = new PackageInfo(installer);
+            // Create a Package
+            this.Package = new PackageInfo(installer);
 
-            ReadLegacyManifest(manifestNav, true);
+            this.ReadLegacyManifest(manifestNav, true);
 
-            Package.Description = Null.NullString;
-            Package.Version = new Version(1, 0, 0);
-            Package.PackageType = "SkinObject";
-            Package.License = Util.PACKAGE_NoLicense;
+            this.Package.Description = Null.NullString;
+            this.Package.Version = new Version(1, 0, 0);
+            this.Package.PackageType = "SkinObject";
+            this.Package.License = Util.PACKAGE_NoLicense;
 
-            BasePath = Path.Combine("DesktopModules", Package.Name.ToLowerInvariant()).Replace("/", "\\");
-            AppCodePath = Path.Combine("App_Code", Package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.BasePath = Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
-		
-		#endregion
 
-		#region "Public Properties"
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets the associated SkinControl
-		/// </summary>
-		/// <value>A SkinControlInfo object</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the associated SkinControl.
+        /// </summary>
+        /// <value>A SkinControlInfo object.</value>
+        /// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
-		
-		#endregion
+
+        protected override void WriteManifestComponent(XmlWriter writer)
+        {
+            // Start component Element
+            writer.WriteStartElement("component");
+            writer.WriteAttributeString("type", "SkinObject");
+
+            // Write SkinControl Manifest
+            CBO.SerializeObject(this.SkinControl, writer);
+
+            // End component Element
+            writer.WriteEndElement();
+        }
 
         private void ReadLegacyManifest(XPathNavigator legacyManifest, bool processModule)
         {
@@ -80,53 +82,36 @@ namespace DotNetNuke.Services.Installer.Writers
 
             if (processModule)
             {
-                Package.Name = Util.ReadElement(folderNav, "name");
-                Package.FriendlyName = Package.Name;
+                this.Package.Name = Util.ReadElement(folderNav, "name");
+                this.Package.FriendlyName = this.Package.Name;
 
-                //Process legacy controls Node
+                // Process legacy controls Node
                 foreach (XPathNavigator controlNav in folderNav.Select("modules/module/controls/control"))
                 {
-                    SkinControl.ControlKey = Util.ReadElement(controlNav, "key");
-                    SkinControl.ControlSrc = Path.Combine(Path.Combine("DesktopModules", Package.Name.ToLowerInvariant()), Util.ReadElement(controlNav, "src")).Replace("\\", "/");
+                    this.SkinControl.ControlKey = Util.ReadElement(controlNav, "key");
+                    this.SkinControl.ControlSrc = Path.Combine(Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()), Util.ReadElement(controlNav, "src")).Replace("\\", "/");
                     string supportsPartialRendering = Util.ReadElement(controlNav, "supportspartialrendering");
                     if (!string.IsNullOrEmpty(supportsPartialRendering))
                     {
-                        SkinControl.SupportsPartialRendering = bool.Parse(supportsPartialRendering);
+                        this.SkinControl.SupportsPartialRendering = bool.Parse(supportsPartialRendering);
                     }
                 }
             }
-			
-            //Process legacy files Node
+
+            // Process legacy files Node
             foreach (XPathNavigator fileNav in folderNav.Select("files/file"))
             {
                 string fileName = Util.ReadElement(fileNav, "name");
                 string filePath = Util.ReadElement(fileNav, "path");
 
-                AddFile(Path.Combine(filePath, fileName), fileName);
+                this.AddFile(Path.Combine(filePath, fileName), fileName);
             }
-			
-            //Process resource file Node
+
+            // Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
-                AddFile(Util.ReadElement(folderNav, "resourcefile"));
+                this.AddFile(Util.ReadElement(folderNav, "resourcefile"));
             }
         }
-
-		#region "Protected Methods"
-		
-        protected override void WriteManifestComponent(XmlWriter writer)
-        {
-			//Start component Element
-            writer.WriteStartElement("component");
-            writer.WriteAttributeString("type", "SkinObject");
-
-            //Write SkinControl Manifest
-            CBO.SerializeObject(SkinControl, writer);
-
-            //End component Element
-            writer.WriteEndElement();
-        }
-		
-		#endregion
     }
 }

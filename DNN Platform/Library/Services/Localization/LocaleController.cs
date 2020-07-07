@@ -1,54 +1,42 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Installer.Packages;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Localization
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Installer.Packages;
+
     /// <summary>
     /// LocaleContrller provides method to manage all pages with localization content.
     /// </summary>
     /// <remarks>
-    /// Content localization in DotNetNuke will allow you to easily manage your web pages in a primary language 
-    /// and then utilize translators to keep the content synchronized in multiple secondary languages.  
-    /// Whether you are maintaining your site in a single language or dozens of languages, the content localization system 
-    /// will help guide your content editors and translators through the process.  Although content localization required 
+    /// Content localization in DotNetNuke will allow you to easily manage your web pages in a primary language
+    /// and then utilize translators to keep the content synchronized in multiple secondary languages.
+    /// Whether you are maintaining your site in a single language or dozens of languages, the content localization system
+    /// will help guide your content editors and translators through the process.  Although content localization required
     /// extensive changes to the core platform, we have been able to add this new feature while still improving overall system performance.
     /// </remarks>
     public class LocaleController : ComponentBase<ILocaleController, LocaleController>, ILocaleController
     {
-        #region Private Shared Methods
-
-        private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
+        public static bool IsValidCultureName(string name)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
-                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
-                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
-            return locales;
+            return
+                CultureInfo
+                .GetCultures(CultureTypes.SpecificCultures)
+                .Any(c => c.Name == name);
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Determines whether the language can be delete.
@@ -74,6 +62,15 @@ namespace DotNetNuke.Services.Localization
             return locales.Values.Select(locale => new CultureInfo(locale.Code)).ToList();
         }
 
+        private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
+                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
+                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
+            return locales;
+        }
+
         /// <summary>
         /// Gets the current locale for current request to the portal.
         /// </summary>
@@ -85,11 +82,12 @@ namespace DotNetNuke.Services.Localization
 
             if (HttpContext.Current != null && !string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["language"]))
             {
-                locale = GetLocale(HttpContext.Current.Request.QueryString["language"]);
+                locale = this.GetLocale(HttpContext.Current.Request.QueryString["language"]);
             }
+
             return locale ?? ((PortalId == Null.NullInteger)
-                                ? GetLocale(Localization.SystemLocale)
-                                : GetDefaultLocale(PortalId));
+                                ? this.GetLocale(Localization.SystemLocale)
+                                : this.GetDefaultLocale(PortalId));
         }
 
         /// <summary>
@@ -103,13 +101,14 @@ namespace DotNetNuke.Services.Localization
             Locale locale = null;
             if (portal != null)
             {
-                Dictionary<string, Locale> locales = GetLocales(portal.PortalID);
+                Dictionary<string, Locale> locales = this.GetLocales(portal.PortalID);
                 if (locales != null && locales.ContainsKey(portal.DefaultLanguage))
                 {
                     locale = locales[portal.DefaultLanguage];
                 }
             }
-            return locale ?? (GetLocale(Localization.SystemLocale));
+
+            return locale ?? this.GetLocale(Localization.SystemLocale);
         }
 
         /// <summary>
@@ -119,7 +118,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Locale GetLocale(string code)
         {
-            return GetLocale(Null.NullInteger, code);
+            return this.GetLocale(Null.NullInteger, code);
         }
 
         /// <summary>
@@ -130,7 +129,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Locale GetLocale(int portalID, string code)
         {
-            Dictionary<string, Locale> dicLocales = GetLocales(portalID);
+            Dictionary<string, Locale> dicLocales = this.GetLocales(portalID);
             Locale locale = null;
 
             if (dicLocales != null)
@@ -161,7 +160,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Locale GetLocale(int languageID)
         {
-            Dictionary<string, Locale> dicLocales = GetLocales(Null.NullInteger);
+            Dictionary<string, Locale> dicLocales = this.GetLocales(Null.NullInteger);
 
             return (from kvp in dicLocales where kvp.Value.LanguageId == languageID select kvp.Value).FirstOrDefault();
         }
@@ -185,7 +184,8 @@ namespace DotNetNuke.Services.Localization
                 {
                     locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
                 }
-            return locales;
+
+                return locales;
             }
 
             return null;
@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Dictionary<string, Locale> GetPublishedLocales(int portalID)
         {
-            return GetLocales(portalID).Where(kvp => kvp.Value.IsPublished).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            return this.GetLocales(portalID).Where(kvp => kvp.Value.IsPublished).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
         /// <summary>
@@ -214,20 +214,20 @@ namespace DotNetNuke.Services.Localization
             try
             {
                 bool enabled = false;
-                Dictionary<string, Locale> dicLocales = GetLocales(portalId);
+                Dictionary<string, Locale> dicLocales = this.GetLocales(portalId);
 
-                //if ((!dicLocales.ContainsKey(localeCode)))
+                // if ((!dicLocales.ContainsKey(localeCode)))
                 string locale = localeCode;
                 if (dicLocales.FirstOrDefault(x => x.Key.ToLower() == locale.ToLower()).Key == null)
                 {
-                    //if localecode is neutral (en, es,...) try to find a locale that has the same language
+                    // if localecode is neutral (en, es,...) try to find a locale that has the same language
                     if (localeCode.IndexOf("-", StringComparison.Ordinal) == -1)
                     {
                         foreach (string strLocale in dicLocales.Keys)
                         {
                             if (strLocale.Split('-')[0].ToLower() == localeCode.ToLower())
                             {
-                                //set the requested _localecode to the full locale
+                                // set the requested _localecode to the full locale
                                 localeCode = strLocale;
                                 enabled = true;
                                 break;
@@ -239,11 +239,12 @@ namespace DotNetNuke.Services.Localization
                 {
                     enabled = true;
                 }
+
                 return enabled;
             }
             catch (Exception ex)
             {
-                //item could not be retrieved  or error
+                // item could not be retrieved  or error
                 Exceptions.Exceptions.LogException(ex);
                 return false;
             }
@@ -311,15 +312,5 @@ namespace DotNetNuke.Services.Localization
                 }
             }
         }
-
-        public static bool IsValidCultureName(string name)
-        {
-            return
-                CultureInfo
-                .GetCultures(CultureTypes.SpecificCultures)
-                .Any(c => c.Name == name);
-        }
-
-        #endregion
     }
 }

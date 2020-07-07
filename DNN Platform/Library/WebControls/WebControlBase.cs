@@ -1,41 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+
     public abstract class WebControlBase : WebControl
     {
-		#region "Private Members"
-
-        private string _styleSheetUrl = "";
-        private string _theme = "";
-		
-		#endregion
-
-		#region "Public Properties"
+        private string _styleSheetUrl = string.Empty;
+        private string _theme = string.Empty;
 
         public string Theme
         {
             get
             {
-                return _theme;
+                return this._theme;
             }
+
             set
             {
-                _theme = value;
+                this._theme = value;
             }
         }
 
@@ -51,18 +41,19 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if ((_styleSheetUrl.StartsWith("~")))
+                if (this._styleSheetUrl.StartsWith("~"))
                 {
-                    return Globals.ResolveUrl(_styleSheetUrl);
+                    return Globals.ResolveUrl(this._styleSheetUrl);
                 }
                 else
                 {
-                    return _styleSheetUrl;
+                    return this._styleSheetUrl;
                 }
             }
+
             set
             {
-                _styleSheetUrl = value;
+                this._styleSheetUrl = value;
             }
         }
 
@@ -70,11 +61,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-            	return Globals.IsHostTab(PortalSettings.ActiveTab.TabID);
+                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
         {
             get
@@ -82,8 +74,6 @@ namespace DotNetNuke.UI.WebControls
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-		
-		#endregion
 
         public abstract string HtmlOutput { get; }
 
@@ -99,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected override void RenderContents(HtmlTextWriter output)
         {
-            output.Write(HtmlOutput);
+            output.Write(this.HtmlOutput);
         }
     }
 }

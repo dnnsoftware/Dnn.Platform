@@ -136,7 +136,7 @@
     <Compile Include="Components\Pages\PageUrlsController.cs" />
     <Compile Include="Components\Pages\Prompt\Commands\DeletePage.cs" />
     <Compile Include="Components\Pages\Prompt\Commands\GetPage.cs" />
-    <Compile Include="Components\Pages\Prompt\Commands\GotoPage.cs" />
+    <Compile Include="Components\Pages\Prompt\Commands\Goto.cs" />
     <Compile Include="Components\Pages\Prompt\Commands\ListPages.cs" />
     <Compile Include="Components\Pages\Prompt\Commands\NewPage.cs" />
     <Compile Include="Components\Pages\Prompt\Commands\SetPage.cs" />
@@ -213,7 +213,7 @@
     <Compile Include="Components\Security\Attributes\AuthProviderSupportedAttribute.cs" />
     <Compile Include="Components\Security\Attributes\CultureCodeExistAttribute.cs" />
     <Compile Include="Components\Security\Attributes\RegistrationFieldsAttribute.cs" />
-    <Compile Include="Components\Security\Attributes\RegistrationFormTypeOptionAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\RegistrationFormTypeOption.cs" />
     <Compile Include="Components\Security\Attributes\TabExistAttribute.cs" />
     <Compile Include="Components\Security\Attributes\UserEmailAsUsernameAttribute.cs" />
     <Compile Include="Components\Security\Attributes\UserExistAttribute.cs" />
@@ -252,6 +252,7 @@
     <Compile Include="Components\Servers\DatabaseServer\DbFileInfo.cs" />
     <Compile Include="Components\Servers\DatabaseServer\DbInfo.cs" />
     <Compile Include="Components\Servers\Log\LogController.cs" />
+    <Compile Include="Components\Servers\Log\LogFile.cs" />
     <Compile Include="Components\Servers\PerformanceSettings\PerformanceController.cs" />
     <Compile Include="Components\Servers\WebServer\ServerInfo.cs" />
     <Compile Include="Components\SiteGroups\IManagePortalGroups.cs" />
@@ -270,11 +271,11 @@
     <Compile Include="Components\Sites\SitesController.cs" />
     <Compile Include="Components\SqlConsole\AdHocSqlQuery.cs" />
     <Compile Include="Components\SqlConsole\ISqlQueryController.cs" />
-    <Compile Include="Components\SqlConsole\SqlConsoleController.cs" />
     <Compile Include="Components\SqlConsole\SqlConsoleQuery.cs" />
+    <Compile Include="Components\SqlConsole\SqlQueryController.cs" />
     <Compile Include="Components\TaskScheduler\Constants.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Commands\GetTask.cs" />
-    <Compile Include="Components\TaskScheduler\Prompt\Commands\ListTask.cs" />
+    <Compile Include="Components\TaskScheduler\Prompt\Commands\ListTasks.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Commands\SetTask.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Models\TaskModel.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Models\TaskModelBase.cs" />
@@ -338,19 +339,13 @@
     <Compile Include="Data\IUsersDataService.cs" />
     <Compile Include="Data\UsersDataService.cs" />
     <Compile Include="MenuControllers\AdminMenuController.cs" />
-    <Compile Include="MenuControllers\ConfigConsoleMenuController.cs" />
-    <Compile Include="MenuControllers\CssEditorMenuController.cs" />
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
-    <Compile Include="MenuControllers\LicensingMenuController.cs" />
+    <Compile Include="MenuControllers\HostMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
     <Compile Include="MenuControllers\PromptMenuController.cs" />
     <Compile Include="MenuControllers\SecurityMenuController.cs" />
     <Compile Include="MenuControllers\ServersMenuController.cs" />
-    <Compile Include="MenuControllers\SiteImportExportMenuController.cs" />
     <Compile Include="MenuControllers\SiteSettingsMenuController.cs" />
-    <Compile Include="MenuControllers\SitesMenuController.cs" />
-    <Compile Include="MenuControllers\SqlConsoleMenuController.cs" />
-    <Compile Include="MenuControllers\TaskSchedulerMenuController.cs" />
     <Compile Include="MenuControllers\ThemeMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminLogsController.cs" />
@@ -393,21 +388,22 @@
     <Compile Include="Services\Dto\SendTestEmailRequest.cs" />
     <Compile Include="Services\Dto\SeoUrl.cs" />
     <Compile Include="Services\Dto\SettingsDto.cs" />
+    <Compile Include="Services\Dto\SitemapSettingsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\CreateLanguagePackRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\FileDto.cs" />
     <Compile Include="Services\Dto\SiteSettings\LanguageTabDto.cs" />
     <Compile Include="Services\Dto\SiteSettings\LocalizationEntry.cs" />
     <Compile Include="Services\Dto\SiteSettings\LocalizationProgress.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateBasicSearchSettingsRequest.cs" />
-    <Compile Include="Services\Dto\SiteSettings\UpdateDefaultPagesSettings.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateDefaultPagesSettingsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateIgnoreWordsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateLanguageRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateLanguageSettingsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateListEntryOrdersRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateListEntryRequest.cs" />
-    <Compile Include="Services\Dto\SiteSettings\UpdateMessagingSettings.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateMessagingSettingsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateOtherSettingsRequest.cs" />
-    <Compile Include="Services\Dto\SiteSettings\UpdatePrivacySettings.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdatePrivacySettingsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateProfilePropertyLocalizationRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateProfilePropertyOrdersRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateProfilePropertyRequest.cs" />
@@ -435,7 +431,6 @@
     <Compile Include="Services\Dto\UpdateRegistrationSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSitemapProviderRequest.cs" />
-    <Compile Include="Services\Dto\UpdateSitemapSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
     <Compile Include="Services\Dto\UpdateSslSettingsRequest.cs" />
@@ -731,10 +726,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="packages.config" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="admin\personaBar\Dnn.SiteGroups\scripts\bundles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

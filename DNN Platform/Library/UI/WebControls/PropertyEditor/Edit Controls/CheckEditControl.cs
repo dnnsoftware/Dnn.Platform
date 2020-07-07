@@ -1,17 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Web.UI;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -29,7 +24,7 @@ namespace DotNetNuke.UI.WebControls
     {
         public CheckEditControl()
         {
-            SystemType = "System.Boolean";
+            this.SystemType = "System.Boolean";
         }
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -40,39 +35,41 @@ namespace DotNetNuke.UI.WebControls
             {
                 boolValue = true;
             }
-            if (!BooleanValue.Equals(boolValue))
+
+            if (!this.BooleanValue.Equals(boolValue))
             {
-                Value = boolValue;
+                this.Value = boolValue;
                 return true;
             }
+
             return false;
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (Page != null && EditMode == PropertyEditorMode.Edit)
+            if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            if ((BooleanValue))
+            if (this.BooleanValue)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, "1");
             }
             else
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, "");
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, string.Empty);
             }
 
             writer.AddAttribute("onclick", "this.value = this.checked ? '1' : '';");
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
@@ -80,7 +77,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            if ((BooleanValue))
+            if (this.BooleanValue)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }

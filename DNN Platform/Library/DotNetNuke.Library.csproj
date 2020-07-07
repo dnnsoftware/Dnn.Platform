@@ -815,6 +815,7 @@
     <Compile Include="Services\Search\Entities\SortFields.cs" />
     <Compile Include="Services\Search\Entities\SearchStopWords.cs" />
     <Compile Include="Services\Search\Entities\SynonymsGroup.cs" />
+    <Compile Include="Services\Search\IndexingProviderBase.cs" />
     <Compile Include="Services\Search\Internals\Constants.cs" />
     <Compile Include="Services\Search\Internals\ISearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\LuceneResults.cs" />
@@ -1744,6 +1745,9 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
@@ -1871,6 +1875,10 @@
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
       <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>

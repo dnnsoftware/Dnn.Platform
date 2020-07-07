@@ -1,19 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Web;
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Log.EventLog;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.OutputCache.Providers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Log.EventLog;
+
     /// <summary>
     /// FileProvider implements the OutputCachingProvider for file storage.
     /// </summary>
@@ -25,7 +26,37 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
-        #region Private Methods
+        public override int GetItemCount(int tabId)
+        {
+            return GetCachedItemCount(tabId);
+        }
+
+        public override byte[] GetOutput(int tabId, string cacheKey)
+        {
+            string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
+            if (!File.Exists(cachedOutput))
+            {
+                return null;
+            }
+
+            var fInfo = new FileInfo(cachedOutput);
+            long numBytes = fInfo.Length;
+            using (var fStream = new FileStream(cachedOutput, FileMode.Open, FileAccess.Read))
+            using (var br = new BinaryReader(fStream))
+            {
+                return br.ReadBytes(Convert.ToInt32(numBytes));
+            }
+        }
+
+        internal static string GetAttribFileName(int tabId, string cacheKey)
+        {
+            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
+        }
+
+        internal static int GetCachedItemCount(int tabId)
+        {
+            return Directory.GetFiles(GetCacheFolder(), $"{tabId}_*{DataFileExtension}").Length;
+        }
 
         private static string GetCacheFolder()
         {
@@ -48,12 +79,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
             var portalInfo = PortalController.Instance.GetPortal(portalId);
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
-            
 
-            if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))
+            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (!(Directory.Exists(cacheFolder)))
+                if (!Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
                 }
@@ -62,7 +92,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             using (var writerLock = CacheFolderPath.GetWriteLock())
             {
                 CacheFolderPath.Add(portalId, cacheFolder);
-                
             }
 
             return cacheFolder;
@@ -101,7 +130,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 int i = 0;
                 foreach (string file in Directory.GetFiles(folder, "*.resources"))
                 {
-                    if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
+                    if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                     {
                         filesNotDeleted.Append(file + ";");
                     }
@@ -110,6 +139,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                         i += 1;
                     }
                 }
+
                 if (filesNotDeleted.Length > 0)
                 {
                     throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
@@ -119,20 +149,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 Exceptions.Exceptions.LogException(ex);
             }
-        }
-
-        #endregion
-
-        #region Friend Methods
-
-        internal static string GetAttribFileName(int tabId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
-        }
-
-        internal static int GetCachedItemCount(int tabId)
-        {
-            return Directory.GetFiles(GetCacheFolder(), $"{tabId}_*{DataFileExtension}").Length;
         }
 
         internal static string GetCachedOutputFileName(int tabId, string cacheKey)
@@ -145,31 +161,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return string.Concat(GetCacheFolder(), cacheKey, TempFileExtension);
         }
 
-        #endregion
-
-        #region Abstract Method Implementation
-
-        public override int GetItemCount(int tabId)
-        {
-            return GetCachedItemCount(tabId);
-        }
-
-        public override byte[] GetOutput(int tabId, string cacheKey)
-        {
-            string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
-            if (!(File.Exists(cachedOutput)))
-            {
-                return null;
-            }
-            var fInfo = new FileInfo(cachedOutput);
-            long numBytes = fInfo.Length;
-            using (var fStream = new FileStream(cachedOutput, FileMode.Open, FileAccess.Read))
-            using (var br = new BinaryReader(fStream))
-            {
-                return br.ReadBytes(Convert.ToInt32(numBytes));
-            }
-        }
-
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
         {
             return new FileResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
@@ -178,9 +169,9 @@ namespace DotNetNuke.Services.OutputCache.Providers
         public override void PurgeCache(int portalId)
         {
             string cacheFolder = GetCacheFolder(portalId);
-            if (!(string.IsNullOrEmpty(cacheFolder)))
+            if (!string.IsNullOrEmpty(cacheFolder))
             {
-                PurgeCache(cacheFolder);
+                this.PurgeCache(cacheFolder);
             }
         }
 
@@ -190,14 +181,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
             int i = 0;
             string cacheFolder = GetCacheFolder(portalId);
 
-            if (!(string.IsNullOrEmpty(cacheFolder)))
+            if (!string.IsNullOrEmpty(cacheFolder))
             {
                 foreach (string file in Directory.GetFiles(cacheFolder, "*" + AttribFileExtension))
                 {
-                    if (IsFileExpired(file))
+                    if (this.IsFileExpired(file))
                     {
                         string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
-                        if (!(FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200)))
+                        if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                         {
                             filesNotDeleted.Append(fileToDelete + ";");
                         }
@@ -207,6 +198,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                         }
                     }
                 }
+
                 if (filesNotDeleted.Length > 0)
                 {
                     throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
@@ -225,11 +217,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     int i = 0;
                     string cacheFolder = GetCacheFolder(portals[tabId]);
 
-                    if (!(string.IsNullOrEmpty(cacheFolder)))
+                    if (!string.IsNullOrEmpty(cacheFolder))
                     {
                         foreach (string file in Directory.GetFiles(cacheFolder, string.Concat(tabId, "_*.*")))
                         {
-                            if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
+                            if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                             {
                                 filesNotDeleted.Append(string.Concat(file, ";"));
                             }
@@ -238,6 +230,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                                 i += 1;
                             }
                         }
+
                         if (filesNotDeleted.Length > 0)
                         {
                             var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
@@ -248,7 +241,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                                 PropertyValue =
                                     string.Format(
                                         "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}",
-                                        i, filesNotDeleted)
+                                        i, filesNotDeleted),
                             };
                             var properties = new LogProperties { logDetail };
                             log.LogProperties = properties;
@@ -290,10 +283,10 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             catch (Exception ex)
             {
-                // TODO: Need to implement multi-threading.  
+                // TODO: Need to implement multi-threading.
                 // The current code is not thread safe and threw error if two threads tried creating cache file
                 // A thread could create a file between the time another thread deleted it and tried to create new cache file.
-                // This would result in a system.IO.IOException.  Also, there was no error handling in place so the 
+                // This would result in a system.IO.IOException.  Also, there was no error handling in place so the
                 // Error would bubble up to the user and provide details on the file structure of the site.
                 Exceptions.Exceptions.LogException(ex);
             }
@@ -324,9 +317,8 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 Exceptions.Exceptions.LogException(ex);
             }
+
             return foundFile;
         }
-
-        #endregion
     }
 }

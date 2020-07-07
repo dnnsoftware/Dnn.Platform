@@ -1,33 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Url.FriendlyUrl
 {
+    using System;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+
     public abstract class FriendlyUrlProvider
     {
-		#region "Shared/Static Methods"
-
-        //return the provider
+        // return the provider
         public static FriendlyUrlProvider Instance()
         {
             return ComponentFactory.GetComponent<FriendlyUrlProvider>();
         }
-		
-		#endregion
-
-		#region "Abstract Methods"
 
         public abstract string FriendlyUrl(TabInfo tab, string path);
 
@@ -38,11 +27,9 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         {
             return this.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
-        
+
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings);
 
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias);
-		
-		#endregion
     }
 }

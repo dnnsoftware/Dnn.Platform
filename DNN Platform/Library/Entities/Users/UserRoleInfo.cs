@@ -1,23 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Roles;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security.Roles;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      UserRoleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The UserRoleInfo class provides Business Layer model for a User/Role
+    /// The UserRoleInfo class provides Business Layer model for a User/Role.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -25,8 +24,6 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserRoleInfo : RoleInfo
     {
-        #region Public Properties
-
         public int UserRoleID { get; set; }
 
         public int UserID { get; set; }
@@ -40,30 +37,28 @@ namespace DotNetNuke.Entities.Users
         public DateTime ExpiryDate { get; set; }
 
         public bool IsOwner { get; set; }
-        
+
         public bool IsTrialUsed { get; set; }
 
         public bool Subscribed { get; set; }
 
-        #endregion
-
         public override void Fill(IDataReader dr)
         {
-			//Fill base class properties
+            // Fill base class properties
             base.Fill(dr);
 
-			//Fill this class properties
-            UserRoleID = Null.SetNullInteger(dr["UserRoleID"]);
-            UserID = Null.SetNullInteger(dr["UserID"]);
-            FullName = Null.SetNullString(dr["DisplayName"]);
-            Email = Null.SetNullString(dr["Email"]);
-            EffectiveDate = Null.SetNullDateTime(dr["EffectiveDate"]);
-            ExpiryDate = Null.SetNullDateTime(dr["ExpiryDate"]);
-            IsOwner = Null.SetNullBoolean(dr["IsOwner"]);
-            IsTrialUsed = Null.SetNullBoolean(dr["IsTrialUsed"]);
-            if (UserRoleID > Null.NullInteger)
+            // Fill this class properties
+            this.UserRoleID = Null.SetNullInteger(dr["UserRoleID"]);
+            this.UserID = Null.SetNullInteger(dr["UserID"]);
+            this.FullName = Null.SetNullString(dr["DisplayName"]);
+            this.Email = Null.SetNullString(dr["Email"]);
+            this.EffectiveDate = Null.SetNullDateTime(dr["EffectiveDate"]);
+            this.ExpiryDate = Null.SetNullDateTime(dr["ExpiryDate"]);
+            this.IsOwner = Null.SetNullBoolean(dr["IsOwner"]);
+            this.IsTrialUsed = Null.SetNullBoolean(dr["IsTrialUsed"]);
+            if (this.UserRoleID > Null.NullInteger)
             {
-                Subscribed = true;
+                this.Subscribed = true;
             }
         }
     }

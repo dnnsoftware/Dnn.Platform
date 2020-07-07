@@ -1,40 +1,34 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Admin.Modules
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class ViewSource : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public ViewSource()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Private Members
 
         protected bool CanEditSource
         {
             get
             {
-                return Request.IsLocal;
+                return this.Request.IsLocal;
             }
         }
 
@@ -43,10 +37,11 @@ namespace DotNetNuke.Modules.Admin.Modules
             get
             {
                 var moduleControlId = Null.NullInteger;
-                if ((Request.QueryString["ctlid"] != null))
+                if (this.Request.QueryString["ctlid"] != null)
                 {
-                    moduleControlId = Int32.Parse(Request.QueryString["ctlid"]);
+                    moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
                 }
+
                 return moduleControlId;
             }
         }
@@ -55,42 +50,76 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
         }
 
-        #endregion
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
-        #region Private Methods
+            this.cboFile.SelectedIndexChanged += this.OnFileIndexChanged;
+            this.cmdUpdate.Click += this.OnUpdateClick;
+
+            if (this.Page.IsPostBack == false)
+            {
+                this.cmdCancel.NavigateUrl = this.ReturnURL;
+
+                var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
+                if (objModuleControl != null)
+                {
+                    this.BindFiles(objModuleControl.ControlSrc);
+                }
+
+                if (this.Request.UrlReferrer != null)
+                {
+                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
+                }
+                else
+                {
+                    this.ViewState["UrlReferrer"] = string.Empty;
+                }
+            }
+
+            this.cmdUpdate.Visible = this.CanEditSource;
+            this.txtSource.Enabled = this.CanEditSource;
+        }
+
+        protected void OnFileIndexChanged(object sender, EventArgs e)
+        {
+            this.DisplayFile();
+        }
 
         private void BindFiles(string controlSrc)
         {
-            cboFile.Items.Clear();
-            //cboFile.Items.Add(new ListItem(Localization.GetString("None_Specified"), "None"));
-            //cboFile.Items.Add(new ListItem("User Control", "UserControl"));
-            cboFile.AddItem(Localization.GetString("None_Specified"), "None");
-            cboFile.AddItem("User Control", "UserControl");
+            this.cboFile.Items.Clear();
 
-            var srcPhysicalPath = Server.MapPath(controlSrc);
+            // cboFile.Items.Add(new ListItem(Localization.GetString("None_Specified"), "None"));
+            // cboFile.Items.Add(new ListItem("User Control", "UserControl"));
+            this.cboFile.AddItem(Localization.GetString("None_Specified"), "None");
+            this.cboFile.AddItem("User Control", "UserControl");
+
+            var srcPhysicalPath = this.Server.MapPath(controlSrc);
             if (File.Exists(srcPhysicalPath + ".vb") || File.Exists(srcPhysicalPath + ".cs"))
             {
-                //cboFile.Items.Add(new ListItem("Code File", "CodeFile"));
-                cboFile.AddItem("Code File", "CodeFile");
+                // cboFile.Items.Add(new ListItem("Code File", "CodeFile"));
+                this.cboFile.AddItem("Code File", "CodeFile");
             }
+
             var fileName = Path.GetFileName(srcPhysicalPath);
             var folder = Path.GetDirectoryName(srcPhysicalPath);
             if (File.Exists(folder + "\\App_LocalResources\\" + fileName + ".resx"))
             {
-                //cboFile.Items.Add(new ListItem("Resource File", "ResourceFile"));
-                cboFile.AddItem("Resource File", "ResourceFile");
+                // cboFile.Items.Add(new ListItem("Resource File", "ResourceFile"));
+                this.cboFile.AddItem("Resource File", "ResourceFile");
             }
         }
 
         private string GetSourceFileName(string controlSrc)
         {
-            var srcPhysicalPath = Server.MapPath(controlSrc);
+            var srcPhysicalPath = this.Server.MapPath(controlSrc);
             var srcFile = Null.NullString;
-            switch (cboFile.SelectedValue)
+            switch (this.cboFile.SelectedValue)
             {
                 case "UserControl":
                     srcFile = srcPhysicalPath;
@@ -104,6 +133,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     {
                         srcFile = srcPhysicalPath + ".cs";
                     }
+
                     break;
                 case "ResourceFile":
                     var fileName = Path.GetFileName(srcPhysicalPath);
@@ -111,104 +141,66 @@ namespace DotNetNuke.Modules.Admin.Modules
                     srcFile = folder + "\\App_LocalResources\\" + fileName + ".resx";
                     break;
             }
+
             return srcFile;
         }
 
         private void DisplayFile()
         {
-            var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
+            var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
             if (objModuleControl != null)
             {
                 var srcVirtualPath = objModuleControl.ControlSrc;
                 var srcFile = Null.NullString;
-                var displaySource = cboFile.SelectedValue != "None";
+                var displaySource = this.cboFile.SelectedValue != "None";
 
                 if (displaySource)
                 {
-                    srcFile = GetSourceFileName(srcVirtualPath);
-                    lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", LocalResourceFile), srcFile);
+                    srcFile = this.GetSourceFileName(srcVirtualPath);
+                    this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), srcFile);
 
                     var objStreamReader = File.OpenText(srcFile);
-                    txtSource.Text = objStreamReader.ReadToEnd();
+                    this.txtSource.Text = objStreamReader.ReadToEnd();
                     objStreamReader.Close();
                 }
-                lblSourceFile.Visible = displaySource;
-                trSource.Visible = displaySource;
+
+                this.lblSourceFile.Visible = displaySource;
+                this.trSource.Visible = displaySource;
             }
-        }
-
-        #endregion
-
-        #region Event Handlers
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            cboFile.SelectedIndexChanged += OnFileIndexChanged;
-            cmdUpdate.Click += OnUpdateClick;
-
-            if (Page.IsPostBack == false)
-            {
-                cmdCancel.NavigateUrl = ReturnURL;
-
-                var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
-                if (objModuleControl != null)
-                {
-                    BindFiles(objModuleControl.ControlSrc);
-                }
-                if (Request.UrlReferrer != null)
-                {
-                    ViewState["UrlReferrer"] = Convert.ToString(Request.UrlReferrer);
-                }
-                else
-                {
-                    ViewState["UrlReferrer"] = "";
-                }
-            }
-            cmdUpdate.Visible = CanEditSource;
-            txtSource.Enabled = CanEditSource;
-        }
-
-        protected void OnFileIndexChanged(object sender, EventArgs e)
-        {
-            DisplayFile();
         }
 
         private void OnUpdateClick(object sender, EventArgs e)
         {
             try
             {
-                if (cboFile.SelectedValue == "None")
+                if (this.cboFile.SelectedValue == "None")
                 {
-                    //No file type selected
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoFileTypeSelected", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    // No file type selected
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoFileTypeSelected", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 }
                 else
                 {
-                    var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
+                    var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
                     if (objModuleControl != null)
                     {
                         var srcVirtualPath = objModuleControl.ControlSrc;
-                        var srcPhysicalPath = GetSourceFileName(srcVirtualPath);
+                        var srcPhysicalPath = this.GetSourceFileName(srcVirtualPath);
                         if (File.Exists(srcPhysicalPath))
                         {
                             File.SetAttributes(srcPhysicalPath, FileAttributes.Normal);
                             var objStream = File.CreateText(srcPhysicalPath);
-                            objStream.WriteLine(txtSource.Text);
+                            objStream.WriteLine(this.txtSource.Text);
                             objStream.Close();
                         }
                     }
-                    Response.Redirect(ReturnURL, true);
+
+                    this.Response.Redirect(this.ReturnURL, true);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

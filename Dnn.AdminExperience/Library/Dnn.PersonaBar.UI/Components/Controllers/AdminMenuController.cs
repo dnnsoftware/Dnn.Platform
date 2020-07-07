@@ -1,37 +1,33 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.UI.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+
     public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
         private IDictionary<string, IList<string>> _knownPages;
 
-        protected override Func<IAdminMenuController> GetFactory()
-        {
-            return () => new AdminMenuController();
-        }
-
         public void CreateLinkMenu(TabInfo tab)
         {
-            if (!ValidateTab(tab))
+            if (!this.ValidateTab(tab))
             {
                 return;
             }
@@ -53,9 +49,9 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
                 Controller = "Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI",
                 ResourceKey = tab.LocalizedTabName,
                 ParentId = PersonaBarRepository.Instance.GetMenuItem("Manage").MenuId,
-                Order = tab.IsSuperTab ? 300 : 200, //show host menus after admin menus
+                Order = tab.IsSuperTab ? 300 : 200, // show host menus after admin menus
                 AllowHost = true,
-                Enabled = true
+                Enabled = true,
             };
 
             PersonaBarRepository.Instance.SaveMenuItem(menuItem);
@@ -77,6 +73,11 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             PersonaBarRepository.Instance.DeleteMenuItem(identifier);
         }
 
+        protected override Func<IAdminMenuController> GetFactory()
+        {
+            return () => new AdminMenuController();
+        }
+
         private bool ValidateTab(TabInfo tab)
         {
             if (tab.IsDeleted || tab.DisableLink || !tab.IsVisible)
@@ -88,7 +89,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var portalId = tab.PortalID;
             var tabName = tab.TabName;
 
-            var knownPages = GetKnownPages(type);
+            var knownPages = this.GetKnownPages(type);
             if (knownPages.Contains(tabName, StringComparer.InvariantCultureIgnoreCase))
             {
                 return false;
@@ -110,14 +111,14 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
         private IList<string> GetKnownPages(string type)
         {
-            if (_knownPages == null)
+            if (this._knownPages == null)
             {
-                _knownPages = new Dictionary<string, IList<string>>();
+                this._knownPages = new Dictionary<string, IList<string>>();
             }
 
-            if (_knownPages.ContainsKey(type))
+            if (this._knownPages.ContainsKey(type))
             {
-                return _knownPages[type];
+                return this._knownPages[type];
             }
 
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
@@ -125,7 +126,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var xmlDocument = new XmlDocument { XmlResolver = null };
             xmlDocument.Load(dataPath);
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();
-            _knownPages.Add(type, pages);
+            this._knownPages.Add(type, pages);
 
             return pages;
         }

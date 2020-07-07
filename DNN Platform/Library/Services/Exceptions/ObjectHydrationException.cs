@@ -1,39 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Exceptions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
+
     public class ObjectHydrationException : BasePortalException
     {
         private List<string> _Columns;
         private Type _Type;
 
-        public ObjectHydrationException(string message, Exception innerException) : base(message, innerException)
+        public ObjectHydrationException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
-        public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr) : base(message, innerException)
+        public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr)
+            : base(message, innerException)
         {
-            _Type = type;
-            _Columns = new List<string>();
+            this._Type = type;
+            this._Columns = new List<string>();
             foreach (DataRow row in dr.GetSchemaTable().Rows)
             {
-                _Columns.Add(row["ColumnName"].ToString());
+                this._Columns.Add(row["ColumnName"].ToString());
             }
         }
 
-        protected ObjectHydrationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ObjectHydrationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -41,11 +39,12 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return _Columns;
+                return this._Columns;
             }
+
             set
             {
-                _Columns = value;
+                this._Columns = value;
             }
         }
 
@@ -53,11 +52,12 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return _Type;
+                return this._Type;
             }
+
             set
             {
-                _Type = value;
+                this._Type = value;
             }
         }
 
@@ -66,12 +66,13 @@ namespace DotNetNuke.Services.Exceptions
             get
             {
                 string _Message = base.Message;
-                _Message += " Expecting - " + Type + ".";
+                _Message += " Expecting - " + this.Type + ".";
                 _Message += " Returned - ";
-                foreach (string columnName in Columns)
+                foreach (string columnName in this.Columns)
                 {
                     _Message += columnName + ", ";
                 }
+
                 return _Message;
             }
         }

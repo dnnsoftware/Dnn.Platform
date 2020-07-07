@@ -1,13 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Services.Installer.Dependencies
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InvalidDependency signifies a dependency that is always invalid,
-    /// taking the place of dependencies that could not be created
+    /// taking the place of dependencies that could not be created.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -22,14 +22,14 @@ namespace DotNetNuke.Services.Installer.Dependencies
         /// <param name="ErrorMessage">The error message to display.</param>
         public InvalidDependency(string ErrorMessage)
         {
-            _ErrorMessage = ErrorMessage;
+            this._ErrorMessage = ErrorMessage;
         }
 
         public override string ErrorMessage
         {
             get
             {
-                return _ErrorMessage;
+                return this._ErrorMessage;
             }
         }
 

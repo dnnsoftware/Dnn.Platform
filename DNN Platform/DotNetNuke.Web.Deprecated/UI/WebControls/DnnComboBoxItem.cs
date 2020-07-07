@@ -1,43 +1,42 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using DotNetNuke.Services.Localization;
-using Telerik.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using DotNetNuke.Services.Localization;
+    using Telerik.Web.UI;
+
     public class DnnComboBoxItem : RadComboBoxItem
     {
         public DnnComboBoxItem()
         {
-        }       
+        }
 
-        public DnnComboBoxItem(string text) : base(text)
+        public DnnComboBoxItem(string text)
+            : base(text)
         {
         }
 
-        public DnnComboBoxItem(string text, string value) : base(text, value)
+        public DnnComboBoxItem(string text, string value)
+            : base(text, value)
         {
         }
 
-        public string ResourceKey { 
+        public string ResourceKey
+        {
             get
             {
-                if (ViewState["ResourceKey"] != null)
+                if (this.ViewState["ResourceKey"] != null)
                 {
-                    return ViewState["ResourceKey"].ToString();
+                    return this.ViewState["ResourceKey"].ToString();
                 }
 
                 return string.Empty;
             }
+
             set
             {
-                ViewState["ResourceKey"] = value;
+                this.ViewState["ResourceKey"] = value;
             }
         }
 
@@ -45,12 +44,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            if (!string.IsNullOrEmpty(ResourceKey))
+            if (!string.IsNullOrEmpty(this.ResourceKey))
             {
                 string resourceFile = Utilities.GetLocalResourceFile(this);
                 if (!string.IsNullOrEmpty(resourceFile))
                 {
-                    Text = Localization.GetString(ResourceKey, resourceFile);
+                    this.Text = Localization.GetString(this.ResourceKey, resourceFile);
                 }
             }
         }

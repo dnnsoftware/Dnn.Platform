@@ -1,19 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Instrumentation;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.Common
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Instrumentation;
+
     public class IocUtil
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (IocUtil));
-
-        #region IOC helpers
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IocUtil));
 
         /// <summary>
         /// Register a component into the IOC container for later instantiation.
@@ -31,18 +30,24 @@ namespace Dnn.PersonaBar.Library.Common
             {
                 if (!string.IsNullOrEmpty(name))
                 {
-                    name += "." + typeof (TContract).FullName;
+                    name += "." + typeof(TContract).FullName;
                 }
 
                 var component = GetInstanceLocal<TContract>(name);
 
                 if (component != null)
+                {
                     return false;
+                }
 
                 if (string.IsNullOrEmpty(name))
+                {
                     ComponentFactory.RegisterComponent<TContract, TConcrete>();
+                }
                 else
+                {
                     ComponentFactory.RegisterComponent<TContract, TConcrete>(name);
+                }
 
                 return true;
             }
@@ -72,12 +77,18 @@ namespace Dnn.PersonaBar.Library.Common
 
                 var component = GetInstanceLocal<TContract>(name);
                 if (component != null)
+                {
                     return false;
+                }
 
                 if (string.IsNullOrEmpty(name))
+                {
                     ComponentFactory.RegisterComponentInstance<TContract>(instance);
+                }
                 else
+                {
                     ComponentFactory.RegisterComponentInstance<TContract>(name, instance);
+                }
 
                 return true;
             }
@@ -99,19 +110,12 @@ namespace Dnn.PersonaBar.Library.Common
             var instance = GetInstanceLocal<TContract>(name);
             if (instance == null)
             {
-                Logger.WarnFormat("No instance of type '{0}' and name '{1}' is registered in the IOC container.",
-                                  typeof (TContract).FullName, name ?? "<empty>");
+                Logger.WarnFormat(
+                    "No instance of type '{0}' and name '{1}' is registered in the IOC container.",
+                    typeof(TContract).FullName, name ?? "<empty>");
             }
 
             return instance;
-        }
-
-        private static TContract GetInstanceLocal<TContract>(string name)
-            where TContract : class
-        {
-            return string.IsNullOrEmpty(name)
-                ? ComponentFactory.GetComponent<TContract>()
-                : ComponentFactory.GetComponent<TContract>(name);
         }
 
         /// <summary>
@@ -126,6 +130,12 @@ namespace Dnn.PersonaBar.Library.Common
             return instances.Values;
         }
 
-        #endregion
+        private static TContract GetInstanceLocal<TContract>(string name)
+            where TContract : class
+        {
+            return string.IsNullOrEmpty(name)
+                ? ComponentFactory.GetComponent<TContract>()
+                : ComponentFactory.GetComponent<TContract>(name);
+        }
     }
 }

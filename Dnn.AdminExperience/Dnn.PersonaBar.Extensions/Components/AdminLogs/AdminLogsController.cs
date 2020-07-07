@@ -1,54 +1,55 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Text;
-using System.Web;
-using System.Xml;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Mail;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.AdminLogs.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Net.Mail;
+    using System.Net.Mime;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
+
     public class AdminLogsController
     {
         private Dictionary<string, LogTypeInfo> _logTypeDictionary;
 
         private PortalSettings _portalSettings;
 
-        private PortalSettings PortalSettings
-        {
-            get
-            {
-                _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return _portalSettings;
-            }
-        }
-
         protected Dictionary<string, LogTypeInfo> LogTypeDictionary
         {
             get
             {
-                _logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
-                return _logTypeDictionary;
+                this._logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
+                return this._logTypeDictionary;
+            }
+        }
+
+        private PortalSettings PortalSettings
+        {
+            get
+            {
+                this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                return this._portalSettings;
             }
         }
 
         public LogTypeInfo GetMyLogType(string logTypeKey)
         {
             LogTypeInfo logType;
-            LogTypeDictionary.TryGetValue(logTypeKey, out logType);
+            this.LogTypeDictionary.TryGetValue(logTypeKey, out logType);
 
             if (logType == null)
             {
@@ -84,7 +85,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 {
                     str.Append(objLogInfo.Exception);
                 }
-                str.Append("<p>" + Localization.GetString("ServerName",Constants.LocalResourcesFile) +
+                str.Append("<p>" + Localization.GetString("ServerName", Constants.LocalResourcesFile) +
                            HttpUtility.HtmlEncode(objLogInfo.LogServerName) + "</p>");
             }
             return str.ToString();
@@ -97,7 +98,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             //add entry to log recording it was cleared
             EventLogController.Instance.AddLog(Localization.GetString("LogCleared", Constants.LocalResourcesFile),
                                Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
-                               PortalSettings,
+                               this.PortalSettings,
                                -1,
                                EventLogController.EventLogType.ADMIN_ALERT);
         }
@@ -212,15 +213,15 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             if (string.IsNullOrEmpty(subject))
             {
-                subject = PortalSettings.PortalName + @" Exceptions";
+                subject = this.PortalSettings.PortalName + @" Exceptions";
             }
 
             string returnMsg;
             if (Globals.EmailValidatorRegex.IsMatch(fromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
-                var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;
-                var xmlDoc = GetExceptions(logItemIds);
+                var filePath = this.PortalSettings.HomeDirectoryMapPath + tempFileName;
+                var xmlDoc = this.GetExceptions(logItemIds);
                 xmlDoc.Save(filePath);
 
                 var attachments = new List<Attachment>();
@@ -252,8 +253,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return returnMsg;
         }
 
-        #region Private Methods
-
         private XmlDocument GetExceptions(IEnumerable<string> logIds)
         {
             var objXml = new XmlDocument { XmlResolver = null };
@@ -269,7 +268,5 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             }
             return objXml;
         }
-
-        #endregion
     }
 }

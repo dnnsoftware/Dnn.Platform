@@ -1,38 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Journal.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security;
+
     public class InternalJournalControllerImpl : IInternalJournalController
     {
         private readonly IJournalDataService _dataService;
 
-        #region Constructors
-
         public InternalJournalControllerImpl()
         {
-            _dataService = JournalDataService.Instance;
+            this._dataService = JournalDataService.Instance;
         }
-
-        #endregion
 
         public IList<JournalItem> GetJournalItemsByProfile(int portalId, int moduleId, int currentUserId, int profileId,
                                                            int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(_dataService.Journal_ListForProfile(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForProfile(portalId, moduleId, currentUserId,
                                                                                     profileId, rowIndex, maxRows));
         }
 
@@ -40,7 +31,7 @@ namespace DotNetNuke.Services.Journal.Internal
                                                          int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(_dataService.Journal_ListForGroup(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForGroup(portalId, moduleId, currentUserId,
                                                                                   groupId, rowIndex, maxRows));
         }
 
@@ -48,18 +39,18 @@ namespace DotNetNuke.Services.Journal.Internal
                                                   int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(_dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
                                                                                     rowIndex, maxRows));
         }
-        
+
         public void DeleteFilters(int portalId, int moduleId)
         {
-            _dataService.Journal_TypeFilters_Delete(portalId, moduleId);
+            this._dataService.Journal_TypeFilters_Delete(portalId, moduleId);
         }
 
         public void SaveFilters(int portalId, int moduleId, int journalTypeId)
         {
-            _dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);
+            this._dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);
         }
     }
 }

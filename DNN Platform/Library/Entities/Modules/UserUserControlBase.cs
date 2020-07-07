@@ -1,22 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 :  DotNetNuke
+    /// Project  :  DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class	 :  UserUserControlBase
+    /// Class    :  UserUserControlBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserUserControlBase class defines a custom base class for the User Control.
@@ -26,193 +21,189 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public class UserUserControlBase : UserModuleBase
     {
-        #region Delegates
         public delegate void UserCreatedEventHandler(object sender, UserCreatedEventArgs e);
+
         public delegate void UserDeletedEventHandler(object sender, UserDeletedEventArgs e);
+
         public delegate void UserRestoredEventHandler(object sender, UserRestoredEventArgs e);
+
         public delegate void UserRemovedEventHandler(object sender, UserRemovedEventArgs e);
+
         public delegate void UserUpdateErrorEventHandler(object sender, UserUpdateErrorArgs e);
-        #endregion
 
-        #region "Events"
         public event UserCreatedEventHandler UserCreated;
-        public event UserCreatedEventHandler UserCreateCompleted;
-        public event UserDeletedEventHandler UserDeleted;
-        public event UserUpdateErrorEventHandler UserDeleteError;
-        public event UserRestoredEventHandler UserRestored;
-        public event UserUpdateErrorEventHandler UserRestoreError;
-        public event UserRemovedEventHandler UserRemoved;
-        public event UserUpdateErrorEventHandler UserRemoveError;
-        public event EventHandler UserUpdated;
-        public event EventHandler UserUpdateCompleted;
-        public event UserUpdateErrorEventHandler UserUpdateError;
-        #endregion
 
-        #region "Event Methods"
+        public event UserCreatedEventHandler UserCreateCompleted;
+
+        public event UserDeletedEventHandler UserDeleted;
+
+        public event UserUpdateErrorEventHandler UserDeleteError;
+
+        public event UserRestoredEventHandler UserRestored;
+
+        public event UserUpdateErrorEventHandler UserRestoreError;
+
+        public event UserRemovedEventHandler UserRemoved;
+
+        public event UserUpdateErrorEventHandler UserRemoveError;
+
+        public event EventHandler UserUpdated;
+
+        public event EventHandler UserUpdateCompleted;
+
+        public event UserUpdateErrorEventHandler UserUpdateError;
+
+        protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserCreateCompleted Event
+        /// Raises the UserCreateCompleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserCreateCompleted(UserCreatedEventArgs e)
         {
-            if (UserCreateCompleted != null)
+            if (this.UserCreateCompleted != null)
             {
-                UserCreateCompleted(this, e);
+                this.UserCreateCompleted(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserCreated Event
+        /// Raises the UserCreated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserCreated(UserCreatedEventArgs e)
         {
-            if (UserCreated != null)
+            if (this.UserCreated != null)
             {
-                UserCreated(this, e);
+                this.UserCreated(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserDeleted Event
+        /// Raises the UserDeleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserDeleted(UserDeletedEventArgs e)
         {
-            if (UserDeleted != null)
+            if (this.UserDeleted != null)
             {
-                UserDeleted(this, e);
+                this.UserDeleted(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserDeleteError Event
+        /// Raises the UserDeleteError Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserDeleteError(UserUpdateErrorArgs e)
         {
-            if (UserDeleteError != null)
+            if (this.UserDeleteError != null)
             {
-                UserDeleteError(this, e);
+                this.UserDeleteError(this, e);
             }
         }
 
         public void OnUserRestored(UserRestoredEventArgs e)
         {
-            if (UserRestored != null)
+            if (this.UserRestored != null)
             {
-                UserRestored(this, e);
+                this.UserRestored(this, e);
             }
         }
 
         public void OnUserRestoreError(UserUpdateErrorArgs e)
         {
-            if (UserRestoreError != null)
+            if (this.UserRestoreError != null)
             {
-                UserRestoreError(this, e);
+                this.UserRestoreError(this, e);
             }
         }
 
         public void OnUserRemoved(UserRemovedEventArgs e)
         {
-            if (UserRemoved != null)
+            if (this.UserRemoved != null)
             {
-                UserRemoved(this, e);
+                this.UserRemoved(this, e);
             }
         }
 
         public void OnUserRemoveError(UserUpdateErrorArgs e)
         {
-            if (UserRemoveError != null)
+            if (this.UserRemoveError != null)
             {
-                UserRemoveError(this, e);
+                this.UserRemoveError(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserUpdated Event
+        /// Raises the UserUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdated(EventArgs e)
         {
-            if (UserUpdated != null)
+            if (this.UserUpdated != null)
             {
-                UserUpdated(this, e);
+                this.UserUpdated(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserUpdated Event
+        /// Raises the UserUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateCompleted(EventArgs e)
         {
-            if (UserUpdateCompleted != null)
+            if (this.UserUpdateCompleted != null)
             {
-                UserUpdateCompleted(this, e);
+                this.UserUpdateCompleted(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserUpdateError Event
+        /// Raises the UserUpdateError Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateError(UserUpdateErrorArgs e)
         {
-            if (UserUpdateError != null)
+            if (this.UserUpdateError != null)
             {
-                UserUpdateError(this, e);
+                this.UserUpdateError(this, e);
             }
         }
 
-        #endregion
-
-        #region "Properties"
-
-        protected override bool AddUser => !Request.IsAuthenticated || base.AddUser;
-
-        #endregion
-
-        #region Nested type: BaseUserEventArgs
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The BaseUserEventArgs class provides a base for User EventArgs classes
+        /// The BaseUserEventArgs class provides a base for User EventArgs classes.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class BaseUserEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Id of the User
+            /// Gets or sets and sets the Id of the User.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public int UserId { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Id of the User
+            /// Gets or sets and sets the Id of the User.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string UserName { get; set; }
         }
 
-        #endregion
-
-        #region Nested type: UserCreatedEventArgs
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserCreatedEventArgs class provides a customised EventArgs class for
-        /// the UserCreated Event
+        /// the UserCreated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class UserCreatedEventArgs
@@ -221,162 +212,148 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new UserCreatedEventArgs
+            /// Initializes a new instance of the <see cref="UserCreatedEventArgs"/> class.
+            /// Constructs a new UserCreatedEventArgs.
             /// </summary>
-            /// <param name="newUser">The newly Created User</param>
+            /// <param name="newUser">The newly Created User.</param>
             /// -----------------------------------------------------------------------------
             public UserCreatedEventArgs(UserInfo newUser)
             {
-                NewUser = newUser;
+                this.NewUser = newUser;
             }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Create Status
+            /// Gets or sets and sets the Create Status.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public UserCreateStatus CreateStatus
             {
                 get
                 {
-                    return _createStatus;
+                    return this._createStatus;
                 }
+
                 set
                 {
-                    _createStatus = value;
+                    this._createStatus = value;
                 }
             }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the New User
+            /// Gets or sets and sets the New User.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public UserInfo NewUser { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets a flag whether to Notify the new User of the Creation
+            /// Gets or sets a value indicating whether gets and sets a flag whether to Notify the new User of the Creation.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public bool Notify { get; set; }
         }
 
-        #endregion
-
-        #region Nested type: UserDeletedEventArgs
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserDeletedEventArgs class provides a customised EventArgs class for
-        /// the UserDeleted Event
+        /// the UserDeleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class UserDeletedEventArgs : BaseUserEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new UserDeletedEventArgs
+            /// Initializes a new instance of the <see cref="UserDeletedEventArgs"/> class.
+            /// Constructs a new UserDeletedEventArgs.
             /// </summary>
-            /// <param name="id">The Id of the User</param>
-            /// <param name="name">The user name of the User</param>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
             /// -----------------------------------------------------------------------------
             public UserDeletedEventArgs(int id, string name)
             {
-                UserId = id;
-                UserName = name;
+                this.UserId = id;
+                this.UserName = name;
             }
         }
 
-        #endregion
-
-        #region Nested type: UserRestoredEventArgs
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The UserRestoredEventArgs class provides a customised EventArgs class for
-		/// the UserRestored Event
-		/// </summary>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UserRestoredEventArgs class provides a customised EventArgs class for
+        /// the UserRestored Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
         public class UserRestoredEventArgs : BaseUserEventArgs
         {
-			/// -----------------------------------------------------------------------------
-			/// <summary>
-			/// Constructs a new UserRestoredEventArgs
-			/// </summary>
-			/// <param name="id">The Id of the User</param>
-			/// <param name="name">The user name of the User</param>
-			/// -----------------------------------------------------------------------------
+            /// -----------------------------------------------------------------------------
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserRestoredEventArgs"/> class.
+            /// Constructs a new UserRestoredEventArgs.
+            /// </summary>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
+            /// -----------------------------------------------------------------------------
             public UserRestoredEventArgs(int id, string name)
             {
-                UserId = id;
-                UserName = name;
+                this.UserId = id;
+                this.UserName = name;
             }
         }
 
-        #endregion
-
-        #region Nested type: UserRemovedEventArgs
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The UserRemovedEventArgs class provides a customised EventArgs class for
-		/// the UserRemoved Event
-		/// </summary>
-		/// -----------------------------------------------------------------------------
-
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UserRemovedEventArgs class provides a customised EventArgs class for
+        /// the UserRemoved Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
         public class UserRemovedEventArgs : BaseUserEventArgs
         {
-			/// -----------------------------------------------------------------------------
-			/// <summary>
-			/// Constructs a new UserRemovedEventArgs
-			/// </summary>
-			/// <param name="id">The Id of the User</param>
-			/// <param name="name">The user name of the User</param>
-			/// -----------------------------------------------------------------------------
-			public UserRemovedEventArgs(int id, string name)
+            /// -----------------------------------------------------------------------------
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserRemovedEventArgs"/> class.
+            /// Constructs a new UserRemovedEventArgs.
+            /// </summary>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
+            /// -----------------------------------------------------------------------------
+            public UserRemovedEventArgs(int id, string name)
             {
-                UserId = id;
-                UserName = name;
+                this.UserId = id;
+                this.UserName = name;
             }
         }
-
-
-        #endregion
-
-        #region Nested type: UserUpdateErrorArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserUpdateErrorArgs class provides a customised EventArgs class for
-        /// the UserUpdateError Event
+        /// the UserUpdateError Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class UserUpdateErrorArgs : BaseUserEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new UserUpdateErrorArgs
+            /// Initializes a new instance of the <see cref="UserUpdateErrorArgs"/> class.
+            /// Constructs a new UserUpdateErrorArgs.
             /// </summary>
-            /// <param name="id">The Id of the User</param>
-            /// <param name="name">The user name of the User</param>
-            /// <param name="message">The error message</param>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
+            /// <param name="message">The error message.</param>
             /// -----------------------------------------------------------------------------
             public UserUpdateErrorArgs(int id, string name, string message)
             {
-                UserId = id;
-                UserName = name;
-                Message = message;
+                this.UserId = id;
+                this.UserName = name;
+                this.Message = message;
             }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the error message
+            /// Gets or sets and sets the error message.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string Message { get; set; }
         }
-
-        #endregion
     }
 }

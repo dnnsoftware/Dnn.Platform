@@ -1,28 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.AdminLogs.Services.Dto;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Web.Api;
-using Newtonsoft.Json.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.AdminLogs.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.AdminLogs.Services.Dto;
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+    using Newtonsoft.Json.Linq;
+
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class AdminLogsController : PersonaBarApiController
     {
@@ -31,10 +32,10 @@ namespace Dnn.PersonaBar.AdminLogs.Services
 
         /// GET: api/AdminLogs/GetLogTypes
         /// <summary>
-        /// Gets log types
+        /// Gets log types.
         /// </summary>
         /// <param></param>
-        /// <returns>List of log types</returns>
+        /// <returns>List of log types.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "," + Components.Constants.LogSettingsEdit)]
         public HttpResponseMessage GetLogTypes()
@@ -65,33 +66,31 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     TotalResults = types.Count
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
-        #region Event Viewer
-
         /// GET: api/AdminLogs/GetLogItems
         /// <summary>
-        /// Gets log items
+        /// Gets log items.
         /// </summary>
         /// <param></param>
         /// <param name="logType"></param>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
-        /// <returns>List of log items</returns>
+        /// <returns>List of log items.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView)]
         public HttpResponseMessage GetLogItems(string logType, int pageSize, int pageIndex)
         {
             try
             {
-                var portalId = UserInfo.IsSuperUser ? Request.GetQueryStringAsInteger("portalid") : PortalId;
+                var portalId = this.UserInfo.IsSuperUser ? this.Request.GetQueryStringAsInteger("portalid") : this.PortalId;
                 var totalRecords = 0;
                 var logItems = LogController.Instance.GetLogs(portalId,
                     logType == "*" ? string.Empty : logType,
@@ -101,13 +100,13 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 {
                     v.LogGUID,
                     v.LogFileID,
-                    _controller.GetMyLogType(v.LogTypeKey).LogTypeCSSClass,
-                    _controller.GetMyLogType(v.LogTypeKey).LogTypeFriendlyName,
+                    this._controller.GetMyLogType(v.LogTypeKey).LogTypeCSSClass,
+                    this._controller.GetMyLogType(v.LogTypeKey).LogTypeFriendlyName,
                     v.LogUserName,
                     v.LogPortalName,
                     LogCreateDate = v.LogCreateDate.ToString("G", CultureInfo.InvariantCulture),
                     v.LogProperties.Summary,
-                    LogProperties = _controller.GetPropertiesText(v)
+                    LogProperties = this._controller.GetPropertiesText(v)
                 });
 
                 var response = new
@@ -117,20 +116,20 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     TotalResults = totalRecords
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/AdminLogs/DeleteLogItems
         /// <summary>
-        /// Deletes log items
+        /// Deletes log items.
         /// </summary>
-        /// <param name="logIds">List of log items to be deleted</param>
+        /// <param name="logIds">List of log items to be deleted.</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -144,20 +143,20 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     var objLogInfo = new LogInfo { LogGUID = logId };
                     LogController.Instance.DeleteLog(objLogInfo);
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/AdminLogs/EmailLogItems
         /// <summary>
-        /// Sends log items via email
+        /// Sends log items via email.
         /// </summary>
-        /// <param name="request">send email request</param>
+        /// <param name="request">send email request.</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -166,27 +165,27 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                if (!UserInfo.IsSuperUser && request.LogIds.Any(
+                if (!this.UserInfo.IsSuperUser && request.LogIds.Any(
                     x =>
                         ((LogInfo)
                             LogController.Instance.GetSingleLog(new LogInfo { LogGUID = x },
-                                LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalID != PortalId))
+                                LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalID != this.PortalId))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
                         Localization.GetString("UnAuthorizedToSendLog", Components.Constants.LocalResourcesFile));
                 }
                 string error;
                 var subject = request.Subject;
-                var strFromEmailAddress = !string.IsNullOrEmpty(UserInfo.Email) ? UserInfo.Email : PortalSettings.Email;
+                var strFromEmailAddress = !string.IsNullOrEmpty(this.UserInfo.Email) ? this.UserInfo.Email : this.PortalSettings.Email;
 
                 if (string.IsNullOrEmpty(subject))
                 {
-                    subject = PortalSettings.PortalName + @" Exceptions";
+                    subject = this.PortalSettings.PortalName + @" Exceptions";
                 }
 
-                string returnMsg = _controller.EmailLogItems(subject, strFromEmailAddress, request.Email,
+                string returnMsg = this._controller.EmailLogItems(subject, strFromEmailAddress, request.Email,
                     request.Message, request.LogIds, out error);
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = string.IsNullOrEmpty(returnMsg) ? true : false,
                     ErrorMessage = error,
@@ -196,13 +195,13 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/AdminLogs/ClearLog
         /// <summary>
-        /// Clears all log items
+        /// Clears all log items.
         /// </summary>
         /// <param></param>
         /// <returns></returns>
@@ -213,33 +212,29 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                _controller.ClearLog();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.ClearLog();
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
-        #endregion
-
-        #region Log Settings
-
         /// GET: api/AdminLogs/GetKeepMostRecentOptions
         /// <summary>
-        /// Gets options of Keep Most Recent
+        /// Gets options of Keep Most Recent.
         /// </summary>
         /// <param></param>
-        /// <returns>Option list of Keep Most Recent</returns>
+        /// <returns>Option list of Keep Most Recent.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetKeepMostRecentOptions()
         {
             try
             {
-                var options = _controller.GetKeepMostRecentOptions().ToList();
+                var options = this._controller.GetKeepMostRecentOptions().ToList();
 
                 var response = new
                 {
@@ -248,21 +243,21 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     TotalResults = options.Count
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// GET: api/AdminLogs/GetOccurenceThresholdOptions
         /// <summary>
-        /// Gets options of Occurence Threshold
+        /// Gets options of Occurence Threshold.
         /// </summary>
         /// <param></param>
-        /// <returns>Option list of Occurence Threshold</returns>
+        /// <returns>Option list of Occurence Threshold.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetOccurrenceOptions()
@@ -274,28 +269,28 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     Success = true,
                     Results = new
                     {
-                        Thresholds = _controller.GetOccurenceThresholds().ToList(),
-                        NotificationTimes = _controller.GetOccurenceThresholdNotificationTimes().ToList(),
-                        NotificationTimeTypes = _controller.GetOccurenceThresholdNotificationTimeTypes().ToList()
+                        Thresholds = this._controller.GetOccurenceThresholds().ToList(),
+                        NotificationTimes = this._controller.GetOccurenceThresholdNotificationTimes().ToList(),
+                        NotificationTimeTypes = this._controller.GetOccurenceThresholdNotificationTimeTypes().ToList()
                     },
                     TotalResults = 1
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// GET: api/AdminLogs/GetLogSettings
         /// <summary>
-        /// Gets log settings
+        /// Gets log settings.
         /// </summary>
         /// <param></param>
-        /// <returns>List of log settings</returns>
+        /// <returns>List of log settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetLogSettings()
@@ -306,7 +301,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
 
                 int portalId;
                 var types = logTypes
-                    .Where(x => UserInfo.IsSuperUser || (int.TryParse(x.LogTypePortalID, out portalId) && portalId == PortalId))
+                    .Where(x => this.UserInfo.IsSuperUser || (int.TryParse(x.LogTypePortalID, out portalId) && portalId == this.PortalId))
                     .Select(v => new
                     {
                         v.LogTypeFriendlyName,
@@ -328,18 +323,18 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     TotalResults = types.Count
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// GET: api/AdminLogs/GetLogSettings
         /// <summary>
-        /// Gets log type settings
+        /// Gets log type settings.
         /// </summary>
         /// <param name="logTypeConfigId"></param>
         /// <returns></returns>
@@ -349,12 +344,12 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                var configInfo = _controller.GetLogTypeConfig(logTypeConfigId);
+                var configInfo = this._controller.GetLogTypeConfig(logTypeConfigId);
                 int portalId;
-                if (!UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != PortalId))
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                if (!this.UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != this.PortalId))
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     configInfo.ID,
                     configInfo.LoggingIsActive,
@@ -378,13 +373,13 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/AdminLogs/AddLogSettings
         /// <summary>
-        /// Adds a new log settings
+        /// Adds a new log settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -395,27 +390,27 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                var isAdmin = UserInfo.Roles.Contains(PortalSettings.AdministratorRoleName);
+                var isAdmin = this.UserInfo.Roles.Contains(this.PortalSettings.AdministratorRoleName);
                 if (isAdmin)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
-                request.LogTypePortalID = UserInfo.IsSuperUser ? request.LogTypePortalID : PortalId.ToString();
+                request.LogTypePortalID = this.UserInfo.IsSuperUser ? request.LogTypePortalID : this.PortalId.ToString();
 
                 var logTypeConfigInfo = JObject.FromObject(request).ToObject<LogTypeConfigInfo>();
-                _controller.AddLogTypeConfig(logTypeConfigInfo);
-                return GetLatestLogSetting();
+                this._controller.AddLogTypeConfig(logTypeConfigInfo);
+                return this.GetLatestLogSetting();
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/AdminLogs/UpdateLogSettings
         /// <summary>
-        /// Updates an existing log settings
+        /// Updates an existing log settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -426,30 +421,30 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                request.LogTypePortalID = UserInfo.IsSuperUser ? request.LogTypePortalID : PortalId.ToString();
+                request.LogTypePortalID = this.UserInfo.IsSuperUser ? request.LogTypePortalID : this.PortalId.ToString();
 
                 int requestPortalId;
                 int settingPortalId;
-                var configInfo = _controller.GetLogTypeConfig(request.ID);
-                if (!UserInfo.IsSuperUser &&
+                var configInfo = this._controller.GetLogTypeConfig(request.ID);
+                if (!this.UserInfo.IsSuperUser &&
                     (!int.TryParse(configInfo.LogTypePortalID, out settingPortalId) ||
                      !int.TryParse(request.LogTypePortalID, out requestPortalId) || requestPortalId != settingPortalId))
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
 
                 var logTypeConfigInfo = JObject.FromObject(request).ToObject<LogTypeConfigInfo>();
-                _controller.UpdateLogTypeConfig(logTypeConfigInfo);
-                return GetLogSetting(request.ID);
+                this._controller.UpdateLogTypeConfig(logTypeConfigInfo);
+                return this.GetLogSetting(request.ID);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/AdminLogs/DeleteLogSettings
         /// <summary>
-        /// Deletes an existing log settings
+        /// Deletes an existing log settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -460,32 +455,28 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                var configInfo = _controller.GetLogTypeConfig(request.LogTypeConfigId);
+                var configInfo = this._controller.GetLogTypeConfig(request.LogTypeConfigId);
                 int portalId;
-                if (!UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != PortalId))
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                if (!this.UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != this.PortalId))
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-                _controller.DeleteLogTypeConfig(request.LogTypeConfigId);
-                return Request.CreateResponse(HttpStatusCode.OK,
+                this._controller.DeleteLogTypeConfig(request.LogTypeConfigId);
+                return this.Request.CreateResponse(HttpStatusCode.OK,
                     new { Success = true, LogSettingId = request.LogTypeConfigId });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         /// GET: api/AdminLogs/GetLatestLogSetting
         /// <summary>
-        /// Gets latest log setting
+        /// Gets latest log setting.
         /// </summary>
         /// <param></param>
-        /// <returns>Log Setting</returns>
+        /// <returns>Log Setting.</returns>
         private HttpResponseMessage GetLatestLogSetting()
         {
             try
@@ -497,7 +488,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 if (configInfo != null)
                 {
                     int portalId;
-                    return Request.CreateResponse(HttpStatusCode.OK, new
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new
                     {
                         configInfo.ID,
                         configInfo.LoggingIsActive,
@@ -518,15 +509,13 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                         configInfo.MailToAddress
                     });
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
     }
 }

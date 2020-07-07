@@ -1,59 +1,68 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.DDRMenu
 {
-	internal class DDRMenuControl : WebControl, IPostBackEventHandler
-	{
-		public override bool EnableViewState { get { return false; } set { } }
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
-		internal MenuNode RootNode { get; set; }
-		internal Boolean SkipLocalisation { get; set; }
-		internal Settings MenuSettings { get; set; }
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
 
-		public delegate void MenuClickEventHandler(string id);
+    internal class DDRMenuControl : WebControl, IPostBackEventHandler
+    {
+        private MenuBase menu;
 
-		public event MenuClickEventHandler NodeClick;
+        public delegate void MenuClickEventHandler(string id);
 
-		private MenuBase menu;
+        public event MenuClickEventHandler NodeClick;
 
-		protected override void OnPreRender(EventArgs e)
-		{
-			using (new DNNContext(this))
-			{
-				base.OnPreRender(e);
+        public override bool EnableViewState
+        {
+            get { return false; }
+            set { }
+        }
 
-				MenuSettings.MenuStyle = MenuSettings.MenuStyle ?? "DNNMenu";
-				menu = MenuBase.Instantiate(MenuSettings.MenuStyle);
-				menu.RootNode = RootNode ?? new MenuNode();
-				menu.SkipLocalisation = SkipLocalisation;
-				menu.ApplySettings(MenuSettings);
+        internal MenuNode RootNode { get; set; }
 
-				menu.PreRender();
-			}
-		}
+        internal bool SkipLocalisation { get; set; }
 
-		protected override void Render(HtmlTextWriter htmlWriter)
-		{
-			using (new DNNContext(this))
-				menu.Render(htmlWriter);
-		}
+        internal Settings MenuSettings { get; set; }
 
-		public void RaisePostBackEvent(string eventArgument)
-		{
-			using (new DNNContext(this))
-			{
-				if (NodeClick != null)
-				{
-					NodeClick(eventArgument);
-				}
-			}
-		}
-	}
+        public void RaisePostBackEvent(string eventArgument)
+        {
+            using (new DNNContext(this))
+            {
+                if (this.NodeClick != null)
+                {
+                    this.NodeClick(eventArgument);
+                }
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            using (new DNNContext(this))
+            {
+                base.OnPreRender(e);
+
+                this.MenuSettings.MenuStyle = this.MenuSettings.MenuStyle ?? "DNNMenu";
+                this.menu = MenuBase.Instantiate(this.MenuSettings.MenuStyle);
+                this.menu.RootNode = this.RootNode ?? new MenuNode();
+                this.menu.SkipLocalisation = this.SkipLocalisation;
+                this.menu.ApplySettings(this.MenuSettings);
+
+                this.menu.PreRender();
+            }
+        }
+
+        protected override void Render(HtmlTextWriter htmlWriter)
+        {
+            using (new DNNContext(this))
+            {
+                this.menu.Render(htmlWriter);
+            }
+        }
+    }
 }

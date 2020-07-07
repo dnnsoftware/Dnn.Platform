@@ -1,43 +1,33 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Localization
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class LanguagePackInfo : BaseEntityInfo, IHydratable
     {
-		#region "Private Members"
-
         private int _DependentPackageID = Null.NullInteger;
         private int _LanguageID = Null.NullInteger;
         private int _LanguagePackID = Null.NullInteger;
         private int _PackageID = Null.NullInteger;
 
-		#endregion
-
-		#region "Public Properties"
-
         public int LanguagePackID
         {
             get
             {
-                return _LanguagePackID;
+                return this._LanguagePackID;
             }
+
             set
             {
-                _LanguagePackID = value;
+                this._LanguagePackID = value;
             }
         }
 
@@ -45,11 +35,12 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _LanguageID;
+                return this._LanguageID;
             }
+
             set
             {
-                _LanguageID = value;
+                this._LanguageID = value;
             }
         }
 
@@ -57,11 +48,12 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _PackageID;
+                return this._PackageID;
             }
+
             set
             {
-                _PackageID = value;
+                this._PackageID = value;
             }
         }
 
@@ -69,11 +61,12 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _DependentPackageID;
+                return this._DependentPackageID;
             }
+
             set
             {
-                _DependentPackageID = value;
+                this._DependentPackageID = value;
             }
         }
 
@@ -81,7 +74,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                if (DependentPackageID == -2)
+                if (this.DependentPackageID == -2)
                 {
                     return LanguagePackType.Core;
                 }
@@ -91,33 +84,29 @@ namespace DotNetNuke.Services.Localization
                 }
             }
         }
-		
-		#endregion
-
-        #region IHydratable Members
-
-        public void Fill(IDataReader dr)
-        {
-            LanguagePackID = Null.SetNullInteger(dr["LanguagePackID"]);
-            LanguageID = Null.SetNullInteger(dr["LanguageID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
-            //Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
-        }
 
         public int KeyID
         {
             get
             {
-                return LanguagePackID;
+                return this.LanguagePackID;
             }
+
             set
             {
-                LanguagePackID = value;
+                this.LanguagePackID = value;
             }
         }
 
-        #endregion
+        public void Fill(IDataReader dr)
+        {
+            this.LanguagePackID = Null.SetNullInteger(dr["LanguagePackID"]);
+            this.LanguageID = Null.SetNullInteger(dr["LanguageID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
+
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
+        }
     }
 }

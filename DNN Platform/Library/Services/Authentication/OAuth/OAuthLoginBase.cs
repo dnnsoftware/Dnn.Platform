@@ -1,23 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Web;
-using DotNetNuke.Common;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Web;
+
+    using DotNetNuke.Common;
+
     public abstract class OAuthLoginBase : AuthenticationLoginBase
     {
+        public override bool Enabled
+        {
+            get { return OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId).Enabled; }
+        }
+
         protected virtual string AuthSystemApplicationName
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected OAuthClientBase OAuthClient { get; set; }
@@ -26,45 +27,35 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         protected virtual void AddCustomProperties(NameValueCollection properties)
         {
-            
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            if (!IsPostBack)
+            if (!this.IsPostBack)
             {
-                //Save the return Url in the cookie
-                HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", RedirectURL)
+                // Save the return Url in the cookie
+                HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", this.RedirectURL)
                 {
                     Expires = DateTime.Now.AddMinutes(5),
-                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                 });
             }
 
-            bool shouldAuthorize = OAuthClient.IsCurrentService() && OAuthClient.HaveVerificationCode();
-            if(Mode == AuthMode.Login)
+            bool shouldAuthorize = this.OAuthClient.IsCurrentService() && this.OAuthClient.HaveVerificationCode();
+            if (this.Mode == AuthMode.Login)
             {
-                shouldAuthorize = shouldAuthorize || OAuthClient.IsCurrentUserAuthorized();
+                shouldAuthorize = shouldAuthorize || this.OAuthClient.IsCurrentUserAuthorized();
             }
 
             if (shouldAuthorize)
             {
-                if (OAuthClient.Authorize() == AuthorisationResult.Authorized)
+                if (this.OAuthClient.Authorize() == AuthorisationResult.Authorized)
                 {
-                    OAuthClient.AuthenticateUser(GetCurrentUser(), PortalSettings, IPAddress, AddCustomProperties, OnUserAuthenticated);
+                    this.OAuthClient.AuthenticateUser(this.GetCurrentUser(), this.PortalSettings, this.IPAddress, this.AddCustomProperties, this.OnUserAuthenticated);
                 }
             }
         }
-
-        #region Overrides of AuthenticationLoginBase
-
-        public override bool Enabled
-        {
-            get { return OAuthConfigBase.GetConfig(AuthSystemApplicationName, PortalId).Enabled; }
-        }
-
-        #endregion
     }
 }

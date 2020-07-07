@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_LiveAuthentication" type="Auth_System" version="09.06.01" >
+    <package name="DNN_LiveAuthentication" type="Auth_System" version="09.06.02" >
       <friendlyName>DotNetNuke Live Authentication Project</friendlyName>
       <description>
         The DotNetNuke Live Authentication Project is an Authentication provider for DotNetNuke that uses
