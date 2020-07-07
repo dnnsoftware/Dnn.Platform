@@ -1,17 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.DigitalAssets.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.Linq;
+
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+
     public class Factory
     {
 #pragma warning disable 649
@@ -21,15 +21,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
 
         public Factory()
         {
-            ExtensionPointManager.ComposeParts(this);   
+            ExtensionPointManager.ComposeParts(this);
         }
 
         public IDigitalAssetsController DigitalAssetsController
         {
             get
             {
-                var dac = controllers.SingleOrDefault(c => c.Metadata.Edition == "PE");
-                return dac != null ? dac.Value : controllers.Single(c => c.Metadata.Edition == "CE").Value;
+                var dac = this.controllers.SingleOrDefault(c => c.Metadata.Edition == "PE");
+                return dac != null ? dac.Value : this.controllers.Single(c => c.Metadata.Edition == "CE").Value;
             }
         }
     }

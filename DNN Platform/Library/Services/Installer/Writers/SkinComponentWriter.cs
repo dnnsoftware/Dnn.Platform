@@ -1,58 +1,45 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Generic;
-using System.Xml;
-
-using DotNetNuke.Services.Installer.Packages;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using System.Collections.Generic;
+    using System.Xml;
+
+    using DotNetNuke.Services.Installer.Packages;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinComponentWriter class handles creating the manifest for Skin Component(s)
+    /// The SkinComponentWriter class handles creating the manifest for Skin Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class SkinComponentWriter : FileComponentWriter
     {
-		#region "Private Members"
-
         private readonly string _SkinName;
 
-		#endregion
-
-		#region "Constructors"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the SkinComponentWriter
+        /// Initializes a new instance of the <see cref="SkinComponentWriter"/> class.
+        /// Constructs the SkinComponentWriter.
         /// </summary>
-        /// <param name="skinName">The name of the Skin</param>
-        /// <param name="basePath">The Base Path for the files</param>
-        /// <param name="files">A Dictionary of files</param>
+        /// <param name="skinName">The name of the Skin.</param>
+        /// <param name="basePath">The Base Path for the files.</param>
+        /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
-        public SkinComponentWriter(string skinName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
+        public SkinComponentWriter(string skinName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
+            : base(basePath, files, package)
         {
-            _SkinName = skinName;
+            this._SkinName = skinName;
         }
-		
-		#endregion
-
-		#region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("skinFiles")
+        /// Gets the name of the Collection Node ("skinFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -64,9 +51,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Component Type ("Skin")
+        /// Gets the name of the Component Type ("Skin").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
@@ -78,9 +65,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("skinFile")
+        /// Gets the name of the Item Node ("skinFile").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -92,9 +79,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the SkinName Node ("skinName")
+        /// Gets the name of the SkinName Node ("skinName").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinNameNodeName
         {
@@ -103,23 +90,17 @@ namespace DotNetNuke.Services.Installer.Writers
                 return "skinName";
             }
         }
-		
-		#endregion
-
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The WriteCustomManifest method writes the custom manifest items (that subclasses
-        /// of FileComponentWriter may need)
+        /// of FileComponentWriter may need).
         /// </summary>
-        /// <param name="writer">The Xmlwriter to use</param>
+        /// <param name="writer">The Xmlwriter to use.</param>
         /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {
-            writer.WriteElementString(SkinNameNodeName, _SkinName);
+            writer.WriteElementString(this.SkinNameNodeName, this._SkinName);
         }
-		
-		#endregion
     }
 }

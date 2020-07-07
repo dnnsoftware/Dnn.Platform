@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Framework;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Social.Messaging.Internal
 {
-	/// <summary>
-	/// Business Layer to manage Messaging. Also contains CRUD methods.
-	/// </summary>
+    using System;
+
+    using DotNetNuke.Framework;
+
+    /// <summary>
+    /// Business Layer to manage Messaging. Also contains CRUD methods.
+    /// </summary>
     public class InternalMessagingController : ServiceLocator<IInternalMessagingController, InternalMessagingController>
     {
         protected override Func<IInternalMessagingController> GetFactory()

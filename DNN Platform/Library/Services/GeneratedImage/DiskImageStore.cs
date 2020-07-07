@@ -1,21 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-//#define INDIVIDUAL_LOCKS
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Hosting;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 #if INDIVIDUAL_LOCKS
 using System.Collections;
 #endif
 
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Hosting;
+
     internal interface IImageStore
     {
         void Add(string id, byte[] data);
@@ -32,70 +32,15 @@ namespace DotNetNuke.Services.GeneratedImage
         private static DiskImageStore _diskImageStore;
         private static readonly object InstanceLock = new object();
         private static string _cachePath;
+        private static TimeSpan _purgeInterval;
         private DateTime _lastPurge;
         private readonly object _purgeQueuedLock = new object();
         private bool _purgeQueued;
-        private static TimeSpan _purgeInterval;
 
 #if INDIVIDUAL_LOCKS
         private Hashtable _fileLocks = new Hashtable();
-#else 
+#else
         private readonly object _fileLock = new object();
-#endif
-
-        public static string CachePath
-        {
-            get
-            {
-                return _cachePath;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-                _cachePath = value;
-            }
-        }
-        public static bool EnableAutoPurge { get; set; } //turn on/off purge feature
-
-        public static TimeSpan PurgeInterval
-        {
-            get
-            {
-                return _purgeInterval;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-                if (value.Ticks < 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                }
-                _purgeInterval = value;
-            }
-        }
-
-        private DateTime LastPurge
-        {
-            get
-            {
-                if (_lastPurge < new DateTime(1990, 1, 1))
-                {
-                    _lastPurge = DateTime.Now.Subtract(PurgeInterval);
-                }
-                return _lastPurge;
-            }
-            set
-            {
-                _lastPurge = value;
-            }
-        }
-
         static DiskImageStore()
         {
             EnableAutoPurge = true;
@@ -109,7 +54,53 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 Directory.CreateDirectory(CachePath);
             }
-            _lastPurge = DateTime.Now;
+
+            this._lastPurge = DateTime.Now;
+        }
+
+#endif
+
+        public static string CachePath
+        {
+            get
+            {
+                return _cachePath;
+            }
+
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+
+                _cachePath = value;
+            }
+        }
+
+        public static bool EnableAutoPurge { get; set; } // turn on/off purge feature
+
+        public static TimeSpan PurgeInterval
+        {
+            get
+            {
+                return _purgeInterval;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+
+                if (value.Ticks < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
+                _purgeInterval = value;
+            }
         }
 
         internal static IImageStore Instance
@@ -126,7 +117,26 @@ namespace DotNetNuke.Services.GeneratedImage
                         }
                     }
                 }
+
                 return _diskImageStore;
+            }
+        }
+
+        private DateTime LastPurge
+        {
+            get
+            {
+                if (this._lastPurge < new DateTime(1990, 1, 1))
+                {
+                    this._lastPurge = DateTime.Now.Subtract(PurgeInterval);
+                }
+
+                return this._lastPurge;
+            }
+
+            set
+            {
+                this._lastPurge = value;
             }
         }
 
@@ -142,6 +152,35 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 // do nothing at this point.
             }
+        }
+
+        void IImageStore.Add(string id, byte[] data)
+        {
+            this.Add(id, data);
+        }
+
+        bool IImageStore.TryTransmitIfContains(string id, HttpResponseBase response)
+        {
+            return this.TryTransmitIfContains(id, response);
+        }
+
+#if INDIVIDUAL_LOCKS
+        private static string GetEntryId(FileInfo fileinfo) {
+            string id = fileinfo.Name.Substring(0, fileinfo.Name.Length - s_tempFileExtension.Length);
+            return id;
+        }
+
+        private void DiscardFileLockObject(string id) {
+            // lock on hashtable to prevent other writers
+            lock (_fileLocks) {
+                _fileLocks.Remove(id);
+            }
+        }
+#endif
+
+        private static string BuildFilePath(string id)
+        {
+            return CachePath + id + TempFileExtension;
         }
 
         private void PurgeCallback(object target)
@@ -185,6 +224,7 @@ namespace DotNetNuke.Services.GeneratedImage
 #endif
                 }
             }
+
             Thread.Sleep(0);
             foreach (var fileinfo in toTryDeleteAgain)
             {
@@ -216,14 +256,14 @@ namespace DotNetNuke.Services.GeneratedImage
 #endif
             }
 
-            LastPurge = DateTime.Now;
-            _purgeQueued = false;
+            this.LastPurge = DateTime.Now;
+            this._purgeQueued = false;
         }
 
         private void Add(string id, byte[] data)
         {
             var path = BuildFilePath(id);
-            lock (GetFileLockObject(id))
+            lock (this.GetFileLockObject(id))
             {
                 try
                 {
@@ -240,16 +280,18 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             if (EnableAutoPurge)
             {
-                QueueAutoPurge();
+                this.QueueAutoPurge();
             }
+
             string path = BuildFilePath(id);
-            lock (GetFileLockObject(id))
+            lock (this.GetFileLockObject(id))
             {
                 if (File.Exists(path))
                 {
                     response.TransmitFile(path);
                     return true;
                 }
+
                 return false;
             }
         }
@@ -257,19 +299,19 @@ namespace DotNetNuke.Services.GeneratedImage
         private void QueueAutoPurge()
         {
             var now = DateTime.Now;
-            if (!_purgeQueued && now.Subtract(LastPurge) > PurgeInterval)
+            if (!this._purgeQueued && now.Subtract(this.LastPurge) > PurgeInterval)
             {
-                lock (_purgeQueuedLock)
+                lock (this._purgeQueuedLock)
                 {
-                    if (!_purgeQueued)
+                    if (!this._purgeQueued)
                     {
-                        _purgeQueued = true;
-                        ThreadPool.QueueUserWorkItem(PurgeCallback);
+                        this._purgeQueued = true;
+                        ThreadPool.QueueUserWorkItem(this.PurgeCallback);
                     }
                 }
             }
         }
-        
+
         private object GetFileLockObject(string id)
         {
 #if INDIVIDUAL_LOCKS
@@ -285,39 +327,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
             return lockObject;
 #else
-            return _fileLock;
+            return this._fileLock;
 #endif
         }
-
-#if INDIVIDUAL_LOCKS
-        private static string GetEntryId(FileInfo fileinfo) {
-            string id = fileinfo.Name.Substring(0, fileinfo.Name.Length - s_tempFileExtension.Length);
-            return id;
-        }
-
-        private void DiscardFileLockObject(string id) {
-            // lock on hashtable to prevent other writers
-            lock (_fileLocks) {
-                _fileLocks.Remove(id);
-            }
-        }
-#endif
-
-        private static string BuildFilePath(string id)
-        {
-            return CachePath + id + TempFileExtension;
-        }
-
-        #region IImageStore Members
-        void IImageStore.Add(string id, byte[] data)
-        {
-            Add(id, data);
-        }
-
-        bool IImageStore.TryTransmitIfContains(string id, HttpResponseBase response)
-        {
-            return TryTransmitIfContains(id, response);
-        }
-        #endregion
     }
 }

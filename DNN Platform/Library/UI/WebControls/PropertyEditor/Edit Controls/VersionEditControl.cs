@@ -1,17 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Web.UI;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -25,79 +20,91 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:VersionEditControl runat=server></{0}:VersionEditControl>")]
     public class VersionEditControl : EditControl
     {
-		#region "Public Properties"
+        protected Version Version
+        {
+            get
+            {
+                return this.Value as Version;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
             {
-                return Value.ToString();
+                return this.Value.ToString();
             }
+
             set
             {
-                Value = new Version(value);
+                this.Value = new Version(value);
             }
         }
 
-        protected Version Version
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            get
+            string majorVersion = postCollection[postDataKey + "_Major"];
+            string minorVersion = postCollection[postDataKey + "_Minor"];
+            string buildVersion = postCollection[postDataKey + "_Build"];
+            bool dataChanged = false;
+            Version presentValue = this.Version;
+            var postedValue = new Version(majorVersion + "." + minorVersion + "." + buildVersion);
+            if (!postedValue.Equals(presentValue))
             {
-                return Value as Version;
+                this.Value = postedValue;
+                dataChanged = true;
             }
+
+            return dataChanged;
         }
-		
-		#endregion
 
         protected void RenderDropDownList(HtmlTextWriter writer, string type, int val)
         {
-            //Render the Select Tag
+            // Render the Select Tag
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + "_" + type);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + type);
             writer.AddStyleAttribute("width", "60px");
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
             for (int i = 0; i <= 99; i++)
             {
-                //Add the Value Attribute
+                // Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, i.ToString());
                 if (val == i)
                 {
-                    //Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-				
-                //Render Option Tag
+
+                // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(i.ToString("00"));
                 writer.RenderEndTag();
             }
-			
-            //Close Select Tag
+
+            // Close Select Tag
             writer.RenderEndTag();
         }
-		
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = Value;
-            args.OldValue = OldValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.Value;
+            args.OldValue = this.OldValue;
+            args.StringValue = this.StringValue;
 
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------
@@ -110,74 +117,57 @@ namespace DotNetNuke.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if (Page != null && EditMode == PropertyEditorMode.Edit)
+            if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            //Render a containing span Tag
-            ControlStyle.AddAttributesToRender(writer);
+            // Render a containing span Tag
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-            //Render Major
-            RenderDropDownList(writer, "Major", Version.Major);
+            // Render Major
+            this.RenderDropDownList(writer, "Major", this.Version.Major);
 
             writer.Write("&nbsp;");
 
-            //Render Minor
-            RenderDropDownList(writer, "Minor", Version.Minor);
+            // Render Minor
+            this.RenderDropDownList(writer, "Minor", this.Version.Minor);
 
             writer.Write("&nbsp;");
 
-            //Render Build
-            RenderDropDownList(writer, "Build", Version.Build);
+            // Render Build
+            this.RenderDropDownList(writer, "Build", this.Version.Build);
 
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            if (Version != null)
+            if (this.Version != null)
             {
-                writer.Write(Version.ToString(3));
+                writer.Write(this.Version.ToString(3));
             }
+
             writer.RenderEndTag();
         }
-
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            string majorVersion = postCollection[postDataKey + "_Major"];
-            string minorVersion = postCollection[postDataKey + "_Minor"];
-            string buildVersion = postCollection[postDataKey + "_Build"];
-            bool dataChanged = false;
-            Version presentValue = Version;
-            var postedValue = new Version(majorVersion + "." + minorVersion + "." + buildVersion);
-            if (!postedValue.Equals(presentValue))
-            {
-                Value = postedValue;
-                dataChanged = true;
-            }
-            return dataChanged;
-        }
-		
-		#endregion
     }
 }

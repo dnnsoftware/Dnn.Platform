@@ -1,44 +1,49 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+
     /// <summary>
-    /// A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type
+    /// A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type.
     /// </summary>
     public class StringPassThroughMediaTypeFormatter : MediaTypeFormatter
     {
         /// <summary>
-        /// Initialize a formatter that can handle text/plain and text/html
+        /// Initializes a new instance of the <see cref="StringPassThroughMediaTypeFormatter"/> class.
+        /// Initialize a formatter that can handle text/plain and text/html.
         /// </summary>
-        public StringPassThroughMediaTypeFormatter() : this(new [] {"text/plain", "text/html"}) {}
+        public StringPassThroughMediaTypeFormatter()
+            : this(new[] { "text/plain", "text/html" })
+        {
+        }
 
         /// <summary>
-        /// Initialize a formatter that can handle the specified media types
+        /// Initializes a new instance of the <see cref="StringPassThroughMediaTypeFormatter"/> class.
+        /// Initialize a formatter that can handle the specified media types.
         /// </summary>
         public StringPassThroughMediaTypeFormatter(IEnumerable<string> mediaTypes)
         {
             foreach (var type in mediaTypes)
             {
-                SupportedMediaTypes.Add(new MediaTypeHeaderValue(type));
+                this.SupportedMediaTypes.Add(new MediaTypeHeaderValue(type));
             }
         }
 
-    	public override bool CanReadType(Type type)
+        public override bool CanReadType(Type type)
         {
             return type == typeof(string);
         }
 
-    	public override bool CanWriteType(Type type)
+        public override bool CanWriteType(Type type)
         {
             return type == typeof(string);
         }

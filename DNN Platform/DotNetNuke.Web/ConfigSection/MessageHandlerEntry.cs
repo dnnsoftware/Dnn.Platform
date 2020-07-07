@@ -1,12 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Configuration;
-using DotNetNuke.Web.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.ConfigSection
 {
+    using System.Configuration;
+
+    using DotNetNuke.Web.Api;
+
     public class MessageHandlerEntry : ConfigurationElement
     {
         private const string NameTag = "name";
@@ -16,13 +17,15 @@ namespace DotNetNuke.Web.ConfigSection
         private const string ForceSslTag = "forceSSL";
 
         [ConfigurationProperty(NameTag, DefaultValue = "", IsRequired = true)]
-        //[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
+
+        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
         public string Name
         {
             get
             {
                 return (string)this[NameTag];
             }
+
             set
             {
                 this[NameTag] = value;
@@ -30,13 +33,15 @@ namespace DotNetNuke.Web.ConfigSection
         }
 
         [ConfigurationProperty(ClassNameTag, DefaultValue = "", IsRequired = true)]
-        //[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
+
+        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
         public string ClassName
         {
             get
             {
                 return (string)this[ClassNameTag];
             }
+
             set
             {
                 this[ClassNameTag] = value;
@@ -51,6 +56,7 @@ namespace DotNetNuke.Web.ConfigSection
                 var b = (bool?)this[EnabledNameTag];
                 return b.Value;
             }
+
             set
             {
                 this[EnabledNameTag] = value;
@@ -58,7 +64,7 @@ namespace DotNetNuke.Web.ConfigSection
         }
 
         /// <summary>
-        /// This property specifies whether this is automatically included when the <see cref="DnnAuthorizeAttribute"/>
+        /// Gets or sets a value indicating whether this property specifies whether this is automatically included when the <see cref="DnnAuthorizeAttribute"/>.
         /// </summary>
         [ConfigurationProperty(DefaultIncludeTag, DefaultValue = false, IsRequired = true)]
         public bool DefaultInclude
@@ -68,6 +74,7 @@ namespace DotNetNuke.Web.ConfigSection
                 var b = (bool?)this[DefaultIncludeTag];
                 return b.Value;
             }
+
             set
             {
                 this[DefaultIncludeTag] = value;
@@ -82,6 +89,7 @@ namespace DotNetNuke.Web.ConfigSection
                 var b = (bool?)this[ForceSslTag];
                 return b.Value;
             }
+
             set
             {
                 this[ForceSslTag] = value;

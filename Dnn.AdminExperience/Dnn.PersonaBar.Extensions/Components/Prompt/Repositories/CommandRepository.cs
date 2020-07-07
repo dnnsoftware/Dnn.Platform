@@ -1,38 +1,45 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web.Caching;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using System.Text.RegularExpressions;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Components.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Web.Caching;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Prompt.Components.Models;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Services.Localization;
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
-        protected override Func<ICommandRepository> GetFactory()
-        {
-            return () => new CommandRepository();
-        }
-
         public SortedDictionary<string, Command> GetCommands()
         {
             return
                 DataCache.GetCachedData<SortedDictionary<string, Command>>(
                     new CacheItemArgs("DnnPromptCommands", CacheItemPriority.Default),
                     c => GetCommandsInternal());
+        }
+
+        public CommandHelp GetCommandHelp(string[] args, IConsoleCommand consoleCommand)
+        {
+            var cacheKey = (string.Join("_", args) + "_" + PortalController.Instance.GetCurrentSettings()?.DefaultLanguage).Replace("-", "_");
+            return DataCache.GetCachedData<CommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
+                c => this.GetCommandHelpInternal(consoleCommand));
+        }
+
+        protected override Func<ICommandRepository> GetFactory()
+        {
+            return () => new CommandRepository();
         }
 
         private static SortedDictionary<string, Command> GetCommandsInternal()
@@ -66,11 +73,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             return commands;
         }
 
-        public CommandHelp GetCommandHelp(string[] args, IConsoleCommand consoleCommand)
+        private static string LocalizeString(string key, string resourcesFile = Constants.LocalResourcesFile)
         {
-            var cacheKey = (string.Join("_", args) + "_" + PortalController.Instance.GetCurrentSettings()?.DefaultLanguage).Replace("-", "_");
-            return DataCache.GetCachedData<CommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => GetCommandHelpInternal(consoleCommand));
+            var localizedText = Localization.GetString(key, resourcesFile);
+            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
+        }
+
+        private static string CreateCommandFromClass(string className)
+        {
+            var camelCasedParts = SplitCamelCase(className);
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+        }
+
+        private static string[] SplitCamelCase(string source)
+        {
+            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
 
         private CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
@@ -105,22 +122,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
             }
             return commandHelp;
-        }
-
-        private static string LocalizeString(string key, string resourcesFile = Constants.LocalResourcesFile)
-        {
-            var localizedText = Localization.GetString(key, resourcesFile);
-            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
-        }
-
-        private static string CreateCommandFromClass(string className)
-        {
-            var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
-        }
-        private static string[] SplitCamelCase(string source)
-        {
-            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
     }
 }

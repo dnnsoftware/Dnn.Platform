@@ -1,16 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities.Internal;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities.Internal;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RetryableActionTests
     {
@@ -19,8 +18,8 @@ namespace DotNetNuke.Tests.Core
         [SetUp]
         public void Setup()
         {
-            _sleepMonitor = new SleepMonitor();
-            RetryableAction.SleepAction = _sleepMonitor.GoToSleep;
+            this._sleepMonitor = new SleepMonitor();
+            RetryableAction.SleepAction = this._sleepMonitor.GoToSleep;
         }
 
         [Test]
@@ -53,9 +52,9 @@ namespace DotNetNuke.Tests.Core
 
             retryable.TryIt();
 
-            var firstRetry = _sleepMonitor.SleepPeriod[0];
-            var secondRetry = _sleepMonitor.SleepPeriod[1];
-            var thirdRetry = _sleepMonitor.SleepPeriod[2];
+            var firstRetry = this._sleepMonitor.SleepPeriod[0];
+            var secondRetry = this._sleepMonitor.SleepPeriod[1];
+            var thirdRetry = this._sleepMonitor.SleepPeriod[2];
 
             Assert.AreEqual(5, firstRetry);
             Assert.AreEqual(50, secondRetry);
@@ -83,58 +82,61 @@ namespace DotNetNuke.Tests.Core
         }
     }
 
-    class SleepMonitor
+    internal class SleepMonitor
     {
         private readonly List<int> _periods = new List<int>();
-
-        public void GoToSleep(int delay)
-        {
-            _periods.Add(delay);
-        }
 
         public IList<int> SleepPeriod
         {
             get
             {
-                return _periods.AsReadOnly();
+                return this._periods.AsReadOnly();
             }
+        }
+
+        public void GoToSleep(int delay)
+        {
+            this._periods.Add(delay);
         }
     }
 
-    class ActionMonitor
+    internal class ActionMonitor
     {
-        private int _failuresRemaining;
         private readonly List<DateTime> _callTimes = new List<DateTime>();
+        private int _failuresRemaining;
 
-        public ActionMonitor() : this(0) {}
+        public ActionMonitor()
+            : this(0)
+        {
+        }
 
         public ActionMonitor(int failureCount)
         {
-            _failuresRemaining = failureCount;
+            this._failuresRemaining = failureCount;
         }
-
-        public int TimesCalled { get; private set; }
 
         public IList<DateTime> CallTime
         {
             get
             {
-                return _callTimes.AsReadOnly();
+                return this._callTimes.AsReadOnly();
             }
         }
 
+        public int TimesCalled { get; private set; }
+
         public void Action()
         {
-            _callTimes.Add(DateTime.Now);
-            TimesCalled++;
+            this._callTimes.Add(DateTime.Now);
+            this.TimesCalled++;
 
-            if(_failuresRemaining != 0)
+            if (this._failuresRemaining != 0)
             {
-                if (_failuresRemaining > 0)
+                if (this._failuresRemaining > 0)
                 {
-                    _failuresRemaining--;
+                    this._failuresRemaining--;
                 }
-                
+
                 throw new Exception("it failed");
             }
         }

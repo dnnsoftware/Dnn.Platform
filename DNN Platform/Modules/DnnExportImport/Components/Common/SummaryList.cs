@@ -1,13 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.ExportImport.Components.Dto;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.ExportImport.Components.Common
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Dto;
+
     public class SummaryList : List<SummaryItem>
     {
         public new void Add(SummaryItem item)
@@ -28,7 +29,7 @@ namespace Dnn.ExportImport.Components.Common
             var summaryItems = items as IList<SummaryItem> ?? items.ToList();
             foreach (var summaryItem in summaryItems.OrderBy(x => x.Order))
             {
-                Add(summaryItem);
+                this.Add(summaryItem);
             }
         }
     }

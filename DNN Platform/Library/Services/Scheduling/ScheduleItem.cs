@@ -1,56 +1,41 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Scheduling
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
-        #region Private Members
-
-        private static readonly DateTime MinNextTime = DateTime.Now; 
+        private static readonly DateTime MinNextTime = DateTime.Now;
         private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 
-        #endregion
-
-        #region Constructors
-
         public ScheduleItem()
         {
-            ScheduleID = Null.NullInteger;
-            TypeFullName = Null.NullString;
-            TimeLapse = Null.NullInteger;
-            TimeLapseMeasurement = Null.NullString;
-            RetryTimeLapse = Null.NullInteger;
-            RetryTimeLapseMeasurement = Null.NullString;
-            ObjectDependencies = Null.NullString;
-            RetainHistoryNum = Null.NullInteger;
-            CatchUpEnabled = Null.NullBoolean;
-            Enabled = Null.NullBoolean;
-            AttachToEvent = Null.NullString;
-            ThreadID = Null.NullInteger;
-            ProcessGroup = Null.NullInteger;
-            Servers = Null.NullString;
-            ScheduleStartDate = Null.NullDate;
+            this.ScheduleID = Null.NullInteger;
+            this.TypeFullName = Null.NullString;
+            this.TimeLapse = Null.NullInteger;
+            this.TimeLapseMeasurement = Null.NullString;
+            this.RetryTimeLapse = Null.NullInteger;
+            this.RetryTimeLapseMeasurement = Null.NullString;
+            this.ObjectDependencies = Null.NullString;
+            this.RetainHistoryNum = Null.NullInteger;
+            this.CatchUpEnabled = Null.NullBoolean;
+            this.Enabled = Null.NullBoolean;
+            this.AttachToEvent = Null.NullString;
+            this.ThreadID = Null.NullInteger;
+            this.ProcessGroup = Null.NullInteger;
+            this.Servers = Null.NullString;
+            this.ScheduleStartDate = Null.NullDate;
         }
-
-        #endregion
-
-        #region Persisted Properties
 
         public string AttachToEvent { get; set; }
 
@@ -66,15 +51,17 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                if (!_NextStart.HasValue)
+                if (!this._NextStart.HasValue)
                 {
-                    _NextStart = MinNextTime;
+                    this._NextStart = MinNextTime;
                 }
-                return _NextStart.Value > MinNextTime ? _NextStart.Value : MinNextTime;
+
+                return this._NextStart.Value > MinNextTime ? this._NextStart.Value : MinNextTime;
             }
+
             set
             {
-                _NextStart = value;
+                this._NextStart = value;
             }
         }
 
@@ -102,28 +89,23 @@ namespace DotNetNuke.Services.Scheduling
 
         public int ThreadID { get; set; }
 
-        #endregion
-
-        #region IHydratable Members
-
         public int KeyID
         {
             get
             {
-                return ScheduleID;
+                return this.ScheduleID;
             }
+
             set
             {
-                ScheduleID = value;
+                this.ScheduleID = value;
             }
         }
 
         public virtual void Fill(IDataReader dr)
         {
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
-
-        #endregion
 
         public bool HasObjectDependencies(string strObjectDependencies)
         {
@@ -134,80 +116,80 @@ namespace DotNetNuke.Services.Scheduling
                 int i;
                 for (i = 0; i <= a.Length - 1; i++)
                 {
-                    if (ObjectDependencies.IndexOf(a[i].Trim(), StringComparison.InvariantCultureIgnoreCase) > -1)
+                    if (this.ObjectDependencies.IndexOf(a[i].Trim(), StringComparison.InvariantCultureIgnoreCase) > -1)
                     {
                         return true;
                     }
                 }
             }
-            else if (ObjectDependencies.IndexOf(strObjectDependencies, StringComparison.InvariantCultureIgnoreCase) > -1)
+            else if (this.ObjectDependencies.IndexOf(strObjectDependencies, StringComparison.InvariantCultureIgnoreCase) > -1)
             {
                 return true;
             }
+
             return false;
         }
 
-        #region "Public Methods"
-
         public void AddSetting(string Key, string Value)
         {
-            _ScheduleItemSettings.Add(Key, Value);
+            this._ScheduleItemSettings.Add(Key, Value);
         }
 
         public virtual string GetSetting(string Key)
         {
-            if (_ScheduleItemSettings == null)
+            if (this._ScheduleItemSettings == null)
             {
-                GetSettings();
+                this.GetSettings();
             }
-            if (_ScheduleItemSettings != null && _ScheduleItemSettings.ContainsKey(Key))
+
+            if (this._ScheduleItemSettings != null && this._ScheduleItemSettings.ContainsKey(Key))
             {
-                return Convert.ToString(_ScheduleItemSettings[Key]);
+                return Convert.ToString(this._ScheduleItemSettings[Key]);
             }
             else
             {
-                return "";
+                return string.Empty;
             }
         }
 
         public virtual Hashtable GetSettings()
         {
-            _ScheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(ScheduleID);
-            return _ScheduleItemSettings;
+            this._ScheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(this.ScheduleID);
+            return this._ScheduleItemSettings;
         }
 
         protected override void FillInternal(IDataReader dr)
         {
-            ScheduleID = Null.SetNullInteger(dr["ScheduleID"]);
-            FriendlyName = Null.SetNullString(dr["FriendlyName"]);
-            TypeFullName = Null.SetNullString(dr["TypeFullName"]);
-            TimeLapse = Null.SetNullInteger(dr["TimeLapse"]);
-            TimeLapseMeasurement = Null.SetNullString(dr["TimeLapseMeasurement"]);
-            RetryTimeLapse = Null.SetNullInteger(dr["RetryTimeLapse"]);
-            RetryTimeLapseMeasurement = Null.SetNullString(dr["RetryTimeLapseMeasurement"]);
-            ObjectDependencies = Null.SetNullString(dr["ObjectDependencies"]);
-            AttachToEvent = Null.SetNullString(dr["AttachToEvent"]);
-            RetainHistoryNum = Null.SetNullInteger(dr["RetainHistoryNum"]);
-            CatchUpEnabled = Null.SetNullBoolean(dr["CatchUpEnabled"]);
-            Enabled = Null.SetNullBoolean(dr["Enabled"]);
-            Servers = Null.SetNullString(dr["Servers"]);
+            this.ScheduleID = Null.SetNullInteger(dr["ScheduleID"]);
+            this.FriendlyName = Null.SetNullString(dr["FriendlyName"]);
+            this.TypeFullName = Null.SetNullString(dr["TypeFullName"]);
+            this.TimeLapse = Null.SetNullInteger(dr["TimeLapse"]);
+            this.TimeLapseMeasurement = Null.SetNullString(dr["TimeLapseMeasurement"]);
+            this.RetryTimeLapse = Null.SetNullInteger(dr["RetryTimeLapse"]);
+            this.RetryTimeLapseMeasurement = Null.SetNullString(dr["RetryTimeLapseMeasurement"]);
+            this.ObjectDependencies = Null.SetNullString(dr["ObjectDependencies"]);
+            this.AttachToEvent = Null.SetNullString(dr["AttachToEvent"]);
+            this.RetainHistoryNum = Null.SetNullInteger(dr["RetainHistoryNum"]);
+            this.CatchUpEnabled = Null.SetNullBoolean(dr["CatchUpEnabled"]);
+            this.Enabled = Null.SetNullBoolean(dr["Enabled"]);
+            this.Servers = Null.SetNullString(dr["Servers"]);
 
             var schema = dr.GetSchemaTable();
             if (schema != null)
             {
                 if (schema.Select("ColumnName = 'NextStart'").Length > 0)
                 {
-                    NextStart = Null.SetNullDateTime(dr["NextStart"]);
+                    this.NextStart = Null.SetNullDateTime(dr["NextStart"]);
                 }
+
                 if (schema.Select("ColumnName = 'ScheduleStartDate'").Length > 0)
                 {
-                    ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
+                    this.ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
                 }
             }
-            //Fill BaseEntityInfo
+
+            // Fill BaseEntityInfo
             base.FillInternal(dr);
         }
-
-        #endregion
     }
 }

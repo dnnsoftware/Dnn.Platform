@@ -1,15 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Seo.Components
 {
+    using DotNetNuke.Services.Localization;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class UrlRewritingResult
     {
+        public UrlRewritingResult()
+        {
+            var noneText = Localization.GetString("None", Localization.GlobalResourceFile);
+            this.RewritingResult = noneText;
+            this.Culture = noneText;
+            this.IdentifiedPage = noneText;
+            this.RedirectionResult = noneText;
+            this.OperationMessages = noneText;
+        }
+
         [JsonProperty("rewritingResult")]
         public string RewritingResult { get; set; }
 
@@ -30,15 +40,5 @@ namespace Dnn.PersonaBar.Seo.Components
 
         [JsonIgnore]
         public int Status { get; set; }
-
-        public UrlRewritingResult()
-        {
-            var noneText = Localization.GetString("None", Localization.GlobalResourceFile);
-            RewritingResult = noneText;
-            Culture = noneText;
-            IdentifiedPage = noneText;
-            RedirectionResult = noneText;
-            OperationMessages = noneText;
-        }
     }
 }

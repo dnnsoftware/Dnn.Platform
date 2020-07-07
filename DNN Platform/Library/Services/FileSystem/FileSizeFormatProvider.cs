@@ -1,11 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     public class FileSizeFormatProvider : IFormatProvider, ICustomFormatter
     {
         private const string FileSizeFormat = "fs";
@@ -45,21 +47,21 @@ namespace DotNetNuke.Services.FileSystem
             if (size >= OneGigaByte)
             {
                 size /= OneGigaByte;
-                suffix = Localization.Localization.GetString("SizeGb");
+                suffix = Localization.GetString("SizeGb");
             }
             else if (size >= OneMegaByte)
             {
                 size /= OneMegaByte;
-                suffix = Localization.Localization.GetString("SizeMb");
+                suffix = Localization.GetString("SizeMb");
             }
             else if (size >= OneKiloByte)
             {
                 size /= OneKiloByte;
-                suffix = Localization.Localization.GetString("SizeKb");
+                suffix = Localization.GetString("SizeKb");
             }
             else
             {
-                suffix = Localization.Localization.GetString("SizeB");
+                suffix = Localization.GetString("SizeB");
             }
 
             return string.Format("{0:N1} {1}", size, suffix);

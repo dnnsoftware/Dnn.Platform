@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-
-using DotNetNuke.Collections.Internal;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+
+    using DotNetNuke.Collections.Internal;
+
     public static class CollectionExtensions
     {
         public static void LoadFromXmlFile(this Dictionary<int, List<ParameterReplaceAction>> actions, string fileName, int portalId, bool portalSpecific, ref List<string> messages)
@@ -19,13 +19,14 @@ namespace DotNetNuke.Entities.Urls
             {
                 throw new ArgumentNullException("messages");
             }
+
             messages = new List<string>();
             if (File.Exists(fileName))
             {
                 var rdr = new XmlTextReader(fileName)
                 {
                     XmlResolver = null,
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 };
                 while (rdr.Read())
                 {
@@ -34,14 +35,15 @@ namespace DotNetNuke.Entities.Urls
                         case XmlNodeType.Element:
                             if (rdr.Name == "parameterReplace")
                             {
-                                //now set up the action
+                                // now set up the action
                                 string portalIdRaw = rdr.GetAttribute("portalId");
                                 int rulePortalId = -1;
                                 if (portalIdRaw != null)
                                 {
-                                    Int32.TryParse(portalIdRaw, out rulePortalId);
+                                    int.TryParse(portalIdRaw, out rulePortalId);
                                 }
-                                //807 : if portal specific then import all regardless of portal id specified
+
+                                // 807 : if portal specific then import all regardless of portal id specified
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
                                 {
                                     int actionCount = 0;
@@ -58,7 +60,7 @@ namespace DotNetNuke.Entities.Urls
                                             ReplaceWith = rdr.GetAttribute("replaceWith"),
                                             PortalId = portalId,
                                             Name = name,
-                                            TabId = tabId
+                                            TabId = tabId,
                                         };
                                         string changeToSiteRootRaw = rdr.GetAttribute("changeToSiteRoot");
                                         bool changeToSiteRoot;
@@ -75,6 +77,7 @@ namespace DotNetNuke.Entities.Urls
                                             tabActionCol = new List<ParameterReplaceAction>();
                                             actions.Add(action.TabId, tabActionCol);
                                         }
+
                                         tabActionCol.Add(action);
 
                                         actionCount++;
@@ -82,12 +85,14 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                 }
                             }
+
                             break;
 
                         case XmlNodeType.EndElement:
                             break;
                     }
                 }
+
                 rdr.Close();
             }
             else
@@ -97,26 +102,27 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Returns all the redirect rules for the specified portal
+        /// Returns all the redirect rules for the specified portal.
         /// </summary>
         /// <param name="actions"></param>
         /// <param name="fileName"></param>
         /// <param name="portalId"></param>
         /// <param name="portalSpecific">If true, all rules belong to supplied portalId, even if not specified.</param>
         /// <param name="messages"></param>
-        /// <remarks>807 : change to allow specificatoin of assumption that all rules belong to the supplied portal</remarks>
+        /// <remarks>807 : change to allow specificatoin of assumption that all rules belong to the supplied portal.</remarks>
         public static void LoadFromXmlFile(this Dictionary<int, List<ParameterRedirectAction>> actions, string fileName, int portalId, bool portalSpecific, ref List<string> messages)
         {
             if (messages == null)
             {
                 messages = new List<string>();
             }
+
             if (File.Exists(fileName))
             {
                 var rdr = new XmlTextReader(fileName)
                 {
                     XmlResolver = null,
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 };
                 while (rdr.Read())
                 {
@@ -127,19 +133,23 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 var tabMessages = new List<string>();
                                 int actionCount = 0;
-                                //now set up the action
+
+                                // now set up the action
                                 string portalIdRaw = rdr.GetAttribute("rulePortalId");
                                 if (string.IsNullOrEmpty(portalIdRaw))
                                 {
                                     portalIdRaw = rdr.GetAttribute("portalId");
                                 }
+
                                 int rulePortalId = -1;
                                 if (portalIdRaw != null)
                                 {
-                                    Int32.TryParse(portalIdRaw, out rulePortalId);
+                                    int.TryParse(portalIdRaw, out rulePortalId);
                                 }
+
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
-                                //if portal specific, all rules are assumed to belong to the portal
+
+                                // if portal specific, all rules are assumed to belong to the portal
                                 {
                                     string tabIdRaw = rdr.GetAttribute("tabIds");
                                     string tabNames = rdr.GetAttribute("tabNames");
@@ -165,23 +175,25 @@ namespace DotNetNuke.Entities.Urls
                                             Name = name,
                                             Action = rdr.GetAttribute("action"),
                                             ChangeToSiteRoot = changeToSiteRoot,
-                                            TabId = tabId
+                                            TabId = tabId,
                                         };
                                         if (fromDefault)
                                         {
-                                            //check for 'fromDefault' attribute
+                                            // check for 'fromDefault' attribute
                                             action.ForDefaultPage = true;
                                             action.TabId = -2;
                                         }
                                         else
                                         {
-                                            //or support the older convention, which was to include a tabid of -2
+                                            // or support the older convention, which was to include a tabid of -2
                                             action.ForDefaultPage = tabId == -2;
                                         }
+
                                         if (fromSiteRoot)
                                         {
-                                            action.TabId = -3; //site root marker
+                                            action.TabId = -3; // site root marker
                                         }
+
                                         List<ParameterRedirectAction> tabActionCol;
                                         if (actions.ContainsKey(action.TabId))
                                         {
@@ -192,22 +204,27 @@ namespace DotNetNuke.Entities.Urls
                                             tabActionCol = new List<ParameterRedirectAction>();
                                             actions.Add(action.TabId, tabActionCol);
                                         }
+
                                         tabActionCol.Add(action);
                                         actionCount++;
                                     }
+
                                     messages.Add(name + " redirect actions added:" + actionCount.ToString());
                                 }
+
                                 if (tabMessages.Count > 0)
                                 {
                                     messages.AddRange(tabMessages);
                                 }
                             }
+
                             break;
 
                         case XmlNodeType.EndElement:
                             break;
                     }
                 }
+
                 rdr.Close();
             }
         }
@@ -218,12 +235,13 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             if (File.Exists(fileName))
             {
                 var rdr = new XmlTextReader(fileName)
                 {
                     XmlResolver = null,
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 };
                 while (rdr.Read())
                 {
@@ -237,11 +255,12 @@ namespace DotNetNuke.Entities.Urls
                                 int actionCount = 0;
                                 if (portalIdRaw != null)
                                 {
-                                    Int32.TryParse(portalIdRaw, out rulePortalId);
+                                    int.TryParse(portalIdRaw, out rulePortalId);
                                 }
+
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalId == -1 || portalSpecific)
                                 {
-                                    //now set up the action
+                                    // now set up the action
                                     string tabIdRaw = rdr.GetAttribute("tabIds");
                                     string tabNames = rdr.GetAttribute("tabNames");
                                     string name = rdr.GetAttribute("name");
@@ -257,7 +276,7 @@ namespace DotNetNuke.Entities.Urls
                                             LookFor = rdr.GetAttribute("lookFor"),
                                             RewriteTo = rdr.GetAttribute("rewriteTo"),
                                             Name = name,
-                                            TabId = tabId
+                                            TabId = tabId,
                                         };
                                         if (fromSiteRoot)
                                         {
@@ -266,7 +285,7 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                         else
                                         {
-                                            //older rule specified tabid -3 meant site root
+                                            // older rule specified tabid -3 meant site root
                                             action.ForSiteRoot = tabId == -3;
                                         }
 
@@ -281,13 +300,14 @@ namespace DotNetNuke.Entities.Urls
                                             tabActionCol = new SharedList<ParameterRewriteAction>();
                                             actions.Add(action.TabId, tabActionCol);
                                         }
+
                                         tabActionCol.Add(action);
                                         actionCount++;
                                     }
+
                                     messages.Add(name + " rewrite actions added:" + actionCount.ToString());
                                 }
                             }
-
 
                             break;
 
@@ -295,6 +315,7 @@ namespace DotNetNuke.Entities.Urls
                             break;
                     }
                 }
+
                 rdr.Close();
             }
             else
@@ -307,12 +328,12 @@ namespace DotNetNuke.Entities.Urls
         {
             var dictionary = new Dictionary<string, string>();
 
-            if(!String.IsNullOrEmpty(delimitedString))
+            if (!string.IsNullOrEmpty(delimitedString))
             {
                 var pairs = delimitedString.Split(pairSeparator);
-                foreach (string pair  in pairs)
+                foreach (string pair in pairs)
                 {
-                    if (!String.IsNullOrEmpty(pair))
+                    if (!string.IsNullOrEmpty(pair))
                     {
                         var chars = pair.Split(separator);
                         dictionary[chars[0]] = chars[1];

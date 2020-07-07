@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Journal" type="Module" isSystem="true" version="09.06.01">
+        <package name="Journal" type="Module" isSystem="true" version="09.06.02">
             <friendlyName>Journal</friendlyName>
             <description>DotNetNuke Corporation Journal module</description>
             <iconFile>DesktopModules/Journal/Images/journal_32X32.png</iconFile>

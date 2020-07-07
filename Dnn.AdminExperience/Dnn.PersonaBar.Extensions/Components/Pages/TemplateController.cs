@@ -1,28 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Xml;
-using Dnn.PersonaBar.Pages.Components.Dto;
-using Dnn.PersonaBar.Pages.Components.Exceptions;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.UI;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Pages.Components.Dto;
+    using Dnn.PersonaBar.Pages.Components.Exceptions;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.UI;
+
     public class TemplateController : ServiceLocator<ITemplateController, TemplateController>, ITemplateController
     {
         private const string TemplatesFolderPath = "Templates/";
@@ -31,13 +32,14 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public TemplateController()
         {
-            _tabController = TabController.Instance;
+            this._tabController = TabController.Instance;
         }
 
         public string SaveAsTemplate(PageTemplate template)
         {
             string filename;
-            try {
+            try
+            {
                 var folder = GetTemplateFolder();
 
                 if (folder == null)
@@ -59,8 +61,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 //Serialize tabs
                 var nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
-                SerializeTab(template, xmlTemplate, nodeTabs);
-           
+                this.SerializeTab(template, xmlTemplate, nodeTabs);
+
                 //add file to Files table
                 using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
                 {
@@ -78,67 +80,13 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return filename;
         }
-        private static IFolderInfo GetTemplateFolder()
-        {
-            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
-        }
 
-        private static IFolderInfo CreateTemplateFolder()
-        {
-            return FolderManager.Instance.AddFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
-        }
-
-        private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tab = _tabController.GetTab(template.TabId, portalSettings.PortalId, false);
-            var xmlTab = new XmlDocument { XmlResolver = null };
-            var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
-            nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
-        }
-
-        protected override Func<ITemplateController> GetFactory()
-        {
-            return () => new TemplateController();
-        }
-
-
-        #region Templates
         public IEnumerable<Template> GetTemplates()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, TemplatesFolderPath);
-           
-            return LoadTemplates(portalSettings.PortalId, templateFolder);
-        }
 
-        private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
-        {
-            var templates = new List<Template>();
-            if (templateFolder == null)
-            {
-                return templates;
-            }
-
-            templates.Add(new Template
-            {
-                Id = Localization.GetString("None_Specified"),
-                Value = Null.NullInteger
-            });
-
-            var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
-            foreach (FileItem file in files)
-            {
-                int i;
-                int.TryParse(file.Value, out i);
-                templates.Add(new Template
-                {
-                    Id = file.Text.Replace(".page.template", ""),
-                    Value = i
-                });
-            }
-
-            return templates;
+            return this.LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
         public int GetDefaultTemplateId(IEnumerable<Template> templates)
@@ -219,6 +167,58 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
             }
         }
-        #endregion
+
+        protected override Func<ITemplateController> GetFactory()
+        {
+            return () => new TemplateController();
+        }
+
+        private static IFolderInfo GetTemplateFolder()
+        {
+            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
+        }
+
+        private static IFolderInfo CreateTemplateFolder()
+        {
+            return FolderManager.Instance.AddFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
+        }
+
+        private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var tab = this._tabController.GetTab(template.TabId, portalSettings.PortalId, false);
+            var xmlTab = new XmlDocument { XmlResolver = null };
+            var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
+            nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
+        }
+
+        private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
+        {
+            var templates = new List<Template>();
+            if (templateFolder == null)
+            {
+                return templates;
+            }
+
+            templates.Add(new Template
+            {
+                Id = Localization.GetString("None_Specified"),
+                Value = Null.NullInteger
+            });
+
+            var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
+            foreach (FileItem file in files)
+            {
+                int i;
+                int.TryParse(file.Value, out i);
+                templates.Add(new Template
+                {
+                    Id = file.Text.Replace(".page.template", ""),
+                    Value = i
+                });
+            }
+
+            return templates;
+        }
     }
 }

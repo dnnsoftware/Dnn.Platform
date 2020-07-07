@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 using System;
-
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Portals
 {
     public interface IPortalSettings
@@ -20,7 +22,6 @@ namespace DotNetNuke.Abstractions.Portals
         int BannerAdvertising { get; set; }
         //CacheLevel Cacheability { get; }
         int CdfVersion { get; }
-        bool ContentLocalizationEnabled { get; }
         //PortalSettings.ControlPanelPermission ControlPanelSecurity { get; }
         bool ControlPanelVisible { get; }
         string CookieMoreLink { get; }
@@ -54,7 +55,8 @@ namespace DotNetNuke.Abstractions.Portals
         bool EnablePopUps { get; }
         bool EnableRegisterNotification { get; }
         bool EnableSkinWidgets { get; }
-        bool EnableUrlLanguage { get; }
+
+        bool ContentLocalizationEnabled { get; }
         int ErrorPage404 { get; }
         int ErrorPage500 { get; }
         DateTime ExpiryDate { get; set; }
@@ -79,6 +81,8 @@ namespace DotNetNuke.Abstractions.Portals
         string PageHeadText { get; }
         int PageQuota { get; set; }
         int Pages { get; set; }
+
+        bool EnableUrlLanguage { get; }
         //IPortalAliasInfo PortalAlias { get; set; }
         //PortalSettings.PortalAliasMapping PortalAliasMappingMode { get; }
         int PortalId { get; set; }
@@ -100,8 +104,10 @@ namespace DotNetNuke.Abstractions.Portals
         int SMTPConnectionLimit { get; }
         int SMTPMaxIdleTime { get; }
         int SplashTabId { get; set; }
+
         bool SSLEnabled { get; }
         bool SSLEnforced { get; }
+
         string SSLURL { get; }
         string STDURL { get; }
         int SuperTabId { get; set; }

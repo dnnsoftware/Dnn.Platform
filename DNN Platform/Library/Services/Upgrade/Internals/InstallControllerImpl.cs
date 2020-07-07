@@ -1,45 +1,45 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Net;
-using System.Threading;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Common;
+    using System.Data.SqlClient;
+    using System.Globalization;
+    using System.Net;
+    using System.Threading;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Controller class for Installer
+    ///   The Controller class for Installer.
     /// </summary>
     /// <remarks>
     /// </remarks>
     internal class InstallControllerImpl : IInstallController
     {
-        #region IInstallController Members
+        public string InstallerLogName
+        {
+            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
+        }
 
         /// <summary>
-        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file
+        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.
         /// </summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file</returns>
+        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public ConnectionConfig GetConnectionFromWebConfig()
         {
             var connectionConfig = new ConnectionConfig();
@@ -75,10 +75,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             connectionConfig.Password = value;
                             break;
                         case "integrated security":
-                            connectionConfig.Integrated = (value.ToLowerInvariant() == "true");
+                            connectionConfig.Integrated = value.ToLowerInvariant() == "true";
                             break;
                         case "attachdbfilename":
-                            connectionConfig.File = value.Replace("|DataDirectory|", "");
+                            connectionConfig.File = value.Replace("|DataDirectory|", string.Empty);
                             break;
                     }
                 }
@@ -92,8 +92,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
         }
 
         /// <summary>
-        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config
-        /// </summary>        
+        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.
+        /// </summary>
         public void SetInstallConfig(InstallConfig installConfig)
         {
             if (installConfig == null)
@@ -101,12 +101,12 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 return;
             }
 
-            //Load Template
+            // Load Template
             var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
             XmlNode dotnetnukeNode = installTemplate.SelectSingleNode("//dotnetnuke");
 
-            //Set Version            
+            // Set Version
             if (!string.IsNullOrEmpty(installConfig.Version))
             {
                 XmlNode versionNode = installTemplate.SelectSingleNode("//dotnetnuke/version");
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 versionNode.InnerText = installConfig.Version;
             }
 
-            //Set installer culture            
+            // Set installer culture
             if (!string.IsNullOrEmpty(installConfig.InstallCulture))
             {
                 XmlNode versionNode = installTemplate.SelectSingleNode("//dotnetnuke/installCulture");
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 versionNode.InnerText = installConfig.InstallCulture;
             }
 
-            //Set SuperUser
+            // Set SuperUser
             if (installConfig.SuperUser != null)
             {
                 XmlNode superUserNode = installTemplate.SelectSingleNode("//dotnetnuke/superuser");
@@ -153,10 +153,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "updatepassword", "false");
             }
 
-            //Set Folder Mappings Settings            
+            // Set Folder Mappings Settings
             if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
             {
-                XmlNode folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
+                XmlNode folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/" + FolderMappingsConfigController.Instance.ConfigNode);
 
                 if (folderMappingsNode == null)
                 {
@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 folderMappingsNode.InnerText = installConfig.FolderMappingsSettings;
             }
 
-            //Set Portals
+            // Set Portals
             if (installConfig.Portals != null && installConfig.Portals.Count > 0)
             {
                 XmlNode portalsNode = installTemplate.SelectSingleNode("//dotnetnuke/portals");
@@ -178,7 +178,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     portalsNode.RemoveAll();
                 }
-
 
                 foreach (PortalConfig portalConfig in installConfig.Portals)
                 {
@@ -204,7 +203,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 }
             }
 
-            //Set the settings
+            // Set the settings
             if (installConfig.Settings != null && installConfig.Settings.Count > 0)
             {
                 XmlNode settingsNode = installTemplate.SelectSingleNode("//dotnetnuke/settings");
@@ -212,12 +211,12 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     settingsNode = AppendNewXmlNode(ref installTemplate, ref dotnetnukeNode, "settings", null);
                 }
-                // DNN-8833: for this node specifically we should append/overwrite existing but not clear all
-                //else
-                //{
-                //    settingsNode.RemoveAll();
-                //}
 
+                // DNN-8833: for this node specifically we should append/overwrite existing but not clear all
+                // else
+                // {
+                //    settingsNode.RemoveAll();
+                // }
                 foreach (HostSettingConfig setting in installConfig.Settings)
                 {
                     XmlNode settingNode = AppendNewXmlNode(ref installTemplate, ref settingsNode, setting.Name, setting.Value);
@@ -230,7 +229,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 }
             }
 
-            //Set Connection
+            // Set Connection
             if (installConfig.Connection != null)
             {
                 XmlNode connectionNode = installTemplate.SelectSingleNode("//dotnetnuke/connection");
@@ -259,11 +258,12 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public void RemoveFromInstallConfig(string xmlNodePath)
         {
-            InstallConfig config = GetInstallConfig();
+            InstallConfig config = this.GetInstallConfig();
             if (config == null)
             {
                 return;
             }
+
             var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
             XmlNodeList nodes = installTemplate.SelectNodes(xmlNodePath);
@@ -271,31 +271,32 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 nodes[0].ParentNode.RemoveChild(nodes[0]);
             }
+
             Upgrade.SetInstallTemplate(installTemplate);
         }
 
         /// <summary>
-        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config
+        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.
         /// </summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file</returns>
+        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public InstallConfig GetInstallConfig()
         {
             var installConfig = new InstallConfig();
 
-            //Load Template
+            // Load Template
             var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
 
-            //Parse the root node
+            // Parse the root node
             XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
             if (rootNode != null)
             {
                 installConfig.Version = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "version");
                 installConfig.SupportLocalization = XmlUtils.GetNodeValueBoolean(rootNode.CreateNavigator(), "supportLocalization");
-                installConfig.InstallCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture") ?? Localization.Localization.SystemLocale;
+                installConfig.InstallCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture") ?? Localization.SystemLocale;
             }
 
-            //Parse the scripts node
+            // Parse the scripts node
             XmlNode scriptsNode = installTemplate.SelectSingleNode("//dotnetnuke/scripts");
             if (scriptsNode != null)
             {
@@ -308,13 +309,13 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 }
             }
 
-            //Parse the connection node
+            // Parse the connection node
             XmlNode connectionNode = installTemplate.SelectSingleNode("//dotnetnuke/connection");
             if (connectionNode != null)
             {
                 var connectionConfig = new ConnectionConfig();
 
-                //Build connection string from the file
+                // Build connection string from the file
                 connectionConfig.Server = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "server");
                 connectionConfig.Database = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "database");
                 connectionConfig.File = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "file");
@@ -328,7 +329,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 installConfig.Connection = connectionConfig;
             }
 
-            //Parse the superuser node
+            // Parse the superuser node
             XmlNode superUserNode = installTemplate.SelectSingleNode("//dotnetnuke/superuser");
             if (superUserNode != null)
             {
@@ -345,7 +346,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 installConfig.SuperUser = superUserConfig;
             }
 
-            //Parse the license node
+            // Parse the license node
             XmlNode licenseNode = installTemplate.SelectSingleNode("//dotnetnuke/license");
             if (licenseNode != null)
             {
@@ -356,7 +357,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 licenseConfig.WebServer = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "webServer");
                 licenseConfig.LicenseType = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "licenseType");
 
-                if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial")))
                 {
                     licenseConfig.TrialRequest = bool.Parse(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial"));
                 }
@@ -364,7 +365,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 installConfig.License = licenseConfig;
             }
 
-            //Parse the settings node
+            // Parse the settings node
             XmlNode settingsNode = installTemplate.SelectSingleNode("//dotnetnuke/settings");
             if (settingsNode != null)
             {
@@ -376,7 +377,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                         if (settingNode.Attributes != null)
                         {
                             XmlAttribute secureAttrib = settingNode.Attributes["Secure"];
-                            if ((secureAttrib != null))
+                            if (secureAttrib != null)
                             {
                                 if (secureAttrib.Value.ToLowerInvariant() == "true")
                                 {
@@ -384,14 +385,16 @@ namespace DotNetNuke.Services.Upgrade.Internals
                                 }
                             }
                         }
-                        installConfig.Settings.Add(new HostSettingConfig {Name = settingNode.Name, Value = settingNode.InnerText, IsSecure = settingIsSecure});
+
+                        installConfig.Settings.Add(new HostSettingConfig { Name = settingNode.Name, Value = settingNode.InnerText, IsSecure = settingIsSecure });
                     }
                 }
             }
-            var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
-            installConfig.FolderMappingsSettings =  (folderMappingsNode != null)? folderMappingsNode.InnerXml : String.Empty;
 
-            //Parse the portals node
+            var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/" + FolderMappingsConfigController.Instance.ConfigNode);
+            installConfig.FolderMappingsSettings = (folderMappingsNode != null) ? folderMappingsNode.InnerXml : string.Empty;
+
+            // Parse the portals node
             XmlNodeList portalsNode = installTemplate.SelectNodes("//dotnetnuke/portals/portal");
             if (portalsNode != null)
             {
@@ -411,14 +414,14 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             portalConfig.AdminPassword = XmlUtils.GetNodeValue(adminNode.CreateNavigator(), "password");
                             portalConfig.AdminEmail = XmlUtils.GetNodeValue(adminNode.CreateNavigator(), "email");
                         }
+
                         portalConfig.Description = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "description");
                         portalConfig.Keywords = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "keywords");
                         portalConfig.TemplateFileName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "templatefile");
                         portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").ToLowerInvariant() == "true";
-                        ;
                         portalConfig.HomeDirectory = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "homedirectory");
 
-                        //Get the Portal Alias
+                        // Get the Portal Alias
                         XmlNodeList portalAliases = portalNode.SelectNodes("portalaliases/portalalias");
                         if (portalAliases != null)
                         {
@@ -430,6 +433,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                                 }
                             }
                         }
+
                         installConfig.Portals.Add(portalConfig);
                     }
                 }
@@ -440,8 +444,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public bool IsValidSqlServerVersion(string connectionString)
         {
-            //todo: check if we can use globals.DatabaseEngineVersion instead
-
+            // todo: check if we can use globals.DatabaseEngineVersion instead
             bool isValidVersion = false;
             var sqlConnection = new SqlConnection(connectionString);
             try
@@ -451,28 +454,28 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string serverVersion = sqlConnection.ServerVersion;
                 if (serverVersion != null)
                 {
-                    string[] serverVersionDetails = serverVersion.Split(new[] {"."}, StringSplitOptions.None);
+                    string[] serverVersionDetails = serverVersion.Split(new[] { "." }, StringSplitOptions.None);
 
                     int versionNumber = int.Parse(serverVersionDetails[0]);
 
                     switch (versionNumber)
                     {
                         case 8:
-                            //sql 2000
+                        // sql 2000
                         case 9:
-                            //sql 2005
+                            // sql 2005
                             isValidVersion = false;
                             break;
                         case 10:
-                            //sql 2008
+                        // sql 2008
                         case 11:
-                            //sql 2010
+                        // sql 2010
                         case 12:
-                            //sql 2012
+                            // sql 2012
                             isValidVersion = true;
                             break;
                         default:
-                            //covers unknown versions and later releases
+                            // covers unknown versions and later releases
                             isValidVersion = true;
                             break;
                     }
@@ -480,13 +483,14 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
             catch (Exception)
             {
-                //cannot connect with the details
+                // cannot connect with the details
                 isValidVersion = false;
             }
             finally
             {
                 sqlConnection.Close();
             }
+
             return isValidVersion;
         }
 
@@ -495,13 +499,14 @@ namespace DotNetNuke.Services.Upgrade.Internals
             var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
             var databaseActions = string.Format(@"CREATE TABLE {0}([fakeColumn] [int] NULL); SELECT * FROM {0}; DROP TABLE {0};", fakeName);
             var strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
-            //if no exceptions we have necessary drop etc permissions
+
+            // if no exceptions we have necessary drop etc permissions
             return string.IsNullOrEmpty(strExceptions);
         }
 
         public bool IsValidDotNetVersion()
         {
-            //todo: check that this works for 4.5 etc.
+            // todo: check that this works for 4.5 etc.
             return Upgrade.IsNETFrameworkCurrent("4.0");
         }
 
@@ -525,14 +530,16 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string downloadUrl = UpdateService.GetLanguageDownloadUrl(cultureCode);
 
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
-                //no need to download english, always there
-                if (cultureCode != "en-us" && String.IsNullOrEmpty(downloadUrl) != true)
+
+                // no need to download english, always there
+                if (cultureCode != "en-us" && string.IsNullOrEmpty(downloadUrl) != true)
                 {
                     var newCulture = new CultureInfo(cultureCode);
                     Thread.CurrentThread.CurrentCulture = newCulture;
-                    GetLanguagePack(downloadUrl, installFolder);
+                    this.GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
+
                 return false;
             }
             catch (Exception)
@@ -545,24 +552,24 @@ namespace DotNetNuke.Services.Upgrade.Internals
         {
             CultureInfo pageCulture = null;
 
-
             // 1. querystring
-            pageCulture = GetCultureFromQs();
+            pageCulture = this.GetCultureFromQs();
 
             // 2. cookie
-            pageCulture = GetCultureFromCookie();
+            pageCulture = this.GetCultureFromCookie();
 
             // 3. browser
-            pageCulture = GetCultureFromBrowser();
+            pageCulture = this.GetCultureFromBrowser();
 
             return pageCulture;
         }
 
         /// <summary>
-        /// Tests the Database Connection using the database connection config
+        /// Tests the Database Connection using the database connection config.
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         public string TestDatabaseConnection(ConnectionConfig config)
         {
             DbConnectionStringBuilder builder = DataProvider.Instance().GetConnectionStringBuilder();
@@ -600,25 +607,31 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
-        public string InstallerLogName
-        {
-            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
-        }
-
-        #endregion
-
         public CultureInfo GetCultureFromBrowser()
         {
             CultureInfo culture = null;
             foreach (string userLang in HttpContext.Current.Request.UserLanguages)
             {
-                //split userlanguage by ";"... all but the first language will contain a preferrence index eg. ;q=.5
+                // split userlanguage by ";"... all but the first language will contain a preferrence index eg. ;q=.5
                 string language = userLang.Split(';')[0];
                 culture = new CultureInfo(language);
             }
+
             return culture;
         }
-        
+
+        private static XmlNode AppendNewXmlNode(ref XmlDocument document, ref XmlNode parentNode, string elementName, string elementValue)
+        {
+            XmlNode newNode = document.CreateNode(XmlNodeType.Element, elementName, null);
+            if (!string.IsNullOrEmpty(elementValue))
+            {
+                newNode.InnerText = elementValue;
+            }
+
+            parentNode.AppendChild(newNode);
+            return newNode;
+        }
+
         private CultureInfo GetCultureFromQs()
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
@@ -633,35 +646,26 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         private void GetLanguagePack(string downloadUrl, string installFolder)
         {
-            string myfile = "";
-            WebResponse wr = Util.GetExternalRequest(downloadUrl,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     -1,
-													 null,
-													 null,
-                                                     false,
-                                                     "DotNetNuke-Appgallery/1.0.0.0(Microsoft Windows NT 6.1.7600.0",
-                                                     "wpi://2.1.0.0/Microsoft Windows NT 6.1.7600.0",
-                                                     out myfile,
-													 10000);
-            //use fixed name for later installation
+            string myfile = string.Empty;
+            WebResponse wr = Util.GetExternalRequest(
+                downloadUrl,
+                null,
+                null,
+                null,
+                null,
+                null,
+                -1,
+                null,
+                null,
+                false,
+                "DotNetNuke-Appgallery/1.0.0.0(Microsoft Windows NT 6.1.7600.0",
+                "wpi://2.1.0.0/Microsoft Windows NT 6.1.7600.0",
+                out myfile,
+                10000);
+
+            // use fixed name for later installation
             myfile = "installlanguage.resources";
             Util.DeployExtension(wr, myfile, installFolder);
-        }
-
-        private static XmlNode AppendNewXmlNode(ref XmlDocument document, ref XmlNode parentNode, string elementName, string elementValue)
-        {
-            XmlNode newNode = document.CreateNode(XmlNodeType.Element, elementName, null);
-            if (!string.IsNullOrEmpty(elementValue))
-            {
-                newNode.InnerText = elementValue;
-            }
-            parentNode.AppendChild(newNode);
-            return newNode;
         }
     }
 }

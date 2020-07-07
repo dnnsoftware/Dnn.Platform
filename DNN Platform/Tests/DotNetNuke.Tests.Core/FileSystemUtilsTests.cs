@@ -1,23 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Utilities.Mocks;
-using ICSharpCode.SharpZipLib.Zip;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using ICSharpCode.SharpZipLib.Zip;
+    using NUnit.Framework;
+
     /// <summary>
-    ///   FileSystemUtilsTests
+    ///   FileSystemUtilsTests.
     /// </summary>
     [TestFixture]
     public class FileSystemUtilsTests
@@ -29,11 +30,10 @@ namespace DotNetNuke.Tests.Core
             field.SetValue(null, null);
 
             var rootPath = Path.Combine(Globals.ApplicationMapPath, "FileSystemUtilsTest");
-            PrepareRootPath(rootPath);
+            this.PrepareRootPath(rootPath);
 
             field.SetValue(null, rootPath);
         }
-
 
         [TestCase("/")]
         [TestCase("//")]
@@ -49,8 +49,8 @@ namespace DotNetNuke.Tests.Core
         [TestCase("..\\")]
         public void DeleteFiles_Should_Not_Able_To_Delete_Root_Folder(string path)
         {
-            //Action
-            FileSystemUtils.DeleteFiles(new string[] {path});
+            // Action
+            FileSystemUtils.DeleteFiles(new string[] { path });
 
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.AllDirectories);
             Assert.Greater(files.Length, 0);
@@ -59,8 +59,8 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void AddToZip_Should_Able_To_Add_Multiple_Files()
         {
-            //Action
-            DeleteZippedFiles();
+            // Action
+            this.DeleteZippedFiles();
             var zipFilePath = Path.Combine(Globals.ApplicationMapPath, $"Test{Guid.NewGuid().ToString().Substring(0, 8)}.zip");
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
             using (var stream = File.Create(zipFilePath))
@@ -78,12 +78,13 @@ namespace DotNetNuke.Tests.Core
                 zipStream.Close();
             }
 
-            //Assert
+            // Assert
             var destPath = Path.Combine(Globals.ApplicationMapPath, Path.GetFileNameWithoutExtension(zipFilePath));
             if (!Directory.Exists(destPath))
             {
                 Directory.CreateDirectory(destPath);
             }
+
             try
             {
                 using (var stream = File.OpenRead(zipFilePath))
@@ -98,24 +99,24 @@ namespace DotNetNuke.Tests.Core
             }
             finally
             {
-                DeleteZippedFiles();
-                DeleteUnzippedFolder(destPath);
+                this.DeleteZippedFiles();
+                this.DeleteUnzippedFolder(destPath);
             }
         }
 
         [Test]
         public void DeleteFile_Should_Delete_File()
         {
-            //Action
+            // Action
             var testPath = Globals.ApplicationMapPath + $"/Test{Guid.NewGuid().ToString().Substring(0, 8)}.txt";
             using (StreamWriter sw = File.CreateText(testPath))
             {
                 sw.WriteLine("48");
             }
-            
+
             FileSystemUtils.DeleteFile(testPath);
 
-            //Assert
+            // Assert
             bool res = File.Exists(testPath.Replace("/", "\\"));
             Assert.IsFalse(res);
         }
@@ -127,15 +128,15 @@ namespace DotNetNuke.Tests.Core
         [TestCase("Test/Test ")]
         public void FixPath_Should_Change_Slashes_And_Trim(string input)
         {
-            //Action
+            // Action
             var result = FileSystemUtils.FixPath(input);
 
-            //Assert
+            // Assert
             if (string.IsNullOrEmpty(input))
             {
                 Assert.IsTrue(input == result);
             }
-            else if(string.IsNullOrWhiteSpace(input))
+            else if (string.IsNullOrWhiteSpace(input))
             {
                 Assert.IsTrue(result == string.Empty);
             }
@@ -144,7 +145,6 @@ namespace DotNetNuke.Tests.Core
                 Assert.IsFalse(result.Contains(" "));
                 Assert.IsFalse(result.Contains("/"));
             }
-
         }
 
         private void PrepareRootPath(string rootPath)
@@ -171,10 +171,11 @@ namespace DotNetNuke.Tests.Core
                 }
                 catch (Exception)
                 {
-                    //ignore
+                    // ignore
                 }
             }
         }
+
         private void DeleteUnzippedFolder(string zippedFolder)
         {
             try
@@ -183,7 +184,7 @@ namespace DotNetNuke.Tests.Core
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
         }
     }

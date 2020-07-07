@@ -1,35 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+
     [Serializable]
     public class RibbonBarToolInfo
     {
         public RibbonBarToolInfo()
         {
-            ControlKey = "";
-            ModuleFriendlyName = "";
-            LinkWindowTarget = "";
-            ToolName = "";
+            this.ControlKey = string.Empty;
+            this.ModuleFriendlyName = string.Empty;
+            this.LinkWindowTarget = string.Empty;
+            this.ToolName = string.Empty;
         }
 
         public RibbonBarToolInfo(string toolName, bool isHostTool, bool useButton, string linkWindowTarget, string moduleFriendlyName, string controlKey, bool showAsPopUp)
         {
-            ToolName = toolName;
-            IsHostTool = isHostTool;
-            UseButton = useButton;
-            LinkWindowTarget = linkWindowTarget;
-            ModuleFriendlyName = moduleFriendlyName;
-            ControlKey = controlKey;
-            ShowAsPopUp = showAsPopUp;
+            this.ToolName = toolName;
+            this.IsHostTool = isHostTool;
+            this.UseButton = useButton;
+            this.LinkWindowTarget = linkWindowTarget;
+            this.ModuleFriendlyName = moduleFriendlyName;
+            this.ControlKey = controlKey;
+            this.ShowAsPopUp = showAsPopUp;
         }
 
         public string ControlKey { get; set; }

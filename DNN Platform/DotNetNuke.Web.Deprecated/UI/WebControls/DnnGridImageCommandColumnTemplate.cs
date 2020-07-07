@@ -1,19 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using Telerik.Web.UI;
+
     public class DnnGridImageCommandColumnTemplate : IBindableTemplate
     {
         private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;
@@ -28,244 +29,231 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnGridImageCommandColumnTemplate(GridItemType itemType)
         {
-            ItemType = itemType;
+            this.ItemType = itemType;
         }
 
-
         /// <summary>
-        /// Gets or sets the CommandName for the Column
+        /// Gets or sets the CommandName for the Column.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string CommandName { get; set; }
 
-
         /// <summary>
-        /// Gets or sets the Design Mode of the Column
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         public bool DesignMode { get; set; }
 
-
         /// <summary>
-        /// Gets or sets the CommandName for the Column
+        /// Gets or sets the CommandName for the Column.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public ImageCommandColumnEditMode EditMode
         {
-            get { return _editMode; }
-            set { _editMode = value; }
+            get { return this._editMode; }
+            set { this._editMode = value; }
         }
 
-
         /// <summary>
-        /// Gets or sets the URL of the Image
+        /// Gets or sets the URL of the Image.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string ImageURL { get; set; }
 
-
         /// <summary>
-        /// The type of Template to Create
+        /// Gets or sets the type of Template to Create.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public GridItemType ItemType
         {
-            get { return _itemType; }
-            set { _itemType = value; }
+            get { return this._itemType; }
+            set { this._itemType = value; }
         }
 
-
         /// <summary>
-        /// The Key Field that provides a Unique key to the data Item
+        /// Gets or sets the Key Field that provides a Unique key to the data Item.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string KeyField { get; set; }
 
-
         /// <summary>
-        /// Gets or sets the URL of the Link (unless DataBinding through KeyField)
+        /// Gets or sets the URL of the Link (unless DataBinding through KeyField).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string NavigateURL { get; set; }
 
-
         /// <summary>
-        /// Gets or sets the URL Formatting string
+        /// Gets or sets the URL Formatting string.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string NavigateURLFormatString { get; set; }
 
-
         /// <summary>
-        /// Javascript text to attach to the OnClick Event
+        /// Gets or sets javascript text to attach to the OnClick Event.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string OnClickJs { get; set; }
 
-
         /// <summary>
-        /// Gets or sets whether an Image is displayed
+        /// Gets or sets a value indicating whether gets or sets whether an Image is displayed.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         public bool ShowImage
         {
-            get { return _showImage; }
-            set { _showImage = value; }
+            get { return this._showImage; }
+            set { this._showImage = value; }
         }
 
-
         /// <summary>
-        /// Gets or sets the Text (for Header/Footer Templates)
+        /// Gets or sets the Text (for Header/Footer Templates).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string Text { get; set; }
 
-
         /// <summary>
-        /// An flag that indicates whether the buttons are visible (this is overridden if
+        /// Gets or sets a value indicating whether an flag that indicates whether the buttons are visible (this is overridden if
         /// the VisibleField is set)
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         public bool Visible
         {
-            get { return _visible; }
-            set { _visible = value; }
+            get { return this._visible; }
+            set { this._visible = value; }
         }
 
-
         /// <summary>
-        /// An flag that indicates whether the buttons are visible.
+        /// Gets or sets an flag that indicates whether the buttons are visible.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         public string VisibleField { get; set; }
 
-        #region ITemplate Members
-
         /// <summary>
-        /// InstantiateIn instantiates the template (implementation of ITemplate)
+        /// InstantiateIn instantiates the template (implementation of ITemplate).
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem).</param>
         public void InstantiateIn(Control container)
         {
-            switch (ItemType)
+            switch (this.ItemType)
             {
                 case GridItemType.Item:
                 case GridItemType.AlternatingItem:
                 case GridItemType.SelectedItem:
                 case GridItemType.EditItem:
-                    if (EditMode == ImageCommandColumnEditMode.URL)
+                    if (this.EditMode == ImageCommandColumnEditMode.URL)
                     {
-                        var hypLink = new HyperLink {ToolTip = Text};
-                        if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                        var hypLink = new HyperLink { ToolTip = this.Text };
+                        if (!string.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
-                            var img = new Image {ImageUrl = DesignMode ? ImageURL.Replace("~/", "../../") : ImageURL};
+                            var img = new Image { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL };
                             hypLink.Controls.Add(img);
-                            img.ToolTip = Text;
+                            img.ToolTip = this.Text;
                         }
                         else
                         {
-                            hypLink.Text = Text;
+                            hypLink.Text = this.Text;
                         }
-                        hypLink.DataBinding += ItemDataBinding;
+
+                        hypLink.DataBinding += this.ItemDataBinding;
                         container.Controls.Add(hypLink);
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                        if (!string.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var colIcon = new ImageButton
-                                {ImageUrl = DesignMode ? ImageURL.Replace("~/", "../../") : ImageURL, ToolTip = Text};
-                            if (!String.IsNullOrEmpty(OnClickJs))
+                            { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL, ToolTip = this.Text };
+                            if (!string.IsNullOrEmpty(this.OnClickJs))
                             {
-                                ClientAPI.AddButtonConfirm(colIcon, OnClickJs);
+                                ClientAPI.AddButtonConfirm(colIcon, this.OnClickJs);
                             }
-                            colIcon.CommandName = CommandName;
-                            colIcon.DataBinding += ItemDataBinding;
+
+                            colIcon.CommandName = this.CommandName;
+                            colIcon.DataBinding += this.ItemDataBinding;
                             container.Controls.Add(colIcon);
                         }
-                        if (!String.IsNullOrEmpty(Text) && !ShowImage)
+
+                        if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                         {
-                            var colLink = new LinkButton {ToolTip = Text};
-                            if (!String.IsNullOrEmpty(OnClickJs))
+                            var colLink = new LinkButton { ToolTip = this.Text };
+                            if (!string.IsNullOrEmpty(this.OnClickJs))
                             {
-                                ClientAPI.AddButtonConfirm(colLink, OnClickJs);
+                                ClientAPI.AddButtonConfirm(colLink, this.OnClickJs);
                             }
-                            colLink.CommandName = CommandName;
-                            colLink.Text = Text;
-                            colLink.DataBinding += ItemDataBinding;
+
+                            colLink.CommandName = this.CommandName;
+                            colLink.Text = this.Text;
+                            colLink.DataBinding += this.ItemDataBinding;
                             container.Controls.Add(colLink);
                         }
                     }
+
                     break;
                 case GridItemType.Footer:
                 case GridItemType.Header:
-                    container.Controls.Add(new LiteralControl(Text));
+                    container.Controls.Add(new LiteralControl(this.Text));
                     break;
             }
         }
-        
+
         public IOrderedDictionary ExtractValues(Control container)
         {
-            //do nothing we don't really support databinding
-            //but the telerik grid trys to databind to all template columns regardless
+            // do nothing we don't really support databinding
+            // but the telerik grid trys to databind to all template columns regardless
             return new OrderedDictionary();
         }
 
-        #endregion
-
         /// <summary>
-        /// Gets whether theButton is visible
+        /// Gets whether theButton is visible.
         /// </summary>
-        ///	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem).</param>
         private bool GetIsVisible(GridItem container)
         {
-            if (!String.IsNullOrEmpty(VisibleField))
+            if (!string.IsNullOrEmpty(this.VisibleField))
             {
-                return Convert.ToBoolean(DataBinder.Eval(container.DataItem, VisibleField));
+                return Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.VisibleField));
             }
 
-            return Visible;
+            return this.Visible;
         }
 
-
         /// <summary>
-        /// Gets the value of the key
+        /// Gets the value of the key.
         /// </summary>
-        ///	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem).</param>
         private int GetValue(GridItem container)
         {
             int keyValue = Null.NullInteger;
-            if (!String.IsNullOrEmpty(KeyField))
+            if (!string.IsNullOrEmpty(this.KeyField))
             {
-                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, KeyField));
+                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField));
             }
+
             return keyValue;
         }
 
-
         /// <summary>
-        /// Item_DataBinding runs when an Item of type GridItemType.Item is being data-bound
+        /// Item_DataBinding runs when an Item of type GridItemType.Item is being data-bound.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An EventArgs object</param>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An EventArgs object.</param>
         private void ItemDataBinding(object sender, EventArgs e)
         {
             GridItem container;
             int keyValue;
-            if (EditMode == ImageCommandColumnEditMode.URL)
+            if (this.EditMode == ImageCommandColumnEditMode.URL)
             {
-                var hypLink = (HyperLink) sender;
-                container = (GridItem) hypLink.NamingContainer;
-                keyValue = GetValue(container);
-                if (!String.IsNullOrEmpty(NavigateURLFormatString))
+                var hypLink = (HyperLink)sender;
+                container = (GridItem)hypLink.NamingContainer;
+                keyValue = this.GetValue(container);
+                if (!string.IsNullOrEmpty(this.NavigateURLFormatString))
                 {
-                    hypLink.NavigateUrl = string.Format(NavigateURLFormatString, keyValue);
+                    hypLink.NavigateUrl = string.Format(this.NavigateURLFormatString, keyValue);
                 }
                 else
                 {
@@ -274,23 +262,24 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                //Bind Image Button
-                if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                // Bind Image Button
+                if (!string.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
-                    var colIcon = (ImageButton) sender;
-                    container = (GridItem) colIcon.NamingContainer;
-                    keyValue = GetValue(container);
+                    var colIcon = (ImageButton)sender;
+                    container = (GridItem)colIcon.NamingContainer;
+                    keyValue = this.GetValue(container);
                     colIcon.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
-                    colIcon.Visible = GetIsVisible(container);
+                    colIcon.Visible = this.GetIsVisible(container);
                 }
-                if (!String.IsNullOrEmpty(Text) && !ShowImage)
+
+                if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
-                    //Bind Link Button
-                    var colLink = (LinkButton) sender;
-                    container = (GridItem) colLink.NamingContainer;
-                    keyValue = GetValue(container);
+                    // Bind Link Button
+                    var colLink = (LinkButton)sender;
+                    container = (GridItem)colLink.NamingContainer;
+                    keyValue = this.GetValue(container);
                     colLink.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
-                    colLink.Visible = GetIsVisible(container);
+                    colLink.Visible = this.GetIsVisible(container);
                 }
             }
         }

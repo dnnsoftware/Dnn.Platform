@@ -1,47 +1,47 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+
     /// <summary>
-    /// Rotation ImageTransform class
+    /// Rotation ImageTransform class.
     /// </summary>
-	public class ImageRotateFlipTransform : ImageTransform
-	{
-		/// <summary>
-        /// Sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone
-		/// </summary>
-		public RotateFlipType RotateFlip { get; set; }
+    public class ImageRotateFlipTransform : ImageTransform
+    {
+        public ImageRotateFlipTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.RotateFlip = RotateFlipType.RotateNoneFlipNone;
+        }
 
         /// <summary>
-        /// Provides an Unique String for this transformation
+        /// Gets provides an Unique String for this transformation.
         /// </summary>
-        public override string UniqueString => base.UniqueString + "-" + RotateFlip;
+        public override string UniqueString => base.UniqueString + "-" + this.RotateFlip;
 
-	    public ImageRotateFlipTransform()
-		{
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
-			RotateFlip = RotateFlipType.RotateNoneFlipNone;
-		}
-        
         /// <summary>
-        /// Processes an input image applying a rotation image transformation
+        /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        public RotateFlipType RotateFlip { get; set; }
+
+        /// <summary>
+        /// Processes an input image applying a rotation image transformation.
+        /// </summary>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
-		{
-			var temp = (Bitmap)image;
-			var bmap = (Bitmap)temp.Clone();
-			bmap.RotateFlip(RotateFlip);
-			return (Bitmap)bmap.Clone();
-		}
-	}
+        {
+            var temp = (Bitmap)image;
+            var bmap = (Bitmap)temp.Clone();
+            bmap.RotateFlip(this.RotateFlip);
+            return (Bitmap)bmap.Clone();
+        }
+    }
 }

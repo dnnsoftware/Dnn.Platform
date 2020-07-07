@@ -1,19 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.ComponentModel.Composition;
-
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.UI.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
-    //TODO Create the Custom IToolBarButtonExtensionPoint Export attribute
+    using System;
+    using System.ComponentModel.Composition;
+
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.UI.Modules;
+
+    // TODO Create the Custom IToolBarButtonExtensionPoint Export attribute
     [Export(typeof(IToolBarButtonExtensionPoint))]
     [ExportMetadata("Module", "DigitalAssets")]
     [ExportMetadata("Name", "DigitalAssetsToolBarButton")]
@@ -35,19 +35,19 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         {
             get
             {
-                if (ModuleContext == null)
+                if (this.ModuleContext == null)
                 {
                     return string.Empty;
                 }
 
-	            if (PortalSettings.Current.EnablePopUps)
-	            {
-		            return ModuleContext.EditUrl("FolderMappings");
-	            }
-	            else
-	            {
-		            return string.Format("location.href = '{0}';", ModuleContext.EditUrl("FolderMappings"));
-	            }
+                if (PortalSettings.Current.EnablePopUps)
+                {
+                    return this.ModuleContext.EditUrl("FolderMappings");
+                }
+                else
+                {
+                    return string.Format("location.href = '{0}';", this.ModuleContext.EditUrl("FolderMappings"));
+                }
             }
         }
 
@@ -83,8 +83,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public bool Enabled
         {
-            get { return ModuleContext != null
-                            && ModulePermissionController.CanManageModule(ModuleContext.Configuration); }
+            get
+            {
+                return this.ModuleContext != null
+                            && ModulePermissionController.CanManageModule(this.ModuleContext.Configuration);
+            }
         }
 
         public ModuleInstanceContext ModuleContext { get; set; }

@@ -1,37 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Dnn.PersonaBar.Library.AppEvents.Attributes;
-using Dnn.PersonaBar.Library.Common;
-using DotNetNuke.Collections;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.AppEvents
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using Dnn.PersonaBar.Library.AppEvents.Attributes;
+    using Dnn.PersonaBar.Library.Common;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+
     public class EventsController : ServiceLocator<IEventsController, EventsController>, IEventsController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (EventsController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventsController));
 
         private static readonly object LockThis = new object();
         private static bool _isInitialized;
-        
-        #region 
-
-        protected override Func<IEventsController> GetFactory()
-        {
-            return () => new EventsController();
-        }
-
-        #endregion
-
-        #region AppEventsController methods
 
         public void ApplicationStartEvent()
         {
@@ -53,7 +43,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("{0}.ApplicationStart threw an exception.  {1}\r\n{2}",
+                    Logger.ErrorFormat(
+                        "{0}.ApplicationStart threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName, e.Message, e.StackTrace);
                 }
             });
@@ -69,17 +60,20 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("{0}.ApplicationEnd threw an exception.  {1}\r\n{2}",
+                    Logger.ErrorFormat(
+                        "{0}.ApplicationEnd threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName, e.Message, e.StackTrace);
                 }
             });
         }
 
-        #endregion
+        protected override Func<IEventsController> GetFactory()
+        {
+            return () => new EventsController();
+        }
 
-        #region
-
-        private static IEnumerable<T> GetEventsImplements<T>() where T : class
+        private static IEnumerable<T> GetEventsImplements<T>()
+            where T : class
         {
             var types = GetAllEventTypes<T>();
 
@@ -92,8 +86,9 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while calling Application start implementors.  {1}",
-                                       type.FullName, e.Message);
+                    Logger.ErrorFormat(
+                        "Unable to create {0} while calling Application start implementors.  {1}",
+                        type.FullName, e.Message);
                     appEventHandler = null;
                 }
 
@@ -104,7 +99,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
             }
         }
 
-        private static IEnumerable<Type> GetAllEventTypes<T>() where T : class 
+        private static IEnumerable<Type> GetAllEventTypes<T>()
+            where T : class
         {
             var typeLocator = new TypeLocator();
             return typeLocator.GetAllMatchingTypes(
@@ -112,7 +108,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                      t.IsClass &&
                      !t.IsAbstract &&
                      t.IsVisible &&
-                     typeof (T).IsAssignableFrom(t) &&
+                     typeof(T).IsAssignableFrom(t) &&
                      (IgnoreVersionMatchCheck(t) || VersionMatched(t)));
         }
 
@@ -132,13 +128,12 @@ namespace Dnn.PersonaBar.Library.AppEvents
 
             if (!matched)
             {
-                Logger.InfoFormat("Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored", 
+                Logger.InfoFormat(
+                    "Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored",
                     t.FullName, typeVersion, currentVersion);
             }
 
             return matched;
         }
-
-        #endregion
     }
 }

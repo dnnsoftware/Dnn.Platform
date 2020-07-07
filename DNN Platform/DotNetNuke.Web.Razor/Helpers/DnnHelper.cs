@@ -1,20 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.Modules;
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.Razor.Helpers
 {
+    using System;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.UI.Modules;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class DnnHelper
     {
@@ -23,7 +19,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public DnnHelper(ModuleInstanceContext context)
         {
-            _context = context;
+            this._context = context;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -31,7 +27,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.Configuration;
+                return this._context.Configuration;
             }
         }
 
@@ -40,7 +36,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.PortalSettings.ActiveTab;
+                return this._context.PortalSettings.ActiveTab;
             }
         }
 
@@ -49,7 +45,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.PortalSettings;
+                return this._context.PortalSettings;
             }
         }
 
@@ -58,7 +54,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.PortalSettings.UserInfo;
+                return this._context.PortalSettings.UserInfo;
             }
         }
     }

@@ -1,19 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : DesktopModuleSupportedFeature
+    /// Class    : DesktopModuleSupportedFeature
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DesktopModuleSupportedFeature enum provides an enumeration of Supported
-    /// Features
+    /// Features.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Flags]
@@ -21,6 +21,6 @@ namespace DotNetNuke.Entities.Modules
     {
         IsPortable = 1,
         IsSearchable = 2,
-        IsUpgradeable = 4
+        IsUpgradeable = 4,
     }
 }

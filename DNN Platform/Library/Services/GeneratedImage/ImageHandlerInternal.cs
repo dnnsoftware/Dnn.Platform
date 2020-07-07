@@ -1,28 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.GeneratedImage.ImageQuantization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.UserRequest;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.GeneratedImage.ImageQuantization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.UserRequest;
+
     internal class ImageHandlerInternal
     {
         private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
@@ -31,20 +32,37 @@ namespace DotNetNuke.Services.GeneratedImage
         private IImageStore _imageStore;
         private DateTime? _now;
 
+        public ImageHandlerInternal()
+        {
+            this.ContentType = ImageFormat.Jpeg;
+            this.ImageCompression = 95;
+            this.ImageTransforms = new List<ImageTransform>();
+            this.AllowStandalone = false;
+        }
+
+        internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
+            : this()
+        {
+            this._imageStore = imageStore;
+            this._now = now;
+        }
+
         public TimeSpan ClientCacheExpiration
         {
             get
             {
-                return _clientCacheExpiration;
+                return this._clientCacheExpiration;
             }
+
             set
             {
                 if (value.Ticks < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
                 }
-                _clientCacheExpiration = value;
-                EnableClientCache = true;
+
+                this._clientCacheExpiration = value;
+                this.EnableClientCache = true;
             }
         }
 
@@ -52,32 +70,16 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public long ImageCompression { get; set; }
 
-        private DateTime DateTime_Now
-        {
-            get
-            {
-                return _now ?? DateTime.Now;
-            }
-        }
-
-        private IImageStore ImageStore
-        {
-            get
-            {
-                return _imageStore ?? DiskImageStore.Instance;
-            }
-        }
-
         public int IPCountMax
         {
-            set { IPCount.MaxCount = value; }
             get { return IPCount.MaxCount; }
+            set { IPCount.MaxCount = value; }
         }
 
         public TimeSpan IpCountPurgeInterval
         {
-            set { IPCount.PurgeInterval = value; }
             get { return IPCount.PurgeInterval; }
+            set { IPCount.PurgeInterval = value; }
         }
 
         public bool EnableClientCache { get; set; }
@@ -98,19 +100,223 @@ namespace DotNetNuke.Services.GeneratedImage
             private set;
         }
 
-        public ImageHandlerInternal()
+        private DateTime DateTime_Now
         {
-            ContentType = ImageFormat.Jpeg;
-            ImageCompression = 95;
-            ImageTransforms = new List<ImageTransform>();
-            AllowStandalone = false;
+            get
+            {
+                return this._now ?? DateTime.Now;
+            }
         }
 
-        internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
-            : this()
+        private IImageStore ImageStore
         {
-            _imageStore = imageStore;
-            _now = now;
+            get
+            {
+                return this._imageStore ?? DiskImageStore.Instance;
+            }
+        }
+
+        public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
+        {
+            context.Response.Clear();
+
+            string ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
+
+            // Check if allowed standalone
+            if (!this.AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
+            {
+                string message = "Not allowed to use standalone";
+                if (this.LogSecurity)
+                {
+                    EventLogController logController = new EventLogController();
+                    var logInfo = new LogInfo
+                    {
+                        LogUserID = PortalSettings.Current.UserId,
+                        LogPortalID = PortalSettings.Current.PortalId,
+                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                    };
+                    logInfo.AddProperty("DnnImageHandler", message);
+                    logInfo.AddProperty("IP", ipAddress);
+                    logController.AddLog(logInfo);
+                }
+
+                context.Response.StatusCode = 403;
+                context.Response.StatusDescription = message;
+                context.Response.End();
+                return;
+            }
+
+            // Check if domain is allowed to embed image
+            if (!string.IsNullOrEmpty(this.AllowedDomains[0]) &&
+                context.Request.UrlReferrer != null &&
+                context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
+            {
+                bool allowed = false;
+                string allowedDomains = string.Empty;
+                foreach (string allowedDomain in this.AllowedDomains)
+                {
+                    if (!string.IsNullOrEmpty(allowedDomain))
+                    {
+                        allowedDomains += allowedDomain + ",";
+                        if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
+                        {
+                            allowed = true;
+                        }
+                    }
+                }
+
+                if (!allowed)
+                {
+                    string message = $"Not allowed to use from referrer '{context.Request.UrlReferrer.Host}'";
+                    if (this.LogSecurity)
+                    {
+                        EventLogController logController = new EventLogController();
+                        var logInfo = new LogInfo
+                        {
+                            LogUserID = PortalSettings.Current.UserId,
+                            LogPortalID = PortalSettings.Current.PortalId,
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                        };
+                        logInfo.AddProperty("DnnImageHandler", message);
+                        logInfo.AddProperty("IP", ipAddress);
+                        logInfo.AddProperty("AllowedDomains", allowedDomains);
+                        logController.AddLog(logInfo);
+                    }
+
+                    context.Response.StatusCode = 403;
+                    context.Response.StatusDescription = "Forbidden";
+                    context.Response.End();
+                    return;
+                }
+            }
+
+            // Generate Image
+            var imageMethodData = imageGenCallback(context.Request.QueryString);
+
+            context.Response.ContentType = GetImageMimeType(this.ContentType);
+            if (imageMethodData == null)
+            {
+                throw new InvalidOperationException("The DnnImageHandler cannot return null.");
+            }
+
+            if (imageMethodData.IsEmptyImage)
+            {
+                using (var imageOutputBuffer = new MemoryStream())
+                {
+                    this.RenderImage(imageMethodData.Image, imageOutputBuffer);
+                    var buffer = imageOutputBuffer.GetBuffer();
+                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                    context.Response.End();
+                    return;
+                }
+            }
+
+            string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
+
+            var cacheCleared = false;
+            var profilepic = context.Request.QueryString["mode"];
+            if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
+            {
+                int userId;
+                if (int.TryParse(context.Request.QueryString["userId"], out userId))
+                {
+                    cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
+                }
+            }
+
+            // Handle client cache
+            var cachePolicy = context.Response.Cache;
+            cachePolicy.SetValidUntilExpires(true);
+            if (this.EnableClientCache)
+            {
+                if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]) && !cacheCleared)
+                {
+                    var provider = CultureInfo.InvariantCulture;
+                    var lastMod = DateTime.ParseExact(context.Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
+                    var etag = context.Request.Headers["If-None-Match"];
+                    if (lastMod + this.ClientCacheExpiration > this.DateTime_Now && etag == cacheId)
+                    {
+                        context.Response.StatusCode = 304;
+                        context.Response.StatusDescription = "Not Modified";
+                        context.Response.End();
+                        return;
+                    }
+                }
+
+                cachePolicy.SetCacheability(HttpCacheability.Public);
+                cachePolicy.SetLastModified(this.DateTime_Now);
+                cachePolicy.SetExpires(this.DateTime_Now + this.ClientCacheExpiration);
+                cachePolicy.SetETag(cacheId);
+            }
+
+            // Handle Server cache
+            if (this.EnableServerCache)
+            {
+                if (this.ImageStore.TryTransmitIfContains(cacheId, context.Response))
+                {
+                    context.Response.Flush();
+                    return;
+                }
+            }
+
+            // Check IP Cout boundaries
+            if (this.EnableIPCount)
+            {
+                if (!IPCount.CheckIp(ipAddress))
+                {
+                    string message = "Too many requests";
+
+                    if (this.LogSecurity)
+                    {
+                        EventLogController logController = new EventLogController();
+                        var logInfo = new LogInfo
+                        {
+                            LogUserID = PortalSettings.Current.UserId,
+                            LogPortalID = PortalSettings.Current.PortalId,
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                        };
+                        logInfo.AddProperty("DnnImageHandler", message);
+                        logInfo.AddProperty("IP", ipAddress);
+                        logController.AddLog(logInfo);
+                    }
+
+                    context.Response.StatusCode = 429;
+                    context.Response.StatusDescription = message;
+                    context.Response.End();
+                    return;
+                }
+            }
+
+            if (imageMethodData.HttpStatusCode != null)
+            {
+                context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;
+                context.Response.End();
+                return;
+            }
+
+            using (var imageOutputBuffer = new MemoryStream())
+            {
+                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
+                if (imageMethodData.Image != null)
+                {
+                    this.RenderImage(this.GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
+                }
+                else if (imageMethodData.ImageByteBuffer != null)
+                {
+                    this.RenderImage(this.GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
+                }
+
+                byte[] buffer = imageOutputBuffer.GetBuffer();
+
+                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+
+                if (this.EnableServerCache)
+                {
+                    this.ImageStore.Add(cacheId, buffer);
+                }
+
+                context.Response.End();
+            }
         }
 
         internal static string GetImageMimeType(ImageFormat format)
@@ -145,198 +351,31 @@ namespace DotNetNuke.Services.GeneratedImage
             return mimeType;
         }
 
-        public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
+        private static string GetIDFromBytes(byte[] buffer)
         {
-            context.Response.Clear();
-
-            string ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
-
-            // Check if allowed standalone
-            if (!AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
+            using (var hasher = SHA1.Create())
             {
-                string message = "Not allowed to use standalone";
-                if (LogSecurity)
+                byte[] result = hasher.ComputeHash(buffer);
+                var sb = new StringBuilder();
+                foreach (var b in result)
                 {
-                    EventLogController logController = new EventLogController();
-                    var logInfo = new LogInfo
-                    {
-                        LogUserID = PortalSettings.Current.UserId,
-                        LogPortalID = PortalSettings.Current.PortalId,
-                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
-                    };
-                    logInfo.AddProperty("DnnImageHandler", message);
-                    logInfo.AddProperty("IP", ipAddress);
-                    logController.AddLog(logInfo);
-                }
-                context.Response.StatusCode = 403;
-                context.Response.StatusDescription = message;
-                context.Response.End();
-                return;
-            }
-
-            // Check if domain is allowed to embed image
-            if (!string.IsNullOrEmpty(AllowedDomains[0]) &&
-                context.Request.UrlReferrer != null &&
-                context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
-            {
-                bool allowed = false;
-                string allowedDomains = "";
-                foreach (string allowedDomain in AllowedDomains)
-                {
-                    if (!string.IsNullOrEmpty(allowedDomain))
-                    {
-                        allowedDomains += allowedDomain + ",";
-                        if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
-                            allowed = true;
-                    }
+                    sb.Append(b.ToString("X2"));
                 }
 
-                if (!allowed)
-                {
-                    string message = $"Not allowed to use from referrer '{context.Request.UrlReferrer.Host}'";
-                    if (LogSecurity)
-                    {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
-                        {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
-                        };
-                        logInfo.AddProperty("DnnImageHandler", message);
-                        logInfo.AddProperty("IP", ipAddress);
-                        logInfo.AddProperty("AllowedDomains", allowedDomains);
-                        logController.AddLog(logInfo);
-                    }
-
-                    context.Response.StatusCode = 403;
-                    context.Response.StatusDescription = "Forbidden";
-                    context.Response.End();
-                    return;
-                }
+                return sb.ToString();
             }
+        }
 
-            // Generate Image
-            var imageMethodData = imageGenCallback(context.Request.QueryString);
-
-            context.Response.ContentType = GetImageMimeType(ContentType);
-            if (imageMethodData == null)
-            {
-                throw new InvalidOperationException("The DnnImageHandler cannot return null.");
-            }
-            if (imageMethodData.IsEmptyImage)
-            {
-                using (var imageOutputBuffer = new MemoryStream())
-                {
-                    RenderImage(imageMethodData.Image, imageOutputBuffer);
-                    var buffer = imageOutputBuffer.GetBuffer();
-                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                    context.Response.End();
-                    return;
-                }
-            }
-
-            string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
-
-            var cacheCleared = false;
-            var profilepic = context.Request.QueryString["mode"];
-            if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
-            {
-                int userId;
-                if (int.TryParse(context.Request.QueryString["userId"], out userId))
-                    cacheCleared = ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
-            }
-            // Handle client cache
-            var cachePolicy = context.Response.Cache;
-            cachePolicy.SetValidUntilExpires(true);
-            if (EnableClientCache)
-            {
-                if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]) && !cacheCleared)
-                {
-                    var provider = CultureInfo.InvariantCulture;
-                    var lastMod = DateTime.ParseExact(context.Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
-                    var etag = context.Request.Headers["If-None-Match"];
-                    if (lastMod + ClientCacheExpiration > DateTime_Now && etag == cacheId)
-                    {
-                        context.Response.StatusCode = 304;
-                        context.Response.StatusDescription = "Not Modified";
-                        context.Response.End();
-                        return;
-                    }
-                }
-                cachePolicy.SetCacheability(HttpCacheability.Public);
-                cachePolicy.SetLastModified(DateTime_Now);
-                cachePolicy.SetExpires(DateTime_Now + ClientCacheExpiration);
-                cachePolicy.SetETag(cacheId);
-            }
-            
-            // Handle Server cache
-            if (EnableServerCache)
-            {
-                if (ImageStore.TryTransmitIfContains(cacheId, context.Response))
-                {
-                    context.Response.End();
-                    return;
-                }
-            }
-
-            // Check IP Cout boundaries
-            if (EnableIPCount)
-            {
-                if (!IPCount.CheckIp(ipAddress))
-                {
-                    string message = "Too many requests";
-
-                    if (LogSecurity)
-                    {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
-                        {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
-                        };
-                        logInfo.AddProperty("DnnImageHandler", message);
-                        logInfo.AddProperty("IP", ipAddress);
-                        logController.AddLog(logInfo);
-                    }
-                    context.Response.StatusCode = 429;
-                    context.Response.StatusDescription = message;
-                    context.Response.End();
-                    return;
-                }
-            }
-            
-            if (imageMethodData.HttpStatusCode != null)
-            {
-                context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;
-                context.Response.End();
-                return;
-            }
-
-            using (var imageOutputBuffer = new MemoryStream())
-            {
-                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
-                if (imageMethodData.Image != null)
-                {
-                    RenderImage(GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
-                }
-                else if (imageMethodData.ImageByteBuffer != null)
-                {
-                    RenderImage(GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
-                }
-
-                byte[] buffer = imageOutputBuffer.GetBuffer();
-
-                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-
-                if (EnableServerCache)
-                {
-                    ImageStore.Add(cacheId, buffer);
-                }
-
-                context.Response.End();
-            }
+        /// <summary>
+        /// Returns the encoder for the specified mime type.
+        /// </summary>
+        /// <param name="mimeType">The mime type of the content.</param>
+        /// <returns>ImageCodecInfo.</returns>
+        private static ImageCodecInfo GetEncoderInfo(string mimeType)
+        {
+            var encoders = ImageCodecInfo.GetImageEncoders();
+            var e = encoders.FirstOrDefault(x => x.MimeType == mimeType);
+            return e;
         }
 
         private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
@@ -348,26 +387,13 @@ namespace DotNetNuke.Services.GeneratedImage
                 builder.Append(key);
                 builder.Append(context.Request.QueryString.Get(key));
             }
-            foreach (var tran in ImageTransforms)
+
+            foreach (var tran in this.ImageTransforms)
             {
                 builder.Append(tran.UniqueString);
             }
 
             return GetIDFromBytes(ASCIIEncoding.ASCII.GetBytes(builder.ToString()));
-        }
-
-        private static string GetIDFromBytes(byte[] buffer)
-        {
-            using (var hasher = SHA1.Create())
-            {
-                byte[] result = hasher.ComputeHash(buffer);
-                var sb = new StringBuilder();
-                foreach (var b in result)
-                {
-                    sb.Append(b.ToString("X2"));
-                }
-                return sb.ToString();
-            }
         }
 
         private Image GetImageThroughTransforms(Image image)
@@ -376,10 +402,11 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 Image temp = image;
 
-                foreach (var tran in ImageTransforms)
+                foreach (var tran in this.ImageTransforms)
                 {
                     temp = tran.ProcessImage(temp);
                 }
+
                 return temp;
             }
             finally
@@ -388,17 +415,26 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        //Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
+        // Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
         private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
         {
             var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
             Dictionary<int, DateTime> userIds;
-            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
-            ImageStore.ForcePurgeFromServerCache(cacheId);
+            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId))
+            {
+                return false;
+            }
+
+            this.ImageStore.ForcePurgeFromServerCache(cacheId);
             DateTime expiry;
-            //The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
-            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(ClientCacheExpiration)) return true;
-            //Remove the userId from the clear list when timespan is > ClientCacheExpiration.
+
+            // The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
+            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration))
+            {
+                return true;
+            }
+
+            // Remove the userId from the clear list when timespan is > ClientCacheExpiration.
             userIds.Remove(userId);
             DataCache.SetCache(cacheKey, userIds);
             return true;
@@ -408,7 +444,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             using (var memoryStream = new MemoryStream(buffer))
             {
-                return GetImageThroughTransforms(Image.FromStream(memoryStream));
+                return this.GetImageThroughTransforms(Image.FromStream(memoryStream));
             }
         }
 
@@ -416,7 +452,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             try
             {
-                if (ContentType == ImageFormat.Gif)
+                if (this.ContentType == ImageFormat.Gif)
                 {
                     var quantizer = new OctreeQuantizer(255, 8);
                     using (var quantized = quantizer.Quantize(image))
@@ -428,9 +464,9 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var eps = new EncoderParameters(1)
                     {
-                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression) }
+                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) },
                     };
-                    var ici = GetEncoderInfo(GetImageMimeType(ContentType));
+                    var ici = GetEncoderInfo(GetImageMimeType(this.ContentType));
                     image?.Save(outStream, ici, eps);
                 }
             }
@@ -438,18 +474,6 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 image?.Dispose();
             }
-        }
-
-        /// <summary>
-        /// Returns the encoder for the specified mime type
-        /// </summary>
-        /// <param name="mimeType">The mime type of the content</param>
-        /// <returns>ImageCodecInfo</returns>
-        private static ImageCodecInfo GetEncoderInfo(string mimeType)
-        {
-            var encoders = ImageCodecInfo.GetImageEncoders();
-            var e = encoders.FirstOrDefault(x => x.MimeType == mimeType);
-            return e;
         }
     }
 }

@@ -1,76 +1,205 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.Caching;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Xml;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Application;
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Upgrade;
-using DotNetNuke.Services.Url.FriendlyUrl;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Utilities;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic.CompilerServices;
-
-using DataCache = DotNetNuke.UI.Utilities.DataCache;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Xml;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Application;
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Upgrade;
+    using DotNetNuke.Services.Url.FriendlyUrl;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Utilities;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.VisualBasic.CompilerServices;
+
+    using DataCache = DotNetNuke.UI.Utilities.DataCache;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     /// <summary>
     /// The global instance of DotNetNuke. all basic functions and properties are defined in this instance.
     /// </summary>
     [StandardModule]
     public sealed class Globals
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Globals));
+        /// <summary>
+        /// Global role id for all users.
+        /// </summary>
+        /// <value>-1.</value>
+        public const string glbRoleAllUsers = "-1";
+
+        /// <summary>
+        /// Global role id for super user.
+        /// </summary>
+        /// <value>-2.</value>
+        public const string glbRoleSuperUser = "-2";
+
+        /// <summary>
+        /// Global role id for unauthenticated users.
+        /// </summary>
+        /// <value>-3.</value>
+        public const string glbRoleUnauthUser = "-3";
+
+        /// <summary>
+        /// Global role id by default.
+        /// </summary>
+        /// <value>-4.</value>
+        public const string glbRoleNothing = "-4";
+
+        /// <summary>
+        /// Global role name for all users.
+        /// </summary>
+        /// <value>All Users.</value>
+        public const string glbRoleAllUsersName = "All Users";
+
+        /// <summary>
+        /// Global ro name for super user.
+        /// </summary>
+        /// <value>Superuser.</value>
+        public const string glbRoleSuperUserName = "Superuser";
+
+        /// <summary>
+        /// Global role name for unauthenticated users.
+        /// </summary>
+        /// <value>Unauthenticated Users.</value>
+        public const string glbRoleUnauthUserName = "Unauthenticated Users";
+
+        /// <summary>
+        /// Default page name.
+        /// </summary>
+        /// <value>Default.aspx.</value>
+        public const string glbDefaultPage = "Default.aspx";
+
+        /// <summary>
+        /// Default host skin folder.
+        /// </summary>
+        /// <value>_default.</value>
+        public const string glbHostSkinFolder = "_default";
+
+        /// <summary>
+        /// Default control panel.
+        /// </summary>
+        /// <value>Admin/ControlPanel/IconBar.ascx.</value>
+        public const string glbDefaultControlPanel = "Admin/ControlPanel/IconBar.ascx";
+
+        /// <summary>
+        /// Default setting to determine if selected control panel is loaded to evaluate visibility.
+        /// </summary>
+        /// <value>false.</value>
+        public const bool glbAllowControlPanelToDetermineVisibility = false;
+
+        /// <summary>
+        /// Default pane name.
+        /// </summary>
+        /// <value>ContentPane.</value>
+        public const string glbDefaultPane = "ContentPane";
+
+        /// <summary>
+        /// Config files folder.
+        /// </summary>
+        /// <value>\Config\.</value>
+        public const string glbConfigFolder = "\\Config\\";
+
+        /// <summary>
+        /// About page name.
+        /// </summary>
+        /// <value>about.htm.</value>
+        public const string glbAboutPage = "about.htm";
+
+        /// <summary>
+        /// DotNetNuke config file.
+        /// </summary>
+        /// <value>DotNetNuke.config.</value>
+        public const string glbDotNetNukeConfig = "DotNetNuke.config";
+
+        /// <summary>
+        /// Default portal id for super user.
+        /// </summary>
+        /// <value>-1.</value>
+        public const int glbSuperUserAppName = -1;
+
+        /// <summary>
+        /// extension of protected files.
+        /// </summary>
+        /// <value>.resources.</value>
+        public const string glbProtectedExtension = ".resources";
+
+        /// <summary>
+        /// Default container folder.
+        /// </summary>
+        /// <value>Portals/_default/Containers/.</value>
+        public const string glbContainersPath = "Portals/_default/Containers/";
+
+        /// <summary>
+        /// Default skin folder.
+        /// </summary>
+        /// <value>Portals/_default/Skins/.</value>
+        public const string glbSkinsPath = "Portals/_default/Skins/";
+
+        /// <summary>
+        /// Email address regex pattern.
+        /// </summary>
+        /// <value><![CDATA[^[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])$]]></value>
+        public const string glbEmailRegEx =
+            @"^\s*[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])\s*$";
+
+        /// <summary>
+        /// User Name regex pattern.
+        /// </summary>
+        /// <value></value>
+        public const string glbUserNameRegEx = @"";
+
+        /// <summary>
+        /// format of a script tag.
+        /// </summary>
+        /// <value><![CDATA[<script type=\"text/javascript\" src=\"{0}\" ></script>]]></value>
+        public const string glbScriptFormat = "<script type=\"text/javascript\" src=\"{0}\" ></script>";
+
+        private const string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; // this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
 
         public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
         public static readonly Regex NonAlphanumericCharacters = new Regex("[^A-Za-z0-9]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -84,7 +213,23 @@ namespace DotNetNuke.Common
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
 
-        #region PerformanceSettings enum
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
+        private static string _applicationPath;
+        private static string _applicationMapPath;
+        private static string _desktopModulePath;
+        private static string _imagePath;
+        private static string _hostMapPath;
+        private static string _hostPath;
+        private static string _installMapPath;
+        private static string _installPath;
+        private static Version _dataBaseVersion;
+        private static UpgradeStatus _status = UpgradeStatus.Unknown;
+        private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
+
+        private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
+
+        // global constants for the life of the application ( set in Application_Start )
+
 
         /// <summary>
         /// Enumeration of site performance setting, say by another way that means how to set the cache.
@@ -97,7 +242,7 @@ namespace DotNetNuke.Common
         /// update cache immediately after the data changed.</para>
         /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
         /// <list type="bullet">
-        ///	<item>HostSettingsCacheTimeOut: 20</item>
+        ///     <item>HostSettingsCacheTimeOut: 20</item>
         /// <item>PortalAliasCacheTimeOut: 200</item>
         /// <item>PortalSettingsCacheTimeOut: 20</item>
         /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
@@ -109,23 +254,22 @@ namespace DotNetNuke.Common
             /// No Caching
             /// </summary>
             NoCaching = 0,
+
             /// <summary>
             /// Caching for a short time
             /// </summary>
             LightCaching = 1,
+
             /// <summary>
             /// Caching for moderate
             /// </summary>
             ModerateCaching = 3,
+
             /// <summary>
             /// Caching for a long time
             /// </summary>
-            HeavyCaching = 6
+            HeavyCaching = 6,
         }
-
-        #endregion
-
-        #region PortalRegistrationType enum
 
         /// <summary>
         /// Enumeration Of Registration Type for portal.
@@ -147,23 +291,22 @@ namespace DotNetNuke.Common
             /// Disabled Registration
             /// </summary>
             NoRegistration = 0,
+
             /// <summary>
             /// Account need be approved by portal's administrator.
             /// </summary>
             PrivateRegistration = 1,
+
             /// <summary>
             /// Account will be available after post registration data successful.
             /// </summary>
             PublicRegistration = 2,
+
             /// <summary>
             /// Account will be available by verify code.
             /// </summary>
-            VerifiedRegistration = 3
+            VerifiedRegistration = 3,
         }
-
-        #endregion
-
-        #region UpgradeStatus enum
 
         /// <summary>
         /// Enumeration Of Application upgrade status.
@@ -174,173 +317,28 @@ namespace DotNetNuke.Common
             /// The application need update to a higher version.
             /// </summary>
             Upgrade,
+
             /// <summary>
             /// The application need to install itself.
             /// </summary>
             Install,
+
             /// <summary>
             /// The application is normal running.
             /// </summary>
             None,
+
             /// <summary>
             /// The application occur error when running.
             /// </summary>
             Error,
+
             /// <summary>
             /// The application status is unknown,
             /// </summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown
+            Unknown,
         }
-
-        #endregion
-
-        /// <summary>
-        /// Global role id for all users
-        /// </summary>
-        /// <value>-1</value>
-        public const string glbRoleAllUsers = "-1";
-
-        /// <summary>
-        /// Global role id for super user
-        /// </summary>
-        /// <value>-2</value>
-        public const string glbRoleSuperUser = "-2";
-
-        /// <summary>
-        /// Global role id for unauthenticated users
-        /// </summary>
-        /// <value>-3</value>
-        public const string glbRoleUnauthUser = "-3";
-
-        /// <summary>
-        /// Global role id by default
-        /// </summary>
-        /// <value>-4</value>
-        public const string glbRoleNothing = "-4";
-
-        /// <summary>
-        /// Global role name for all users
-        /// </summary>
-        /// <value>All Users</value>
-        public const string glbRoleAllUsersName = "All Users";
-
-        /// <summary>
-        /// Global ro name for super user
-        /// </summary>
-        /// <value>Superuser</value>
-        public const string glbRoleSuperUserName = "Superuser";
-
-        /// <summary>
-        /// Global role name for unauthenticated users
-        /// </summary>
-        /// <value>Unauthenticated Users</value>
-        public const string glbRoleUnauthUserName = "Unauthenticated Users";
-
-        /// <summary>
-        /// Default page name
-        /// </summary>
-        /// <value>Default.aspx</value>
-        public const string glbDefaultPage = "Default.aspx";
-
-        /// <summary>
-        /// Default host skin folder
-        /// </summary>
-        /// <value>_default</value>
-        public const string glbHostSkinFolder = "_default";
-
-        /// <summary>
-        /// Default control panel
-        /// </summary>
-        /// <value>Admin/ControlPanel/IconBar.ascx</value>
-        public const string glbDefaultControlPanel = "Admin/ControlPanel/IconBar.ascx";
-
-        /// <summary>
-        /// Default setting to determine if selected control panel is loaded to evaluate visibility
-        /// </summary>
-        /// <value>false</value>
-        public const bool glbAllowControlPanelToDetermineVisibility = false;
-
-        /// <summary>
-        /// Default pane name
-        /// </summary>
-        /// <value>ContentPane</value>
-        public const string glbDefaultPane = "ContentPane";
-
-        /// <summary>
-        /// Config files folder
-        /// </summary>
-        /// <value>\Config\</value>
-        public const string glbConfigFolder = "\\Config\\";
-
-        /// <summary>
-        /// About page name
-        /// </summary>
-        /// <value>about.htm</value>
-        public const string glbAboutPage = "about.htm";
-
-        /// <summary>
-        /// DotNetNuke config file
-        /// </summary>
-        /// <value>DotNetNuke.config</value>
-        public const string glbDotNetNukeConfig = "DotNetNuke.config";
-
-        /// <summary>
-        /// Default portal id for super user
-        /// </summary>
-        /// <value>-1</value>
-        public const int glbSuperUserAppName = -1;
-
-        /// <summary>
-        /// extension of protected files
-        /// </summary>
-        /// <value>.resources</value>
-        public const string glbProtectedExtension = ".resources";
-
-        /// <summary>
-        /// Default container folder
-        /// </summary>
-        /// <value>Portals/_default/Containers/</value>
-        public const string glbContainersPath = "Portals/_default/Containers/";
-
-        /// <summary>
-        /// Default skin folder
-        /// </summary>
-        /// <value>Portals/_default/Skins/</value>
-        public const string glbSkinsPath = "Portals/_default/Skins/";
-
-        /// <summary>
-        /// Email address regex pattern
-        /// </summary>
-        /// <value><![CDATA[^[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])$]]></value>
-        public const string glbEmailRegEx =
-            @"^\s*[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])\s*$";
-
-        /// <summary>
-        /// User Name regex pattern
-        /// </summary>
-        /// <value></value>
-        public const string glbUserNameRegEx = @"";
-
-        /// <summary>
-        /// format of a script tag
-        /// </summary>
-        /// <value><![CDATA[<script type=\"text/javascript\" src=\"{0}\" ></script>]]></value>
-        public const string glbScriptFormat = "<script type=\"text/javascript\" src=\"{0}\" ></script>";
-
-        // global constants for the life of the application ( set in Application_Start )
-        private static string _applicationPath;
-        private static string _applicationMapPath;
-        private static string _desktopModulePath;
-        private static string _imagePath;
-        private static string _hostMapPath;
-        private static string _hostPath;
-        private static string _installMapPath;
-        private static string _installPath;
-        private static Version _dataBaseVersion;
-        private static UpgradeStatus _status = UpgradeStatus.Unknown;
-        private const string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
-        private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         /// <summary>
         /// Gets the application path.
@@ -353,7 +351,7 @@ namespace DotNetNuke.Common
                 {
                     if (HttpContext.Current.Request.ApplicationPath == "/")
                     {
-                        _applicationPath = string.IsNullOrEmpty(Config.GetSetting("InstallationSubfolder")) ? "" : (Config.GetSetting("InstallationSubfolder") + "/").ToLowerInvariant();
+                        _applicationPath = string.IsNullOrEmpty(Config.GetSetting("InstallationSubfolder")) ? string.Empty : (Config.GetSetting("InstallationSubfolder") + "/").ToLowerInvariant();
                     }
                     else
                     {
@@ -366,7 +364,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets or sets the application map path.
+        /// Gets the application map path.
         /// </summary>
         /// <value>
         /// The application map path.
@@ -379,20 +377,10 @@ namespace DotNetNuke.Common
             }
         }
 
-        private static string GetCurrentDomainDirectory()
-        {
-            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
-            if (dir.Length > 3 &&  dir.EndsWith("\\"))
-            {
-                dir = dir.Substring(0, dir.Length - 1);
-            }
-            return dir;
-        }
-
         /// <summary>
         /// Gets the desktop module path.
         /// </summary>
-        /// <value>ApplicationPath + "/DesktopModules/"</value>
+        /// <value>ApplicationPath + "/DesktopModules/".</value>
         public static string DesktopModulePath
         {
             get
@@ -401,6 +389,7 @@ namespace DotNetNuke.Common
                 {
                     _desktopModulePath = ApplicationPath + "/DesktopModules/";
                 }
+
                 return _desktopModulePath;
             }
         }
@@ -408,7 +397,7 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Gets the image path.
         /// </summary>
-        /// <value>ApplicationPath + "/Images/"</value>
+        /// <value>ApplicationPath + "/Images/".</value>
         public static string ImagePath
         {
             get
@@ -417,6 +406,7 @@ namespace DotNetNuke.Common
                 {
                     _imagePath = ApplicationPath + "/Images/";
                 }
+
                 return _imagePath;
             }
         }
@@ -433,9 +423,9 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets or sets the host map path.
+        /// Gets the host map path.
         /// </summary>
-        /// <value>ApplicationMapPath + "Portals\_default\"</value>
+        /// <value>ApplicationMapPath + "Portals\_default\".</value>
         public static string HostMapPath
         {
             get
@@ -444,14 +434,15 @@ namespace DotNetNuke.Common
                 {
                     _hostMapPath = Path.Combine(ApplicationMapPath, @"Portals\_default\");
                 }
+
                 return _hostMapPath;
             }
         }
 
         /// <summary>
-        /// Gets or sets the host path.
+        /// Gets the host path.
         /// </summary>
-        /// <value>ApplicationPath + "/Portals/_default/"</value>
+        /// <value>ApplicationPath + "/Portals/_default/".</value>
         public static string HostPath
         {
             get
@@ -460,12 +451,13 @@ namespace DotNetNuke.Common
                 {
                     _hostPath = ApplicationPath + "/Portals/_default/";
                 }
+
                 return _hostPath;
             }
         }
 
         /// <summary>
-        /// Gets or sets the install map path.
+        /// Gets the install map path.
         /// </summary>
         /// <value>server map path of InstallPath.</value>
         public static string InstallMapPath
@@ -476,14 +468,15 @@ namespace DotNetNuke.Common
                 {
                     _installMapPath = ApplicationMapPath + "\\Install\\";
                 }
+
                 return _installMapPath;
             }
         }
 
         /// <summary>
-        /// Gets or sets the install path.
+        /// Gets the install path.
         /// </summary>
-        /// <value>ApplicationPath + "/Install/"</value>
+        /// <value>ApplicationPath + "/Install/".</value>
         public static string InstallPath
         {
             get
@@ -492,7 +485,123 @@ namespace DotNetNuke.Common
                 {
                     _installPath = ApplicationPath + "/Install/";
                 }
+
                 return _installPath;
+            }
+        }
+
+        /// <summary>
+        /// Gets the status of application.
+        /// </summary>
+        /// <seealso cref="GetStatus"/>
+        public static UpgradeStatus Status
+        {
+            get
+            {
+                if (_status == UpgradeStatus.Unknown)
+                {
+                    var tempStatus = UpgradeStatus.Unknown;
+
+                    Logger.Trace("Getting application status");
+                    tempStatus = UpgradeStatus.None;
+
+                    // first call GetProviderPath - this insures that the Database is Initialised correctly
+                    // and also generates the appropriate error message if it cannot be initialised correctly
+                    string strMessage = DataProvider.Instance().GetProviderPath();
+
+                    // get current database version from DB
+                    if (!strMessage.StartsWith("ERROR:"))
+                    {
+                        try
+                        {
+                            _dataBaseVersion = DataProvider.Instance().GetVersion();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                            strMessage = "ERROR:" + ex.Message;
+                        }
+                    }
+
+                    if (strMessage.StartsWith("ERROR"))
+                    {
+                        if (IsInstalled())
+                        {
+                            // Errors connecting to the database after an initial installation should be treated as errors.
+                            tempStatus = UpgradeStatus.Error;
+                        }
+                        else
+                        {
+                            // An error that occurs before the database has been installed should be treated as a new install
+                            tempStatus = UpgradeStatus.Install;
+                        }
+                    }
+                    else if (DataBaseVersion == null)
+                    {
+                        // No Db Version so Install
+                        tempStatus = UpgradeStatus.Install;
+                    }
+                    else
+                    {
+                        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                        if (version.Major > DataBaseVersion.Major)
+                        {
+                            // Upgrade Required (Major Version Upgrade)
+                            tempStatus = UpgradeStatus.Upgrade;
+                        }
+                        else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
+                        {
+                            // Upgrade Required (Minor Version Upgrade)
+                            tempStatus = UpgradeStatus.Upgrade;
+                        }
+                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                                 version.Build > DataBaseVersion.Build)
+                        {
+                            // Upgrade Required (Build Version Upgrade)
+                            tempStatus = UpgradeStatus.Upgrade;
+                        }
+                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                                 version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
+                        {
+                            // Upgrade Required (Build Version Upgrade)
+                            tempStatus = UpgradeStatus.Upgrade;
+                        }
+                    }
+
+                    _status = tempStatus;
+
+                    Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
+                    Logger.Trace("Application status is " + _status);
+                }
+
+                return _status;
+            }
+        }
+
+        /// <summary>
+        /// Gets image file types.
+        /// </summary>
+        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
+        public static string glbImageFileTypes
+        {
+            get
+            {
+                var listController = new ListController();
+                var listEntries = listController.GetListEntryInfoItems("ImageTypes");
+                if (listEntries == null || listEntries.Count() == 0)
+                {
+                    return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
+                }
+
+                return string.Join(",", listEntries.Select(l => l.Value));
+            }
+        }
+
+        public static TimeSpan ElapsedSinceAppStart
+        {
+            get
+            {
+                return AppStopwatch.Elapsed;
             }
         }
 
@@ -500,7 +609,7 @@ namespace DotNetNuke.Common
         /// Gets or sets the name of the IIS app.
         /// </summary>
         /// <value>
-        /// request.ServerVariables["APPL_MD_PATH"]
+        /// request.ServerVariables["APPL_MD_PATH"].
         /// </value>
         public static string IISAppName { get; set; }
 
@@ -557,8 +666,8 @@ namespace DotNetNuke.Common
             }
             catch (ThreadAbortException)
             {
-                //we are ignoreing this error simply because there is no graceful way to redirect the user, wihtout the threadabort exception.
-                //RobC
+                // we are ignoreing this error simply because there is no graceful way to redirect the user, wihtout the threadabort exception.
+                // RobC
             }
             catch (Exception ex)
             {
@@ -566,99 +675,15 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the status of application.
-        /// </summary>
-        /// <seealso cref="GetStatus"/>
-        public static UpgradeStatus Status
-        {
-            get
-            {
-                if (_status == UpgradeStatus.Unknown)
-                {
-                    var tempStatus = UpgradeStatus.Unknown;
-
-                    Logger.Trace("Getting application status");
-                    tempStatus = UpgradeStatus.None;
-                    //first call GetProviderPath - this insures that the Database is Initialised correctly
-                    //and also generates the appropriate error message if it cannot be initialised correctly
-                    string strMessage = DataProvider.Instance().GetProviderPath();
-                    //get current database version from DB
-                    if (!strMessage.StartsWith("ERROR:"))
-                    {
-                        try
-                        {
-                            _dataBaseVersion = DataProvider.Instance().GetVersion();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                            strMessage = "ERROR:" + ex.Message;
-                        }
-                    }
-                    if (strMessage.StartsWith("ERROR"))
-                    {
-                        if (IsInstalled())
-                        {
-                            //Errors connecting to the database after an initial installation should be treated as errors.
-                            tempStatus = UpgradeStatus.Error;
-                        }
-                        else
-                        {
-                            //An error that occurs before the database has been installed should be treated as a new install
-                           tempStatus = UpgradeStatus.Install;
-                        }
-                    }
-                    else if (DataBaseVersion == null)
-                    {
-                        //No Db Version so Install
-                        tempStatus = UpgradeStatus.Install;
-                    }
-                    else
-                    {
-                        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                        if (version.Major > DataBaseVersion.Major)
-                        {
-                            //Upgrade Required (Major Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
-                        {
-                            //Upgrade Required (Minor Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build > DataBaseVersion.Build)
-                        {
-                            //Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
-                        {
-                            //Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                    }
-
-                    _status = tempStatus;
-
-                    Logger.Trace(string.Format("result of getting providerpath: {0}",strMessage));
-                    Logger.Trace("Application status is " + _status);
-                }
-                return _status;
-            }
-
-        }
-
         public static bool IncrementalVersionExists(Version version)
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
-            //If the provider path does not exist, then there can't be any log files
+
+            // If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
-                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~","");
+                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", string.Empty);
                 if (Directory.Exists(providerpath))
                 {
                     var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
@@ -669,168 +694,9 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return false;
         }
-
-
-        /// <summary>
-        /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
-        /// If DotNetNuke has not been installed, then we should expect to have database connection problems
-        /// since the connection string may not have been configured yet, which can occur during the installation
-        /// wizard.
-        /// </remarks>
-        internal static bool IsInstalled()
-        {
-            const int c_PassingScore = 4;
-            int installationdatefactor = Convert.ToInt32(HasInstallationDate() ? 1 : 0);
-            int dataproviderfactor = Convert.ToInt32(HasDataProviderLogFiles() ? 3 : 0);
-            int htmlmodulefactor = Convert.ToInt32(ModuleDirectoryExists("html") ? 2 : 0);
-            int portaldirectoryfactor = Convert.ToInt32(HasNonDefaultPortalDirectory() ? 2 : 0);
-            int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
-            //This calculation ensures that you have a more than one item that indicates you have already installed DNN.
-            //While it is possible that you might not have an installation date or that you have deleted log files
-            //it is unlikely that you have removed every trace of an installation and yet still have a working install
-
-            bool isInstalled =  (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
-
-            // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
-            // this value exists, then DNN was previously installed, and we should never try to re-install it
-            return isInstalled || HasInstallVersion();
-        }
-
-        /// <summary>
-        /// Determines whether has data provider log files.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has data provider log files; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasDataProviderLogFiles()
-        {
-            Provider currentdataprovider = Config.GetDefaultProvider("data");
-            string providerpath = currentdataprovider.Attributes["providerPath"];
-            //If the provider path does not exist, then there can't be any log files
-            if (!string.IsNullOrEmpty(providerpath))
-            {
-                providerpath = HttpContext.Current.Server.MapPath(providerpath);
-                if (Directory.Exists(providerpath))
-                {
-                    return Directory.GetFiles(providerpath, "*.log.resources").Length > 0;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether has installation date.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasInstallationDate()
-        {
-            return Config.GetSetting("InstallationDate") != null;
-        }
-
-        /// <summary>
-        /// Determines whether has InstallVersion set.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasInstallVersion()
-        {
-            return Config.GetSetting("InstallVersion") != null;
-        }
-
-        /// <summary>
-        /// Check whether the modules directory is exists.
-        /// </summary>
-        /// <param name="moduleName">Name of the module.</param>
-        /// <returns>
-        /// <c>true</c> if the module directory exist, otherwise, <c>false</c>.
-        /// </returns>
-        private static bool ModuleDirectoryExists(string moduleName)
-        {
-            string dir = ApplicationMapPath + "\\desktopmodules\\" + moduleName;
-            return Directory.Exists(dir);
-        }
-
-        /// <summary>
-        /// Determines whether has portal directory except default portal directory in portal path.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has portal directory except default portal directory in portal path; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasNonDefaultPortalDirectory()
-        {
-            string dir = ApplicationMapPath + "\\portals";
-            if (Directory.Exists(dir))
-            {
-                return Directory.GetDirectories(dir).Length > 1;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether current request is for install.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if current request is for install; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsInstallationURL()
-        {
-            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
-            return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
-        }
-
-        /// <summary>
-        /// Gets the culture code of the tab.
-        /// </summary>
-        /// <param name="TabID">The tab ID.</param>
-        /// <param name="IsSuperTab">if set to <c>true</c> [is super tab].</param>
-        /// <param name="settings">The settings.</param>
-        /// <returns>return the tab's culture code, if ths tab doesn't exist, it will return current culture name.</returns>
-        internal static string GetCultureCode(int TabID, bool IsSuperTab, IPortalSettings settings)
-        {
-            string cultureCode = Null.NullString;
-            if (settings != null)
-            {
-                TabInfo linkTab = TabController.Instance.GetTab(TabID, IsSuperTab ? Null.NullInteger : settings.PortalId, false);
-                if (linkTab != null)
-                {
-                    cultureCode = linkTab.CultureCode;
-                }
-                if (string.IsNullOrEmpty(cultureCode))
-                {
-                    cultureCode = Thread.CurrentThread.CurrentCulture.Name;
-                }
-            }
-
-            return cultureCode;
-        }
-
-        /// <summary>
-        /// Image file types
-        /// </summary>
-        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico</value>
-        public static string glbImageFileTypes
-        {
-            get
-            {
-                var listController = new ListController();
-                var listEntries = listController.GetListEntryInfoItems("ImageTypes");
-                if (listEntries == null || listEntries.Count() == 0)
-                {
-                    return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
-                }
-                return String.Join(",", listEntries.Select(l => l.Value));
-            }
-        }
-
 
         /// <summary>
         /// Builds the cross tab dataset.
@@ -844,7 +710,7 @@ namespace DotNetNuke.Common
         /// <param name="FieldTypeColumn">The field type column.</param>
         /// <param name="StringValueColumn">The string value column.</param>
         /// <param name="NumericValueColumn">The numeric value column.</param>
-        /// <returns>the dataset instance</returns>
+        /// <returns>the dataset instance.</returns>
         public static DataSet BuildCrossTabDataSet(string DataSetName, IDataReader result, string FixedColumns, string VariableColumns, string KeyColumn, string FieldColumn, string FieldTypeColumn,
                                                    string StringValueColumn, string NumericValueColumn)
         {
@@ -853,19 +719,19 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// converts a data reader with serialized fields into a typed data set
+        /// converts a data reader with serialized fields into a typed data set.
         /// </summary>
-        /// <param name="DataSetName">Name of the dataset to be created</param>
-        /// <param name="result">Data reader that contains all field values serialized</param>
-        /// <param name="FixedColumns">List of fixed columns, delimited by commas. Columns must be contained in DataReader</param>
-        /// <param name="VariableColumns">List of variable columns, delimited by commas. Columns must be contained in DataReader</param>
-        /// <param name="KeyColumn">Name of the column, that contains the row ID. Column must be contained in DataReader</param>
-        /// <param name="FieldColumn">Name of the column, that contains the field name. Column must be contained in DataReader</param>
-        /// <param name="FieldTypeColumn">Name of the column, that contains the field type name. Column must be contained in DataReader</param>
-        /// <param name="StringValueColumn">Name of the column, that contains the field value, if stored as string. Column must be contained in DataReader</param>
-        /// <param name="NumericValueColumn">Name of the column, that contains the field value, if stored as number. Column must be contained in DataReader</param>
-        /// <param name="Culture">culture of the field values in data reader's string value column</param>
-        /// <returns>The generated DataSet</returns>
+        /// <param name="DataSetName">Name of the dataset to be created.</param>
+        /// <param name="result">Data reader that contains all field values serialized.</param>
+        /// <param name="FixedColumns">List of fixed columns, delimited by commas. Columns must be contained in DataReader.</param>
+        /// <param name="VariableColumns">List of variable columns, delimited by commas. Columns must be contained in DataReader.</param>
+        /// <param name="KeyColumn">Name of the column, that contains the row ID. Column must be contained in DataReader.</param>
+        /// <param name="FieldColumn">Name of the column, that contains the field name. Column must be contained in DataReader.</param>
+        /// <param name="FieldTypeColumn">Name of the column, that contains the field type name. Column must be contained in DataReader.</param>
+        /// <param name="StringValueColumn">Name of the column, that contains the field value, if stored as string. Column must be contained in DataReader.</param>
+        /// <param name="NumericValueColumn">Name of the column, that contains the field value, if stored as number. Column must be contained in DataReader.</param>
+        /// <param name="Culture">culture of the field values in data reader's string value column.</param>
+        /// <returns>The generated DataSet.</returns>
         /// -----------------------------------------------------------------------------
         public static DataSet BuildCrossTabDataSet(string DataSetName, IDataReader result, string FixedColumns, string VariableColumns, string KeyColumn, string FieldColumn, string FieldTypeColumn,
                                                    string StringValueColumn, string NumericValueColumn, CultureInfo Culture)
@@ -876,13 +742,17 @@ namespace DotNetNuke.Common
             string FieldType;
             int intColumn;
             int intKeyColumn;
+
             // create dataset
             var crosstab = new DataSet(DataSetName);
             crosstab.Namespace = "NetFrameWork";
+
             // create table
             var tab = new DataTable(DataSetName);
+
             // split fixed columns
             arrFixedColumns = FixedColumns.Split(',');
+
             // add fixed columns to table
             for (intColumn = 0; intColumn < arrFixedColumns.Length; intColumn++)
             {
@@ -892,10 +762,11 @@ namespace DotNetNuke.Common
             }
 
             // split variable columns
-            if (!String.IsNullOrEmpty(VariableColumns))
+            if (!string.IsNullOrEmpty(VariableColumns))
             {
                 arrVariableColumns = VariableColumns.Split(',');
-                //add varible columns to table
+
+                // add varible columns to table
                 for (intColumn = 0; intColumn < arrVariableColumns.Length; intColumn++)
                 {
                     arrField = arrVariableColumns[intColumn].Split('|');
@@ -904,31 +775,36 @@ namespace DotNetNuke.Common
                     tab.Columns.Add(col);
                 }
             }
+
             // add table to dataset
             crosstab.Tables.Add(tab);
+
             // add rows to table
             intKeyColumn = -1;
             DataRow row = null;
             while (result.Read())
             {
-                //loop using KeyColumn as control break
+                // loop using KeyColumn as control break
                 if (Convert.ToInt32(result[KeyColumn]) != intKeyColumn)
                 {
-                    //add row
+                    // add row
                     if (intKeyColumn != -1)
                     {
                         tab.Rows.Add(row);
                     }
+
                     // create new row
                     row = tab.NewRow();
+
                     // assign fixed column values
                     for (intColumn = 0; intColumn < arrFixedColumns.Length; intColumn++)
                     {
                         arrField = arrFixedColumns[intColumn].Split('|');
                         row[arrField[0]] = result[arrField[0]];
                     }
-                    //initialize variable column values
-                    if (!String.IsNullOrEmpty(VariableColumns))
+
+                    // initialize variable column values
+                    if (!string.IsNullOrEmpty(VariableColumns))
                     {
                         for (intColumn = 0; intColumn < arrVariableColumns.Length; intColumn++)
                         {
@@ -939,15 +815,17 @@ namespace DotNetNuke.Common
                                     row[arrField[0]] = 0;
                                     break;
                                 case "String":
-                                    row[arrField[0]] = "";
+                                    row[arrField[0]] = string.Empty;
                                     break;
                             }
                         }
                     }
+
                     intKeyColumn = Convert.ToInt32(result[KeyColumn]);
                 }
-                //assign pivot column value
-                if (!String.IsNullOrEmpty(FieldTypeColumn))
+
+                // assign pivot column value
+                if (!string.IsNullOrEmpty(FieldTypeColumn))
                 {
                     FieldType = result[FieldTypeColumn].ToString();
                 }
@@ -955,6 +833,7 @@ namespace DotNetNuke.Common
                 {
                     FieldType = "String";
                 }
+
                 switch (FieldType)
                 {
                     case "Decimal":
@@ -974,24 +853,29 @@ namespace DotNetNuke.Common
                                     row[result[FieldColumn].ToString()] = decimal.Parse(result[StringValueColumn].ToString(), Culture);
                                     break;
                                 case "System.Int32":
-                                    row[result[FieldColumn].ToString()] = Int32.Parse(result[StringValueColumn].ToString(), Culture);
+                                    row[result[FieldColumn].ToString()] = int.Parse(result[StringValueColumn].ToString(), Culture);
                                     break;
                                 default:
                                     row[result[FieldColumn].ToString()] = result[StringValueColumn];
                                     break;
                             }
                         }
+
                         break;
                 }
             }
+
             result.Close();
+
             // add row
             if (intKeyColumn != -1)
             {
                 tab.Rows.Add(row);
             }
+
             // finalize dataset
             crosstab.AcceptChanges();
+
             // return the dataset
             return crosstab;
         }
@@ -1000,7 +884,7 @@ namespace DotNetNuke.Common
         /// Converts the datareader to dataset.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>the dataset instance</returns>
+        /// <returns>the dataset instance.</returns>
         public static DataSet ConvertDataReaderToDataSet(IDataReader reader)
         {
             // add datatable to dataset
@@ -1011,11 +895,12 @@ namespace DotNetNuke.Common
                 do
                 {
                     objDataSet.Tables.Add(ConvertDataReaderToDataTable(reader, false));
-                } while (reader.NextResult());
+                }
+                while (reader.NextResult());
             }
             finally
             {
-			    reader.Close();
+                reader.Close();
             }
 
             return objDataSet;
@@ -1025,43 +910,45 @@ namespace DotNetNuke.Common
         /// Converts the datareader to datatable.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>the datatable instance</returns>
-		public static DataTable ConvertDataReaderToDataTable(IDataReader reader)
+        /// <returns>the datatable instance.</returns>
+        public static DataTable ConvertDataReaderToDataTable(IDataReader reader)
         {
-	        return ConvertDataReaderToDataTable(reader, true);
+            return ConvertDataReaderToDataTable(reader, true);
         }
 
-		/// <summary>
-		/// Converts the datareader to datatable.
-		/// </summary>
-		/// <param name="reader">The reader.</param>
-		/// <param name="closeReader">Whether close reader.</param>
-		/// <returns>the datatable instance</returns>
+        /// <summary>
+        /// Converts the datareader to datatable.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="closeReader">Whether close reader.</param>
+        /// <returns>the datatable instance.</returns>
         public static DataTable ConvertDataReaderToDataTable(IDataReader reader, bool closeReader)
         {
-		    try
-		    {
+            try
+            {
                 // create datatable from datareader
                 var objDataTable = new DataTable();
-		        int intFieldCount = reader.FieldCount;
-		        int intCounter;
-		        for (intCounter = 0; intCounter <= intFieldCount - 1; intCounter++)
-		        {
-		            objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
-		        }
-		        // populate datatable
-		        objDataTable.BeginLoadData();
-		        var objValues = new object[intFieldCount];
-		        while (reader.Read())
-		        {
-		            reader.GetValues(objValues);
-		            objDataTable.LoadDataRow(objValues, true);
-		        }
-		        objDataTable.EndLoadData();
-		        return objDataTable;
-		    }
-		    finally
-		    {
+                int intFieldCount = reader.FieldCount;
+                int intCounter;
+                for (intCounter = 0; intCounter <= intFieldCount - 1; intCounter++)
+                {
+                    objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
+                }
+
+                // populate datatable
+                objDataTable.BeginLoadData();
+                var objValues = new object[intFieldCount];
+                while (reader.Read())
+                {
+                    reader.GetValues(objValues);
+                    objDataTable.LoadDataRow(objValues, true);
+                }
+
+                objDataTable.EndLoadData();
+                return objDataTable;
+            }
+            finally
+            {
                 if (closeReader)
                 {
                     reader.Close();
@@ -1073,7 +960,7 @@ namespace DotNetNuke.Common
         /// Gets the absolute server path.
         /// </summary>
         /// <param name="Request">The request.</param>
-        /// <returns>absolute server path</returns>
+        /// <returns>absolute server path.</returns>
         public static string GetAbsoluteServerPath(HttpRequest Request)
         {
             string strServerPath;
@@ -1082,6 +969,7 @@ namespace DotNetNuke.Common
             {
                 strServerPath += "\\";
             }
+
             return strServerPath;
         }
 
@@ -1095,11 +983,12 @@ namespace DotNetNuke.Common
         /// for this instance of DotNetNuke, and Id is the current PortalId for normal
         /// users or glbSuperUserAppName for SuperUsers.
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetApplicationName()
         {
             string appName;
-            if (HttpContext.Current.Items["ApplicationName"] == null || String.IsNullOrEmpty(HttpContext.Current.Items["ApplicationName"].ToString()))
+            if (HttpContext.Current.Items["ApplicationName"] == null || string.IsNullOrEmpty(HttpContext.Current.Items["ApplicationName"].ToString()))
             {
                 PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (_PortalSettings == null)
@@ -1115,6 +1004,7 @@ namespace DotNetNuke.Common
             {
                 appName = Convert.ToString(HttpContext.Current.Items["ApplicationName"]);
             }
+
             return appName;
         }
 
@@ -1123,22 +1013,27 @@ namespace DotNetNuke.Common
         /// Gets the ApplicationName for the MemberRole API.
         /// </summary>
         /// <remarks>
-        /// This overload is used to build the Application Name from the Portal Id
+        /// This overload is used to build the Application Name from the Portal Id.
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetApplicationName(int PortalID)
         {
             string appName;
-            //Get the Data Provider Configuration
+
+            // Get the Data Provider Configuration
             ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
-            //Read the configuration specific information for the current Provider
+
+            // Read the configuration specific information for the current Provider
             var objProvider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
-            //Get the Object Qualifier frm the Provider Configuration
+
+            // Get the Object Qualifier frm the Provider Configuration
             string _objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_") == false)
+            if (!string.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_") == false)
             {
                 _objectQualifier += "_";
             }
+
             appName = _objectQualifier + Convert.ToString(PortalID);
             return appName;
         }
@@ -1170,6 +1065,7 @@ namespace DotNetNuke.Common
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return version;
         }
 
@@ -1179,7 +1075,7 @@ namespace DotNetNuke.Common
         /// <param name="version">The version.</param>
         public static void UpdateDataBaseVersion(Version version)
         {
-            //update the version
+            // update the version
             DataProvider.Instance().UpdateDatabaseVersion(version.Major, version.Minor, version.Build, DotNetNukeContext.Current.Application.Name);
             _dataBaseVersion = version;
         }
@@ -1189,33 +1085,31 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
-       public static void UpdateDataBaseVersionIncrement(Version version,int increment)
+        public static void UpdateDataBaseVersionIncrement(Version version, int increment)
         {
-            //update the version and increment
-           DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
+            // update the version and increment
+            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
             _dataBaseVersion = version;
         }
 
-       public static int GetLastAppliedIteration(Version version)
-       {
-           try
-           {
-               return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);
-           }
-           catch (Exception)
-           {
-
-               return 0;
-           }
-
-       }
+        public static int GetLastAppliedIteration(Version version)
+        {
+            try
+            {
+                return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
 
         /// <summary>
         /// Adds the port.
         /// </summary>
         /// <param name="httpAlias">The HTTP alias.</param>
         /// <param name="originalUrl">The original URL.</param>
-        /// <returns>url with port if the post number is not 80</returns>
+        /// <returns>url with port if the post number is not 80.</returns>
         public static string AddPort(string httpAlias, string originalUrl)
         {
             var uri = new Uri(originalUrl);
@@ -1233,7 +1127,7 @@ namespace DotNetNuke.Common
         /// Gets the name of the domain.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>domain name</returns>
+        /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequest request)
         {
             return GetDomainName(new HttpRequestWrapper(request), false);
@@ -1243,29 +1137,29 @@ namespace DotNetNuke.Common
         /// Gets the name of the domain.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>domain name</returns>
+        /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequestBase request)
         {
             return GetDomainName(request, false);
         }
 
         /// <summary>
-        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost )
+        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
-        /// <returns>domain name</returns>
+        /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequest request, bool parsePortNumber)
         {
             return GetDomainName(new HttpRequestWrapper(request), parsePortNumber);
         }
 
         /// <summary>
-        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost )
+        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
-        /// <returns>domain name</returns>
+        /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequestBase request, bool parsePortNumber)
         {
             return TestableGlobals.Instance.GetDomainName(request.Url, parsePortNumber);
@@ -1280,10 +1174,11 @@ namespace DotNetNuke.Common
         public static bool UsePortNumber()
         {
             bool usePort = true;
-            if ((Config.GetSetting("UsePortNumber") != null))
+            if (Config.GetSetting("UsePortNumber") != null)
             {
                 usePort = bool.Parse(Config.GetSetting("UsePortNumber"));
             }
+
             return usePort;
         }
 
@@ -1293,17 +1188,17 @@ namespace DotNetNuke.Common
         /// <returns>file list.</returns>
         public static ArrayList GetFileList()
         {
-            return GetFileList(-1, "", true, "", false);
+            return GetFileList(-1, string.Empty, true, string.Empty, false);
         }
 
         /// <summary>
         /// Gets the file list.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
-        /// <returns>file list</returns>
+        /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId)
         {
-            return GetFileList(portalId, "", true, "", false);
+            return GetFileList(portalId, string.Empty, true, string.Empty, false);
         }
 
         /// <summary>
@@ -1311,10 +1206,10 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
-        /// <returns>file list</returns>
+        /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions)
         {
-            return GetFileList(portalId, strExtensions, true, "", false);
+            return GetFileList(portalId, strExtensions, true, string.Empty, false);
         }
 
         /// <summary>
@@ -1323,10 +1218,10 @@ namespace DotNetNuke.Common
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
         /// <param name="noneSpecified">if set to <c>true</c> [none specified].</param>
-        /// <returns>file list</returns>
+        /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified)
         {
-            return GetFileList(portalId, strExtensions, noneSpecified, "", false);
+            return GetFileList(portalId, strExtensions, noneSpecified, string.Empty, false);
         }
 
         /// <summary>
@@ -1336,7 +1231,7 @@ namespace DotNetNuke.Common
         /// <param name="strExtensions">The STR extensions.</param>
         /// <param name="NoneSpecified">if set to <c>true</c> [none specified].</param>
         /// <param name="Folder">The folder.</param>
-        /// <returns>file list</returns>
+        /// <returns>file list.</returns>
         public static ArrayList GetFileList(int PortalId, string strExtensions, bool NoneSpecified, string Folder)
         {
             return GetFileList(PortalId, strExtensions, NoneSpecified, Folder, false);
@@ -1350,13 +1245,13 @@ namespace DotNetNuke.Common
         /// <param name="NoneSpecified">if set to <c>true</c> [none specified].</param>
         /// <param name="Folder">The folder.</param>
         /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
-        /// <returns>file list</returns>
+        /// <returns>file list.</returns>
         public static ArrayList GetFileList(int PortalId, string strExtensions, bool NoneSpecified, string Folder, bool includeHidden)
         {
             var arrFileList = new ArrayList();
             if (NoneSpecified)
             {
-                arrFileList.Add(new FileItem("", "<" + Localization.GetString("None_Specified") + ">"));
+                arrFileList.Add(new FileItem(string.Empty, "<" + Localization.GetString("None_Specified") + ">"));
             }
 
             var objFolder = FolderManager.Instance.GetFolder(PortalId, Folder);
@@ -1393,7 +1288,7 @@ namespace DotNetNuke.Common
                             }
                             else
                             {
-                                //File is stored in DB - Just add to arraylist
+                                // File is stored in DB - Just add to arraylist
                                 arrFileList.Add(new FileItem(file.FileId.ToString(), file.FileName));
                             }
                         }
@@ -1404,26 +1299,30 @@ namespace DotNetNuke.Common
                     Exceptions.LogException(ex);
                 }
             }
+
             return arrFileList;
         }
 
         /// <summary>
         /// Gets the host portal settings.
         /// </summary>
-        /// <returns>Host portal settings</returns>
+        /// <returns>Host portal settings.</returns>
         public static PortalSettings GetHostPortalSettings()
         {
             int TabId = -1;
             int PortalId = -1;
             PortalAliasInfo objPortalAliasInfo = null;
-            //if the portal alias exists
+
+            // if the portal alias exists
             if (Host.HostPortalID > Null.NullInteger)
             {
                 PortalId = Host.HostPortalID;
+
                 // use the host portal
                 objPortalAliasInfo = new PortalAliasInfo();
                 objPortalAliasInfo.PortalID = PortalId;
             }
+
             // load the PortalSettings into current context
             return new PortalSettings(TabId, objPortalAliasInfo);
         }
@@ -1434,16 +1333,17 @@ namespace DotNetNuke.Common
         /// <param name="strPortalAlias">The portal alias.</param>
         /// <param name="Request">The request or <c>null</c>.</param>
         /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
-        /// <returns>domain name</returns>
+        /// <returns>domain name.</returns>
         public static string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP)
         {
-            string strDomainName = "";
-            string strURL = "";
+            string strDomainName = string.Empty;
+            string strURL = string.Empty;
             int intAlias;
             if (Request != null)
             {
                 strURL = GetDomainName(Request);
             }
+
             string[] arrPortalAlias = strPortalAlias.Split(',');
             for (intAlias = 0; intAlias <= arrPortalAlias.Length - 1; intAlias++)
             {
@@ -1452,45 +1352,52 @@ namespace DotNetNuke.Common
                     strDomainName = arrPortalAlias[intAlias];
                 }
             }
-            if (String.IsNullOrEmpty(strDomainName))
+
+            if (string.IsNullOrEmpty(strDomainName))
             {
                 strDomainName = arrPortalAlias[0];
             }
+
             if (blnAddHTTP)
             {
                 strDomainName = AddHTTP(strDomainName);
             }
+
             return strDomainName;
         }
 
         /// <summary>
         /// Gets the portal settings.
         /// </summary>
-        /// <returns>Portal settings</returns>
+        /// <returns>Portal settings.</returns>
         public static PortalSettings GetPortalSettings()
         {
             PortalSettings portalSettings = null;
-            //Try getting the settings from the Context
+
+            // Try getting the settings from the Context
             if (HttpContext.Current != null)
             {
                 portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
-            //If nothing then try getting the Host Settings
+
+            // If nothing then try getting the Host Settings
             if (portalSettings == null)
             {
                 portalSettings = GetHostPortalSettings();
             }
+
             return portalSettings;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns the folder path under the root for the portal
+        /// Returns the folder path under the root for the portal.
         /// </summary>
-        /// <param name="strFileNamePath">The folder the absolute path</param>
+        /// <param name="strFileNamePath">The folder the absolute path.</param>
         /// <param name="portalId">Portal Id.</param>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetSubFolderPath(string strFileNamePath, int portalId)
         {
@@ -1504,6 +1411,7 @@ namespace DotNetNuke.Common
                 PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
                 ParentFolderName = objPortal.HomeDirectoryMapPath.Replace("/", "\\");
             }
+
             string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
             return strFolderpath.Substring(ParentFolderName.Length).Replace("\\", "/");
         }
@@ -1512,8 +1420,8 @@ namespace DotNetNuke.Common
         /// <summary>
         /// The GetTotalRecords method gets the number of Records returned.
         /// </summary>
-        /// <param name="dr">An <see cref="IDataReader"/> containing the Total no of records</param>
-        /// <returns>An Integer</returns>
+        /// <param name="dr">An <see cref="IDataReader"/> containing the Total no of records.</param>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public static int GetTotalRecords(ref IDataReader dr)
         {
@@ -1530,6 +1438,7 @@ namespace DotNetNuke.Common
                     total = -1;
                 }
             }
+
             return total;
         }
 
@@ -1545,11 +1454,11 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ImportFile - converts a file url (/Portals/0/somefile.gif) to the appropriate
-        /// FileID=xx identification for use in importing portals, tabs and modules
+        /// FileID=xx identification for use in importing portals, tabs and modules.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <returns>An UpgradeStatus enum Upgrade/Install/None</returns>
+        /// <returns>An UpgradeStatus enum Upgrade/Install/None.</returns>
         /// -----------------------------------------------------------------------------
         public static string ImportFile(int PortalId, string url)
         {
@@ -1575,13 +1484,13 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Encode the post url
+        /// Encode the post url.
         /// </summary>
         /// <param name="strPost">The post url.</param>
-        /// <returns>encoded value</returns>
+        /// <returns>encoded value.</returns>
         public static string HTTPPOSTEncode(string strPost)
         {
-            strPost = strPost.Replace("\\", "");
+            strPost = strPost.Replace("\\", string.Empty);
             strPost = HttpUtility.UrlEncode(strPost);
             strPost = strPost.Replace("%2f", "/");
             return strPost;
@@ -1589,12 +1498,12 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets the ApplicationName for the MemberRole API
+        /// Sets the ApplicationName for the MemberRole API.
         /// </summary>
         /// <remarks>
-        /// This overload takes a the PortalId
+        /// This overload takes a the PortalId.
         /// </remarks>
-        ///	<param name="PortalID">The Portal Id</param>
+        ///     <param name="PortalID">The Portal Id.</param>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(int PortalID)
         {
@@ -1603,12 +1512,12 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets the ApplicationName for the MemberRole API
+        /// Sets the ApplicationName for the MemberRole API.
         /// </summary>
         /// <remarks>
-        /// This overload takes a the PortalId
+        /// This overload takes a the PortalId.
         /// </remarks>
-        ///	<param name="ApplicationName">The Application Name to set</param>
+        ///     <param name="ApplicationName">The Application Name to set.</param>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(string ApplicationName)
         {
@@ -1616,7 +1525,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Formats the address on a single line ( ie. Unit, Street, City, Region, Country, PostalCode )
+        /// Formats the address on a single line ( ie. Unit, Street, City, Region, Country, PostalCode ).
         /// </summary>
         /// <param name="Unit">The unit.</param>
         /// <param name="Street">The street.</param>
@@ -1627,61 +1536,68 @@ namespace DotNetNuke.Common
         /// <returns></returns>
         public static string FormatAddress(object Unit, object Street, object City, object Region, object Country, object PostalCode)
         {
-            string strAddress = "";
+            string strAddress = string.Empty;
             if (Unit != null)
             {
-                if (!String.IsNullOrEmpty(Unit.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Unit.ToString().Trim()))
                 {
                     strAddress += ", " + Unit;
                 }
             }
+
             if (Street != null)
             {
-                if (!String.IsNullOrEmpty(Street.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Street.ToString().Trim()))
                 {
                     strAddress += ", " + Street;
                 }
             }
+
             if (City != null)
             {
-                if (!String.IsNullOrEmpty(City.ToString().Trim()))
+                if (!string.IsNullOrEmpty(City.ToString().Trim()))
                 {
                     strAddress += ", " + City;
                 }
             }
+
             if (Region != null)
             {
-                if (!String.IsNullOrEmpty(Region.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Region.ToString().Trim()))
                 {
                     strAddress += ", " + Region;
                 }
             }
+
             if (Country != null)
             {
-                if (!String.IsNullOrEmpty(Country.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Country.ToString().Trim()))
                 {
                     strAddress += ", " + Country;
                 }
             }
+
             if (PostalCode != null)
             {
-                if (!String.IsNullOrEmpty(PostalCode.ToString().Trim()))
+                if (!string.IsNullOrEmpty(PostalCode.ToString().Trim()))
                 {
                     strAddress += ", " + PostalCode;
                 }
             }
-            if (!String.IsNullOrEmpty(strAddress.Trim()))
+
+            if (!string.IsNullOrEmpty(strAddress.Trim()))
             {
                 strAddress = strAddress.Substring(2);
             }
+
             return strAddress;
         }
 
         /// <summary>
-        /// Formats the system.version into the standard format nn.nn.nn
+        /// Formats the system.version into the standard format nn.nn.nn.
         /// </summary>
         /// <param name="version">The version.</param>
-        /// <returns>Formatted  version as string</returns>
+        /// <returns>Formatted  version as string.</returns>
         public static string FormatVersion(Version version)
         {
             return FormatVersion(version, false);
@@ -1692,7 +1608,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="includeBuild">if set to <c>true</c> [include build].</param>
-        /// <returns>Formatted version as string</returns>
+        /// <returns>Formatted version as string.</returns>
         /// <example>
         /// <code lang="C#">
         /// var version = new Version(6, 0, 0, 147);
@@ -1706,20 +1622,21 @@ namespace DotNetNuke.Common
             {
                 strVersion += " (" + version.Revision + ")";
             }
+
             return strVersion;
         }
 
         /// <summary>
-        /// Formats  a version into the standard format nn.nn.nn
+        /// Formats  a version into the standard format nn.nn.nn.
         /// </summary>
         /// <param name="version">The version to be formatted.</param>
         /// <param name="fieldFormat">The field format.</param>
         /// <param name="fieldCount">The field count.</param>
         /// <param name="delimiterCharacter">The delimiter character.</param>
-        /// <returns>Formatted version as a string</returns>
+        /// <returns>Formatted version as a string.</returns>
         public static string FormatVersion(Version version, string fieldFormat, int fieldCount, string delimiterCharacter)
         {
-            string strVersion = "";
+            string strVersion = string.Empty;
             int intZero = 0;
             if (version != null)
             {
@@ -1734,6 +1651,7 @@ namespace DotNetNuke.Common
                         strVersion += intZero.ToString(fieldFormat);
                     }
                 }
+
                 if (fieldCount > 1)
                 {
                     strVersion += delimiterCharacter;
@@ -1746,6 +1664,7 @@ namespace DotNetNuke.Common
                         strVersion += intZero.ToString(fieldFormat);
                     }
                 }
+
                 if (fieldCount > 2)
                 {
                     strVersion += delimiterCharacter;
@@ -1758,6 +1677,7 @@ namespace DotNetNuke.Common
                         strVersion += intZero.ToString(fieldFormat);
                     }
                 }
+
                 if (fieldCount > 3)
                 {
                     strVersion += delimiterCharacter;
@@ -1771,14 +1691,15 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return strVersion;
         }
 
         /// <summary>
-        /// Cloaks the text, obfuscate sensitive data to prevent collection by robots and spiders and crawlers
+        /// Cloaks the text, obfuscate sensitive data to prevent collection by robots and spiders and crawlers.
         /// </summary>
         /// <param name="PersonalInfo">The personal info.</param>
-        /// <returns>obfuscated sensitive data by hustling ASCII characters</returns>
+        /// <returns>obfuscated sensitive data by hustling ASCII characters.</returns>
         public static string CloakText(string PersonalInfo)
         {
             if (PersonalInfo == null)
@@ -1810,7 +1731,7 @@ namespace DotNetNuke.Common
         /// </example>
         public static string GetMediumDate(string strDate)
         {
-            if (!String.IsNullOrEmpty(strDate))
+            if (!string.IsNullOrEmpty(strDate))
             {
                 DateTime datDate = Convert.ToDateTime(strDate);
                 string strYear = datDate.Year.ToString();
@@ -1818,6 +1739,7 @@ namespace DotNetNuke.Common
                 string strDay = datDate.Day.ToString();
                 strDate = strDay + "-" + strMonth + "-" + strYear;
             }
+
             return strDate;
         }
 
@@ -1828,7 +1750,7 @@ namespace DotNetNuke.Common
         /// <returns>short date content of the input.</returns>
         public static string GetShortDate(string strDate)
         {
-            if (!String.IsNullOrEmpty(strDate))
+            if (!string.IsNullOrEmpty(strDate))
             {
                 DateTime datDate = Convert.ToDateTime(strDate);
                 string strYear = datDate.Year.ToString();
@@ -1836,6 +1758,7 @@ namespace DotNetNuke.Common
                 string strDay = datDate.Day.ToString();
                 strDate = strMonth + "/" + strDay + "/" + strYear;
             }
+
             return strDate;
         }
 
@@ -1852,6 +1775,7 @@ namespace DotNetNuke.Common
             {
                 return false;
             }
+
             return (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) || (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 
@@ -1867,27 +1791,30 @@ namespace DotNetNuke.Common
             if (HttpContext.Current != null)
             {
                 string AdminKeys = "tab,module,importmodule,exportmodule,help";
-                string ControlKey = "";
+                string ControlKey = string.Empty;
                 if (HttpContext.Current.Request.QueryString["ctl"] != null)
                 {
                     ControlKey = HttpContext.Current.Request.QueryString["ctl"].ToLowerInvariant();
                 }
+
                 int ModuleID = -1;
                 if (HttpContext.Current.Request.QueryString["mid"] != null)
                 {
-                    Int32.TryParse(HttpContext.Current.Request.QueryString["mid"], out ModuleID);
+                    int.TryParse(HttpContext.Current.Request.QueryString["mid"], out ModuleID);
                 }
-                _IsAdminSkin = (!String.IsNullOrEmpty(ControlKey) && ControlKey != "view" && ModuleID != -1) ||
-                               (!String.IsNullOrEmpty(ControlKey) && AdminKeys.IndexOf(ControlKey) != -1 && ModuleID == -1);
+
+                _IsAdminSkin = (!string.IsNullOrEmpty(ControlKey) && ControlKey != "view" && ModuleID != -1) ||
+                               (!string.IsNullOrEmpty(ControlKey) && AdminKeys.IndexOf(ControlKey) != -1 && ModuleID == -1);
             }
+
             return _IsAdminSkin;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns whether the current tab is in EditMode
+        /// Returns whether the current tab is in EditMode.
         /// </summary>
-        /// <returns><c>true</c> if the tab is in Edit mode; otherwise <c>false</c></returns>
+        /// <returns><c>true</c> if the tab is in Edit mode; otherwise <c>false</c>.</returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1904,15 +1831,15 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns whether the current tab is in LayoutMode
+        /// Returns whether the current tab is in LayoutMode.
         /// </summary>
-        /// <returns><c>true</c> if the current tab is in layout mode; otherwise <c>false</c></returns>
+        /// <returns><c>true</c> if the current tab is in layout mode; otherwise <c>false</c>.</returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool IsLayoutMode()
         {
-            return (TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout);
+            return TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout;
         }
 
         /// <summary>
@@ -1937,12 +1864,12 @@ namespace DotNetNuke.Common
                 while (dr.Read())
                 {
                     int field;
-                    int.TryParse((dr[SyndicateField] ?? "").ToString(), out field);
+                    int.TryParse((dr[SyndicateField] ?? string.Empty).ToString(), out field);
                     if (field > 0)
                     {
                         strRSS.AppendLine(" <item>");
                         strRSS.AppendLine("  <title>" + dr[TitleField] + "</title>");
-                        var drUrl = (dr["URL"] ?? "").ToString();
+                        var drUrl = (dr["URL"] ?? string.Empty).ToString();
                         if (drUrl.IndexOf("://", StringComparison.InvariantCulture) == -1)
                         {
                             strRSS.Append("  <link>");
@@ -1954,12 +1881,14 @@ namespace DotNetNuke.Common
                             {
                                 strRSS.Append(strRelativePath + dr[URLField]);
                             }
+
                             strRSS.AppendLine("</link>");
                         }
                         else
                         {
                             strRSS.AppendLine("  <link>" + dr[URLField] + "</link>");
                         }
+
                         strRSS.AppendLine("  <description>" + _portalSettings.PortalName + " " + GetMediumDate(dr[CreatedDateField].ToString()) + "</description>");
                         strRSS.AppendLine(" </item>");
                     }
@@ -1995,11 +1924,11 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// injects the upload directory into raw HTML for src and background tags
+        /// injects the upload directory into raw HTML for src and background tags.
         /// </summary>
-        /// <param name="strHTML">raw HTML text</param>
-        /// <param name="strUploadDirectory">path of portal image directory</param>
-        /// <returns>HTML with paths for images and background corrected</returns>
+        /// <param name="strHTML">raw HTML text.</param>
+        /// <param name="strUploadDirectory">path of portal image directory.</param>
+        /// <returns>HTML with paths for images and background corrected.</returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -2011,12 +1940,12 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// injects the upload directory into raw HTML for a single token
+        /// injects the upload directory into raw HTML for a single token.
         /// </summary>
-        /// <param name="strHTML">raw HTML text</param>
-        /// <param name="strUploadDirectory">path of portal image directory</param>
-        /// <param name="strToken">token to be replaced</param>
-        /// <returns>HTML with paths for images and background corrected</returns>
+        /// <param name="strHTML">raw HTML text.</param>
+        /// <param name="strUploadDirectory">path of portal image directory.</param>
+        /// <param name="strToken">token to be replaced.</param>
+        /// <returns>HTML with paths for images and background corrected.</returns>
         /// <remarks>
         /// called by ManageUploadDirectory for each token.
         /// </remarks>
@@ -2028,18 +1957,19 @@ namespace DotNetNuke.Common
             int S = 0;
             int tLen;
             string strURL;
-            var sbBuff = new StringBuilder("");
-            if (!String.IsNullOrEmpty(strHTML))
+            var sbBuff = new StringBuilder(string.Empty);
+            if (!string.IsNullOrEmpty(strHTML))
             {
                 tLen = strToken.Length + 2;
                 string _UploadDirectory = strUploadDirectory.ToLowerInvariant();
-                //find position of first occurrance:
+
+                // find position of first occurrance:
                 P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
                 while (P != -1)
                 {
-                    sbBuff.Append(strHTML.Substring(S, P - S + tLen)); //keep charactes left of URL
-                    S = P + tLen; //save startpos of URL
-                    R = strHTML.IndexOf("\"", S); //end of URL
+                    sbBuff.Append(strHTML.Substring(S, P - S + tLen)); // keep charactes left of URL
+                    S = P + tLen; // save startpos of URL
+                    R = strHTML.IndexOf("\"", S); // end of URL
                     if (R >= 0)
                     {
                         strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
@@ -2048,19 +1978,23 @@ namespace DotNetNuke.Common
                     {
                         strURL = strHTML.Substring(S).ToLowerInvariant();
                     }
+
                     // add uploaddirectory if we are linking internally and the uploaddirectory is not already included
                     if (!strURL.Contains("://") && !strURL.StartsWith("/") && !strURL.StartsWith(_UploadDirectory))
                     {
                         sbBuff.Append(strUploadDirectory);
                     }
-                    //find position of next occurrance:
+
+                    // find position of next occurrance:
                     P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
                 }
+
                 if (S > -1)
                 {
                     sbBuff.Append(strHTML.Substring(S));
                 }
             }
+
             return sbBuff.ToString();
         }
 
@@ -2091,10 +2025,10 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Searches control hierarchy from top down to find a control matching the passed in name
+        /// Searches control hierarchy from top down to find a control matching the passed in name.
         /// </summary>
-        /// <param name="objParent">Root control to begin searching</param>
-        /// <param name="strControlName">Name of control to look for</param>
+        /// <param name="objParent">Root control to begin searching.</param>
+        /// <param name="strControlName">Name of control to look for.</param>
         /// <returns></returns>
         /// <remarks>
         /// This differs from FindControlRecursive in that it looks down the control hierarchy, whereas, the
@@ -2117,6 +2051,7 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return objCtl;
         }
 
@@ -2130,7 +2065,7 @@ namespace DotNetNuke.Common
             {
                 if (control.Page.Request.Browser.EcmaScriptVersion.Major >= 1)
                 {
-                    //JH dnn.js mod
+                    // JH dnn.js mod
                     if (ClientAPI.ClientAPIDisabled() == false)
                     {
                         JavaScript.RegisterClientReference(control.Page, ClientAPI.ClientNamespaceReferences.dnn);
@@ -2138,7 +2073,7 @@ namespace DotNetNuke.Common
                     }
                     else
                     {
-                        //Create JavaScript
+                        // Create JavaScript
                         var sb = new StringBuilder();
                         sb.Append("<script type=\"text/javascript\">");
                         sb.Append("<!--");
@@ -2146,12 +2081,14 @@ namespace DotNetNuke.Common
                         sb.Append("function SetInitialFocus() {");
                         sb.Append(Environment.NewLine);
                         sb.Append(" document.");
-                        //Find the Form
+
+                        // Find the Form
                         Control objParent = control.Parent;
                         while (!(objParent is HtmlForm))
                         {
                             objParent = objParent.Parent;
                         }
+
                         sb.Append(objParent.ClientID);
                         sb.Append("['");
                         sb.Append(control.UniqueID);
@@ -2161,6 +2098,7 @@ namespace DotNetNuke.Common
                         sb.Append("// -->");
                         sb.Append(Environment.NewLine);
                         sb.Append("</script>");
+
                         // Register Client Script
                         ClientAPI.RegisterClientScriptBlock(control.Page, "InitialFocus", sb.ToString());
                     }
@@ -2172,36 +2110,45 @@ namespace DotNetNuke.Common
         /// Gets the external request.
         /// </summary>
         /// <param name="Address">The address.</param>
-        /// <returns>Web request</returns>
+        /// <returns>Web request.</returns>
         public static HttpWebRequest GetExternalRequest(string Address)
         {
-            //Obtain PortalSettings from Current Context
+            // Obtain PortalSettings from Current Context
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            //Create the request object
+
+            // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(Address);
-            //Set a time out to the request ... 10 seconds
+
+            // Set a time out to the request ... 10 seconds
             objRequest.Timeout = Host.WebRequestTimeout;
-            //Attach a User Agent to the request
+
+            // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
-            //If there is Proxy info, apply it to the request
+
+            // If there is Proxy info, apply it to the request
             if (!string.IsNullOrEmpty(Host.ProxyServer))
             {
-                //Create a new Proxy
+                // Create a new Proxy
                 WebProxy Proxy;
-                //Create a new Network Credentials item
+
+                // Create a new Network Credentials item
                 NetworkCredential ProxyCredentials;
-                //Fill Proxy info from host settings
+
+                // Fill Proxy info from host settings
                 Proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
                 if (!string.IsNullOrEmpty(Host.ProxyUsername))
                 {
-                    //Fill the credential info from host settings
+                    // Fill the credential info from host settings
                     ProxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
-                    //Apply credentials to proxy
+
+                    // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
-                //Apply Proxy to request
+
+                // Apply Proxy to request
                 objRequest.Proxy = Proxy;
             }
+
             return objRequest;
         }
 
@@ -2210,38 +2157,47 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="Address">The address.</param>
         /// <param name="Credentials">The credentials.</param>
-        /// <returns>Web request</returns>
+        /// <returns>Web request.</returns>
         public static HttpWebRequest GetExternalRequest(string Address, NetworkCredential Credentials)
         {
-            //Create the request object
+            // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(Address);
+
             // Set a time out to the request ... 10 seconds
             objRequest.Timeout = Host.WebRequestTimeout;
+
             // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
+
             // Attach supplied credentials
             if (Credentials.UserName != null)
             {
                 objRequest.Credentials = Credentials;
             }
+
             // If there is Proxy info, apply it to the request
             if (!string.IsNullOrEmpty(Host.ProxyServer))
             {
                 // Create a new Proxy
                 WebProxy Proxy;
+
                 // Create a new Network Credentials item
                 NetworkCredential ProxyCredentials;
+
                 // Fill Proxy info from host settings
                 Proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
                 if (!string.IsNullOrEmpty(Host.ProxyUsername))
                 {
                     // Fill the credential info from host settings
                     ProxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
-                    //Apply credentials to proxy
+
+                    // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
+
                 objRequest.Proxy = Proxy;
             }
+
             return objRequest;
         }
 
@@ -2253,6 +2209,7 @@ namespace DotNetNuke.Common
         {
             FileSystemUtils.DeleteFolderRecursive(strRoot);
         }
+
         /// <summary>
         /// Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.
         /// </summary>
@@ -2263,51 +2220,14 @@ namespace DotNetNuke.Common
             FileSystemUtils.DeleteFilesRecursive(strRoot, filter);
         }
 
-        private static void DeleteFile(string filePath)
-        {
-            try
-            {
-                FileSystemUtils.DeleteFile(filePath);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
-        private static void DeleteFolder(string strRoot)
-        {
-            try
-            {
-                Directory.Delete(strRoot);
-            }
-            catch (IOException)
-            {
-                //Force Deletion. Directory should be empty
-                try
-                {
-                    Thread.Sleep(50);
-                    Directory.Delete(strRoot, true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
         /// <summary>
         /// Cleans the name of the file.
         /// </summary>
         /// <param name="FileName">Name of the file.</param>
-        /// <returns>clean name</returns>
+        /// <returns>clean name.</returns>
         public static string CleanFileName(string FileName)
         {
-            return CleanFileName(FileName, "", "");
+            return CleanFileName(FileName, string.Empty, string.Empty);
         }
 
         /// <summary>
@@ -2315,10 +2235,10 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="FileName">Name of the file.</param>
         /// <param name="BadChars">The bad chars.</param>
-        /// <returns>clean name</returns>
+        /// <returns>clean name.</returns>
         public static string CleanFileName(string FileName, string BadChars)
         {
-            return CleanFileName(FileName, BadChars, "");
+            return CleanFileName(FileName, BadChars, string.Empty);
         }
 
         /// <summary>
@@ -2327,23 +2247,26 @@ namespace DotNetNuke.Common
         /// <param name="FileName">Name of the file.</param>
         /// <param name="BadChars">The bad chars.</param>
         /// <param name="ReplaceChar">The replace char.</param>
-        /// <returns>clean name</returns>
+        /// <returns>clean name.</returns>
         public static string CleanFileName(string FileName, string BadChars, string ReplaceChar)
         {
             string strFileName = FileName;
-            if (String.IsNullOrEmpty(BadChars))
+            if (string.IsNullOrEmpty(BadChars))
             {
                 BadChars = ":/\\?*|" + ((char)34) + ((char)39) + ((char)9);
             }
-            if (String.IsNullOrEmpty(ReplaceChar))
+
+            if (string.IsNullOrEmpty(ReplaceChar))
             {
                 ReplaceChar = "_";
             }
+
             int intCounter;
             for (intCounter = 0; intCounter <= BadChars.Length - 1; intCounter++)
             {
                 strFileName = strFileName.Replace(BadChars.Substring(intCounter, 1), ReplaceChar);
             }
+
             return strFileName;
         }
 
@@ -2354,7 +2277,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <returns>A cleaned string</returns>
+        /// <returns>A cleaned string.</returns>
         /// -----------------------------------------------------------------------------
         public static string CleanName(string Name)
         {
@@ -2363,8 +2286,9 @@ namespace DotNetNuke.Common
             int intCounter;
             for (intCounter = 0; intCounter <= strBadChars.Length - 1; intCounter++)
             {
-                strName = strName.Replace(strBadChars.Substring(intCounter, 1), "");
+                strName = strName.Replace(strBadChars.Substring(intCounter, 1), string.Empty);
             }
+
             return strName;
         }
 
@@ -2374,29 +2298,30 @@ namespace DotNetNuke.Common
         ///   for use as an XHTML class attribute / CSS class selector value and optionally
         ///   prepends the letter 'A' if the first character is not alphabetic.  This differs
         ///   from <see>CreateValidID</see> which replaces invalid characters with an underscore
-        ///   and replaces the first letter with an 'A' if it is not alphabetic
+        ///   and replaces the first letter with an 'A' if it is not alphabetic.
         /// </summary>
-        /// <param name = "inputValue">String to use to create the class value</param>
+        /// <param name = "inputValue">String to use to create the class value.</param>
         /// <param name = "validateFirstChar">If set true, validate whether the first character
-        ///   is alphabetic and, if not, prepend the letter 'A' to the returned value</param>
+        ///   is alphabetic and, if not, prepend the letter 'A' to the returned value.</param>
         /// <remarks>
         /// </remarks>
-        /// <returns>A string suitable for use as a class value</returns>
+        /// <returns>A string suitable for use as a class value.</returns>
         /// -----------------------------------------------------------------------------
         public static string CreateValidClass(string inputValue, bool validateFirstChar)
         {
             string returnValue = Null.NullString;
 
-            //Regex is expensive so we will cache the results in a lookup table
-            var validClassLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(new CacheItemArgs("ValidClassLookup", 200, CacheItemPriority.NotRemovable),
-                                                                                                   (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
+            // Regex is expensive so we will cache the results in a lookup table
+            var validClassLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
+                new CacheItemArgs("ValidClassLookup", 200, CacheItemPriority.NotRemovable),
+                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validClassLookupDictionary.GetReadLock())
             {
                 if (validClassLookupDictionary.ContainsKey(inputValue))
                 {
-                    //Return value
+                    // Return value
                     returnValue = validClassLookupDictionary[inputValue];
                     idFound = true;
                 }
@@ -2408,29 +2333,29 @@ namespace DotNetNuke.Common
                 {
                     if (!validClassLookupDictionary.ContainsKey(inputValue))
                     {
-                        //Create Valid Class
+                        // Create Valid Class
                         // letters ([a-zA-Z]), digits ([0-9]), hyphens ("-") and underscores ("_") are valid in class values
                         // Remove all characters that aren't in the list
                         returnValue = InvalidCharacters.Replace(inputValue, string.Empty);
 
                         // If we're asked to validate the first character...
-                        if ((validateFirstChar))
+                        if (validateFirstChar)
                         {
                             // classes should begin with a letter ([A-Za-z])'
                             // prepend a starting non-letter character with an A
-                            if ((InvalidCharacters.IsMatch(returnValue)))
+                            if (InvalidCharacters.IsMatch(returnValue))
                             {
                                 returnValue = "A" + returnValue;
                             }
                         }
 
-                        //put in Dictionary
+                        // put in Dictionary
                         validClassLookupDictionary[inputValue] = returnValue;
                     }
                 }
             }
 
-            //Return Value
+            // Return Value
             return returnValue;
         }
 
@@ -2438,21 +2363,22 @@ namespace DotNetNuke.Common
         ///   Creates the valid ID.
         /// </summary>
         /// <param name = "inputValue">The input value.</param>
-        /// <returns>String with a valid ID</returns>
+        /// <returns>String with a valid ID.</returns>
         public static string CreateValidID(string inputValue)
         {
             string returnValue = Null.NullString;
 
-            //Regex is expensive so we will cache the results in a lookup table
-            var validIDLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(new CacheItemArgs("ValidIDLookup", 200, CacheItemPriority.NotRemovable),
-                                                                                                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
+            // Regex is expensive so we will cache the results in a lookup table
+            var validIDLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
+                new CacheItemArgs("ValidIDLookup", 200, CacheItemPriority.NotRemovable),
+                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validIDLookupDictionary.GetReadLock())
             {
                 if (validIDLookupDictionary.ContainsKey(inputValue))
                 {
-                    //Return value
+                    // Return value
                     returnValue = validIDLookupDictionary[inputValue];
                     idFound = true;
                 }
@@ -2464,7 +2390,7 @@ namespace DotNetNuke.Common
                 {
                     if (!validIDLookupDictionary.ContainsKey(inputValue))
                     {
-                        //Create Valid ID
+                        // Create Valid ID
                         // '... letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".")' are valid identifiers
                         // We aren't allowing hyphens or periods, even though they're valid, since the previous version of this function didn't
                         // Replace all characters that aren't in the list with an underscore
@@ -2474,44 +2400,44 @@ namespace DotNetNuke.Common
                         // replace a starting non-letter character with an A
                         returnValue = InvalidInitialCharacters.Replace(returnValue, "A");
 
-                        //put in Dictionary
+                        // put in Dictionary
                         validIDLookupDictionary[inputValue] = returnValue;
                     }
                 }
             }
+
             return returnValue;
         }
-
 
         /// <summary>
         /// Get the URL to show the "access denied" message.
         /// </summary>
-        /// <returns>URL to access denied view</returns>
+        /// <returns>URL to access denied view.</returns>
         public static string AccessDeniedURL()
         {
-            return AccessDeniedURL("");
+            return AccessDeniedURL(string.Empty);
         }
 
         /// <summary>
         /// Get the URL to show the "access denied" message.
         /// </summary>
         /// <param name="Message">The message to display.</param>
-        /// <returns>URL to access denied view</returns>
+        /// <returns>URL to access denied view.</returns>
         public static string AccessDeniedURL(string Message)
         {
             var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-            string strURL = "";
+            string strURL = string.Empty;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
             {
-                if (String.IsNullOrEmpty(Message))
+                if (string.IsNullOrEmpty(Message))
                 {
-                    //redirect to access denied page
+                    // redirect to access denied page
                     strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied");
                 }
                 else
                 {
-                    //redirect to access denied page with custom message
+                    // redirect to access denied page with custom message
                     var messageGuid = DataProvider.Instance().AddRedirectMessage(
                         _portalSettings.UserId, _portalSettings.ActiveTab.TabID, Message).ToString("N");
                     strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + messageGuid);
@@ -2521,54 +2447,57 @@ namespace DotNetNuke.Common
             {
                 strURL = LoginURL(HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), false);
             }
+
             return strURL;
         }
 
         /// <summary>
-        /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified
+        /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified.
         /// </summary>
-        /// <param name="strURL">The URL</param>
-        /// <returns>The formatted URL</returns>
+        /// <param name="strURL">The URL.</param>
+        /// <returns>The formatted URL.</returns>
         public static string AddHTTP(string strURL)
         {
-            if (!String.IsNullOrEmpty(strURL))
+            if (!string.IsNullOrEmpty(strURL))
             {
                 if (strURL.IndexOf("mailto:") == -1 && strURL.IndexOf("://") == -1 && strURL.IndexOf("~") == -1 && strURL.IndexOf("\\\\") == -1)
                 {
                     strURL = ((HttpContext.Current != null && UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request)) ? "https://" : "http://") + strURL;
                 }
             }
+
             return strURL;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates the Application root url (including the tab/page)
+        /// Generates the Application root url (including the tab/page).
         /// </summary>
         /// <remarks>
-        /// This overload assumes the current page
+        /// This overload assumes the current page.
         /// </remarks>
-        /// <returns>The formatted root url</returns>
+        /// <returns>The formatted root url.</returns>
         /// -----------------------------------------------------------------------------
         public static string ApplicationURL()
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (_portalSettings != null && _portalSettings.ActiveTab.HasAVisibleVersion)
             {
-                return (ApplicationURL(_portalSettings.ActiveTab.TabID));
+                return ApplicationURL(_portalSettings.ActiveTab.TabID);
             }
-            return (ApplicationURL(-1));
+
+            return ApplicationURL(-1);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates the Application root url (including the tab/page)
+        /// Generates the Application root url (including the tab/page).
         /// </summary>
         /// <remarks>
-        /// This overload takes the tabid (page id) as a parameter
+        /// This overload takes the tabid (page id) as a parameter.
         /// </remarks>
-        /// <param name="TabID">The id of the tab/page</param>
-        /// <returns>The formatted root url</returns>
+        /// <param name="TabID">The id of the tab/page.</param>
+        /// <returns>The formatted root url.</returns>
         /// -----------------------------------------------------------------------------
         public static string ApplicationURL(int TabID)
         {
@@ -2577,6 +2506,7 @@ namespace DotNetNuke.Common
             {
                 strURL += "?tabid=" + TabID;
             }
+
             return strURL;
         }
 
@@ -2589,7 +2519,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public static string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name)
         {
-            return FormatHelpUrl(HelpUrl, objPortalSettings, Name, "");
+            return FormatHelpUrl(HelpUrl, objPortalSettings, Name, string.Empty);
         }
 
         /// <summary>
@@ -2611,7 +2541,8 @@ namespace DotNetNuke.Common
             {
                 strURL += "?helpculture=";
             }
-            if (!String.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant()))
+
+            if (!string.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant()))
             {
                 strURL += Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant();
             }
@@ -2619,14 +2550,17 @@ namespace DotNetNuke.Common
             {
                 strURL += objPortalSettings.DefaultLanguage.ToLowerInvariant();
             }
-            if (!String.IsNullOrEmpty(Name))
+
+            if (!string.IsNullOrEmpty(Name))
             {
                 strURL += "&helpmodule=" + HttpUtility.UrlEncode(Name);
             }
-            if (!String.IsNullOrEmpty(Version))
+
+            if (!string.IsNullOrEmpty(Version))
             {
                 strURL += "&helpversion=" + HttpUtility.UrlEncode(Version);
             }
+
             return AddHTTP(strURL);
         }
 
@@ -2634,26 +2568,26 @@ namespace DotNetNuke.Common
         /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
-        /// Assumes Default.aspx, and that portalsettings are saved to Context
+        /// Assumes Default.aspx, and that portalsettings are saved to Context.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <returns>The formatted (friendly) URL.</returns>
         public static string FriendlyUrl(TabInfo tab, string path)
         {
             return FriendlyUrl(tab, path, glbDefaultPage);
         }
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
         /// This overload includes an optional page to include in the url.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the url.</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <returns>The formatted (friendly) URL.</returns>
         public static string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -2661,15 +2595,15 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
-        /// This overload includes the portal settings for the site
+        /// This overload includes the portal settings for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
-        /// <param name="settings">The portal settings</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <param name="settings">The portal settings.</param>
+        /// <returns>The formatted (friendly) URL.</returns>
         [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
         public static string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
@@ -2677,32 +2611,32 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
-        /// This overload includes the portal settings for the site
+        /// This overload includes the portal settings for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
-        /// <param name="settings">The portal settings</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <param name="settings">The portal settings.</param>
+        /// <returns>The formatted (friendly) URL.</returns>
         public static string FriendlyUrl(TabInfo tab, string path, IPortalSettings settings)
         {
             return FriendlyUrl(tab, path, glbDefaultPage, settings);
         }
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
         /// This overload includes an optional page to include in the URL, and the portal
-        /// settings for the site
+        /// settings for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the URL.</param>
-        /// <param name="settings">The portal settings</param>
-        /// <returns>The formatted (friendly) url</returns>
+        /// <param name="settings">The portal settings.</param>
+        /// <returns>The formatted (friendly) url.</returns>
         [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
         public static string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
@@ -2710,34 +2644,34 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
         /// This overload includes an optional page to include in the URL, and the portal
-        /// settings for the site
+        /// settings for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the URL.</param>
-        /// <param name="settings">The portal settings</param>
-        /// <returns>The formatted (friendly) url</returns>
+        /// <param name="settings">The portal settings.</param>
+        /// <returns>The formatted (friendly) url.</returns>
         public static string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, settings);
         }
 
         /// <summary>
-        /// Generates the correctly formatted friendly url
+        /// Generates the correctly formatted friendly url.
         /// </summary>
         /// <remarks>
         /// This overload includes an optional page to include in the url, and the portal
-        /// alias for the site
+        /// alias for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the URL.</param>
-        /// <param name="portalAlias">The portal alias for the site</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <param name="portalAlias">The portal alias for the site.</param>
+        /// <returns>The formatted (friendly) URL.</returns>
         public static string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, portalAlias);
@@ -2745,31 +2679,35 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns the type of URl (T=other tab, F=file, U=URL, N=normal)
+        /// Returns the type of URl (T=other tab, F=file, U=URL, N=normal).
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="URL">The url</param>
-        /// <returns>The url type</returns>
+        /// <param name="URL">The url.</param>
+        /// <returns>The url type.</returns>
         /// -----------------------------------------------------------------------------
         public static TabType GetURLType(string URL)
         {
-            if (String.IsNullOrEmpty(URL))
+            if (string.IsNullOrEmpty(URL))
             {
                 return TabType.Normal;
             }
+
             if (URL.ToLowerInvariant().StartsWith("mailto:") == false && URL.IndexOf("://") == -1 && URL.StartsWith("~") == false && URL.StartsWith("\\\\") == false && URL.StartsWith("/") == false)
             {
                 if (NumberMatchRegex.IsMatch(URL))
                 {
                     return TabType.Tab;
                 }
+
                 if (URL.ToLowerInvariant().StartsWith("userid="))
                 {
                     return TabType.Member;
                 }
+
                 return TabType.File;
             }
+
             return TabType.Url;
         }
 
@@ -2777,11 +2715,11 @@ namespace DotNetNuke.Common
         /// Url's as internal links to Files, Tabs and Users should only be imported if
         /// those files, tabs and users exist. This function parses the url, and checks
         /// whether the internal links exist.
-        /// If the link does not exist, the function will return an empty string
+        /// If the link does not exist, the function will return an empty string.
         /// </summary>
-        /// <param name="ModuleId">Integer</param>
-        /// <param name="url">String</param>
-        /// <returns>If an internal link does not exist, an empty string is returned, otherwise the passed in url is returned as is</returns>
+        /// <param name="ModuleId">Integer.</param>
+        /// <param name="url">String.</param>
+        /// <returns>If an internal link does not exist, an empty string is returned, otherwise the passed in url is returned as is.</returns>
         public static string ImportUrl(int ModuleId, string url)
         {
             string strUrl = url;
@@ -2791,52 +2729,56 @@ namespace DotNetNuke.Common
             switch (urlType)
             {
                 case TabType.File:
-                    if (Int32.TryParse(url.Replace("FileID=", ""), out intId))
+                    if (int.TryParse(url.Replace("FileID=", string.Empty), out intId))
                     {
                         var objFile = FileManager.Instance.GetFile(intId);
                         if (objFile == null)
                         {
-                            //fileId does not exist in the portal
-                            strUrl = "";
+                            // fileId does not exist in the portal
+                            strUrl = string.Empty;
                         }
                     }
                     else
                     {
-                        //failed to get fileId
-                        strUrl = "";
+                        // failed to get fileId
+                        strUrl = string.Empty;
                     }
+
                     break;
                 case TabType.Member:
-                    if (Int32.TryParse(url.Replace("UserID=", ""), out intId))
+                    if (int.TryParse(url.Replace("UserID=", string.Empty), out intId))
                     {
                         if (UserController.GetUserById(portalSettings.PortalId, intId) == null)
                         {
-                            //UserId does not exist for this portal
-                            strUrl = "";
+                            // UserId does not exist for this portal
+                            strUrl = string.Empty;
                         }
                     }
                     else
                     {
-                        //failed to get UserId
-                        strUrl = "";
+                        // failed to get UserId
+                        strUrl = string.Empty;
                     }
+
                     break;
                 case TabType.Tab:
-                    if (Int32.TryParse(url, out intId))
+                    if (int.TryParse(url, out intId))
                     {
                         if (TabController.Instance.GetTab(intId, portalSettings.PortalId, false) == null)
                         {
-                            //the tab does not exist
-                            strUrl = "";
+                            // the tab does not exist
+                            strUrl = string.Empty;
                         }
                     }
                     else
                     {
-                        //failed to get TabId
-                        strUrl = "";
+                        // failed to get TabId
+                        strUrl = string.Empty;
                     }
+
                     break;
             }
+
             return strUrl;
         }
 
@@ -2866,7 +2808,8 @@ namespace DotNetNuke.Common
             {
                 returnUrl = string.Format("returnurl={0}", returnUrl);
             }
-            var popUpParameter = "";
+
+            var popUpParameter = string.Empty;
             if (HttpUtility.UrlDecode(returnUrl).IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 popUpParameter = "popUp=true";
@@ -2877,13 +2820,14 @@ namespace DotNetNuke.Common
                 if (ValidateLoginTabID(portalSettings.LoginTabId))
                 {
                     loginUrl = string.IsNullOrEmpty(returnUrl)
-                                        ? navigationManager.NavigateURL(portalSettings.LoginTabId, "", popUpParameter)
-                                        : navigationManager.NavigateURL(portalSettings.LoginTabId, "", returnUrl, popUpParameter);
+                                        ? navigationManager.NavigateURL(portalSettings.LoginTabId, string.Empty, popUpParameter)
+                                        : navigationManager.NavigateURL(portalSettings.LoginTabId, string.Empty, returnUrl, popUpParameter);
                 }
                 else
                 {
                     string strMessage = string.Format("error={0}", Localization.GetString("NoLoginControl", Localization.GlobalResourceFile));
-                    //No account module so use portal tab
+
+                    // No account module so use portal tab
                     loginUrl = string.IsNullOrEmpty(returnUrl)
                                  ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
                                  : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, strMessage, popUpParameter);
@@ -2891,11 +2835,12 @@ namespace DotNetNuke.Common
             }
             else
             {
-                //portal tab
+                // portal tab
                 loginUrl = string.IsNullOrEmpty(returnUrl)
                                 ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
                                 : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, popUpParameter);
             }
+
             return loginUrl;
         }
 
@@ -2906,10 +2851,10 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string UserProfileURL(int userId)
         {
-            string strURL = "";
+            string strURL = string.Empty;
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            strURL = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(portalSettings.UserTabId, "", string.Format("userId={0}", userId));
+            strURL = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", userId));
 
             return strURL;
         }
@@ -2918,7 +2863,8 @@ namespace DotNetNuke.Common
         /// Gets the URL to the current page.
         /// </summary>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL()
         {
@@ -2930,7 +2876,8 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID)
         {
@@ -2943,7 +2890,8 @@ namespace DotNetNuke.Common
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
@@ -2955,7 +2903,8 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey)
         {
@@ -2968,7 +2917,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters, in <c>"key=value"</c> format.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
@@ -2981,7 +2931,8 @@ namespace DotNetNuke.Common
         /// <param name="tabID">The tab ID.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey)
         {
@@ -2995,7 +2946,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
@@ -3010,7 +2962,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
@@ -3026,7 +2979,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
@@ -3067,10 +3021,10 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// UrlEncode query string
+        /// UrlEncode query string.
         /// </summary>
         /// <param name="QueryString">The query string.</param>
-        /// <returns>Encoded content</returns>
+        /// <returns>Encoded content.</returns>
         public static string QueryStringEncode(string QueryString)
         {
             QueryString = HttpUtility.UrlEncode(QueryString);
@@ -3078,10 +3032,10 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// UrlDecode query string
+        /// UrlDecode query string.
         /// </summary>
         /// <param name="QueryString">The query string.</param>
-        /// <returns>Decoded content</returns>
+        /// <returns>Decoded content.</returns>
         public static string QueryStringDecode(string QueryString)
         {
             QueryString = HttpUtility.UrlDecode(QueryString);
@@ -3094,11 +3048,13 @@ namespace DotNetNuke.Common
             {
                 Exceptions.ProcessHttpException(exc);
             }
+
             string strDoubleDecodeURL = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Server.UrlDecode(QueryString));
             if (QueryString.IndexOf("..") != -1 || strDoubleDecodeURL.IndexOf("..") != -1)
             {
                 Exceptions.ProcessHttpException();
             }
+
             return QueryString;
         }
 
@@ -3113,54 +3069,60 @@ namespace DotNetNuke.Common
             var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            string extraParams = String.Empty;
+            string extraParams = string.Empty;
             if (!string.IsNullOrEmpty(returnURL))
             {
                 extraParams = string.Concat("returnurl=", returnURL);
             }
+
             if (!string.IsNullOrEmpty(originalURL))
             {
                 extraParams += string.Concat("&orignalurl=", originalURL);
             }
+
             if (_portalSettings.RegisterTabId != -1)
             {
-                //user defined tab
-                strURL = navigationManager.NavigateURL(_portalSettings.RegisterTabId, "", extraParams);
+                // user defined tab
+                strURL = navigationManager.NavigateURL(_portalSettings.RegisterTabId, string.Empty, extraParams);
             }
             else
             {
                 strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Register", extraParams);
             }
+
             return strURL;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates the correctly formatted url
+        /// Generates the correctly formatted url.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="url">The url to format.</param>
-        /// <returns>The formatted (resolved) url</returns>
+        /// <returns>The formatted (resolved) url.</returns>
         /// -----------------------------------------------------------------------------
         public static string ResolveUrl(string url)
         {
             // String is Empty, just return Url
-            if (String.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url))
             {
                 return url;
             }
+
             // String does not contain a ~, so just return Url
-            if ((url.StartsWith("~") == false))
+            if (url.StartsWith("~") == false)
             {
                 return url;
             }
+
             // There is just the ~ in the Url, return the appPath
-            if ((url.Length == 1))
+            if (url.Length == 1)
             {
                 return ApplicationPath;
             }
-            if ((url.ToCharArray()[1] == '/' || url.ToCharArray()[1] == '\\'))
+
+            if (url.ToCharArray()[1] == '/' || url.ToCharArray()[1] == '\\')
             {
                 // Url looks like ~/ or ~\
                 if (!string.IsNullOrEmpty(ApplicationPath) && ApplicationPath.Length > 1)
@@ -3190,7 +3152,7 @@ namespace DotNetNuke.Common
         /// Encodes the reserved characters.
         /// </summary>
         /// <param name="QueryString">The query string.</param>
-        /// <returns>Encoded content</returns>
+        /// <returns>Encoded content.</returns>
         public static string EncodeReservedCharacters(string QueryString)
         {
             QueryString = QueryString.Replace("$", "%24");
@@ -3242,7 +3204,7 @@ namespace DotNetNuke.Common
         {
             if (HashObject != null)
             {
-                if (!String.IsNullOrEmpty(HashObject.ToString()))
+                if (!string.IsNullOrEmpty(HashObject.ToString()))
                 {
                     return Convert.ToString(HashObject);
                 }
@@ -3266,7 +3228,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID)
         {
-            return LinkClick(Link, TabID, ModuleID, true, "");
+            return LinkClick(Link, TabID, ModuleID, true, string.Empty);
         }
 
         /// <summary>
@@ -3279,7 +3241,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks)
         {
-            return LinkClick(Link, TabID, ModuleID, TrackClicks, "");
+            return LinkClick(Link, TabID, ModuleID, TrackClicks, string.Empty);
         }
 
         /// <summary>
@@ -3293,7 +3255,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, string ContentType)
         {
-            return LinkClick(Link, TabID, ModuleID, TrackClicks, !String.IsNullOrEmpty(ContentType));
+            return LinkClick(Link, TabID, ModuleID, TrackClicks, !string.IsNullOrEmpty(ContentType));
         }
 
         /// <summary>
@@ -3325,7 +3287,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, bool ForceDownload, int PortalId, bool EnableUrlLanguage, string portalGuid)
         {
-            string strLink = "";
+            string strLink = string.Empty;
             TabType UrlType = GetURLType(Link);
             if (UrlType == TabType.Member)
             {
@@ -3333,40 +3295,46 @@ namespace DotNetNuke.Common
             }
             else if (TrackClicks || ForceDownload || UrlType == TabType.File)
             {
-                //format LinkClick wrapper
+                // format LinkClick wrapper
                 if (Link.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
                     strLink = ApplicationPath + "/LinkClick.aspx?fileticket=" + UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(Link), portalGuid);
-                    if (PortalId == Null.NullInteger) //To track Host files
+                    if (PortalId == Null.NullInteger) // To track Host files
                     {
                         strLink += "&hf=1";
                     }
                 }
-                if (String.IsNullOrEmpty(strLink))
+
+                if (string.IsNullOrEmpty(strLink))
                 {
                     strLink = ApplicationPath + "/LinkClick.aspx?link=" + HttpUtility.UrlEncode(Link);
                 }
+
                 // tabid is required to identify the portal where the click originated
                 if (TabID != Null.NullInteger)
                 {
                     strLink += "&tabid=" + TabID;
                 }
-                //append portal id to query string to identity portal the click originated.
-                if(PortalId != Null.NullInteger)
+
+                // append portal id to query string to identity portal the click originated.
+                if (PortalId != Null.NullInteger)
                 {
                     strLink += "&portalid=" + PortalId;
                 }
+
                 // moduleid is used to identify the module where the url is stored
                 if (ModuleID != -1)
                 {
                     strLink += "&mid=" + ModuleID;
                 }
-                //only add language to url if more than one locale is enabled, and if admin did not turn it off
+
+                // only add language to url if more than one locale is enabled, and if admin did not turn it off
                 if (LocaleController.Instance.GetLocales(PortalId).Count > 1 && EnableUrlLanguage)
                 {
                     strLink += "&language=" + Thread.CurrentThread.CurrentCulture.Name;
                 }
-                //force a download dialog
+
+                // force a download dialog
                 if (ForceDownload)
                 {
                     strLink += "&forcedownload=true";
@@ -3384,6 +3352,7 @@ namespace DotNetNuke.Common
                         break;
                 }
             }
+
             return strLink;
         }
 
@@ -3391,7 +3360,7 @@ namespace DotNetNuke.Common
         /// Gets the name of the role.
         /// </summary>
         /// <param name="RoleID">The role ID.</param>
-        /// <returns>Role Name</returns>
+        /// <returns>Role Name.</returns>
         public static string GetRoleName(int RoleID)
         {
             switch (Convert.ToString(RoleID))
@@ -3401,11 +3370,13 @@ namespace DotNetNuke.Common
                 case glbRoleUnauthUser:
                     return glbRoleUnauthUserName;
             }
+
             Hashtable htRoles = null;
             if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
             {
                 htRoles = (Hashtable)DataCache.GetCache("GetRoles");
             }
+
             if (htRoles == null)
             {
                 var roles = RoleController.Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup);
@@ -3416,11 +3387,13 @@ namespace DotNetNuke.Common
                     RoleInfo role = roles[i];
                     htRoles.Add(role.RoleID, role.RoleName);
                 }
+
                 if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
                 {
                     DataCache.SetCache("GetRoles", htRoles);
                 }
             }
+
             return Convert.ToString(htRoles[RoleID]);
         }
 
@@ -3434,7 +3407,7 @@ namespace DotNetNuke.Common
         {
             var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.LoadXml(Content);
-            if (String.IsNullOrEmpty(ContentType))
+            if (string.IsNullOrEmpty(ContentType))
             {
                 return xmlDoc.DocumentElement;
             }
@@ -3446,13 +3419,13 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GenerateTabPath generates the TabPath used in Friendly URLS
+        /// GenerateTabPath generates the TabPath used in Friendly URLS.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="parentId">The Id of the Parent Tab</param>
-        /// <param name="tabName">The Name of the current Tab</param>
-        /// <returns>The TabPath</returns>
+        /// <param name="parentId">The Id of the Parent Tab.</param>
+        /// <param name="tabName">The Name of the current Tab.</param>
+        /// <returns>The TabPath.</returns>
         /// -----------------------------------------------------------------------------
         public static string GenerateTabPath(int parentId, string tabName)
         {
@@ -3488,11 +3461,12 @@ namespace DotNetNuke.Common
             {
                 string FileName = Path.GetFileName(objModuleControl.ControlSrc);
                 string LocalResourceFile = objModuleControl.ControlSrc.Replace(FileName, Localization.LocalResourceDirectory + "/" + FileName);
-                if (!String.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, LocalResourceFile)))
+                if (!string.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, LocalResourceFile)))
                 {
                     helpText = Localization.GetString(ModuleActionType.HelpText, LocalResourceFile);
                 }
             }
+
             return helpText;
         }
 
@@ -3506,20 +3480,22 @@ namespace DotNetNuke.Common
         {
             if (string.IsNullOrEmpty(HelpUrl))
             {
-                //bool isAdminModule = moduleConfig.DesktopModule.IsAdmin;
-                //string ctlString = Convert.ToString(HttpContext.Current.Request.QueryString["ctl"]);
-                //if (((Host.EnableModuleOnLineHelp && !isAdminModule) || (isAdminModule)))
-                //{
+                // bool isAdminModule = moduleConfig.DesktopModule.IsAdmin;
+                // string ctlString = Convert.ToString(HttpContext.Current.Request.QueryString["ctl"]);
+                // if (((Host.EnableModuleOnLineHelp && !isAdminModule) || (isAdminModule)))
+                // {
                 //    if ((isAdminModule) || (IsAdminControl() && ctlString == "Module") || (IsAdminControl() && ctlString == "Tab"))
                 //    {
                 //        HelpUrl = Host.HelpURL;
                 //    }
-                //}
-                //else
-                //{
+                // }
+                // else
+                // {
                 HelpUrl = Host.HelpURL;
-                //}
+
+                // }
             }
+
             return HelpUrl;
         }
 
@@ -3530,79 +3506,50 @@ namespace DotNetNuke.Common
         /// <returns><c>true</c> if the tab contains "Account Login" module, otherwise, <c>false</c>.</returns>
         public static bool ValidateLoginTabID(int tabId)
         {
-	        return ValidateModuleInTab(tabId, "Account Login");
-        }
-
-		/// <summary>
-		/// Check whether the tab contains specific module.
-		/// </summary>
-		/// <param name="tabId">The tab id.</param>
-		/// <param name="moduleName">The module need to check.</param>
-		/// <returns><c>true</c> if the tab contains the module, otherwise, <c>false</c>.</returns>
-		public static bool ValidateModuleInTab(int tabId, string moduleName)
-		{
-			bool hasModule = Null.NullBoolean;
-            foreach (ModuleInfo objModule in ModuleController.Instance.GetTabModules(tabId).Values)
-            {
-				if (objModule.ModuleDefinition.FriendlyName == moduleName)
-                {
-                    //We need to ensure that Anonymous Users or All Users have View permissions to the login page
-                    TabInfo tab = TabController.Instance.GetTab(tabId, objModule.PortalID, false);
-                    if (TabPermissionController.CanViewPage(tab))
-                    {
-						hasModule = true;
-                        break;
-                    }
-                }
-            }
-			return hasModule;
+            return ValidateModuleInTab(tabId, "Account Login");
         }
 
         /// <summary>
-        /// Check whether the Filename matches extensions.
+        /// Check whether the tab contains specific module.
         /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <param name="strExtensions">The valid extensions.</param>
-        /// <returns><c>true</c> if the Filename matches extensions, otherwise, <c>false</c>.</returns>
-        private static bool FilenameMatchesExtensions(string filename, string strExtensions)
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="moduleName">The module need to check.</param>
+        /// <returns><c>true</c> if the tab contains the module, otherwise, <c>false</c>.</returns>
+        public static bool ValidateModuleInTab(int tabId, string moduleName)
         {
-			bool result = string.IsNullOrEmpty(strExtensions);
-            if (!result)
+            bool hasModule = Null.NullBoolean;
+            foreach (ModuleInfo objModule in ModuleController.Instance.GetTabModules(tabId).Values)
             {
-                filename = filename.ToUpper();
-                strExtensions = strExtensions.ToUpper();
-                foreach (string extension in strExtensions.Split(','))
+                if (objModule.ModuleDefinition.FriendlyName == moduleName)
                 {
-                    string ext = extension.Trim();
-                    if (!ext.StartsWith("."))
+                    // We need to ensure that Anonymous Users or All Users have View permissions to the login page
+                    TabInfo tab = TabController.Instance.GetTab(tabId, objModule.PortalID, false);
+                    if (TabPermissionController.CanViewPage(tab))
                     {
-                        ext = "." + extension;
-                    }
-                    result = filename.EndsWith(extension);
-                    if (result)
-                    {
+                        hasModule = true;
                         break;
                     }
                 }
             }
-            return result;
+
+            return hasModule;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeserializeHashTableBase64 deserializes a Hashtable using Binary Formatting
+        /// DeserializeHashTableBase64 deserializes a Hashtable using Binary Formatting.
         /// </summary>
         /// <remarks>
         /// While this method of serializing is no longer supported (due to Medium Trust
         /// issue, it is still required for upgrade purposes.
         /// </remarks>
-        /// <param name="Source">The String Source to deserialize</param>
-        /// <returns>The deserialized Hashtable</returns>
+        /// <param name="Source">The String Source to deserialize.</param>
+        /// <returns>The deserialized Hashtable.</returns>
         /// -----------------------------------------------------------------------------
         public static Hashtable DeserializeHashTableBase64(string Source)
         {
             Hashtable objHashTable;
-            if (!String.IsNullOrEmpty(Source))
+            if (!string.IsNullOrEmpty(Source))
             {
                 byte[] bits = Convert.FromBase64String(Source);
                 using (var mem = new MemoryStream(bits))
@@ -3610,7 +3557,7 @@ namespace DotNetNuke.Common
                     var bin = new BinaryFormatter();
                     try
                     {
-                        objHashTable = (Hashtable) bin.Deserialize(mem);
+                        objHashTable = (Hashtable)bin.Deserialize(mem);
                     }
                     catch (Exception exc)
                     {
@@ -3618,6 +3565,7 @@ namespace DotNetNuke.Common
 
                         objHashTable = new Hashtable();
                     }
+
                     mem.Close();
                 }
             }
@@ -3625,18 +3573,19 @@ namespace DotNetNuke.Common
             {
                 objHashTable = new Hashtable();
             }
+
             return objHashTable;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeserializeHashTableXml deserializes a Hashtable using Xml Serialization
+        /// DeserializeHashTableXml deserializes a Hashtable using Xml Serialization.
         /// </summary>
         /// <remarks>
-        /// This is the preferred method of serialization under Medium Trust
+        /// This is the preferred method of serialization under Medium Trust.
         /// </remarks>
-        /// <param name="Source">The String Source to deserialize</param>
-        /// <returns>The deserialized Hashtable</returns>
+        /// <param name="Source">The String Source to deserialize.</param>
+        /// <returns>The deserialized Hashtable.</returns>
         /// -----------------------------------------------------------------------------
         public static Hashtable DeserializeHashTableXml(string Source)
         {
@@ -3645,14 +3594,14 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SerializeHashTableBase64 serializes a Hashtable using Binary Formatting
+        /// SerializeHashTableBase64 serializes a Hashtable using Binary Formatting.
         /// </summary>
         /// <remarks>
         /// While this method of serializing is no longer supported (due to Medium Trust
         /// issue, it is still required for upgrade purposes.
         /// </remarks>
-        /// <param name="Source">The Hashtable to serialize</param>
-        /// <returns>The serialized String</returns>
+        /// <param name="Source">The Hashtable to serialize.</param>
+        /// <returns>The serialized String.</returns>
         /// -----------------------------------------------------------------------------
         public static string SerializeHashTableBase64(Hashtable Source)
         {
@@ -3670,7 +3619,7 @@ namespace DotNetNuke.Common
                 {
                     Logger.Error(exc);
 
-                    strString = "";
+                    strString = string.Empty;
                 }
                 finally
                 {
@@ -3679,20 +3628,21 @@ namespace DotNetNuke.Common
             }
             else
             {
-                strString = "";
+                strString = string.Empty;
             }
+
             return strString;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SerializeHashTableXml serializes a Hashtable using Xml Serialization
+        /// SerializeHashTableXml serializes a Hashtable using Xml Serialization.
         /// </summary>
         /// <remarks>
-        /// This is the preferred method of serialization under Medium Trust
+        /// This is the preferred method of serialization under Medium Trust.
         /// </remarks>
-        /// <param name="Source">The Hashtable to serialize</param>
-        /// <returns>The serialized String</returns>
+        /// <param name="Source">The Hashtable to serialize.</param>
+        /// <returns>The serialized String.</returns>
         /// -----------------------------------------------------------------------------
         public static string SerializeHashTableXml(Hashtable Source)
         {
@@ -3713,17 +3663,17 @@ namespace DotNetNuke.Common
             {
                 isHostTab = hostTabs.Any(t => t.Value.TabID == tabId);
             }
+
             return isHostTab;
         }
-
 
         /// <summary>
         /// Return User Profile Picture Formatted Url. UserId, width and height can be passed to build a formatted Avatar Url.
         /// </summary>
-        /// <returns>Formatted url,  e.g. http://www.mysite.com/DnnImageHandler.ashx?mode=profilepic&amp;userid={0}&amp;h={1}&amp;w={2}
+        /// <returns>Formatted url,  e.g. http://www.mysite.com/DnnImageHandler.ashx?mode=profilepic&amp;userid={0}&amp;h={1}&amp;w={2}.
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
-        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32)
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32).
         /// </remarks>
         [Obsolete("Obsoleted in DNN 7.3.0 as it causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead.. Scheduled removal in v11.0.0.")]
         public static string UserProfilePicFormattedUrl()
@@ -3733,10 +3683,12 @@ namespace DotNetNuke.Common
             {
                 avatarUrl = HttpContext.Current.Request.Url.Host;
             }
-            avatarUrl = string.Format("{0}://{1}{2}",
-                                      UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
-                                      avatarUrl,
-                                      !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
+
+            avatarUrl = string.Format(
+                "{0}://{1}{2}",
+                UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
+                avatarUrl,
+                !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
 
             avatarUrl += "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
 
@@ -3746,10 +3698,10 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
         /// </summary>
-        /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
+        /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal.
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
-        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32).
         /// </remarks>
         [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl. Scheduled removal in v11.0.0.")]
         public static string UserProfilePicRelativeUrl()
@@ -3761,10 +3713,10 @@ namespace DotNetNuke.Common
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
         /// </summary>
         /// <param name="includeCdv">Indicates if cdv (Cache Delayed Verification) has to be included in the returned URL.</param>
-        /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
+        /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal.
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
-        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32).
         /// </remarks>
         [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl. Scheduled removal in v11.0.0.")]
         public static string UserProfilePicRelativeUrl(bool includeCdv)
@@ -3772,29 +3724,25 @@ namespace DotNetNuke.Common
             const string query = "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
             var index = currentAlias.IndexOf('/');
-            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : string.Empty;
 
-            var cdv = "";
+            var cdv = string.Empty;
             if (includeCdv)
             {
                 cdv = "&cdv=" + DateTime.Now.Ticks;
             }
 
             if (childPortalAlias.StartsWith(ApplicationPath))
+            {
                 return childPortalAlias + query + cdv;
+            }
 
             return ApplicationPath + childPortalAlias + query + cdv;
-
         }
-
-        #region "Obsolete - retained for Binary Compatability"
 
         // ****************************************************************************************
         // Constants are inlined in code and would require a rebuild of any module or skinobject
         // that may be using these constants.
-
-        #region "Html functions moved to HtmlUtils.vb"
-
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail. Scheduled removal in v11.0.0.")]
         public static string FormatEmail(string Email)
         {
@@ -3807,17 +3755,11 @@ namespace DotNetNuke.Common
             return HtmlUtils.FormatWebsite(Website);
         }
 
-        #endregion
-
-        #region "Xml functions moved to XmlUtils.vb"
-
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.XmlUtils.XMLEncode. Scheduled removal in v11.0.0.")]
         public static string XMLEncode(string HTML)
         {
             return XmlUtils.XMLEncode(HTML);
         }
-
-        #endregion
 
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString. Scheduled removal in v11.0.0.")]
         public static string GetDBConnectionString()
@@ -3828,14 +3770,14 @@ namespace DotNetNuke.Common
         [Obsolete("This method has been deprecated. . Scheduled removal in v11.0.0.")]
         public static ArrayList GetFileList(DirectoryInfo CurrentDirectory, [Optional, DefaultParameterValue("")] // ERROR: Optional parameters aren't supported in C#
                                                                                 string strExtensions, [Optional, DefaultParameterValue(true)] // ERROR: Optional parameters aren't supported in C#
-                                                                                                          bool NoneSpecified)
+                                                                                bool NoneSpecified)
         {
             var arrFileList = new ArrayList();
-            string strExtension = "";
+            string strExtension = string.Empty;
 
             if (NoneSpecified)
             {
-                arrFileList.Add(new FileItem("", "<" + Localization.GetString("None_Specified") + ">"));
+                arrFileList.Add(new FileItem(string.Empty, "<" + Localization.GetString("None_Specified") + ">"));
             }
 
             string File = null;
@@ -3847,6 +3789,7 @@ namespace DotNetNuke.Common
                 {
                     strExtension = File.Substring(File.LastIndexOf(".") + 1);
                 }
+
                 string FileName = File.Substring(CurrentDirectory.FullName.Length);
                 if (strExtensions.IndexOf(strExtension, StringComparison.InvariantCultureIgnoreCase) != -1 || string.IsNullOrEmpty(strExtensions))
                 {
@@ -3871,6 +3814,7 @@ namespace DotNetNuke.Common
             {
                 ParentFolderName = _portalSettings.HomeDirectoryMapPath.Replace("/", "\\");
             }
+
             string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
 
             return strFolderpath.Substring(ParentFolderName.Length).Replace("\\", "/");
@@ -3886,24 +3830,236 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated PreventSQLInjection Function to consolidate Security Filter functions in the PortalSecurity class. Scheduled removal in v11.0.0.")]
         public static string PreventSQLInjection(string strSQL)
         {
-            return (PortalSecurity.Instance).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
+            return PortalSecurity.Instance.InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
 
-        #endregion
+        /// <summary>
+        /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
+        /// If DotNetNuke has not been installed, then we should expect to have database connection problems
+        /// since the connection string may not have been configured yet, which can occur during the installation
+        /// wizard.
+        /// </remarks>
+        internal static bool IsInstalled()
+        {
+            const int c_PassingScore = 4;
+            int installationdatefactor = Convert.ToInt32(HasInstallationDate() ? 1 : 0);
+            int dataproviderfactor = Convert.ToInt32(HasDataProviderLogFiles() ? 3 : 0);
+            int htmlmodulefactor = Convert.ToInt32(ModuleDirectoryExists("html") ? 2 : 0);
+            int portaldirectoryfactor = Convert.ToInt32(HasNonDefaultPortalDirectory() ? 2 : 0);
+            int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
 
-        private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
+            // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
+            // While it is possible that you might not have an installation date or that you have deleted log files
+            // it is unlikely that you have removed every trace of an installation and yet still have a working install
+            bool isInstalled = (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
+
+            // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
+            // this value exists, then DNN was previously installed, and we should never try to re-install it
+            return isInstalled || HasInstallVersion();
+        }
+
+        /// <summary>
+        /// Gets the culture code of the tab.
+        /// </summary>
+        /// <param name="TabID">The tab ID.</param>
+        /// <param name="IsSuperTab">if set to <c>true</c> [is super tab].</param>
+        /// <param name="settings">The settings.</param>
+        /// <returns>return the tab's culture code, if ths tab doesn't exist, it will return current culture name.</returns>
+        internal static string GetCultureCode(int TabID, bool IsSuperTab, IPortalSettings settings)
+        {
+            string cultureCode = Null.NullString;
+            if (settings != null)
+            {
+                TabInfo linkTab = TabController.Instance.GetTab(TabID, IsSuperTab ? Null.NullInteger : settings.PortalId, false);
+                if (linkTab != null)
+                {
+                    cultureCode = linkTab.CultureCode;
+                }
+
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    cultureCode = Thread.CurrentThread.CurrentCulture.Name;
+                }
+            }
+
+            return cultureCode;
+        }
 
         internal static void ResetAppStartElapseTime()
         {
             AppStopwatch.Restart();
         }
 
-        public static TimeSpan ElapsedSinceAppStart
+        private static string GetCurrentDomainDirectory()
         {
-            get
+            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
+            if (dir.Length > 3 && dir.EndsWith("\\"))
             {
-                return AppStopwatch.Elapsed;
+                dir = dir.Substring(0, dir.Length - 1);
             }
+
+            return dir;
+        }
+
+        /// <summary>
+        /// Determines whether has data provider log files.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has data provider log files; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasDataProviderLogFiles()
+        {
+            Provider currentdataprovider = Config.GetDefaultProvider("data");
+            string providerpath = currentdataprovider.Attributes["providerPath"];
+
+            // If the provider path does not exist, then there can't be any log files
+            if (!string.IsNullOrEmpty(providerpath))
+            {
+                providerpath = HttpContext.Current.Server.MapPath(providerpath);
+                if (Directory.Exists(providerpath))
+                {
+                    return Directory.GetFiles(providerpath, "*.log.resources").Length > 0;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether has installation date.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasInstallationDate()
+        {
+            return Config.GetSetting("InstallationDate") != null;
+        }
+
+        /// <summary>
+        /// Determines whether has InstallVersion set.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasInstallVersion()
+        {
+            return Config.GetSetting("InstallVersion") != null;
+        }
+
+        /// <summary>
+        /// Check whether the modules directory is exists.
+        /// </summary>
+        /// <param name="moduleName">Name of the module.</param>
+        /// <returns>
+        /// <c>true</c> if the module directory exist, otherwise, <c>false</c>.
+        /// </returns>
+        private static bool ModuleDirectoryExists(string moduleName)
+        {
+            string dir = ApplicationMapPath + "\\desktopmodules\\" + moduleName;
+            return Directory.Exists(dir);
+        }
+
+        /// <summary>
+        /// Determines whether has portal directory except default portal directory in portal path.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has portal directory except default portal directory in portal path; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasNonDefaultPortalDirectory()
+        {
+            string dir = ApplicationMapPath + "\\portals";
+            if (Directory.Exists(dir))
+            {
+                return Directory.GetDirectories(dir).Length > 1;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether current request is for install.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if current request is for install; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsInstallationURL()
+        {
+            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
+            return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
+        }
+
+        private static void DeleteFile(string filePath)
+        {
+            try
+            {
+                FileSystemUtils.DeleteFile(filePath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        private static void DeleteFolder(string strRoot)
+        {
+            try
+            {
+                Directory.Delete(strRoot);
+            }
+            catch (IOException)
+            {
+                // Force Deletion. Directory should be empty
+                try
+                {
+                    Thread.Sleep(50);
+                    Directory.Delete(strRoot, true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Check whether the Filename matches extensions.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <param name="strExtensions">The valid extensions.</param>
+        /// <returns><c>true</c> if the Filename matches extensions, otherwise, <c>false</c>.</returns>
+        private static bool FilenameMatchesExtensions(string filename, string strExtensions)
+        {
+            bool result = string.IsNullOrEmpty(strExtensions);
+            if (!result)
+            {
+                filename = filename.ToUpper();
+                strExtensions = strExtensions.ToUpper();
+                foreach (string extension in strExtensions.Split(','))
+                {
+                    string ext = extension.Trim();
+                    if (!ext.StartsWith("."))
+                    {
+                        ext = "." + extension;
+                    }
+
+                    result = filename.EndsWith(extension);
+                    if (result)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

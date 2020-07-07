@@ -1,37 +1,33 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     public abstract class Help : PortalModuleBase
     {
-        private string MyFileName = "Help.ascx";
-        private string _key;
         protected LinkButton cmdCancel;
         protected HyperLink cmdHelp;
         protected Literal helpFrame;
         protected Label lblHelp;
         protected Label lblInfo;
+        private string MyFileName = "Help.ascx";
+        private string _key;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
@@ -41,16 +37,16 @@ namespace DotNetNuke.UI.UserControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cmdCancel.Click += cmdCancel_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
             int moduleControlId = Null.NullInteger;
 
-            if (Request.QueryString["ctlid"] != null)
+            if (this.Request.QueryString["ctlid"] != null)
             {
-                moduleControlId = Int32.Parse(Request.QueryString["ctlid"]);
+                moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
             }
             else if (Host.EnableModuleOnLineHelp)
             {
-                helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", Host.HelpURL);
+                this.helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", Host.HelpURL);
             }
 
             ModuleControlInfo objModuleControl = ModuleControlController.GetModuleControl(moduleControlId);
@@ -58,34 +54,35 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(objModuleControl.HelpURL) && Host.EnableModuleOnLineHelp)
                 {
-                    helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", objModuleControl.HelpURL); ;
+                    this.helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", objModuleControl.HelpURL);
                 }
                 else
                 {
                     string fileName = Path.GetFileName(objModuleControl.ControlSrc);
                     string localResourceFile = objModuleControl.ControlSrc.Replace(fileName, Localization.LocalResourceDirectory + "/" + fileName);
-                    if (!String.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, localResourceFile)))
+                    if (!string.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, localResourceFile)))
                     {
-                        lblHelp.Text = Localization.GetString(ModuleActionType.HelpText, localResourceFile);
+                        this.lblHelp.Text = Localization.GetString(ModuleActionType.HelpText, localResourceFile);
                     }
                     else
                     {
-                        lblHelp.Text = Localization.GetString("lblHelp.Text", Localization.GetResourceFile(this, MyFileName));
+                        this.lblHelp.Text = Localization.GetString("lblHelp.Text", Localization.GetResourceFile(this, this.MyFileName));
                     }
                 }
 
-                _key = objModuleControl.ControlKey;
-                //display module info to Host users
-                if (UserInfo.IsSuperUser)
+                this._key = objModuleControl.ControlKey;
+
+                // display module info to Host users
+                if (this.UserInfo.IsSuperUser)
                 {
-                    string strInfo = Localization.GetString("lblInfo.Text", Localization.GetResourceFile(this, MyFileName));
+                    string strInfo = Localization.GetString("lblInfo.Text", Localization.GetResourceFile(this, this.MyFileName));
                     strInfo = strInfo.Replace("[CONTROL]", objModuleControl.ControlKey);
                     strInfo = strInfo.Replace("[SRC]", objModuleControl.ControlSrc);
                     ModuleDefinitionInfo objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
                     if (objModuleDefinition != null)
                     {
                         strInfo = strInfo.Replace("[DEFINITION]", objModuleDefinition.FriendlyName);
-                        DesktopModuleInfo objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
+                        DesktopModuleInfo objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, this.PortalId);
                         if (objDesktopModule != null)
                         {
                             PackageInfo objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == objDesktopModule.PackageID);
@@ -100,37 +97,39 @@ namespace DotNetNuke.UI.UserControls
                             }
                         }
                     }
-                    lblInfo.Text = Server.HtmlDecode(strInfo);
+
+                    this.lblInfo.Text = this.Server.HtmlDecode(strInfo);
                 }
 
-                cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
+                this.cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
             }
-            if (Page.IsPostBack == false)
+
+            if (this.Page.IsPostBack == false)
             {
-                if (Request.UrlReferrer != null)
+                if (this.Request.UrlReferrer != null)
                 {
-                    ViewState["UrlReferrer"] = Convert.ToString(Request.UrlReferrer);
+                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
                 }
                 else
                 {
-                    ViewState["UrlReferrer"] = "";
+                    this.ViewState["UrlReferrer"] = string.Empty;
                 }
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdCancel_Click runs when the cancel Button is clicked
+        /// cmdCancel_Click runs when the cancel Button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        protected void cmdCancel_Click(Object sender, EventArgs e)
+        protected void cmdCancel_Click(object sender, EventArgs e)
         {
             try
             {
-                Response.Redirect(Convert.ToString(ViewState["UrlReferrer"]), true);
+                this.Response.Redirect(Convert.ToString(this.ViewState["UrlReferrer"]), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -1,47 +1,46 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Tokens;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+
     [XmlRoot("tab", IsNullable = false)]
     [Serializable]
     public class TabInfo : ContentItem, IPropertyAccess
     {
-        #region Private Members
+        private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
+        private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
+        private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+        private readonly SharedDictionary<string, string> _localizedTabNameDictionary;
+        private readonly SharedDictionary<string, string> _fullUrlDictionary;
 
         private string _administratorRoles;
         private string _authorizedRoles;
@@ -52,8 +51,6 @@ namespace DotNetNuke.Entities.Tabs
         private Hashtable _settings;
         private string _skinDoctype;
         private bool _superTabIdSet = Null.NullBoolean;
-        private readonly SharedDictionary<string, string> _localizedTabNameDictionary;
-        private readonly SharedDictionary<string, string> _fullUrlDictionary;
         private string _iconFile;
         private string _iconFileLarge;
 
@@ -62,63 +59,329 @@ namespace DotNetNuke.Entities.Tabs
         private List<TabUrlInfo> _tabUrls;
         private ArrayList _modules;
 
-
-        #endregion
-
-        #region Constructors
-
         public TabInfo()
             : this(new SharedDictionary<string, string>(), new SharedDictionary<string, string>())
         {
-
         }
-
 
         private TabInfo(SharedDictionary<string, string> localizedTabNameDictionary, SharedDictionary<string, string> fullUrlDictionary)
         {
-            _localizedTabNameDictionary = localizedTabNameDictionary;
-            _fullUrlDictionary = fullUrlDictionary;
+            this._localizedTabNameDictionary = localizedTabNameDictionary;
+            this._fullUrlDictionary = fullUrlDictionary;
 
-            PortalID = Null.NullInteger;
-            _authorizedRoles = Null.NullString;
-            ParentId = Null.NullInteger;
-            IconFile = Null.NullString;
-            IconFileLarge = Null.NullString;
-            _administratorRoles = Null.NullString;
-            Title = Null.NullString;
-            Description = Null.NullString;
-            KeyWords = Null.NullString;
-            Url = Null.NullString;
-            SkinSrc = Null.NullString;
-            _skinDoctype = Null.NullString;
-            ContainerSrc = Null.NullString;
-            TabPath = Null.NullString;
-            StartDate = Null.NullDate;
-            EndDate = Null.NullDate;
-            RefreshInterval = Null.NullInteger;
-            PageHeadText = Null.NullString;
-            SiteMapPriority = 0.5F;
+            this.PortalID = Null.NullInteger;
+            this._authorizedRoles = Null.NullString;
+            this.ParentId = Null.NullInteger;
+            this.IconFile = Null.NullString;
+            this.IconFileLarge = Null.NullString;
+            this._administratorRoles = Null.NullString;
+            this.Title = Null.NullString;
+            this.Description = Null.NullString;
+            this.KeyWords = Null.NullString;
+            this.Url = Null.NullString;
+            this.SkinSrc = Null.NullString;
+            this._skinDoctype = Null.NullString;
+            this.ContainerSrc = Null.NullString;
+            this.TabPath = Null.NullString;
+            this.StartDate = Null.NullDate;
+            this.EndDate = Null.NullDate;
+            this.RefreshInterval = Null.NullInteger;
+            this.PageHeadText = Null.NullString;
+            this.SiteMapPriority = 0.5F;
 
-            //UniqueId, Version Guid, and Localized Version Guid should be initialised to a new value
-            UniqueId = Guid.NewGuid();
-            VersionGuid = Guid.NewGuid();
-            LocalizedVersionGuid = Guid.NewGuid();
+            // UniqueId, Version Guid, and Localized Version Guid should be initialised to a new value
+            this.UniqueId = Guid.NewGuid();
+            this.VersionGuid = Guid.NewGuid();
+            this.LocalizedVersionGuid = Guid.NewGuid();
 
-            //Default Language Guid should be initialised to a null Guid
-            DefaultLanguageGuid = Null.NullGuid;
+            // Default Language Guid should be initialised to a null Guid
+            this.DefaultLanguageGuid = Null.NullGuid;
 
-            IsVisible = true;
-            HasBeenPublished = true;
-            DisableLink = false;
+            this.IsVisible = true;
+            this.HasBeenPublished = true;
+            this.DisableLink = false;
 
-            Panes = new ArrayList();
+            this.Panes = new ArrayList();
 
-            IsSystem = false;
+            this.IsSystem = false;
         }
 
-        #endregion
+        [XmlIgnore]
+        public bool HasAVisibleVersion
+        {
+            get
+            {
+                return this.HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
+            }
+        }
 
-        #region Auto-Properties
+        [XmlIgnore]
+        public Dictionary<int, ModuleInfo> ChildModules
+        {
+            get
+            {
+                return ModuleController.Instance.GetTabModules(this.TabID);
+            }
+        }
+
+        [XmlIgnore]
+        public TabInfo DefaultLanguageTab
+        {
+            get
+            {
+                if (this._defaultLanguageTab == null && (!this.DefaultLanguageGuid.Equals(Null.NullGuid)))
+                {
+                    this._defaultLanguageTab = (from kvp in TabController.Instance.GetTabsByPortal(this.PortalID) where kvp.Value.UniqueId == this.DefaultLanguageGuid select kvp.Value).SingleOrDefault();
+                }
+
+                return this._defaultLanguageTab;
+            }
+        }
+
+        [XmlIgnore]
+        public bool DoNotRedirect
+        {
+            get
+            {
+                bool doNotRedirect;
+                if (this.TabSettings.ContainsKey("DoNotRedirect") && !string.IsNullOrEmpty(this.TabSettings["DoNotRedirect"].ToString()))
+                {
+                    doNotRedirect = bool.Parse(this.TabSettings["DoNotRedirect"].ToString());
+                }
+                else
+                {
+                    doNotRedirect = false;
+                }
+
+                return doNotRedirect;
+            }
+        }
+
+        [XmlIgnore]
+        public string IndentedTabName
+        {
+            get
+            {
+                string indentedTabName = Null.NullString;
+                for (int intCounter = 1; intCounter <= this.Level; intCounter++)
+                {
+                    indentedTabName += "...";
+                }
+
+                indentedTabName += this.LocalizedTabName;
+                return indentedTabName;
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsDefaultLanguage
+        {
+            get
+            {
+                return this.DefaultLanguageGuid == Null.NullGuid;
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsNeutralCulture
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.CultureCode);
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsTranslated
+        {
+            get
+            {
+                bool isTranslated = true;
+                if (this.DefaultLanguageTab != null)
+                {
+                    // Child language
+                    isTranslated = this.LocalizedVersionGuid == this.DefaultLanguageTab.LocalizedVersionGuid;
+                }
+
+                return isTranslated;
+            }
+        }
+
+        [XmlIgnore]
+        public string LocalizedTabName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.TabPath))
+                {
+                    return this.TabName;
+                }
+
+                var key = Thread.CurrentThread.CurrentUICulture.ToString();
+                string localizedTabName;
+                using (this._localizedTabNameDictionary.GetReadLock())
+                {
+                    this._localizedTabNameDictionary.TryGetValue(key, out localizedTabName);
+                }
+
+                if (string.IsNullOrEmpty(localizedTabName))
+                {
+                    using (this._localizedTabNameDictionary.GetWriteLock())
+                    {
+                        localizedTabName = Localization.GetString(this.TabPath + ".String", Localization.GlobalResourceFile, true);
+                        if (string.IsNullOrEmpty(localizedTabName))
+                        {
+                            localizedTabName = this.TabName;
+                        }
+
+                        if (!this._localizedTabNameDictionary.ContainsKey(key))
+                        {
+                            this._localizedTabNameDictionary.Add(key, localizedTabName.Trim());
+                        }
+                    }
+                }
+
+                return localizedTabName;
+            }
+        }
+
+        [XmlIgnore]
+        public Dictionary<string, TabInfo> LocalizedTabs
+        {
+            get
+            {
+                if (this._localizedTabs == null)
+                {
+                    this._localizedTabs =
+                        (from kvp in TabController.Instance.GetTabsByPortal(this.PortalID)
+                         where kvp.Value.DefaultLanguageGuid == this.UniqueId && LocaleController.Instance.GetLocale(this.PortalID, kvp.Value.CultureCode) != null
+                         select kvp.Value).ToDictionary(t => t.CultureCode);
+                }
+
+                return this._localizedTabs;
+            }
+        }
+
+        [XmlArray("tabpermissions")]
+        [XmlArrayItem("permission")]
+        public TabPermissionCollection TabPermissions
+        {
+            get
+            {
+                return this._permissions ?? (this._permissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalID)));
+            }
+        }
+
+        [XmlIgnore]
+        public Hashtable TabSettings
+        {
+            get
+            {
+                return this._settings ?? (this._settings = (this.TabID == Null.NullInteger) ? new Hashtable() : TabController.Instance.GetTabSettings(this.TabID));
+            }
+        }
+
+        [XmlIgnore]
+        public TabType TabType
+        {
+            get
+            {
+                return Globals.GetURLType(this.Url);
+            }
+        }
+
+        [XmlIgnore]
+        public List<TabAliasSkinInfo> AliasSkins
+        {
+            get
+            {
+                return this._aliasSkins ?? (this._aliasSkins = (this.TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TabController.Instance.GetAliasSkins(this.TabID, this.PortalID));
+            }
+        }
+
+        [XmlIgnore]
+        public Dictionary<string, string> CustomAliases
+        {
+            get
+            {
+                return this._customAliases ?? (this._customAliases = (this.TabID == Null.NullInteger) ? new Dictionary<string, string>() : TabController.Instance.GetCustomAliases(this.TabID, this.PortalID));
+            }
+        }
+
+        [XmlIgnore]
+        public string FullUrl
+        {
+            get
+            {
+                var key = string.Format("{0}_{1}", TestableGlobals.Instance.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias),
+                                            Thread.CurrentThread.CurrentCulture);
+
+                string fullUrl;
+                using (this._fullUrlDictionary.GetReadLock())
+                {
+                    this._fullUrlDictionary.TryGetValue(key, out fullUrl);
+                }
+
+                if (string.IsNullOrEmpty(fullUrl))
+                {
+                    using (this._fullUrlDictionary.GetWriteLock())
+                    {
+                        switch (this.TabType)
+                        {
+                            case TabType.Normal:
+                                // normal tab
+                                fullUrl = TestableGlobals.Instance.NavigateURL(this.TabID, this.IsSuperTab);
+                                break;
+                            case TabType.Tab:
+                                // alternate tab url
+                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(this.Url));
+                                break;
+                            case TabType.File:
+                                // file url
+                                fullUrl = TestableGlobals.Instance.LinkClick(this.Url, this.TabID, Null.NullInteger);
+                                break;
+                            case TabType.Url:
+                                // external url
+                                fullUrl = this.Url;
+                                break;
+                        }
+
+                        if (!this._fullUrlDictionary.ContainsKey(key))
+                        {
+                            if (fullUrl != null)
+                            {
+                                this._fullUrlDictionary.Add(key, fullUrl.Trim());
+                            }
+                        }
+                    }
+                }
+
+                return fullUrl;
+            }
+        }
+
+        [XmlIgnore]
+        public bool TabPermissionsSpecified
+        {
+            get { return false; }
+        }
+
+        [XmlIgnore]
+        public List<TabUrlInfo> TabUrls
+        {
+            get
+            {
+                return this._tabUrls ?? (this._tabUrls = (this.TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TabController.Instance.GetTabUrls(this.TabID, this.PortalID));
+            }
+        }
+
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
 
         [XmlIgnore]
         public ArrayList BreadCrumbs { get; set; }
@@ -168,14 +431,6 @@ namespace DotNetNuke.Entities.Tabs
         [XmlIgnore]
         public bool HasBeenPublished { get; set; }
 
-        [XmlIgnore]
-        public bool HasAVisibleVersion {
-            get
-            {
-			    return HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
-            }
-        }
-
         [XmlElement("keywords")]
         public string KeyWords { get; set; }
 
@@ -186,16 +441,17 @@ namespace DotNetNuke.Entities.Tabs
         public Guid LocalizedVersionGuid { get; set; }
 
         [XmlIgnore]
-        public ArrayList Modules 
+        public ArrayList Modules
         {
             get
             {
-                return _modules ?? (_modules = TabModulesController.Instance.GetTabModules(this));
+                return this._modules ?? (this._modules = TabModulesController.Instance.GetTabModules(this));
             }
+
             set
             {
-                _modules = value;
-            } 
+                this._modules = value;
+            }
         }
 
         [XmlElement("pageheadtext")]
@@ -246,63 +502,19 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("versionguid")]
         public Guid VersionGuid { get; set; }
 
-        #endregion
-
-        #region Public Properties
-
-        [XmlIgnore]
-        public Dictionary<int, ModuleInfo> ChildModules
-        {
-            get
-            {
-                return ModuleController.Instance.GetTabModules(TabID);
-            }
-        }
-
-        [XmlIgnore]
-        public TabInfo DefaultLanguageTab
-        {
-            get
-            {
-                if (_defaultLanguageTab == null && (!DefaultLanguageGuid.Equals(Null.NullGuid)))
-                {
-                    _defaultLanguageTab = (from kvp in TabController.Instance.GetTabsByPortal(PortalID) where kvp.Value.UniqueId == DefaultLanguageGuid select kvp.Value).SingleOrDefault();
-                }
-                return _defaultLanguageTab;
-            }
-        }
-
-        [XmlIgnore]
-        public bool DoNotRedirect
-        {
-            get
-            {
-                bool doNotRedirect;
-                if (TabSettings.ContainsKey("DoNotRedirect") && !string.IsNullOrEmpty(TabSettings["DoNotRedirect"].ToString()))
-                {
-                    doNotRedirect = bool.Parse(TabSettings["DoNotRedirect"].ToString());
-                }
-                else
-                {
-                    doNotRedirect = false;
-                }
-                return doNotRedirect;
-            }
-        }
-
         [XmlElement("iconfile")]
         public string IconFile
         {
             get
             {
-                IconFileGetter(ref _iconFile, IconFileRaw);
-                return _iconFile;
+                this.IconFileGetter(ref this._iconFile, this.IconFileRaw);
+                return this._iconFile;
             }
 
             set
             {
-                IconFileRaw = value;
-                _iconFile = null;
+                this.IconFileRaw = value;
+                this._iconFile = null;
             }
         }
 
@@ -311,47 +523,14 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                IconFileGetter(ref _iconFileLarge, IconFileLargeRaw);
-                return _iconFileLarge;
+                this.IconFileGetter(ref this._iconFileLarge, this.IconFileLargeRaw);
+                return this._iconFileLarge;
             }
 
             set
             {
-                IconFileLargeRaw = value;
-                _iconFileLarge = null;
-            }
-        }
-
-        [XmlIgnore]
-        public string IndentedTabName
-        {
-            get
-            {
-                string indentedTabName = Null.NullString;
-                for (int intCounter = 1; intCounter <= Level; intCounter++)
-                {
-                    indentedTabName += "...";
-                }
-                indentedTabName += LocalizedTabName;
-                return indentedTabName;
-            }
-        }
-
-        [XmlIgnore]
-        public bool IsDefaultLanguage
-        {
-            get
-            {
-                return (DefaultLanguageGuid == Null.NullGuid);
-            }
-        }
-
-        [XmlIgnore]
-        public bool IsNeutralCulture
-        {
-            get
-            {
-                return string.IsNullOrEmpty(CultureCode);
+                this.IconFileLargeRaw = value;
+                this._iconFileLarge = null;
             }
         }
 
@@ -360,31 +539,18 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                if (_superTabIdSet)
+                if (this._superTabIdSet)
                 {
-                    return _isSuperTab;
+                    return this._isSuperTab;
                 }
-                return (PortalID == Null.NullInteger);
+
+                return this.PortalID == Null.NullInteger;
             }
+
             set
             {
-                _isSuperTab = value;
-                _superTabIdSet = true;
-            }
-        }
-
-        [XmlIgnore]
-        public bool IsTranslated
-        {
-            get
-            {
-                bool isTranslated = true;
-                if (DefaultLanguageTab != null)
-                {
-                    //Child language
-                    isTranslated = (LocalizedVersionGuid == DefaultLanguageTab.LocalizedVersionGuid);
-                }
-                return isTranslated;
+                this._isSuperTab = value;
+                this._superTabIdSet = true;
             }
         }
 
@@ -393,62 +559,12 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return TabID;
+                return this.TabID;
             }
+
             set
             {
-                TabID = value;
-            }
-        }
-
-        [XmlIgnore]
-        public string LocalizedTabName
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(TabPath)) return TabName;
-
-                var key = Thread.CurrentThread.CurrentUICulture.ToString();
-                string localizedTabName;
-                using (_localizedTabNameDictionary.GetReadLock())
-                {
-                    _localizedTabNameDictionary.TryGetValue(key, out localizedTabName);
-                }
-
-                if (String.IsNullOrEmpty(localizedTabName))
-                {
-                    using (_localizedTabNameDictionary.GetWriteLock())
-                    {
-                        localizedTabName = Localization.GetString(TabPath + ".String", Localization.GlobalResourceFile, true);
-                        if (string.IsNullOrEmpty(localizedTabName))
-                        {
-                            localizedTabName = TabName;
-                        }
-
-                        if (!_localizedTabNameDictionary.ContainsKey(key))
-                        {
-                            _localizedTabNameDictionary.Add(key, localizedTabName.Trim());
-                        }
-                    }
-                }
-
-                return localizedTabName;
-            }
-        }
-
-        [XmlIgnore]
-        public Dictionary<string, TabInfo> LocalizedTabs
-        {
-            get
-            {
-                if (_localizedTabs == null)
-                {
-                    _localizedTabs =
-                        (from kvp in TabController.Instance.GetTabsByPortal(PortalID)
-                         where kvp.Value.DefaultLanguageGuid == UniqueId && LocaleController.Instance.GetLocale(PortalID, kvp.Value.CultureCode) != null
-                         select kvp.Value).ToDictionary(t => t.CultureCode);
-                }
-                return _localizedTabs;
+                this.TabID = value;
             }
         }
 
@@ -457,135 +573,21 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                if (string.IsNullOrEmpty(SkinSrc) == false && string.IsNullOrEmpty(_skinDoctype))
+                if (string.IsNullOrEmpty(this.SkinSrc) == false && string.IsNullOrEmpty(this._skinDoctype))
                 {
-                    _skinDoctype = CheckIfDoctypeConfigExists();
-                    if (string.IsNullOrEmpty(_skinDoctype))
+                    this._skinDoctype = this.CheckIfDoctypeConfigExists();
+                    if (string.IsNullOrEmpty(this._skinDoctype))
                     {
-                        _skinDoctype = Host.Host.DefaultDocType;
+                        this._skinDoctype = Host.Host.DefaultDocType;
                     }
                 }
-                return _skinDoctype;
+
+                return this._skinDoctype;
             }
+
             set
             {
-                _skinDoctype = value;
-            }
-        }
-
-        [XmlArray("tabpermissions"), XmlArrayItem("permission")]
-        public TabPermissionCollection TabPermissions
-        {
-            get
-            {
-                return _permissions ?? (_permissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(TabID, PortalID)));
-            }
-        }
-
-        [XmlIgnore]
-        public Hashtable TabSettings
-        {
-            get
-            {
-                return _settings ?? (_settings = (TabID == Null.NullInteger) ? new Hashtable() : TabController.Instance.GetTabSettings(TabID));
-            }
-        }
-
-        [XmlIgnore]
-        public TabType TabType
-        {
-            get
-            {
-                return Globals.GetURLType(Url);
-            }
-        }
-
-        #endregion
-
-        #region Url Properties
-
-        [XmlIgnore]
-        public List<TabAliasSkinInfo> AliasSkins
-        {
-            get
-            {
-                return _aliasSkins ?? (_aliasSkins = (TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TabController.Instance.GetAliasSkins(TabID, PortalID));
-            }
-        }
-
-        [XmlIgnore]
-        public Dictionary<string, string> CustomAliases
-        {
-            get
-            {
-                return _customAliases ?? (_customAliases = (TabID == Null.NullInteger) ? new Dictionary<string, string>() : TabController.Instance.GetCustomAliases(TabID, PortalID));
-            }
-        }
-
-        [XmlIgnore]
-        public string FullUrl
-        {
-            get
-            {
-                var key = string.Format("{0}_{1}", TestableGlobals.Instance.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias),
-                                            Thread.CurrentThread.CurrentCulture);
-
-                string fullUrl;
-                using (_fullUrlDictionary.GetReadLock())
-                {
-                    _fullUrlDictionary.TryGetValue(key, out fullUrl);
-                }
-
-                if (String.IsNullOrEmpty(fullUrl))
-                {
-                    using (_fullUrlDictionary.GetWriteLock())
-                    {
-                        switch (TabType)
-                        {
-                            case TabType.Normal:
-                                //normal tab
-                                fullUrl = TestableGlobals.Instance.NavigateURL(TabID, IsSuperTab);
-                                break;
-                            case TabType.Tab:
-                                //alternate tab url
-                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(Url));
-                                break;
-                            case TabType.File:
-                                //file url
-                                fullUrl = TestableGlobals.Instance.LinkClick(Url, TabID, Null.NullInteger);
-                                break;
-                            case TabType.Url:
-                                //external url
-                                fullUrl = Url;
-                                break;
-                        }
-
-                        if (!_fullUrlDictionary.ContainsKey(key))
-                        {
-                            if (fullUrl != null)
-                            {
-                                _fullUrlDictionary.Add(key, fullUrl.Trim());
-                            }
-                        }
-                    }
-                }
-
-                return fullUrl;
-            }
-        }
-
-        [XmlIgnore]
-        public bool TabPermissionsSpecified
-        {
-            get { return false; }
-        }
-
-        [XmlIgnore]
-        public List<TabUrlInfo> TabUrls
-        {
-            get
-            {
-                return _tabUrls ?? (_tabUrls = (TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TabController.Instance.GetTabUrls(TabID, PortalID));
+                this._skinDoctype = value;
             }
         }
 
@@ -594,10 +596,6 @@ namespace DotNetNuke.Entities.Tabs
 
         [XmlIgnore]
         public bool UseBaseFriendlyUrls { get; set; }
-
-        #endregion
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -613,6 +611,7 @@ namespace DotNetNuke.Entities.Tabs
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
 
             string result = string.Empty;
@@ -621,161 +620,284 @@ namespace DotNetNuke.Entities.Tabs
             {
                 case "tabid":
                     propertyNotFound = false;
-                    result = (TabID.ToString(outputFormat, formatProvider));
+                    result = this.TabID.ToString(outputFormat, formatProvider);
                     break;
                 case "taborder":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (TabOrder.ToString(outputFormat, formatProvider));
+                    result = this.TabOrder.ToString(outputFormat, formatProvider);
                     break;
                 case "portalid":
                     propertyNotFound = false;
-                    result = (PortalID.ToString(outputFormat, formatProvider));
+                    result = this.PortalID.ToString(outputFormat, formatProvider);
                     break;
                 case "tabname":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(LocalizedTabName, format);
+                    result = PropertyAccess.FormatString(this.LocalizedTabName, format);
                     break;
                 case "isvisible":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(IsVisible, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsVisible, formatProvider);
                     break;
                 case "parentid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (ParentId.ToString(outputFormat, formatProvider));
+                    result = this.ParentId.ToString(outputFormat, formatProvider);
                     break;
                 case "level":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (Level.ToString(outputFormat, formatProvider));
+                    result = this.Level.ToString(outputFormat, formatProvider);
                     break;
                 case "iconfile":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(IconFile, format);
+                    result = PropertyAccess.FormatString(this.IconFile, format);
                     break;
                 case "iconfilelarge":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(IconFileLarge, format);
+                    result = PropertyAccess.FormatString(this.IconFileLarge, format);
                     break;
                 case "disablelink":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(DisableLink, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisableLink, formatProvider);
                     break;
                 case "title":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(Title, format);
+                    result = PropertyAccess.FormatString(this.Title, format);
                     break;
                 case "description":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(Description, format);
+                    result = PropertyAccess.FormatString(this.Description, format);
                     break;
                 case "keywords":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(KeyWords, format);
+                    result = PropertyAccess.FormatString(this.KeyWords, format);
                     break;
                 case "isdeleted":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(IsDeleted, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider);
                     break;
                 case "url":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(Url, format);
+                    result = PropertyAccess.FormatString(this.Url, format);
                     break;
                 case "skinsrc":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(SkinSrc, format);
+                    result = PropertyAccess.FormatString(this.SkinSrc, format);
                     break;
                 case "containersrc":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(ContainerSrc, format);
+                    result = PropertyAccess.FormatString(this.ContainerSrc, format);
                     break;
                 case "tabpath":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(TabPath, format);
+                    result = PropertyAccess.FormatString(this.TabPath, format);
                     break;
                 case "startdate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (StartDate.ToString(outputFormat, formatProvider));
+                    result = this.StartDate.ToString(outputFormat, formatProvider);
                     break;
                 case "enddate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (EndDate.ToString(outputFormat, formatProvider));
+                    result = this.EndDate.ToString(outputFormat, formatProvider);
                     break;
                 case "haschildren":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(HasChildren, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.HasChildren, formatProvider);
                     break;
                 case "refreshinterval":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (RefreshInterval.ToString(outputFormat, formatProvider));
+                    result = this.RefreshInterval.ToString(outputFormat, formatProvider);
                     break;
                 case "pageheadtext":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(PageHeadText, format);
+                    result = PropertyAccess.FormatString(this.PageHeadText, format);
                     break;
                 case "skinpath":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(SkinPath, format);
+                    result = PropertyAccess.FormatString(this.SkinPath, format);
                     break;
                 case "skindoctype":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(SkinDoctype, format);
+                    result = PropertyAccess.FormatString(this.SkinDoctype, format);
                     break;
                 case "containerpath":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(ContainerPath, format);
+                    result = PropertyAccess.FormatString(this.ContainerPath, format);
                     break;
                 case "issupertab":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(IsSuperTab, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsSuperTab, formatProvider);
                     break;
                 case "fullurl":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(FullUrl, format);
+                    result = PropertyAccess.FormatString(this.FullUrl, format);
                     break;
                 case "sitemappriority":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(SiteMapPriority.ToString(), format);
+                    result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(), format);
                     break;
             }
+
             if (!isPublic && currentScope != Scope.Debug)
             {
                 propertyNotFound = true;
                 result = PropertyAccess.ContentLocked;
             }
+
             return result;
         }
 
-        public CacheLevel Cacheability
+        public TabInfo Clone()
         {
-            get
+            var clonedTab = new TabInfo(this._localizedTabNameDictionary, this._fullUrlDictionary)
             {
-                return CacheLevel.fullyCacheable;
+                TabID = this.TabID,
+                TabOrder = this.TabOrder,
+                PortalID = this.PortalID,
+                TabName = this.TabName,
+                IsVisible = this.IsVisible,
+                HasBeenPublished = this.HasBeenPublished,
+                ParentId = this.ParentId,
+                Level = this.Level,
+                IconFile = this.IconFileRaw,
+                IconFileLarge = this.IconFileLargeRaw,
+                DisableLink = this.DisableLink,
+                Title = this.Title,
+                Description = this.Description,
+                KeyWords = this.KeyWords,
+                IsDeleted = this.IsDeleted,
+                Url = this.Url,
+                SkinSrc = this.SkinSrc,
+                ContainerSrc = this.ContainerSrc,
+                TabPath = this.TabPath,
+                StartDate = this.StartDate,
+                EndDate = this.EndDate,
+                HasChildren = this.HasChildren,
+                SkinPath = this.SkinPath,
+                ContainerPath = this.ContainerPath,
+                IsSuperTab = this.IsSuperTab,
+                RefreshInterval = this.RefreshInterval,
+                PageHeadText = this.PageHeadText,
+                IsSecure = this.IsSecure,
+                PermanentRedirect = this.PermanentRedirect,
+                IsSystem = this.IsSystem,
+            };
+
+            if (this.BreadCrumbs != null)
+            {
+                clonedTab.BreadCrumbs = new ArrayList();
+                foreach (TabInfo t in this.BreadCrumbs)
+                {
+                    clonedTab.BreadCrumbs.Add(t.Clone());
+                }
             }
+
+            this.Clone(clonedTab, this);
+
+            // localized properties
+            clonedTab.UniqueId = this.UniqueId;
+            clonedTab.VersionGuid = this.VersionGuid;
+            clonedTab.DefaultLanguageGuid = this.DefaultLanguageGuid;
+            clonedTab.LocalizedVersionGuid = this.LocalizedVersionGuid;
+            clonedTab.CultureCode = this.CultureCode;
+
+            clonedTab.Panes = new ArrayList();
+            clonedTab.Modules = this._modules;
+
+            return clonedTab;
         }
 
-        #endregion
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a TabInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public override void Fill(IDataReader dr)
+        {
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
+            this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
+            this.VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
+            this.DefaultLanguageGuid = Null.SetNullGuid(dr["DefaultLanguageGuid"]);
+            this.LocalizedVersionGuid = Null.SetNullGuid(dr["LocalizedVersionGuid"]);
+            this.CultureCode = Null.SetNullString(dr["CultureCode"]);
 
-        #region Private Methods
+            this.TabOrder = Null.SetNullInteger(dr["TabOrder"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.TabName = Null.SetNullString(dr["TabName"]);
+            this.IsVisible = Null.SetNullBoolean(dr["IsVisible"]);
+            this.HasBeenPublished = Null.SetNullBoolean(dr["HasBeenPublished"]);
+            this.ParentId = Null.SetNullInteger(dr["ParentId"]);
+            this.Level = Null.SetNullInteger(dr["Level"]);
+            this.IconFile = Null.SetNullString(dr["IconFile"]);
+            this.IconFileLarge = Null.SetNullString(dr["IconFileLarge"]);
+            this.DisableLink = Null.SetNullBoolean(dr["DisableLink"]);
+            this.Title = Null.SetNullString(dr["Title"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.KeyWords = Null.SetNullString(dr["KeyWords"]);
+            this.IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
+            this.Url = Null.SetNullString(dr["Url"]);
+            this.SkinSrc = Null.SetNullString(dr["SkinSrc"]);
+            this.ContainerSrc = Null.SetNullString(dr["ContainerSrc"]);
+            this.TabPath = Null.SetNullString(dr["TabPath"]);
+            this.StartDate = Null.SetNullDateTime(dr["StartDate"]);
+            this.EndDate = Null.SetNullDateTime(dr["EndDate"]);
+            this.HasChildren = Null.SetNullBoolean(dr["HasChildren"]);
+            this.RefreshInterval = Null.SetNullInteger(dr["RefreshInterval"]);
+            this.PageHeadText = Null.SetNullString(dr["PageHeadText"]);
+            this.IsSecure = Null.SetNullBoolean(dr["IsSecure"]);
+            this.PermanentRedirect = Null.SetNullBoolean(dr["PermanentRedirect"]);
+            this.SiteMapPriority = Null.SetNullSingle(dr["SiteMapPriority"]);
+            this.BreadCrumbs = null;
+            this.Modules = null;
+            this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
+        }
 
-        private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
-        private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
-        private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
+        public string GetCurrentUrl(string cultureCode)
+        {
+            string url = null;
+            if (this._tabUrls != null && this._tabUrls.Count > 0)
+            {
+                TabUrlInfo tabUrl = this._tabUrls.CurrentUrl(cultureCode);
+                if (tabUrl != null)
+                {
+                    url = tabUrl.Url;
+                }
+            }
+
+            return url ?? string.Empty;
+        }
+
+        public string GetTags()
+        {
+            return string.Join(",", this.Terms.Select(t => t.Name));
+        }
+
+        internal void ClearTabUrls()
+        {
+            this._tabUrls = null;
+        }
+
+        internal void ClearSettingsCache()
+        {
+            this._settings = null;
+        }
 
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
@@ -785,48 +907,58 @@ namespace DotNetNuke.Entities.Tabs
         /// <remarks></remarks>
         private string CheckIfDoctypeConfigExists()
         {
-            if (string.IsNullOrEmpty(SkinSrc))
+            if (string.IsNullOrEmpty(this.SkinSrc))
+            {
                 return string.Empty;
+            }
 
             // loading an XML document from disk for each page request is expensive
             // let's implement some local caching
-            if (!_docTypeCache.ContainsKey(SkinSrc)) {
+            if (!_docTypeCache.ContainsKey(this.SkinSrc))
+            {
                 // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
                 _docTypeCacheLock.EnterWriteLock();
-                try {
-
-                    var docType = LoadDocType();
-                    _docTypeCache[SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
-
-                } catch (Exception ex) {
+                try
+                {
+                    var docType = this.LoadDocType();
+                    _docTypeCache[this.SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
+                }
+                catch (Exception ex)
+                {
                     Exceptions.LogException(ex);
-                } finally {
+                }
+                finally
+                {
                     _docTypeCacheLock.ExitWriteLock();
                 }
             }
 
             // return if file exists from cache
             _docTypeCacheLock.EnterReadLock();
-            try {
-                return _docTypeCache[SkinSrc];
-            } finally {
+            try
+            {
+                return _docTypeCache[this.SkinSrc];
+            }
+            finally
+            {
                 _docTypeCacheLock.ExitReadLock();
             }
         }
 
-        XmlDocument LoadDocType()
+        private XmlDocument LoadDocType()
         {
             var xmlSkinDocType = new XmlDocument { XmlResolver = null };
 
             // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-            var skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
-            if (File.Exists(skinFileName)) {
+            var skinFileName = HttpContext.Current.Server.MapPath(this.SkinSrc.Replace(".ascx", ".doctype.xml"));
+            if (File.Exists(skinFileName))
+            {
                 xmlSkinDocType.Load(skinFileName);
                 return xmlSkinDocType;
             }
 
             // use the skin.doctype.xml file
-            var packageFileName = HttpContext.Current.Server.MapPath(SkinSrcRegex.Replace(SkinSrc, "skin.doctype.xml"));
+            var packageFileName = HttpContext.Current.Server.MapPath(SkinSrcRegex.Replace(this.SkinSrc, "skin.doctype.xml"));
             if (File.Exists(packageFileName))
             {
                 xmlSkinDocType.Load(packageFileName);
@@ -839,11 +971,11 @@ namespace DotNetNuke.Entities.Tabs
 
         private void IconFileGetter(ref string iconFile, string iconRaw)
         {
-            if ((!String.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || PortalID == Null.NullInteger)
+            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
             {
                 iconFile = iconRaw;
             }
-            else if (iconFile == null && !String.IsNullOrEmpty(iconRaw) && PortalID != Null.NullInteger)
+            else if (iconFile == null && !string.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
             {
                 IFileInfo fileInfo;
                 if (iconRaw.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))
@@ -853,157 +985,11 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 else
                 {
-                    fileInfo = FileManager.Instance.GetFile(PortalID, iconRaw);
+                    fileInfo = FileManager.Instance.GetFile(this.PortalID, iconRaw);
                 }
 
                 iconFile = fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconRaw;
             }
         }
-
-        #endregion
-
-        #region Internal Methods
-
-        internal void ClearTabUrls()
-        {
-            _tabUrls = null;
-        }
-
-        internal void ClearSettingsCache()
-        {
-            _settings = null;
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        public TabInfo Clone()
-        {
-            var clonedTab = new TabInfo(_localizedTabNameDictionary, _fullUrlDictionary)
-            {
-                TabID = TabID,
-                TabOrder = TabOrder,
-                PortalID = PortalID,
-                TabName = TabName,
-                IsVisible = IsVisible,
-                HasBeenPublished = HasBeenPublished,
-                ParentId = ParentId,
-                Level = Level,
-                IconFile = IconFileRaw,
-                IconFileLarge = IconFileLargeRaw,
-                DisableLink = DisableLink,
-                Title = Title,
-                Description = Description,
-                KeyWords = KeyWords,
-                IsDeleted = IsDeleted,
-                Url = Url,
-                SkinSrc = SkinSrc,
-                ContainerSrc = ContainerSrc,
-                TabPath = TabPath,
-                StartDate = StartDate,
-                EndDate = EndDate,
-                HasChildren = HasChildren,
-                SkinPath = SkinPath,
-                ContainerPath = ContainerPath,
-                IsSuperTab = IsSuperTab,
-                RefreshInterval = RefreshInterval,
-                PageHeadText = PageHeadText,
-                IsSecure = IsSecure,
-                PermanentRedirect = PermanentRedirect,
-                IsSystem = IsSystem
-            };
-
-            if (BreadCrumbs != null)
-            {
-                clonedTab.BreadCrumbs = new ArrayList();
-                foreach (TabInfo t in BreadCrumbs)
-                {
-                    clonedTab.BreadCrumbs.Add(t.Clone());
-                }
-            }
-
-            Clone(clonedTab, this);
-
-            //localized properties
-            clonedTab.UniqueId = UniqueId;
-            clonedTab.VersionGuid = VersionGuid;
-            clonedTab.DefaultLanguageGuid = DefaultLanguageGuid;
-            clonedTab.LocalizedVersionGuid = LocalizedVersionGuid;
-            clonedTab.CultureCode = CultureCode;
-
-            clonedTab.Panes = new ArrayList();
-            clonedTab.Modules = _modules;
-
-            return clonedTab;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a TabInfo from a Data Reader
-        /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// -----------------------------------------------------------------------------
-        public override void Fill(IDataReader dr)
-        {
-            //Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
-            UniqueId = Null.SetNullGuid(dr["UniqueId"]);
-            VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
-            DefaultLanguageGuid = Null.SetNullGuid(dr["DefaultLanguageGuid"]);
-            LocalizedVersionGuid = Null.SetNullGuid(dr["LocalizedVersionGuid"]);
-            CultureCode = Null.SetNullString(dr["CultureCode"]);
-
-            TabOrder = Null.SetNullInteger(dr["TabOrder"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            TabName = Null.SetNullString(dr["TabName"]);
-            IsVisible = Null.SetNullBoolean(dr["IsVisible"]);
-            HasBeenPublished = Null.SetNullBoolean(dr["HasBeenPublished"]);
-            ParentId = Null.SetNullInteger(dr["ParentId"]);
-            Level = Null.SetNullInteger(dr["Level"]);
-            IconFile = Null.SetNullString(dr["IconFile"]);
-            IconFileLarge = Null.SetNullString(dr["IconFileLarge"]);
-            DisableLink = Null.SetNullBoolean(dr["DisableLink"]);
-            Title = Null.SetNullString(dr["Title"]);
-            Description = Null.SetNullString(dr["Description"]);
-            KeyWords = Null.SetNullString(dr["KeyWords"]);
-            IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
-            Url = Null.SetNullString(dr["Url"]);
-            SkinSrc = Null.SetNullString(dr["SkinSrc"]);
-            ContainerSrc = Null.SetNullString(dr["ContainerSrc"]);
-            TabPath = Null.SetNullString(dr["TabPath"]);
-            StartDate = Null.SetNullDateTime(dr["StartDate"]);
-            EndDate = Null.SetNullDateTime(dr["EndDate"]);
-            HasChildren = Null.SetNullBoolean(dr["HasChildren"]);
-            RefreshInterval = Null.SetNullInteger(dr["RefreshInterval"]);
-            PageHeadText = Null.SetNullString(dr["PageHeadText"]);
-            IsSecure = Null.SetNullBoolean(dr["IsSecure"]);
-            PermanentRedirect = Null.SetNullBoolean(dr["PermanentRedirect"]);
-            SiteMapPriority = Null.SetNullSingle(dr["SiteMapPriority"]);
-            BreadCrumbs = null;
-            Modules = null;
-            IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
-        }
-
-        public string GetCurrentUrl(string cultureCode)
-        {
-            string url = null;
-            if (_tabUrls != null && _tabUrls.Count > 0)
-            {
-                TabUrlInfo tabUrl = _tabUrls.CurrentUrl(cultureCode);
-                if (tabUrl != null)
-                {
-                    url = tabUrl.Url;
-                }
-            }
-            return url ?? ("");
-        }
-
-        public string GetTags()
-        {
-            return string.Join(",", Terms.Select(t => t.Name));
-        }
-
-        #endregion
     }
 }

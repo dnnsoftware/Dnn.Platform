@@ -1,18 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-
-using DotNetNuke.Collections.Internal;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Collections
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Threading;
+
+    using DotNetNuke.Collections.Internal;
+    using NUnit.Framework;
+
     public abstract class SharedDictionaryTests
     {
         public abstract LockingStrategy LockingStrategy { get; }
@@ -23,7 +22,7 @@ namespace DotNetNuke.Tests.Core.Collections
             const string KEY = "key";
             const string VALUE = "value";
 
-            var sharedDictionary = new SharedDictionary<string, string>(LockingStrategy);
+            var sharedDictionary = new SharedDictionary<string, string>(this.LockingStrategy);
 
             bool doInsert = false;
             using (ISharedCollectionLock l = sharedDictionary.GetReadLock())
@@ -45,25 +44,30 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
 
-            CollectionAssert.AreEqual(new Dictionary<string, string> {{KEY, VALUE}}, sharedDictionary.BackingDictionary);
+            CollectionAssert.AreEqual(new Dictionary<string, string> { { KEY, VALUE } }, sharedDictionary.BackingDictionary);
         }
 
-        [Test, ExpectedException(typeof (WriteLockRequiredException)), TestCaseSource("GetWriteMethods")]
+        [Test]
+        [ExpectedException(typeof(WriteLockRequiredException))]
+        [TestCaseSource("GetWriteMethods")]
         public void WriteRequiresLock(Action<SharedDictionary<string, string>> writeAction)
         {
-            writeAction.Invoke(InitSharedDictionary("key", "value"));
+            writeAction.Invoke(this.InitSharedDictionary("key", "value"));
         }
 
-        [Test, ExpectedException(typeof (ReadLockRequiredException)), TestCaseSource("GetReadMethods")]
+        [Test]
+        [ExpectedException(typeof(ReadLockRequiredException))]
+        [TestCaseSource("GetReadMethods")]
         public void ReadRequiresLock(Action<SharedDictionary<string, string>> readAction)
         {
-            readAction.Invoke(InitSharedDictionary("key", "value"));
+            readAction.Invoke(this.InitSharedDictionary("key", "value"));
         }
 
-        [Test, ExpectedException(typeof (ReadLockRequiredException))]
+        [Test]
+        [ExpectedException(typeof(ReadLockRequiredException))]
         public void DisposedReadLockDeniesRead()
         {
-            var d = new SharedDictionary<string, string>(LockingStrategy);
+            var d = new SharedDictionary<string, string>(this.LockingStrategy);
 
             ISharedCollectionLock l = d.GetReadLock();
             l.Dispose();
@@ -71,10 +75,11 @@ namespace DotNetNuke.Tests.Core.Collections
             d.ContainsKey("foo");
         }
 
-        [Test, ExpectedException(typeof (ReadLockRequiredException))]
+        [Test]
+        [ExpectedException(typeof(ReadLockRequiredException))]
         public void DisposedWriteLockDeniesRead()
         {
-            var d = new SharedDictionary<string, string>(LockingStrategy);
+            var d = new SharedDictionary<string, string>(this.LockingStrategy);
 
             ISharedCollectionLock l = d.GetWriteLock();
             l.Dispose();
@@ -82,10 +87,11 @@ namespace DotNetNuke.Tests.Core.Collections
             d.ContainsKey("foo");
         }
 
-        [Test, ExpectedException(typeof (WriteLockRequiredException))]
+        [Test]
+        [ExpectedException(typeof(WriteLockRequiredException))]
         public void DisposedWriteLockDeniesWrite()
         {
-            var d = new SharedDictionary<string, string>(LockingStrategy);
+            var d = new SharedDictionary<string, string>(this.LockingStrategy);
 
             ISharedCollectionLock l = d.GetWriteLock();
             l.Dispose();
@@ -96,7 +102,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void WriteLockEnablesRead()
         {
-            var d = InitSharedDictionary("key", "value");
+            var d = this.InitSharedDictionary("key", "value");
 
             string actualValue = null;
             using (ISharedCollectionLock l = d.GetWriteLock())
@@ -110,7 +116,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void CanGetAnotherLockAfterDisposingLock()
         {
-            var d = new SharedDictionary<string, string>(LockingStrategy);
+            var d = new SharedDictionary<string, string>(this.LockingStrategy);
             ISharedCollectionLock l = d.GetReadLock();
             l.Dispose();
 
@@ -121,23 +127,25 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void DoubleDispose()
         {
-            var d = new SharedDictionary<string, string>(LockingStrategy);
+            var d = new SharedDictionary<string, string>(this.LockingStrategy);
 
             d.Dispose();
             d.Dispose();
         }
 
-        [Test, ExpectedException(typeof (ObjectDisposedException))]
+        [Test]
+        [ExpectedException(typeof(ObjectDisposedException))]
         [TestCaseSource("GetObjectDisposedExceptionMethods")]
         public void MethodsThrowAfterDisposed(Action<SharedDictionary<string, string>> methodCall)
         {
-            var d = new SharedDictionary<string, string>(LockingStrategy);
+            var d = new SharedDictionary<string, string>(this.LockingStrategy);
 
             d.Dispose();
             methodCall.Invoke(d);
         }
 
-        [Test, ExpectedException(typeof (LockRecursionException))]
+        [Test]
+        [ExpectedException(typeof(LockRecursionException))]
         public void TwoDictsShareALockWriteTest()
         {
             ILockStrategy ls = new ReaderWriterLockStrategy();
@@ -148,17 +156,17 @@ namespace DotNetNuke.Tests.Core.Collections
             {
                 using (ISharedCollectionLock writeLock = d2.GetWriteLock())
                 {
-                    //do nothing
+                    // do nothing
                 }
             }
         }
 
         protected IEnumerable<Action<SharedDictionary<string, string>>> GetObjectDisposedExceptionMethods()
         {
-            var l = new List<Action<SharedDictionary<string, string>>> {(SharedDictionary<string, string> d) => d.GetReadLock(), (SharedDictionary<string, string> d) => d.GetWriteLock()};
+            var l = new List<Action<SharedDictionary<string, string>>> { (SharedDictionary<string, string> d) => d.GetReadLock(), (SharedDictionary<string, string> d) => d.GetWriteLock() };
 
-            l.AddRange(GetReadMethods());
-            l.AddRange(GetWriteMethods());
+            l.AddRange(this.GetReadMethods());
+            l.AddRange(this.GetWriteMethods());
 
             return l;
         }
@@ -171,7 +179,7 @@ namespace DotNetNuke.Tests.Core.Collections
             l.Add(d => d.Contains(new KeyValuePair<string, string>("key", "value")));
             l.Add(d => Console.WriteLine(d.Count));
             l.Add(d => d.GetEnumerator());
-            l.Add(d => ((IEnumerable) d).GetEnumerator());
+            l.Add(d => ((IEnumerable)d).GetEnumerator());
             l.Add(d => Console.WriteLine(d.IsReadOnly));
             l.Add(d => Console.WriteLine(d["key"]));
             l.Add(d => Console.WriteLine(d.Keys));
@@ -185,7 +193,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             l.Add((SharedDictionary<string, string> d) =>
                       {
-                          string value = "";
+                          string value = string.Empty;
                           d.TryGetValue("key", out value);
                       });
 
@@ -208,7 +216,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
         private SharedDictionary<TKey, TValue> InitSharedDictionary<TKey, TValue>(TKey key, TValue value)
         {
-            var sharedDict = new SharedDictionary<TKey, TValue>(LockingStrategy);
+            var sharedDict = new SharedDictionary<TKey, TValue>(this.LockingStrategy);
             sharedDict.BackingDictionary.Add(key, value);
             return sharedDict;
         }

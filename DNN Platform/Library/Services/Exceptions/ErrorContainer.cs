@@ -1,31 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Exceptions
 {
+    using System;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.UI.Skins.Controls;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     public class ErrorContainer : Control
     {
         public ErrorContainer(string strError)
         {
-            Container = FormatException(strError);
+            this.Container = this.FormatException(strError);
         }
 
         public ErrorContainer(string strError, Exception exc)
         {
-            Container = FormatException(strError, exc);
+            this.Container = this.FormatException(strError, exc);
         }
 
         public ErrorContainer(PortalSettings _PortalSettings, string strError, Exception exc)
@@ -33,11 +30,11 @@ namespace DotNetNuke.Services.Exceptions
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             if (objUserInfo.IsSuperUser)
             {
-                Container = FormatException(strError, exc);
+                this.Container = this.FormatException(strError, exc);
             }
             else
             {
-                Container = FormatException(strError);
+                this.Container = this.FormatException(strError);
             }
         }
 
@@ -46,7 +43,7 @@ namespace DotNetNuke.Services.Exceptions
         private ModuleMessage FormatException(string strError)
         {
             ModuleMessage m;
-            m = UI.Skins.Skin.GetModuleMessageControl(Localization.Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
+            m = UI.Skins.Skin.GetModuleMessageControl(Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
             return m;
         }
 
@@ -59,8 +56,9 @@ namespace DotNetNuke.Services.Exceptions
             }
             else
             {
-                m = UI.Skins.Skin.GetModuleMessageControl(Localization.Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
+                m = UI.Skins.Skin.GetModuleMessageControl(Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
             }
+
             return m;
         }
     }

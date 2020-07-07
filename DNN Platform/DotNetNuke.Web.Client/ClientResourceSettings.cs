@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.Client
 {
     using System;
@@ -28,6 +28,9 @@ namespace DotNetNuke.Web.Client
         private static readonly Type _hostControllerType;
         private static readonly Type _commonGlobalsType;
 
+        private bool _statusChecked;
+        private UpgradeStatus _status;
+
         static ClientResourceSettings()
         {
             try
@@ -40,15 +43,58 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
+            }
+        }
+
+        private enum UpgradeStatus
+        {
+            /// <summary>
+            /// The application need update to a higher version.
+            /// </summary>
+            Upgrade,
+
+            /// <summary>
+            /// The application need to install itself.
+            /// </summary>
+            Install,
+
+            /// <summary>
+            /// The application is normal running.
+            /// </summary>
+            None,
+
+            /// <summary>
+            /// The application occur error when running.
+            /// </summary>
+            Error,
+
+            /// <summary>
+            /// The application status is unknown,
+            /// </summary>
+            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
+            Unknown,
+        }
+
+        private UpgradeStatus Status
+        {
+            get
+            {
+                if (!this._statusChecked)
+                {
+                    this._status = this.GetStatusByReflection();
+                    this._statusChecked = true;
+                }
+
+                return this._status;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public Boolean IsOverridingDefaultSettingsEnabled()
+        public bool IsOverridingDefaultSettingsEnabled()
         {
             var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
             var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
@@ -66,12 +112,16 @@ namespace DotNetNuke.Web.Client
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
             if (portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
+            {
                 return portalVersion.Value;
+            }
 
             // otherwise return the host setting
             var hostVersion = GetIntegerSetting(HostSettingsDictionaryKey, VersionKey);
             if (hostVersion.HasValue)
+            {
                 return hostVersion.Value;
+            }
 
             // otherwise tell the calling method that nothing is set
             return null;
@@ -79,41 +129,17 @@ namespace DotNetNuke.Web.Client
 
         public bool? AreCompositeFilesEnabled()
         {
-            return IsBooleanSettingEnabled(EnableCompositeFilesKey);
+            return this.IsBooleanSettingEnabled(EnableCompositeFilesKey);
         }
 
         public bool? EnableCssMinification()
         {
-            return IsBooleanSettingEnabled(MinifyCssKey);
+            return this.IsBooleanSettingEnabled(MinifyCssKey);
         }
 
         public bool? EnableJsMinification()
         {
-            return IsBooleanSettingEnabled(MinifyJsKey);
-        }
-
-        private bool? IsBooleanSettingEnabled(string settingKey)
-        {
-            if (Status != UpgradeStatus.None)
-            {
-                return false;
-            }
-
-            var portalEnabled = GetBooleanSetting(PortalSettingsDictionaryKey, settingKey);
-            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
-
-            // if portal version is set
-            // and the portal "override default settings" flag is set and set to true
-            if (portalEnabled.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
-                return portalEnabled.Value;
-
-            // otherwise return the host setting
-            var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, settingKey);
-            if (hostEnabled.HasValue)
-                return hostEnabled.Value;
-
-            // otherwise tell the calling method that nothing is set
-            return null;
+            return this.IsBooleanSettingEnabled(MinifyJsKey);
         }
 
         private static bool? GetBooleanSetting(string dictionaryKey, string settingKey)
@@ -124,6 +150,7 @@ namespace DotNetNuke.Web.Client
             {
                 return result;
             }
+
             return null;
         }
 
@@ -138,6 +165,7 @@ namespace DotNetNuke.Web.Client
                     return version;
                 }
             }
+
             return null;
         }
 
@@ -148,7 +176,9 @@ namespace DotNetNuke.Web.Client
             if (settings == null)
             {
                 if (dictionaryKey == HostSettingsDictionaryKey)
+                {
                     return GetHostSettingThroughReflection(settingKey);
+                }
 
                 return GetPortalSettingThroughReflection(settingKey);
             }
@@ -182,8 +212,9 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
+
             return null;
         }
 
@@ -201,8 +232,9 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
+
             return null;
         }
 
@@ -222,26 +254,38 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
+
             return null;
         }
 
-        private bool _statusChecked;
-        private UpgradeStatus _status;
-
-        private UpgradeStatus Status
+        private bool? IsBooleanSettingEnabled(string settingKey)
         {
-            get
+            if (this.Status != UpgradeStatus.None)
             {
-                if (!_statusChecked)
-                {
-                    _status = GetStatusByReflection();
-                    _statusChecked = true;
-                }
-
-                return _status;
+                return false;
             }
+
+            var portalEnabled = GetBooleanSetting(PortalSettingsDictionaryKey, settingKey);
+            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+
+            // if portal version is set
+            // and the portal "override default settings" flag is set and set to true
+            if (portalEnabled.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
+            {
+                return portalEnabled.Value;
+            }
+
+            // otherwise return the host setting
+            var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, settingKey);
+            if (hostEnabled.HasValue)
+            {
+                return hostEnabled.Value;
+            }
+
+            // otherwise tell the calling method that nothing is set
+            return null;
         }
 
         private UpgradeStatus GetStatusByReflection()
@@ -256,31 +300,6 @@ namespace DotNetNuke.Web.Client
             {
                 return UpgradeStatus.Unknown;
             }
-        }
-
-        private enum UpgradeStatus
-        {
-            /// <summary>
-            /// The application need update to a higher version.
-            /// </summary>
-            Upgrade,
-            /// <summary>
-            /// The application need to install itself.
-            /// </summary>
-            Install,
-            /// <summary>
-            /// The application is normal running.
-            /// </summary>
-            None,
-            /// <summary>
-            /// The application occur error when running.
-            /// </summary>
-            Error,
-            /// <summary>
-            /// The application status is unknown,
-            /// </summary>
-            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown
         }
     }
 }

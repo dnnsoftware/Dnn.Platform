@@ -1,40 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.InternalServices.Views.Search
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
-    /// BasicView grouped by DocumentTypeName
+    /// BasicView grouped by DocumentTypeName.
     /// </summary>
     public class GroupedBasicView
     {
-        /// <summary>
-        /// Type of Search Document
-        /// </summary>
-        public string DocumentTypeName { get; set; }
-
-        /// <summary>
-        /// Results of the Search
-        /// </summary>   
-        public List<BasicView> Results { get; set; }
-
-        #region constructor
-
         public GroupedBasicView()
-        {}
+        {
+        }
 
         public GroupedBasicView(BasicView basic)
         {
-            DocumentTypeName = basic.DocumentTypeName;
-            Results = new List<BasicView>
+            this.DocumentTypeName = basic.DocumentTypeName;
+            this.Results = new List<BasicView>
             {
                 new BasicView
                 {
@@ -43,10 +27,18 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
                     Description = basic.Description,
                     DocumentUrl = basic.DocumentUrl,
                     Attributes = basic.Attributes
-                }
+                },
             };
         }
 
-        #endregion
+        /// <summary>
+        /// Gets or sets type of Search Document.
+        /// </summary>
+        public string DocumentTypeName { get; set; }
+
+        /// <summary>
+        /// Gets or sets results of the Search.
+        /// </summary>
+        public List<BasicView> Results { get; set; }
     }
 }

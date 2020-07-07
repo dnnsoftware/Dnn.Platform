@@ -1,12 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Tests.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 {
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.Tests.Utilities;
+
     internal class UserPreferenceBuilder
     {
         private int userId;
@@ -16,20 +16,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 
         internal UserPreferenceBuilder()
         {
-            userId = Constants.USER_InValidId;
-            portalId = Constants.PORTAL_ValidPortalId;
-            messagesEmailFrequency = Frequency.Instant;
-            notificationsEmailFrequency = Frequency.Hourly;
+            this.userId = Constants.USER_InValidId;
+            this.portalId = Constants.PORTAL_ValidPortalId;
+            this.messagesEmailFrequency = Frequency.Instant;
+            this.notificationsEmailFrequency = Frequency.Hourly;
         }
 
         internal UserPreference Build()
         {
             return new UserPreference
             {
-                UserId = userId,
-                PortalId = portalId,
-                MessagesEmailFrequency = messagesEmailFrequency,
-                NotificationsEmailFrequency = notificationsEmailFrequency
+                UserId = this.userId,
+                PortalId = this.portalId,
+                MessagesEmailFrequency = this.messagesEmailFrequency,
+                NotificationsEmailFrequency = this.notificationsEmailFrequency,
             };
         }
 

@@ -1,19 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Entities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+
+    using DotNetNuke.Entities;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlText object
+    ///   Defines an instance of an HtmlText object.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -22,7 +23,7 @@ namespace DotNetNuke.Modules.Html
     {
         // local property declarations
         private bool _Approved = true;
-        private string _Comment = "";
+        private string _Comment = string.Empty;
         private bool _IsActive = true;
         private int _ItemID = -1;
 
@@ -33,11 +34,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _ItemID;
+                return this._ItemID;
             }
+
             set
             {
-                _ItemID = value;
+                this._ItemID = value;
             }
         }
 
@@ -65,11 +67,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _IsActive;
+                return this._IsActive;
             }
+
             set
             {
-                _IsActive = value;
+                this._IsActive = value;
             }
         }
 
@@ -77,11 +80,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _Comment;
+                return this._Comment;
             }
+
             set
             {
-                _Comment = value;
+                this._Comment = value;
             }
         }
 
@@ -89,16 +93,17 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _Approved;
+                return this._Approved;
             }
+
             set
             {
-                _Approved = value;
+                this._Approved = value;
             }
         }
 
         public string DisplayName { get; set; }
 
-		public string Summary { get; set; }
+        public string Summary { get; set; }
     }
 }

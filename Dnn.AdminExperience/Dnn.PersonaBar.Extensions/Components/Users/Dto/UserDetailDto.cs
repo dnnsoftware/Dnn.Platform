@@ -1,26 +1,62 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using System.Runtime.Serialization;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Library.Common;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Abstractions;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
+    using System;
+    using System.Linq;
+    using System.Runtime.Serialization;
+
+    using Dnn.PersonaBar.Library.Common;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+    using Microsoft.Extensions.DependencyInjection;
+
     [DataContract]
     public class UserDetailDto : UserBasicDto
     {
+        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+
+        public UserDetailDto()
+        {
+        }
+
+        public UserDetailDto(UserInfo user) : base(user)
+        {
+            this.LastLogin = user.Membership.LastLoginDate;
+            this.LastActivity = user.Membership.LastActivityDate;
+            this.LastPasswordChange = user.Membership.LastPasswordChangeDate;
+            this.LastLockout = user.Membership.LastLockoutDate;
+            this.IsOnline = user.Membership.IsOnLine;
+            this.IsLocked = user.Membership.LockedOut;
+            this.NeedUpdatePassword = user.Membership.UpdatePassword;
+            this.PortalId = user.PortalID;
+            this.UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
+            var userFolder = FolderManager.Instance.GetUserFolder(user);
+            if (userFolder != null)
+            {
+                this.UserFolderId = userFolder.FolderID;
+
+                // check whether user had upload files
+                var files = FolderManager.Instance.GetFiles(userFolder, true);
+                this.HasUserFiles = files.Any();
+            }
+
+            this.HasAgreedToTermsOn = user.HasAgreedToTermsOn;
+        }
+
+        [DataMember(Name = "profileUrl")]
+        public string ProfileUrl => this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
+
+        [DataMember(Name = "editProfileUrl")]
+        public string EditProfileUrl => this.UserId > 0 ? GetSettingUrl(this.PortalId, this.UserId) : null;
+
         [DataMember(Name = "lastLogin")]
         public DateTime LastLogin { get; set; }
 
@@ -45,13 +81,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [IgnoreDataMember]
         public int PortalId { get; set; }
 
-
-        [DataMember(Name = "profileUrl")]
-        public string ProfileUrl => UserId > 0 ? Globals.UserProfileURL(UserId) : null;
-
-        [DataMember(Name = "editProfileUrl")]
-        public string EditProfileUrl => UserId > 0 ? GetSettingUrl(PortalId, UserId) : null;
-
         [DataMember(Name = "userFolder")]
         public string UserFolder { get; set; }
 
@@ -63,35 +92,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "hasAgreedToTermsOn")]
         public DateTime HasAgreedToTermsOn { get; set; }
-
-        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-
-        public UserDetailDto()
-        {
-        }
-
-        public UserDetailDto(UserInfo user) : base(user)
-        {
-            LastLogin = user.Membership.LastLoginDate;
-            LastActivity = user.Membership.LastActivityDate;
-            LastPasswordChange = user.Membership.LastPasswordChangeDate;
-            LastLockout = user.Membership.LastLockoutDate;
-            IsOnline = user.Membership.IsOnLine;
-            IsLocked = user.Membership.LockedOut;
-            NeedUpdatePassword = user.Membership.UpdatePassword;
-            PortalId = user.PortalID;
-            UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
-            var userFolder = FolderManager.Instance.GetUserFolder(user);
-            if (userFolder != null)
-            {
-                UserFolderId = userFolder.FolderID;
-
-                //check whether user had upload files
-                var files = FolderManager.Instance.GetFiles(userFolder, true);
-                HasUserFiles = files.Any();
-            }
-            HasAgreedToTermsOn = user.HasAgreedToTermsOn;
-        }
 
         private static string GetSettingUrl(int portalId, int userId)
         {
@@ -107,7 +107,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             {
                 return string.Empty;
             }
-            //ctl/Edit/mid/345/packageid/52
+
+            // ctl/Edit/mid/345/packageid/52
             return _navigationManager.NavigateURL(tabId, PortalSettings.Current, "Edit",
                                             "mid=" + module.ModuleID,
                                             "popUp=true",

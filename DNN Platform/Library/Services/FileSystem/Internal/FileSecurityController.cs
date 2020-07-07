@@ -1,29 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.FileSystem.Internal
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
     /// Internal class to check file security.
     /// </summary>
     public class FileSecurityController : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
-
         private const int BufferSize = 4096;
 
-        protected override Func<IFileSecurityController> GetFactory()
-        {
-            return () => new FileSecurityController();
-        }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
 
         public bool Validate(string fileName, Stream fileContent)
         {
@@ -31,19 +27,24 @@ namespace DotNetNuke.Services.FileSystem.Internal
             Requires.NotNull("fileContent", fileContent);
 
             var extension = Path.GetExtension(fileName);
-            var checker = GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
+            var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
 
-            //when there is no specfic file check for the file type, then treat it as validated.
+            // when there is no specfic file check for the file type, then treat it as validated.
             if (checker == null)
             {
                 return true;
             }
 
-            //use copy of the stream as we can't make sure how the check process the stream.
-            using (var copyStream = CopyStream(fileContent))
+            // use copy of the stream as we can't make sure how the check process the stream.
+            using (var copyStream = this.CopyStream(fileContent))
             {
                 return checker.Validate(copyStream);
             }
+        }
+
+        protected override Func<IFileSecurityController> GetFactory()
+        {
+            return () => new FileSecurityController();
         }
 
         private IFileSecurityChecker GetSecurityChecker(string extension)
@@ -72,7 +73,8 @@ namespace DotNetNuke.Services.FileSystem.Internal
             do
             {
                 filePath = Path.Combine(folderPath, Path.GetRandomFileName()) + ".resx";
-            } while (File.Exists(filePath));
+            }
+            while (File.Exists(filePath));
 
             var fileStream = ((FileManager)FileManager.Instance).GetAutoDeleteFileStream(filePath);
 

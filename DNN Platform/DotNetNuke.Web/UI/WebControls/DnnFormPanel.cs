@@ -1,38 +1,38 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnFormPanel : WebControl 
-    {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
+    public class DnnFormPanel : WebControl
+    {
         public bool Expanded { get; set; }
 
         public string Text { get; set; }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClass);
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
             writer.RenderBeginTag(HtmlTextWriterTag.H2);
 
-            if (Expanded)
+            if (this.Expanded)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnSectionExpanded");
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.A);
-            writer.Write(Text);
+            writer.Write(this.Text);
             writer.RenderEndTag();
 
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Fieldset);
 
-            RenderChildren(writer);
+            this.RenderChildren(writer);
 
             writer.RenderEndTag();
         }

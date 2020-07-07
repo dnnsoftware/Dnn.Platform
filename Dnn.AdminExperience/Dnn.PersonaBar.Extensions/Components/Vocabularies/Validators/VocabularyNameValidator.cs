@@ -1,19 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Linq;
-using Dnn.PersonaBar.Vocabularies.Components;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Web.Validators;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Vocabularies.Validators
 {
+    using System.Linq;
+
+    using Dnn.PersonaBar.Vocabularies.Components;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Web.Validators;
+
     public class VocabularyNameValidator : ObjectValidator
     {
         private IVocabularyController _vocabularyController;
@@ -21,8 +17,8 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
 
         public VocabularyNameValidator(IVocabularyController vocabularyController, ITermController termController)
         {
-            _vocabularyController = vocabularyController;
-            _termController = termController;
+            this._vocabularyController = vocabularyController;
+            this._termController = termController;
         }
 
         public override ValidationResult ValidateObject(object target)
@@ -31,7 +27,7 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
             {
                 var vocabulary = target as Vocabulary;
                 var existVocabulary =
-                    _vocabularyController.GetVocabularies().FirstOrDefault(v => v.Name == vocabulary.Name && v.ScopeId == vocabulary.ScopeId);
+                    this._vocabularyController.GetVocabularies().FirstOrDefault(v => v.Name == vocabulary.Name && v.ScopeId == vocabulary.ScopeId);
 
                 if (existVocabulary != null && (vocabulary.VocabularyId == Null.NullInteger || existVocabulary.VocabularyId != vocabulary.VocabularyId))
                 {
@@ -41,8 +37,8 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
             else if (target is Term)
             {
                 var term = target as Term;
-                var vocabulary = _vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == term.VocabularyId);
-                var terms = _termController.GetTermsByVocabulary(term.VocabularyId);
+                var vocabulary = this._vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == term.VocabularyId);
+                var terms = this._termController.GetTermsByVocabulary(term.VocabularyId);
 
                 if (vocabulary != null)
                 {

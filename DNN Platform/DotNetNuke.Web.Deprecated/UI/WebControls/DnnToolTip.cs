@@ -1,69 +1,65 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using DotNetNuke.Web.UI;
-using Telerik.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
-   public class DnnToolTip : RadToolTip, ILocalizable
-   {
-      private bool _localize = true;
+    using System;
+    using System.Web.UI;
 
-      protected override void Render(HtmlTextWriter writer)
-      {
-         LocalizeStrings();
-         base.Render(writer);
-      }
+    using DotNetNuke.Web.UI;
+    using Telerik.Web.UI;
 
-      public string ResourceKey { get; set; }
+    public class DnnToolTip : RadToolTip, ILocalizable
+    {
+        private bool _localize = true;
 
-#region ILocalizable Implementation
-      public bool Localize
-      {
-         get
-         {
-            if (base.DesignMode)
+        public string ResourceKey { get; set; }
+
+        public bool Localize
+        {
+            get
             {
-               return false;
-            }
-            return _localize;
-         }
-         set
-         {
-            _localize = value;
-         }
-      }
+                if (this.DesignMode)
+                {
+                    return false;
+                }
 
-      public string LocalResourceFile { get; set; }
-
-      public virtual void LocalizeStrings()
-      {
-         if ((this.Localize) && (!(String.IsNullOrEmpty(this.ResourceKey))))
-         {
-            if (!(String.IsNullOrEmpty(base.ManualCloseButtonText)))
-            {
-               base.ManualCloseButtonText = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ManualCloseButtonText", this.ResourceKey), this);
+                return this._localize;
             }
 
-            if (!(String.IsNullOrEmpty(base.Text)))
+            set
             {
-               base.Text = Utilities.GetLocalizedStringFromParent(String.Format("{0}.Text", this.ResourceKey), this);
+                this._localize = value;
             }
+        }
 
-            if (!(String.IsNullOrEmpty(base.ToolTip)))
+        public string LocalResourceFile { get; set; }
+
+        public virtual void LocalizeStrings()
+        {
+            if (this.Localize && (!string.IsNullOrEmpty(this.ResourceKey)))
             {
-               base.ToolTip = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ToolTip", this.ResourceKey), this);
+                if (!string.IsNullOrEmpty(this.ManualCloseButtonText))
+                {
+                    this.ManualCloseButtonText = Utilities.GetLocalizedStringFromParent(string.Format("{0}.ManualCloseButtonText", this.ResourceKey), this);
+                }
+
+                if (!string.IsNullOrEmpty(this.Text))
+                {
+                    this.Text = Utilities.GetLocalizedStringFromParent(string.Format("{0}.Text", this.ResourceKey), this);
+                }
+
+                if (!string.IsNullOrEmpty(this.ToolTip))
+                {
+                    this.ToolTip = Utilities.GetLocalizedStringFromParent(string.Format("{0}.ToolTip", this.ResourceKey), this);
+                }
             }
-         }
-      }
-#endregion
-   }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
+        }
+    }
 }

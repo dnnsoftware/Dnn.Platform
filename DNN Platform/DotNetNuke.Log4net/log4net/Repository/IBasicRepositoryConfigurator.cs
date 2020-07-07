@@ -1,14 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Apache License
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -19,43 +18,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
-
 namespace log4net.Repository
 {
-	/// <summary>
-	/// Basic Configurator interface for repositories
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Interface used by basic configurator to configure a <see cref="ILoggerRepository"/>
-	/// with a default <see cref="log4net.Appender.IAppender"/>.
-	/// </para>
-	/// <para>
-	/// A <see cref="ILoggerRepository"/> should implement this interface to support
-	/// configuration by the <see cref="log4net.Config.BasicConfigurator"/>.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	public interface IBasicRepositoryConfigurator
-	{
-		/// <summary>
-		/// Initialize the repository using the specified appender
-		/// </summary>
-		/// <param name="appender">the appender to use to log all logging events</param>
-		/// <remarks>
-		/// <para>
-		/// Configure the repository to route all logging events to the
-		/// specified appender.
-		/// </para>
-		/// </remarks>
+    /// <summary>
+    /// Basic Configurator interface for repositories.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Interface used by basic configurator to configure a <see cref="ILoggerRepository"/>
+    /// with a default <see cref="log4net.Appender.IAppender"/>.
+    /// </para>
+    /// <para>
+    /// A <see cref="ILoggerRepository"/> should implement this interface to support
+    /// configuration by the <see cref="log4net.Config.BasicConfigurator"/>.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    public interface IBasicRepositoryConfigurator
+    {
+        /// <summary>
+        /// Initialize the repository using the specified appender.
+        /// </summary>
+        /// <param name="appender">the appender to use to log all logging events.</param>
+        /// <remarks>
+        /// <para>
+        /// Configure the repository to route all logging events to the
+        /// specified appender.
+        /// </para>
+        /// </remarks>
         void Configure(Appender.IAppender appender);
 
         /// <summary>
-        /// Initialize the repository using the specified appenders
+        /// Initialize the repository using the specified appenders.
         /// </summary>
-        /// <param name="appenders">the appenders to use to log all logging events</param>
+        /// <param name="appenders">the appenders to use to log all logging events.</param>
         /// <remarks>
         /// <para>
         /// Configure the repository to route all logging events to the
@@ -63,5 +60,5 @@ namespace log4net.Repository
         /// </para>
         /// </remarks>
         void Configure(params Appender.IAppender[] appenders);
-	}
+    }
 }

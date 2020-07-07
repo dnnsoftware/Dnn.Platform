@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.DependencyInjection.Extensions;
-using DotNetNuke.Web.Api;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Extensions
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.DependencyInjection.Extensions;
+    using DotNetNuke.Web.Api;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
+
     /// <summary>
     /// Adds DNN Web API Specific startup extensions to simplify the
     /// <see cref="Startup"/> Class.

@@ -1,112 +1,43 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionBase
+    /// Class    : ActionBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionBase is an abstract base control for Action objects that inherit from UserControl.
     /// </summary>
     /// <remarks>
-    /// ActionBase inherits from UserControl, and implements the IActionControl Interface
+    /// ActionBase inherits from UserControl, and implements the IActionControl Interface.
     /// </remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
-		#region "Private Members"
-		
+        protected bool m_supportsIcons = true;
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
-        protected bool m_supportsIcons = true;
-		
-		#endregion
 
-		#region Protected Properties
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Actions Collection
-        /// </summary>
-        /// <returns>A ModuleActionCollection</returns>
-        protected ModuleActionCollection Actions
-        {
-            get
-            {
-                return ModuleContext.Actions;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionRoot
-        /// </summary>
-        /// <returns>A ModuleActionCollection</returns>
-        protected ModuleAction ActionRoot
-        {
-            get
-            {
-                if (_ActionRoot == null)
-                {
-                    _ActionRoot = new ModuleAction(ModuleContext.GetNextActionID(), Localization.GetString("Manage.Text", Localization.GlobalResourceFile), string.Empty, string.Empty, "manage-icn.png");
-                }
-                return _ActionRoot;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleContext
-        /// </summary>
-        /// <returns>A ModuleInstanceContext</returns>
-        protected ModuleInstanceContext ModuleContext
-        {
-            get
-            {
-                return ModuleControl.ModuleContext;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the PortalSettings
-        /// </summary>
-        /// <returns>A PortalSettings object</returns>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return ModuleControl.ModuleContext.PortalSettings;
-            }
-        }
-		
-		#endregion
-
-		#region Public Properties
+        public event ActionEventHandler Action;
 
         public bool EditMode
         {
             get
             {
-                return ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
+                return this.ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
             }
         }
 
@@ -114,80 +45,129 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return m_supportsIcons;
+                return this.m_supportsIcons;
             }
         }
-		
-		#endregion
-
-        #region IActionControl Members
-
-        public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control
+        /// Gets the ActionManager instance for this Action control.
         /// </summary>
-        /// <returns>An ActionManager object</returns>
+        /// <returns>An ActionManager object.</returns>
         public ActionManager ActionManager
         {
             get
             {
-                if (_ActionManager == null)
+                if (this._ActionManager == null)
                 {
-                    _ActionManager = new ActionManager(this);
+                    this._ActionManager = new ActionManager(this);
                 }
-                return _ActionManager;
+
+                return this._ActionManager;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
-        /// <returns>An IModuleControl object</returns>
+        /// <returns>An IModuleControl object.</returns>
         public IModuleControl ModuleControl { get; set; }
-
-        #endregion
-		
-		#region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DisplayControl determines whether the control should be displayed
+        /// Gets the Actions Collection.
         /// </summary>
-        protected bool DisplayControl(DNNNodeCollection objNodes)
+        /// <returns>A ModuleActionCollection.</returns>
+        protected ModuleActionCollection Actions
         {
-            return ActionManager.DisplayControl(objNodes);
+            get
+            {
+                return this.ModuleContext.Actions;
+            }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnAction raises the Action Event for this control
+        /// Gets the ActionRoot.
+        /// </summary>
+        /// <returns>A ModuleActionCollection.</returns>
+        protected ModuleAction ActionRoot
+        {
+            get
+            {
+                if (this._ActionRoot == null)
+                {
+                    this._ActionRoot = new ModuleAction(this.ModuleContext.GetNextActionID(), Localization.GetString("Manage.Text", Localization.GlobalResourceFile), string.Empty, string.Empty, "manage-icn.png");
+                }
+
+                return this._ActionRoot;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the ModuleContext.
+        /// </summary>
+        /// <returns>A ModuleInstanceContext.</returns>
+        protected ModuleInstanceContext ModuleContext
+        {
+            get
+            {
+                return this.ModuleControl.ModuleContext;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the PortalSettings.
+        /// </summary>
+        /// <returns>A PortalSettings object.</returns>
+        protected PortalSettings PortalSettings
+        {
+            get
+            {
+                return this.ModuleControl.ModuleContext.PortalSettings;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DisplayControl determines whether the control should be displayed.
+        /// </summary>
+        /// <returns></returns>
+        protected bool DisplayControl(DNNNodeCollection objNodes)
+        {
+            return this.ActionManager.DisplayControl(objNodes);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnAction raises the Action Event for this control.
         /// </summary>
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (Action != null)
+            if (this.Action != null)
             {
-                Action(this, e);
+                this.Action(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessAction processes the action event
+        /// ProcessAction processes the action event.
         /// </summary>
         protected void ProcessAction(string ActionID)
         {
             int output;
-            if (Int32.TryParse(ActionID, out output))
+            if (int.TryParse(ActionID, out output))
             {
-                ModuleAction action = Actions.GetActionByID(output);
+                ModuleAction action = this.Actions.GetActionByID(output);
                 if (action != null)
                 {
-                    if (!ActionManager.ProcessAction(action))
+                    if (!this.ActionManager.ProcessAction(action))
                     {
-                        OnAction(new ActionEventArgs(action, ModuleContext.Configuration));
+                        this.OnAction(new ActionEventArgs(action, this.ModuleContext.Configuration));
                     }
                 }
             }
@@ -195,7 +175,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the class is loaded
+        /// Page_Load runs when the class is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -208,17 +188,14 @@ namespace DotNetNuke.UI.Containers
                     return;
                 }
 
-                ActionRoot.Actions.AddRange(Actions);
+                this.ActionRoot.Actions.AddRange(this.Actions);
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
 
-			base.OnLoad(e);
+            base.OnLoad(e);
         }
-		
-		
-		#endregion
     }
 }

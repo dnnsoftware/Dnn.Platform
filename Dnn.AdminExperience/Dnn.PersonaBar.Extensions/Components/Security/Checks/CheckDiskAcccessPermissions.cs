@@ -1,26 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Security.Principal;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Security.AccessControl;
+    using System.Security.Principal;
+
+    using DotNetNuke.Common;
+
     public class CheckDiskAcccessPermissions : IAuditCheck
     {
+        private const char Yes = 'Y';
+        private const char No = 'N';
+
         public string Id => "CheckDiskAccess";
 
         public bool LazyLoad => false;
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
             IList<string> accessErrors = new List<string>();
             try
             {
@@ -40,7 +44,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 //Some security exception
             }
 
-
             if (accessErrors.Count == 0)
             {
                 result.Severity = SeverityEnum.Pass;
@@ -53,13 +56,10 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             return result;
         }
 
-        #region private methods
-
         private static IList<string> CheckAccessToDrives()
         {
             var errors = new List<string>();
             var dir = new DirectoryInfo(Globals.ApplicationMapPath);
-
 
             while (dir.Parent != null)
             {
@@ -175,96 +175,88 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             return permissions;
         }
 
-        #endregion
-
-        #region helpers
-
-        private const char Yes = 'Y';
-        private const char No = 'N';
-
         private class Permissions
         {
+            private char _create;
+
+            private bool _createLocked;
+            private char _delete;
+            private bool _deleteLocked;
+            private char _read;
+            private bool _readLocked;
+
+            private char _write;
+            private bool _writeLocked;
+
             public Permissions(char initial)
             {
-                _create = _write = _read = _delete = initial;
+                this._create = this._write = this._read = this._delete = initial;
             }
 
             public bool AnyYes
             {
-                get { return Create == Yes || Write == Yes || Read == Yes || Delete == Yes; }
+                get { return this.Create == Yes || this.Write == Yes || this.Read == Yes || this.Delete == Yes; }
             }
-
-            private char _create;
-            private char _write;
-            private char _read;
-            private char _delete;
-
-            private bool _createLocked;
-            private bool _writeLocked;
-            private bool _readLocked;
-            private bool _deleteLocked;
 
             public char Create
             {
-                get { return _create; }
-                set { if (!_createLocked) _create = value; }
+                get { return this._create; }
+                set { if (!this._createLocked) this._create = value; }
             }
 
             public char Write
             {
-                get { return _write; }
-                set { if (!_writeLocked) _write = value; }
+                get { return this._write; }
+                set { if (!this._writeLocked) this._write = value; }
             }
 
             public char Read
             {
-                get { return _read; }
-                set { if (!_readLocked) _read = value; }
+                get { return this._read; }
+                set { if (!this._readLocked) this._read = value; }
             }
 
             public char Delete
             {
-                get { return _delete; }
-                set { if (!_deleteLocked) _delete = value; }
+                get { return this._delete; }
+                set { if (!this._deleteLocked) this._delete = value; }
             }
 
             public void SetThenLockCreate(char value)
             {
-                if (!_createLocked)
+                if (!this._createLocked)
                 {
-                    _createLocked = true;
-                    _create = value;
+                    this._createLocked = true;
+                    this._create = value;
                 }
             }
 
             public void SetThenLockWrite(char value)
             {
-                if (!_writeLocked)
+                if (!this._writeLocked)
                 {
-                    _writeLocked = true;
-                    _write = value;
+                    this._writeLocked = true;
+                    this._write = value;
                 }
             }
 
             public void SetThenLockRead(char value)
             {
-                if (!_readLocked)
+                if (!this._readLocked)
                 {
-                    _readLocked = true;
-                    _read = value;
+                    this._readLocked = true;
+                    this._read = value;
                 }
             }
 
             public void SetThenLockDelete(char value)
             {
-                if (!_deleteLocked)
+                if (!this._deleteLocked)
                 {
-                    _deleteLocked = true;
-                    _delete = value;
+                    this._deleteLocked = true;
+                    this._delete = value;
                 }
             }
         }
-
-        #endregion
     }
 }

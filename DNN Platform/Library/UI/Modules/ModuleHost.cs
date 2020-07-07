@@ -1,109 +1,97 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Microsoft.Extensions.DependencyInjection;
-using Globals = DotNetNuke.Common.Globals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Modules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : ModuleHost
+    /// Class    : ModuleHost
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleHost hosts a Module Control (or its cached Content).
     /// </summary>
     public sealed class ModuleHost : Panel
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
-
-        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
 
-        #region Private Members
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHost));
+
+        private static readonly Regex CdfMatchRegex = new Regex(
+            @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly ModuleInfo _moduleConfiguration;
+        private readonly IModuleControlPipeline _moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
         private Control _control;
         private bool _isCached;
-        private readonly IModuleControlPipeline _moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
-
-        #endregion
-
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a Module Host control using the ModuleConfiguration for the Module
+        /// Initializes a new instance of the <see cref="ModuleHost"/> class.
+        /// Creates a Module Host control using the ModuleConfiguration for the Module.
         /// </summary>
         /// <remarks>
         /// </remarks>
         public ModuleHost(ModuleInfo moduleConfiguration, Skins.Skin skin, Containers.Container container)
         {
-            ID = "ModuleContent";
-            Container = container;
-            _moduleConfiguration = moduleConfiguration;
-            Skin = skin;
+            this.ID = "ModuleContent";
+            this.Container = container;
+            this._moduleConfiguration = moduleConfiguration;
+            this.Skin = skin;
         }
-
-        #endregion
-
-        #region Public Properties
-
-        public Containers.Container Container { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the attached ModuleControl
+        /// Gets the attached ModuleControl.
         /// </summary>
-        /// <returns>An IModuleControl</returns>
+        /// <returns>An IModuleControl.</returns>
         public IModuleControl ModuleControl
         {
             get
             {
-				//Make sure the Control tree has been created
-                EnsureChildControls();
-                return _control as IModuleControl;
+                // Make sure the Control tree has been created
+                this.EnsureChildControls();
+                return this._control as IModuleControl;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the current POrtal Settings
+        /// Gets the current POrtal Settings.
         /// </summary>
         public PortalSettings PortalSettings
         {
@@ -113,121 +101,15 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
+        public Containers.Container Container { get; private set; }
+
         public Skins.Skin Skin { get; private set; }
-
-        #endregion
-
-        #region Private Methods
-
-        private bool IsVersionRequest()
-        {
-            int version;
-            return TabVersionUtils.TryGetUrlVersion(out version);
-        }
-
-        private void InjectVersionToTheModuleIfSupported()
-        {
-            if (!(_control is IVersionableControl)) return;
-
-            var versionableControl = _control as IVersionableControl;
-            if (_moduleConfiguration.ModuleVersion != Null.NullInteger)
-            {
-                versionableControl.SetModuleVersion(_moduleConfiguration.ModuleVersion);
-            }
-        }
-
-        private void InjectModuleContent(Control content)
-        {
-            if (_moduleConfiguration.IsWebSlice && !Globals.IsAdminControl())
-            {
-				//Assign the class - hslice to the Drag-N-Drop Panel
-                CssClass = "hslice";
-                var titleLabel = new Label
-                                     {
-                                         CssClass = "entry-title Hidden",
-                                         Text = !string.IsNullOrEmpty(_moduleConfiguration.WebSliceTitle) ? _moduleConfiguration.WebSliceTitle : _moduleConfiguration.ModuleTitle
-                                     };
-                Controls.Add(titleLabel);
-
-                var websliceContainer = new Panel {CssClass = "entry-content"};
-                websliceContainer.Controls.Add(content);
-
-                var expiry = new HtmlGenericControl {TagName = "abbr"};
-                expiry.Attributes["class"] = "endtime";
-                if (!Null.IsNull(_moduleConfiguration.WebSliceExpiryDate))
-                {
-                    expiry.Attributes["title"] = _moduleConfiguration.WebSliceExpiryDate.ToString("o");
-                    websliceContainer.Controls.Add(expiry);
-                }
-                else if (_moduleConfiguration.EndDate < DateTime.MaxValue)
-                {
-                    expiry.Attributes["title"] = _moduleConfiguration.EndDate.ToString("o");
-                    websliceContainer.Controls.Add(expiry);
-                }
-
-                var ttl = new HtmlGenericControl {TagName = "abbr"};
-                ttl.Attributes["class"] = "ttl";
-                if (_moduleConfiguration.WebSliceTTL > 0)
-                {
-                    ttl.Attributes["title"] = _moduleConfiguration.WebSliceTTL.ToString();
-                    websliceContainer.Controls.Add(ttl);
-                }
-                else if (_moduleConfiguration.CacheTime > 0)
-                {
-                    ttl.Attributes["title"] = (_moduleConfiguration.CacheTime/60).ToString();
-                    websliceContainer.Controls.Add(ttl);
-                }
-
-                Controls.Add(websliceContainer);
-            }
-            else
-            {
-                Controls.Add(content);
-            }
-        }
-
-        /// ----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a flag that indicates whether the Module Content should be displayed
-        /// </summary>
-        /// <returns>A Boolean</returns>
-        private bool DisplayContent()
-        {
-			//module content visibility options
-            var content = PortalSettings.UserMode != PortalSettings.Mode.Layout;
-            if (Page.Request.QueryString["content"] != null)
-            {
-                switch (Page.Request.QueryString["Content"].ToLowerInvariant())
-                {
-                    case "1":
-                    case "true":
-                        content = true;
-                        break;
-                    case "0":
-                    case "false":
-                        content = false;
-                        break;
-                }
-            }
-            if (Globals.IsAdminControl())
-            {
-                content = true;
-            }
-            return content;
-        }
-
-        private static void InjectMessageControl(Control container)
-        {
-            //inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
-            var messagePlaceholder = new PlaceHolder {ID = "MessagePlaceHolder", Visible = false};
-            container.Controls.Add(messagePlaceholder);
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that indicates whether the Module is in View Mode
+        /// Gets a flag that indicates whether the Module is in View Mode.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
         {
             bool viewMode;
@@ -239,48 +121,250 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                viewMode = !(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
-                                                              moduleInfo)); 
+                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
+                                                              moduleInfo);
             }
-            
+
             return viewMode || settings.UserMode == PortalSettings.Mode.View;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadModuleControl loads the ModuleControl (PortalModuelBase)
+        /// CreateChildControls builds the control tree.
+        /// </summary>
+        protected override void CreateChildControls()
+        {
+            this.Controls.Clear();
+
+            // Load Module Control (or cached control)
+            this.LoadModuleControl();
+
+            // Optionally Inject AJAX Update Panel
+            if (this.ModuleControl != null)
+            {
+                // if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
+                if (!this._isCached && this._moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
+                {
+                    this.LoadUpdatePanel();
+                }
+                else
+                {
+                    // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
+                    InjectMessageControl(this);
+
+                    this.InjectVersionToTheModuleIfSupported();
+
+                    // inject the module into the panel
+                    this.InjectModuleContent(this._control);
+                }
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (Host.EnableCustomModuleCssClass)
+            {
+                string moduleName = this.ModuleControl.ModuleContext.Configuration.DesktopModule.ModuleName;
+                if (moduleName != null)
+                {
+                    moduleName = Globals.CleanName(moduleName);
+                }
+
+                this.Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RenderContents renders the contents of the control to the output stream.
+        /// </summary>
+        protected override void RenderContents(HtmlTextWriter writer)
+        {
+            if (this._isCached)
+            {
+                // Render the cached control to the output stream
+                base.RenderContents(writer);
+            }
+            else
+            {
+                if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !this.IsVersionRequest())
+                {
+                    // Render to cache
+                    var tempWriter = new StringWriter();
+
+                    this._control.RenderControl(new HtmlTextWriter(tempWriter));
+                    string cachedOutput = tempWriter.ToString();
+
+                    if (!string.IsNullOrEmpty(cachedOutput) && (!HttpContext.Current.Request.Browser.Crawler))
+                    {
+                        // Save content to cache
+                        var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
+                        var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
+
+                        var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() } };
+
+                        var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
+                        cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);
+                    }
+
+                    // Render the cached content to Response
+                    writer.Write(cachedOutput);
+                }
+                else
+                {
+                    // Render the control to Response
+                    base.RenderContents(writer);
+                }
+            }
+        }
+
+        private static void InjectMessageControl(Control container)
+        {
+            // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
+            var messagePlaceholder = new PlaceHolder { ID = "MessagePlaceHolder", Visible = false };
+            container.Controls.Add(messagePlaceholder);
+        }
+
+        private bool IsVersionRequest()
+        {
+            int version;
+            return TabVersionUtils.TryGetUrlVersion(out version);
+        }
+
+        private void InjectVersionToTheModuleIfSupported()
+        {
+            if (!(this._control is IVersionableControl))
+            {
+                return;
+            }
+
+            var versionableControl = this._control as IVersionableControl;
+            if (this._moduleConfiguration.ModuleVersion != Null.NullInteger)
+            {
+                versionableControl.SetModuleVersion(this._moduleConfiguration.ModuleVersion);
+            }
+        }
+
+        private void InjectModuleContent(Control content)
+        {
+            if (this._moduleConfiguration.IsWebSlice && !Globals.IsAdminControl())
+            {
+                // Assign the class - hslice to the Drag-N-Drop Panel
+                this.CssClass = "hslice";
+                var titleLabel = new Label
+                {
+                    CssClass = "entry-title Hidden",
+                    Text = !string.IsNullOrEmpty(this._moduleConfiguration.WebSliceTitle) ? this._moduleConfiguration.WebSliceTitle : this._moduleConfiguration.ModuleTitle,
+                };
+                this.Controls.Add(titleLabel);
+
+                var websliceContainer = new Panel { CssClass = "entry-content" };
+                websliceContainer.Controls.Add(content);
+
+                var expiry = new HtmlGenericControl { TagName = "abbr" };
+                expiry.Attributes["class"] = "endtime";
+                if (!Null.IsNull(this._moduleConfiguration.WebSliceExpiryDate))
+                {
+                    expiry.Attributes["title"] = this._moduleConfiguration.WebSliceExpiryDate.ToString("o");
+                    websliceContainer.Controls.Add(expiry);
+                }
+                else if (this._moduleConfiguration.EndDate < DateTime.MaxValue)
+                {
+                    expiry.Attributes["title"] = this._moduleConfiguration.EndDate.ToString("o");
+                    websliceContainer.Controls.Add(expiry);
+                }
+
+                var ttl = new HtmlGenericControl { TagName = "abbr" };
+                ttl.Attributes["class"] = "ttl";
+                if (this._moduleConfiguration.WebSliceTTL > 0)
+                {
+                    ttl.Attributes["title"] = this._moduleConfiguration.WebSliceTTL.ToString();
+                    websliceContainer.Controls.Add(ttl);
+                }
+                else if (this._moduleConfiguration.CacheTime > 0)
+                {
+                    ttl.Attributes["title"] = (this._moduleConfiguration.CacheTime / 60).ToString();
+                    websliceContainer.Controls.Add(ttl);
+                }
+
+                this.Controls.Add(websliceContainer);
+            }
+            else
+            {
+                this.Controls.Add(content);
+            }
+        }
+
+        /// ----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a flag that indicates whether the Module Content should be displayed.
+        /// </summary>
+        /// <returns>A Boolean.</returns>
+        private bool DisplayContent()
+        {
+            // module content visibility options
+            var content = this.PortalSettings.UserMode != PortalSettings.Mode.Layout;
+            if (this.Page.Request.QueryString["content"] != null)
+            {
+                switch (this.Page.Request.QueryString["Content"].ToLowerInvariant())
+                {
+                    case "1":
+                    case "true":
+                        content = true;
+                        break;
+                    case "0":
+                    case "false":
+                        content = false;
+                        break;
+                }
+            }
+
+            if (Globals.IsAdminControl())
+            {
+                content = true;
+            }
+
+            return content;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LoadModuleControl loads the ModuleControl (PortalModuelBase).
         /// </summary>
         private void LoadModuleControl()
         {
             try
             {
-                if (DisplayContent())
+                if (this.DisplayContent())
                 {
-                    //if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
-                    if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings) && !IsVersionRequest())
+                    // if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
+                    if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !this.IsVersionRequest())
                     {
-						//attempt to load the cached content
-                        _isCached = TryLoadCached();
+                        // attempt to load the cached content
+                        this._isCached = this.TryLoadCached();
                     }
-                    if (!_isCached)
+
+                    if (!this._isCached)
                     {
-                    	// load the control dynamically
-                        _control = _moduleControlPipeline.LoadModuleControl(Page, _moduleConfiguration);
+                        // load the control dynamically
+                        this._control = this._moduleControlPipeline.LoadModuleControl(this.Page, this._moduleConfiguration);
                     }
                 }
-                else //content placeholder
+                else // content placeholder
                 {
-                    _control = _moduleControlPipeline.CreateModuleControl(_moduleConfiguration);
+                    this._control = this._moduleControlPipeline.CreateModuleControl(this._moduleConfiguration);
                 }
-                if (Skin != null)
+
+                if (this.Skin != null)
                 {
-				
-                	//check for IMC
-                    Skin.Communicator.LoadCommunicator(_control);
+                    // check for IMC
+                    this.Skin.Communicator.LoadCommunicator(this._control);
                 }
-				
-                //add module settings
-                ModuleControl.ModuleContext.Configuration = _moduleConfiguration;
+
+                // add module settings
+                this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
             }
             catch (ThreadAbortException exc)
             {
@@ -291,14 +375,14 @@ namespace DotNetNuke.UI.Modules
             catch (Exception exc)
             {
                 Logger.Error(exc);
-				
-				//add module settings
-                _control = _moduleControlPipeline.CreateModuleControl(_moduleConfiguration);
-                ModuleControl.ModuleContext.Configuration = _moduleConfiguration;
+
+                // add module settings
+                this._control = this._moduleControlPipeline.CreateModuleControl(this._moduleConfiguration);
+                this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
                 if (TabPermissionController.CanAdminPage())
                 {
-					//only display the error to page administrators
-                    Exceptions.ProcessModuleLoadException(_control, exc);
+                    // only display the error to page administrators
+                    Exceptions.ProcessModuleLoadException(this._control, exc);
                 }
                 else
                 {
@@ -306,85 +390,85 @@ namespace DotNetNuke.UI.Modules
                     new ExceptionLogController().AddLog(exc);
                 }
             }
-            
-            //Enable ViewState
-            _control.ViewStateMode = ViewStateMode.Enabled;
+
+            // Enable ViewState
+            this._control.ViewStateMode = ViewStateMode.Enabled;
         }
 
         /// <summary>
-        /// LoadUpdatePanel optionally loads an AJAX Update Panel
+        /// LoadUpdatePanel optionally loads an AJAX Update Panel.
         /// </summary>
         private void LoadUpdatePanel()
         {
-			//register AJAX
+            // register AJAX
             AJAX.RegisterScriptManager();
 
-            //enable Partial Rendering
-            var scriptManager = AJAX.GetScriptManager(Page);
+            // enable Partial Rendering
+            var scriptManager = AJAX.GetScriptManager(this.Page);
             if (scriptManager != null)
             {
                 scriptManager.EnablePartialRendering = true;
             }
-			
-            //create update panel
-            var updatePanel = new UpdatePanel
-                                  {
-                                      UpdateMode = UpdatePanelUpdateMode.Conditional, 
-                                      ID = _control.ID + "_UP"
-                                  };
 
-            //get update panel content template
+            // create update panel
+            var updatePanel = new UpdatePanel
+            {
+                UpdateMode = UpdatePanelUpdateMode.Conditional,
+                ID = this._control.ID + "_UP",
+            };
+
+            // get update panel content template
             var templateContainer = updatePanel.ContentTemplateContainer;
 
-            //inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
+            // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
             InjectMessageControl(templateContainer);
 
-            //inject module into update panel content template
-            templateContainer.Controls.Add(_control);
+            // inject module into update panel content template
+            templateContainer.Controls.Add(this._control);
 
-            //inject the update panel into the panel
-            InjectModuleContent(updatePanel);
+            // inject the update panel into the panel
+            this.InjectModuleContent(updatePanel);
 
-            //create image for update progress control
+            // create image for update progress control
             var progressTemplate = "<div class=\"dnnLoading dnnPanelLoading\"></div>";
 
-            //inject updateprogress into the panel
+            // inject updateprogress into the panel
             var updateProgress = new UpdateProgress
-                                     {
-                                         AssociatedUpdatePanelID = updatePanel.ID, 
-                                         ID = updatePanel.ID + "_Prog",
+            {
+                AssociatedUpdatePanelID = updatePanel.ID,
+                ID = updatePanel.ID + "_Prog",
 
-                                         ProgressTemplate = new LiteralTemplate(progressTemplate)
-                                     };
-            Controls.Add(updateProgress);
+                ProgressTemplate = new LiteralTemplate(progressTemplate),
+            };
+            this.Controls.Add(updateProgress);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that indicates whether the Module Instance supports Caching
+        /// Gets a flag that indicates whether the Module Instance supports Caching.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         private bool SupportsCaching()
         {
-            return _moduleConfiguration.CacheTime > 0;
+            return this._moduleConfiguration.CacheTime > 0;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Trys to load previously cached Module Content
+        /// Trys to load previously cached Module Content.
         /// </summary>
-        /// <returns>A Boolean that indicates whether the cahed content was loaded</returns>
+        /// <returns>A Boolean that indicates whether the cahed content was loaded.</returns>
         private bool TryLoadCached()
         {
             bool success = false;
             string cachedContent = string.Empty;
             try
             {
-                var cache = ModuleCachingProvider.Instance(_moduleConfiguration.GetEffectiveCacheMethod());
-                var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString()}};
+                var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
+                var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() } };
 
-                string cacheKey = cache.GenerateCacheKey(_moduleConfiguration.TabModuleID, varyBy);
-                byte[] cachedBytes = ModuleCachingProvider.Instance(_moduleConfiguration.GetEffectiveCacheMethod()).GetModule(_moduleConfiguration.TabModuleID, cacheKey);
+                string cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
+                byte[] cachedBytes = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod()).GetModule(this._moduleConfiguration.TabModuleID, cacheKey);
 
                 if (cachedBytes != null && cachedBytes.Length > 0)
                 {
@@ -398,12 +482,14 @@ namespace DotNetNuke.UI.Modules
                 Exceptions.LogException(ex);
                 success = false;
             }
+
             if (success)
             {
                 this.RestoreCachedClientResourceRegistrations(cachedContent);
-                _control = _moduleControlPipeline.CreateCachedControl(cachedContent, _moduleConfiguration);
-                Controls.Add(_control);
+                this._control = this._moduleControlPipeline.CreateCachedControl(cachedContent, this._moduleConfiguration);
+                this.Controls.Add(this._control);
             }
+
             return success;
         }
 
@@ -452,7 +538,7 @@ namespace DotNetNuke.UI.Modules
                             priority = (int)FileOrder.Js.DefaultPriority;
                         }
 
-                        ClientResourceManager.RegisterScript(Page, filePath, priority, forceProvider);
+                        ClientResourceManager.RegisterScript(this.Page, filePath, priority, forceProvider);
                         break;
                     case "CSS":
                         if (string.IsNullOrEmpty(forceProvider))
@@ -465,7 +551,7 @@ namespace DotNetNuke.UI.Modules
                             priority = (int)FileOrder.Css.DefaultPriority;
                         }
 
-                        ClientResourceManager.RegisterStyleSheet(Page, filePath, priority, forceProvider);
+                        ClientResourceManager.RegisterStyleSheet(this.Page, filePath, priority, forceProvider);
                         break;
                     case "JS-LIBRARY":
                         var args = filePath.Split(new[] { ',', }, StringSplitOptions.None);
@@ -486,103 +572,5 @@ namespace DotNetNuke.UI.Modules
                 }
             }
         }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateChildControls builds the control tree
-        /// </summary>
-        protected override void CreateChildControls()
-        {
-            Controls.Clear();
-
-            //Load Module Control (or cached control)
-            LoadModuleControl();
-			
-			//Optionally Inject AJAX Update Panel
-            if (ModuleControl != null)
-            {
-                //if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
-                if (!_isCached && _moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
-                {
-                    LoadUpdatePanel();
-                }
-                else
-                {
-                    //inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
-                    InjectMessageControl(this);
-
-                    InjectVersionToTheModuleIfSupported();
-
-                    //inject the module into the panel
-                    InjectModuleContent(_control);
-                }
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (Host.EnableCustomModuleCssClass)
-            {
-                string moduleName = ModuleControl.ModuleContext.Configuration.DesktopModule.ModuleName;
-                if (moduleName != null)
-                {
-                    moduleName = Globals.CleanName(moduleName);
-                }
-                Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderContents renders the contents of the control to the output stream
-        /// </summary>
-        protected override void RenderContents(HtmlTextWriter writer)
-        {
-            if (_isCached)
-            {
-				//Render the cached control to the output stream
-                base.RenderContents(writer);
-            }
-            else
-            {
-                if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings) && !Globals.IsAdminControl() && !IsVersionRequest())
-                {
-					//Render to cache
-                    var tempWriter = new StringWriter();
-
-                    _control.RenderControl(new HtmlTextWriter(tempWriter));
-                    string cachedOutput = tempWriter.ToString();
-
-                    if (!string.IsNullOrEmpty(cachedOutput) && (!HttpContext.Current.Request.Browser.Crawler))
-                    {
-						//Save content to cache
-                        var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
-                        var cache = ModuleCachingProvider.Instance(_moduleConfiguration.GetEffectiveCacheMethod());
-
-                        var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString()}};
-
-                        var cacheKey = cache.GenerateCacheKey(_moduleConfiguration.TabModuleID, varyBy);
-                        cache.SetModule(_moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, _moduleConfiguration.CacheTime), moduleContent);
-                    }
-					
-                    //Render the cached content to Response
-                    writer.Write(cachedOutput);
-                }
-                else
-                {
-					//Render the control to Response
-                    base.RenderContents(writer);
-                }
-            }
-        }
-
-        #endregion
-
     }
 }

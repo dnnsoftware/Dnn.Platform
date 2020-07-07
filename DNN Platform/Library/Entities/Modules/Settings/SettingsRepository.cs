@@ -1,46 +1,50 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Cache;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Web.Caching;
-
 namespace DotNetNuke.Entities.Modules.Settings
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Web.Caching;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Cache;
     public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
     {
-        #region Properties
-
-        private IList<ParameterMapping> Mapping { get; }
+        public const string CachePrefix = "ModuleSettingsPersister_";
 
         private readonly IModuleController _moduleController;
 
-        #endregion
-
         protected SettingsRepository()
         {
-            Mapping = LoadMapping();
-            _moduleController = ModuleController.Instance;
+            this.Mapping = this.LoadMapping();
+            this._moduleController = ModuleController.Instance;
         }
+        protected virtual string MappingCacheKey
+        {
+            get
+            {
+                var type = typeof(T);
+                return CachePrefix + type.FullName.Replace(".", "_");
+            }
+        }
+
+        private IList<ParameterMapping> Mapping { get; }
 
         public T GetSettings(ModuleInfo moduleContext)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), Load, false);
+            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
-        #region Serialization
         public void SaveSettings(ModuleInfo moduleContext, T settings)
         {
             Requires.NotNull("settings", settings);
             Requires.NotNull("ctlModule", moduleContext);
 
-            Mapping.ForEach(mapping =>
+            this.Mapping.ForEach(mapping =>
             {
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
@@ -51,12 +55,12 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                     if (attribute is ModuleSettingAttribute)
                     {
-                        _moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
+                        this._moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
                         moduleContext.ModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
                     else if (attribute is TabModuleSettingAttribute)
                     {
-                        _moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
+                        this._moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
                         moduleContext.TabModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
                     else if (attribute is PortalSettingAttribute)
@@ -65,11 +69,9 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                 }
             });
-            DataCache.SetCache(CacheKey(moduleContext.TabModuleID), settings);
+            DataCache.SetCache(this.CacheKey(moduleContext.TabModuleID), settings);
         }
-        #endregion
 
-        #region Mappings
         protected IList<ParameterMapping> LoadMapping()
         {
             var cacheKey = this.MappingCacheKey;
@@ -77,22 +79,13 @@ namespace DotNetNuke.Entities.Modules.Settings
             if (mapping == null)
             {
                 mapping = this.CreateMapping();
-                // HARDCODED: 2 hour expiration. 
+
+                // HARDCODED: 2 hour expiration.
                 // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
                 CachingProvider.Instance().Insert(cacheKey, mapping, (DNNCacheDependency)null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
             }
 
             return mapping;
-        }
-
-        public const string CachePrefix = "ModuleSettingsPersister_";
-        protected virtual string MappingCacheKey
-        {
-            get
-            {
-                var type = typeof(T);
-                return CachePrefix + type.FullName.Replace(".", "_");
-            }
         }
 
         protected virtual IList<ParameterMapping> CreateMapping()
@@ -109,15 +102,13 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             return mapping;
         }
-        #endregion
 
-        #region Deserialization
         private T Load(CacheItemArgs args)
         {
             var ctlModule = (ModuleInfo)args.ParamList[0];
             var settings = new T();
 
-            Mapping.ForEach(mapping =>
+            this.Mapping.ForEach(mapping =>
             {
                 string settingValue = null;
 
@@ -140,7 +131,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (settingValue != null && property.CanWrite)
                 {
-                    DeserializeProperty(settings, property, attribute, settingValue);
+                    this.DeserializeProperty(settings, property, attribute, settingValue);
                 }
             });
 
@@ -163,7 +154,5 @@ namespace DotNetNuke.Entities.Modules.Settings
         {
             SerializationController.DeserializeProperty(settings, property, propertyValue, attribute.Serializer);
         }
-        #endregion
-
     }
 }

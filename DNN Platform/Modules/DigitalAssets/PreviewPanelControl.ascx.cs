@@ -1,29 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+
     public partial class PreviewPanelControl : System.Web.UI.UserControl
     {
-        #region Protected Properties
         protected string Title
         {
             get
             {
-                return PreviewInfo.Title;
+                return this.PreviewInfo.Title;
             }
         }
-                
+
         protected string PreviewImageUrl
-        { 
+        {
             get
             {
-                return PreviewInfo.PreviewImageUrl;
+                return this.PreviewInfo.PreviewImageUrl;
             }
         }
 
@@ -32,29 +31,26 @@ namespace DotNetNuke.Modules.DigitalAssets
         protected IDigitalAssetsController Controller { get; private set; }
 
         protected ModuleInfo ModuleConfiguration { get; private set; }
-        #endregion
-        
-        #region Public Methods
+
         public void SetPreviewInfo(PreviewInfoViewModel previewInfoViewModel)
         {
-            PreviewInfo = previewInfoViewModel;
-            if (FieldsControl != null && PreviewInfo != null)
+            this.PreviewInfo = previewInfoViewModel;
+            if (this.FieldsControl != null && this.PreviewInfo != null)
             {
-                var fieldsControl = ((PreviewFieldsControl)FieldsControl);
-                fieldsControl.Fields = PreviewInfo.Fields;
+                var fieldsControl = (PreviewFieldsControl)this.FieldsControl;
+                fieldsControl.Fields = this.PreviewInfo.Fields;
                 fieldsControl.GenerateFieldsTable();
             }
         }
-        
+
         public void SetController(IDigitalAssetsController damController)
         {
-            Controller = damController;
+            this.Controller = damController;
         }
 
         public void SetModuleConfiguration(ModuleInfo moduleConfiguration)
         {
-            ModuleConfiguration = moduleConfiguration;
+            this.ModuleConfiguration = moduleConfiguration;
         }
-        #endregion
     }
 }

@@ -1,21 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+
     /// <summary>
     /// ContentTypeController provides the business layer of ContentType.
     /// </summary>
@@ -38,20 +33,15 @@ namespace DotNetNuke.Entities.Content
     {
         private readonly IDataService _DataService;
 
-        #region Constructors
-
-        public ContentTypeController() : this(Util.GetDataService())
+        public ContentTypeController()
+            : this(Util.GetDataService())
         {
         }
 
         public ContentTypeController(IDataService dataService)
         {
-            _DataService = dataService;
+            this._DataService = dataService;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Adds the type of the content.
@@ -62,14 +52,14 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         public int AddContentType(ContentType contentType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            contentType.ContentTypeId = _DataService.AddContentType(contentType);
+            contentType.ContentTypeId = this._DataService.AddContentType(contentType);
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+            // Refresh cached collection of types
+            this.ClearContentTypeCache();
 
             return contentType.ContentTypeId;
         }
@@ -90,14 +80,14 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         public void DeleteContentType(ContentType contentType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
 
-            _DataService.DeleteContentType(contentType);
+            this._DataService.DeleteContentType(contentType);
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+            // Refresh cached collection of types
+            this.ClearContentTypeCache();
         }
 
         /// <summary>
@@ -106,10 +96,12 @@ namespace DotNetNuke.Entities.Content
         /// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
         {
-            return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey,
-                                                                            DataCache.ContentTypesCacheTimeOut,
-                                                                            DataCache.ContentTypesCachePriority),
-                                                                c => CBO.FillQueryable<ContentType>(_DataService.GetContentTypes()).ToList()).AsQueryable();
+            return CBO.GetCachedObject<List<ContentType>>(
+                new CacheItemArgs(
+                DataCache.ContentTypesCacheKey,
+                DataCache.ContentTypesCacheTimeOut,
+                DataCache.ContentTypesCachePriority),
+                c => CBO.FillQueryable<ContentType>(this._DataService.GetContentTypes()).ToList()).AsQueryable();
         }
 
         /// <summary>
@@ -121,17 +113,15 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         public void UpdateContentType(ContentType contentType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            _DataService.UpdateContentType(contentType);
+            this._DataService.UpdateContentType(contentType);
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+            // Refresh cached collection of types
+            this.ClearContentTypeCache();
         }
-
-        #endregion
     }
 }

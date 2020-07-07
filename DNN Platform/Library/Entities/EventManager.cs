@@ -1,188 +1,213 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Friends;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs.Actions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.EventArgs;
-using DotNetNuke.Services.Log.EventLog;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 // ReSharper disable UseNullPropagation
-
 namespace DotNetNuke.Entities
 {
+    using System;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Friends;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs.Actions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.EventArgs;
+    using DotNetNuke.Services.Log.EventLog;
+
     public class EventManager : ServiceLocator<IEventManager, EventManager>, IEventManager
     {
+        public EventManager()
+        {
+            foreach (var handler in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
+            {
+                this.FileChanged += handler.Value.FileOverwritten;
+                this.FileDeleted += handler.Value.FileDeleted;
+                this.FileRenamed += handler.Value.FileRenamed;
+                this.FileMoved += handler.Value.FileMoved;
+                this.FileAdded += handler.Value.FileAdded;
+                this.FileOverwritten += handler.Value.FileOverwritten;
+                this.FileMetadataChanged += handler.Value.FileMetadataChanged;
+                this.FileDownloaded += handler.Value.FileDownloaded;
+
+                this.FolderAdded += handler.Value.FolderAdded;
+                this.FolderDeleted += handler.Value.FolderDeleted;
+                this.FolderMoved += handler.Value.FolderMoved;
+                this.FolderRenamed += handler.Value.FolderRenamed;
+            }
+
+            foreach (var handler in EventHandlersContainer<IFollowerEventHandlers>.Instance.EventHandlers)
+            {
+                this.FollowRequested += handler.Value.FollowRequested;
+                this.UnfollowRequested += handler.Value.UnfollowRequested;
+            }
+
+            foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
+            {
+                this.FriendshipRequested += handlers.Value.FriendshipRequested;
+                this.FriendshipAccepted += handlers.Value.FriendshipAccepted;
+                this.FriendshipDeleted += handlers.Value.FriendshipDeleted;
+            }
+
+            foreach (var handlers in EventHandlersContainer<IModuleEventHandler>.Instance.EventHandlers)
+            {
+                this.ModuleCreated += handlers.Value.ModuleCreated;
+                this.ModuleUpdated += handlers.Value.ModuleUpdated;
+                this.ModuleRemoved += handlers.Value.ModuleRemoved;
+                this.ModuleDeleted += handlers.Value.ModuleDeleted;
+            }
+
+            foreach (var handler in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
+            {
+                this.PortalCreated += handler.Value.PortalCreated;
+            }
+
+            foreach (var handler in EventHandlersContainer<IPortalSettingHandlers>.Instance.EventHandlers)
+            {
+                this.PortalSettingUpdated += handler.Value.PortalSettingUpdated;
+            }
+
+            foreach (var handler in EventHandlersContainer<IPortalTemplateEventHandlers>.Instance.EventHandlers)
+            {
+                this.PortalTemplateCreated += handler.Value.TemplateCreated;
+            }
+
+            foreach (var handler in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
+            {
+                this.ProfileUpdated += handler.Value.ProfileUpdated;
+            }
+
+            foreach (var handler in EventHandlersContainer<IRoleEventHandlers>.Instance.EventHandlers)
+            {
+                this.RoleCreated += handler.Value.RoleCreated;
+                this.RoleDeleted += handler.Value.RoleDeleted;
+                this.RoleJoined += handler.Value.RoleJoined;
+                this.RoleLeft += handler.Value.RoleLeft;
+            }
+
+            foreach (var handler in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
+            {
+                this.TabCreated += handler.Value.TabCreated;
+                this.TabUpdated += handler.Value.TabUpdated;
+                this.TabRemoved += handler.Value.TabRemoved;
+                this.TabDeleted += handler.Value.TabDeleted;
+                this.TabRestored += handler.Value.TabRestored;
+                this.TabMarkedAsPublished += handler.Value.TabMarkedAsPublished;
+            }
+
+            foreach (var handler in EventHandlersContainer<ITabSyncEventHandler>.Instance.EventHandlers)
+            {
+                this.TabSerialize += handler.Value.TabSerialize;
+                this.TabDeserialize += handler.Value.TabDeserialize;
+            }
+
+            foreach (var handler in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
+            {
+                this.UserAuthenticated += handler.Value.UserAuthenticated;
+                this.UserCreated += handler.Value.UserCreated;
+                this.UserDeleted += handler.Value.UserDeleted;
+                this.UserRemoved += handler.Value.UserRemoved;
+                this.UserApproved += handler.Value.UserApproved;
+                this.UserUpdated += handler.Value.UserUpdated;
+            }
+        }
+
         private event EventHandler<FileAddedEventArgs> FileAdded;
+
         private event EventHandler<FileChangedEventArgs> FileChanged;
+
         private event EventHandler<FileDeletedEventArgs> FileDeleted;
+
         private event EventHandler<FileChangedEventArgs> FileMetadataChanged;
+
         private event EventHandler<FileMovedEventArgs> FileMoved;
+
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
+
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
-        private event EventHandler<FileDownloadedEventArgs> FileDownloaded; 
+
+        private event EventHandler<FileDownloadedEventArgs> FileDownloaded;
 
         private event EventHandler<FolderChangedEventArgs> FolderAdded;
+
         private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
+
         private event EventHandler<FolderMovedEventArgs> FolderMoved;
+
         private event EventHandler<FolderRenamedEventArgs> FolderRenamed;
 
         private event EventHandler<RelationshipEventArgs> FollowRequested;
+
         private event EventHandler<RelationshipEventArgs> UnfollowRequested;
 
         private event EventHandler<RelationshipEventArgs> FriendshipAccepted;
+
         private event EventHandler<RelationshipEventArgs> FriendshipDeleted;
+
         private event EventHandler<RelationshipEventArgs> FriendshipRequested;
 
         private event EventHandler<ModuleEventArgs> ModuleCreated;
+
         private event EventHandler<ModuleEventArgs> ModuleUpdated;
+
         private event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
+
         private event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
 
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
+
         private event EventHandler<PortalTemplateEventArgs> PortalTemplateCreated;
+
         private event EventHandler<PortalSettingUpdatedEventArgs> PortalSettingUpdated;
 
         private event EventHandler<ProfileEventArgs> ProfileUpdated;
 
         private event EventHandler<RoleEventArgs> RoleCreated;
+
         private event EventHandler<RoleEventArgs> RoleDeleted;
+
         private event EventHandler<RoleEventArgs> RoleJoined;
+
         private event EventHandler<RoleEventArgs> RoleLeft;
 
         private event EventHandler<TabEventArgs> TabCreated;
+
         private event EventHandler<TabEventArgs> TabUpdated;
+
         private event EventHandler<TabEventArgs> TabRemoved; // soft delete
+
         private event EventHandler<TabEventArgs> TabDeleted; // hard delete
+
         private event EventHandler<TabEventArgs> TabRestored;
+
         private event EventHandler<TabEventArgs> TabMarkedAsPublished;
 
         private event EventHandler<TabSyncEventArgs> TabSerialize; // soft delete
+
         private event EventHandler<TabSyncEventArgs> TabDeserialize; // hard delete
 
         private event EventHandler<UserEventArgs> UserApproved;
+
         private event EventHandler<UserEventArgs> UserAuthenticated;
+
         private event EventHandler<UserEventArgs> UserCreated;
+
         private event EventHandler<UserEventArgs> UserDeleted;
+
         private event EventHandler<UserEventArgs> UserRemoved;
+
         private event EventHandler<UpdateUserEventArgs> UserUpdated;
-
-
-        public EventManager()
-        {
-            foreach (var handler in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
-            {
-                FileChanged += handler.Value.FileOverwritten;
-                FileDeleted += handler.Value.FileDeleted;
-                FileRenamed += handler.Value.FileRenamed;
-                FileMoved += handler.Value.FileMoved;
-                FileAdded += handler.Value.FileAdded;
-                FileOverwritten += handler.Value.FileOverwritten;
-                FileMetadataChanged += handler.Value.FileMetadataChanged;
-                FileDownloaded += handler.Value.FileDownloaded;
-
-                FolderAdded += handler.Value.FolderAdded;
-                FolderDeleted += handler.Value.FolderDeleted;
-                FolderMoved += handler.Value.FolderMoved;
-                FolderRenamed += handler.Value.FolderRenamed;
-            }
-
-            foreach (var handler in EventHandlersContainer<IFollowerEventHandlers>.Instance.EventHandlers)
-            {
-                FollowRequested += handler.Value.FollowRequested;
-                UnfollowRequested += handler.Value.UnfollowRequested;
-            }
-
-            foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
-            {
-                FriendshipRequested += handlers.Value.FriendshipRequested;
-                FriendshipAccepted += handlers.Value.FriendshipAccepted;
-                FriendshipDeleted += handlers.Value.FriendshipDeleted;
-            }
-
-            foreach (var handlers in EventHandlersContainer<IModuleEventHandler>.Instance.EventHandlers)
-            {
-                ModuleCreated += handlers.Value.ModuleCreated;
-                ModuleUpdated += handlers.Value.ModuleUpdated;
-                ModuleRemoved += handlers.Value.ModuleRemoved;
-                ModuleDeleted += handlers.Value.ModuleDeleted;
-            }
-
-            foreach (var handler in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
-            {
-                PortalCreated += handler.Value.PortalCreated;
-            }
-
-            foreach (var handler in EventHandlersContainer<IPortalSettingHandlers>.Instance.EventHandlers)
-            {
-                PortalSettingUpdated += handler.Value.PortalSettingUpdated;
-            }
-
-            foreach (var handler in EventHandlersContainer<IPortalTemplateEventHandlers>.Instance.EventHandlers)
-            {
-                PortalTemplateCreated += handler.Value.TemplateCreated;
-            }
-
-            foreach (var handler in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
-            {
-                ProfileUpdated += handler.Value.ProfileUpdated;
-            }
-
-            foreach (var handler in EventHandlersContainer<IRoleEventHandlers>.Instance.EventHandlers)
-            {
-                RoleCreated += handler.Value.RoleCreated;
-                RoleDeleted += handler.Value.RoleDeleted;
-                RoleJoined += handler.Value.RoleJoined;
-                RoleLeft += handler.Value.RoleLeft;
-            }
-
-            foreach (var handler in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
-            {
-                TabCreated += handler.Value.TabCreated;
-                TabUpdated += handler.Value.TabUpdated;
-                TabRemoved += handler.Value.TabRemoved;
-                TabDeleted += handler.Value.TabDeleted;
-                TabRestored += handler.Value.TabRestored;
-                TabMarkedAsPublished += handler.Value.TabMarkedAsPublished;
-            }
-
-            foreach (var handler in EventHandlersContainer<ITabSyncEventHandler>.Instance.EventHandlers)
-            {
-                TabSerialize += handler.Value.TabSerialize;
-                TabDeserialize += handler.Value.TabDeserialize;
-            }
-
-            foreach (var handler in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
-            {
-                UserAuthenticated += handler.Value.UserAuthenticated;
-                UserCreated += handler.Value.UserCreated;
-                UserDeleted += handler.Value.UserDeleted;
-                UserRemoved += handler.Value.UserRemoved;
-                UserApproved += handler.Value.UserApproved;
-                UserUpdated += handler.Value.UserUpdated;
-            }
-
-        }
-
-        protected override Func<IEventManager> GetFactory()
-        {
-            return () => new EventManager();
-        }
 
         public virtual void OnFileAdded(FileAddedEventArgs args)
         {
-            if (FileAdded != null)
+            if (this.FileAdded != null)
             {
-                FileAdded(this, args);
+                this.FileAdded(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_ADDED);
@@ -190,9 +215,9 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFileChanged(FileChangedEventArgs args)
         {
-            if (FileChanged != null)
+            if (this.FileChanged != null)
             {
-                FileChanged(this, args);
+                this.FileChanged(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_CHANGED);
@@ -200,9 +225,9 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFileDeleted(FileDeletedEventArgs args)
         {
-            if (FileDeleted != null)
+            if (this.FileDeleted != null)
             {
-                FileDeleted(this, args);
+                this.FileDeleted(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_DELETED);
@@ -210,9 +235,9 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFileMetadataChanged(FileChangedEventArgs args)
         {
-            if (FileMetadataChanged != null)
+            if (this.FileMetadataChanged != null)
             {
-                FileMetadataChanged(this, args);
+                this.FileMetadataChanged(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_METADATACHANGED);
@@ -220,9 +245,9 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
         {
-            if (FileDownloaded != null)
+            if (this.FileDownloaded != null)
             {
-                FileDownloaded(this, args);
+                this.FileDownloaded(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_DOWNLOADED);
@@ -230,9 +255,9 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFileMoved(FileMovedEventArgs args)
         {
-            if (FileMoved != null)
+            if (this.FileMoved != null)
             {
-                FileMoved(this, args);
+                this.FileMoved(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_MOVED);
@@ -240,9 +265,9 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFileOverwritten(FileChangedEventArgs args)
         {
-            if (FileOverwritten != null)
+            if (this.FileOverwritten != null)
             {
-                FileOverwritten(this, args);
+                this.FileOverwritten(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_OVERWRITTEN);
@@ -250,9 +275,9 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFileRenamed(FileRenamedEventArgs args)
         {
-            if (FileRenamed != null)
+            if (this.FileRenamed != null)
             {
-                FileRenamed(this, args);
+                this.FileRenamed(this, args);
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_RENAMED);
@@ -260,281 +285,281 @@ namespace DotNetNuke.Entities
 
         public virtual void OnFolderAdded(FolderChangedEventArgs args)
         {
-            if (FolderAdded != null)
+            if (this.FolderAdded != null)
             {
-                FolderAdded(this, args);
+                this.FolderAdded(this, args);
             }
         }
 
         public virtual void OnFolderDeleted(FolderDeletedEventArgs args)
         {
-            if (FolderDeleted != null)
+            if (this.FolderDeleted != null)
             {
-                FolderDeleted(this, args);
+                this.FolderDeleted(this, args);
             }
         }
 
         public virtual void OnFolderMoved(FolderMovedEventArgs args)
         {
-            if (FolderMoved != null)
+            if (this.FolderMoved != null)
             {
-                FolderMoved(this, args);
+                this.FolderMoved(this, args);
             }
         }
 
         public virtual void OnFolderRenamed(FolderRenamedEventArgs args)
         {
-            if (FolderRenamed != null)
+            if (this.FolderRenamed != null)
             {
-                FolderRenamed(this, args);
+                this.FolderRenamed(this, args);
             }
         }
 
         public virtual void OnFollowRequested(RelationshipEventArgs args)
         {
-            if (FollowRequested != null)
+            if (this.FollowRequested != null)
             {
-                FollowRequested(this, args);
+                this.FollowRequested(this, args);
             }
         }
 
         public virtual void OnFriendshipAccepted(RelationshipEventArgs args)
         {
-            if (FriendshipAccepted != null)
+            if (this.FriendshipAccepted != null)
             {
-                FriendshipAccepted(this, args);
+                this.FriendshipAccepted(this, args);
             }
         }
 
         public virtual void OnFriendshipDeleted(RelationshipEventArgs args)
         {
-            if (FriendshipDeleted != null)
+            if (this.FriendshipDeleted != null)
             {
-                FriendshipDeleted(this, args);
+                this.FriendshipDeleted(this, args);
             }
         }
 
         public virtual void OnFriendshipRequested(RelationshipEventArgs args)
         {
-            if (FriendshipRequested != null)
+            if (this.FriendshipRequested != null)
             {
-                FriendshipRequested(this, args);
+                this.FriendshipRequested(this, args);
             }
         }
 
         public virtual void OnModuleCreated(ModuleEventArgs args)
         {
-            if (ModuleCreated != null)
+            if (this.ModuleCreated != null)
             {
-                ModuleCreated(this, args);
+                this.ModuleCreated(this, args);
             }
         }
 
         public virtual void OnModuleDeleted(ModuleEventArgs args)
         {
-            if (ModuleDeleted != null)
+            if (this.ModuleDeleted != null)
             {
-                ModuleDeleted(this, args);
+                this.ModuleDeleted(this, args);
             }
         }
 
         public virtual void OnModuleRemoved(ModuleEventArgs args)
         {
-            if (ModuleRemoved != null)
+            if (this.ModuleRemoved != null)
             {
-                ModuleRemoved(this, args);
+                this.ModuleRemoved(this, args);
             }
         }
 
         public virtual void OnModuleUpdated(ModuleEventArgs args)
         {
-            if (ModuleUpdated != null)
+            if (this.ModuleUpdated != null)
             {
-                ModuleUpdated(this, args);
+                this.ModuleUpdated(this, args);
             }
         }
 
         public virtual void OnPortalCreated(PortalCreatedEventArgs args)
         {
-            if (PortalCreated != null)
+            if (this.PortalCreated != null)
             {
-                PortalCreated(this, args);
+                this.PortalCreated(this, args);
             }
         }
 
         public virtual void OnPortalSettingUpdated(PortalSettingUpdatedEventArgs args)
         {
-            if (PortalSettingUpdated != null)
+            if (this.PortalSettingUpdated != null)
             {
-                PortalSettingUpdated(this, args);
+                this.PortalSettingUpdated(this, args);
             }
         }
 
         public virtual void OnPortalTemplateCreated(PortalTemplateEventArgs args)
         {
-            if (PortalTemplateCreated != null)
+            if (this.PortalTemplateCreated != null)
             {
-                PortalTemplateCreated(this, args);
+                this.PortalTemplateCreated(this, args);
             }
         }
 
         public virtual void OnProfileUpdated(ProfileEventArgs args)
         {
-            if (ProfileUpdated != null)
+            if (this.ProfileUpdated != null)
             {
-                ProfileUpdated(this, args);
+                this.ProfileUpdated(this, args);
             }
         }
 
         public virtual void OnRoleCreated(RoleEventArgs args)
         {
-            if (RoleCreated != null)
+            if (this.RoleCreated != null)
             {
-                RoleCreated(this, args);
+                this.RoleCreated(this, args);
             }
         }
 
         public virtual void OnRoleDeleted(RoleEventArgs args)
         {
-            if (RoleDeleted != null)
+            if (this.RoleDeleted != null)
             {
-                RoleDeleted(this, args);
+                this.RoleDeleted(this, args);
             }
         }
 
         public virtual void OnRoleJoined(RoleEventArgs args)
         {
-            if (RoleJoined != null)
+            if (this.RoleJoined != null)
             {
-                RoleJoined(this, args);
+                this.RoleJoined(this, args);
             }
         }
 
         public virtual void OnRoleLeft(RoleEventArgs args)
         {
-            if (RoleLeft != null)
+            if (this.RoleLeft != null)
             {
-                RoleLeft(this, args);
+                this.RoleLeft(this, args);
             }
         }
 
         public virtual void OnTabCreated(TabEventArgs args)
         {
-            if (TabCreated != null)
+            if (this.TabCreated != null)
             {
-                TabCreated(this, args);
+                this.TabCreated(this, args);
             }
         }
 
         public virtual void OnTabDeleted(TabEventArgs args)
         {
-            if (TabDeleted != null)
+            if (this.TabDeleted != null)
             {
-                TabDeleted(this, args);
+                this.TabDeleted(this, args);
             }
         }
 
         public virtual void OnTabDeserialize(TabSyncEventArgs args)
         {
-            if (TabDeserialize != null)
+            if (this.TabDeserialize != null)
             {
-                TabDeserialize(this, args);
+                this.TabDeserialize(this, args);
             }
         }
 
         public virtual void OnTabMarkedAsPublished(TabEventArgs args)
         {
-            if (TabMarkedAsPublished != null)
+            if (this.TabMarkedAsPublished != null)
             {
-                TabMarkedAsPublished(this, args);
+                this.TabMarkedAsPublished(this, args);
             }
         }
 
         public virtual void OnTabRemoved(TabEventArgs args)
         {
-            if (TabRemoved != null)
+            if (this.TabRemoved != null)
             {
-                TabRemoved(this, args);
+                this.TabRemoved(this, args);
             }
         }
 
         public virtual void OnTabRestored(TabEventArgs args)
         {
-            if (TabRestored != null)
+            if (this.TabRestored != null)
             {
-                TabRestored(this, args);
+                this.TabRestored(this, args);
             }
         }
 
         public virtual void OnTabSerialize(TabSyncEventArgs args)
         {
-            if (TabSerialize != null)
+            if (this.TabSerialize != null)
             {
-                TabSerialize(this, args);
+                this.TabSerialize(this, args);
             }
         }
 
         public virtual void OnTabUpdated(TabEventArgs args)
         {
-            if (TabUpdated != null)
+            if (this.TabUpdated != null)
             {
-                TabUpdated(this, args);
+                this.TabUpdated(this, args);
             }
         }
 
         public virtual void OnUnfollowRequested(RelationshipEventArgs args)
         {
-            if (UnfollowRequested != null)
+            if (this.UnfollowRequested != null)
             {
-                UnfollowRequested(this, args);
+                this.UnfollowRequested(this, args);
             }
         }
 
         public virtual void OnUserApproved(UserEventArgs args)
         {
-            if (UserApproved != null)
+            if (this.UserApproved != null)
             {
-                UserApproved(this, args);
+                this.UserApproved(this, args);
             }
         }
 
         public virtual void OnUserAuthenticated(UserEventArgs args)
         {
-            if (UserAuthenticated != null)
+            if (this.UserAuthenticated != null)
             {
-                UserAuthenticated(this, args);
+                this.UserAuthenticated(this, args);
             }
         }
 
         public virtual void OnUserCreated(UserEventArgs args)
         {
-            if (UserCreated != null)
+            if (this.UserCreated != null)
             {
-                UserCreated(this, args);
+                this.UserCreated(this, args);
             }
         }
 
         public virtual void OnUserDeleted(UserEventArgs args)
         {
-            if (UserDeleted != null)
+            if (this.UserDeleted != null)
             {
-                UserDeleted(this, args);
+                this.UserDeleted(this, args);
             }
         }
 
         public virtual void OnUserRemoved(UserEventArgs args)
         {
-            if (UserRemoved != null)
+            if (this.UserRemoved != null)
             {
-                UserRemoved(this, args);
+                this.UserRemoved(this, args);
             }
         }
 
         public virtual void OnUserUpdated(UpdateUserEventArgs args)
         {
-            if (UserUpdated != null)
+            if (this.UserUpdated != null)
             {
-                UserUpdated(this, args);
+                this.UserUpdated(this, args);
             }
         }
 
@@ -542,9 +567,14 @@ namespace DotNetNuke.Entities
         {
             foreach (var handlers in new EventHandlersContainer<ITabSyncEventHandler>().EventHandlers)
             {
-                TabSerialize += handlers.Value.TabSerialize;
-                TabDeserialize += handlers.Value.TabDeserialize;
+                this.TabSerialize += handlers.Value.TabSerialize;
+                this.TabDeserialize += handlers.Value.TabDeserialize;
             }
+        }
+
+        protected override Func<IEventManager> GetFactory()
+        {
+            return () => new EventManager();
         }
 
         private static void AddLog(IFileInfo fileInfo, int userId, EventLogController.EventLogType logType)
@@ -554,7 +584,7 @@ namespace DotNetNuke.Entities
                 return;
             }
 
-            EventLogController.Instance.AddLog(fileInfo, PortalSettings.Current, userId, "", logType);
+            EventLogController.Instance.AddLog(fileInfo, PortalSettings.Current, userId, string.Empty, logType);
         }
     }
 }

@@ -1,44 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-using DataCache = DotNetNuke.UI.Utilities.DataCache;
-using Globals = DotNetNuke.Common.Globals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Framework
 {
-#pragma warning disable 618
-	public class jQuery
-    {
-        private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
-        private const string jQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
-		private const string jQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
-		private const string jQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
-        private const string jQueryVersionKey = "jQueryVersionKey";
-		private const string jQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
+    using System;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using DataCache = DotNetNuke.UI.Utilities.DataCache;
+    using Globals = DotNetNuke.Common.Globals;
+
+#pragma warning disable 618
+    public class jQuery
+    {
         /// <summary>
-        /// Returns the default URL for a hosted version of the jQuery script
+        /// Returns the default URL for a hosted version of the jQuery script.
         /// </summary>
         /// <remarks>
         /// Google hosts versions of many popular javascript libraries on their CDN.
@@ -47,20 +35,27 @@ namespace DotNetNuke.Framework
         /// </remarks>
         public const string DefaultHostedUrl = "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
 
+        public const string DefaultUIHostedUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js";
+        private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
+        private const string jQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
+        private const string jQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
+        private const string jQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
+        private const string jQueryVersionKey = "jQueryVersionKey";
+        private const string jQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
+
         private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
         private const string jQueryUIVersionKey = "jQueryUIVersionKey";
         private const string jQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
-        public const string DefaultUIHostedUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js";
-
-        #region Public Properties
 
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery script.</placeholder>
+        /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUrl
         {
@@ -68,39 +63,43 @@ namespace DotNetNuke.Framework
             {
                 if (Globals.Status != Globals.UpgradeStatus.None)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
 
                 return Host.jQueryUrl;
             }
         }
 
-		/// <summary>
-		/// Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.
-		/// </summary>
-		/// <value></value>
-		/// <returns></returns>
-		/// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
+        /// <summary>
+        /// Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.
+        /// </summary>
+        /// <value>
+        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery migrated script.</placeholder>
+        /// </value>
+        /// <returns></returns>
+        /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedMigrateUrl
-		{
-			get
-			{
-				if (Globals.Status != Globals.UpgradeStatus.None)
-				{
-					return String.Empty;
-				}
+        {
+            get
+            {
+                if (Globals.Status != Globals.UpgradeStatus.None)
+                {
+                    return string.Empty;
+                }
 
-				return Host.jQueryMigrateUrl;
-			}
-		}
+                return Host.jQueryMigrateUrl;
+            }
+        }
 
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery UI script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery UI script.</placeholder>
+        /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUIUrl
         {
@@ -108,7 +107,7 @@ namespace DotNetNuke.Framework
             {
                 if (Globals.Status != Globals.UpgradeStatus.None)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
 
                 return Host.jQueryUIUrl;
@@ -116,7 +115,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Checks whether the jQuery core script file exists locally.
+        /// Gets a value indicating whether checks whether the jQuery core script file exists locally.
         /// </summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery.
@@ -134,7 +133,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Checks whether the jQuery UI core script file exists locally.
+        /// Gets a value indicating whether checks whether the jQuery UI core script file exists locally.
         /// </summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery UI.
@@ -150,6 +149,7 @@ namespace DotNetNuke.Framework
                 return File.Exists(minFile) || File.Exists(dbgFile);
             }
         }
+
         public static bool IsRequested
         {
             get
@@ -183,11 +183,13 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
+        /// Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</placeholder>
+        /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryDebug property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryDebug property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseDebugScript
         {
@@ -203,11 +205,13 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets the HostSetting to determine if we should use a hosted version of the jQuery script.
+        /// Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting to determine if we should use a hosted version of the jQuery script.</placeholder>
+        /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryHosted property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryHosted property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseHostedScript
         {
@@ -223,9 +227,11 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets the version string for the local jQuery script
+        /// Gets the version string for the local jQuery script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The version string for the local jQuery script</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>
         /// This only evaluates the version in the full jQuery file and assumes that the minified script
@@ -251,14 +257,17 @@ namespace DotNetNuke.Framework
                         ver = Localization.GetString("jQuery.NotInstalled.Text");
                     }
                 }
+
                 return ver;
             }
         }
 
         /// <summary>
-        /// Gets the version string for the local jQuery UI script
+        /// Gets the version string for the local jQuery UI script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The version string for the local jQuery UI script</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>
         /// This only evaluates the version in the full jQuery UI file and assumes that the minified script
@@ -284,34 +293,10 @@ namespace DotNetNuke.Framework
                         ver = Localization.GetString("jQueryUI.NotInstalled.Text");
                     }
                 }
+
                 return ver;
             }
         }
-        #endregion
-
-        #region Private Methods
-
-        private static bool GetSettingAsBoolean(string key, bool defaultValue)
-        {
-            bool retValue = defaultValue;
-            try
-            {
-                object setting = HttpContext.Current.Items[key];
-                if (setting != null)
-                {
-                    retValue = Convert.ToBoolean(setting);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-            return retValue;
-        }
-
-        #endregion
-
-        #region Public Methods
 
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryFileMapPath(bool getMinFile)
@@ -333,19 +318,21 @@ namespace DotNetNuke.Framework
             {
                 jfile = jQueryMinFile;
             }
+
             return jfile;
         }
 
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryMigrateFile(bool getMinFile)
-		{
-			string jfile = jQueryMigrateDebugFile;
-			if (getMinFile)
-			{
-				jfile = jQueryMigrateMinFile;
-			}
-			return jfile;
-		}
+        {
+            string jfile = jQueryMigrateDebugFile;
+            if (getMinFile)
+            {
+                jfile = jQueryMigrateMinFile;
+            }
+
+            return jfile;
+        }
 
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryUIFile(bool getMinFile)
@@ -355,6 +342,7 @@ namespace DotNetNuke.Framework
             {
                 jfile = jQueryUIMinFile;
             }
+
             return jfile;
         }
 
@@ -366,19 +354,21 @@ namespace DotNetNuke.Framework
             {
                 scriptsrc = JQueryFile(!UseDebugScript);
             }
+
             return scriptsrc;
         }
 
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string GetJQueryMigrateScriptReference()
-		{
-			string scriptsrc = HostedMigrateUrl;
-			if (!UseHostedScript || string.IsNullOrEmpty(scriptsrc))
-			{
-				scriptsrc = JQueryMigrateFile(!UseDebugScript);
-			}
-			return scriptsrc;
-		}
+        {
+            string scriptsrc = HostedMigrateUrl;
+            if (!UseHostedScript || string.IsNullOrEmpty(scriptsrc))
+            {
+                scriptsrc = JQueryMigrateFile(!UseDebugScript);
+            }
+
+            return scriptsrc;
+        }
 
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string GetJQueryUIScriptReference()
@@ -388,37 +378,33 @@ namespace DotNetNuke.Framework
             {
                 scriptsrc = JQueryUIFile(!UseDebugScript);
             }
+
             return scriptsrc;
         }
 
+        /// <summary>
+        /// Active the page with keep alive, so that authentication will not expire.
+        /// </summary>
+        /// <param name="page">The page instance.</param>
+        public static void KeepAlive(Page page)
+        {
+            var cookieTimeout = Config.GetAuthCookieTimeout();
+            if (cookieTimeout <= 0 || page.ClientScript.IsClientScriptBlockRegistered("PageKeepAlive"))
+            {
+                return;
+            }
 
+            if (cookieTimeout > 5)
+            {
+                cookieTimeout = 5; // ping server in 5 minutes to make sure the server is not IDLE.
+            }
 
-		/// <summary>
-		/// Active the page with keep alive, so that authentication will not expire.
-		/// </summary>
-		/// <param name="page">The page instance.</param>
-		public static void KeepAlive(Page page)
-		{
-			var cookieTimeout = Config.GetAuthCookieTimeout();
-			if(cookieTimeout <= 0 || page.ClientScript.IsClientScriptBlockRegistered("PageKeepAlive"))
-			{
-				return;
-			}
-
-			if(cookieTimeout > 5)
-			{
-				cookieTimeout = 5; // ping server in 5 minutes to make sure the server is not IDLE.
-			}
             JavaScript.RequestRegistration(CommonJs.jQuery);
 
-			var seconds = (cookieTimeout*60 - 30)*1000; //ping server 30 seconds before cookie is time out.
-			var scriptBlock = string.Format("(function($){{setInterval(function(){{$.get(location.href)}}, {1});}}(jQuery));", Globals.ApplicationPath, seconds);
-			ScriptManager.RegisterClientScriptBlock(page, page.GetType(), "PageKeepAlive", scriptBlock, true);
-		}
-
-        #endregion
-
-        #region Obsolete Members
+            var seconds = ((cookieTimeout * 60) - 30) * 1000; // ping server 30 seconds before cookie is time out.
+            var scriptBlock = string.Format("(function($){{setInterval(function(){{$.get(location.href)}}, {1});}}(jQuery));", Globals.ApplicationPath, seconds);
+            ScriptManager.RegisterClientScriptBlock(page, page.GetType(), "PageKeepAlive", scriptBlock, true);
+        }
 
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load. Scheduled removal in v10.0.0.")]
         public static void RegisterJQuery(Page page)
@@ -451,13 +437,11 @@ namespace DotNetNuke.Framework
         public static void RegisterFileUpload(Page page)
         {
             JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
-
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQuery);. Scheduled removal in v10.0.0.")]
         public static void RequestRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
@@ -465,26 +449,39 @@ namespace DotNetNuke.Framework
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQueryUI);. Scheduled removal in v10.0.0.")]
         public static void RequestUIRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.jQueryUI);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.DnnPlugins);. Scheduled removal in v10.0.0.")]
         public static void RequestDnnPluginsRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.HoverIntent);. Scheduled removal in v10.0.0.")]
         public static void RequestHoverIntentRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.HoverIntent);
         }
 
+        private static bool GetSettingAsBoolean(string key, bool defaultValue)
+        {
+            bool retValue = defaultValue;
+            try
+            {
+                object setting = HttpContext.Current.Items[key];
+                if (setting != null)
+                {
+                    retValue = Convert.ToBoolean(setting);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
 
-        #endregion
-	}
+            return retValue;
+        }
+    }
 #pragma warning restore 618
 }

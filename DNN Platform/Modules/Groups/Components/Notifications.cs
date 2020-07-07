@@ -1,27 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Common;
+namespace DotNetNuke.Modules.Groups.Components
+{
+    using System;
+    using System.Collections.Generic;
 
-namespace DotNetNuke.Modules.Groups.Components {
-    public class Notifications {
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Notifications;
+
+    public class Notifications
+    {
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators)
         {
-            return AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, null as UserInfo);
+            return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, null as UserInfo);
         }
-		internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, UserInfo recipient)
-		{
-			return AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, recipient == null ? null : new List<UserInfo> { recipient });
-		}
-        internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, IList<UserInfo> recipients) {
+
+        internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, UserInfo recipient)
+        {
+            return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, recipient == null ? null : new List<UserInfo> { recipient });
+        }
+
+        internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, IList<UserInfo> recipients)
+        {
             var notificationType = NotificationsController.Instance.GetNotificationType(notificationTypeName);
             var tokenReplace = new GroupItemTokenReplace(group);
 
@@ -29,31 +34,32 @@ namespace DotNetNuke.Modules.Groups.Components {
             subject = tokenReplace.ReplaceGroupItemTokens(subject);
 
             var body = Localization.GetString(notificationTypeName + ".Body", Constants.SharedResourcesPath);
-            
+
             body = tokenReplace.ReplaceGroupItemTokens(body);
             body = body.Replace("Public.Text", Localization.GetString("Public.Text", Constants.SharedResourcesPath));
             body = body.Replace("Private.Text", Localization.GetString("Private.Text", Constants.SharedResourcesPath));
 
             bool dismiss = notificationTypeName != Constants.GroupPendingNotification;
             var notification = new Notification
-                                   {
-                                       NotificationTypeID = notificationType.NotificationTypeId,
-                                       Subject = subject,
-                                       Body = body,
-                                       IncludeDismissAction = dismiss,
-                                       SenderUserID = initiatingUser.UserID,
-                                       Context = String.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID)
-                                   };
+            {
+                NotificationTypeID = notificationType.NotificationTypeId,
+                Subject = subject,
+                Body = body,
+                IncludeDismissAction = dismiss,
+                SenderUserID = initiatingUser.UserID,
+                Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID),
+            };
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, moderators, recipients);
 
             return notification;
         }
-        internal virtual Notification AddGroupOwnerNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser) 
+
+        internal virtual Notification AddGroupOwnerNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(notificationTypeName);
 
             var tokenReplace = new GroupItemTokenReplace(group);
-            
+
             var subject = Localization.GetString(notificationTypeName + ".Subject", Constants.SharedResourcesPath);
             var body = Localization.GetString(notificationTypeName + ".Body", Constants.SharedResourcesPath);
             subject = subject.Replace("[DisplayName]", initiatingUser.DisplayName);
@@ -74,11 +80,10 @@ namespace DotNetNuke.Modules.Groups.Components {
                     roleOwners.Add(UserController.GetUserById(group.PortalID, userRoleInfo.UserID));
                 }
             }
+
             roleOwners.Add(roleCreator);
-            
 
-
-            //Need to add from sender details
+            // Need to add from sender details
             var notification = new Notification
             {
                 NotificationTypeID = notificationType.NotificationTypeId,
@@ -86,13 +91,15 @@ namespace DotNetNuke.Modules.Groups.Components {
                 Body = body,
                 IncludeDismissAction = true,
                 SenderUserID = initiatingUser.UserID,
-                Context = String.Format("{0}:{1}:{2}:{3}", tabId, moduleId, group.RoleID, initiatingUser.UserID)
+                Context = string.Format("{0}:{1}:{2}:{3}", tabId, moduleId, group.RoleID, initiatingUser.UserID),
             };
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, roleOwners);
 
             return notification;
         }
-        internal virtual Notification AddMemberNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo sender, UserInfo recipient) {
+
+        internal virtual Notification AddMemberNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo sender, UserInfo recipient)
+        {
             var notificationType = NotificationsController.Instance.GetNotificationType(notificationTypeName);
 
             var subject = Localization.GetString(notificationTypeName + ".Subject", Constants.SharedResourcesPath);
@@ -106,7 +113,7 @@ namespace DotNetNuke.Modules.Groups.Components {
             body = body.Replace("[ProfileUrl]", Globals.UserProfileURL(recipient.UserID));
             body = tokenReplace.ReplaceGroupItemTokens(body);
 
-            //Need to add from sender details
+            // Need to add from sender details
             var notification = new Notification
             {
                 NotificationTypeID = notificationType.NotificationTypeId,
@@ -114,7 +121,7 @@ namespace DotNetNuke.Modules.Groups.Components {
                 Body = body,
                 IncludeDismissAction = true,
                 SenderUserID = sender.UserID,
-                Context = String.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID)
+                Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID),
             };
             NotificationsController.Instance.SendNotification(notification, recipient.PortalID, null, new List<UserInfo> { recipient });
 

@@ -1,42 +1,41 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Users.Components.Contracts;
-using Dnn.PersonaBar.Users.Components.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Web.Api;
-using System.Collections.Generic;
-using System.IO;
-using DotNetNuke.Entities.Portals;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.SqlClient;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Contracts;
+    using Dnn.PersonaBar.Users.Components.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Membership;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(MenuName = "Dnn.Users")]
     public class UsersController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
-
-        #region Users API
 
         /// <summary>
         /// Create a User.
@@ -50,7 +49,7 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 var settings = new RegisterationDetails
                 {
-                    PortalSettings = PortalSettings,
+                    PortalSettings = this.PortalSettings,
                     Email = contract.Email,
                     FirstName = contract.FirstName,
                     LastName = contract.LastName,
@@ -64,27 +63,27 @@ namespace Dnn.PersonaBar.Users.Services
                     IgnoreRegistrationMode = true
                 };
                 var userInfo = RegisterController.Instance.Register(settings);
-                return Request.CreateResponse(HttpStatusCode.OK, userInfo != null
-                    ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(PortalId,
+                return this.Request.CreateResponse(HttpStatusCode.OK, userInfo != null
+                    ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(this.PortalId,
                         userInfo.UserId))
                     : null);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
         /// <summary>
         /// Perform a search on Users registered in the Site.
         /// </summary>
-        /// <param name="searchText">Search filter text (if any)</param>
+        /// <param name="searchText">Search filter text (if any).</param>
         /// <param name="filter">User filter. Send -1 to disable.</param>
-        /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
-        /// <param name="pageSize">Number of records to return per page</param>
-        /// <param name="sortColumn">Column to sort on</param>
-        /// <param name="sortAscending">Sort ascending or descending</param>
+        /// <param name="pageIndex">Page index to begin from (0, 1, 2).</param>
+        /// <param name="pageSize">Number of records to return per page.</param>
+        /// <param name="sortColumn">Column to sort on.</param>
+        /// <param name="sortAscending">Sort ascending or descending.</param>
         [HttpGet]
         public HttpResponseMessage GetUsers(string searchText, UserFilters filter, int pageIndex, int pageSize,
             string sortColumn,
@@ -100,11 +99,11 @@ namespace Dnn.PersonaBar.Users.Services
                     PageSize = pageSize,
                     SortColumn = sortColumn,
                     SortAscending = sortAscending,
-                    PortalId = PortalController.GetEffectivePortalId(PortalId),
+                    PortalId = PortalController.GetEffectivePortalId(this.PortalId),
                     Filter = filter
                 };
 
-                var results = Components.UsersController.Instance.GetUsers(getUsersContract, UserInfo.IsSuperUser,
+                var results = Components.UsersController.Instance.GetUsers(getUsersContract, this.UserInfo.IsSuperUser,
                     out totalRecords);
                 var response = new
                 {
@@ -112,12 +111,12 @@ namespace Dnn.PersonaBar.Users.Services
                     TotalResults = totalRecords
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -126,13 +125,13 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                return Request.CreateResponse(HttpStatusCode.OK,
-                    Components.UsersController.Instance.GetUserFilters(UserInfo.IsSuperUser));
+                return this.Request.CreateResponse(HttpStatusCode.OK,
+                    Components.UsersController.Instance.GetUserFilters(this.UserInfo.IsSuperUser));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -146,28 +145,28 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var userDetail = Components.UsersController.Instance.GetUserDetail(PortalId, userId);
+                var userDetail = Components.UsersController.Instance.GetUserDetail(this.PortalId, userId);
                 if (userDetail == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    return this.Request.CreateErrorResponse(HttpStatusCode.NotFound,
                         Localization.GetString("UserNotFound", Components.Constants.LocalResourcesFile));
                 }
                 if (userDetail.IsSuperUser)
                 {
-                    if (!UserInfo.IsSuperUser)
+                    if (!this.UserInfo.IsSuperUser)
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                        return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
                             Localization.GetString("InSufficientPermissions.Text", Components.Constants.LocalResourcesFile));
                     }
                     userDetail = Components.UsersController.Instance.GetUserDetail(Null.NullInteger, userId);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, userDetail);
+                return this.Request.CreateResponse(HttpStatusCode.OK, userDetail);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -181,19 +180,19 @@ namespace Dnn.PersonaBar.Users.Services
                 var userId = changePasswordDto.UserId;
                 var password = changePasswordDto.Password;
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
 
                 var controller = Components.UsersController.Instance;
-                controller.ChangePassword(PortalId, userId, password);
+                controller.ChangePassword(this.PortalId, userId, password);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -205,22 +204,22 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
                 HttpResponseMessage httpResponseMessage;
-                if (IsCurrentUser(userId, out httpResponseMessage))
+                if (this.IsCurrentUser(userId, out httpResponseMessage))
                     return httpResponseMessage;
 
-                return Components.UsersController.Instance.ForceChangePassword(user, PortalId, true)
-                    ? Request.CreateResponse(HttpStatusCode.OK, new { Success = true })
-                    : Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                return Components.UsersController.Instance.ForceChangePassword(user, this.PortalId, true)
+                    ? this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true })
+                    : this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                         Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile));
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -232,9 +231,9 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
 
                 var errorMessage = string.Empty;
                 if (MembershipProviderConfig.RequiresQuestionAndAnswer)
@@ -248,14 +247,14 @@ namespace Dnn.PersonaBar.Users.Services
                         //create resettoken
                         UserController.ResetPasswordToken(user, Host.AdminMembershipResetLinkValidity);
 
-                        var canSend = Mail.SendMail(user, MessageType.PasswordReminder, PortalSettings) == string.Empty;
+                        var canSend = Mail.SendMail(user, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
                         if (!canSend)
                         {
                             errorMessage = Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile);
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                         }
                     }
                     catch (ArgumentException exc)
@@ -270,12 +269,12 @@ namespace Dnn.PersonaBar.Users.Services
                     }
                 }
 
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -287,22 +286,22 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
                 HttpResponseMessage httpResponseMessage;
-                if (IsCurrentUser(userId, out httpResponseMessage))
+                if (this.IsCurrentUser(userId, out httpResponseMessage))
                     return httpResponseMessage;
                 if (user.Membership.Approved == authorized)//Do nothing if the new status is same as current status.
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
-                Components.UsersController.Instance.UpdateAuthorizeStatus(user, PortalId, authorized);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                Components.UsersController.Instance.UpdateAuthorizeStatus(user, this.PortalId, authorized);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -314,20 +313,20 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
                 var deleted = !user.IsDeleted && UserController.DeleteUser(ref user, true, false);
 
                 return !deleted
-                    ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                    ? this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserDeleteError", Components.Constants.LocalResourcesFile))
-                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -339,19 +338,19 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
                 var deleted = user.IsDeleted && UserController.RemoveUser(user);
                 return !deleted
-                    ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                    ? this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRemoveError", Components.Constants.LocalResourcesFile))
-                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -359,20 +358,20 @@ namespace Dnn.PersonaBar.Users.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RemoveDeletedUsers()
         {
-            if (!UserInfo.IsSuperUser)
+            if (!this.UserInfo.IsSuperUser)
             {
-                if (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                if (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
                 }
             }
-            UserController.RemoveDeletedUsers(PortalSettings.PortalId);
-            var remaining = UserController.GetDeletedUsers(PortalSettings.PortalId);
+            UserController.RemoveDeletedUsers(this.PortalSettings.PortalId);
+            var remaining = UserController.GetDeletedUsers(this.PortalSettings.PortalId);
             if (remaining.Count > 0)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CouldNotRemoveAll", Components.Constants.LocalResourcesFile));
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CouldNotRemoveAll", Components.Constants.LocalResourcesFile));
             }
-            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
         [HttpPost]
@@ -383,19 +382,19 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
                 var restored = user.IsDeleted && UserController.RestoreUser(ref user);
                 return !restored
-                    ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                    ? this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRestoreError", Components.Constants.LocalResourcesFile))
-                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -407,22 +406,22 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
 
                 user.IsSuperUser = setSuperUser;
 
                 //Update User
-                UserController.UpdateUser(PortalId, user);
+                UserController.UpdateUser(this.PortalId, user);
                 DataCache.ClearCache();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -433,26 +432,26 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                Validate(userBasicDto);
+                this.Validate(userBasicDto);
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userBasicDto.UserId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userBasicDto.UserId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
 
                 var upadtedUser = Components.UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
 
-                return Request.CreateResponse(HttpStatusCode.OK, upadtedUser);
+                return this.Request.CreateResponse(HttpStatusCode.OK, upadtedUser);
             }
             catch (SqlException ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                     Localization.GetString("UsernameNotUnique", Components.Constants.LocalResourcesFile));
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -464,29 +463,25 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
                 HttpResponseMessage httpResponseMessage;
-                if (IsCurrentUser(userId, out httpResponseMessage))
+                if (this.IsCurrentUser(userId, out httpResponseMessage))
                     return httpResponseMessage;
 
                 var unlocked = user.Membership.LockedOut && UserController.UnLockUser(user);
                 return !unlocked
-                    ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                    ? this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserUnlockError", Components.Constants.LocalResourcesFile))
-                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        #endregion
-
-        #region User Roles API
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
@@ -496,16 +491,16 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 if (string.IsNullOrEmpty(keyword))
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new List<UserRoleInfo>());
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new List<UserRoleInfo>());
                 }
-                var isAdmin = Components.UsersController.IsAdmin(PortalSettings);
+                var isAdmin = Components.UsersController.IsAdmin(this.PortalSettings);
 
-                var roles = RoleController.Instance.GetRoles(PortalId,
+                var roles = RoleController.Instance.GetRoles(this.PortalId,
                     x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
                 var matchedRoles = roles
                     .Where(
                         r =>
-                            (isAdmin || r.RoleID != PortalSettings.AdministratorRoleId) &&
+                            (isAdmin || r.RoleID != this.PortalSettings.AdministratorRoleId) &&
                             r.Status == RoleStatus.Approved)
                     .ToList().Take(count).Select(u => new UserRoleInfo
                     {
@@ -514,13 +509,13 @@ namespace Dnn.PersonaBar.Users.Services
                         SecurityMode = u.SecurityMode
                     });
 
-                return Request.CreateResponse(HttpStatusCode.OK,
-                    matchedRoles.ToList().Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r)));
+                return this.Request.CreateResponse(HttpStatusCode.OK,
+                    matchedRoles.ToList().Select(r => UserRoleDto.FromRoleInfo(this.PortalSettings, r)));
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -531,19 +526,19 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
                 int totalRoles;
                 var userRoles = Components.UsersController.Instance.GetUserRoles(user, keyword, out totalRoles, pageIndex, pageSize)
-                        .Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r));
+                        .Select(r => UserRoleDto.FromRoleInfo(this.PortalSettings, r));
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { UserRoles = userRoles, TotalRecords = totalRoles });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { UserRoles = userRoles, TotalRecords = totalRoles });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -555,21 +550,21 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                Validate(userRoleDto);
+                this.Validate(userRoleDto);
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userRoleDto.UserId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
 
-                var result = Components.UsersController.Instance.SaveUserRole(PortalId, UserInfo, userRoleDto,
+                var result = Components.UsersController.Instance.SaveUserRole(this.PortalId, this.UserInfo, userRoleDto,
                     notifyUser, isOwner);
 
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+                return this.Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -580,27 +575,24 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                Validate(userRoleDto);
+                this.Validate(userRoleDto);
                 KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userRoleDto.UserId, PortalSettings, UserInfo, out response);
+                var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
-                    return Request.CreateErrorResponse(response.Key, response.Value);
+                    return this.Request.CreateErrorResponse(response.Key, response.Value);
 
-                RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
+                RoleController.Instance.UpdateUserRole(this.PortalId, userRoleDto.UserId, userRoleDto.RoleId,
                     RoleStatus.Approved, false, true);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
-        #endregion
-
-        #region Profiles API
         //        User profile is not implemented currently
         //        [HttpGet]
         //        public HttpResponseMessage GetProfileDefinitions()
@@ -617,26 +609,25 @@ namespace Dnn.PersonaBar.Users.Services
         //            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
         //        }
 
-        #endregion
-
         /// <summary>
-        /// Return Password security options from server 
+        /// Return Password security options from server. 
         /// </summary>
-        /// <returns>MembershipPasswordSettings</returns>
+        /// <returns>MembershipPasswordSettings.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
         public HttpResponseMessage PasswordStrengthOptions()
         {
-            var settings = new MembershipPasswordSettings(PortalId);
+            var settings = new MembershipPasswordSettings(this.PortalId);
 
-            var passwordSettings = new PasswordSettingsDto{
+            var passwordSettings = new PasswordSettingsDto
+            {
                 MinLength = settings.MinPasswordLength,
                 MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters,
                 ValidationExpression = settings.ValidationExpression
             };
 
-            return Request.CreateResponse(HttpStatusCode.OK, passwordSettings);
+            return this.Request.CreateResponse(HttpStatusCode.OK, passwordSettings);
         }
 
         private void Validate(UserRoleDto userRoleDto)
@@ -653,9 +644,9 @@ namespace Dnn.PersonaBar.Users.Services
         private bool IsCurrentUser(int userId, out HttpResponseMessage response)
         {
             response = null;
-            if (userId == UserInfo.UserID)
+            if (userId == this.UserInfo.UserID)
             {
-                response = Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                response = this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
                     Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
                 return true;
             }

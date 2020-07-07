@@ -1,32 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+
     public class EventLogController : ServiceLocator<IEventLogController, EventLogController>, IEventLogController
     {
-        #region EventLogType enum
-
         public enum EventLogType
         {
             USER_CREATED,
@@ -182,62 +175,64 @@ namespace DotNetNuke.Services.Log.EventLog
             WEBSERVER_DISABLED,
             WEBSERVER_ENABLED,
             WEBSERVER_PINGFAILED,
-            FOLDER_MOVED
+            FOLDER_MOVED,
         }
 
-        #endregion
-
-        protected override Func<IEventLogController> GetFactory()
+        public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
         {
-            return () => new EventLogController();
-        }
+            var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
+            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
+            log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
 
-        #region IEventLogController Members
+            LogController.Instance.AddLog(log);
+        }
 
         public void AddLog(string propertyName, string propertyValue, EventLogType logType)
         {
-            AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
+            this.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
         }
 
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType)
         {
-            AddLog(propertyName, propertyValue, portalSettings, userID, logType.ToString());
+            this.AddLog(propertyName, propertyValue, portalSettings, userID, logType.ToString());
         }
 
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
         {
             var properties = new LogProperties();
-            var logDetailInfo = new LogDetailInfo {PropertyName = propertyName, PropertyValue = propertyValue};
+            var logDetailInfo = new LogDetailInfo { PropertyName = propertyName, PropertyValue = propertyValue };
             properties.Add(logDetailInfo);
-            AddLog(properties, portalSettings, userID, logType, false);
+            this.AddLog(properties, portalSettings, userID, logType, false);
         }
 
         public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
         {
-            //supports adding a custom string for LogType
+            // supports adding a custom string for LogType
             var log = new LogInfo
-                {
-                    LogUserID = userID,
-                    LogTypeKey = logTypeKey,
-                    LogProperties = properties,
-                    BypassBuffering = bypassBuffering
-                };
+            {
+                LogUserID = userID,
+                LogTypeKey = logTypeKey,
+                LogProperties = properties,
+                BypassBuffering = bypassBuffering,
+            };
             if (portalSettings != null)
             {
                 log.LogPortalID = portalSettings.PortalId;
                 log.LogPortalName = portalSettings.PortalName;
             }
+
             LogController.Instance.AddLog(log);
         }
 
         public void AddLog(PortalSettings portalSettings, int userID, EventLogType logType)
         {
-            AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
+            this.AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
         }
 
         public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, EventLogType logType)
         {
-            AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
+            this.AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
         }
 
         public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType)
@@ -339,16 +334,12 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             else
             {
-                //Serialise using XmlSerializer
+                // Serialise using XmlSerializer
                 log.LogProperties.Add(new LogDetailInfo("logdetail", XmlUtils.Serialize(businessObject)));
             }
 
             LogController.Instance.AddLog(log);
         }
-
-        #endregion
-
-        #region ILogController Members
 
         public void AddLog(LogInfo logInfo)
         {
@@ -430,22 +421,9 @@ namespace DotNetNuke.Services.Log.EventLog
             LogController.Instance.UpdateLogType(logType);
         }
 
-
-        #endregion
-
-        #region Helper Methods
-
-        public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
+        protected override Func<IEventLogController> GetFactory()
         {
-            var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
-            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
-            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
-            log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
-
-            LogController.Instance.AddLog(log);
+            return () => new EventLogController();
         }
-
-        #endregion
-
     }
 }

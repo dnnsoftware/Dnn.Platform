@@ -1,17 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System.Collections.Generic;
+
     /// <summary>
-    ///   Late-bound RSS element (used for late bound item and image)
+    ///   Late-bound RSS element (used for late bound item and image).
     /// </summary>
     public sealed class GenericRssElement : RssElementBase
     {
@@ -27,11 +22,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return GetAttributeValue(attributeName);
+                return this.GetAttributeValue(attributeName);
             }
+
             set
             {
-                Attributes[attributeName] = value;
+                this.Attributes[attributeName] = value;
             }
         }
     }

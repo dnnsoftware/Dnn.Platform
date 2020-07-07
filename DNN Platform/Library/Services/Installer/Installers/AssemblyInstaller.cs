@@ -1,27 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Reflection;
-using System.Security;
-using System.Text.RegularExpressions;
-using System.Xml;
-
-using DotNetNuke.Common;
-using DotNetNuke.Data;
-using DotNetNuke.Framework;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Security;
+    using System.Text.RegularExpressions;
+    using System.Xml;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AssemblyInstaller installs Assembly Components to a DotNetNuke site
+    /// The AssemblyInstaller installs Assembly Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,13 +26,24 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
 
-        #region "Protected Properties"
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
+        /// </summary>
+        /// <value>A String.</value>
+        public override string AllowableFiles
+        {
+            get
+            {
+                return "dll,pdb";
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("assemblies")
+        /// Gets the name of the Collection Node ("assemblies").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string CollectionNodeName
         {
             get
@@ -48,9 +54,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the default Path for the file - if not present in the manifest
+        /// Gets the default Path for the file - if not present in the manifest.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string DefaultPath
         {
             get
@@ -61,9 +67,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("assembly")
+        /// Gets the name of the Item Node ("assembly").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string ItemNodeName
         {
             get
@@ -74,169 +80,101 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PhysicalBasePath for the assemblies
+        /// Gets the PhysicalBasePath for the assemblies.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string PhysicalBasePath
         {
             get
             {
-                return PhysicalSitePath + "\\";
+                return this.PhysicalSitePath + "\\";
             }
         }
-		
-		#endregion
-
-		#region "Public Properties"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
-        /// </summary>
-        /// <value>A String</value>
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "dll,pdb";
-            }
-        }
-		
-		
-		#endregion
-
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DeleteFile method deletes a single assembly.
         /// </summary>
-        /// <param name="file">The InstallFile to delete</param>
+        /// <param name="file">The InstallFile to delete.</param>
         protected override void DeleteFile(InstallFile file)
         {
-            //Attempt to unregister assembly this will return False if the assembly is used by another package and
-            //cannot be delete andtrue if it is not being used and can be deleted
-            if (DataProvider.Instance().UnRegisterAssembly(Package.PackageID, file.Name))
+            // Attempt to unregister assembly this will return False if the assembly is used by another package and
+            // cannot be delete andtrue if it is not being used and can be deleted
+            if (DataProvider.Instance().UnRegisterAssembly(this.Package.PackageID, file.Name))
             {
-                Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
-                
-                RemoveBindingRedirect(file);
-                
-                //Call base class version to deleteFile file from \bin
+                this.Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
+
+                this.RemoveBindingRedirect(file);
+
+                // Call base class version to deleteFile file from \bin
                 base.DeleteFile(file);
             }
             else
             {
-                Log.AddInfo(Util.ASSEMBLY_InUse + " - " + file.FullName);
+                this.Log.AddInfo(Util.ASSEMBLY_InUse + " - " + file.FullName);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that determines what type of file this installer supports
+        /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
-        /// <param name="type">The type of file being processed</param>
+        /// <param name="type">The type of file being processed.</param>
+        /// <returns></returns>
         protected override bool IsCorrectType(InstallFileType type)
         {
-            return (type == InstallFileType.Assembly);
+            return type == InstallFileType.Assembly;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The InstallFile method installs a single assembly.
         /// </summary>
-        /// <param name="file">The InstallFile to install</param>
+        /// <param name="file">The InstallFile to install.</param>
+        /// <returns></returns>
         protected override bool InstallFile(InstallFile file)
         {
             bool bSuccess = true;
             if (file.Action == "UnRegister")
             {
-                DeleteFile(file);
+                this.DeleteFile(file);
             }
             else
             {
-                //Attempt to register assembly this will return False if the assembly exists and true if it does not or is older
-                int returnCode = DataProvider.Instance().RegisterAssembly(Package.PackageID, file.Name, file.Version.ToString(3));
+                // Attempt to register assembly this will return False if the assembly exists and true if it does not or is older
+                int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, file.Version.ToString(3));
                 switch (returnCode)
                 {
                     case 0:
-                        //Assembly Does Not Exist
-                        Log.AddInfo(Util.ASSEMBLY_Added + " - " + file.FullName);
+                        // Assembly Does Not Exist
+                        this.Log.AddInfo(Util.ASSEMBLY_Added + " - " + file.FullName);
                         break;
                     case 1:
-                        //Older version of Assembly Exists
-                        Log.AddInfo(Util.ASSEMBLY_Updated + " - " + file.FullName);
+                        // Older version of Assembly Exists
+                        this.Log.AddInfo(Util.ASSEMBLY_Updated + " - " + file.FullName);
                         break;
                     case 2:
                     case 3:
-						//Assembly already Registered
-                        Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
+                        // Assembly already Registered
+                        this.Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
                         break;
                 }
-				
-                //If assembly not registered, is newer (or is the same version and we are in repair mode)
+
+                // If assembly not registered, is newer (or is the same version and we are in repair mode)
                 if (returnCode < 2 || (returnCode == 2 && file.InstallerInfo.RepairInstall))
                 {
-                    //Call base class version to copy file to \bin
+                    // Call base class version to copy file to \bin
                     bSuccess = base.InstallFile(file);
-                    AddOrUpdateBindingRedirect(file);
+                    this.AddOrUpdateBindingRedirect(file);
                 }
             }
+
             return bSuccess;
-        }
-		
-		#endregion
-
-        #region "Private Methods"
-
-        /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
-        /// <param name="file">The assembly file.</param>
-        private void AddOrUpdateBindingRedirect(InstallFile file)
-        {
-            if (ApplyXmlMerge(file, "BindingRedirect.config"))
-            {
-                this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
-            }
-        }
-
-        /// <summary>Removes the binding redirect for the assembly file, if the assembly is strong-named.</summary>
-        /// <param name="file">The assembly file.</param>
-        private void RemoveBindingRedirect(InstallFile file)
-        {
-            if (ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
-            {
-                Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
-            }
-        }
-
-        /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
-        /// <param name="file">The assembly file.</param>
-        /// <param name="xmlMergeFile">The XML merge file name.</param>
-        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
-        private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
-        {
-            var assemblyName = ReadAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
-            var publicKeyToken = ReadPublicKey(assemblyName);
-            if (string.IsNullOrEmpty(publicKeyToken))
-            {
-                return false;
-            }
-
-            var name = assemblyName.Name;
-            var assemblyVersion = assemblyName.Version;
-            var newVersion = assemblyVersion.ToString();
-
-            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
-            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
-            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
-            xmlMerge.UpdateConfigs();
-            
-            return true;
         }
 
         /// <summary>Reads the file's <see cref="AssemblyName"/>.</summary>
         /// <param name="assemblyFile">The path for the assembly whose <see cref="AssemblyName"/> is to be returned.</param>
-        /// <returns>An <see cref="AssemblyName"/> or <c>null</c></returns>
+        /// <returns>An <see cref="AssemblyName"/> or <c>null</c>.</returns>
         private static AssemblyName ReadAssemblyName(string assemblyFile)
         {
             try
@@ -264,7 +202,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return null;
             }
         }
-        
+
         private static string ReadPublicKey(AssemblyName assemblyName)
         {
             if (assemblyName == null || !assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
@@ -326,6 +264,49 @@ namespace DotNetNuke.Services.Installer.Installers
             attribute.Value = attribute.Value.Replace(oldValue, newValue);
         }
 
-        #endregion
+        /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
+        /// <param name="file">The assembly file.</param>
+        private void AddOrUpdateBindingRedirect(InstallFile file)
+        {
+            if (this.ApplyXmlMerge(file, "BindingRedirect.config"))
+            {
+                this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
+            }
+        }
+
+        /// <summary>Removes the binding redirect for the assembly file, if the assembly is strong-named.</summary>
+        /// <param name="file">The assembly file.</param>
+        private void RemoveBindingRedirect(InstallFile file)
+        {
+            if (this.ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
+            {
+                this.Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
+            }
+        }
+
+        /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
+        /// <param name="file">The assembly file.</param>
+        /// <param name="xmlMergeFile">The XML merge file name.</param>
+        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
+        private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
+        {
+            var assemblyName = ReadAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
+            var publicKeyToken = ReadPublicKey(assemblyName);
+            if (string.IsNullOrEmpty(publicKeyToken))
+            {
+                return false;
+            }
+
+            var name = assemblyName.Name;
+            var assemblyVersion = assemblyName.Version;
+            var newVersion = assemblyVersion.ToString();
+
+            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
+            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
+            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
+            xmlMerge.UpdateConfigs();
+
+            return true;
+        }
     }
 }

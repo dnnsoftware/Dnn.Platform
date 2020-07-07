@@ -1,33 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Friends;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Users.Social.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Friends;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Notifications;
+
     internal class FriendsControllerImpl : IFriendsController
     {
         internal const string FriendRequest = "FriendRequest";
 
-
-        //static FriendsControllerImpl()
-        //{
-        //}
+        // static FriendsControllerImpl()
+        // {
+        // }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AcceptFriend - Current User accepts a Friend Request to the Target User
-        /// </summary>                
-        /// <param name="targetUser">UserInfo for Target User</param>        
-        /// <returns>UserRelationship object</returns>
+        /// AcceptFriend - Current User accepts a Friend Request to the Target User.
+        /// </summary>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// -----------------------------------------------------------------------------
         public void AcceptFriend(UserInfo targetUser)
         {
@@ -39,15 +38,14 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 NotificationsController.Instance.GetNotificationType(FriendRequest).NotificationTypeId,
                 friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), initiatingUser.UserID);
 
-            EventManager.Instance.OnFriendshipAccepted(new RelationshipEventArgs(friendRelationship,initiatingUser.PortalID));
+            EventManager.Instance.OnFriendshipAccepted(new RelationshipEventArgs(friendRelationship, initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddFriend - Current User initiates a Friend Request to the Target User
-        /// </summary>                
-        /// <param name="targetUser">UserInfo for Target User</param>        
-        /// <returns>UserRelationship object</returns>
+        /// AddFriend - Current User initiates a Friend Request to the Target User.
+        /// </summary>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -55,16 +53,15 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         public void AddFriend(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();
-            AddFriend(initiatingUser, targetUser);
+            this.AddFriend(initiatingUser, targetUser);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddFriend - Initiating User initiates a Friend Request to the Target User
-        /// </summary>        
-        /// <param name="initiatingUser">UserInfo for Initiating User</param>        
-        /// <param name="targetUser">UserInfo for Target User</param>        
-        /// <returns>UserRelationship object</returns>
+        /// AddFriend - Initiating User initiates a Friend Request to the Target User.
+        /// </summary>
+        /// <param name="initiatingUser">UserInfo for Initiating User.</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -73,8 +70,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            //Check if the friendship has been requested first by target user
-            var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(targetUser,
+            // Check if the friendship has been requested first by target user
+            var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(
+                targetUser,
                 initiatingUser);
             if (targetUserRelationship != null && targetUserRelationship.Status == RelationshipStatus.Pending)
             {
@@ -82,7 +80,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 return;
             }
 
-            var userRelationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser, 
+            var userRelationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
                                         RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
 
             AddFriendRequestNotification(initiatingUser, targetUser, userRelationship);
@@ -92,22 +90,22 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteFriend - Current User deletes a friend relationship with the target User
+        /// DeleteFriend - Current User deletes a friend relationship with the target User.
         /// </summary>
-        /// <param name="targetUser">UserInfo for Target User</param>        
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();
-            DeleteFriend(initiatingUser, targetUser);
+            this.DeleteFriend(initiatingUser, targetUser);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteFriend - Initiating User deletes a friend relationship with the target User
+        /// DeleteFriend - Initiating User deletes a friend relationship with the target User.
         /// </summary>
-        /// <param name="initiatingUser">UserInfo for Initiating User</param>        
-        /// <param name="targetUser">UserInfo for Target User</param>        
+        /// <param name="initiatingUser">UserInfo for Initiating User.</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo initiatingUser, UserInfo targetUser)
         {
@@ -125,11 +123,13 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(FriendRequest);
             var language = GetUserPreferredLocale(targetUser)?.Name;
-            var subject = string.Format(Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile, language),
-                              initiatingUser.DisplayName);
+            var subject = string.Format(
+                Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile, language),
+                initiatingUser.DisplayName);
 
-            var body = string.Format(Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile, language),
-                              initiatingUser.DisplayName);
+            var body = string.Format(
+                Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile, language),
+                initiatingUser.DisplayName);
 
             var notification = new Notification
             {
@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 Body = body,
                 IncludeDismissAction = true,
                 Context = userRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture),
-                SenderUserID = initiatingUser.UserID
+                SenderUserID = initiatingUser.UserID,
             };
 
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, new List<UserInfo> { targetUser });

@@ -1,44 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.IO;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinControlInstaller installs SkinControl (SkinObject) Components to a DotNetNuke site
+    /// The SkinControlInstaller installs SkinControl (SkinObject) Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class SkinControlInstaller : ComponentInstallerBase
     {
-		#region "Private Properties"
-
         private SkinControlInfo InstalledSkinControl;
         private SkinControlInfo SkinControl;
-		
-		#endregion
-
-		#region "Public Properties"
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -47,43 +35,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ascx, vb, cs, js, resx, xml, vbproj, csproj, sln";
             }
         }
-		
-		#endregion
-
-		#region "Private Methods"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteSkinControl method deletes the SkinControl from the data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void DeleteSkinControl()
-        {
-            try
-            {
-				//Attempt to get the SkinControl
-                SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(Package.PackageID);
-                if (skinControl != null)
-                {
-                    SkinControlController.DeleteSkinControl(skinControl);
-                }
-                Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
-            }
-            catch (Exception ex)
-            {
-                Log.AddFailure(ex);
-            }
-        }
-		
-		#endregion
-
-		#region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <remarks>In the case of Modules this is not neccessary</remarks>
+        /// <remarks>In the case of Modules this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -91,31 +48,31 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the Module component
+        /// The Install method installs the Module component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
             try
             {
-				//Attempt to get the SkinControl
-                InstalledSkinControl = SkinControlController.GetSkinControlByKey(SkinControl.ControlKey);
+                // Attempt to get the SkinControl
+                this.InstalledSkinControl = SkinControlController.GetSkinControlByKey(this.SkinControl.ControlKey);
 
-                if (InstalledSkinControl != null)
+                if (this.InstalledSkinControl != null)
                 {
-                    SkinControl.SkinControlID = InstalledSkinControl.SkinControlID;
+                    this.SkinControl.SkinControlID = this.InstalledSkinControl.SkinControlID;
                 }
-				
-                //Save SkinControl
-                SkinControl.PackageID = Package.PackageID;
-                SkinControl.SkinControlID = SkinControlController.SaveSkinControl(SkinControl);
 
-                Completed = true;
-                Log.AddInfo(string.Format(Util.MODULE_Registered, SkinControl.ControlKey));
+                // Save SkinControl
+                this.SkinControl.PackageID = this.Package.PackageID;
+                this.SkinControl.SkinControlID = SkinControlController.SaveSkinControl(this.SkinControl);
+
+                this.Completed = true;
+                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.SkinControl.ControlKey));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 
@@ -126,46 +83,68 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            //Load the SkinControl from the manifest
-            SkinControl = CBO.DeserializeObject<SkinControlInfo>(new StringReader(manifestNav.InnerXml));
+            // Load the SkinControl from the manifest
+            this.SkinControl = CBO.DeserializeObject<SkinControlInfo>(new StringReader(manifestNav.InnerXml));
 
-            if (Log.Valid)
+            if (this.Log.Valid)
             {
-                Log.AddInfo(Util.MODULE_ReadSuccess);
+                this.Log.AddInfo(Util.MODULE_ReadSuccess);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
-        /// that one of the other components fails
+        /// The Rollback method undoes the installation of the component in the event
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//If Temp SkinControl exists then we need to update the DataStore with this 
-            if (InstalledSkinControl == null)
+            // If Temp SkinControl exists then we need to update the DataStore with this
+            if (this.InstalledSkinControl == null)
             {
-				//No Temp SkinControl - Delete newly added SkinControl
-                DeleteSkinControl();
+                // No Temp SkinControl - Delete newly added SkinControl
+                this.DeleteSkinControl();
             }
             else
             {
-				//Temp SkinControl - Rollback to Temp
-                SkinControlController.SaveSkinControl(InstalledSkinControl);
+                // Temp SkinControl - Rollback to Temp
+                SkinControlController.SaveSkinControl(this.InstalledSkinControl);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the SkinControl component
+        /// The UnInstall method uninstalls the SkinControl component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
-            DeleteSkinControl();
+            this.DeleteSkinControl();
         }
-		
-		#endregion
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The DeleteSkinControl method deletes the SkinControl from the data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void DeleteSkinControl()
+        {
+            try
+            {
+                // Attempt to get the SkinControl
+                SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(this.Package.PackageID);
+                if (skinControl != null)
+                {
+                    SkinControlController.DeleteSkinControl(skinControl);
+                }
+
+                this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
+        }
     }
 }

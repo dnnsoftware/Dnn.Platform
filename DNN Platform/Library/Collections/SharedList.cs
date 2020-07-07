@@ -1,80 +1,46 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class SharedList<T> : IList<T>, IDisposable
     {
         private readonly List<T> _list = new List<T>();
         private ILockStrategy _lockStrategy;
 
-        public SharedList() : this(LockingStrategy.ReaderWriter)
+        private bool _isDisposed;
+
+        public SharedList()
+            : this(LockingStrategy.ReaderWriter)
         {
         }
 
         public SharedList(ILockStrategy lockStrategy)
         {
-            _lockStrategy = lockStrategy;
+            this._lockStrategy = lockStrategy;
         }
 
-        public SharedList(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
+        public SharedList(LockingStrategy strategy)
+            : this(LockingStrategyFactory.Create(strategy))
         {
         }
 
-        internal IList<T> BackingList
+        ~SharedList()
         {
-            get
-            {
-                return _list;
-            }
-        }
-
-        #region IList<T> Members
-
-        public void Add(T item)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Add(item);
-        }
-
-        public void Clear()
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Clear();
-        }
-
-        public bool Contains(T item)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.Contains(item);
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            _list.CopyTo(array, arrayIndex);
+            this.Dispose(false);
         }
 
         public int Count
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _list.Count;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._list.Count;
             }
         }
 
@@ -82,148 +48,177 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return ((ICollection<T>) _list).IsReadOnly;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return ((ICollection<T>)this._list).IsReadOnly;
             }
         }
 
-        public bool Remove(T item)
+        internal IList<T> BackingList
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            return _list.Remove(item);
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.GetEnumerator();
-        }
-
-        public int IndexOf(T item)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.IndexOf(item);
-        }
-
-        public void Insert(int index, T item)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Insert(index, item);
+            get
+            {
+                return this._list;
+            }
         }
 
         public T this[int index]
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _list[index];
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._list[index];
             }
+
             set
             {
-                EnsureNotDisposed();
-                EnsureWriteAccess();
-                _list[index] = value;
+                this.EnsureNotDisposed();
+                this.EnsureWriteAccess();
+                this._list[index] = value;
             }
+        }
+
+        public void Add(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.Add(item);
+        }
+
+        public void Clear()
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.Clear();
+        }
+
+        public bool Contains(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this._list.Contains(item);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            this._list.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            return this._list.Remove(item);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this._list.GetEnumerator();
+        }
+
+        public int IndexOf(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this._list.IndexOf(item);
+        }
+
+        public void Insert(int index, T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.Insert(index, item);
         }
 
         public void RemoveAt(int index)
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.RemoveAt(index);
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.RemoveAt(index);
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator1();
-        }
-
-        #endregion
-
-        #region "IDisposable Support"
-
-        private bool _isDisposed;
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         // To detect redundant calls
-
         public void EnsureNotDisposed()
         {
-            if (_isDisposed)
+            if (this._isDisposed)
             {
                 throw new ObjectDisposedException("SharedList");
             }
         }
 
+        public ISharedCollectionLock GetReadLock()
+        {
+            return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
+        {
+            this.EnsureNotDisposed();
+            return this._lockStrategy.GetReadLock(timeOut);
+        }
+
+        public ISharedCollectionLock GetReadLock(int millisecondTimeout)
+        {
+            return this.GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+        }
+
+        public ISharedCollectionLock GetWriteLock()
+        {
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
+        {
+            this.EnsureNotDisposed();
+            return this._lockStrategy.GetWriteLock(timeOut);
+        }
+
+        public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
+        {
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+        }
+
+        public IEnumerator GetEnumerator1()
+        {
+            return this.GetEnumerator();
+        }
+
         // IDisposable
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
                     // dispose managed state (managed objects).
                 }
 
-                _lockStrategy.Dispose();
-                _lockStrategy = null;
+                this._lockStrategy.Dispose();
+                this._lockStrategy = null;
             }
-            _isDisposed = true;
+
+            this._isDisposed = true;
         }
 
-        ~SharedList()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            Dispose(false);
-        }
-
-        #endregion
-
-        public ISharedCollectionLock GetReadLock()
-        {
-            return GetReadLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
-        {
-            EnsureNotDisposed();
-            return _lockStrategy.GetReadLock(timeOut);
-        }
-
-        public ISharedCollectionLock GetReadLock(int millisecondTimeout)
-        {
-            return GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
-        }
-
-        public ISharedCollectionLock GetWriteLock()
-        {
-            return GetWriteLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
-        {
-            EnsureNotDisposed();
-            return _lockStrategy.GetWriteLock(timeOut);
-        }
-
-        public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
-        {
-            return GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+            return this.GetEnumerator1();
         }
 
         private void EnsureReadAccess()
         {
-            if (!(_lockStrategy.ThreadCanRead))
+            if (!this._lockStrategy.ThreadCanRead)
             {
                 throw new ReadLockRequiredException();
             }
@@ -231,15 +226,10 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureWriteAccess()
         {
-            if (!_lockStrategy.ThreadCanWrite)
+            if (!this._lockStrategy.ThreadCanWrite)
             {
                 throw new WriteLockRequiredException();
             }
-        }
-
-        public IEnumerator GetEnumerator1()
-        {
-            return GetEnumerator();
         }
     }
 }

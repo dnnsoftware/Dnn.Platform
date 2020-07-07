@@ -1,54 +1,44 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.WebControls;
+
     public class SkinControl : UserControlBase
     {
-		#region "Private Members"	
-		
-        private string _DefaultKey = "System";
-        private string _SkinRoot;
-        private string _SkinSrc;
-        private string _Width = "";
-        private string _localResourceFile;
-        private PortalInfo _objPortal;
         protected DropDownList cboSkin;
         protected CommandButton cmdPreview;
         protected RadioButton optHost;
         protected RadioButton optSite;
-		
-		#endregion
-
-		#region "Public Properties"
+        private string _DefaultKey = "System";
+        private string _SkinRoot;
+        private string _SkinSrc;
+        private string _Width = string.Empty;
+        private string _localResourceFile;
+        private PortalInfo _objPortal;
 
         public string DefaultKey
         {
             get
             {
-                return _DefaultKey;
+                return this._DefaultKey;
             }
+
             set
             {
-                _DefaultKey = value;
+                this._DefaultKey = value;
             }
         }
 
@@ -56,11 +46,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(ViewState["SkinControlWidth"]);
+                return Convert.ToString(this.ViewState["SkinControlWidth"]);
             }
+
             set
             {
-                _Width = value;
+                this._Width = value;
             }
         }
 
@@ -68,11 +59,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(ViewState["SkinRoot"]);
+                return Convert.ToString(this.ViewState["SkinRoot"]);
             }
+
             set
             {
-                _SkinRoot = value;
+                this._SkinRoot = value;
             }
         }
 
@@ -80,18 +72,19 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                if (cboSkin.SelectedItem != null)
+                if (this.cboSkin.SelectedItem != null)
                 {
-                    return cboSkin.SelectedItem.Value;
+                    return this.cboSkin.SelectedItem.Value;
                 }
                 else
                 {
-                    return "";
+                    return string.Empty;
                 }
             }
+
             set
             {
-                _SkinSrc = value;
+                this._SkinSrc = value;
             }
         }
 
@@ -100,134 +93,88 @@ namespace DotNetNuke.UI.Skins
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(_localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/SkinControl.ascx";
+                    fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/SkinControl.ascx";
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
+
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
-		
-		#endregion
-
-		#region "Private Methods"
-
-        private void LoadSkins()
-        {
-            cboSkin.Items.Clear();
-
-            if (optHost.Checked)
-            {
-                // load host skins
-                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(_objPortal, SkinRoot, SkinScope.Host))
-                {
-                    cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
-                }
-            }
-
-            if (optSite.Checked)
-            {
-                // load portal skins
-                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(_objPortal, SkinRoot, SkinScope.Site))
-                {
-                    cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
-                }
-            }
-
-            cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(DefaultKey, LocalResourceFile) + ">", ""));
-
-
-            // select current skin
-            for (int intIndex = 0; intIndex < cboSkin.Items.Count; intIndex++)
-            {
-                if (cboSkin.Items[intIndex].Value.Equals(Convert.ToString(ViewState["SkinSrc"]), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    cboSkin.Items[intIndex].Selected = true;
-                    break;
-                }
-            }
-        }
-		
-		#endregion
-
-		#region "Event Handlers"
 
         /// <summary>
-		/// The Page_Load server event handler on this page is used
-        /// to populate the role information for the page
-		/// </summary>
-		protected override void OnLoad(EventArgs e)
+        /// The Page_Load server event handler on this page is used
+        /// to populate the role information for the page.
+        /// </summary>
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            #region Bind Handles
-
-            optHost.CheckedChanged += optHost_CheckedChanged;
-            optSite.CheckedChanged += optSite_CheckedChanged;
-            cmdPreview.Click += cmdPreview_Click;
-
-            #endregion
-
+            this.optHost.CheckedChanged += this.optHost_CheckedChanged;
+            this.optSite.CheckedChanged += this.optSite_CheckedChanged;
+            this.cmdPreview.Click += this.cmdPreview_Click;
             try
             {
-				if (Request.QueryString["pid"] != null && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+                if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
+                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
                 }
                 else
                 {
-                    _objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                    this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 }
-                if (!Page.IsPostBack)
+
+                if (!this.Page.IsPostBack)
                 {
-					//save persistent values
-                    ViewState["SkinControlWidth"] = _Width;
-                    ViewState["SkinRoot"] = _SkinRoot;
-                    ViewState["SkinSrc"] = _SkinSrc;
-					
-					//set width of control
-                    if (!String.IsNullOrEmpty(_Width))
+                    // save persistent values
+                    this.ViewState["SkinControlWidth"] = this._Width;
+                    this.ViewState["SkinRoot"] = this._SkinRoot;
+                    this.ViewState["SkinSrc"] = this._SkinSrc;
+
+                    // set width of control
+                    if (!string.IsNullOrEmpty(this._Width))
                     {
-                        cboSkin.Width = Unit.Parse(_Width);
+                        this.cboSkin.Width = Unit.Parse(this._Width);
                     }
-					
-					//set selected skin
-                    if (!String.IsNullOrEmpty(_SkinSrc))
+
+                    // set selected skin
+                    if (!string.IsNullOrEmpty(this._SkinSrc))
                     {
-                        switch (_SkinSrc.Substring(0, 3))
+                        switch (this._SkinSrc.Substring(0, 3))
                         {
                             case "[L]":
-                                optHost.Checked = false;
-                                optSite.Checked = true;
+                                this.optHost.Checked = false;
+                                this.optSite.Checked = true;
                                 break;
                             case "[G]":
-                                optSite.Checked = false;
-                                optHost.Checked = true;
+                                this.optSite.Checked = false;
+                                this.optHost.Checked = true;
                                 break;
                         }
                     }
                     else
                     {
-						//no skin selected, initialized to site skin if any exists
-                        string strRoot = _objPortal.HomeDirectoryMapPath + SkinRoot;
+                        // no skin selected, initialized to site skin if any exists
+                        string strRoot = this._objPortal.HomeDirectoryMapPath + this.SkinRoot;
                         if (Directory.Exists(strRoot) && Directory.GetDirectories(strRoot).Length > 0)
                         {
-                            optHost.Checked = false;
-                            optSite.Checked = true;
+                            this.optHost.Checked = false;
+                            this.optSite.Checked = true;
                         }
                     }
-                    LoadSkins();
+
+                    this.LoadSkins();
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -235,33 +182,67 @@ namespace DotNetNuke.UI.Skins
 
         protected void optHost_CheckedChanged(object sender, EventArgs e)
         {
-            LoadSkins();
+            this.LoadSkins();
         }
 
         protected void optSite_CheckedChanged(object sender, EventArgs e)
         {
-            LoadSkins();
+            this.LoadSkins();
         }
 
         protected void cmdPreview_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(SkinSrc))
+            if (!string.IsNullOrEmpty(this.SkinSrc))
             {
-                string strType = SkinRoot.Substring(0, SkinRoot.Length - 1);
+                string strType = this.SkinRoot.Substring(0, this.SkinRoot.Length - 1);
 
-                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(SkinSrc.Replace(".ascx", ""));
+                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(this.SkinSrc.Replace(".ascx", string.Empty));
 
-                if (SkinRoot == SkinController.RootContainer)
+                if (this.SkinRoot == SkinController.RootContainer)
                 {
-                    if (Request.QueryString["ModuleId"] != null)
+                    if (this.Request.QueryString["ModuleId"] != null)
                     {
-                        strURL += "&ModuleId=" + Request.QueryString["ModuleId"];
+                        strURL += "&ModuleId=" + this.Request.QueryString["ModuleId"];
                     }
                 }
-                Response.Redirect(strURL, true);
+
+                this.Response.Redirect(strURL, true);
             }
         }
-		
-		#endregion
+
+        private void LoadSkins()
+        {
+            this.cboSkin.Items.Clear();
+
+            if (this.optHost.Checked)
+            {
+                // load host skins
+                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Host))
+                {
+                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
+                }
+            }
+
+            if (this.optSite.Checked)
+            {
+                // load portal skins
+                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Site))
+                {
+                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
+                }
+            }
+
+            this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", string.Empty));
+
+            // select current skin
+            for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
+            {
+                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.cboSkin.Items[intIndex].Selected = true;
+                    break;
+                }
+            }
+        }
     }
 }

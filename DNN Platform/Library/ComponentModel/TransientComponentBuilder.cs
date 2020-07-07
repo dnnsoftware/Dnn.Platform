@@ -1,48 +1,39 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Framework;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.ComponentModel
 {
+    using System;
+
+    using DotNetNuke.Framework;
+
     internal class TransientComponentBuilder : IComponentBuilder
     {
         private readonly string _Name;
         private readonly Type _Type;
 
         /// <summary>
-        /// Initializes a new instance of the TransientComponentBuilder class.
+        /// Initializes a new instance of the <see cref="TransientComponentBuilder"/> class.
         /// </summary>
-        /// <param name="name">The name of the component</param>
-        /// <param name="type">The type of the component</param>
+        /// <param name="name">The name of the component.</param>
+        /// <param name="type">The type of the component.</param>
         public TransientComponentBuilder(string name, Type type)
         {
-            _Name = name;
-            _Type = type;
-        }
-
-        #region IComponentBuilder Members
-
-        public object BuildComponent()
-        {
-            return Reflection.CreateObject(_Type);
+            this._Name = name;
+            this._Type = type;
         }
 
         public string Name
         {
             get
             {
-                return _Name;
+                return this._Name;
             }
         }
 
-        #endregion
+        public object BuildComponent()
+        {
+            return Reflection.CreateObject(this._Type);
+        }
     }
 }

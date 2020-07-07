@@ -1,22 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Framework;
+
     internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
     {
-        #region Public Methods
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
             using (var context = DataContext.Instance())
@@ -28,7 +28,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         public WorkflowState GetWorkflowStateByID(int stateId)
         {
-            return CBO.GetCachedObject<WorkflowState>(new CacheItemArgs(
+            return CBO.GetCachedObject<WorkflowState>(
+                new CacheItemArgs(
                 GetWorkflowStateKey(stateId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                 _ =>
                 {
@@ -39,7 +40,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                     }
                 });
         }
-        
+
         public void AddWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -56,9 +57,9 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(state);
             }
 
-            CacheWorkflowState(state);
+            this.CacheWorkflowState(state);
         }
-        
+
         public void UpdateWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -78,7 +79,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
-            CacheWorkflowState(state);
+            this.CacheWorkflowState(state);
         }
 
         public void DeleteWorkflowState(WorkflowState state)
@@ -95,9 +96,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
-        #endregion
 
-        #region Private Methods
+        protected override Func<IWorkflowStateRepository> GetFactory()
+        {
+            return () => new WorkflowStateRepository();
+        }
 
         private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
         {
@@ -115,18 +118,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         {
             if (state.StateID > 0)
             {
-                CBO.GetCachedObject<WorkflowState>(new CacheItemArgs(
+                CBO.GetCachedObject<WorkflowState>(
+                    new CacheItemArgs(
                 GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
-                _ => state);
+                    _ => state);
             }
         }
-        #endregion
-
-        #region Service Locator
-        protected override Func<IWorkflowStateRepository> GetFactory()
-        {
-            return () => new WorkflowStateRepository();
-        }
-        #endregion
     }
 }

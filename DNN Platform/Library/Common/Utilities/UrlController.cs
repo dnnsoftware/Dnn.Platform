@@ -1,29 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     public class UrlController
     {
         public ArrayList GetUrls(int PortalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetUrls(PortalID), typeof (UrlInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetUrls(PortalID), typeof(UrlInfo));
         }
 
         public UrlInfo GetUrl(int PortalID, string Url)
@@ -38,21 +33,22 @@ namespace DotNetNuke.Common.Utilities
 
         public void UpdateUrl(int PortalID, string Url, string UrlType, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
         {
-            UpdateUrl(PortalID, Url, UrlType, 0, Null.NullDate, Null.NullDate, LogActivity, TrackClicks, ModuleID, NewWindow);
+            this.UpdateUrl(PortalID, Url, UrlType, 0, Null.NullDate, Null.NullDate, LogActivity, TrackClicks, ModuleID, NewWindow);
         }
 
         public void UpdateUrl(int PortalID, string Url, string UrlType, int Clicks, DateTime LastClick, DateTime CreatedDate, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
         {
-            if (!String.IsNullOrEmpty(Url))
+            if (!string.IsNullOrEmpty(Url))
             {
                 if (UrlType == "U")
                 {
-                    if (GetUrl(PortalID, Url) == null)
+                    if (this.GetUrl(PortalID, Url) == null)
                     {
                         DataProvider.Instance().AddUrl(PortalID, Url.Replace(@"\", @"/"));
                     }
                 }
-                UrlTrackingInfo objURLTracking = GetUrlTracking(PortalID, Url, ModuleID);
+
+                UrlTrackingInfo objURLTracking = this.GetUrlTracking(PortalID, Url, ModuleID);
                 if (objURLTracking == null)
                 {
                     DataProvider.Instance().AddUrlTracking(PortalID, Url, UrlType, LogActivity, TrackClicks, ModuleID, NewWindow);
@@ -74,7 +70,7 @@ namespace DotNetNuke.Common.Utilities
             TabType UrlType = Globals.GetURLType(Url);
             if (UrlType == TabType.File && Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
             {
-				//to handle legacy scenarios before the introduction of the FileServerHandler
+                // to handle legacy scenarios before the introduction of the FileServerHandler
                 var fileName = Path.GetFileName(Url);
 
                 var folderPath = Url.Substring(0, Url.LastIndexOf(fileName));
@@ -84,7 +80,8 @@ namespace DotNetNuke.Common.Utilities
 
                 Url = "FileID=" + file.FileId;
             }
-            UrlTrackingInfo objUrlTracking = GetUrlTracking(PortalID, Url, ModuleId);
+
+            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
                 if (objUrlTracking.TrackClicks)
@@ -96,6 +93,7 @@ namespace DotNetNuke.Common.Utilities
                         {
                             UserID = UserController.Instance.GetCurrentUserInfo().UserID;
                         }
+
                         DataProvider.Instance().AddUrlLog(objUrlTracking.UrlTrackingID, UserID);
                     }
                 }
@@ -105,11 +103,12 @@ namespace DotNetNuke.Common.Utilities
         public ArrayList GetUrlLog(int PortalID, string Url, int ModuleId, DateTime StartDate, DateTime EndDate)
         {
             ArrayList arrUrlLog = null;
-            UrlTrackingInfo objUrlTracking = GetUrlTracking(PortalID, Url, ModuleId);
+            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
-                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof (UrlLogInfo));
+                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof(UrlLogInfo));
             }
+
             return arrUrlLog;
         }
     }

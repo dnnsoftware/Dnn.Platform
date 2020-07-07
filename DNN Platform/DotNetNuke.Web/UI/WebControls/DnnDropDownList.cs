@@ -1,39 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.Serialization;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
 
-    [DataContract]
-    public class DnnDropDownListState
-    {
-        [DataMember(Name = "selectedItem")]
-        public SerializableKeyValuePair<string, string> SelectedItem;
-    }
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
 
     [ToolboxData("<{0}:DnnDropDownList runat='server'></{0}:DnnDropDownList>")]
     public class DnnDropDownList : Panel, INamingContainer
     {
-        #region Private Fields
-
         private static readonly object EventSelectionChanged = new object();
 
         private readonly Lazy<DnnDropDownListOptions> _options =
@@ -42,52 +30,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
         private HtmlAnchor _selectedValue;
 
-        #endregion
-
-        #region Protected Properties
-
-        internal DnnDropDownListOptions Options
-        {
-            get
-            {
-                return _options.Value;
-            }
-        }
-
-        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
-        {
-            get
-            {
-                EnsureChildControls();
-                return _stateControl;
-            }
-        }
-
-        private HtmlAnchor SelectedValue
-        {
-            get
-            {
-                EnsureChildControls();
-                return _selectedValue;
-            }
-        }
-
-        private bool UseUndefinedItem
-        {
-            get
-            {
-                return ViewState.GetValue("UseUndefinedItem", false);
-            }
-            set
-            {
-                ViewState.SetValue("UseUndefinedItem", value, false);
-            }
-        }
-
-        #endregion
-
-        #region Events
-
         /// <summary>
         /// Occurs when the selection from the list control changes between posts to the server.
         /// </summary>
@@ -95,95 +37,42 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             add
             {
-                Events.AddHandler(EventSelectionChanged, value);
+                this.Events.AddHandler(EventSelectionChanged, value);
             }
+
             remove
             {
-                Events.RemoveHandler(EventSelectionChanged, value);
+                this.Events.RemoveHandler(EventSelectionChanged, value);
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public override ControlCollection Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
 
         /// <summary>
-        /// Gets the selected item in the control, or selects the item in the control.
-        /// </summary>
-        public ListItem SelectedItem
-        {
-            get
-            {
-                if (StateControl.TypedValue != null && StateControl.TypedValue.SelectedItem != null)
-                {
-                    return new ListItem { Text = StateControl.TypedValue.SelectedItem.Value, Value = StateControl.TypedValue.SelectedItem.Key };
-                }
-                return null;
-            }
-            set
-            {
-                StateControl.TypedValueOrDefault.SelectedItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
-            }
-        }
-
-        /// <summary>
-        /// When this method returns, contains the 32-bit signed integer value equivalent to the number contained in
+        /// Gets when this method returns, contains the 32-bit signed integer value equivalent to the number contained in
         /// SelectedItem.Value, if the conversion succeeded, or Null.NullInteger if the conversion failed.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int SelectedItemValueAsInt
         {
             get
             {
-                if (SelectedItem != null && !string.IsNullOrEmpty(SelectedItem.Value))
+                if (this.SelectedItem != null && !string.IsNullOrEmpty(this.SelectedItem.Value))
                 {
                     int valueAsInt;
-                    var parsed = Int32.TryParse(SelectedItem.Value, out valueAsInt);
+                    var parsed = int.TryParse(this.SelectedItem.Value, out valueAsInt);
                     return parsed ? valueAsInt : Null.NullInteger;
                 }
+
                 return Null.NullInteger;
-            }
-        }
-
-        /// <summary>
-        /// SelectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
-        /// Always displayed as first option in the list
-        /// </summary>
-        public ListItem UndefinedItem
-        {
-            get
-            {
-                return FirstItem;
-            }
-            set
-            {
-                FirstItem = value;
-                UseUndefinedItem = true;
-            }
-        }
-
-        /// <summary>
-        /// Item to be displayed as first item
-        /// </summary>
-        public ListItem FirstItem
-        {
-            get
-            {
-                return (Options.ItemList.FirstItem == null) ? null : new ListItem(Options.ItemList.FirstItem.Value, Options.ItemList.FirstItem.Key);
-            }
-            set
-            {
-                Options.ItemList.FirstItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
-                UseUndefinedItem = false;
             }
         }
 
@@ -191,18 +80,85 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Options.Services;
+                return this.Options.Services;
             }
         }
 
         /// <summary>
-        /// DropDownList Caption when no Item is selected.
+        /// Gets register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
+        /// </summary>
+        public List<string> OnClientSelectionChanged
+        {
+            get
+            {
+                return this.Options.OnClientSelectionChanged;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the selected item in the control, or selects the item in the control.
+        /// </summary>
+        public ListItem SelectedItem
+        {
+            get
+            {
+                if (this.StateControl.TypedValue != null && this.StateControl.TypedValue.SelectedItem != null)
+                {
+                    return new ListItem { Text = this.StateControl.TypedValue.SelectedItem.Value, Value = this.StateControl.TypedValue.SelectedItem.Key };
+                }
+
+                return null;
+            }
+
+            set
+            {
+                this.StateControl.TypedValueOrDefault.SelectedItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets selectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
+        /// Always displayed as first option in the list.
+        /// </summary>
+        public ListItem UndefinedItem
+        {
+            get
+            {
+                return this.FirstItem;
+            }
+
+            set
+            {
+                this.FirstItem = value;
+                this.UseUndefinedItem = true;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets item to be displayed as first item.
+        /// </summary>
+        public ListItem FirstItem
+        {
+            get
+            {
+                return (this.Options.ItemList.FirstItem == null) ? null : new ListItem(this.Options.ItemList.FirstItem.Value, this.Options.ItemList.FirstItem.Key);
+            }
+
+            set
+            {
+                this.Options.ItemList.FirstItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
+                this.UseUndefinedItem = false;
+            }
+        }
+
+        /// <summary>
+        /// Sets dropDownList Caption when no Item is selected.
         /// </summary>
         public string SelectItemDefaultText
         {
             set
             {
-                Options.SelectItemDefaultText = value;
+                this.Options.SelectItemDefaultText = value;
             }
         }
 
@@ -222,11 +178,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState.GetValue("AutoPostBack", false);
+                return this.ViewState.GetValue("AutoPostBack", false);
             }
+
             set
             {
-                ViewState.SetValue("AutoPostBack", value, false);
+                this.ViewState.SetValue("AutoPostBack", value, false);
             }
         }
 
@@ -237,11 +194,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState.GetValue("CausesValidation", false);
+                return this.ViewState.GetValue("CausesValidation", false);
             }
+
             set
             {
-                ViewState.SetValue("CausesValidation", value, false);
+                this.ViewState.SetValue("CausesValidation", value, false);
             }
         }
 
@@ -252,98 +210,69 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState.GetValue("ValidationGroup", string.Empty);
+                return this.ViewState.GetValue("ValidationGroup", string.Empty);
             }
+
             set
             {
-                ViewState.SetValue("ValidationGroup", value, string.Empty);
+                this.ViewState.SetValue("ValidationGroup", value, string.Empty);
             }
         }
 
         /// <summary>
-        /// Register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
-        /// </summary>
-        public List<string> OnClientSelectionChanged
-        {
-            get
-            {
-                return Options.OnClientSelectionChanged;
-            }
-        }
-
-        /// <summary>
-        /// When the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
+        /// Gets or sets when the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
         /// we need expand its parent nodes to make it selected.
         /// </summary>
         public string ExpandPath
         {
             get
             {
-                return ClientAPI.GetClientVariable(Page, ClientID + "_expandPath");
+                return ClientAPI.GetClientVariable(this.Page, this.ClientID + "_expandPath");
             }
+
             set
             {
-                ClientAPI.RegisterClientVariable(Page, ClientID + "_expandPath", value, true);
+                ClientAPI.RegisterClientVariable(this.Page, this.ClientID + "_expandPath", value, true);
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
-        protected override void CreateChildControls()
+        internal DnnDropDownListOptions Options
         {
-            Controls.Clear();
-
-            var selectedItemPanel = new Panel { CssClass = "selected-item" };
-
-            _selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
-            _selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
-            _selectedValue.ViewStateMode = ViewStateMode.Disabled;
-            selectedItemPanel.Controls.Add(_selectedValue);
-            Controls.Add(selectedItemPanel);
-
-            _stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
-            _stateControl.ValueChanged += (sender, args) => OnSelectionChanged(EventArgs.Empty);
-            Controls.Add(_stateControl);
-
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            StateControl.Value = ""; // for state persistence (stateControl)
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            RegisterClientScript(Page, Skin);
-
-            this.AddCssClass("dnnDropDownList");
-
-            base.OnPreRender(e);
-
-            RegisterStartupScript();
-        }
-
-        protected virtual void OnSelectionChanged(EventArgs e)
-        {
-            var eventHandler = (EventHandler)Events[EventSelectionChanged];
-            if (eventHandler == null)
+            get
             {
-                return;
+                return this._options.Value;
             }
-            eventHandler(this, e);
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private static string LocalizeString(string key)
+        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
         {
-            return Localization.GetString(key, Localization.SharedResourceFile);
+            get
+            {
+                this.EnsureChildControls();
+                return this._stateControl;
+            }
+        }
+
+        private HtmlAnchor SelectedValue
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this._selectedValue;
+            }
+        }
+
+        private bool UseUndefinedItem
+        {
+            get
+            {
+                return this.ViewState.GetValue("UseUndefinedItem", false);
+            }
+
+            set
+            {
+                this.ViewState.SetValue("UseUndefinedItem", value, false);
+            }
         }
 
         internal static void RegisterClientScript(Page page, string skin)
@@ -353,6 +282,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList." + skin + ".css", FileOrder.Css.ResourceCss);
             }
+
             ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.extensions.js");
@@ -365,74 +295,124 @@ namespace DotNetNuke.Web.UI.WebControls
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
         }
 
+        protected override void CreateChildControls()
+        {
+            this.Controls.Clear();
+
+            var selectedItemPanel = new Panel { CssClass = "selected-item" };
+
+            this._selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
+            this._selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
+            this._selectedValue.ViewStateMode = ViewStateMode.Disabled;
+            selectedItemPanel.Controls.Add(this._selectedValue);
+            this.Controls.Add(selectedItemPanel);
+
+            this._stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
+            this._stateControl.ValueChanged += (sender, args) => this.OnSelectionChanged(EventArgs.Empty);
+            this.Controls.Add(this._stateControl);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this.StateControl.Value = string.Empty; // for state persistence (stateControl)
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            RegisterClientScript(this.Page, this.Skin);
+
+            this.AddCssClass("dnnDropDownList");
+
+            base.OnPreRender(e);
+
+            this.RegisterStartupScript();
+        }
+
+        protected virtual void OnSelectionChanged(EventArgs e)
+        {
+            var eventHandler = (EventHandler)this.Events[EventSelectionChanged];
+            if (eventHandler == null)
+            {
+                return;
+            }
+
+            eventHandler(this, e);
+        }
+
+        private static string LocalizeString(string key)
+        {
+            return Localization.GetString(key, Localization.SharedResourceFile);
+        }
+
         private string GetPostBackScript()
         {
             var script = string.Empty;
-            if (HasAttributes)
+            if (this.HasAttributes)
             {
-                script = Attributes["onchange"];
+                script = this.Attributes["onchange"];
                 if (script != null)
                 {
-                    Attributes.Remove("onchange");
+                    this.Attributes.Remove("onchange");
                 }
             }
+
             var options = new PostBackOptions(this, string.Empty);
-            if (CausesValidation)
+            if (this.CausesValidation)
             {
                 options.PerformValidation = true;
-                options.ValidationGroup = ValidationGroup;
+                options.ValidationGroup = this.ValidationGroup;
             }
-            if (Page.Form != null)
+
+            if (this.Page.Form != null)
             {
                 options.AutoPostBack = true;
                 options.TrackFocus = true;
             }
-            return script.Append(Page.ClientScript.GetPostBackEventReference(options), "; ");
+
+            return script.Append(this.Page.ClientScript.GetPostBackEventReference(options), "; ");
         }
 
         private void RegisterStartupScript()
         {
-            Options.InternalStateFieldId = StateControl.ClientID;
+            this.Options.InternalStateFieldId = this.StateControl.ClientID;
 
-            if (SelectedItem == null && UseUndefinedItem)
+            if (this.SelectedItem == null && this.UseUndefinedItem)
             {
-                SelectedItem = UndefinedItem;
+                this.SelectedItem = this.UndefinedItem;
             }
 
-            Options.InitialState = new DnnDropDownListState
+            this.Options.InitialState = new DnnDropDownListState
             {
-                SelectedItem = StateControl.TypedValue != null ? StateControl.TypedValue.SelectedItem : null
+                SelectedItem = this.StateControl.TypedValue != null ? this.StateControl.TypedValue.SelectedItem : null,
             };
 
-            SelectedValue.InnerText = (SelectedItem != null) ? SelectedItem.Text : Options.SelectItemDefaultText;
+            this.SelectedValue.InnerText = (this.SelectedItem != null) ? this.SelectedItem.Text : this.Options.SelectItemDefaultText;
 
-            Options.Disabled = !Enabled;
+            this.Options.Disabled = !this.Enabled;
 
-            var optionsAsJsonString = Json.Serialize(Options);
+            var optionsAsJsonString = Json.Serialize(this.Options);
 
             var methods = new JavaScriptObjectDictionary();
-            if (AutoPostBack)
+            if (this.AutoPostBack)
             {
-                methods.AddMethodBody("onSelectionChangedBackScript", GetPostBackScript());
+                methods.AddMethodBody("onSelectionChangedBackScript", this.GetPostBackScript());
             }
 
             var methodsAsJsonString = methods.ToJsonString();
 
-            var script = string.Format("dnn.createDropDownList('#{0}', {1}, {2});{3}", ClientID, optionsAsJsonString, methodsAsJsonString, Environment.NewLine);
+            var script = string.Format("dnn.createDropDownList('#{0}', {1}, {2});{3}", this.ClientID, optionsAsJsonString, methodsAsJsonString, Environment.NewLine);
 
-            if (ScriptManager.GetCurrent(Page) != null)
+            if (ScriptManager.GetCurrent(this.Page) != null)
             {
                 // respect MS AJAX
-                ScriptManager.RegisterStartupScript(Page, GetType(), ClientID + "DnnDropDownList", script, true);
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), this.ClientID + "DnnDropDownList", script, true);
             }
             else
             {
-                Page.ClientScript.RegisterStartupScript(GetType(), ClientID + "DnnDropDownList", script, true);
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID + "DnnDropDownList", script, true);
             }
         }
-
-        #endregion
-
     }
-
 }

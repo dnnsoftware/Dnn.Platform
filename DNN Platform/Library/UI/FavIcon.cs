@@ -1,19 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.FileSystem;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.UI.Internals
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.FileSystem;
+
     /// <summary>
-    /// Manages the FavIcon of a portal
+    /// Manages the FavIcon of a portal.
     /// </summary>
     public class FavIcon
     {
@@ -22,40 +22,20 @@ namespace DotNetNuke.UI.Internals
         private readonly int _portalId;
 
         /// <summary>
-        /// Initializes a FavIcon instance
+        /// Initializes a new instance of the <see cref="FavIcon"/> class.
+        /// Initializes a FavIcon instance.
         /// </summary>
-        /// <param name="portalId">The id of the portal</param>
+        /// <param name="portalId">The id of the portal.</param>
         public FavIcon(int portalId)
         {
-            _portalId = portalId;
+            this._portalId = portalId;
         }
 
         /// <summary>
-        /// Get the path of the favicon file relative to the portal root
+        /// Get the HTML for a favicon link.
         /// </summary>
-        /// <remarks>This relative path is only relevant to use with Host/Portal Settings the path is not guaranteed any 
-        /// physical relevance in the local file system</remarks>
-        /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set</returns>
-        public string GetSettingPath()
-        {
-            return PortalController.GetPortalSetting(SettingName, _portalId, "");
-        }
-
-        /// <summary>
-        /// Update the file to use for a favIcon
-        /// </summary>
-        /// <param name="fileId">The file id or Null.NullInteger for none</param>
-        public void Update(int fileId)
-        {
-            PortalController.UpdatePortalSetting(_portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : "", /*clearCache*/ true);
-            DataCache.ClearCache(GetCacheKey(_portalId));
-        }
-
-        /// <summary>
-        /// Get the HTML for a favicon link
-        /// </summary>
-        /// <param name="portalId">The portal id</param>
-        /// <returns>The HTML for the favicon link for the portal, or an empty string if there is no favicon</returns>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>The HTML for the favicon link for the portal, or an empty string if there is no favicon.</returns>
         public static string GetHeaderLink(int portalId)
         {
             string headerLink;
@@ -63,7 +43,7 @@ namespace DotNetNuke.UI.Internals
 
             if (fromCache == null)
             {
-                //only create an instance of FavIcon when there is a cache miss
+                // only create an instance of FavIcon when there is a cache miss
                 string favIconPath = new FavIcon(portalId).GetRelativeUrl();
                 if (!string.IsNullOrEmpty(favIconPath))
                 {
@@ -71,11 +51,11 @@ namespace DotNetNuke.UI.Internals
                 }
                 else
                 {
-                    headerLink = "";
+                    headerLink = string.Empty;
                 }
 
-                //cache link or empty string to ensure we don't always have a
-                //cache miss when no favicon is in use
+                // cache link or empty string to ensure we don't always have a
+                // cache miss when no favicon is in use
                 UpdateCachedHeaderLink(portalId, headerLink);
             }
             else
@@ -86,21 +66,25 @@ namespace DotNetNuke.UI.Internals
             return headerLink;
         }
 
-        private string GetRelativeUrl()
+        /// <summary>
+        /// Get the path of the favicon file relative to the portal root.
+        /// </summary>
+        /// <remarks>This relative path is only relevant to use with Host/Portal Settings the path is not guaranteed any
+        /// physical relevance in the local file system.</remarks>
+        /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set.</returns>
+        public string GetSettingPath()
         {
-            var fileInfo = GetFileInfo();
-            return fileInfo == null ? string.Empty : FileManager.Instance.GetUrl(fileInfo);
+            return PortalController.GetPortalSetting(SettingName, this._portalId, string.Empty);
         }
 
-        private IFileInfo GetFileInfo()
+        /// <summary>
+        /// Update the file to use for a favIcon.
+        /// </summary>
+        /// <param name="fileId">The file id or Null.NullInteger for none.</param>
+        public void Update(int fileId)
         {
-            var path = GetSettingPath();
-            if( ! String.IsNullOrEmpty(path) )
-            { 
-                return FileManager.Instance.GetFile(_portalId, path);
-            }
-
-            return null;
+            PortalController.UpdatePortalSetting(this._portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : string.Empty, /*clearCache*/ true);
+            DataCache.ClearCache(GetCacheKey(this._portalId));
         }
 
         private static void UpdateCachedHeaderLink(int portalId, string headerLink)
@@ -114,6 +98,23 @@ namespace DotNetNuke.UI.Internals
         private static string GetCacheKey(int portalId)
         {
             return "FAVICON" + portalId;
+        }
+
+        private string GetRelativeUrl()
+        {
+            var fileInfo = this.GetFileInfo();
+            return fileInfo == null ? string.Empty : FileManager.Instance.GetUrl(fileInfo);
+        }
+
+        private IFileInfo GetFileInfo()
+        {
+            var path = this.GetSettingPath();
+            if (!string.IsNullOrEmpty(path))
+            {
+                return FileManager.Instance.GetFile(this._portalId, path);
+            }
+
+            return null;
         }
     }
 }

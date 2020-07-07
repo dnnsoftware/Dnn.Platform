@@ -1,70 +1,62 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+
     public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
     {
         private readonly IDataService _dataService;
 
-        protected override Func<IContentController> GetFactory()
-        {
-            return () => new ContentController();
-        }
-
-        public ContentController() : this(Util.GetDataService())
+        public ContentController()
+            : this(Util.GetDataService())
         {
         }
 
         public ContentController(IDataService dataService)
         {
-            _dataService = dataService;
+            this._dataService = dataService;
         }
 
-	    public int AddContentItem(ContentItem contentItem)
+        public int AddContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             var createdByUserId = currentUser.UserID;
-            if(contentItem.CreatedByUserID != currentUser.UserID)
+            if (contentItem.CreatedByUserID != currentUser.UserID)
             {
                 createdByUserId = contentItem.CreatedByUserID;
             }
-            
-            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, createdByUserId);
+
+            contentItem.ContentItemId = this._dataService.AddContentItem(contentItem, createdByUserId);
             contentItem.CreatedByUserID = createdByUserId;
             contentItem.LastModifiedByUserID = currentUser.UserID;
 
-            SaveMetadataDelta(contentItem);
+            this.SaveMetadataDelta(contentItem);
 
-	        UpdateContentItemsCache(contentItem);
+            UpdateContentItemsCache(contentItem);
 
             return contentItem.ContentItemId;
         }
 
         public void DeleteContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
 
@@ -73,110 +65,112 @@ namespace DotNetNuke.Entities.Content
                 UniqueKey = contentItem.ContentItemId.ToString("D"),
                 ModuleId = contentItem.ModuleID,
                 TabId = contentItem.TabID,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
             };
             DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
 
-            _dataService.DeleteContentItem(contentItem.ContentItemId);
+            this._dataService.DeleteContentItem(contentItem.ContentItemId);
 
             UpdateContentItemsCache(contentItem, false);
         }
 
         public void DeleteContentItem(int contentItemId)
         {
-            var contentItem = GetContentItem(contentItemId);
-            DeleteContentItem(contentItem);
+            var contentItem = this.GetContentItem(contentItemId);
+            this.DeleteContentItem(contentItem);
         }
-        
+
         public ContentItem GetContentItem(int contentItemId)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
             return CBO.GetCachedObject<ContentItem>(
                 new CacheItemArgs(GetContentItemCacheKey(contentItemId), DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority),
-                c => CBO.FillObject<ContentItem>(_dataService.GetContentItem(contentItemId)));
+                c => CBO.FillObject<ContentItem>(this._dataService.GetContentItem(contentItemId)));
         }
 
         public IQueryable<ContentItem> GetContentItems(int contentTypeId, int tabId, int moduleId)
         {
-            return CBO.FillQueryable<ContentItem>(_dataService.GetContentItems(contentTypeId, tabId, moduleId));
+            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItems(contentTypeId, tabId, moduleId));
         }
 
         public IQueryable<ContentItem> GetContentItemsByTerm(string term)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNullOrEmpty("term", term);
 
-            return CBO.FillQueryable<ContentItem>(_dataService.GetContentItemsByTerm(term));
+            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTerm(term));
         }
 
         public IQueryable<ContentItem> GetContentItemsByTerm(Term term)
-	    {
-	        return GetContentItemsByTerm(term.Name);
-	    }
+        {
+            return this.GetContentItemsByTerm(term.Name);
+        }
 
-	    public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
-	    {
-            return CBO.FillQueryable<ContentItem>(_dataService.GetContentItemsByContentType(contentTypeId));
-	    }
+        public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
+        {
+            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByContentType(contentTypeId));
+        }
 
         /// <summary>Get a list of content items by ContentType.</summary>
+        /// <returns></returns>
         public IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType)
         {
-            return GetContentItemsByContentType(contentType.ContentTypeId);
+            return this.GetContentItemsByContentType(contentType.ContentTypeId);
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
+        public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
         {
-            return GetContentItemsByTerms(terms.Select(t => t.Name).ToArray());
+            return this.GetContentItemsByTerms(terms.Select(t => t.Name).ToArray());
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
+        public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
         {
             var union = new List<ContentItem>();
 
-            union = terms.Aggregate(union,
+            union = terms.Aggregate(
+                union,
                 (current, term) =>
                     !current.Any()
-                        ? GetContentItemsByTerm(term).ToList()
-                        : current.Intersect(GetContentItemsByTerm(term), new ContentItemEqualityComparer()).ToList());
+                        ? this.GetContentItemsByTerm(term).ToList()
+                        : current.Intersect(this.GetContentItemsByTerm(term), new ContentItemEqualityComparer()).ToList());
 
             return union.AsQueryable();
         }
 
         public IQueryable<ContentItem> GetContentItemsByTabId(int tabId)
         {
-            return CBO.FillQueryable<ContentItem>(_dataService.GetContentItemsByTabId(tabId));
+            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTabId(tabId));
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
+        public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
         {
-            return CBO.FillQueryable<ContentItem>(_dataService.GetContentItemsByVocabularyId(vocabularyId));
+            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByVocabularyId(vocabularyId));
         }
 
         public IQueryable<ContentItem> GetUnIndexedContentItems()
         {
-            return CBO.FillQueryable<ContentItem>(_dataService.GetUnIndexedContentItems());
+            return CBO.FillQueryable<ContentItem>(this._dataService.GetUnIndexedContentItems());
         }
 
         public IQueryable<ContentItem> GetContentItemsByModuleId(int moduleId)
         {
-            return CBO.FillQueryable<ContentItem>(_dataService.GetContentItemsByModuleId(moduleId));
+            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByModuleId(moduleId));
         }
 
         public void UpdateContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
-            
+
             AttachmentController.SerializeAttachmentMetadata(contentItem);
 
-            SaveMetadataDelta(contentItem);
+            this.SaveMetadataDelta(contentItem);
 
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            _dataService.UpdateContentItem(contentItem, userId);
+            this._dataService.UpdateContentItem(contentItem, userId);
             contentItem.LastModifiedByUserID = userId;
 
             UpdateContentItemsCache(contentItem);
@@ -184,24 +178,24 @@ namespace DotNetNuke.Entities.Content
 
         public void AddMetaData(ContentItem contentItem, string name, string value)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
 
-            _dataService.AddMetaData(contentItem, name, value);
+            this._dataService.AddMetaData(contentItem, name, value);
 
             UpdateContentItemsCache(contentItem, false);
         }
 
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
 
-            _dataService.DeleteMetaData(contentItem, name, value);
+            this._dataService.DeleteMetaData(contentItem, name, value);
 
             UpdateContentItemsCache(contentItem, false);
         }
@@ -210,18 +204,18 @@ namespace DotNetNuke.Entities.Content
         {
             if (contentItem.Metadata.AllKeys.Contains(name))
             {
-                DeleteMetaData(contentItem, name, contentItem.Metadata[name]);
+                this.DeleteMetaData(contentItem, name, contentItem.Metadata[name]);
             }
         }
 
         public NameValueCollection GetMetaData(int contentItemId)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
             var metadata = new NameValueCollection();
 
-            using (var dr = _dataService.GetMetaData(contentItemId))
+            using (var dr = this._dataService.GetMetaData(contentItemId))
             {
                 if (dr != null)
                 {
@@ -232,12 +226,41 @@ namespace DotNetNuke.Entities.Content
                 }
             }
 
-		    return metadata;
+            return metadata;
         }
-        
+
+        protected override Func<IContentController> GetFactory()
+        {
+            return () => new ContentController();
+        }
+
+        private static bool MetaDataChanged(
+            IEnumerable<KeyValuePair<string, string>> lh,
+            IEnumerable<KeyValuePair<string, string>> rh)
+        {
+            return lh.SequenceEqual(rh, new NameValueEqualityComparer()) == false;
+        }
+
+        private static void UpdateContentItemsCache(ContentItem contentItem, bool readdItem = true)
+        {
+            DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
+            if (readdItem)
+            {
+                CBO.GetCachedObject<ContentItem>(
+                    new CacheItemArgs(
+                    GetContentItemCacheKey(contentItem.ContentItemId),
+                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
+            }
+        }
+
+        private static string GetContentItemCacheKey(int contetnItemId)
+        {
+            return string.Format(DataCache.ContentItemsCacheKey, contetnItemId);
+        }
+
         private void SaveMetadataDelta(ContentItem contentItem)
         {
-            var persisted = GetMetaData(contentItem.ContentItemId);
+            var persisted = this.GetMetaData(contentItem.ContentItemId);
 
             var lh = persisted.AllKeys.ToDictionary(x => x, x => persisted[x]);
 
@@ -254,33 +277,9 @@ namespace DotNetNuke.Entities.Content
             // Items included in the object but missing from the database (newly added).
             var added = rh.Except(lh).ToArray();
 
-            _dataService.SynchronizeMetaData(contentItem, added, deleted);
+            this._dataService.SynchronizeMetaData(contentItem, added, deleted);
 
             UpdateContentItemsCache(contentItem, false);
-        }
-
-        private static bool MetaDataChanged(
-            IEnumerable<KeyValuePair<string, string>> lh,
-            IEnumerable<KeyValuePair<string, string>> rh)
-        {
-            return lh.SequenceEqual(rh, new NameValueEqualityComparer()) == false;
-        }
-
-        private static void UpdateContentItemsCache(ContentItem contentItem, bool readdItem = true)
-        {
-
-            DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
-            if (readdItem)
-            {
-                CBO.GetCachedObject<ContentItem>(new CacheItemArgs(
-                    GetContentItemCacheKey(contentItem.ContentItemId),
-                   DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
-            }
-        }
-
-        private static string GetContentItemCacheKey(int contetnItemId)
-        {
-            return string.Format(DataCache.ContentItemsCacheKey, contetnItemId);
         }
     }
 }

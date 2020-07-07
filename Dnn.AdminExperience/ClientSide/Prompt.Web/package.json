@@ -1,6 +1,6 @@
 {
   "name": "prompt",
-  "version": "9.6.1",
+  "version": "9.6.2",
   "description": "DNN Prompt",
   "private": true,
   "scripts": {
@@ -15,10 +15,9 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.6.1",
+    "@dnnsoftware/dnn-react-common": "9.6.2",
     "array.prototype.find": "2.0.4",
     "array.prototype.findindex": "2.0.2",
-    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",

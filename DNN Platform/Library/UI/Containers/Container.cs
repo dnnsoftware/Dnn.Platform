@@ -1,79 +1,148 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Application;
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Containers.EventListeners;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.WebControls;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Containers
 {
-    using Web.Client;
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Containers.EventListeners;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.WebControls;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// <summary>
-    /// Container is the base for the Containers
+    /// Container is the base for the Containers.
     /// </summary>
     /// <remarks>
     /// </remarks>
     public class Container : UserControl
     {
-        #region Private Members
-
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private HtmlContainerControl _contentPane;
         private ModuleInfo _moduleConfiguration;
         private ModuleHost _moduleHost;
 
-		#endregion
-
-		#region Protected Properties
-
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Content Pane Control (Id="ContentPane")
+        /// Gets the ModuleControl object that this container is displaying.
         /// </summary>
-        /// <returns>An HtmlContainerControl</returns>
-        protected HtmlContainerControl ContentPane
+        /// <returns>A ModuleHost object.</returns>
+        public IModuleControl ModuleControl
         {
             get
             {
-                return _contentPane ?? (_contentPane = FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
+                IModuleControl moduleControl = null;
+                if (this.ModuleHost != null)
+                {
+                    moduleControl = this.ModuleHost.ModuleControl;
+                }
+
+                return moduleControl;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Portal Settings for the current Portal
+        /// Gets and sets the ModuleInfo object that this container is displaying.
         /// </summary>
-        /// <returns>A PortalSettings object</returns>
+        /// <returns>A ModuleInfo object.</returns>
+        public ModuleInfo ModuleConfiguration
+        {
+            get
+            {
+                return this._moduleConfiguration;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the ModuleHost object that this container is displaying.
+        /// </summary>
+        /// <returns>A ModuleHost object.</returns>
+        public ModuleHost ModuleHost
+        {
+            get
+            {
+                return this._moduleHost;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Parent Container for this container.
+        /// </summary>
+        /// <returns>A String.</returns>
+        public Skins.Skin ParentSkin
+        {
+            get
+            {
+                // This finds a reference to the containing skin
+                return Skins.Skin.GetParentSkin(this);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Path for this container.
+        /// </summary>
+        /// <returns>A String.</returns>
+        public string ContainerPath
+        {
+            get
+            {
+                return this.TemplateSourceDirectory + "/";
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Source for this container.
+        /// </summary>
+        /// <returns>A String.</returns>
+        public string ContainerSrc { get; set; }
+
+        internal bool InjectActionMenu { get; set; }
+
+        /// <summary>
+        /// Gets the Content Pane Control (Id="ContentPane").
+        /// </summary>
+        /// <returns>An HtmlContainerControl.</returns>
+        protected HtmlContainerControl ContentPane
+        {
+            get
+            {
+                return this._contentPane ?? (this._contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Portal Settings for the current Portal.
+        /// </summary>
+        /// <returns>A PortalSettings object.</returns>
         protected PortalSettings PortalSettings
         {
             get
@@ -81,98 +150,59 @@ namespace DotNetNuke.UI.Containers
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-		
-		#endregion
 
-		#region Public Properties
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleControl object that this container is displaying
-        /// </summary>
-        /// <returns>A ModuleHost object</returns>
-        public IModuleControl ModuleControl
+        public void SetModuleConfiguration(ModuleInfo configuration)
         {
-            get
-            {
-                IModuleControl moduleControl = null;
-                if (ModuleHost != null)
-                {
-                    moduleControl = ModuleHost.ModuleControl;
-                }
-                return moduleControl;
-            }
+            this._moduleConfiguration = configuration;
+            this.ProcessModule();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleInfo object that this container is displaying
+        /// OnInit runs when the Container is initialised.
         /// </summary>
-        /// <returns>A ModuleInfo object</returns>
-        public ModuleInfo ModuleConfiguration
+        protected override void OnInit(EventArgs e)
         {
-            get
-            {
-                return _moduleConfiguration;
-            }
+            base.OnInit(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerInit);
+        }
+
+        /// <summary>
+        /// OnLoad runs when the Container is loaded.
+        /// </summary>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerLoad);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleHost object that this container is displaying
+        /// OnLoad runs just before the Container is rendered.
         /// </summary>
-        /// <returns>A ModuleHost object</returns>
-        public ModuleHost ModuleHost
+        protected override void OnPreRender(EventArgs e)
         {
-            get
-            {
-                return _moduleHost;
-            }
+            base.OnPreRender(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerPreRender);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Parent Container for this container
+        /// OnUnLoad runs when the Container is unloaded.
         /// </summary>
-        /// <returns>A String</returns>
-        public Skins.Skin ParentSkin
+        protected override void OnUnload(EventArgs e)
         {
-            get
-            {
-				//This finds a reference to the containing skin
-                return Skins.Skin.GetParentSkin(this);
-            }
+            base.OnUnload(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerUnLoad);
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Path for this container
-        /// </summary>
-        /// <returns>A String</returns>
-        public string ContainerPath
-        {
-            get
-            {
-                return TemplateSourceDirectory + "/";
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Source for this container
-        /// </summary>
-        /// <returns>A String</returns>
-        public string ContainerSrc { get; set; }
-
-        internal bool InjectActionMenu { get; set; }
-		
-		#endregion
-
-		#region Private Helper Methods
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
-            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
+            this.ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
         }
 
         /// -----------------------------------------------------------------------------
@@ -188,31 +218,32 @@ namespace DotNetNuke.UI.Containers
             ISkinControl skinControl;
             foreach (Control childControl in control.Controls)
             {
-				//check if control is an action control
+                // check if control is an action control
                 actions = childControl as IActionControl;
                 if (actions != null)
                 {
-                    actions.ModuleControl = ModuleControl;
-                    actions.Action += ModuleActionClick;
+                    actions.ModuleControl = this.ModuleControl;
+                    actions.Action += this.ModuleActionClick;
                 }
 
-                //check if control is an actionLink control
+                // check if control is an actionLink control
                 var actionLink = childControl as ActionLink;
                 if (actionLink != null)
                 {
-                    actionLink.ModuleControl = ModuleControl;
+                    actionLink.ModuleControl = this.ModuleControl;
                 }
 
-				//check if control is a skin control
+                // check if control is a skin control
                 skinControl = childControl as ISkinControl;
                 if (skinControl != null)
                 {
-                    skinControl.ModuleControl = ModuleControl;
+                    skinControl.ModuleControl = this.ModuleControl;
                 }
+
                 if (childControl.HasControls())
                 {
-					//recursive call for child controls
-                    ProcessChildControls(childControl);
+                    // recursive call for child controls
+                    this.ProcessChildControls(childControl);
                 }
             }
         }
@@ -224,19 +255,19 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessContentPane()
         {
-            SetAlignment();
+            this.SetAlignment();
 
-            SetBackground();
+            this.SetBackground();
 
-            SetBorder();
+            this.SetBorder();
 
-            //display visual indicator if module is only visible to administrators
-			string viewRoles = ModuleConfiguration.InheritViewPermissions
-                                   ? TabPermissionController.GetTabPermissions(ModuleConfiguration.TabID, ModuleConfiguration.PortalID).ToString("VIEW")
-                                   : ModuleConfiguration.ModulePermissions.ToString("VIEW");
+            // display visual indicator if module is only visible to administrators
+            string viewRoles = this.ModuleConfiguration.InheritViewPermissions
+                                   ? TabPermissionController.GetTabPermissions(this.ModuleConfiguration.TabID, this.ModuleConfiguration.PortalID).ToString("VIEW")
+                                   : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
 
-            string pageEditRoles = TabPermissionController.GetTabPermissions(ModuleConfiguration.TabID, ModuleConfiguration.PortalID).ToString("EDIT");
-            string moduleEditRoles = ModuleConfiguration.ModulePermissions.ToString("EDIT");
+            string pageEditRoles = TabPermissionController.GetTabPermissions(this.ModuleConfiguration.TabID, this.ModuleConfiguration.PortalID).ToString("EDIT");
+            string moduleEditRoles = this.ModuleConfiguration.ModulePermissions.ToString("EDIT");
 
             viewRoles = viewRoles.Replace(";", string.Empty).Trim().ToLowerInvariant();
             pageEditRoles = pageEditRoles.Replace(";", string.Empty).Trim().ToLowerInvariant();
@@ -244,27 +275,30 @@ namespace DotNetNuke.UI.Containers
 
             var showMessage = false;
             var adminMessage = Null.NullString;
-            if (viewRoles.Equals(PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
-                            && (moduleEditRoles.Equals(PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
-                                    || String.IsNullOrEmpty(moduleEditRoles))
-                            && pageEditRoles.Equals(PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
+            if (viewRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
+                            && (moduleEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
+                                    || string.IsNullOrEmpty(moduleEditRoles))
+                            && pageEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
             {
                 adminMessage = Localization.GetString("ModuleVisibleAdministrator.Text");
-                showMessage = !ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();
+                showMessage = !this.ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();
             }
-            if (ModuleConfiguration.StartDate >= DateTime.Now)
+
+            if (this.ModuleConfiguration.StartDate >= DateTime.Now)
             {
-                adminMessage = string.Format(Localization.GetString("ModuleEffective.Text"), ModuleConfiguration.StartDate);
+                adminMessage = string.Format(Localization.GetString("ModuleEffective.Text"), this.ModuleConfiguration.StartDate);
                 showMessage = !Globals.IsAdminControl();
             }
-            if (ModuleConfiguration.EndDate <= DateTime.Now)
+
+            if (this.ModuleConfiguration.EndDate <= DateTime.Now)
             {
-                adminMessage = string.Format(Localization.GetString("ModuleExpired.Text"), ModuleConfiguration.EndDate);
+                adminMessage = string.Format(Localization.GetString("ModuleExpired.Text"), this.ModuleConfiguration.EndDate);
                 showMessage = !Globals.IsAdminControl();
             }
+
             if (showMessage)
             {
-                AddAdministratorOnlyHighlighting(adminMessage);
+                this.AddAdministratorOnlyHighlighting(adminMessage);
             }
         }
 
@@ -274,17 +308,17 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessFooter()
         {
-			//inject the footer
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Footer))
+            // inject the footer
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Footer))
             {
-                var footer = new Literal {Text = ModuleConfiguration.Footer};
-                ContentPane.Controls.Add(footer);
+                var footer = new Literal { Text = this.ModuleConfiguration.Footer };
+                this.ContentPane.Controls.Add(footer);
             }
-			
-            //inject an end comment around the module content
+
+            // inject an end comment around the module content
             if (!Globals.IsAdminControl())
             {
-                ContentPane.Controls.Add(new LiteralControl("<!-- End_Module_" + ModuleConfiguration.ModuleID + " -->"));
+                this.ContentPane.Controls.Add(new LiteralControl("<!-- End_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
             }
         }
 
@@ -296,86 +330,93 @@ namespace DotNetNuke.UI.Containers
         {
             if (!Globals.IsAdminControl())
             {
-				//inject a start comment around the module content
-                ContentPane.Controls.Add(new LiteralControl("<!-- Start_Module_" + ModuleConfiguration.ModuleID + " -->"));
+                // inject a start comment around the module content
+                this.ContentPane.Controls.Add(new LiteralControl("<!-- Start_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
             }
-			
-            //inject the header
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Header))
+
+            // inject the header
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Header))
             {
-                var header = new Literal {Text = ModuleConfiguration.Header};
-                ContentPane.Controls.Add(header);
+                var header = new Literal { Text = this.ModuleConfiguration.Header };
+                this.ContentPane.Controls.Add(header);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessModule processes the module which is attached to this container
+        /// ProcessModule processes the module which is attached to this container.
         /// </summary>
         private void ProcessModule()
         {
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"Container.ProcessModule Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
-
-            if (ContentPane != null)
+            if (this._tracelLogger.IsDebugEnabled)
             {
-				//Process Content Pane Attributes
-                ProcessContentPane();
+                this._tracelLogger.Debug($"Container.ProcessModule Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            }
+
+            if (this.ContentPane != null)
+            {
+                // Process Content Pane Attributes
+                this.ProcessContentPane();
 
                 // always add the actions menu as the first item in the content pane.
-                if (InjectActionMenu && !ModuleHost.IsViewMode(ModuleConfiguration, PortalSettings) && Request.QueryString["dnnprintmode"] != "true")
+                if (this.InjectActionMenu && !ModuleHost.IsViewMode(this.ModuleConfiguration, this.PortalSettings) && this.Request.QueryString["dnnprintmode"] != "true")
                 {
                     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                    ContentPane.Controls.Add(LoadControl(PortalSettings.DefaultModuleActionMenu));
+                    this.ContentPane.Controls.Add(this.LoadControl(this.PortalSettings.DefaultModuleActionMenu));
 
-                    //register admin.css
-                    ClientResourceManager.RegisterAdminStylesheet(Page, Globals.HostPath + "admin.css");
+                    // register admin.css
+                    ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                 }
 
-                //Process Module Header
-                ProcessHeader();
+                // Process Module Header
+                this.ProcessHeader();
 
-                //Try to load the module control
-                _moduleHost = new ModuleHost(ModuleConfiguration, ParentSkin, this);
-                if (_tracelLogger.IsDebugEnabled)
-                    _tracelLogger.Debug($"Container.ProcessModule Info (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{_moduleHost.ID})");
-
-                ContentPane.Controls.Add(ModuleHost);
-
-                //Process Module Footer
-                ProcessFooter();
-				
-				//Process the Action Controls
-                if (ModuleHost != null && ModuleControl != null)
+                // Try to load the module control
+                this._moduleHost = new ModuleHost(this.ModuleConfiguration, this.ParentSkin, this);
+                if (this._tracelLogger.IsDebugEnabled)
                 {
-                    ProcessChildControls(this);
+                    this._tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this._moduleHost.ID})");
                 }
-				
-				//Add Module Stylesheets
-                ProcessStylesheets(ModuleHost != null);
+
+                this.ContentPane.Controls.Add(this.ModuleHost);
+
+                // Process Module Footer
+                this.ProcessFooter();
+
+                // Process the Action Controls
+                if (this.ModuleHost != null && this.ModuleControl != null)
+                {
+                    this.ProcessChildControls(this);
+                }
+
+                // Add Module Stylesheets
+                this.ProcessStylesheets(this.ModuleHost != null);
             }
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"Container.ProcessModule End (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// ProcessStylesheets processes the Module and Container stylesheets and adds
-		/// them to the Page.
-		/// </summary>
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// ProcessStylesheets processes the Module and Container stylesheets and adds
+        /// them to the Page.
+        /// </summary>
         private void ProcessStylesheets(bool includeModuleCss)
         {
-            ClientResourceManager.RegisterStyleSheet(Page, ContainerPath + "container.css", FileOrder.Css.ContainerCss);
-            ClientResourceManager.RegisterStyleSheet(Page, ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
 
-            //process the base class module properties 
+            // process the base class module properties
             if (includeModuleCss)
             {
-                string controlSrc = ModuleConfiguration.ModuleControl.ControlSrc;
-                string folderName = ModuleConfiguration.DesktopModule.FolderName;
+                string controlSrc = this.ModuleConfiguration.ModuleControl.ControlSrc;
+                string folderName = this.ModuleConfiguration.DesktopModule.FolderName;
 
-                string stylesheet = "";
-                if (String.IsNullOrEmpty(folderName)==false)
+                string stylesheet = string.Empty;
+                if (string.IsNullOrEmpty(folderName) == false)
                 {
                     if (controlSrc.EndsWith(".mvc"))
                     {
@@ -385,97 +426,51 @@ namespace DotNetNuke.UI.Containers
                     {
                         stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
                     }
-                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
+
+                    ClientResourceManager.RegisterStyleSheet(this.Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
+
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
                 if (ix >= 0)
                 {
                     stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
-                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
             }
         }
 
         private void SetAlignment()
         {
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Alignment))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Alignment))
             {
-                if (ContentPane.Attributes["class"] != null)
+                if (this.ContentPane.Attributes["class"] != null)
                 {
-                    ContentPane.Attributes["class"] = ContentPane.Attributes["class"] + " DNNAlign" + ModuleConfiguration.Alignment.ToLowerInvariant();
+                    this.ContentPane.Attributes["class"] = this.ContentPane.Attributes["class"] + " DNNAlign" + this.ModuleConfiguration.Alignment.ToLowerInvariant();
                 }
                 else
                 {
-                    ContentPane.Attributes["class"] = "DNNAlign" + ModuleConfiguration.Alignment.ToLowerInvariant();
+                    this.ContentPane.Attributes["class"] = "DNNAlign" + this.ModuleConfiguration.Alignment.ToLowerInvariant();
                 }
             }
         }
 
         private void SetBackground()
         {
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Color))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Color))
             {
-                ContentPane.Style["background-color"] = ModuleConfiguration.Color;
+                this.ContentPane.Style["background-color"] = this.ModuleConfiguration.Color;
             }
         }
 
         private void SetBorder()
         {
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Border))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Border))
             {
-                ContentPane.Style["border-top"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
-                ContentPane.Style["border-bottom"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
-                ContentPane.Style["border-right"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
-                ContentPane.Style["border-left"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
+                this.ContentPane.Style["border-top"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-bottom"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-right"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-left"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
             }
-        }
-		
-		#endregion
-
-		#region Protected Methods
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnInit runs when the Container is initialised.
-        /// </summary>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            InvokeContainerEvents(ContainerEventType.OnContainerInit);
-        }
-
-        /// <summary>
-        /// OnLoad runs when the Container is loaded.
-        /// </summary>
-       protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-
-            InvokeContainerEvents(ContainerEventType.OnContainerLoad);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs just before the Container is rendered.
-        /// </summary>
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            InvokeContainerEvents(ContainerEventType.OnContainerPreRender);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnUnLoad runs when the Container is unloaded.
-        /// </summary>
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-
-            InvokeContainerEvents(ContainerEventType.OnContainerUnLoad);
         }
 
         private void InvokeContainerEvents(ContainerEventType containerEventType)
@@ -490,46 +485,30 @@ namespace DotNetNuke.UI.Containers
                 }
             }
         }
-		
-		#endregion
-
-		#region Public Methods
-
-        public void SetModuleConfiguration(ModuleInfo configuration)
-        {
-            _moduleConfiguration = configuration;
-            ProcessModule();
-        }
-
-		#endregion
-
-		#region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ModuleAction_Click runs when a ModuleAction is clicked.
         /// </summary>
-        /// <remarks>The Module Action must be configured to fire an event (it may be configured 
+        /// <remarks>The Module Action must be configured to fire an event (it may be configured
         /// to redirect to a new url).  The event handler finds the Parent Container and invokes each
         /// registered ModuleActionEventListener delegate.
-        /// 
+        ///
         /// Note: with the refactoring of this to the Container, this could be handled at the container level.
         /// However, for legacy purposes this is left this way, as many modules would have registered their
         /// listeners on the Container directly, rather than through the helper method in PortalModuleBase.</remarks>
         private void ModuleActionClick(object sender, ActionEventArgs e)
         {
-			//Search through the listeners
-            foreach (ModuleActionEventListener listener in ParentSkin.ActionEventListeners)
-            {			
-				//If the associated module has registered a listener
+            // Search through the listeners
+            foreach (ModuleActionEventListener listener in this.ParentSkin.ActionEventListeners)
+            {
+                // If the associated module has registered a listener
                 if (e.ModuleConfiguration.ModuleID == listener.ModuleID)
                 {
-					//Invoke the listener to handle the ModuleAction_Click event
+                    // Invoke the listener to handle the ModuleAction_Click event
                     listener.ActionEvent.Invoke(sender, e);
                 }
             }
         }
-		
-		#endregion
     }
 }

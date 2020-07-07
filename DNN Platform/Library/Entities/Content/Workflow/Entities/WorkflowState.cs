@@ -1,55 +1,56 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.ComponentModel.DataAnnotations;
-using DotNetNuke.ComponentModel.DataAnnotations;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     /// <summary>
-    /// This entity represents a Workflow State
+    /// This entity represents a Workflow State.
     /// </summary>
     [PrimaryKey("StateID")]
     [TableName("ContentWorkflowStates")]
     [Serializable]
-    public class WorkflowState 
+    public class WorkflowState
     {
         /// <summary>
-        /// State Id
+        /// Gets or sets state Id.
         /// </summary>
         public int StateID { get; set; }
 
         /// <summary>
-        /// Workflow associated to the state
+        /// Gets or sets workflow associated to the state.
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// State name
+        /// Gets or sets state name.
         /// </summary>
         [Required]
         [StringLength(40)]
         public string StateName { get; set; }
 
         /// <summary>
-        /// State Order
+        /// Gets state Order.
         /// </summary>
-        public int Order { get; internal set; } 
+        public int Order { get; internal set; }
 
         /// <summary>
-        /// Indicates if the state is a system state. System states (i.e.: Draft, Published) have a special behavior. They cannot be deleted or moved.
+        /// Gets a value indicating whether indicates if the state is a system state. System states (i.e.: Draft, Published) have a special behavior. They cannot be deleted or moved.
         /// </summary>
         public bool IsSystem { get; internal set; }
 
         /// <summary>
-        /// If set to true the Workflow Engine will send system notification to the reviewer of the state when the workflow reach it
+        /// Gets or sets a value indicating whether if set to true the Workflow Engine will send system notification to the reviewer of the state when the workflow reach it.
         /// </summary>
         public bool SendNotification { get; set; }
 
         /// <summary>
-        /// If set to true the Workflow Engine <see cref="IWorkflowEngine"/> will send system notification to administrators user when the workflow reach it
+        /// Gets or sets a value indicating whether if set to true the Workflow Engine <see cref="IWorkflowEngine"/> will send system notification to administrators user when the workflow reach it.
         /// </summary>
         public bool SendNotificationToAdministrators { get; set; }
     }

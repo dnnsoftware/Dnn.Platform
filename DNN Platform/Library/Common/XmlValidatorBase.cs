@@ -1,21 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections;
-using System.IO;
-using System.Xml;
-using System.Xml.Schema;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common
 {
-	/// <summary>
-	/// Base class od XmlValidator
-	/// </summary>
+    using System.Collections;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.Schema;
+
+    /// <summary>
+    /// Base class od XmlValidator.
+    /// </summary>
     public class XmlValidatorBase
     {
         private readonly XmlSchemaSet _schemaSet;
@@ -24,106 +19,110 @@ namespace DotNetNuke.Common
 
         public XmlValidatorBase()
         {
-            _errs = new ArrayList();
-            _schemaSet = new XmlSchemaSet();
+            this._errs = new ArrayList();
+            this._schemaSet = new XmlSchemaSet();
         }
 
-		/// <summary>
-		/// Gets or sets the errors.
-		/// </summary>
-		/// <value>
-		/// The errors.
-		/// </value>
-        public ArrayList Errors
-        {
-            get
-            {
-                return _errs;
-            }
-            set
-            {
-                _errs = value;
-            }
-        }
-
-		/// <summary>
-		/// Gets the schema set.
-		/// </summary>
+        /// <summary>
+        /// Gets the schema set.
+        /// </summary>
         public XmlSchemaSet SchemaSet
         {
             get
             {
-                return _schemaSet;
+                return this._schemaSet;
             }
         }
 
-		/// <summary>
-		/// Validations the call back.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
-        protected void ValidationCallBack(object sender, ValidationEventArgs args)
+        /// <summary>
+        /// Gets or sets the errors.
+        /// </summary>
+        /// <value>
+        /// The errors.
+        /// </value>
+        public ArrayList Errors
         {
-            _errs.Add(args.Message);
+            get
+            {
+                return this._errs;
+            }
+
+            set
+            {
+                this._errs = value;
+            }
         }
 
-		/// <summary>
-		/// Determines whether this instance is valid.
-		/// </summary>
-		/// <returns>
-		///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
-		/// </returns>
+        /// <summary>
+        /// Determines whether this instance is valid.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
+        /// </returns>
         public bool IsValid()
         {
-			//There is a bug here which I haven't been able to fix.
-            //If the XML Instance does not include a reference to the
-            //schema, then the validation fails.  If the reference exists
-            //the the validation works correctly.
+            // There is a bug here which I haven't been able to fix.
+            // If the XML Instance does not include a reference to the
+            // schema, then the validation fails.  If the reference exists
+            // the the validation works correctly.
 
-            //Create a validating reader
+            // Create a validating reader
             var settings = new XmlReaderSettings();
-            settings.Schemas = _schemaSet;
+            settings.Schemas = this._schemaSet;
             settings.ValidationType = ValidationType.Schema;
-            //Set the validation event handler.
-            settings.ValidationEventHandler += ValidationCallBack;
-            XmlReader vreader = XmlReader.Create(_reader, settings);
-            //Read and validate the XML data.
+
+            // Set the validation event handler.
+            settings.ValidationEventHandler += this.ValidationCallBack;
+            XmlReader vreader = XmlReader.Create(this._reader, settings);
+
+            // Read and validate the XML data.
             while (vreader.Read())
             {
             }
+
             vreader.Close();
-            return (_errs.Count == 0);
+            return this._errs.Count == 0;
         }
 
-		/// <summary>
-		/// Validates the specified XML stream.
-		/// </summary>
-		/// <param name="xmlStream">The XML stream.</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Validates the specified XML stream.
+        /// </summary>
+        /// <param name="xmlStream">The XML stream.</param>
+        /// <returns></returns>
         public virtual bool Validate(Stream xmlStream)
         {
             xmlStream.Seek(0, SeekOrigin.Begin);
-            _reader = new XmlTextReader(xmlStream)
+            this._reader = new XmlTextReader(xmlStream)
             {
                 XmlResolver = null,
-                DtdProcessing = DtdProcessing.Prohibit
+                DtdProcessing = DtdProcessing.Prohibit,
             };
-            return IsValid();
+            return this.IsValid();
         }
 
-		/// <summary>
-		/// Validates the specified filename.
-		/// </summary>
-		/// <param name="filename">The filename.</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Validates the specified filename.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <returns></returns>
         public virtual bool Validate(string filename)
         {
-            _reader = new XmlTextReader(filename)
+            this._reader = new XmlTextReader(filename)
             {
                 XmlResolver = null,
-                DtdProcessing = DtdProcessing.Prohibit
+                DtdProcessing = DtdProcessing.Prohibit,
             };
-            return IsValid();
+            return this.IsValid();
+        }
+
+        /// <summary>
+        /// Validations the call back.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
+        protected void ValidationCallBack(object sender, ValidationEventArgs args)
+        {
+            this._errs.Add(args.Message);
         }
     }
 }

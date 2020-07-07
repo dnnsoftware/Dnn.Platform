@@ -1,26 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Linq;
-
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Web.Validators;
-
-using Moq;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.UI.Validation
 {
+    using System.Linq;
+
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Web.Validators;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ValidatorTests
     {
-        private static readonly ValidationResult FailedResult = new ValidationResult(new[] {new ValidationError()});
+        private static readonly ValidationResult FailedResult = new ValidationResult(new[] { new ValidationError() });
 
-        private static readonly ValidationResult AnotherFailedResult = new ValidationResult(new[] {new ValidationError()});
-
-        #region Tests
+        private static readonly ValidationResult AnotherFailedResult = new ValidationResult(new[] { new ValidationError() });
 
         [Test]
         public void ValidateObject_Returns_Successful_Result_If_All_Validators_Return_Successful()
@@ -66,12 +62,8 @@ namespace DotNetNuke.Tests.UI.Validation
             // Assert
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(2, result.Errors.Count());
-            EnumerableAssert.ElementsMatch(new[] {FailedResult, AnotherFailedResult}, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
+            EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult }, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
         }
-
-        #endregion
-
-        #region Helpers
 
         private static void SetupValidators(Validator validator, object target, params ValidationResult[] validationResults)
         {
@@ -83,7 +75,5 @@ namespace DotNetNuke.Tests.UI.Validation
                 validator.Validators.Add(mockValidator.Object);
             }
         }
-
-        #endregion
     }
 }

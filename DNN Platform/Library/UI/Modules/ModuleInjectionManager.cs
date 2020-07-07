@@ -1,22 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.UI.Modules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+
     internal class ModuleInjectionManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleInjectionManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInjectionManager));
         private static NaiveLockingList<IModuleInjectionFilter> _filters;
 
         public static void RegisterInjectionFilters()
@@ -29,7 +29,17 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        private static IEnumerable<IModuleInjectionFilter>  GetFilters()
+        public static bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)
+        {
+            return _filters.All(filter => filter.CanInjectModule(module, portalSettings));
+        }
+
+        internal static bool IsValidModuleInjectionFilter(Type t)
+        {
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
+        }
+
+        private static IEnumerable<IModuleInjectionFilter> GetFilters()
         {
             var typeLocator = new TypeLocator();
             IEnumerable<Type> types = typeLocator.GetAllMatchingTypes(IsValidModuleInjectionFilter);
@@ -53,16 +63,6 @@ namespace DotNetNuke.UI.Modules
                     yield return filter;
                 }
             }
-        }
-
-        internal static bool IsValidModuleInjectionFilter(Type t)
-        {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
-        }
-
-        public static bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)
-        {
-            return _filters.All(filter => filter.CanInjectModule(module, portalSettings));
         }
     }
 }

@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : ISettingsControl
+    /// Class    : ISettingsControl
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ISettingsControl provides a common Interface for Module Settings Controls
+    /// ISettingsControl provides a common Interface for Module Settings Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public interface ISettingsControl : IModuleControl

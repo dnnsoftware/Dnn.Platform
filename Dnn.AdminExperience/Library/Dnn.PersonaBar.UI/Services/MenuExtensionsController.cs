@@ -1,36 +1,36 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class MenuExtensionsController : PersonaBarApiController
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuExtensionsController));
 
-        #region Public API methods
-
         /// <summary>
-        /// Retrieve a list of extensions for menu. 
+        /// Retrieve a list of extensions for menu.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetExtensions(string menu)
         {
@@ -41,29 +41,27 @@ namespace Dnn.PersonaBar.UI.Services
                 if (menuItem != null)
                 {
                     var extensions = PersonaBarExtensionRepository.Instance.GetExtensions(menuItem.MenuId)
-                        .Where(IsVisible)
+                        .Where(this.IsVisible)
                         .Select(t => new
                         {
                             identifier = t.Identifier,
                             folderName = t.FolderName,
                             container = t.Container,
-                            path = GetExtensionPathByController(t),
-                            settings = GetExtensionSettings(t)
+                            path = this.GetExtensionPathByController(t),
+                            settings = this.GetExtensionSettings(t),
                         });
 
-                    return Request.CreateResponse(HttpStatusCode.OK, extensions);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, extensions);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
-
-        #endregion
 
         private string GetExtensionPathByController(PersonaBarExtension extension)
         {
@@ -73,20 +71,20 @@ namespace Dnn.PersonaBar.UI.Services
                 return extension.Path;
             }
 
-            var extensionController = GetExtensionController(extension);
+            var extensionController = this.GetExtensionController(extension);
             var path = extensionController?.GetPath(extension);
             return !string.IsNullOrEmpty(path) ? path : extension.Path;
         }
 
         private bool IsVisible(PersonaBarExtension extension)
         {
-            var extensionController = GetExtensionController(extension);
+            var extensionController = this.GetExtensionController(extension);
             return extensionController == null || extensionController.Visible(extension);
         }
 
         private IDictionary<string, object> GetExtensionSettings(PersonaBarExtension extension)
         {
-            var extensionController = GetExtensionController(extension);
+            var extensionController = this.GetExtensionController(extension);
             var settings = extensionController?.GetSettings(extension);
             return settings;
         }
@@ -111,7 +109,6 @@ namespace Dnn.PersonaBar.UI.Services
                 Logger.Error(ex);
                 return null;
             }
-
         }
     }
 }

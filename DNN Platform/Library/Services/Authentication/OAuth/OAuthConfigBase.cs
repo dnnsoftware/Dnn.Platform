@@ -1,16 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Globalization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
 
     /// <summary>
     /// The Config class provides a central area for management of Module Configuration Settings.
@@ -23,36 +22,34 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected OAuthConfigBase(string service, int portalId)
             : base(portalId)
         {
-            Service = service;
-            
-            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, "");
-            var hostApiKey = "";
+            this.Service = service;
+
+            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, string.Empty);
+            var hostApiKey = string.Empty;
 
             if (string.IsNullOrEmpty(portalApiKey))
             {
-                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", "");
-                HostConfig = !string.IsNullOrEmpty(hostApiKey);
+                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", string.Empty);
+                this.HostConfig = !string.IsNullOrEmpty(hostApiKey);
             }
             else
             {
-                HostConfig = false;
+                this.HostConfig = false;
             }
 
-            if (HostConfig)
+            if (this.HostConfig)
             {
-                APIKey = hostApiKey;
-                APISecret = HostController.Instance.GetString(Service + "_APISecret", "");
-                Enabled = HostController.Instance.GetBoolean(Service + "_Enabled", false);
+                this.APIKey = hostApiKey;
+                this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", string.Empty);
+                this.Enabled = HostController.Instance.GetBoolean(this.Service + "_Enabled", false);
             }
             else
             {
-                APIKey = portalApiKey;
-                APISecret = PortalController.GetPortalSetting(Service + "_APISecret", portalId, "");
-                Enabled = PortalController.GetPortalSettingAsBoolean(Service + "_Enabled", portalId, false);
+                this.APIKey = portalApiKey;
+                this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, string.Empty);
+                this.Enabled = PortalController.GetPortalSettingAsBoolean(this.Service + "_Enabled", portalId, false);
             }
         }
-
-        protected string Service { get; set; }
 
         public string APIKey { get; set; }
 
@@ -62,10 +59,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public bool HostConfig { get; set; }
 
-        private static string GetCacheKey(string service, int portalId)
-        {
-            return _cacheKey + "." + service + "_" + portalId;
-        }
+        protected string Service { get; set; }
 
         public static void ClearConfig(string service, int portalId)
         {
@@ -81,6 +75,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 config = new OAuthConfigBase(service, portalId);
                 DataCache.SetCache(key, config);
             }
+
             return config;
         }
 
@@ -103,6 +98,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
 
             ClearConfig(config.Service, config.PortalID);
+        }
+
+        private static string GetCacheKey(string service, int portalId)
+        {
+            return _cacheKey + "." + service + "_" + portalId;
         }
     }
 }

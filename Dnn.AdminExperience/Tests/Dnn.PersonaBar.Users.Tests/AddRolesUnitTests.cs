@@ -1,20 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using Dnn.PersonaBar.Roles.Components;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-using Dnn.PersonaBar.Library.Prompt.Models;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Roles.Components;
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AddRolesUnitTests : CommandTests<AddRoles>
     {
@@ -22,13 +23,9 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUsersController> _usersControllerMock;
         private Mock<IRolesController> _rolesControllerMock;
 
-        protected override string CommandName { get { return "Add-roles"; } }
-
-        protected override void ChildSetup()
+        protected override string CommandName
         {
-            _userValidatorMock = new Mock<IUserValidator>();
-            _usersControllerMock = new Mock<IUsersController>();
-            _rolesControllerMock = new Mock<IRolesController>();
+            get { return "Add-roles"; }
         }
 
         [TestCase]
@@ -36,11 +33,11 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             // Arrange
             var userId = 2;
-            var userInfo = GetUser(userId, true);
+            var userInfo = this.GetUser(userId, true);
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
 
             var userInfoList = new List<UserRoleInfo>(
                     new[]
@@ -48,15 +45,14 @@ namespace Dnn.PersonaBar.Users.Tests
                         new UserRoleInfo
                         {
                             RoleID = 1,
-                            PortalID = testPortalId,
+                            PortalID = this.testPortalId,
                             IsPublic = true
-                        }
-                    }
-                );
+                        },
+                    });
 
             var total = 1;
-            _usersControllerMock
-                .Setup(u => u.GetUserRoles(userInfo, "", out total, -1, -1))
+            this._usersControllerMock
+                .Setup(u => u.GetUserRoles(userInfo, string.Empty, out total, -1, -1))
                 .Returns(userInfoList);
 
             var rolesList = new List<RoleInfo>(
@@ -66,16 +62,15 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             RoleName = "Tester"
-                        }
-                    }
-                );
+                        },
+                    });
 
-            _rolesControllerMock
-                .Setup(r => r.GetRolesByNames(portalSettings, It.IsAny<int>(), It.IsAny<IList<string>>()))
+            this._rolesControllerMock
+                .Setup(r => r.GetRolesByNames(this.portalSettings, It.IsAny<int>(), It.IsAny<IList<string>>()))
                 .Returns(rolesList);
 
             // Act
-            var result = RunCommand(userId.ToString(), "--roles", "Tester");
+            var result = this.RunCommand(userId.ToString(), "--roles", "Tester");
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -88,14 +83,14 @@ namespace Dnn.PersonaBar.Users.Tests
             var userId = 2;
             UserInfo userInfo = null;
 
-            errorResultModel = new ConsoleErrorResultModel("Invalid userId");
+            this.errorResultModel = new ConsoleErrorResultModel("Invalid userId");
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
 
             // Act
-            var result = RunCommand(userId.ToString());
+            var result = this.RunCommand(userId.ToString());
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -106,11 +101,11 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             // Arrange
             var userId = 2;
-            var userInfo = GetUser(userId, true);
+            var userInfo = this.GetUser(userId, true);
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
 
             var userInfoList = new List<UserRoleInfo>(
                     new[]
@@ -118,15 +113,14 @@ namespace Dnn.PersonaBar.Users.Tests
                         new UserRoleInfo
                         {
                             RoleID = 1,
-                            PortalID = testPortalId,
+                            PortalID = this.testPortalId,
                             IsPublic = true
-                        }
-                    }
-                );
+                        },
+                    });
 
             var total = 1;
-            _usersControllerMock
-                .Setup(u => u.GetUserRoles(userInfo, "", out total, -1, -1))
+            this._usersControllerMock
+                .Setup(u => u.GetUserRoles(userInfo, string.Empty, out total, -1, -1))
                 .Returns(userInfoList);
 
             var rolesList = new List<RoleInfo>(
@@ -136,24 +130,30 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             RoleName = "Tester"
-                        }
-                    }
-                );
+                        },
+                    });
 
-            _rolesControllerMock
-                .Setup(r => r.GetRolesByNames(portalSettings, -1, It.IsAny<IList<string>>()))
+            this._rolesControllerMock
+                .Setup(r => r.GetRolesByNames(this.portalSettings, -1, It.IsAny<IList<string>>()))
                 .Returns(rolesList);
 
             // Act
-            TestDelegate ex = () => RunCommand(userId.ToString(), "--roles", "Not Tester");
+            TestDelegate ex = () => this.RunCommand(userId.ToString(), "--roles", "Not Tester");
 
             // Assert
             Assert.Throws<Exception>(ex, "Should throw exception");
         }
 
+        protected override void ChildSetup()
+        {
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._usersControllerMock = new Mock<IUsersController>();
+            this._rolesControllerMock = new Mock<IRolesController>();
+        }
+
         protected override AddRoles CreateCommand()
         {
-            return new AddRoles(_userValidatorMock.Object, _usersControllerMock.Object, _rolesControllerMock.Object);
+            return new AddRoles(this._userValidatorMock.Object, this._usersControllerMock.Object, this._rolesControllerMock.Object);
         }
     }
 }

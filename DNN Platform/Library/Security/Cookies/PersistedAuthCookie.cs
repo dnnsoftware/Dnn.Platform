@@ -1,43 +1,46 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Modules;
-// ReSharper disable MemberCanBePrivate.Global
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
+// ReSharper disable MemberCanBePrivate.Global
 namespace DotNetNuke.Security.Cookies
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     [TableName("AuthCookies")]
     [PrimaryKey("CookieId")]
     public class PersistedAuthCookie : IHydratable
     {
         public int CookieId { get; private set; }
+
         public string CookieValue { get; private set; }
+
         public DateTime ExpiresOn { get; private set; } // UTC
 
         public int KeyID
         {
-            get { return CookieId; }
-            set { CookieId = value; }
+            get { return this.CookieId; }
+            set { this.CookieId = value; }
         }
 
         public void Fill(IDataReader dr)
         {
-            CookieId = Null.SetNullInteger(dr[nameof(CookieId)]);
-            CookieValue = Null.SetNullString(dr[nameof(CookieValue)]);
-            ExpiresOn = Null.SetNullDateTime(dr[nameof(ExpiresOn)]);
+            this.CookieId = Null.SetNullInteger(dr[nameof(this.CookieId)]);
+            this.CookieValue = Null.SetNullString(dr[nameof(this.CookieValue)]);
+            this.ExpiresOn = Null.SetNullDateTime(dr[nameof(this.ExpiresOn)]);
 
-            if (ExpiresOn.Kind != DateTimeKind.Utc)
+            if (this.ExpiresOn.Kind != DateTimeKind.Utc)
             {
-                ExpiresOn = new DateTime(
-                    ExpiresOn.Year, ExpiresOn.Month, ExpiresOn.Day,
-                    ExpiresOn.Hour, ExpiresOn.Minute, ExpiresOn.Second,
-                    ExpiresOn.Millisecond, DateTimeKind.Utc);
+                this.ExpiresOn = new DateTime(
+                    this.ExpiresOn.Year, this.ExpiresOn.Month, this.ExpiresOn.Day,
+                    this.ExpiresOn.Hour, this.ExpiresOn.Minute, this.ExpiresOn.Second,
+                    this.ExpiresOn.Millisecond, DateTimeKind.Utc);
             }
         }
     }

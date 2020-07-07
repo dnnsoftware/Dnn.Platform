@@ -1,26 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
-    {
-        #region Public Methods
+    using System;
+    using System.Linq;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+
+    internal class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
+    {
         /// <summary>
-        /// Tracks a version detail when a module is added to a page
+        /// Tracks a version detail when a module is added to a page.
         /// </summary>
-        /// <param name="module">Module which tracks the version detail</param>
-        /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="module">Module which tracks the version detail.</param>
+        /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
+        /// <param name="userId">User Id who provokes the version detail.</param>
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
@@ -38,11 +37,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <summary>
-        /// Tracks a version detail when a module is modified on a page
+        /// Tracks a version detail when a module is modified on a page.
         /// </summary>
-        /// <param name="module">Module which tracks the version detail</param>
-        /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="module">Module which tracks the version detail.</param>
+        /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
+        /// <param name="userId">User Id who provokes the version detail.</param>
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
@@ -77,7 +76,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
             catch (InvalidOperationException)
             {
-                throw; 
+                throw;
             }
             catch (Exception ex)
             {
@@ -86,11 +85,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <summary>
-        /// Tracks a version detail when a module is deleted from a page
+        /// Tracks a version detail when a module is deleted from a page.
         /// </summary>
-        /// <param name="module">Module which tracks the version detail</param>
-        /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="module">Module which tracks the version detail.</param>
+        /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
+        /// <param name="userId">User Id who provokes the version detail.</param>
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
@@ -108,12 +107,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <summary>
-        /// Tracks a version detail when a module is copied from an exisitng page
+        /// Tracks a version detail when a module is copied from an exisitng page.
         /// </summary>
-        /// <param name="module">Module which tracks the version detail</param>
-        /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="originalTabId">Tab Id where the module originally is</param>
-        /// /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="module">Module which tracks the version detail.</param>
+        /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
+        /// <param name="originalTabId">Tab Id where the module originally is.</param>
+        /// /// <param name="userId">User Id who provokes the version detail.</param>
         public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             Requires.NotNull("module", module);
@@ -136,12 +135,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <summary>
-        /// Tracks a version detail when a copied module is deleted from an exisitng page
+        /// Tracks a version detail when a copied module is deleted from an exisitng page.
         /// </summary>
-        /// <param name="module">Module which tracks the version detail</param>
-        /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="originalTabId">Tab Id where the module originally is</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="module">Module which tracks the version detail.</param>
+        /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
+        /// <param name="originalTabId">Tab Id where the module originally is.</param>
+        /// <param name="userId">User Id who provokes the version detail.</param>
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             Requires.NotNull("module", module);
@@ -164,9 +163,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        #endregion
-
-        #region Private Statics Methods
+        protected override Func<ITabChangeTracker> GetFactory()
+        {
+            return () => new TabVersionTracker();
+        }
 
         private static void ProcessAdditionDetail(ModuleInfo module, int moduleVersion, int userId, TabVersion targetVersion)
         {
@@ -174,14 +174,15 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 return;
             }
-            
-            //Module could be restored in the same version
+
+            // Module could be restored in the same version
             var existingTabDetails =
                 TabVersionDetailController.Instance.GetTabVersionDetails(targetVersion.TabVersionId)
                     .Where(tvd => tvd.ModuleId == module.ModuleID);
             foreach (var existingTabDetail in existingTabDetails)
             {
-                TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
+                TabVersionDetailController.Instance.DeleteTabVersionDetail(
+                    existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
             }
 
@@ -202,17 +203,18 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     .SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
             if (existingTabDetail != null)
             {
-                TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
+                TabVersionDetailController.Instance.DeleteTabVersionDetail(
+                    existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
-                
-                //When a module is added in the same version, then we should do nothing with it
+
+                // When a module is added in the same version, then we should do nothing with it
                 if (existingTabDetail.Action == TabVersionDetailAction.Added)
                 {
                     return;
                 }
             }
 
-            //Do not add module to Tab Version Details if it has been hard deleted
+            // Do not add module to Tab Version Details if it has been hard deleted
             ModuleInfo moduleInfo = ModuleController.Instance.GetModule(module.ModuleID, module.TabID, false);
             if (moduleInfo != null)
             {
@@ -245,7 +247,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 ModuleVersion = moduleVersion,
                 ModuleOrder = module.ModuleOrder,
                 PaneName = module.PaneName,
-                Action = action              
+                Action = action,
             };
         }
 
@@ -259,16 +261,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 ModuleVersion = moduleVersion,
                 ModuleOrder = moduleOrder,
                 PaneName = paneName,
-                Action = action
+                Action = action,
             };
         }
-        #endregion
-
-        #region Service Locator
-        protected override Func<ITabChangeTracker> GetFactory()
-        {
-            return () => new TabVersionTracker();
-        }
-        #endregion
     }
 }

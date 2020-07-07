@@ -1,21 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+
     public class BusinessController : IUpgradeable
     {
         public string UpgradeModule(string version)
@@ -23,11 +24,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             switch (version)
             {
                 case "01.04.00":
-                    UpdateMenuController();
+                    this.UpdateMenuController();
                     break;
 
                 case "01.05.00":
-                    if (TelerikAssemblyExists())
+                    if (this.TelerikAssemblyExists())
                     {
                         UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                     }
@@ -35,16 +36,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
             return String.Empty;
-        }
-
-        private void UpdateMenuController()
-        {
-            PersonaBarRepository.Instance.UpdateMenuController(Dnn.PersonaBar.Vocabularies.Components.Constants.MenuIdentifier, string.Empty);
-        }
-
-        private bool TelerikAssemblyExists()
-        {
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
         }
 
         private static string UpdateTelerikEncryptionKey(string keyName)
@@ -79,6 +70,16 @@ namespace Dnn.PersonaBar.Extensions.Components
                 }
             }
             return strError;
+        }
+
+        private void UpdateMenuController()
+        {
+            PersonaBarRepository.Instance.UpdateMenuController(Dnn.PersonaBar.Vocabularies.Components.Constants.MenuIdentifier, string.Empty);
+        }
+
+        private bool TelerikAssemblyExists()
+        {
+            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
         }
     }
 }

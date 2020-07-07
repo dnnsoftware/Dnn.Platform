@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DNN.Integration.Test.Framework.Scripts
 {
     public static class SqlScripts
@@ -576,21 +576,6 @@ namespace DNN.Integration.Test.Framework.Scripts
 
             SELECT SCOPE_IDENTITY() AS ModulePermissionId";
 
-        public static string UserGetPreferredTimeZone = @"
-            DECLARE @UserId INT
-            DECLARE @PortalID INT
-            DECLARE @PropertyDefinitionId INT
-
-            SET @UserId = '$[user_id]'
-            SET @PortalID = '$[portal_id]'
-
-            SELECT TOP 1 @PropertyDefinitionId = PropertyDefinitionID
-            FROM [dbo].[{objectQualifier}ProfilePropertyDefinition]
-            WHERE PortalID = @PortalID AND PropertyName = 'PreferredTimeZone' AND PropertyCategory = 'Preferences'
-
-            SELECT PropertyValue FROM [dbo].[{objectQualifier}UserProfile]
-            WHERE PropertyDefinitionID = @PropertyDefinitionId AND [UserId] = @UserId";
-
         public const string PortalGetTimeZone = @"
             DECLARE @PortalID INT
             SET @PortalID = '$[portal_id]'
@@ -622,5 +607,20 @@ namespace DNN.Integration.Test.Framework.Scripts
             ELSE
                 SELECT 0
             ;";
+
+        public static string UserGetPreferredTimeZone = @"
+            DECLARE @UserId INT
+            DECLARE @PortalID INT
+            DECLARE @PropertyDefinitionId INT
+
+            SET @UserId = '$[user_id]'
+            SET @PortalID = '$[portal_id]'
+
+            SELECT TOP 1 @PropertyDefinitionId = PropertyDefinitionID
+            FROM [dbo].[{objectQualifier}ProfilePropertyDefinition]
+            WHERE PortalID = @PortalID AND PropertyName = 'PreferredTimeZone' AND PropertyCategory = 'Preferences'
+
+            SELECT PropertyValue FROM [dbo].[{objectQualifier}UserProfile]
+            WHERE PropertyDefinitionID = @PropertyDefinitionId AND [UserId] = @UserId";
     }
 }
