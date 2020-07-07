@@ -27,6 +27,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
+        /// Gets provides an Unique String for the image transformation.
+        /// </summary>
+        public override string UniqueString => base.UniqueString + this.Width + "-" + this.Height + "-" + this.Color + "-" + this.BackColor + "-" + this.Text;
+
+        /// <summary>
         /// Gets or sets the width of the placeholder image.
         /// </summary>
         public int Width { get; set; }
@@ -50,11 +55,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Gets or sets the text of the placeholder image. if blank dimension will be used.
         /// </summary>
         public string Text { get; set; }
-
-        /// <summary>
-        /// Gets provides an Unique String for the image transformation.
-        /// </summary>
-        public override string UniqueString => base.UniqueString + this.Width + "-" + this.Height + "-" + this.Color + "-" + this.BackColor + "-" + this.Text;
 
         /// <summary>
         /// Processes an input image returning a placeholder image.

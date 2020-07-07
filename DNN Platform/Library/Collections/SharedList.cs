@@ -142,11 +142,6 @@ namespace DotNetNuke.Collections.Internal
             this._list.RemoveAt(index);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator1();
-        }
-
         public void Dispose()
         {
             this.Dispose(true);
@@ -173,23 +168,6 @@ namespace DotNetNuke.Collections.Internal
             return this._lockStrategy.GetReadLock(timeOut);
         }
 
-        // IDisposable
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._isDisposed)
-            {
-                if (disposing)
-                {
-                    // dispose managed state (managed objects).
-                }
-
-                this._lockStrategy.Dispose();
-                this._lockStrategy = null;
-            }
-
-            this._isDisposed = true;
-        }
-
         public ISharedCollectionLock GetReadLock(int millisecondTimeout)
         {
             return this.GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
@@ -214,6 +192,28 @@ namespace DotNetNuke.Collections.Internal
         public IEnumerator GetEnumerator1()
         {
             return this.GetEnumerator();
+        }
+
+        // IDisposable
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._isDisposed)
+            {
+                if (disposing)
+                {
+                    // dispose managed state (managed objects).
+                }
+
+                this._lockStrategy.Dispose();
+                this._lockStrategy = null;
+            }
+
+            this._isDisposed = true;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator1();
         }
 
         private void EnsureReadAccess()

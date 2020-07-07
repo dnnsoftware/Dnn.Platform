@@ -43,6 +43,24 @@ namespace DotNetNuke.Web.UI.WebControls
         /// -----------------------------------------------------------------------------
         public string IconStyle { get; set; }
 
+        public override string ImageUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(base.ImageUrl))
+                {
+                    base.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
+                }
+
+                return base.ImageUrl;
+            }
+
+            set
+            {
+                base.ImageUrl = value;
+            }
+        }
+
         public override GridColumn Clone()
         {
             DnnGridButtonColumn dnnGridColumn = new DnnGridButtonColumn();
@@ -59,24 +77,6 @@ namespace DotNetNuke.Web.UI.WebControls
             if (inItem is GridHeaderItem && !string.IsNullOrEmpty(this.HeaderText))
             {
                 cell.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
-            }
-        }
-
-        public override string ImageUrl
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(base.ImageUrl))
-                {
-                    base.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
-                }
-
-                return base.ImageUrl;
-            }
-
-            set
-            {
-                base.ImageUrl = value;
             }
         }
     }

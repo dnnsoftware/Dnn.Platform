@@ -25,8 +25,6 @@ namespace DotNetNuke.Security
 
     public class PortalSecurity
     {
-        public static readonly PortalSecurity Instance = new PortalSecurity();
-
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
@@ -34,11 +32,13 @@ namespace DotNetNuke.Security
         private const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
 
         private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
+        public static readonly PortalSecurity Instance = new PortalSecurity();
 
         private static readonly DateTime OldExpiryTime = new DateTime(1999, 1, 1);
 
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly Regex[] RxListStrings = new[]
         {
             new Regex("<script[^>]*>.*?</script[^><]*>", RxOptions),
@@ -190,6 +190,114 @@ namespace DotNetNuke.Security
             return cookieDomain;
         }
 
+        public static bool IsDenied(string roles)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsDenied(objUserInfo, settings, roles);
+        }
+
+        public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
+        {
+            // super user always has full access
+            if (objUserInfo.IsSuperUser)
+            {
+                return false;
+            }
+
+            bool isDenied = false;
+
+            if (roles != null)
+            {
+                // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+                foreach (string role in roles.Split(new[] { ';' }))
+                {
+                    if (!string.IsNullOrEmpty(role))
+                    {
+                        // Deny permission
+                        if (role.StartsWith("!"))
+                        {
+                            // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                            if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
+                            {
+                                string denyRole = role.Replace("!", string.Empty);
+                                if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
+                                {
+                                    isDenied = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return isDenied;
+        }
+
+        public static bool IsInRole(string role)
+        {
+            if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
+            {
+                return true;
+            }
+
+            return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentPortalSettings(), role);
+        }
+
+        public static bool IsInRoles(string roles)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsInRoles(objUserInfo, settings, roles);
+        }
+
+        public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
+        {
+            // super user always has full access
+            bool isInRoles = objUserInfo.IsSuperUser;
+
+            if (!isInRoles)
+            {
+                if (roles != null)
+                {
+                    foreach (string role in roles.Split(new[] { ';' }))
+                    {
+                        bool? roleAllowed;
+                        ProcessRole(objUserInfo, settings, role, out roleAllowed);
+                        if (roleAllowed.HasValue)
+                        {
+                            isInRoles = roleAllowed.Value;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return isInRoles;
+        }
+
+        public static bool IsFriend(int userId)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsInRoles(objUserInfo, settings, RoleFriendPrefix + userId);
+        }
+
+        public static bool IsFollower(int userId)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsInRoles(objUserInfo, settings, RoleFollowerPrefix + userId);
+        }
+
+        public static bool IsOwner(int userId)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function creates a random key.
@@ -212,265 +320,6 @@ namespace DotNetNuke.Security
         public string Decrypt(string strKey, string strData)
         {
             return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
-        }
-
-        private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
-        {
-            var roleType = GetRoleType(roleName);
-            switch (roleType)
-            {
-                case RoleType.Friend:
-                    ProcessFriendRole(user, roleName, out roleAllowed);
-                    break;
-                case RoleType.Follower:
-                    ProcessFollowerRole(user, roleName, out roleAllowed);
-                    break;
-                case RoleType.Owner:
-                    ProcessOwnerRole(user, roleName, out roleAllowed);
-                    break;
-                default:
-                    ProcessSecurityRole(user, settings, roleName, out roleAllowed);
-                    break;
-            }
-        }
-
-        private static void ProcessFriendRole(UserInfo user, string roleName, out bool? roleAllowed)
-        {
-            roleAllowed = null;
-            var targetUser = UserController.Instance.GetUserById(user.PortalID, GetEntityFromRoleName(roleName));
-            var relationShip = RelationshipController.Instance.GetFriendRelationship(user, targetUser);
-            if (relationShip != null && relationShip.Status == RelationshipStatus.Accepted)
-            {
-                roleAllowed = true;
-            }
-        }
-
-        private static void ProcessFollowerRole(UserInfo user, string roleName, out bool? roleAllowed)
-        {
-            roleAllowed = null;
-            var targetUser = UserController.Instance.GetUserById(user.PortalID, GetEntityFromRoleName(roleName));
-            var relationShip = RelationshipController.Instance.GetFollowerRelationship(user, targetUser);
-            if (relationShip != null && relationShip.Status == RelationshipStatus.Accepted)
-            {
-                roleAllowed = true;
-            }
-        }
-
-        private static void ProcessOwnerRole(UserInfo user, string roleName, out bool? roleAllowed)
-        {
-            roleAllowed = null;
-            var entityId = GetEntityFromRoleName(roleName);
-            if (entityId == user.UserID)
-            {
-                roleAllowed = true;
-            }
-        }
-
-        private static int GetEntityFromRoleName(string roleName)
-        {
-            var roleParts = roleName.Split(':');
-            int result;
-            if (roleParts.Length > 1 && int.TryParse(roleParts[1], out result))
-            {
-                return result;
-            }
-
-            return Null.NullInteger;
-        }
-
-        private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
-        {
-            roleAllowed = null;
-
-            // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-            if (!string.IsNullOrEmpty(roleName))
-            {
-                // Deny permission
-                if (roleName.StartsWith("!"))
-                {
-                    // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                    if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
-                    {
-                        string denyRole = roleName.Replace("!", string.Empty);
-                        if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
-                        {
-                            roleAllowed = false;
-                        }
-                    }
-                }
-                else // Grant permission
-                {
-                    if (roleName == Globals.glbRoleAllUsersName || user.IsInRole(roleName))
-                    {
-                        roleAllowed = true;
-                    }
-                }
-            }
-        }
-
-        private static RoleType GetRoleType(string roleName)
-        {
-            if (roleName.StartsWith(RoleFriendPrefix, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return RoleType.Friend;
-            }
-
-            if (roleName.StartsWith(RoleFollowerPrefix, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return RoleType.Follower;
-            }
-
-            if (roleName.StartsWith(RoleOwnerPrefix, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return RoleType.Owner;
-            }
-
-            return RoleType.Security;
-        }
-
-        private static string BytesToHexString(IEnumerable<byte> bytes)
-        {
-            var hexString = new StringBuilder();
-            foreach (var b in bytes)
-            {
-                hexString.Append(string.Format("{0:X2}", b));
-            }
-
-            return hexString.ToString();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This function uses Regex search strings to remove HTML tags which are
-        /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
-        /// to provide more robust checking as additional holes are found.
-        /// </summary>
-        /// <param name="strInput">This is the string to be filtered.</param>
-        /// <returns>Filtered UserInput.</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the FormatDisableScripting function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static string FilterStrings(string strInput)
-        {
-            // setup up list of search terms as items may be used twice
-            var tempInput = strInput;
-            if (string.IsNullOrEmpty(tempInput))
-            {
-                return tempInput;
-            }
-
-            const string replacement = " ";
-
-            // remove the js event from html tags
-            var tagMatches = DangerElementsRegex.Matches(tempInput);
-            foreach (Match match in tagMatches)
-            {
-                var tagContent = match.Value;
-                var cleanTagContent = DangerElementContentRegex.Replace(tagContent, string.Empty);
-                tempInput = tempInput.Replace(tagContent, cleanTagContent);
-            }
-
-            // check if text contains encoded angle brackets, if it does it we decode it to check the plain text
-            if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
-            {
-                // text is encoded, so decode and try again
-                tempInput = HttpUtility.HtmlDecode(tempInput);
-                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
-
-                // Re-encode
-                tempInput = HttpUtility.HtmlEncode(tempInput);
-            }
-            else
-            {
-                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
-            }
-
-            return tempInput;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This filter removes angle brackets i.e.
-        /// </summary>
-        /// <param name="strInput">This is the string to be filtered.</param>
-        /// <returns>Filtered UserInput.</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static string FormatAngleBrackets(string strInput)
-        {
-            var tempInput = new StringBuilder(strInput).Replace("<", string.Empty).Replace(">", string.Empty);
-            return tempInput.ToString();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This filter removes CrLf characters and inserts br.
-        /// </summary>
-        /// <param name="strInput">This is the string to be filtered.</param>
-        /// <returns>Filtered UserInput.</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static string FormatMultiLine(string strInput)
-        {
-            const string lbreak = "<br />";
-            var tempInput = new StringBuilder(strInput).Replace("\r\n", lbreak).Replace("\n", lbreak).Replace("\r", lbreak);
-            return tempInput.ToString();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This function uses Regex search strings to remove HTML tags which are
-        /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
-        /// to provide more robust checking as additional holes are found.
-        /// </summary>
-        /// <param name="strInput">This is the string to be filtered.</param>
-        /// <returns>Filtered UserInput.</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private string FormatDisableScripting(string strInput)
-        {
-            return string.IsNullOrWhiteSpace(strInput)
-                ? strInput
-                : FilterStrings(strInput);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This function verifies raw SQL statements to prevent SQL injection attacks
-        /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module.
-        /// </summary>
-        /// <param name="strSQL">This is the string to be filtered.</param>
-        /// <returns>Filtered UserInput.</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static string FormatRemoveSQL(string strSQL)
-        {
-            // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
-            return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This function determines if the Input string contains any markup.
-        /// </summary>
-        /// <param name="strInput">This is the string to be checked.</param>
-        /// <returns>True if string contains Markup tag(s).</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static bool IncludesMarkup(string strInput)
-        {
-            return StripTagsRegex.IsMatch(strInput);
         }
 
         public string DecryptString(string message, string passphrase)
@@ -882,6 +731,246 @@ namespace DotNetNuke.Security
             }
         }
 
+        private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        {
+            var roleType = GetRoleType(roleName);
+            switch (roleType)
+            {
+                case RoleType.Friend:
+                    ProcessFriendRole(user, roleName, out roleAllowed);
+                    break;
+                case RoleType.Follower:
+                    ProcessFollowerRole(user, roleName, out roleAllowed);
+                    break;
+                case RoleType.Owner:
+                    ProcessOwnerRole(user, roleName, out roleAllowed);
+                    break;
+                default:
+                    ProcessSecurityRole(user, settings, roleName, out roleAllowed);
+                    break;
+            }
+        }
+
+        private static void ProcessFriendRole(UserInfo user, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+            var targetUser = UserController.Instance.GetUserById(user.PortalID, GetEntityFromRoleName(roleName));
+            var relationShip = RelationshipController.Instance.GetFriendRelationship(user, targetUser);
+            if (relationShip != null && relationShip.Status == RelationshipStatus.Accepted)
+            {
+                roleAllowed = true;
+            }
+        }
+
+        private static void ProcessFollowerRole(UserInfo user, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+            var targetUser = UserController.Instance.GetUserById(user.PortalID, GetEntityFromRoleName(roleName));
+            var relationShip = RelationshipController.Instance.GetFollowerRelationship(user, targetUser);
+            if (relationShip != null && relationShip.Status == RelationshipStatus.Accepted)
+            {
+                roleAllowed = true;
+            }
+        }
+
+        private static void ProcessOwnerRole(UserInfo user, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+            var entityId = GetEntityFromRoleName(roleName);
+            if (entityId == user.UserID)
+            {
+                roleAllowed = true;
+            }
+        }
+
+        private static int GetEntityFromRoleName(string roleName)
+        {
+            var roleParts = roleName.Split(':');
+            int result;
+            if (roleParts.Length > 1 && int.TryParse(roleParts[1], out result))
+            {
+                return result;
+            }
+
+            return Null.NullInteger;
+        }
+
+        private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+
+            // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+            if (!string.IsNullOrEmpty(roleName))
+            {
+                // Deny permission
+                if (roleName.StartsWith("!"))
+                {
+                    // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                    if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
+                    {
+                        string denyRole = roleName.Replace("!", string.Empty);
+                        if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
+                        {
+                            roleAllowed = false;
+                        }
+                    }
+                }
+                else // Grant permission
+                {
+                    if (roleName == Globals.glbRoleAllUsersName || user.IsInRole(roleName))
+                    {
+                        roleAllowed = true;
+                    }
+                }
+            }
+        }
+
+        private static RoleType GetRoleType(string roleName)
+        {
+            if (roleName.StartsWith(RoleFriendPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return RoleType.Friend;
+            }
+
+            if (roleName.StartsWith(RoleFollowerPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return RoleType.Follower;
+            }
+
+            if (roleName.StartsWith(RoleOwnerPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return RoleType.Owner;
+            }
+
+            return RoleType.Security;
+        }
+
+        private static string BytesToHexString(IEnumerable<byte> bytes)
+        {
+            var hexString = new StringBuilder();
+            foreach (var b in bytes)
+            {
+                hexString.Append(string.Format("{0:X2}", b));
+            }
+
+            return hexString.ToString();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This function uses Regex search strings to remove HTML tags which are
+        /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
+        /// to provide more robust checking as additional holes are found.
+        /// </summary>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// <remarks>
+        /// This is a private function that is used internally by the FormatDisableScripting function.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static string FilterStrings(string strInput)
+        {
+            // setup up list of search terms as items may be used twice
+            var tempInput = strInput;
+            if (string.IsNullOrEmpty(tempInput))
+            {
+                return tempInput;
+            }
+
+            const string replacement = " ";
+
+            // remove the js event from html tags
+            var tagMatches = DangerElementsRegex.Matches(tempInput);
+            foreach (Match match in tagMatches)
+            {
+                var tagContent = match.Value;
+                var cleanTagContent = DangerElementContentRegex.Replace(tagContent, string.Empty);
+                tempInput = tempInput.Replace(tagContent, cleanTagContent);
+            }
+
+            // check if text contains encoded angle brackets, if it does it we decode it to check the plain text
+            if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
+            {
+                // text is encoded, so decode and try again
+                tempInput = HttpUtility.HtmlDecode(tempInput);
+                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
+
+                // Re-encode
+                tempInput = HttpUtility.HtmlEncode(tempInput);
+            }
+            else
+            {
+                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
+            }
+
+            return tempInput;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This filter removes angle brackets i.e.
+        /// </summary>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// <remarks>
+        /// This is a private function that is used internally by the InputFilter function.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static string FormatAngleBrackets(string strInput)
+        {
+            var tempInput = new StringBuilder(strInput).Replace("<", string.Empty).Replace(">", string.Empty);
+            return tempInput.ToString();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This filter removes CrLf characters and inserts br.
+        /// </summary>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// <remarks>
+        /// This is a private function that is used internally by the InputFilter function.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static string FormatMultiLine(string strInput)
+        {
+            const string lbreak = "<br />";
+            var tempInput = new StringBuilder(strInput).Replace("\r\n", lbreak).Replace("\n", lbreak).Replace("\r", lbreak);
+            return tempInput.ToString();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This function verifies raw SQL statements to prevent SQL injection attacks
+        /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module.
+        /// </summary>
+        /// <param name="strSQL">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// <remarks>
+        /// This is a private function that is used internally by the InputFilter function.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static string FormatRemoveSQL(string strSQL)
+        {
+            // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
+            return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This function determines if the Input string contains any markup.
+        /// </summary>
+        /// <param name="strInput">This is the string to be checked.</param>
+        /// <returns>True if string contains Markup tag(s).</returns>
+        /// <remarks>
+        /// This is a private function that is used internally by the InputFilter function.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static bool IncludesMarkup(string strInput)
+        {
+            return StripTagsRegex.IsMatch(strInput);
+        }
+
         private static void InvalidateAspNetSession(HttpContext context)
         {
             if (context.Session != null && !context.Session.IsNewSession)
@@ -892,112 +981,23 @@ namespace DotNetNuke.Security
             }
         }
 
-        public static bool IsDenied(string roles)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This function uses Regex search strings to remove HTML tags which are
+        /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
+        /// to provide more robust checking as additional holes are found.
+        /// </summary>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// <remarks>
+        /// This is a private function that is used internally by the InputFilter function.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private string FormatDisableScripting(string strInput)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            return IsDenied(objUserInfo, settings, roles);
-        }
-
-        public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
-        {
-            // super user always has full access
-            if (objUserInfo.IsSuperUser)
-            {
-                return false;
-            }
-
-            bool isDenied = false;
-
-            if (roles != null)
-            {
-                // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] { ';' }))
-                {
-                    if (!string.IsNullOrEmpty(role))
-                    {
-                        // Deny permission
-                        if (role.StartsWith("!"))
-                        {
-                            // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                            if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
-                            {
-                                string denyRole = role.Replace("!", string.Empty);
-                                if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
-                                {
-                                    isDenied = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return isDenied;
-        }
-
-        public static bool IsInRole(string role)
-        {
-            if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
-            {
-                return true;
-            }
-
-            return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentPortalSettings(), role);
-        }
-
-        public static bool IsInRoles(string roles)
-        {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            return IsInRoles(objUserInfo, settings, roles);
-        }
-
-        public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
-        {
-            // super user always has full access
-            bool isInRoles = objUserInfo.IsSuperUser;
-
-            if (!isInRoles)
-            {
-                if (roles != null)
-                {
-                    foreach (string role in roles.Split(new[] { ';' }))
-                    {
-                        bool? roleAllowed;
-                        ProcessRole(objUserInfo, settings, role, out roleAllowed);
-                        if (roleAllowed.HasValue)
-                        {
-                            isInRoles = roleAllowed.Value;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return isInRoles;
-        }
-
-        public static bool IsFriend(int userId)
-        {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            return IsInRoles(objUserInfo, settings, RoleFriendPrefix + userId);
-        }
-
-        public static bool IsFollower(int userId)
-        {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            return IsInRoles(objUserInfo, settings, RoleFollowerPrefix + userId);
-        }
-
-        public static bool IsOwner(int userId)
-        {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
+            return string.IsNullOrWhiteSpace(strInput)
+                ? strInput
+                : FilterStrings(strInput);
         }
     }
 }

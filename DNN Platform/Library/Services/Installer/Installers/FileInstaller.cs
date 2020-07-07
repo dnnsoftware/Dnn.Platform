@@ -24,6 +24,20 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        public override bool SupportsManifestOnlyInstall
+        {
+            get
+            {
+                return Null.NullBoolean;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
         /// package.
         /// </summary>
@@ -41,29 +55,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 this._DeleteFiles = value;
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
-        public override bool SupportsManifestOnlyInstall
-        {
-            get
-            {
-                return Null.NullBoolean;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the BasePath for the files.
-        /// </summary>
-        /// <remarks>The Base Path is relative to the WebRoot.</remarks>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        protected string BasePath { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -143,6 +134,15 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets the BasePath for the files.
+        /// </summary>
+        /// <remarks>The Base Path is relative to the WebRoot.</remarks>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        protected string BasePath { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Files this is not neccessary.</remarks>
@@ -184,6 +184,75 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
 
                 this.Completed = bSuccess;
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ReadManifest method reads the manifest file for the file compoent.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void ReadManifest(XPathNavigator manifestNav)
+        {
+            XPathNavigator rootNav = manifestNav.SelectSingleNode(this.CollectionNodeName);
+            if (rootNav != null)
+            {
+                XPathNavigator baseNav = rootNav.SelectSingleNode("basePath");
+                if (baseNav != null)
+                {
+                    this.BasePath = baseNav.Value;
+                }
+
+                this.ReadCustomManifest(rootNav);
+                foreach (XPathNavigator nav in rootNav.Select(this.ItemNodeName))
+                {
+                    this.ProcessFile(this.ReadManifestItem(nav, true), nav);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Rollback method undoes the installation of the file component in the event
+        /// that one of the other components fails.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Rollback()
+        {
+            try
+            {
+                foreach (InstallFile file in this.Files)
+                {
+                    this.RollbackFile(file);
+                }
+
+                this.Completed = true;
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstall method uninstalls the file component.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void UnInstall()
+        {
+            try
+            {
+                foreach (InstallFile file in this.Files)
+                {
+                    this.UnInstallFile(file);
+                }
+
+                this.Completed = true;
             }
             catch (Exception ex)
             {
@@ -396,75 +465,6 @@ namespace DotNetNuke.Services.Installer.Installers
         protected virtual void UnInstallFile(InstallFile unInstallFile)
         {
             this.DeleteFile(unInstallFile);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file for the file compoent.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void ReadManifest(XPathNavigator manifestNav)
-        {
-            XPathNavigator rootNav = manifestNav.SelectSingleNode(this.CollectionNodeName);
-            if (rootNav != null)
-            {
-                XPathNavigator baseNav = rootNav.SelectSingleNode("basePath");
-                if (baseNav != null)
-                {
-                    this.BasePath = baseNav.Value;
-                }
-
-                this.ReadCustomManifest(rootNav);
-                foreach (XPathNavigator nav in rootNav.Select(this.ItemNodeName))
-                {
-                    this.ProcessFile(this.ReadManifestItem(nav, true), nav);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Rollback method undoes the installation of the file component in the event
-        /// that one of the other components fails.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Rollback()
-        {
-            try
-            {
-                foreach (InstallFile file in this.Files)
-                {
-                    this.RollbackFile(file);
-                }
-
-                this.Completed = true;
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the file component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void UnInstall()
-        {
-            try
-            {
-                foreach (InstallFile file in this.Files)
-                {
-                    this.UnInstallFile(file);
-                }
-
-                this.Completed = true;
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
-            }
         }
     }
 }

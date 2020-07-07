@@ -140,6 +140,29 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             return FileLinkClickController.Instance.GetFileLinkClick(file);
         }
 
+        /// <summary>
+        /// Gets the URL of the image to display in FileManager tree.
+        /// </summary>
+        /// <returns></returns>
+        public override string GetFolderProviderIconPath()
+        {
+            return Globals.ResolveUrl("~/Providers/FolderProviders/AzureFolderProvider/images/FolderAzure_32x32_Standard.png");
+        }
+
+        public List<string> GetAllContainers(FolderMappingInfo folderMapping)
+        {
+            List<string> containers = new List<string>();
+            var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
+            var accountKey = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
+            var useHttps = GetBooleanSetting(folderMapping, Constants.UseHttps);
+
+            var sc = new StorageCredentials(accountName, accountKey);
+            var csa = new CloudStorageAccount(sc, useHttps);
+            var blobClient = csa.CreateCloudBlobClient();
+            blobClient.ListContainers().ToList().ForEach(x => containers.Add(x.Name));
+            return containers;
+        }
+
         protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
             var container = this.GetContainer(folderMapping);
@@ -160,34 +183,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             blob.DeleteIfExists();
 
             this.ClearCache(folderMapping.FolderMappingID);
-        }
-
-        private static void CheckSettings(FolderMappingInfo folderMapping)
-        {
-            var settings = folderMapping.FolderMappingSettings;
-
-            if (string.IsNullOrEmpty((string)settings[Constants.AccountName]) ||
-                string.IsNullOrEmpty((string)settings[Constants.AccountKey]) ||
-                string.IsNullOrEmpty((string)settings[Constants.Container]) ||
-                string.IsNullOrEmpty((string)settings[Constants.UseHttps]))
-            {
-                throw new Exception("Settings cannot be found.");
-            }
-        }
-
-        private CloudBlobContainer GetContainer(FolderMappingInfo folderMapping)
-        {
-            CheckSettings(folderMapping);
-
-            var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
-            var accountKey = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
-            var container = GetSetting(folderMapping, Constants.Container);
-            var useHttps = GetBooleanSetting(folderMapping, Constants.UseHttps);
-
-            var sc = new StorageCredentials(accountName, accountKey);
-            var csa = new CloudStorageAccount(sc, useHttps);
-            var blobClient = csa.CreateCloudBlobClient();
-            return blobClient.GetContainerReference(container);
         }
 
         protected override void DeleteFolderInternal(FolderMappingInfo folderMapping, IFolderInfo folder)
@@ -290,27 +285,32 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <summary>
-        /// Gets the URL of the image to display in FileManager tree.
-        /// </summary>
-        /// <returns></returns>
-        public override string GetFolderProviderIconPath()
+        private static void CheckSettings(FolderMappingInfo folderMapping)
         {
-            return Globals.ResolveUrl("~/Providers/FolderProviders/AzureFolderProvider/images/FolderAzure_32x32_Standard.png");
+            var settings = folderMapping.FolderMappingSettings;
+
+            if (string.IsNullOrEmpty((string)settings[Constants.AccountName]) ||
+                string.IsNullOrEmpty((string)settings[Constants.AccountKey]) ||
+                string.IsNullOrEmpty((string)settings[Constants.Container]) ||
+                string.IsNullOrEmpty((string)settings[Constants.UseHttps]))
+            {
+                throw new Exception("Settings cannot be found.");
+            }
         }
 
-        public List<string> GetAllContainers(FolderMappingInfo folderMapping)
+        private CloudBlobContainer GetContainer(FolderMappingInfo folderMapping)
         {
-            List<string> containers = new List<string>();
+            CheckSettings(folderMapping);
+
             var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
             var accountKey = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
+            var container = GetSetting(folderMapping, Constants.Container);
             var useHttps = GetBooleanSetting(folderMapping, Constants.UseHttps);
 
             var sc = new StorageCredentials(accountName, accountKey);
             var csa = new CloudStorageAccount(sc, useHttps);
             var blobClient = csa.CreateCloudBlobClient();
-            blobClient.ListContainers().ToList().ForEach(x => containers.Add(x.Name));
-            return containers;
+            return blobClient.GetContainerReference(container);
         }
     }
 }

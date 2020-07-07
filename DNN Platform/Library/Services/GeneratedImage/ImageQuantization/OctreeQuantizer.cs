@@ -127,6 +127,26 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             private int _leafCount;
 
             /// <summary>
+            /// Array of reducible nodes.
+            /// </summary>
+            private OctreeNode[] _reducibleNodes;
+
+            /// <summary>
+            /// Maximum number of significant bits in the image.
+            /// </summary>
+            private int _maxColorBits;
+
+            /// <summary>
+            /// Store the last node quantized.
+            /// </summary>
+            private OctreeNode _previousNode;
+
+            /// <summary>
+            /// Cache the previous color quantized.
+            /// </summary>
+            private int _previousColor;
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="Octree"/> class.
             /// Construct the octree.
             /// </summary>
@@ -253,26 +273,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
 
             /// <summary>
-            /// Array of reducible nodes.
-            /// </summary>
-            private OctreeNode[] _reducibleNodes;
-
-            /// <summary>
-            /// Maximum number of significant bits in the image.
-            /// </summary>
-            private int _maxColorBits;
-
-            /// <summary>
-            /// Store the last node quantized.
-            /// </summary>
-            private OctreeNode _previousNode;
-
-            /// <summary>
-            /// Cache the previous color quantized.
-            /// </summary>
-            private int _previousColor;
-
-            /// <summary>
             /// Class which encapsulates each node in the tree.
             /// </summary>
             protected class OctreeNode
@@ -291,6 +291,31 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 /// Red component.
                 /// </summary>
                 private int _red;
+
+                /// <summary>
+                /// Green Component.
+                /// </summary>
+                private int _green;
+
+                /// <summary>
+                /// Blue component.
+                /// </summary>
+                private int _blue;
+
+                /// <summary>
+                /// Pointers to any child nodes.
+                /// </summary>
+                private OctreeNode[] _children;
+
+                /// <summary>
+                /// Pointer to next reducible node.
+                /// </summary>
+                private OctreeNode _nextReducible;
+
+                /// <summary>
+                /// The index of this node in the palette.
+                /// </summary>
+                private int _paletteIndex;
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="OctreeNode"/> class.
@@ -324,20 +349,20 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 }
 
                 /// <summary>
+                /// Gets return the child nodes.
+                /// </summary>
+                public OctreeNode[] Children
+                {
+                    get { return this._children; }
+                }
+
+                /// <summary>
                 /// Gets or sets get/Set the next reducible node.
                 /// </summary>
                 public OctreeNode NextReducible
                 {
                     get { return this._nextReducible; }
                     set { this._nextReducible = value; }
-                }
-
-                /// <summary>
-                /// Gets return the child nodes.
-                /// </summary>
-                public OctreeNode[] Children
-                {
-                    get { return this._children; }
                 }
 
                 /// <summary>
@@ -474,31 +499,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     this._green += pixel.Green;
                     this._blue += pixel.Blue;
                 }
-
-                /// <summary>
-                /// Green Component.
-                /// </summary>
-                private int _green;
-
-                /// <summary>
-                /// Blue component.
-                /// </summary>
-                private int _blue;
-
-                /// <summary>
-                /// Pointers to any child nodes.
-                /// </summary>
-                private OctreeNode[] _children;
-
-                /// <summary>
-                /// Pointer to next reducible node.
-                /// </summary>
-                private OctreeNode _nextReducible;
-
-                /// <summary>
-                /// The index of this node in the palette.
-                /// </summary>
-                private int _paletteIndex;
             }
         }
     }

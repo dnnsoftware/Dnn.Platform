@@ -29,6 +29,24 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ActionManager instance for this Action control.
+        /// </summary>
+        /// <returns>An ActionManager object.</returns>
+        public ActionManager ActionManager
+        {
+            get
+            {
+                if (this._ActionManager == null)
+                {
+                    this._ActionManager = new ActionManager(this);
+                }
+
+                return this._ActionManager;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets the Separator between Buttons.
         /// </summary>
         /// <remarks>Defaults to 2 non-breaking spaces.</remarks>
@@ -62,24 +80,6 @@ namespace DotNetNuke.UI.Containers
             set
             {
                 this._commandName = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleActionCollection to bind to the list.
-        /// </summary>
-        /// <value>A ModuleActionCollection.</value>
-        protected ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                if (this._ModuleActions == null)
-                {
-                    this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
-                }
-
-                return this._ModuleActions;
             }
         }
 
@@ -120,28 +120,28 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control.
-        /// </summary>
-        /// <returns>An ActionManager object.</returns>
-        public ActionManager ActionManager
-        {
-            get
-            {
-                if (this._ActionManager == null)
-                {
-                    this._ActionManager = new ActionManager(this);
-                }
-
-                return this._ActionManager;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
         /// <returns>An IModuleControl object.</returns>
         public IModuleControl ModuleControl { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the ModuleActionCollection to bind to the list.
+        /// </summary>
+        /// <value>A ModuleActionCollection.</value>
+        protected ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                if (this._ModuleActions == null)
+                {
+                    this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
+                }
+
+                return this._ModuleActions;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

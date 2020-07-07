@@ -91,75 +91,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        private string ImportModule()
-        {
-            var strMessage = string.Empty;
-            if (this.Module != null)
-            {
-                if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
-                {
-                    try
-                    {
-                        var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
-                        if (objObject is IPortable)
-                        {
-                            var xmlDoc = new XmlDocument { XmlResolver = null };
-                            try
-                            {
-                                var content = XmlUtils.RemoveInvalidXmlCharacters(this.txtContent.Text);
-                                xmlDoc.LoadXml(content);
-                            }
-                            catch
-                            {
-                                strMessage = Localization.GetString("NotValidXml", this.LocalResourceFile);
-                            }
-
-                            if (string.IsNullOrEmpty(strMessage))
-                            {
-                                var strType = xmlDoc.DocumentElement.GetAttribute("type");
-                                if (strType == Globals.CleanName(this.Module.DesktopModule.ModuleName) || strType == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
-                                {
-                                    var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
-
-                                    // DNN26810 if rootnode = "content", import only content(the old way)
-                                    if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
-                                    {
-                                        ((IPortable)objObject).ImportModule(this.ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
-                                    }
-
-                                    // otherwise (="module") import the new way
-                                    else
-                                    {
-                                        ModuleController.DeserializeModule(xmlDoc.DocumentElement, this.Module, this.PortalId, this.TabId);
-                                    }
-
-                                    this.Response.Redirect(this._navigationManager.NavigateURL(), true);
-                                }
-                                else
-                                {
-                                    strMessage = Localization.GetString("NotCorrectType", this.LocalResourceFile);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
-                        }
-                    }
-                    catch
-                    {
-                        strMessage = Localization.GetString("Error", this.LocalResourceFile);
-                    }
-                }
-                else
-                {
-                    strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
-                }
-            }
-
-            return strMessage;
-        }
-
         protected void OnFoldersIndexChanged(object sender, EventArgs e)
         {
             this.cboFiles.Items.Clear();
@@ -257,6 +188,75 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private string ImportModule()
+        {
+            var strMessage = string.Empty;
+            if (this.Module != null)
+            {
+                if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
+                {
+                    try
+                    {
+                        var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
+                        if (objObject is IPortable)
+                        {
+                            var xmlDoc = new XmlDocument { XmlResolver = null };
+                            try
+                            {
+                                var content = XmlUtils.RemoveInvalidXmlCharacters(this.txtContent.Text);
+                                xmlDoc.LoadXml(content);
+                            }
+                            catch
+                            {
+                                strMessage = Localization.GetString("NotValidXml", this.LocalResourceFile);
+                            }
+
+                            if (string.IsNullOrEmpty(strMessage))
+                            {
+                                var strType = xmlDoc.DocumentElement.GetAttribute("type");
+                                if (strType == Globals.CleanName(this.Module.DesktopModule.ModuleName) || strType == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
+                                {
+                                    var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
+
+                                    // DNN26810 if rootnode = "content", import only content(the old way)
+                                    if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
+                                    {
+                                        ((IPortable)objObject).ImportModule(this.ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
+                                    }
+
+                                    // otherwise (="module") import the new way
+                                    else
+                                    {
+                                        ModuleController.DeserializeModule(xmlDoc.DocumentElement, this.Module, this.PortalId, this.TabId);
+                                    }
+
+                                    this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                                }
+                                else
+                                {
+                                    strMessage = Localization.GetString("NotCorrectType", this.LocalResourceFile);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
+                        }
+                    }
+                    catch
+                    {
+                        strMessage = Localization.GetString("Error", this.LocalResourceFile);
+                    }
+                }
+                else
+                {
+                    strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
+                }
+            }
+
+            return strMessage;
         }
     }
 }

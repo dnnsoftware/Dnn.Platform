@@ -21,8 +21,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("name", "Prompt_ListModules_FlagModuleName", "String")]
         private const string FlagModuleName = "name";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("title", "Prompt_ListModules_FlagModuleTitle", "String")]
         private const string FlagModuleTitle = "title";
 
@@ -38,11 +36,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("max", "Prompt_ListModules_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private int? PageId { get; set; }
         private int Page { get; set; }
         private int Max { get; set; } = 10;
         private string ModuleName { get; set; }
         private string ModuleTitle { get; set; }
+
         private bool? Deleted { get; set; }
         //public string PageName { get; }
 

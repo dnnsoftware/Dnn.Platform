@@ -41,20 +41,6 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        public bool EnableBannedList { get; set; }
-
-        public bool EnableStrengthMeter { get; set; }
-
-        public bool EnableIPChecking { get; set; }
-
-        public bool EnablePasswordHistory { get; set; }
-
-        public int NumberOfPasswordsStored { get; set; }
-
-        public int NumberOfDaysBeforePasswordReuse { get; set; }
-
-        public int ResetLinkValidity { get; set; }
-
         /// <summary>
         /// Gets minimum number of non-alphanumeric characters setting for password strength indicator.
         /// </summary>
@@ -103,6 +89,20 @@ namespace DotNetNuke.Entities.Users.Membership
         {
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
         }
+
+        public bool EnableBannedList { get; set; }
+
+        public bool EnableStrengthMeter { get; set; }
+
+        public bool EnableIPChecking { get; set; }
+
+        public bool EnablePasswordHistory { get; set; }
+
+        public int NumberOfPasswordsStored { get; set; }
+
+        public int NumberOfDaysBeforePasswordReuse { get; set; }
+
+        public int ResetLinkValidity { get; set; }
 
         public int PortalId { get; set; }
 

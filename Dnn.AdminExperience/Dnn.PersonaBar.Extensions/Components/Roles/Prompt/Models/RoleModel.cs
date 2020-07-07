@@ -13,9 +13,6 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         {
         }
 
-        public string Description { get; set; }
-        public string CreatedDate { get; set; }
-        public int CreatedBy { get; set; }
         public RoleModel(RoleInfo role) : base(role)
         {
             this.ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
@@ -25,5 +22,9 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         }
 
         public string __CreatedBy => $"get-user {this.CreatedBy}";
+
+        public string Description { get; set; }
+        public string CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
     }
 }

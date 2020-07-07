@@ -27,14 +27,54 @@ namespace DotNetNuke.UI.WebControls
     {
         protected LinkButton cmdHelp;
         protected HtmlGenericControl label;
-        private string _ResourceKey;
         protected Label lblHelp;
         protected Label lblLabel;
         protected Panel pnlTooltip;
         protected Panel pnlHelp;
+        private string _ResourceKey;
 
         public PropertyLabelControl()
         {
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets the value of the Label Style.
+        /// </summary>
+        /// <value>A string representing the Name of the Field.</value>
+        /// -----------------------------------------------------------------------------
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Help Text.")]
+        public Style HelpStyle
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this.pnlHelp.ControlStyle;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets the value of the Label Style.
+        /// </summary>
+        /// <value>A string representing the Name of the Field.</value>
+        /// -----------------------------------------------------------------------------
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Label Text")]
+        public Style LabelStyle
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this.lblLabel.ControlStyle;
+            }
         }
 
         /// <summary>
@@ -72,14 +112,6 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.EnsureChildControls();
                 this.lblLabel.AssociatedControlID = value;
-            }
-        }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
             }
         }
 
@@ -181,47 +213,15 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(false)]
         public object DataSource { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the value of the Label Style.
-        /// </summary>
-        /// <value>A string representing the Name of the Field.</value>
-        /// -----------------------------------------------------------------------------
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Description("Set the Style for the Help Text.")]
-        public Style HelpStyle
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return this.pnlHelp.ControlStyle;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the value of the Label Style.
-        /// </summary>
-        /// <value>A string representing the Name of the Field.</value>
-        /// -----------------------------------------------------------------------------
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Description("Set the Style for the Label Text")]
-        public Style LabelStyle
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return this.lblLabel.ControlStyle;
-            }
-        }
-
         public bool Required { get; set; }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
 
         /// <summary>
         /// CreateChildControls creates the control collection.

@@ -16,7 +16,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_ResetPassword_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("notify", "Prompt_ResetPassword_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
@@ -26,13 +25,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
         }
 
-        private bool Notify { get; set; }
-        private int? UserId { get; set; }
-
         public ResetPassword(IUserValidator userValidator)
         {
             this._userValidator = userValidator;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        private bool Notify { get; set; }
+        private int? UserId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

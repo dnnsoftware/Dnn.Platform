@@ -24,14 +24,24 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         private const string WindowsPcAgent = "windows nt";
         private const string WindowsPhoneAgent = "windows phone";
         private const string AndroidAgent = "android";
+        private const string IphoneAgent = "iphone";
+        private const string IpadAgent = "ipad";
+        private const string MacOsxAgent = "mac os x";
+        private const string LinuxAgent = "linux ";
+        private const string UnixAgent = "i686";
+        private const string UnixAgent2 = "i586";
+        private const string UnixAgent3 = "i386";
+        private const string X11Agent = "x11";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetClientCapability));
+
         private static readonly Regex MobileCheck =
             new Regex(
                 @"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino",
                 RegexOptions.Compiled, TimeSpan.FromSeconds(2));
 
         private static readonly Regex TabletRegex = new Regex("ipad|xoom|sch-i800|playbook|tablet|kindle|nexus", RegexOptions.Compiled, TimeSpan.FromSeconds(2));
+        private static readonly char[] Separators = { ';', ')' };
 
         private readonly IDictionary<string, string> _properties;
 
@@ -313,15 +323,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                     return "NT " + version;
             }
         }
-        private const string IphoneAgent = "iphone";
-        private const string IpadAgent = "ipad";
-        private const string MacOsxAgent = "mac os x";
-        private const string LinuxAgent = "linux ";
-        private const string UnixAgent = "i686";
-        private const string UnixAgent2 = "i586";
-        private const string UnixAgent3 = "i386";
-        private const string X11Agent = "x11";
-        private static readonly char[] Separators = { ';', ')' };
 
         private static bool CheckAgentAndVersion(string queryAgent, string userAgent, ref string version)
         {

@@ -46,12 +46,6 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A string representing the Name of the property.</value>
         public string Name { get; set; }
 
-        protected ProfileVisibility Visibility
-        {
-            get { return this.Value as ProfileVisibility; }
-            set { this.Value = value; }
-        }
-
         /// <summary>
         /// Gets or sets the UserInfo object that represents the User whose profile is being displayed.
         /// </summary>
@@ -62,6 +56,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Value.</value>
         public object Value { get; set; }
+
+        protected ProfileVisibility Visibility
+        {
+            get { return this.Value as ProfileVisibility; }
+            set { this.Value = value; }
+        }
 
         /// <summary>
         /// LoadPostData loads the Post Back Data and determines whether the value has change.
@@ -143,72 +143,6 @@ namespace DotNetNuke.UI.WebControls
             this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "visibleChange", "$(document).ready(function(){$('.dnnFormVisibility').on('click', 'input[type=radio]', function(){$(this).parent().parent().find('ul').hide();$(this).parent().next('ul').show();});});", true);
         }
 
-        private void RenderVisibility(HtmlTextWriter writer, string optionValue, UserVisibilityMode selectedVisibility, string optionText)
-        {
-            // Render Li
-            writer.RenderBeginTag(HtmlTextWriterTag.Li);
-
-            // Render radio button
-            writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            writer.AddAttribute("aria-label", this.ID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, optionValue);
-            if (this.Visibility.VisibilityMode == selectedVisibility)
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
-            }
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Input);
-            writer.Write(optionText);
-            writer.RenderEndTag();
-
-            // Close Li
-            writer.RenderEndTag();
-        }
-
-        private void RenderCheckboxItem(HtmlTextWriter writer, string prefix, string value, string text, bool selected)
-        {
-            // Render Li
-            writer.RenderBeginTag(HtmlTextWriterTag.Li);
-
-            // Render radio button
-            writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            writer.AddAttribute("aria-label", this.ID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + prefix + value);
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, value);
-            if (selected)
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
-            }
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Input);
-            writer.Write(text);
-            writer.RenderEndTag();
-
-            // Close Li
-            writer.RenderEndTag();
-        }
-
-        private void RenderGroups(HtmlTextWriter writer)
-        {
-            foreach (var group in this.User.Social.Roles.Where((role) => role.SecurityMode != SecurityMode.SecurityRole))
-            {
-                this.RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture),
-                                        group.RoleName,
-                                        this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
-            }
-        }
-
-        private void RenderRelationships(HtmlTextWriter writer)
-        {
-            foreach (var relationship in this.User.Social.Relationships)
-            {
-                this.RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
-                                        relationship.Name,
-                                        this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
-            }
-        }
-
         /// <summary>
         /// OnVisibilityChanged runs when the Visibility has changed.  It raises the VisibilityChanged
         /// Event.
@@ -286,6 +220,72 @@ namespace DotNetNuke.UI.WebControls
 
             // Close Div
             writer.RenderEndTag();
+        }
+
+        private void RenderVisibility(HtmlTextWriter writer, string optionValue, UserVisibilityMode selectedVisibility, string optionText)
+        {
+            // Render Li
+            writer.RenderBeginTag(HtmlTextWriterTag.Li);
+
+            // Render radio button
+            writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
+            writer.AddAttribute("aria-label", this.ID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Value, optionValue);
+            if (this.Visibility.VisibilityMode == selectedVisibility)
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+            }
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Input);
+            writer.Write(optionText);
+            writer.RenderEndTag();
+
+            // Close Li
+            writer.RenderEndTag();
+        }
+
+        private void RenderCheckboxItem(HtmlTextWriter writer, string prefix, string value, string text, bool selected)
+        {
+            // Render Li
+            writer.RenderBeginTag(HtmlTextWriterTag.Li);
+
+            // Render radio button
+            writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
+            writer.AddAttribute("aria-label", this.ID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + prefix + value);
+            writer.AddAttribute(HtmlTextWriterAttribute.Value, value);
+            if (selected)
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+            }
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Input);
+            writer.Write(text);
+            writer.RenderEndTag();
+
+            // Close Li
+            writer.RenderEndTag();
+        }
+
+        private void RenderGroups(HtmlTextWriter writer)
+        {
+            foreach (var group in this.User.Social.Roles.Where((role) => role.SecurityMode != SecurityMode.SecurityRole))
+            {
+                this.RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture),
+                                        group.RoleName,
+                                        this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
+            }
+        }
+
+        private void RenderRelationships(HtmlTextWriter writer)
+        {
+            foreach (var relationship in this.User.Social.Relationships)
+            {
+                this.RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
+                                        relationship.Name,
+                                        this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
+            }
         }
     }
 }

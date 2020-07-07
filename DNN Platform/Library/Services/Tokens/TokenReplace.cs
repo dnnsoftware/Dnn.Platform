@@ -217,48 +217,6 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// setup context by creating appropriate objects.
-        /// </summary>
-        /// <remarks >
-        /// security is not the purpose of the initialization, this is in the responsibility of each property access class.
-        /// </remarks>
-        private void InitializePropertySources()
-        {
-            // Cleanup, by default "" is returned for these objects and any property
-            IPropertyAccess defaultPropertyAccess = new EmptyPropertyAccess();
-            this.PropertySource["portal"] = defaultPropertyAccess;
-            this.PropertySource["tab"] = defaultPropertyAccess;
-            this.PropertySource["host"] = defaultPropertyAccess;
-            this.PropertySource["module"] = defaultPropertyAccess;
-            this.PropertySource["user"] = defaultPropertyAccess;
-            this.PropertySource["membership"] = defaultPropertyAccess;
-            this.PropertySource["profile"] = defaultPropertyAccess;
-
-            // initialization
-            if (this.CurrentAccessLevel >= Scope.Configuration)
-            {
-                if (this.PortalSettings != null)
-                {
-                    this.PropertySource["portal"] = this.PortalSettings;
-                    this.PropertySource["tab"] = this.PortalSettings.ActiveTab;
-                }
-
-                this.PropertySource["host"] = new HostPropertyAccess();
-                if (this.ModuleInfo != null)
-                {
-                    this.PropertySource["module"] = this.ModuleInfo;
-                }
-            }
-
-            if (this.CurrentAccessLevel >= Scope.DefaultSettings && !(this.User == null || this.User.UserID == -1))
-            {
-                this.PropertySource["user"] = this.User;
-                this.PropertySource["membership"] = new MembershipPropertyAccess(this.User);
-                this.PropertySource["profile"] = new ProfilePropertyAccess(this.User);
-            }
-        }
-
-        /// <summary>
         /// Replaces tokens in sourceText parameter with the property values.
         /// </summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
@@ -327,6 +285,48 @@ namespace DotNetNuke.Services.Tokens
         {
             this.InitializePropertySources();
             return base.ReplaceTokens(sourceText);
+        }
+
+        /// <summary>
+        /// setup context by creating appropriate objects.
+        /// </summary>
+        /// <remarks >
+        /// security is not the purpose of the initialization, this is in the responsibility of each property access class.
+        /// </remarks>
+        private void InitializePropertySources()
+        {
+            // Cleanup, by default "" is returned for these objects and any property
+            IPropertyAccess defaultPropertyAccess = new EmptyPropertyAccess();
+            this.PropertySource["portal"] = defaultPropertyAccess;
+            this.PropertySource["tab"] = defaultPropertyAccess;
+            this.PropertySource["host"] = defaultPropertyAccess;
+            this.PropertySource["module"] = defaultPropertyAccess;
+            this.PropertySource["user"] = defaultPropertyAccess;
+            this.PropertySource["membership"] = defaultPropertyAccess;
+            this.PropertySource["profile"] = defaultPropertyAccess;
+
+            // initialization
+            if (this.CurrentAccessLevel >= Scope.Configuration)
+            {
+                if (this.PortalSettings != null)
+                {
+                    this.PropertySource["portal"] = this.PortalSettings;
+                    this.PropertySource["tab"] = this.PortalSettings.ActiveTab;
+                }
+
+                this.PropertySource["host"] = new HostPropertyAccess();
+                if (this.ModuleInfo != null)
+                {
+                    this.PropertySource["module"] = this.ModuleInfo;
+                }
+            }
+
+            if (this.CurrentAccessLevel >= Scope.DefaultSettings && !(this.User == null || this.User.UserID == -1))
+            {
+                this.PropertySource["user"] = this.User;
+                this.PropertySource["membership"] = new MembershipPropertyAccess(this.User);
+                this.PropertySource["profile"] = new ProfilePropertyAccess(this.User);
+            }
         }
     }
 }

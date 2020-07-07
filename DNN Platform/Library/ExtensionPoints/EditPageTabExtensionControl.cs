@@ -89,6 +89,27 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
+        public void CancelAction(int portalId, int tabId, int moduleId)
+        {
+            var panel = this.Parent.FindControl(this.PanelControlId);
+
+            foreach (var control in panel.Controls)
+            {
+                var panelcontrol = control as PanelTabExtensionControl;
+                if (panelcontrol != null)
+                {
+                    foreach (var extensionControl in panelcontrol.Controls)
+                    {
+                        var actionsControl = extensionControl as IEditPageTabControlActions;
+                        if (actionsControl != null)
+                        {
+                            actionsControl.CancelAction(portalId, tabId, moduleId);
+                        }
+                    }
+                }
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             var extensionPointManager = new ExtensionPointManager();
@@ -112,27 +133,6 @@ namespace DotNetNuke.ExtensionPoints
                     control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
                     container.Controls.Add(control);
                     panel.Controls.Add(container);
-                }
-            }
-        }
-
-        public void CancelAction(int portalId, int tabId, int moduleId)
-        {
-            var panel = this.Parent.FindControl(this.PanelControlId);
-
-            foreach (var control in panel.Controls)
-            {
-                var panelcontrol = control as PanelTabExtensionControl;
-                if (panelcontrol != null)
-                {
-                    foreach (var extensionControl in panelcontrol.Controls)
-                    {
-                        var actionsControl = extensionControl as IEditPageTabControlActions;
-                        if (actionsControl != null)
-                        {
-                            actionsControl.CancelAction(portalId, tabId, moduleId);
-                        }
-                    }
                 }
             }
         }

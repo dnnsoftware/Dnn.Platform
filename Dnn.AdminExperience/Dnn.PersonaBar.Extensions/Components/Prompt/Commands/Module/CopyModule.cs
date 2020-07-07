@@ -22,8 +22,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("id", "Prompt_CopyModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("pageid", "Prompt_CopyModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
@@ -36,6 +34,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("includesettings", "Prompt_CopyModule_FlagIncludesettings", "Boolean", "true")]
         private const string FlagIncludesettings = "includesettings";
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         private int ModuleId { get; set; }
         private int PageId { get; set; }
         private int TargetPageId { get; set; }

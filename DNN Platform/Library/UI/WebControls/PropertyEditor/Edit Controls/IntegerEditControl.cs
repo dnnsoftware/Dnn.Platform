@@ -39,26 +39,6 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
-        /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
-        protected override string StringValue
-        {
-            get
-            {
-                return this.IntegerValue.ToString();
-            }
-
-            set
-            {
-                int setValue = int.Parse(value);
-                this.Value = setValue;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets integerValue returns the Integer representation of the Value.
         /// </summary>
         /// <value>An integer representing the Value.</value>
@@ -107,6 +87,26 @@ namespace DotNetNuke.UI.WebControls
                 }
 
                 return intValue;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets stringValue is the value of the control expressed as a String.
+        /// </summary>
+        /// <value>A string representing the Value.</value>
+        /// -----------------------------------------------------------------------------
+        protected override string StringValue
+        {
+            get
+            {
+                return this.IntegerValue.ToString();
+            }
+
+            set
+            {
+                int setValue = int.Parse(value);
+                this.Value = setValue;
             }
         }
 

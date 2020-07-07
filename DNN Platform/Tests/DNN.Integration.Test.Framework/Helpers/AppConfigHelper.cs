@@ -29,6 +29,15 @@ namespace DNN.Integration.Test.Framework.Helpers
         public static string SiteUrl =>
             _siteUrl ?? (_siteUrl = GetAppSetting("siteUrl") ?? DefaultWebsiteName);
 
+        public static string HostUserName =>
+            _hostUserName ?? (_hostUserName = GetAppSetting("hostUserName") ?? DefaultHostName);
+
+        public static string HostPassword =>
+            _hostPassword ?? (_hostPassword = GetAppSetting("hostPassword") ?? DefaultHostPwd);
+
+        public static string LoginCookie =>
+            _loginCookieString ?? (_loginCookieString = GetAppSetting("loginCookie") ?? DefaultLoginCookie);
+
         public static string GetAppSetting(string key)
         {
             return ConfigurationManager.AppSettings[key];
@@ -45,14 +54,5 @@ namespace DNN.Integration.Test.Framework.Helpers
             int value;
             return int.TryParse(GetAppSetting(key), out value) ? value : defaultValue;
         }
-
-        public static string HostUserName =>
-            _hostUserName ?? (_hostUserName = GetAppSetting("hostUserName") ?? DefaultHostName);
-
-        public static string HostPassword =>
-            _hostPassword ?? (_hostPassword = GetAppSetting("hostPassword") ?? DefaultHostPwd);
-
-        public static string LoginCookie =>
-            _loginCookieString ?? (_loginCookieString = GetAppSetting("loginCookie") ?? DefaultLoginCookie);
     }
 }

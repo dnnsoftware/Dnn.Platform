@@ -32,15 +32,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
         private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
 
-        public enum SearchTypeIds
-        {
-            ModuleSearchTypeId = 1,
-            TabSearchTypeId,
-            DocumentSearchTypeId,
-            UrlSearchTypeId,
-            OtherSearchTypeId,
-            UnknownSearchTypeId,
-        }
         private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
         private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
         private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
@@ -87,6 +78,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private IInternalSearchController _internalSearchController;
         private LuceneControllerImpl _luceneController;
+
+        public enum SearchTypeIds
+        {
+            ModuleSearchTypeId = 1,
+            TabSearchTypeId,
+            DocumentSearchTypeId,
+            UrlSearchTypeId,
+            OtherSearchTypeId,
+            UnknownSearchTypeId,
+        }
 
         [SetUp]
         public void SetUp()
@@ -142,228 +143,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() => this._internalSearchController.AddSearchDocument(new SearchDocument()));
-        }
-
-        private void CreateNewLuceneControllerInstance()
-        {
-            this.DeleteIndexFolder();
-            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
-            this._internalSearchController = InternalSearchController.Instance;
-
-            if (this._luceneController != null)
-            {
-                LuceneController.ClearInstance();
-                this._luceneController.Dispose();
-            }
-
-            this._luceneController = new LuceneControllerImpl();
-            LuceneController.SetTestableInstance(this._luceneController);
-        }
-
-        private void SetupHostController()
-        {
-            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
-            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchKeywordBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>()))
-                .Returns(Constants.DefaultSearchDescriptionBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
-            HostController.RegisterInstance(this._mockHostController.Object);
-        }
-
-        private void SetupLocaleController()
-        {
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
-
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
-        }
-
-        private void SetupDataProvider()
-        {
-            // Standard DataProvider Path for Logging
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-
-            DataTableReader searchTypes = null;
-            this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
-                .Callback(() => searchTypes = this.GetAllSearchTypes().CreateDataReader())
-                .Returns(() => searchTypes);
-
-            this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
-        }
-
-        private IDataReader GetPortalsCallBack(string culture)
-        {
-            return this.GetPortalCallBack(PortalId0, CultureEnUs);
-        }
-
-        private IDataReader GetPortalCallBack(int portalId, string culture)
-        {
-            var table = new DataTable("Portal");
-
-            var cols = new[]
-            {
-                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId",
-                "Currency", "HostFee",
-                "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID",
-                "PaymentProcessor", "ProcessorUserId",
-                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId",
-                "LoginTabId", "RegisterTabId",
-                "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID",
-                "LastModifiedOnDate", "CultureCode",
-            };
-
-            foreach (var col in cols)
-            {
-                table.Columns.Add(col);
-            }
-
-            const int homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null,
-                "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null,
-                "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0",
-                null, homePage.ToString("D"), null, null, "57", "56", "-1", "-1", "7", null, null, "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
-
-            return table.CreateDataReader();
-        }
-
-        private void SetupSearchHelper()
-        {
-            this._mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
-            this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns<int, string, string>(this.GetSynonymsCallBack);
-            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>()))
-                .Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
-            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(this.GetSearchTypeByNameCallback);
-            this._mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(this.GetSearchTypes());
-            this._mockSearchHelper.Setup(c => c.GetSynonymsGroups(It.IsAny<int>(), It.IsAny<string>())).Returns(this.GetSynonymsGroupsCallBack);
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
-                new SearchStopWords
-                {
-                    PortalId = 0,
-                    CultureCode = CultureEsEs,
-                    StopWords = "los,de,el",
-                });
-            this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
-            this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
-            SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
-        }
-
-        private IList<SynonymsGroup> GetSynonymsGroupsCallBack()
-        {
-            var groups = new List<SynonymsGroup>
-            {
-                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 1, SynonymsTags = string.Join(",", TermDNN, TermDotNetNuke) },
-                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 2, SynonymsTags = string.Join(",", TermLaptop, TermNotebook) },
-                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop) },
-            };
-
-            return groups;
-        }
-
-        private SearchType GetSearchTypeByNameCallback(string searchTypeName)
-        {
-            var searchType = new SearchType { SearchTypeName = searchTypeName, SearchTypeId = 0 };
-            switch (searchTypeName)
-            {
-                case ModuleSearchTypeName:
-                    searchType.SearchTypeId = ModuleSearchTypeId;
-                    break;
-                case TabSearchTypeName:
-                    searchType.SearchTypeId = TabSearchTypeId;
-                    break;
-                case OtherSearchTypeName:
-                    searchType.SearchTypeId = OtherSearchTypeId;
-                    break;
-                case DocumentSearchTypeName:
-                    searchType.SearchTypeId = DocumentSearchTypeId;
-                    break;
-                case UrlSearchTypeName:
-                    searchType.SearchTypeId = UrlSearchTypeId;
-                    break;
-            }
-
-            return searchType;
-        }
-
-        private IList<string> GetSynonymsCallBack(int portalId, string cultureCode, string term)
-        {
-            var synonyms = new List<string>();
-            if (term == "fox")
-            {
-                synonyms.Add("wolf");
-            }
-
-            return synonyms;
-        }
-
-        private UserInfo GetUserByIdCallback(int portalId, int userId)
-        {
-            return new UserInfo { UserID = userId, DisplayName = "User" + userId, PortalID = portalId };
-        }
-
-        private DataTable GetAllSearchTypes()
-        {
-            var dtSearchTypes = new DataTable("SearchTypes");
-            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof(int));
-            dtSearchTypes.Columns.Add("SearchTypeName", typeof(string));
-            dtSearchTypes.Columns.Add("SearchResultClass", typeof(string));
-            dtSearchTypes.PrimaryKey = new[] { pkId };
-
-            // Create default Crawler
-            dtSearchTypes.Rows.Add(ModuleSearchTypeId, ModuleSearchTypeName, FakeResultControllerClass);
-            dtSearchTypes.Rows.Add(TabSearchTypeId, TabSearchTypeName, FakeResultControllerClass);
-            dtSearchTypes.Rows.Add(OtherSearchTypeId, OtherSearchTypeName, FakeResultControllerClass);
-            dtSearchTypes.Rows.Add(DocumentSearchTypeId, DocumentSearchTypeName, NoPermissionFakeResultControllerClass);
-            dtSearchTypes.Rows.Add(UrlSearchTypeId, UrlSearchTypeName, FakeResultControllerClass);
-
-            return dtSearchTypes;
-        }
-
-        private IEnumerable<SearchType> GetSearchTypes()
-        {
-            var searchTypes = new List<SearchType>
-            {
-                new SearchType { SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass },
-                new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass },
-                new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass },
-                new SearchType
-                {
-                    SearchTypeId = DocumentSearchTypeId,
-                    SearchTypeName = DocumentSearchTypeName,
-                    SearchResultClass = NoPermissionFakeResultControllerClass,
-                },
-                new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass },
-            };
-
-            return searchTypes;
-        }
-
-        private void DeleteIndexFolder()
-        {
-            try
-            {
-                if (Directory.Exists(SearchIndexFolder))
-                {
-                    Directory.Delete(SearchIndexFolder, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
         }
 
         [Test]
@@ -693,6 +472,228 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
+        }
+
+        private void CreateNewLuceneControllerInstance()
+        {
+            this.DeleteIndexFolder();
+            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
+            this._internalSearchController = InternalSearchController.Instance;
+
+            if (this._luceneController != null)
+            {
+                LuceneController.ClearInstance();
+                this._luceneController.Dispose();
+            }
+
+            this._luceneController = new LuceneControllerImpl();
+            LuceneController.SetTestableInstance(this._luceneController);
+        }
+
+        private void SetupHostController()
+        {
+            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchKeywordBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>()))
+                .Returns(Constants.DefaultSearchDescriptionBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
+            HostController.RegisterInstance(this._mockHostController.Object);
+        }
+
+        private void SetupLocaleController()
+        {
+            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
+
+            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
+        }
+
+        private void SetupDataProvider()
+        {
+            // Standard DataProvider Path for Logging
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+
+            DataTableReader searchTypes = null;
+            this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
+                .Callback(() => searchTypes = this.GetAllSearchTypes().CreateDataReader())
+                .Returns(() => searchTypes);
+
+            this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
+        }
+
+        private IDataReader GetPortalsCallBack(string culture)
+        {
+            return this.GetPortalCallBack(PortalId0, CultureEnUs);
+        }
+
+        private IDataReader GetPortalCallBack(int portalId, string culture)
+        {
+            var table = new DataTable("Portal");
+
+            var cols = new[]
+            {
+                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId",
+                "Currency", "HostFee",
+                "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID",
+                "PaymentProcessor", "ProcessorUserId",
+                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId",
+                "LoginTabId", "RegisterTabId",
+                "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID",
+                "LastModifiedOnDate", "CultureCode",
+            };
+
+            foreach (var col in cols)
+            {
+                table.Columns.Add(col);
+            }
+
+            const int homePage = 1;
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null,
+                "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null,
+                "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0",
+                null, homePage.ToString("D"), null, null, "57", "56", "-1", "-1", "7", null, null, "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
+
+            return table.CreateDataReader();
+        }
+
+        private void SetupSearchHelper()
+        {
+            this._mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
+            this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns<int, string, string>(this.GetSynonymsCallBack);
+            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>()))
+                .Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
+            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(this.GetSearchTypeByNameCallback);
+            this._mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(this.GetSearchTypes());
+            this._mockSearchHelper.Setup(c => c.GetSynonymsGroups(It.IsAny<int>(), It.IsAny<string>())).Returns(this.GetSynonymsGroupsCallBack);
+            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
+                new SearchStopWords
+                {
+                    PortalId = 0,
+                    CultureCode = CultureEsEs,
+                    StopWords = "los,de,el",
+                });
+            this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
+            this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
+            SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
+        }
+
+        private IList<SynonymsGroup> GetSynonymsGroupsCallBack()
+        {
+            var groups = new List<SynonymsGroup>
+            {
+                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 1, SynonymsTags = string.Join(",", TermDNN, TermDotNetNuke) },
+                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 2, SynonymsTags = string.Join(",", TermLaptop, TermNotebook) },
+                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop) },
+            };
+
+            return groups;
+        }
+
+        private SearchType GetSearchTypeByNameCallback(string searchTypeName)
+        {
+            var searchType = new SearchType { SearchTypeName = searchTypeName, SearchTypeId = 0 };
+            switch (searchTypeName)
+            {
+                case ModuleSearchTypeName:
+                    searchType.SearchTypeId = ModuleSearchTypeId;
+                    break;
+                case TabSearchTypeName:
+                    searchType.SearchTypeId = TabSearchTypeId;
+                    break;
+                case OtherSearchTypeName:
+                    searchType.SearchTypeId = OtherSearchTypeId;
+                    break;
+                case DocumentSearchTypeName:
+                    searchType.SearchTypeId = DocumentSearchTypeId;
+                    break;
+                case UrlSearchTypeName:
+                    searchType.SearchTypeId = UrlSearchTypeId;
+                    break;
+            }
+
+            return searchType;
+        }
+
+        private IList<string> GetSynonymsCallBack(int portalId, string cultureCode, string term)
+        {
+            var synonyms = new List<string>();
+            if (term == "fox")
+            {
+                synonyms.Add("wolf");
+            }
+
+            return synonyms;
+        }
+
+        private UserInfo GetUserByIdCallback(int portalId, int userId)
+        {
+            return new UserInfo { UserID = userId, DisplayName = "User" + userId, PortalID = portalId };
+        }
+
+        private DataTable GetAllSearchTypes()
+        {
+            var dtSearchTypes = new DataTable("SearchTypes");
+            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof(int));
+            dtSearchTypes.Columns.Add("SearchTypeName", typeof(string));
+            dtSearchTypes.Columns.Add("SearchResultClass", typeof(string));
+            dtSearchTypes.PrimaryKey = new[] { pkId };
+
+            // Create default Crawler
+            dtSearchTypes.Rows.Add(ModuleSearchTypeId, ModuleSearchTypeName, FakeResultControllerClass);
+            dtSearchTypes.Rows.Add(TabSearchTypeId, TabSearchTypeName, FakeResultControllerClass);
+            dtSearchTypes.Rows.Add(OtherSearchTypeId, OtherSearchTypeName, FakeResultControllerClass);
+            dtSearchTypes.Rows.Add(DocumentSearchTypeId, DocumentSearchTypeName, NoPermissionFakeResultControllerClass);
+            dtSearchTypes.Rows.Add(UrlSearchTypeId, UrlSearchTypeName, FakeResultControllerClass);
+
+            return dtSearchTypes;
+        }
+
+        private IEnumerable<SearchType> GetSearchTypes()
+        {
+            var searchTypes = new List<SearchType>
+            {
+                new SearchType { SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                new SearchType
+                {
+                    SearchTypeId = DocumentSearchTypeId,
+                    SearchTypeName = DocumentSearchTypeName,
+                    SearchResultClass = NoPermissionFakeResultControllerClass,
+                },
+                new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass },
+            };
+
+            return searchTypes;
+        }
+
+        private void DeleteIndexFolder()
+        {
+            try
+            {
+                if (Directory.Exists(SearchIndexFolder))
+                {
+                    Directory.Delete(SearchIndexFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private SearchStatistics GetSearchStatistics()

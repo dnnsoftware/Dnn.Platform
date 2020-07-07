@@ -198,11 +198,6 @@ namespace DotNetNuke.Services.Log.EventLog
             this.AddLog(propertyName, propertyValue, portalSettings, userID, logType.ToString());
         }
 
-        protected override Func<IEventLogController> GetFactory()
-        {
-            return () => new EventLogController();
-        }
-
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
         {
             var properties = new LogProperties();
@@ -424,6 +419,11 @@ namespace DotNetNuke.Services.Log.EventLog
         public virtual void UpdateLogType(LogTypeInfo logType)
         {
             LogController.Instance.UpdateLogType(logType);
+        }
+
+        protected override Func<IEventLogController> GetFactory()
+        {
+            return () => new EventLogController();
         }
     }
 }

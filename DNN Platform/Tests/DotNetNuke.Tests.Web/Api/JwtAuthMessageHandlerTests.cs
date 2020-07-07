@@ -104,131 +104,6 @@ namespace DotNetNuke.Tests.Web.Api
             Assert.IsNull(response);
         }
 
-        private static IDataReader GetUser()
-        {
-            var table = new DataTable("Users");
-            table.Columns.Add("UserID", typeof(int));
-            table.Columns.Add("PortalId", typeof(int));
-            table.Columns.Add("UserName", typeof(string));
-            table.Columns.Add("FirstName", typeof(string));
-            table.Columns.Add("LastName", typeof(string));
-            table.Columns.Add("DisplayName", typeof(string));
-            table.Columns.Add("IsSuperUser", typeof(byte));
-            table.Columns.Add("Email", typeof(string));
-            table.Columns.Add("VanityUrl", typeof(string));
-            table.Columns.Add("AffiliateId", typeof(int));
-            table.Columns.Add("IsDeleted", typeof(byte));
-            table.Columns.Add("RefreshRoles", typeof(byte));
-            table.Columns.Add("LastIPAddress", typeof(string));
-            table.Columns.Add("UpdatePassword", typeof(byte));
-            table.Columns.Add("PasswordResetToken", typeof(Guid));
-            table.Columns.Add("PasswordResetExpiration", typeof(DateTime));
-            table.Columns.Add("Authorised", typeof(byte));
-
-            table.Columns.Add("CreatedByUserID", typeof(int));
-            table.Columns.Add("CreatedOnDate", typeof(DateTime));
-            table.Columns.Add("LastModifiedByUserID", typeof(int));
-            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-
-            table.Rows.Add(1, null, "host", "host", "host", "host", 1, "host@changeme.invalid", null, null, 0, null,
-                           "127.0.0.1", 0, "8D3C800F-7A40-45D6-BA4D-E59A393F9800", DateTime.Now, null, -1, DateTime.Now,
-                           -1, DateTime.Now);
-            return table.CreateDataReader();
-        }
-
-        private static IDataReader GetPortalsCallBack(string culture)
-        {
-            return GetPortalCallBack(0, culture);
-        }
-
-        private static IDataReader GetPortalCallBack(int portalId, string culture)
-        {
-            var table = new DataTable("Portal");
-
-            var cols = new[]
-            {
-                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate",
-                "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
-                "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId",
-                "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor",
-                "ProcessorUserId",
-                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset",
-                "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
-                "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
-                "CultureCode",
-            };
-
-            foreach (var col in cols)
-            {
-                table.Columns.Add(col);
-            }
-
-            const int homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright (c) 2018 DNN Corp.", null,
-                "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
-                "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
-                null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null,
-                homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11",
-                "-1", "2011-08-25 07:34:29", culture);
-
-            return table.CreateDataReader();
-        }
-
-        private IDataReader GetPortalGroups()
-        {
-            var table = new DataTable("ModuleDefinitions");
-            var pkId = table.Columns.Add("PortalGroupID", typeof(int));
-            table.Columns.Add("MasterPortalID", typeof(int));
-            table.Columns.Add("PortalGroupName", typeof(string));
-            table.Columns.Add("PortalGroupDescription", typeof(string));
-            table.Columns.Add("AuthenticationDomain", typeof(string));
-            table.Columns.Add("CreatedByUserID", typeof(int));
-            table.Columns.Add("CreatedOnDate", typeof(DateTime));
-            table.Columns.Add("LastModifiedByUserID", typeof(int));
-            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            table.PrimaryKey = new[] { pkId };
-
-            table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
-            return table.CreateDataReader();
-        }
-
-        private static PersistedToken GetPersistedToken(string sessionId)
-        {
-            if ("0123456789ABCDEF".Equals(sessionId))
-            {
-                return new PersistedToken
-                {
-                    TokenId = sessionId,
-                    RenewalExpiry = DateTime.UtcNow.AddDays(14),
-                    TokenExpiry = DateTime.UtcNow.AddHours(1),
-                    UserId = 1,
-                    TokenHash = GetHashedStr(ValidToken),
-                    RenewalHash = "renewal-hash",
-                };
-            }
-
-            return null;
-        }
-
-        private static UserInfo GetUserByIdCallback(int portalId, int userId)
-        {
-            if (portalId == 0)
-            {
-                switch (userId)
-                {
-                    case 1:
-                        return new UserInfo { UserID = userId, Username = "host", DisplayName = "Host User" };
-                    case 2:
-                        return new UserInfo { UserID = userId, Username = "admin", DisplayName = "Admin User" };
-                    case 3:
-                        return new UserInfo { UserID = userId, Username = "reguser", DisplayName = "Registered User" };
-                }
-            }
-
-            return null;
-        }
-
         [Test]
         public void WrongAuthoizationSchemeReturnsNullResponse()
         {
@@ -307,6 +182,113 @@ namespace DotNetNuke.Tests.Web.Api
             Assert.IsNull(response);
         }
 
+        private static IDataReader GetUser()
+        {
+            var table = new DataTable("Users");
+            table.Columns.Add("UserID", typeof(int));
+            table.Columns.Add("PortalId", typeof(int));
+            table.Columns.Add("UserName", typeof(string));
+            table.Columns.Add("FirstName", typeof(string));
+            table.Columns.Add("LastName", typeof(string));
+            table.Columns.Add("DisplayName", typeof(string));
+            table.Columns.Add("IsSuperUser", typeof(byte));
+            table.Columns.Add("Email", typeof(string));
+            table.Columns.Add("VanityUrl", typeof(string));
+            table.Columns.Add("AffiliateId", typeof(int));
+            table.Columns.Add("IsDeleted", typeof(byte));
+            table.Columns.Add("RefreshRoles", typeof(byte));
+            table.Columns.Add("LastIPAddress", typeof(string));
+            table.Columns.Add("UpdatePassword", typeof(byte));
+            table.Columns.Add("PasswordResetToken", typeof(Guid));
+            table.Columns.Add("PasswordResetExpiration", typeof(DateTime));
+            table.Columns.Add("Authorised", typeof(byte));
+
+            table.Columns.Add("CreatedByUserID", typeof(int));
+            table.Columns.Add("CreatedOnDate", typeof(DateTime));
+            table.Columns.Add("LastModifiedByUserID", typeof(int));
+            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+
+            table.Rows.Add(1, null, "host", "host", "host", "host", 1, "host@changeme.invalid", null, null, 0, null,
+                           "127.0.0.1", 0, "8D3C800F-7A40-45D6-BA4D-E59A393F9800", DateTime.Now, null, -1, DateTime.Now,
+                           -1, DateTime.Now);
+            return table.CreateDataReader();
+        }
+
+        private static IDataReader GetPortalsCallBack(string culture)
+        {
+            return GetPortalCallBack(0, culture);
+        }
+
+        private static IDataReader GetPortalCallBack(int portalId, string culture)
+        {
+            var table = new DataTable("Portal");
+
+            var cols = new[]
+            {
+                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate",
+                "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
+                "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId",
+                "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor",
+                "ProcessorUserId",
+                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset",
+                "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
+                "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
+                "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
+                "CultureCode",
+            };
+
+            foreach (var col in cols)
+            {
+                table.Columns.Add(col);
+            }
+
+            const int homePage = 1;
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright (c) 2018 DNN Corp.", null,
+                "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
+                "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
+                null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null,
+                homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11",
+                "-1", "2011-08-25 07:34:29", culture);
+
+            return table.CreateDataReader();
+        }
+
+        private static PersistedToken GetPersistedToken(string sessionId)
+        {
+            if ("0123456789ABCDEF".Equals(sessionId))
+            {
+                return new PersistedToken
+                {
+                    TokenId = sessionId,
+                    RenewalExpiry = DateTime.UtcNow.AddDays(14),
+                    TokenExpiry = DateTime.UtcNow.AddHours(1),
+                    UserId = 1,
+                    TokenHash = GetHashedStr(ValidToken),
+                    RenewalHash = "renewal-hash",
+                };
+            }
+
+            return null;
+        }
+
+        private static UserInfo GetUserByIdCallback(int portalId, int userId)
+        {
+            if (portalId == 0)
+            {
+                switch (userId)
+                {
+                    case 1:
+                        return new UserInfo { UserID = userId, Username = "host", DisplayName = "Host User" };
+                    case 2:
+                        return new UserInfo { UserID = userId, Username = "admin", DisplayName = "Admin User" };
+                    case 3:
+                        return new UserInfo { UserID = userId, Username = "reguser", DisplayName = "Registered User" };
+                }
+            }
+
+            return null;
+        }
+
         // todo unit test actual authentication code
         // very hard to unit test inbound authentication code as it dips into untestable bits of
         // UserController, etc. Need to write controllers with interfaces and ServiceLocator<>.
@@ -329,6 +311,24 @@ namespace DotNetNuke.Tests.Web.Api
             {
                 return EncodeBase64(hasher.ComputeHash(Encoding.UTF8.GetBytes(data)));
             }
+        }
+
+        private IDataReader GetPortalGroups()
+        {
+            var table = new DataTable("ModuleDefinitions");
+            var pkId = table.Columns.Add("PortalGroupID", typeof(int));
+            table.Columns.Add("MasterPortalID", typeof(int));
+            table.Columns.Add("PortalGroupName", typeof(string));
+            table.Columns.Add("PortalGroupDescription", typeof(string));
+            table.Columns.Add("AuthenticationDomain", typeof(string));
+            table.Columns.Add("CreatedByUserID", typeof(int));
+            table.Columns.Add("CreatedOnDate", typeof(DateTime));
+            table.Columns.Add("LastModifiedByUserID", typeof(int));
+            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            table.PrimaryKey = new[] { pkId };
+
+            table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
+            return table.CreateDataReader();
         }
     }
 }

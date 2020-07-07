@@ -28,12 +28,12 @@ namespace DotNetNuke.Services.FileSystem
             this.LoadConfig();
         }
 
-        public IList<FolderTypeConfig> FolderTypes { get; internal set; }
-
         public string ConfigNode
         {
             get { return configNode; }
         }
+
+        public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
         private IDictionary<string, string> FolderMappings { get; set; }
 
@@ -53,6 +53,34 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
             }
+        }
+
+        public void SaveConfig(string folderMappinsSettings)
+        {
+            if (!File.Exists(defaultConfigFilePath))
+            {
+                var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";
+                File.AppendAllText(defaultConfigFilePath, folderMappingsConfigContent);
+                var configDocument = new XmlDocument { XmlResolver = null };
+                configDocument.LoadXml(folderMappingsConfigContent);
+                this.FillFolderMappings(configDocument);
+                this.FillFolderTypes(configDocument);
+            }
+        }
+
+        public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
+        {
+            if (!this.FolderMappings.ContainsKey(folderPath))
+            {
+                return null;
+            }
+
+            return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
+        }
+
+        protected override Func<IFolderMappingsConfigController> GetFactory()
+        {
+            return () => new FolderMappingsConfigController();
         }
 
         private void FillFolderMappings(XmlDocument configDocument)
@@ -112,34 +140,6 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return folderType;
-        }
-
-        public void SaveConfig(string folderMappinsSettings)
-        {
-            if (!File.Exists(defaultConfigFilePath))
-            {
-                var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";
-                File.AppendAllText(defaultConfigFilePath, folderMappingsConfigContent);
-                var configDocument = new XmlDocument { XmlResolver = null };
-                configDocument.LoadXml(folderMappingsConfigContent);
-                this.FillFolderMappings(configDocument);
-                this.FillFolderTypes(configDocument);
-            }
-        }
-
-        public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
-        {
-            if (!this.FolderMappings.ContainsKey(folderPath))
-            {
-                return null;
-            }
-
-            return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
-        }
-
-        protected override Func<IFolderMappingsConfigController> GetFactory()
-        {
-            return () => new FolderMappingsConfigController();
         }
     }
 }

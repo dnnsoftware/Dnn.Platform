@@ -13,6 +13,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnGrid : GridView
     {
+        public TableItemStyle ItemStyle => this.RowStyle;
+
+        public TableItemStyle AlternatingItemStyle => this.AlternatingRowStyle;
+
+        public TableItemStyle EditItemStyle => this.EditRowStyle;
+
+        public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
         public int ScreenRowNumber { get; set; }
 
         public int RowHeight { get; set; }
@@ -26,14 +33,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             set { this.PageIndex = value; }
         }
-
-        public TableItemStyle ItemStyle => this.RowStyle;
-
-        public TableItemStyle AlternatingItemStyle => this.AlternatingRowStyle;
-
-        public TableItemStyle EditItemStyle => this.EditRowStyle;
-
-        public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
 
         protected override void OnInit(EventArgs e)
         {

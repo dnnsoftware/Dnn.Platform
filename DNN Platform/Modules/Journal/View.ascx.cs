@@ -41,7 +41,6 @@ namespace DotNetNuke.Modules.Journal
     {
         public int PageSize = 20;
         public bool AllowPhotos = true;
-        private readonly INavigationManager _navigationManager;
         public bool AllowFiles = true;
         public int MaxMessageLength = 250;
         public bool CanRender = true;
@@ -54,6 +53,7 @@ namespace DotNetNuke.Modules.Journal
         public int Pid = -1;
         public long MaxUploadSize = Config.GetMaxUploadSize();
         public bool IsPublicGroup = false;
+        private readonly INavigationManager _navigationManager;
 
         public View()
         {

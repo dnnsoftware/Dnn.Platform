@@ -20,9 +20,9 @@ namespace DotNetNuke.Services.Search.Internals
     internal sealed class SynonymFilter : TokenFilter
     {
         private readonly Stack<string> _synonymStack = new Stack<string>();
-        private State _current;
         private readonly TermAttribute _termAtt;
         private readonly PositionIncrementAttribute _posIncrAtt;
+        private State _current;
 
         public SynonymFilter(TokenStream input)
             : base(input)

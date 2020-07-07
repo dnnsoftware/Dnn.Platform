@@ -54,6 +54,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     {
         private const string LOGIN_PATH = "/login";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
+
         private static readonly Regex UserLanguageRegex = new Regex(
             "(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -67,91 +68,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         public Login()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
-        /// <summary>
-        /// Gets or sets and sets the current AuthenticationType.
-        /// </summary>
-        protected string AuthenticationType
-        {
-            get
-            {
-                var authenticationType = Null.NullString;
-                if (this.ViewState["AuthenticationType"] != null)
-                {
-                    authenticationType = Convert.ToString(this.ViewState["AuthenticationType"]);
-                }
-
-                return authenticationType;
-            }
-
-            set
-            {
-                this.ViewState["AuthenticationType"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.
-        /// </summary>
-        protected bool AutoRegister
-        {
-            get
-            {
-                var autoRegister = Null.NullBoolean;
-                if (this.ViewState["AutoRegister"] != null)
-                {
-                    autoRegister = Convert.ToBoolean(this.ViewState["AutoRegister"]);
-                }
-
-                return autoRegister;
-            }
-
-            set
-            {
-                this.ViewState["AutoRegister"] = value;
-            }
-        }
-
-        protected NameValueCollection ProfileProperties
-        {
-            get
-            {
-                var profile = new NameValueCollection();
-                if (this.ViewState["ProfileProperties"] != null)
-                {
-                    profile = (NameValueCollection)this.ViewState["ProfileProperties"];
-                }
-
-                return profile;
-            }
-
-            set
-            {
-                this.ViewState["ProfileProperties"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets and sets the current Page No.
-        /// </summary>
-        protected int PageNo
-        {
-            get
-            {
-                var pageNo = 0;
-                if (this.ViewState["PageNo"] != null)
-                {
-                    pageNo = Convert.ToInt32(this.ViewState["PageNo"]);
-                }
-
-                return pageNo;
-            }
-
-            set
-            {
-                this.ViewState["PageNo"] = value;
-            }
         }
 
         /// <summary>
@@ -256,6 +172,103 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
+        /// </summary>
+        protected bool UseCaptcha
+        {
+            get
+            {
+                object setting = GetSetting(this.PortalId, "Security_CaptchaLogin");
+                return Convert.ToBoolean(setting);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets and sets the current AuthenticationType.
+        /// </summary>
+        protected string AuthenticationType
+        {
+            get
+            {
+                var authenticationType = Null.NullString;
+                if (this.ViewState["AuthenticationType"] != null)
+                {
+                    authenticationType = Convert.ToString(this.ViewState["AuthenticationType"]);
+                }
+
+                return authenticationType;
+            }
+
+            set
+            {
+                this.ViewState["AuthenticationType"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.
+        /// </summary>
+        protected bool AutoRegister
+        {
+            get
+            {
+                var autoRegister = Null.NullBoolean;
+                if (this.ViewState["AutoRegister"] != null)
+                {
+                    autoRegister = Convert.ToBoolean(this.ViewState["AutoRegister"]);
+                }
+
+                return autoRegister;
+            }
+
+            set
+            {
+                this.ViewState["AutoRegister"] = value;
+            }
+        }
+
+        protected NameValueCollection ProfileProperties
+        {
+            get
+            {
+                var profile = new NameValueCollection();
+                if (this.ViewState["ProfileProperties"] != null)
+                {
+                    profile = (NameValueCollection)this.ViewState["ProfileProperties"];
+                }
+
+                return profile;
+            }
+
+            set
+            {
+                this.ViewState["ProfileProperties"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets and sets the current Page No.
+        /// </summary>
+        protected int PageNo
+        {
+            get
+            {
+                var pageNo = 0;
+                if (this.ViewState["PageNo"] != null)
+                {
+                    pageNo = Convert.ToInt32(this.ViewState["PageNo"]);
+                }
+
+                return pageNo;
+            }
+
+            set
+            {
+                this.ViewState["PageNo"] = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created.
         /// </summary>
         protected bool RememberMe
@@ -277,18 +290,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
-        /// </summary>
-        protected bool UseCaptcha
-        {
-            get
-            {
-                object setting = GetSetting(this.PortalId, "Security_CaptchaLogin");
-                return Convert.ToBoolean(setting);
-            }
-        }
-
         protected UserLoginStatus LoginStatus
         {
             get
@@ -306,33 +307,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 this.ViewState["LoginStatus"] = value;
             }
-        }
-
-        private bool NeedRedirectAfterLogin =>
-               this.LoginStatus == UserLoginStatus.LOGIN_SUCCESS
-            || this.LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
-            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
-            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
-
-        /// <summary>
-        /// Replaces the original language with user language.
-        /// </summary>
-        /// <param name="Url"></param>
-        /// <param name="originalLanguage"></param>
-        /// <param name="newLanguage"></param>
-        /// <returns></returns>
-        private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
-        {
-            var returnValue = Host.UseFriendlyUrls
-                ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
-                : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
-            return returnValue;
-        }
-
-        private bool IsRedirectingFromLoginUrl()
-        {
-            return this.Request.UrlReferrer != null &&
-                this.Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
         }
 
         /// <summary>
@@ -378,6 +352,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 this.ViewState["UserName"] = value;
             }
         }
+
+        private bool NeedRedirectAfterLogin =>
+               this.LoginStatus == UserLoginStatus.LOGIN_SUCCESS
+            || this.LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
+            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
+            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
 
         /// <summary>
         /// Page_Init runs when the control is initialised.
@@ -509,6 +489,317 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", Localization.SharedResourceFile);
             }
+        }
+
+        /// <summary>
+        /// cmdAssociate_Click runs when the associate button is clicked.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void cmdAssociate_Click(object sender, EventArgs e)
+        {
+            if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || (!this.UseCaptcha))
+            {
+                UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
+                var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+                UserInfo objUser = UserController.ValidateUser(
+                    this.PortalId,
+                    this.txtUsername.Text,
+                    this.txtPassword.Text,
+                    "DNN",
+                    string.Empty,
+                    this.PortalSettings.PortalName,
+                    ipAddress,
+                    ref loginStatus);
+                if (loginStatus == UserLoginStatus.LOGIN_SUCCESS)
+                {
+                    // Assocate alternate Login with User and proceed with Login
+                    AuthenticationController.AddUserAuthentication(objUser.UserID, this.AuthenticationType, this.UserToken);
+                    if (objUser != null)
+                    {
+                        this.UpdateProfile(objUser, true);
+                    }
+
+                    this.ValidateUser(objUser, true);
+                }
+                else
+                {
+                    this.AddModuleMessage("AssociationFailed", ModuleMessage.ModuleMessageType.RedError, true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// cmdCreateUser runs when the register (as new user) button is clicked.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void cmdCreateUser_Click(object sender, EventArgs e)
+        {
+            this.User.Membership.Password = UserController.GeneratePassword();
+
+            if (this.AutoRegister)
+            {
+                this.ctlUser.User = this.User;
+
+                // Call the Create User method of the User control so that it can create
+                // the user and raise the appropriate event(s)
+                this.ctlUser.CreateUser();
+            }
+            else
+            {
+                if (this.ctlUser.IsValid)
+                {
+                    // Call the Create User method of the User control so that it can create
+                    // the user and raise the appropriate event(s)
+                    this.ctlUser.CreateUser();
+                }
+            }
+        }
+
+        /// <summary>
+        /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void cmdProceed_Click(object sender, EventArgs e)
+        {
+            var user = this.ctlPassword.User;
+            this.ValidateUser(user, true);
+        }
+
+        /// <summary>
+        /// PasswordUpdated runs when the password is updated.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
+        {
+            PasswordUpdateStatus status = e.UpdateStatus;
+            if (status == PasswordUpdateStatus.Success)
+            {
+                this.AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+                var user = this.ctlPassword.User;
+                user.Membership.LastPasswordChangeDate = DateTime.Now;
+                user.Membership.UpdatePassword = false;
+                this.LoginStatus = user.IsSuperUser ? UserLoginStatus.LOGIN_SUPERUSER : UserLoginStatus.LOGIN_SUCCESS;
+                UserLoginStatus userstatus = UserLoginStatus.LOGIN_FAILURE;
+                UserController.CheckInsecurePassword(user.Username, user.Membership.Password, ref userstatus);
+                this.LoginStatus = userstatus;
+                this.ValidateUser(user, true);
+            }
+            else
+            {
+                this.AddModuleMessage(status.ToString(), ModuleMessage.ModuleMessageType.RedError, true);
+            }
+        }
+
+        /// <summary>
+        /// DataConsentCompleted runs after the user has gone through the data consent screen.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
+        {
+            switch (e.Status)
+            {
+                case DataConsent.DataConsentStatus.Consented:
+                    this.ValidateUser(this.ctlDataConsent.User, true);
+                    break;
+                case DataConsent.DataConsentStatus.Cancelled:
+                case DataConsent.DataConsentStatus.RemovedAccount:
+                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId), true);
+                    break;
+                case DataConsent.DataConsentStatus.FailedToRemoveAccount:
+                    this.AddModuleMessage("FailedToRemoveAccount", ModuleMessage.ModuleMessageType.RedError, true);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// ProfileUpdated runs when the profile is updated.
+        /// </summary>
+        protected void ProfileUpdated(object sender, EventArgs e)
+        {
+            // Authorize User
+            this.ValidateUser(this.ctlProfile.User, true);
+        }
+
+        /// <summary>
+        /// UserAuthenticated runs when the user is authenticated by one of the child
+        /// Authentication controls.
+        /// </summary>
+        protected void UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
+        {
+            this.LoginStatus = e.LoginStatus;
+
+            // Check the Login Status
+            switch (this.LoginStatus)
+            {
+                case UserLoginStatus.LOGIN_USERNOTAPPROVED:
+                    switch (e.Message)
+                    {
+                        case "UnverifiedUser":
+                            if (e.User != null)
+                            {
+                                // First update the profile (if any properties have been passed)
+                                this.AuthenticationType = e.AuthenticationType;
+                                this.ProfileProperties = e.Profile;
+                                this.RememberMe = e.RememberMe;
+                                this.UpdateProfile(e.User, true);
+                                this.ValidateUser(e.User, false);
+                            }
+
+                            break;
+                        case "EnterCode":
+                            this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.YellowWarning, true);
+                            break;
+                        case "InvalidCode":
+                        case "UserNotAuthorized":
+                            this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
+                            break;
+                        default:
+                            this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
+                            break;
+                    }
+
+                    break;
+                case UserLoginStatus.LOGIN_USERLOCKEDOUT:
+                    if (Host.AutoAccountUnlockDuration > 0)
+                    {
+                        this.AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", this.LocalResourceFile), Host.AutoAccountUnlockDuration), ModuleMessage.ModuleMessageType.RedError, true);
+                    }
+                    else
+                    {
+                        this.AddLocalizedModuleMessage(Localization.GetString("UserLockedOut_ContactAdmin", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError, true);
+                    }
+
+                    // notify administrator about account lockout ( possible hack attempt )
+                    var Custom = new ArrayList { e.UserToken };
+
+                    var message = new Message
+                    {
+                        FromUserID = this.PortalSettings.AdministratorId,
+                        ToUserID = this.PortalSettings.AdministratorId,
+                        Subject = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_SUBJECT", Localization.GlobalResourceFile, Custom),
+                        Body = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_BODY", Localization.GlobalResourceFile, Custom),
+                        Status = MessageStatusType.Unread,
+                    };
+
+                    // _messagingController.SaveMessage(_message);
+                    Mail.SendEmail(this.PortalSettings.Email, this.PortalSettings.Email, message.Subject, message.Body);
+                    break;
+                case UserLoginStatus.LOGIN_FAILURE:
+                    // A Login Failure can mean one of two things:
+                    //  1 - User was authenticated by the Authentication System but is not "affiliated" with a DNN Account
+                    //  2 - User was not authenticated
+                    if (e.Authenticated)
+                    {
+                        this.AutoRegister = e.AutoRegister;
+                        this.AuthenticationType = e.AuthenticationType;
+                        this.ProfileProperties = e.Profile;
+                        this.UserToken = e.UserToken;
+                        this.UserName = e.UserName;
+                        if (this.AutoRegister)
+                        {
+                            this.InitialiseUser();
+                            this.User.Membership.Password = UserController.GeneratePassword();
+
+                            this.ctlUser.User = this.User;
+
+                            // Call the Create User method of the User control so that it can create
+                            // the user and raise the appropriate event(s)
+                            this.ctlUser.CreateUser();
+                        }
+                        else
+                        {
+                            this.PageNo = 1;
+                            this.ShowPanel();
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(e.Message))
+                        {
+                            this.AddModuleMessage("LoginFailed", ModuleMessage.ModuleMessageType.RedError, true);
+                        }
+                        else
+                        {
+                            this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
+                        }
+                    }
+
+                    break;
+                default:
+                    if (e.User != null)
+                    {
+                        // First update the profile (if any properties have been passed)
+                        this.AuthenticationType = e.AuthenticationType;
+                        this.ProfileProperties = e.Profile;
+                        this.RememberMe = e.RememberMe;
+                        this.UpdateProfile(e.User, true);
+                        this.ValidateUser(e.User, e.AuthenticationType != "DNN");
+                    }
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// UserCreateCompleted runs when a new user has been Created.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
+        {
+            var strMessage = string.Empty;
+            try
+            {
+                if (e.CreateStatus == UserCreateStatus.Success)
+                {
+                    // Assocate alternate Login with User and proceed with Login
+                    AuthenticationController.AddUserAuthentication(e.NewUser.UserID, this.AuthenticationType, this.UserToken);
+
+                    strMessage = this.CompleteUserCreation(e.CreateStatus, e.NewUser, e.Notify, true);
+                    if (string.IsNullOrEmpty(strMessage))
+                    {
+                        // First update the profile (if any properties have been passed)
+                        this.UpdateProfile(e.NewUser, true);
+
+                        this.ValidateUser(e.NewUser, true);
+                    }
+                }
+                else
+                {
+                    this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
+                }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Replaces the original language with user language.
+        /// </summary>
+        /// <param name="Url"></param>
+        /// <param name="originalLanguage"></param>
+        /// <param name="newLanguage"></param>
+        /// <returns></returns>
+        private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
+        {
+            var returnValue = Host.UseFriendlyUrls
+                ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
+                : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
+            return returnValue;
+        }
+
+        private bool IsRedirectingFromLoginUrl()
+        {
+            return this.Request.UrlReferrer != null &&
+                this.Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
         }
 
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)
@@ -1142,296 +1433,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private bool LocaleEnabled(string locale)
         {
             return LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).ContainsKey(locale);
-        }
-
-        /// <summary>
-        /// cmdAssociate_Click runs when the associate button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void cmdAssociate_Click(object sender, EventArgs e)
-        {
-            if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || (!this.UseCaptcha))
-            {
-                UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                var userRequestIpAddressController = UserRequestIPAddressController.Instance;
-                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
-                UserInfo objUser = UserController.ValidateUser(
-                    this.PortalId,
-                    this.txtUsername.Text,
-                    this.txtPassword.Text,
-                    "DNN",
-                    string.Empty,
-                    this.PortalSettings.PortalName,
-                    ipAddress,
-                    ref loginStatus);
-                if (loginStatus == UserLoginStatus.LOGIN_SUCCESS)
-                {
-                    // Assocate alternate Login with User and proceed with Login
-                    AuthenticationController.AddUserAuthentication(objUser.UserID, this.AuthenticationType, this.UserToken);
-                    if (objUser != null)
-                    {
-                        this.UpdateProfile(objUser, true);
-                    }
-
-                    this.ValidateUser(objUser, true);
-                }
-                else
-                {
-                    this.AddModuleMessage("AssociationFailed", ModuleMessage.ModuleMessageType.RedError, true);
-                }
-            }
-        }
-
-        /// <summary>
-        /// cmdCreateUser runs when the register (as new user) button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void cmdCreateUser_Click(object sender, EventArgs e)
-        {
-            this.User.Membership.Password = UserController.GeneratePassword();
-
-            if (this.AutoRegister)
-            {
-                this.ctlUser.User = this.User;
-
-                // Call the Create User method of the User control so that it can create
-                // the user and raise the appropriate event(s)
-                this.ctlUser.CreateUser();
-            }
-            else
-            {
-                if (this.ctlUser.IsValid)
-                {
-                    // Call the Create User method of the User control so that it can create
-                    // the user and raise the appropriate event(s)
-                    this.ctlUser.CreateUser();
-                }
-            }
-        }
-
-        /// <summary>
-        /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void cmdProceed_Click(object sender, EventArgs e)
-        {
-            var user = this.ctlPassword.User;
-            this.ValidateUser(user, true);
-        }
-
-        /// <summary>
-        /// PasswordUpdated runs when the password is updated.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
-        {
-            PasswordUpdateStatus status = e.UpdateStatus;
-            if (status == PasswordUpdateStatus.Success)
-            {
-                this.AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
-                var user = this.ctlPassword.User;
-                user.Membership.LastPasswordChangeDate = DateTime.Now;
-                user.Membership.UpdatePassword = false;
-                this.LoginStatus = user.IsSuperUser ? UserLoginStatus.LOGIN_SUPERUSER : UserLoginStatus.LOGIN_SUCCESS;
-                UserLoginStatus userstatus = UserLoginStatus.LOGIN_FAILURE;
-                UserController.CheckInsecurePassword(user.Username, user.Membership.Password, ref userstatus);
-                this.LoginStatus = userstatus;
-                this.ValidateUser(user, true);
-            }
-            else
-            {
-                this.AddModuleMessage(status.ToString(), ModuleMessage.ModuleMessageType.RedError, true);
-            }
-        }
-
-        /// <summary>
-        /// DataConsentCompleted runs after the user has gone through the data consent screen.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
-        {
-            switch (e.Status)
-            {
-                case DataConsent.DataConsentStatus.Consented:
-                    this.ValidateUser(this.ctlDataConsent.User, true);
-                    break;
-                case DataConsent.DataConsentStatus.Cancelled:
-                case DataConsent.DataConsentStatus.RemovedAccount:
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId), true);
-                    break;
-                case DataConsent.DataConsentStatus.FailedToRemoveAccount:
-                    this.AddModuleMessage("FailedToRemoveAccount", ModuleMessage.ModuleMessageType.RedError, true);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// ProfileUpdated runs when the profile is updated.
-        /// </summary>
-        protected void ProfileUpdated(object sender, EventArgs e)
-        {
-            // Authorize User
-            this.ValidateUser(this.ctlProfile.User, true);
-        }
-
-        /// <summary>
-        /// UserAuthenticated runs when the user is authenticated by one of the child
-        /// Authentication controls.
-        /// </summary>
-        protected void UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
-        {
-            this.LoginStatus = e.LoginStatus;
-
-            // Check the Login Status
-            switch (this.LoginStatus)
-            {
-                case UserLoginStatus.LOGIN_USERNOTAPPROVED:
-                    switch (e.Message)
-                    {
-                        case "UnverifiedUser":
-                            if (e.User != null)
-                            {
-                                // First update the profile (if any properties have been passed)
-                                this.AuthenticationType = e.AuthenticationType;
-                                this.ProfileProperties = e.Profile;
-                                this.RememberMe = e.RememberMe;
-                                this.UpdateProfile(e.User, true);
-                                this.ValidateUser(e.User, false);
-                            }
-
-                            break;
-                        case "EnterCode":
-                            this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.YellowWarning, true);
-                            break;
-                        case "InvalidCode":
-                        case "UserNotAuthorized":
-                            this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
-                            break;
-                        default:
-                            this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
-                            break;
-                    }
-
-                    break;
-                case UserLoginStatus.LOGIN_USERLOCKEDOUT:
-                    if (Host.AutoAccountUnlockDuration > 0)
-                    {
-                        this.AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", this.LocalResourceFile), Host.AutoAccountUnlockDuration), ModuleMessage.ModuleMessageType.RedError, true);
-                    }
-                    else
-                    {
-                        this.AddLocalizedModuleMessage(Localization.GetString("UserLockedOut_ContactAdmin", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError, true);
-                    }
-
-                    // notify administrator about account lockout ( possible hack attempt )
-                    var Custom = new ArrayList { e.UserToken };
-
-                    var message = new Message
-                    {
-                        FromUserID = this.PortalSettings.AdministratorId,
-                        ToUserID = this.PortalSettings.AdministratorId,
-                        Subject = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_SUBJECT", Localization.GlobalResourceFile, Custom),
-                        Body = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_BODY", Localization.GlobalResourceFile, Custom),
-                        Status = MessageStatusType.Unread,
-                    };
-
-                    // _messagingController.SaveMessage(_message);
-                    Mail.SendEmail(this.PortalSettings.Email, this.PortalSettings.Email, message.Subject, message.Body);
-                    break;
-                case UserLoginStatus.LOGIN_FAILURE:
-                    // A Login Failure can mean one of two things:
-                    //  1 - User was authenticated by the Authentication System but is not "affiliated" with a DNN Account
-                    //  2 - User was not authenticated
-                    if (e.Authenticated)
-                    {
-                        this.AutoRegister = e.AutoRegister;
-                        this.AuthenticationType = e.AuthenticationType;
-                        this.ProfileProperties = e.Profile;
-                        this.UserToken = e.UserToken;
-                        this.UserName = e.UserName;
-                        if (this.AutoRegister)
-                        {
-                            this.InitialiseUser();
-                            this.User.Membership.Password = UserController.GeneratePassword();
-
-                            this.ctlUser.User = this.User;
-
-                            // Call the Create User method of the User control so that it can create
-                            // the user and raise the appropriate event(s)
-                            this.ctlUser.CreateUser();
-                        }
-                        else
-                        {
-                            this.PageNo = 1;
-                            this.ShowPanel();
-                        }
-                    }
-                    else
-                    {
-                        if (string.IsNullOrEmpty(e.Message))
-                        {
-                            this.AddModuleMessage("LoginFailed", ModuleMessage.ModuleMessageType.RedError, true);
-                        }
-                        else
-                        {
-                            this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
-                        }
-                    }
-
-                    break;
-                default:
-                    if (e.User != null)
-                    {
-                        // First update the profile (if any properties have been passed)
-                        this.AuthenticationType = e.AuthenticationType;
-                        this.ProfileProperties = e.Profile;
-                        this.RememberMe = e.RememberMe;
-                        this.UpdateProfile(e.User, true);
-                        this.ValidateUser(e.User, e.AuthenticationType != "DNN");
-                    }
-
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// UserCreateCompleted runs when a new user has been Created.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
-        {
-            var strMessage = string.Empty;
-            try
-            {
-                if (e.CreateStatus == UserCreateStatus.Success)
-                {
-                    // Assocate alternate Login with User and proceed with Login
-                    AuthenticationController.AddUserAuthentication(e.NewUser.UserID, this.AuthenticationType, this.UserToken);
-
-                    strMessage = this.CompleteUserCreation(e.CreateStatus, e.NewUser, e.Notify, true);
-                    if (string.IsNullOrEmpty(strMessage))
-                    {
-                        // First update the profile (if any properties have been passed)
-                        this.UpdateProfile(e.NewUser, true);
-
-                        this.ValidateUser(e.NewUser, true);
-                    }
-                }
-                else
-                {
-                    this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
-                }
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
 
         private void AddEventLog(int userId, string username, int portalId, string propertyName, string propertyValue)

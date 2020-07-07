@@ -47,12 +47,6 @@ namespace DotNetNuke.Security.Permissions
             return CanAddContentToPage(TabController.CurrentPage);
         }
 
-        private static void ClearPermissionCache(int tabId)
-        {
-            var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
-            DataCache.ClearTabPermissionsCache(objTab.PortalID);
-        }
-
         /// <summary>
         /// Returns a flag indicating whether the current user can add content to a page.
         /// </summary>
@@ -300,6 +294,12 @@ namespace DotNetNuke.Security.Permissions
             _provider.SaveTabPermissions(tab);
             EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_UPDATED);
             DataCache.ClearTabPermissionsCache(tab.PortalID);
+        }
+
+        private static void ClearPermissionCache(int tabId)
+        {
+            var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
+            DataCache.ClearTabPermissionsCache(objTab.PortalID);
         }
     }
 }

@@ -173,29 +173,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             this._mockRepository.VerifyAll();
         }
 
-        private UserInfo SetUpUserWithRole(string roleName)
-        {
-            var user = new UserInfo
-            {
-                UserID = 1,
-                PortalID = 1,
-            };
-
-            var roles = new List<UserRoleInfo>
-            {
-                new UserRoleInfo
-                {
-                    RoleName = roleName,
-                    Status = RoleStatus.Approved
-                },
-            };
-
-            this._mockRoleController.Setup(x => x.GetUserRoles(user, true)).Returns(roles);
-            RoleController.SetTestableInstance(this._mockRoleController.Object);
-
-            return user;
-        }
-
         [Test]
         public void RegisteredUser_IsDenied_If_IncludedIn_StaticRoles()
         {
@@ -222,6 +199,29 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 
             // Assert
             this._mockRepository.VerifyAll();
+        }
+
+        private UserInfo SetUpUserWithRole(string roleName)
+        {
+            var user = new UserInfo
+            {
+                UserID = 1,
+                PortalID = 1,
+            };
+
+            var roles = new List<UserRoleInfo>
+            {
+                new UserRoleInfo
+                {
+                    RoleName = roleName,
+                    Status = RoleStatus.Approved
+                },
+            };
+
+            this._mockRoleController.Setup(x => x.GetUserRoles(user, true)).Returns(roles);
+            RoleController.SetTestableInstance(this._mockRoleController.Object);
+
+            return user;
         }
     }
 }

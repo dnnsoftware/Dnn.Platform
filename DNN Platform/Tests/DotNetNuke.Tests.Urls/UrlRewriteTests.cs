@@ -103,57 +103,6 @@ namespace DotNetNuke.Tests.Urls
             }
         }
 
-        private void CreateSimulatedRequest(Uri url)
-        {
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
-            simulator.SimulateRequest(url);
-
-            var browserCaps = new HttpBrowserCapabilities { Capabilities = new Hashtable() };
-            HttpContext.Current.Request.Browser = browserCaps;
-        }
-
-        private void ProcessRequest(FriendlyUrlSettings settings, UrlTestHelper testHelper)
-        {
-            var provider = new AdvancedUrlRewriter();
-
-            provider.ProcessTestRequestWithContext(
-                HttpContext.Current,
-                HttpContext.Current.Request.Url,
-                true,
-                testHelper.Result,
-                settings);
-            testHelper.Response = HttpContext.Current.Response;
-        }
-
-        private string ReplaceTokens(Dictionary<string, string> testFields, string url, string tabId)
-        {
-            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
-            var httpAlias = testFields.GetValue("Alias", string.Empty);
-            var tabName = testFields["Page Name"];
-            var vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
-            var homeTabId = testFields.GetValue("HomeTabId", string.Empty);
-
-            var userName = testFields.GetValue("UserName", string.Empty);
-            string userId = string.Empty;
-            if (!string.IsNullOrEmpty(userName))
-            {
-                var user = UserController.GetUserByName(this.PortalId, userName);
-                if (user != null)
-                {
-                    userId = user.UserID.ToString();
-                }
-            }
-
-            return url.Replace("{alias}", httpAlias)
-                            .Replace("{usealias}", defaultAlias)
-                            .Replace("{tabName}", tabName)
-                            .Replace("{tabId}", tabId)
-                            .Replace("{portalId}", this.PortalId.ToString())
-                            .Replace("{vanityUrl}", vanityUrl)
-                            .Replace("{userId}", userId)
-                            .Replace("{defaultPage}", _defaultPage);
-        }
-
         [TestFixtureSetUp]
         public override void TestFixtureSetUp()
         {
@@ -264,106 +213,6 @@ namespace DotNetNuke.Tests.Urls
             this.SetDefaultAlias(testFields);
 
             this.ExecuteTest(settings, testFields, true);
-        }
-
-        private void DeleteTab(string tabName)
-        {
-            var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
-
-            if (tab != null)
-            {
-                TabController.Instance.DeleteTab(tab.TabID, this.PortalId);
-            }
-        }
-
-        private void ExecuteTestForTab(TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
-        {
-            var httpAlias = testFields.GetValue("Alias", string.Empty);
-            var scheme = testFields["Scheme"];
-            var url = testFields["Test Url"];
-            var result = testFields["Expected Url"];
-            var expectedStatus = int.Parse(testFields["Status"]);
-            var redirectUrl = testFields.GetValue("Final Url");
-            var redirectReason = testFields.GetValue("RedirectReason");
-
-            var tabID = (tab == null) ? "-1" : tab.TabID.ToString();
-
-            var expectedResult = this.ReplaceTokens(testFields, result, tabID);
-            var testurl = this.ReplaceTokens(testFields, url, tabID);
-            var expectedRedirectUrl = this.ReplaceTokens(testFields, redirectUrl, tabID);
-
-            this.CreateSimulatedRequest(new Uri(testurl));
-
-            var request = HttpContext.Current.Request;
-            var testHelper = new UrlTestHelper
-            {
-                HttpAliasFull = scheme + httpAlias + "/",
-                Result = new UrlAction(request)
-                {
-                    IsSecureConnection = request.IsSecureConnection,
-                    RawUrl = request.RawUrl,
-                },
-                RequestUri = new Uri(testurl),
-                QueryStringCol = new NameValueCollection(),
-            };
-
-            this.ProcessRequest(settings, testHelper);
-
-            // Test expected response status
-            Assert.AreEqual(expectedStatus, testHelper.Response.StatusCode);
-
-            switch (expectedStatus)
-            {
-                case 200:
-                    // Test expected rewrite path
-                    if (!string.IsNullOrEmpty(expectedResult))
-                    {
-                        Assert.AreEqual(expectedResult, testHelper.Result.RewritePath.TrimStart('/'));
-                    }
-
-                    break;
-                case 301:
-                case 302:
-                    // Test for final Url if redirected
-                    Assert.IsTrue(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase));
-                    Assert.AreEqual(redirectReason, testHelper.Result.Reason.ToString(), "Redirect reason incorrect");
-                    break;
-            }
-        }
-
-        private void ExecuteTest(FriendlyUrlSettings settings, Dictionary<string, string> testFields, bool setDefaultAlias)
-        {
-            var tabName = testFields["Page Name"];
-            var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
-
-            if (setDefaultAlias)
-            {
-                this.SetDefaultAlias(testFields);
-            }
-
-            this.ExecuteTestForTab(tab, settings, testFields);
-        }
-
-        private void UpdateTab(TabInfo tab)
-        {
-            if (tab != null)
-            {
-                TabController.Instance.UpdateTab(tab);
-            }
-        }
-
-        private void UpdateTabName(int tabId, string newName)
-        {
-            var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
-            tab.TabName = newName;
-            TabController.Instance.UpdateTab(tab);
-        }
-
-        private void UpdateTabSkin(int tabId, string newSkin)
-        {
-            var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
-            tab.SkinSrc = newSkin;
-            TabController.Instance.UpdateTab(tab);
         }
 
         [Test]
@@ -662,6 +511,157 @@ namespace DotNetNuke.Tests.Urls
             {
                 this.UpdateHomeTab(homeTabId);
             }
+        }
+
+        private void CreateSimulatedRequest(Uri url)
+        {
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
+            simulator.SimulateRequest(url);
+
+            var browserCaps = new HttpBrowserCapabilities { Capabilities = new Hashtable() };
+            HttpContext.Current.Request.Browser = browserCaps;
+        }
+
+        private void ProcessRequest(FriendlyUrlSettings settings, UrlTestHelper testHelper)
+        {
+            var provider = new AdvancedUrlRewriter();
+
+            provider.ProcessTestRequestWithContext(
+                HttpContext.Current,
+                HttpContext.Current.Request.Url,
+                true,
+                testHelper.Result,
+                settings);
+            testHelper.Response = HttpContext.Current.Response;
+        }
+
+        private string ReplaceTokens(Dictionary<string, string> testFields, string url, string tabId)
+        {
+            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
+            var httpAlias = testFields.GetValue("Alias", string.Empty);
+            var tabName = testFields["Page Name"];
+            var vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
+            var homeTabId = testFields.GetValue("HomeTabId", string.Empty);
+
+            var userName = testFields.GetValue("UserName", string.Empty);
+            string userId = string.Empty;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var user = UserController.GetUserByName(this.PortalId, userName);
+                if (user != null)
+                {
+                    userId = user.UserID.ToString();
+                }
+            }
+
+            return url.Replace("{alias}", httpAlias)
+                            .Replace("{usealias}", defaultAlias)
+                            .Replace("{tabName}", tabName)
+                            .Replace("{tabId}", tabId)
+                            .Replace("{portalId}", this.PortalId.ToString())
+                            .Replace("{vanityUrl}", vanityUrl)
+                            .Replace("{userId}", userId)
+                            .Replace("{defaultPage}", _defaultPage);
+        }
+
+        private void DeleteTab(string tabName)
+        {
+            var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
+
+            if (tab != null)
+            {
+                TabController.Instance.DeleteTab(tab.TabID, this.PortalId);
+            }
+        }
+
+        private void ExecuteTestForTab(TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
+        {
+            var httpAlias = testFields.GetValue("Alias", string.Empty);
+            var scheme = testFields["Scheme"];
+            var url = testFields["Test Url"];
+            var result = testFields["Expected Url"];
+            var expectedStatus = int.Parse(testFields["Status"]);
+            var redirectUrl = testFields.GetValue("Final Url");
+            var redirectReason = testFields.GetValue("RedirectReason");
+
+            var tabID = (tab == null) ? "-1" : tab.TabID.ToString();
+
+            var expectedResult = this.ReplaceTokens(testFields, result, tabID);
+            var testurl = this.ReplaceTokens(testFields, url, tabID);
+            var expectedRedirectUrl = this.ReplaceTokens(testFields, redirectUrl, tabID);
+
+            this.CreateSimulatedRequest(new Uri(testurl));
+
+            var request = HttpContext.Current.Request;
+            var testHelper = new UrlTestHelper
+            {
+                HttpAliasFull = scheme + httpAlias + "/",
+                Result = new UrlAction(request)
+                {
+                    IsSecureConnection = request.IsSecureConnection,
+                    RawUrl = request.RawUrl,
+                },
+                RequestUri = new Uri(testurl),
+                QueryStringCol = new NameValueCollection(),
+            };
+
+            this.ProcessRequest(settings, testHelper);
+
+            // Test expected response status
+            Assert.AreEqual(expectedStatus, testHelper.Response.StatusCode);
+
+            switch (expectedStatus)
+            {
+                case 200:
+                    // Test expected rewrite path
+                    if (!string.IsNullOrEmpty(expectedResult))
+                    {
+                        Assert.AreEqual(expectedResult, testHelper.Result.RewritePath.TrimStart('/'));
+                    }
+
+                    break;
+                case 301:
+                case 302:
+                    // Test for final Url if redirected
+                    Assert.IsTrue(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase));
+                    Assert.AreEqual(redirectReason, testHelper.Result.Reason.ToString(), "Redirect reason incorrect");
+                    break;
+            }
+        }
+
+        private void ExecuteTest(FriendlyUrlSettings settings, Dictionary<string, string> testFields, bool setDefaultAlias)
+        {
+            var tabName = testFields["Page Name"];
+            var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
+
+            if (setDefaultAlias)
+            {
+                this.SetDefaultAlias(testFields);
+            }
+
+            this.ExecuteTestForTab(tab, settings, testFields);
+        }
+
+        private void UpdateTab(TabInfo tab)
+        {
+            if (tab != null)
+            {
+                TabController.Instance.UpdateTab(tab);
+            }
+        }
+
+        private void UpdateTabName(int tabId, string newName)
+        {
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
+            tab.TabName = newName;
+            TabController.Instance.UpdateTab(tab);
+        }
+
+        private void UpdateTabSkin(int tabId, string newSkin)
+        {
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
+            tab.SkinSrc = newSkin;
+            TabController.Instance.UpdateTab(tab);
         }
 
         private int UpdateHomeTab(int homeTabId)

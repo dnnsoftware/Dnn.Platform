@@ -1,7 +1,7 @@
 <%@ Page Language="C#" %>
 
 <script runat="server">
-    
+
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
@@ -12,9 +12,9 @@
         {
             Localization.SetThreadCultures(pageLocale, settings);
         }
-    }    
-    
-	protected override void OnLoad(EventArgs e)
+    }
+
+    protected override void OnLoad(EventArgs e)
 	{
 		base.OnLoad(e);
 

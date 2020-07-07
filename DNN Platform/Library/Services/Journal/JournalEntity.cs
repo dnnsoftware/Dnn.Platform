@@ -42,6 +42,11 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        public CacheLevel Cacheability
+        {
+            get { return CacheLevel.fullyCacheable; }
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -49,11 +54,6 @@ namespace DotNetNuke.Services.Journal
         public string Vanity { get; set; }
 
         public string Avatar { get; set; }
-
-        public CacheLevel Cacheability
-        {
-            get { return CacheLevel.fullyCacheable; }
-        }
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {

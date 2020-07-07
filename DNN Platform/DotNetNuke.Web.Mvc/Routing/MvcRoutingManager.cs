@@ -133,6 +133,12 @@ namespace DotNetNuke.Web.Mvc.Routing
             return route;
         }
 
+        private static RouteValueDictionary CreateRouteValueDictionaryUncached(object values)
+        {
+            var dictionary = values as IDictionary<string, object>;
+            return dictionary != null ? new RouteValueDictionary(dictionary) : TypeHelper.ObjectToDictionary(values);
+        }
+
         private void LocateServicesAndMapRoutes()
         {
             RegisterSystemRoutes();
@@ -186,12 +192,6 @@ namespace DotNetNuke.Web.Mvc.Routing
         private IEnumerable<Type> GetAllServiceRouteMapperTypes()
         {
             return this.TypeLocator.GetAllMatchingTypes(IsValidServiceRouteMapper);
-        }
-
-        private static RouteValueDictionary CreateRouteValueDictionaryUncached(object values)
-        {
-            var dictionary = values as IDictionary<string, object>;
-            return dictionary != null ? new RouteValueDictionary(dictionary) : TypeHelper.ObjectToDictionary(values);
         }
     }
 }

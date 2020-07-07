@@ -18,14 +18,14 @@ namespace Dnn.ExportImport.Components.Models
             this.CompleteLog = this.CompleteLog = new List<LogItem>();
         }
 
-        public int JobId { get; set; }
-
-        public IList<LogItem> CompleteLog { get; private set; }
-
         public IList<LogItem> Summary
         {
             get { return this.CompleteLog.Where(item => item.ReportLevel >= ReportLevel.Info).ToList(); }
         }
+
+        public int JobId { get; set; }
+
+        public IList<LogItem> CompleteLog { get; private set; }
 
         public LogItem AddSummary(string name, string value)
         {

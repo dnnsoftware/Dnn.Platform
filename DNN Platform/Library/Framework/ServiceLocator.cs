@@ -14,6 +14,43 @@ namespace DotNetNuke.Framework
     public abstract class ServiceLocator<TContract, TSelf>
         where TSelf : ServiceLocator<TContract, TSelf>, new()
     {
+        protected static Func<TContract> Factory { get; set; }
+
+        /// <summary>
+        /// Registers an instance to use for the Singleton.
+        /// </summary>
+        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
+        /// <param name="instance"></param>
+        public static void SetTestableInstance(TContract instance)
+        {
+            _testableInstance = instance;
+            _useTestable = true;
+        }
+
+        /// <summary>
+        /// Clears the current instance, a new instance will be initialized when next requested.
+        /// </summary>
+        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
+        public static void ClearInstance()
+        {
+            _useTestable = false;
+            _testableInstance = default(TContract);
+            _instance = new Lazy<TContract>(InitInstance, true);
+        }
+
+        protected abstract Func<TContract> GetFactory();
+
+        private static TContract InitInstance()
+        {
+            if (Factory == null)
+            {
+                var controllerInstance = new TSelf();
+                Factory = controllerInstance.GetFactory();
+            }
+
+            return Factory();
+        }
+
         // ReSharper disable StaticFieldInGenericType
         // ReSharper disable InconsistentNaming
         private static Lazy<TContract> _instance = new Lazy<TContract>(InitInstance, true);
@@ -39,41 +76,5 @@ namespace DotNetNuke.Framework
         }
 
         // ReSharper restore StaticFieldInGenericType
-        protected static Func<TContract> Factory { get; set; }
-
-        /// <summary>
-        /// Registers an instance to use for the Singleton.
-        /// </summary>
-        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
-        /// <param name="instance"></param>
-        public static void SetTestableInstance(TContract instance)
-        {
-            _testableInstance = instance;
-            _useTestable = true;
-        }
-
-        /// <summary>
-        /// Clears the current instance, a new instance will be initialized when next requested.
-        /// </summary>
-        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
-        public static void ClearInstance()
-        {
-            _useTestable = false;
-            _testableInstance = default(TContract);
-            _instance = new Lazy<TContract>(InitInstance, true);
-        }
-
-        private static TContract InitInstance()
-        {
-            if (Factory == null)
-            {
-                var controllerInstance = new TSelf();
-                Factory = controllerInstance.GetFactory();
-            }
-
-            return Factory();
-        }
-
-        protected abstract Func<TContract> GetFactory();
     }
 }

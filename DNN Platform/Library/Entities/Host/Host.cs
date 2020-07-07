@@ -959,35 +959,6 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the PerformanceSettings.
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to PerformanceSettings.ModerateCaching.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        public static Globals.PerformanceSettings PerformanceSetting
-        {
-            get
-            {
-                if (!_performanceSetting.HasValue)
-                {
-                    var s = HostController.Instance.GetString("PerformanceSetting");
-                    if (string.IsNullOrEmpty(s))
-                    {
-                        return Globals.PerformanceSettings.ModerateCaching;
-                    }
-
-                    _performanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), s);
-                }
-
-                return _performanceSetting.Value;
-            }
-
-            set { _performanceSetting = value; }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         ///   Gets the Payment Processor Password.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -1342,50 +1313,6 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets the SMTP mode (portal|host).
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        internal static bool SMTPPortalEnabled
-        {
-            get
-            {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-
-                if (portalSettings == null || portalSettings.ActiveTab == null)
-                {
-                    // without portal settings or active tab, we can't continue
-                    return false;
-                }
-
-                // we don't want to load the portal smtp server when on a host tab.
-                if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
-                {
-                    return false;
-                }
-
-                var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalSettings.PortalId, Null.NullString);
-
-                return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Get's the SMTP setting, if portal smtp is configured, it will return items from the portal settings collection.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private static string GetSmtpSetting(string settingName)
-        {
-            if (SMTPPortalEnabled)
-            {
-                return PortalController.GetPortalSetting(settingName, PortalSettings.Current.PortalId, Null.NullString);
-            }
-
-            return HostController.Instance.GetString(settingName);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         ///   Gets the SMTP Connection Limit.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -1692,6 +1619,79 @@ namespace DotNetNuke.Entities.Host
         public static bool IsLocked
         {
             get { return HostController.Instance.GetBoolean("IsLocked", false); }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets or sets the PerformanceSettings.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to PerformanceSettings.ModerateCaching.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static Globals.PerformanceSettings PerformanceSetting
+        {
+            get
+            {
+                if (!_performanceSetting.HasValue)
+                {
+                    var s = HostController.Instance.GetString("PerformanceSetting");
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        return Globals.PerformanceSettings.ModerateCaching;
+                    }
+
+                    _performanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), s);
+                }
+
+                return _performanceSetting.Value;
+            }
+
+            set { _performanceSetting = value; }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets the SMTP mode (portal|host).
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        internal static bool SMTPPortalEnabled
+        {
+            get
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+
+                if (portalSettings == null || portalSettings.ActiveTab == null)
+                {
+                    // without portal settings or active tab, we can't continue
+                    return false;
+                }
+
+                // we don't want to load the portal smtp server when on a host tab.
+                if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
+                {
+                    return false;
+                }
+
+                var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalSettings.PortalId, Null.NullString);
+
+                return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Get's the SMTP setting, if portal smtp is configured, it will return items from the portal settings collection.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static string GetSmtpSetting(string settingName)
+        {
+            if (SMTPPortalEnabled)
+            {
+                return PortalController.GetPortalSetting(settingName, PortalSettings.Current.PortalId, Null.NullString);
+            }
+
+            return HostController.Instance.GetString(settingName);
         }
     }
 }

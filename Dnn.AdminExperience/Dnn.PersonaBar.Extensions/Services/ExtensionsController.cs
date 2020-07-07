@@ -300,17 +300,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        private static void AddFiles(ICollection<KeyValuePair<string, string>> collection, string path, string root, string filter)
-        {
-            var files = Directory.GetFiles(path, filter);
-            foreach (var strFile in files)
-            {
-                var file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
-                var item = new KeyValuePair<string, string>(file.ToLower(), file);
-                collection.Add(item);
-            }
-        }
-
         [HttpGet]
         public HttpResponseMessage GetLanguagesList()
         {
@@ -1267,42 +1256,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        private HttpResponseMessage CreateManifestInternal(PackageInfo package, PackageManifestDto packageManifestDto)
-        {
-            var writer = PackageWriterFactory.GetWriter(package);
-
-            foreach (var fileName in packageManifestDto.Files)
-            {
-                var name = fileName.Trim();
-                if (!string.IsNullOrEmpty(name))
-                {
-                    writer.AddFile(new InstallFile(name));
-                }
-            }
-
-            foreach (var fileName in packageManifestDto.Assemblies)
-            {
-                var name = fileName.Trim();
-                if (!string.IsNullOrEmpty(name))
-                {
-                    writer.AddFile(new InstallFile(name));
-                }
-            }
-
-            string manifestContent;
-            if (!string.IsNullOrEmpty(packageManifestDto.ManifestName))
-            {
-                writer.WriteManifest(packageManifestDto.ManifestName, package.Manifest);
-                manifestContent = package.Manifest;
-            }
-            else
-            {
-                manifestContent = writer.WriteManifest(false);
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = manifestContent });
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -1375,6 +1328,17 @@ namespace Dnn.PersonaBar.Extensions.Services
             return returnValue.ToString();
         }
 
+        private static void AddFiles(ICollection<KeyValuePair<string, string>> collection, string path, string root, string filter)
+        {
+            var files = Directory.GetFiles(path, filter);
+            foreach (var strFile in files)
+            {
+                var file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
+                var item = new KeyValuePair<string, string>(file.ToLower(), file);
+                collection.Add(item);
+            }
+        }
+
         private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
         {
             if (!tabsWithModule.ContainsKey(currentTab.TabID) || tabsInOrder.ContainsKey(currentTab.TabID)) return;
@@ -1383,6 +1347,42 @@ namespace Dnn.PersonaBar.Extensions.Services
             {
                 AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
             }
+        }
+
+        private HttpResponseMessage CreateManifestInternal(PackageInfo package, PackageManifestDto packageManifestDto)
+        {
+            var writer = PackageWriterFactory.GetWriter(package);
+
+            foreach (var fileName in packageManifestDto.Files)
+            {
+                var name = fileName.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    writer.AddFile(new InstallFile(name));
+                }
+            }
+
+            foreach (var fileName in packageManifestDto.Assemblies)
+            {
+                var name = fileName.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    writer.AddFile(new InstallFile(name));
+                }
+            }
+
+            string manifestContent;
+            if (!string.IsNullOrEmpty(packageManifestDto.ManifestName))
+            {
+                writer.WriteManifest(packageManifestDto.ManifestName, package.Manifest);
+                manifestContent = package.Manifest;
+            }
+            else
+            {
+                manifestContent = writer.WriteManifest(false);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = manifestContent });
         }
 
         private Task<HttpResponseMessage> UploadFileAction(Func<PortalSettings, UserInfo, string, Stream, object> action)

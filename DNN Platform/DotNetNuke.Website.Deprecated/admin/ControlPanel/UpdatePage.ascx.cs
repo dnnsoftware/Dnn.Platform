@@ -82,6 +82,14 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
+        private string LocalResourceFile
+        {
+            get
+            {
+                return string.Format("{0}/{1}/{2}.ascx.resx", this.TemplateSourceDirectory, Localization.LocalResourceDirectory, this.GetType().BaseType.Name);
+            }
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -167,14 +175,6 @@ namespace DotNetNuke.UI.ControlPanel
                     errMsg = string.Format("<p>{0}</p><p>{1}</p>", this.GetString("Err.Header"), errMsg);
                     Web.UI.Utilities.RegisterAlertOnPageLoad(this, new MessageWindowParameters(errMsg) { Title = this.GetString("Err.Title") });
                 }
-            }
-        }
-
-        private string LocalResourceFile
-        {
-            get
-            {
-                return string.Format("{0}/{1}/{2}.ascx.resx", this.TemplateSourceDirectory, Localization.LocalResourceDirectory, this.GetType().BaseType.Name);
             }
         }
 

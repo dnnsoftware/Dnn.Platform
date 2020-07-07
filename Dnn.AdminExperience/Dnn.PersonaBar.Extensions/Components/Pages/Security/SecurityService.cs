@@ -71,18 +71,6 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             return permissions;
         }
 
-        private bool IsPageAdmin()
-        {
-            return //TabPermissionController.CanAddContentToPage() ||
-                    TabPermissionController.CanAddPage()
-                    || TabPermissionController.CanAdminPage()
-                    || TabPermissionController.CanCopyPage()
-                    || TabPermissionController.CanDeletePage()
-                    || TabPermissionController.CanExportPage()
-                    || TabPermissionController.CanImportPage()
-                    || TabPermissionController.CanManagePage();
-        }
-
         public virtual JObject GetPagePermissions(TabInfo tab)
         {
             var permissions = new JObject
@@ -169,6 +157,18 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         {
             return PortalSettings.Current.ActiveTab.IsSystem || PortalSettings.Current.ActiveTab.IsSuperTab ||
                 PortalSettings.Current.ActiveTab.ParentId == PortalSettings.Current.AdminTabId || PortalSettings.Current.ActiveTab.TabID == PortalSettings.Current.AdminTabId;
+        }
+
+        private bool IsPageAdmin()
+        {
+            return //TabPermissionController.CanAddContentToPage() ||
+                TabPermissionController.CanAddPage()
+                || TabPermissionController.CanAdminPage()
+                || TabPermissionController.CanCopyPage()
+                || TabPermissionController.CanDeletePage()
+                || TabPermissionController.CanExportPage()
+                || TabPermissionController.CanImportPage()
+                || TabPermissionController.CanManagePage();
         }
 
         private TabInfo GetTabById(int pageId)

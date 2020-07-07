@@ -138,171 +138,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             return returnValue;
         }
 
-        private void BindData()
-        {
-            if (this.Module != null)
-            {
-                var desktopModule = DesktopModuleController.GetDesktopModule(this.Module.DesktopModuleID, this.PortalId);
-                this.dgPermissions.ResourceFile = Globals.ApplicationPath + "/DesktopModules/" + desktopModule.FolderName + "/" + Localization.LocalResourceDirectory + "/" +
-                                             Localization.LocalSharedResourceFile;
-                if (!this.Module.IsShared)
-                {
-                    this.chkInheritPermissions.Checked = this.Module.InheritViewPermissions;
-                    this.dgPermissions.InheritViewPermissionsFromTab = this.Module.InheritViewPermissions;
-                }
-
-                this.txtFriendlyName.Text = this.Module.DesktopModule.FriendlyName;
-                this.txtTitle.Text = this.Module.ModuleTitle;
-                this.ctlIcon.Url = this.Module.IconFile;
-
-                if (this.cboTab.FindItemByValue(this.Module.TabID.ToString()) != null)
-                {
-                    this.cboTab.FindItemByValue(this.Module.TabID.ToString()).Selected = true;
-                }
-
-                this.rowTab.Visible = this.cboTab.Items.Count != 1;
-                this.chkAllTabs.Checked = this.Module.AllTabs;
-                this.trnewPages.Visible = this.chkAllTabs.Checked;
-                this.allowIndexRow.Visible = desktopModule.IsSearchable;
-                this.chkAllowIndex.Checked = this.GetBooleanSetting("AllowIndex", true);
-                this.txtMoniker.Text = (string)this.Settings["Moniker"] ?? string.Empty;
-
-                this.cboVisibility.SelectedIndex = (int)this.Module.Visibility;
-                this.chkAdminBorder.Checked = this.Settings["hideadminborder"] != null && bool.Parse(this.Settings["hideadminborder"].ToString());
-
-                var objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(this.Module.ModuleDefID);
-                if (objModuleDef.DefaultCacheTime == Null.NullInteger)
-                {
-                    this.cacheWarningRow.Visible = true;
-                    this.txtCacheDuration.Text = this.Module.CacheTime.ToString();
-                }
-                else
-                {
-                    this.cacheWarningRow.Visible = false;
-                    this.txtCacheDuration.Text = this.Module.CacheTime.ToString();
-                }
-
-                this.BindModuleCacheProviderList();
-
-                this.ShowCacheRows();
-
-                this.cboAlign.Items.FindByValue(this.Module.Alignment).Selected = true;
-                this.txtColor.Text = this.Module.Color;
-                this.txtBorder.Text = this.Module.Border;
-
-                this.txtHeader.Text = this.Module.Header;
-                this.txtFooter.Text = this.Module.Footer;
-
-                if (!Null.IsNull(this.Module.StartDate))
-                {
-                    this.startDatePicker.SelectedDate = this.Module.StartDate;
-                }
-
-                if (!Null.IsNull(this.Module.EndDate) && this.Module.EndDate <= this.endDatePicker.MaxDate)
-                {
-                    this.endDatePicker.SelectedDate = this.Module.EndDate;
-                }
-
-                this.BindContainers();
-
-                this.chkDisplayTitle.Checked = this.Module.DisplayTitle;
-                this.chkDisplayPrint.Checked = this.Module.DisplayPrint;
-                this.chkDisplaySyndicate.Checked = this.Module.DisplaySyndicate;
-
-                this.chkWebSlice.Checked = this.Module.IsWebSlice;
-                this.webSliceTitle.Visible = this.Module.IsWebSlice;
-                this.webSliceExpiry.Visible = this.Module.IsWebSlice;
-                this.webSliceTTL.Visible = this.Module.IsWebSlice;
-
-                this.txtWebSliceTitle.Text = this.Module.WebSliceTitle;
-                if (!Null.IsNull(this.Module.WebSliceExpiryDate))
-                {
-                    this.diWebSliceExpiry.SelectedDate = this.Module.WebSliceExpiryDate;
-                }
-
-                if (!Null.IsNull(this.Module.WebSliceTTL))
-                {
-                    this.txtWebSliceTTL.Text = this.Module.WebSliceTTL.ToString();
-                }
-
-                if (this.Module.ModuleID == PortalSettings.Current.DefaultModuleId && this.Module.TabID == PortalSettings.Current.DefaultTabId)
-                {
-                    this.chkDefault.Checked = true;
-                }
-
-                if (!this.Module.IsShared && this.Module.DesktopModule.Shareable != ModuleSharing.Unsupported)
-                {
-                    this.isShareableCheckBox.Checked = this.Module.IsShareable;
-                    this.isShareableViewOnlyCheckBox.Checked = this.Module.IsShareableViewOnly;
-                    this.isShareableRow.Visible = true;
-
-                    this.chkInheritPermissions.Visible = true;
-                }
-            }
-        }
-
-        private void BindContainers()
-        {
-            this.moduleContainerCombo.PortalId = this.PortalId;
-            this.moduleContainerCombo.RootPath = SkinController.RootContainer;
-            this.moduleContainerCombo.Scope = SkinScope.All;
-            this.moduleContainerCombo.IncludeNoneSpecificItem = true;
-            this.moduleContainerCombo.NoneSpecificText = "<" + Localization.GetString("None_Specified") + ">";
-            this.moduleContainerCombo.SelectedValue = this.Module.ContainerSrc;
-        }
-
-        private void BindModulePages()
-        {
-            var tabsByModule = TabController.Instance.GetTabsByModuleID(this._moduleId);
-            tabsByModule.Remove(this.TabId);
-            this.dgOnTabs.DataSource = tabsByModule.Values;
-            this.dgOnTabs.DataBind();
-        }
-
-        private void BindModuleCacheProviderList()
-        {
-            this.cboCacheProvider.DataSource = this.GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
-            this.cboCacheProvider.DataBind();
-
-            // cboCacheProvider.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), ""));
-            this.cboCacheProvider.InsertItem(0, Localization.GetString("None_Specified"), string.Empty);
-
-            // if (!string.IsNullOrEmpty(Module.GetEffectiveCacheMethod()) && cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()) != null)
-            if (!string.IsNullOrEmpty(this.Module.GetEffectiveCacheMethod()) && this.cboCacheProvider.FindItemByValue(this.Module.GetEffectiveCacheMethod()) != null)
-            {
-                // cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()).Selected = true;
-                this.cboCacheProvider.FindItemByValue(this.Module.GetEffectiveCacheMethod()).Selected = true;
-            }
-            else
-            {
-                // select the None Specified value
-                this.cboCacheProvider.Items[0].Selected = true;
-            }
-
-            this.lblCacheInherited.Visible = this.Module.CacheMethod != this.Module.GetEffectiveCacheMethod();
-        }
-
-        private IEnumerable GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
-        {
-            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new { filteredkey, provider.Key };
-
-            return providers;
-        }
-
-        private void ShowCacheRows()
-        {
-            this.divCacheDuration.Visible = !string.IsNullOrEmpty(this.cboCacheProvider.SelectedValue);
-        }
-
-        private bool GetBooleanSetting(string settingName, bool defaultValue)
-        {
-            var value = this.Settings[settingName];
-
-            return value == null
-                ? defaultValue
-                : bool.Parse(value.ToString());
-        }
-
         protected bool IsSharedViewOnly()
         {
             return this.ModuleContext.Configuration.IsShared && this.ModuleContext.Configuration.IsShareableViewOnly;
@@ -758,6 +593,171 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             this.dgOnTabs.PageIndex = e.NewPageIndex;
             this.BindModulePages();
+        }
+
+        private void BindData()
+        {
+            if (this.Module != null)
+            {
+                var desktopModule = DesktopModuleController.GetDesktopModule(this.Module.DesktopModuleID, this.PortalId);
+                this.dgPermissions.ResourceFile = Globals.ApplicationPath + "/DesktopModules/" + desktopModule.FolderName + "/" + Localization.LocalResourceDirectory + "/" +
+                                             Localization.LocalSharedResourceFile;
+                if (!this.Module.IsShared)
+                {
+                    this.chkInheritPermissions.Checked = this.Module.InheritViewPermissions;
+                    this.dgPermissions.InheritViewPermissionsFromTab = this.Module.InheritViewPermissions;
+                }
+
+                this.txtFriendlyName.Text = this.Module.DesktopModule.FriendlyName;
+                this.txtTitle.Text = this.Module.ModuleTitle;
+                this.ctlIcon.Url = this.Module.IconFile;
+
+                if (this.cboTab.FindItemByValue(this.Module.TabID.ToString()) != null)
+                {
+                    this.cboTab.FindItemByValue(this.Module.TabID.ToString()).Selected = true;
+                }
+
+                this.rowTab.Visible = this.cboTab.Items.Count != 1;
+                this.chkAllTabs.Checked = this.Module.AllTabs;
+                this.trnewPages.Visible = this.chkAllTabs.Checked;
+                this.allowIndexRow.Visible = desktopModule.IsSearchable;
+                this.chkAllowIndex.Checked = this.GetBooleanSetting("AllowIndex", true);
+                this.txtMoniker.Text = (string)this.Settings["Moniker"] ?? string.Empty;
+
+                this.cboVisibility.SelectedIndex = (int)this.Module.Visibility;
+                this.chkAdminBorder.Checked = this.Settings["hideadminborder"] != null && bool.Parse(this.Settings["hideadminborder"].ToString());
+
+                var objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(this.Module.ModuleDefID);
+                if (objModuleDef.DefaultCacheTime == Null.NullInteger)
+                {
+                    this.cacheWarningRow.Visible = true;
+                    this.txtCacheDuration.Text = this.Module.CacheTime.ToString();
+                }
+                else
+                {
+                    this.cacheWarningRow.Visible = false;
+                    this.txtCacheDuration.Text = this.Module.CacheTime.ToString();
+                }
+
+                this.BindModuleCacheProviderList();
+
+                this.ShowCacheRows();
+
+                this.cboAlign.Items.FindByValue(this.Module.Alignment).Selected = true;
+                this.txtColor.Text = this.Module.Color;
+                this.txtBorder.Text = this.Module.Border;
+
+                this.txtHeader.Text = this.Module.Header;
+                this.txtFooter.Text = this.Module.Footer;
+
+                if (!Null.IsNull(this.Module.StartDate))
+                {
+                    this.startDatePicker.SelectedDate = this.Module.StartDate;
+                }
+
+                if (!Null.IsNull(this.Module.EndDate) && this.Module.EndDate <= this.endDatePicker.MaxDate)
+                {
+                    this.endDatePicker.SelectedDate = this.Module.EndDate;
+                }
+
+                this.BindContainers();
+
+                this.chkDisplayTitle.Checked = this.Module.DisplayTitle;
+                this.chkDisplayPrint.Checked = this.Module.DisplayPrint;
+                this.chkDisplaySyndicate.Checked = this.Module.DisplaySyndicate;
+
+                this.chkWebSlice.Checked = this.Module.IsWebSlice;
+                this.webSliceTitle.Visible = this.Module.IsWebSlice;
+                this.webSliceExpiry.Visible = this.Module.IsWebSlice;
+                this.webSliceTTL.Visible = this.Module.IsWebSlice;
+
+                this.txtWebSliceTitle.Text = this.Module.WebSliceTitle;
+                if (!Null.IsNull(this.Module.WebSliceExpiryDate))
+                {
+                    this.diWebSliceExpiry.SelectedDate = this.Module.WebSliceExpiryDate;
+                }
+
+                if (!Null.IsNull(this.Module.WebSliceTTL))
+                {
+                    this.txtWebSliceTTL.Text = this.Module.WebSliceTTL.ToString();
+                }
+
+                if (this.Module.ModuleID == PortalSettings.Current.DefaultModuleId && this.Module.TabID == PortalSettings.Current.DefaultTabId)
+                {
+                    this.chkDefault.Checked = true;
+                }
+
+                if (!this.Module.IsShared && this.Module.DesktopModule.Shareable != ModuleSharing.Unsupported)
+                {
+                    this.isShareableCheckBox.Checked = this.Module.IsShareable;
+                    this.isShareableViewOnlyCheckBox.Checked = this.Module.IsShareableViewOnly;
+                    this.isShareableRow.Visible = true;
+
+                    this.chkInheritPermissions.Visible = true;
+                }
+            }
+        }
+
+        private void BindContainers()
+        {
+            this.moduleContainerCombo.PortalId = this.PortalId;
+            this.moduleContainerCombo.RootPath = SkinController.RootContainer;
+            this.moduleContainerCombo.Scope = SkinScope.All;
+            this.moduleContainerCombo.IncludeNoneSpecificItem = true;
+            this.moduleContainerCombo.NoneSpecificText = "<" + Localization.GetString("None_Specified") + ">";
+            this.moduleContainerCombo.SelectedValue = this.Module.ContainerSrc;
+        }
+
+        private void BindModulePages()
+        {
+            var tabsByModule = TabController.Instance.GetTabsByModuleID(this._moduleId);
+            tabsByModule.Remove(this.TabId);
+            this.dgOnTabs.DataSource = tabsByModule.Values;
+            this.dgOnTabs.DataBind();
+        }
+
+        private void BindModuleCacheProviderList()
+        {
+            this.cboCacheProvider.DataSource = this.GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
+            this.cboCacheProvider.DataBind();
+
+            // cboCacheProvider.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), ""));
+            this.cboCacheProvider.InsertItem(0, Localization.GetString("None_Specified"), string.Empty);
+
+            // if (!string.IsNullOrEmpty(Module.GetEffectiveCacheMethod()) && cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()) != null)
+            if (!string.IsNullOrEmpty(this.Module.GetEffectiveCacheMethod()) && this.cboCacheProvider.FindItemByValue(this.Module.GetEffectiveCacheMethod()) != null)
+            {
+                // cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()).Selected = true;
+                this.cboCacheProvider.FindItemByValue(this.Module.GetEffectiveCacheMethod()).Selected = true;
+            }
+            else
+            {
+                // select the None Specified value
+                this.cboCacheProvider.Items[0].Selected = true;
+            }
+
+            this.lblCacheInherited.Visible = this.Module.CacheMethod != this.Module.GetEffectiveCacheMethod();
+        }
+
+        private IEnumerable GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
+        {
+            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new { filteredkey, provider.Key };
+
+            return providers;
+        }
+
+        private void ShowCacheRows()
+        {
+            this.divCacheDuration.Visible = !string.IsNullOrEmpty(this.cboCacheProvider.SelectedValue);
+        }
+
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            var value = this.Settings[settingName];
+
+            return value == null
+                ? defaultValue
+                : bool.Parse(value.ToString());
         }
     }
 }

@@ -21,29 +21,6 @@ namespace DotNetNuke.Services.OutputCache
             this._captureStream = this.CaptureStream;
         }
 
-        public TimeSpan CacheDuration { get; set; }
-
-        public virtual string CacheKey { get; set; }
-
-        public Stream CaptureStream
-        {
-            get
-            {
-                return this._captureStream;
-            }
-
-            set
-            {
-                this._captureStream = value;
-            }
-        }
-
-        public Stream ChainedStream { get; set; }
-
-        public bool HasErrored { get; set; }
-
-        public int MaxVaryByCount { get; set; }
-
         public override bool CanRead
         {
             get
@@ -75,6 +52,29 @@ namespace DotNetNuke.Services.OutputCache
                 throw new NotSupportedException();
             }
         }
+
+        public TimeSpan CacheDuration { get; set; }
+
+        public virtual string CacheKey { get; set; }
+
+        public Stream CaptureStream
+        {
+            get
+            {
+                return this._captureStream;
+            }
+
+            set
+            {
+                this._captureStream = value;
+            }
+        }
+
+        public Stream ChainedStream { get; set; }
+
+        public bool HasErrored { get; set; }
+
+        public int MaxVaryByCount { get; set; }
 
         public override long Position
         {

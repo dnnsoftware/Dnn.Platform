@@ -20,20 +20,16 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_GetUser_FlagId", "Integer")]
         private const string FlagId = "id";
 
-        private IUserValidator _userValidator;
-
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-        private IUserControllerWrapper _userControllerWrapper;
         [FlagParameter("email", "Prompt_GetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
+
         [FlagParameter("username", "Prompt_GetUser_FlagUsername", "String")]
         private const string FlagUsername = "username";
 
         private const int UserIdZero = 0;
 
-        private int? UserId { get; set; }
-        private string Email { get; set; }
-        private string Username { get; set; }
+        private IUserValidator _userValidator;
+        private IUserControllerWrapper _userControllerWrapper;
 
         public GetUser() : this(new UserValidator(), new UserControllerWrapper())
         {
@@ -44,6 +40,12 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             this._userValidator = userValidator;
             this._userControllerWrapper = userControllerWrapper;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        private int? UserId { get; set; }
+        private string Email { get; set; }
+        private string Username { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

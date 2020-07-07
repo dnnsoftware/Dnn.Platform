@@ -34,7 +34,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     {
         private const string SearchIndexFolder = @"App_Data\LuceneTests";
         private const string WriteLockFile = "write.lock";
-        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private const string Line1 = "the quick brown fox jumps over the lazy dog";
         private const string Line2 = "the quick gold fox jumped over the lazy black dog";
         private const string Line3 = "the quick fox jumps over the black dog";
@@ -52,6 +51,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         // Arrange
         private const int TotalTestDocs2Create = 5;
         private const string ContentFieldName = "content";
+        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
 
         private Mock<IHostController> _mockHostController;
         private LuceneControllerImpl _luceneController;
@@ -109,70 +109,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this._luceneController.Add(null));
-        }
-
-        private void CreateNewLuceneControllerInstance()
-        {
-            if (this._luceneController != null)
-            {
-                LuceneController.ClearInstance();
-                this._luceneController.Dispose();
-            }
-
-            this._luceneController = new LuceneControllerImpl();
-            LuceneController.SetTestableInstance(this._luceneController);
-        }
-
-        private IList<string> GetSynonymsCallBack(int portalId, string cultureCode, string term)
-        {
-            var synonyms = new List<string>();
-            if (term == "fox")
-            {
-                synonyms.Add("wolf");
-            }
-
-            return synonyms;
-        }
-
-        private void DeleteIndexFolder()
-        {
-            try
-            {
-                if (Directory.Exists(SearchIndexFolder))
-                {
-                    Directory.Delete(SearchIndexFolder, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-        }
-
-        /// <summary>
-        /// Adds standarad SearchDocs in Lucene Index.
-        /// </summary>
-        private void AddStandardDocs()
-        {
-            string[] lines =
-            {
-                Line1, Line2, Line3, Line4,
-                };
-
-            this.AddLinesAsSearchDocs(lines);
-        }
-
-        private void AddLinesAsSearchDocs(IEnumerable<string> lines)
-        {
-            foreach (var line in lines)
-            {
-                var field = new Field(Constants.ContentTag, line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                var doc = new Document();
-                doc.Add(field);
-                this._luceneController.Add(doc);
-            }
-
-            this._luceneController.Commit();
         }
 
         public void LuceneController_Add_Throws_On_Null_Query()
@@ -719,38 +655,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(TotalTestDocs2Create - delCount, this._luceneController.SearchbleDocsCount());
         }
 
-        private int AddTestDocs()
-        {
-            // Act
-            for (var i = 0; i < TotalTestDocs2Create; i++)
-            {
-                var doc = new Document();
-
-                // format to "D#" because LengthFilter will not consider words of length < 3 or > 255 characters in length (defaults)
-                doc.Add(new Field(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen), Field.Store.YES, Field.Index.ANALYZED));
-                this._luceneController.Add(doc);
-            }
-
-            this._luceneController.Commit();
-            return TotalTestDocs2Create;
-        }
-
-        private int DeleteTestDocs()
-        {
-            // Act
-            // delete odd docs => [1, 3]
-            var delCount = 0;
-            for (var i = 1; i < TotalTestDocs2Create; i += 2)
-            {
-                // format to "D#" because LengthFilter will not consider the defaults for these values
-                this._luceneController.Delete(new TermQuery(new Term(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen))));
-                delCount++;
-            }
-
-            this._luceneController.Commit();
-            return delCount;
-        }
-
         [Test]
         public void LuceneController_TestDeleteAfterOptimize()
         {
@@ -786,6 +690,102 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.IsNotNull(this._luceneController.GetSearcher());
+        }
+
+        private void CreateNewLuceneControllerInstance()
+        {
+            if (this._luceneController != null)
+            {
+                LuceneController.ClearInstance();
+                this._luceneController.Dispose();
+            }
+
+            this._luceneController = new LuceneControllerImpl();
+            LuceneController.SetTestableInstance(this._luceneController);
+        }
+
+        private IList<string> GetSynonymsCallBack(int portalId, string cultureCode, string term)
+        {
+            var synonyms = new List<string>();
+            if (term == "fox")
+            {
+                synonyms.Add("wolf");
+            }
+
+            return synonyms;
+        }
+
+        private void DeleteIndexFolder()
+        {
+            try
+            {
+                if (Directory.Exists(SearchIndexFolder))
+                {
+                    Directory.Delete(SearchIndexFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        /// <summary>
+        /// Adds standarad SearchDocs in Lucene Index.
+        /// </summary>
+        private void AddStandardDocs()
+        {
+            string[] lines =
+            {
+                Line1, Line2, Line3, Line4,
+                };
+
+            this.AddLinesAsSearchDocs(lines);
+        }
+
+        private void AddLinesAsSearchDocs(IEnumerable<string> lines)
+        {
+            foreach (var line in lines)
+            {
+                var field = new Field(Constants.ContentTag, line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                var doc = new Document();
+                doc.Add(field);
+                this._luceneController.Add(doc);
+            }
+
+            this._luceneController.Commit();
+        }
+
+        private int AddTestDocs()
+        {
+            // Act
+            for (var i = 0; i < TotalTestDocs2Create; i++)
+            {
+                var doc = new Document();
+
+                // format to "D#" because LengthFilter will not consider words of length < 3 or > 255 characters in length (defaults)
+                doc.Add(new Field(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen), Field.Store.YES, Field.Index.ANALYZED));
+                this._luceneController.Add(doc);
+            }
+
+            this._luceneController.Commit();
+            return TotalTestDocs2Create;
+        }
+
+        private int DeleteTestDocs()
+        {
+            // Act
+            // delete odd docs => [1, 3]
+            var delCount = 0;
+            for (var i = 1; i < TotalTestDocs2Create; i += 2)
+            {
+                // format to "D#" because LengthFilter will not consider the defaults for these values
+                this._luceneController.Delete(new TermQuery(new Term(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen))));
+                delCount++;
+            }
+
+            this._luceneController.Commit();
+            return delCount;
         }
 
         private LuceneSearchContext CreateSearchContext(LuceneQuery luceneQuery)

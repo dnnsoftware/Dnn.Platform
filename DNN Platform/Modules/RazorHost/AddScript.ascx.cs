@@ -16,8 +16,8 @@ namespace DotNetNuke.Modules.RazorHost
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class AddScript : ModuleUserControlBase
     {
-        private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private readonly INavigationManager _navigationManager;
+        private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
         public AddScript()
         {
@@ -40,11 +40,6 @@ namespace DotNetNuke.Modules.RazorHost
             base.OnLoad(e);
 
             this.DisplayExtension();
-        }
-
-        private void DisplayExtension()
-        {
-            this.fileExtension.Text = "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -89,6 +84,11 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void DisplayExtension()
+        {
+            this.fileExtension.Text = "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
         }
 
         private void scriptFileType_SelectedIndexChanged(object sender, EventArgs e)

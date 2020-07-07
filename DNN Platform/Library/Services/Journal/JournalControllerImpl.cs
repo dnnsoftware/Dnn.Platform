@@ -30,11 +30,11 @@ namespace DotNetNuke.Services.Journal
     {
         private const string AllowResizePhotosSetting = "Journal_AllowResizePhotos";
         private const string AllowPhotosSetting = "Journal_AllowPhotos";
-        private readonly IJournalDataService _dataService;
         private const string EditorEnabledSetting = "Journal_EditorEnabled";
 
         private static readonly string[] InvalidSecuritySetsWithoutId = new[] { "R", "U", "F", "P" };
         private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
+        private readonly IJournalDataService _dataService;
 
         public JournalControllerImpl()
         {
@@ -167,247 +167,6 @@ namespace DotNetNuke.Services.Journal
                     Exceptions.Exceptions.LogException(exc);
                 }
             }
-        }
-
-        private XmlElement CreateElement(XmlDocument xDoc, string name, string value)
-        {
-            XmlElement xnode = xDoc.CreateElement(name);
-            XmlText xtext = xDoc.CreateTextNode(value);
-            xnode.AppendChild(xtext);
-            return xnode;
-        }
-
-        private XmlElement CreateCDataElement(XmlDocument xDoc, string name, string value)
-        {
-            XmlElement xnode = xDoc.CreateElement(name);
-            XmlCDataSection xdata = xDoc.CreateCDataSection(value);
-            xnode.AppendChild(xdata);
-            return xnode;
-        }
-
-        private void UpdateGroupStats(int portalId, int groupId)
-        {
-            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
-            if (role == null)
-            {
-                return;
-            }
-
-            for (var i = 0; i < role.Settings.Keys.Count; i++)
-            {
-                var key = role.Settings.Keys.ElementAt(i);
-                if (key.StartsWith("stat_"))
-                {
-                    role.Settings[key] = "0";
-                }
-            }
-
-            using (IDataReader dr = this._dataService.Journal_GetStatsForGroup(portalId, groupId))
-            {
-                while (dr.Read())
-                {
-                    string settingName = "stat_" + dr["JournalType"];
-                    if (role.Settings.ContainsKey(settingName))
-                    {
-                        role.Settings[settingName] = dr["JournalTypeCount"].ToString();
-                    }
-                    else
-                    {
-                        role.Settings.Add(settingName, dr["JournalTypeCount"].ToString());
-                    }
-                }
-
-                dr.Close();
-            }
-
-            RoleController.Instance.UpdateRoleSettings(role, true);
-        }
-
-        private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
-        {
-            var ji = this.GetJournalItem(portalId, currentUserId, journalId, !softDelete);
-            if (ji == null)
-            {
-                return;
-            }
-
-            var groupId = ji.SocialGroupId;
-
-            if (softDelete)
-            {
-                this._dataService.Journal_SoftDelete(journalId);
-            }
-            else
-            {
-                this._dataService.Journal_Delete(journalId);
-            }
-
-            if (groupId > 0)
-            {
-                this.UpdateGroupStats(portalId, groupId);
-            }
-
-            // queue remove journal from search index
-            var document = new SearchDocumentToDelete
-            {
-                PortalId = portalId,
-                AuthorUserId = currentUserId,
-                UniqueKey = ji.ContentItemId.ToString("D"),
-
-                // QueryString = "journalid=" + journalId,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
-            };
-
-            if (groupId > 0)
-            {
-                document.RoleId = groupId;
-            }
-
-            DataProvider.Instance().AddSearchDeletedItems(document);
-        }
-
-        private Stream GetJournalImageContent(Stream fileContent)
-        {
-            Image image = new Bitmap(fileContent);
-            int thumbnailWidth = 400;
-            int thumbnailHeight = 400;
-            this.GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
-            var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, this.ThumbnailCallback, IntPtr.Zero);
-            var result = new MemoryStream();
-            thumbnail.Save(result, image.RawFormat);
-            return result;
-        }
-
-        private void GetThumbnailSize(int imageWidth, int imageHeight, ref int thumbnailWidth, ref int thumbnailHeight)
-        {
-            if (imageWidth >= imageHeight)
-            {
-                thumbnailWidth = Math.Min(imageWidth, thumbnailWidth);
-                thumbnailHeight = this.GetMinorSize(imageHeight, imageWidth, thumbnailWidth);
-            }
-            else
-            {
-                thumbnailHeight = Math.Min(imageHeight, thumbnailHeight);
-                thumbnailWidth = this.GetMinorSize(imageWidth, imageHeight, thumbnailHeight);
-            }
-        }
-
-        private int GetMinorSize(int imageMinorSize, int imageMajorSize, int thumbnailMajorSize)
-        {
-            if (imageMajorSize == thumbnailMajorSize)
-            {
-                return imageMinorSize;
-            }
-
-            double calculated = (Convert.ToDouble(imageMinorSize) * Convert.ToDouble(thumbnailMajorSize)) / Convert.ToDouble(imageMajorSize);
-            return Convert.ToInt32(Math.Round(calculated));
-        }
-
-        private bool IsImageFile(string fileName)
-        {
-            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", string.Empty) + ",", StringComparison.InvariantCultureIgnoreCase) > -1;
-        }
-
-        private bool ThumbnailCallback()
-        {
-            return true;
-        }
-
-        private bool IsResizePhotosEnabled(ModuleInfo module)
-        {
-            return this.GetBooleanSetting(AllowResizePhotosSetting, false, module) &&
-                   this.GetBooleanSetting(AllowPhotosSetting, true, module) &&
-                   this.GetBooleanSetting(EditorEnabledSetting, true, module);
-        }
-
-        private bool GetBooleanSetting(string settingName, bool defaultValue, ModuleInfo module)
-        {
-            if (module.ModuleSettings.Contains(settingName))
-            {
-                return Convert.ToBoolean(module.ModuleSettings[settingName].ToString());
-            }
-
-            return defaultValue;
-        }
-
-        // none of the parameters should be null; checked before calling this method
-        private void PrepareSecuritySet(JournalItem journalItem, UserInfo currentUser)
-        {
-            var originalSecuritySet =
-                journalItem.SecuritySet = (journalItem.SecuritySet ?? string.Empty).ToUpperInvariant();
-
-            if (string.IsNullOrEmpty(journalItem.SecuritySet))
-            {
-                journalItem.SecuritySet = "E,";
-            }
-            else if (!journalItem.SecuritySet.EndsWith(","))
-            {
-                journalItem.SecuritySet += ",";
-                originalSecuritySet = journalItem.SecuritySet;
-            }
-
-            if (journalItem.SecuritySet == "F,")
-            {
-                journalItem.SecuritySet = "F" + journalItem.UserId + ",";
-                if (journalItem.ProfileId > 0)
-                {
-                    journalItem.SecuritySet += "P" + journalItem.ProfileId + ",";
-                }
-            }
-            else if (journalItem.SecuritySet == "U,")
-            {
-                journalItem.SecuritySet += "U" + journalItem.UserId + ",";
-            }
-            else if (journalItem.SecuritySet == "R,")
-            {
-                if (journalItem.SocialGroupId > 0)
-                {
-                    journalItem.SecuritySet += "R" + journalItem.SocialGroupId + ",";
-                }
-            }
-
-            if (journalItem.ProfileId > 0 && journalItem.UserId != journalItem.ProfileId)
-            {
-                if (!journalItem.SecuritySet.Contains("P" + journalItem.ProfileId + ","))
-                {
-                    journalItem.SecuritySet += "P" + journalItem.ProfileId + ",";
-                }
-
-                if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId + ","))
-                {
-                    journalItem.SecuritySet += "U" + journalItem.UserId + ",";
-                }
-            }
-
-            if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId + ","))
-            {
-                journalItem.SecuritySet += "U" + journalItem.UserId + ",";
-            }
-
-            // if the post is marked as private, we shouldn't make it visible to the group.
-            if (journalItem.SocialGroupId > 0 && originalSecuritySet.Contains("U,"))
-            {
-                var item = journalItem;
-                var role = RoleController.Instance.GetRole(
-                    journalItem.PortalId,
-                    r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
-
-                if (role != null && !role.IsPublic)
-                {
-                    journalItem.SecuritySet = journalItem.SecuritySet.Replace("E,", string.Empty).Replace("C,", string.Empty);
-                }
-            }
-
-            // clean up and remove duplicates
-            var parts = journalItem.SecuritySet
-                .Replace(" ", string.Empty)
-                .Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                .Distinct()
-                .Except(InvalidSecuritySetsWithoutId)
-                .Where(p => p.IndexOfAny(ValidSecurityDescriptors) >= 0);
-
-            // TODO: validate existence and visibility/accessability of all Roles added to the set (if any)
-            journalItem.SecuritySet = string.Join(",", parts);
         }
 
         public void UpdateJournalItem(JournalItem journalItem, int tabId, int moduleId)
@@ -778,6 +537,247 @@ namespace DotNetNuke.Services.Journal
         public void UpdateJournalItem(JournalItem journalItem, int tabId)
         {
             this.UpdateJournalItem(journalItem, tabId, Null.NullInteger);
+        }
+
+        private XmlElement CreateElement(XmlDocument xDoc, string name, string value)
+        {
+            XmlElement xnode = xDoc.CreateElement(name);
+            XmlText xtext = xDoc.CreateTextNode(value);
+            xnode.AppendChild(xtext);
+            return xnode;
+        }
+
+        private XmlElement CreateCDataElement(XmlDocument xDoc, string name, string value)
+        {
+            XmlElement xnode = xDoc.CreateElement(name);
+            XmlCDataSection xdata = xDoc.CreateCDataSection(value);
+            xnode.AppendChild(xdata);
+            return xnode;
+        }
+
+        private void UpdateGroupStats(int portalId, int groupId)
+        {
+            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
+            if (role == null)
+            {
+                return;
+            }
+
+            for (var i = 0; i < role.Settings.Keys.Count; i++)
+            {
+                var key = role.Settings.Keys.ElementAt(i);
+                if (key.StartsWith("stat_"))
+                {
+                    role.Settings[key] = "0";
+                }
+            }
+
+            using (IDataReader dr = this._dataService.Journal_GetStatsForGroup(portalId, groupId))
+            {
+                while (dr.Read())
+                {
+                    string settingName = "stat_" + dr["JournalType"];
+                    if (role.Settings.ContainsKey(settingName))
+                    {
+                        role.Settings[settingName] = dr["JournalTypeCount"].ToString();
+                    }
+                    else
+                    {
+                        role.Settings.Add(settingName, dr["JournalTypeCount"].ToString());
+                    }
+                }
+
+                dr.Close();
+            }
+
+            RoleController.Instance.UpdateRoleSettings(role, true);
+        }
+
+        private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
+        {
+            var ji = this.GetJournalItem(portalId, currentUserId, journalId, !softDelete);
+            if (ji == null)
+            {
+                return;
+            }
+
+            var groupId = ji.SocialGroupId;
+
+            if (softDelete)
+            {
+                this._dataService.Journal_SoftDelete(journalId);
+            }
+            else
+            {
+                this._dataService.Journal_Delete(journalId);
+            }
+
+            if (groupId > 0)
+            {
+                this.UpdateGroupStats(portalId, groupId);
+            }
+
+            // queue remove journal from search index
+            var document = new SearchDocumentToDelete
+            {
+                PortalId = portalId,
+                AuthorUserId = currentUserId,
+                UniqueKey = ji.ContentItemId.ToString("D"),
+
+                // QueryString = "journalid=" + journalId,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
+            };
+
+            if (groupId > 0)
+            {
+                document.RoleId = groupId;
+            }
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
+        }
+
+        private Stream GetJournalImageContent(Stream fileContent)
+        {
+            Image image = new Bitmap(fileContent);
+            int thumbnailWidth = 400;
+            int thumbnailHeight = 400;
+            this.GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
+            var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, this.ThumbnailCallback, IntPtr.Zero);
+            var result = new MemoryStream();
+            thumbnail.Save(result, image.RawFormat);
+            return result;
+        }
+
+        private void GetThumbnailSize(int imageWidth, int imageHeight, ref int thumbnailWidth, ref int thumbnailHeight)
+        {
+            if (imageWidth >= imageHeight)
+            {
+                thumbnailWidth = Math.Min(imageWidth, thumbnailWidth);
+                thumbnailHeight = this.GetMinorSize(imageHeight, imageWidth, thumbnailWidth);
+            }
+            else
+            {
+                thumbnailHeight = Math.Min(imageHeight, thumbnailHeight);
+                thumbnailWidth = this.GetMinorSize(imageWidth, imageHeight, thumbnailHeight);
+            }
+        }
+
+        private int GetMinorSize(int imageMinorSize, int imageMajorSize, int thumbnailMajorSize)
+        {
+            if (imageMajorSize == thumbnailMajorSize)
+            {
+                return imageMinorSize;
+            }
+
+            double calculated = (Convert.ToDouble(imageMinorSize) * Convert.ToDouble(thumbnailMajorSize)) / Convert.ToDouble(imageMajorSize);
+            return Convert.ToInt32(Math.Round(calculated));
+        }
+
+        private bool IsImageFile(string fileName)
+        {
+            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", string.Empty) + ",", StringComparison.InvariantCultureIgnoreCase) > -1;
+        }
+
+        private bool ThumbnailCallback()
+        {
+            return true;
+        }
+
+        private bool IsResizePhotosEnabled(ModuleInfo module)
+        {
+            return this.GetBooleanSetting(AllowResizePhotosSetting, false, module) &&
+                   this.GetBooleanSetting(AllowPhotosSetting, true, module) &&
+                   this.GetBooleanSetting(EditorEnabledSetting, true, module);
+        }
+
+        private bool GetBooleanSetting(string settingName, bool defaultValue, ModuleInfo module)
+        {
+            if (module.ModuleSettings.Contains(settingName))
+            {
+                return Convert.ToBoolean(module.ModuleSettings[settingName].ToString());
+            }
+
+            return defaultValue;
+        }
+
+        // none of the parameters should be null; checked before calling this method
+        private void PrepareSecuritySet(JournalItem journalItem, UserInfo currentUser)
+        {
+            var originalSecuritySet =
+                journalItem.SecuritySet = (journalItem.SecuritySet ?? string.Empty).ToUpperInvariant();
+
+            if (string.IsNullOrEmpty(journalItem.SecuritySet))
+            {
+                journalItem.SecuritySet = "E,";
+            }
+            else if (!journalItem.SecuritySet.EndsWith(","))
+            {
+                journalItem.SecuritySet += ",";
+                originalSecuritySet = journalItem.SecuritySet;
+            }
+
+            if (journalItem.SecuritySet == "F,")
+            {
+                journalItem.SecuritySet = "F" + journalItem.UserId + ",";
+                if (journalItem.ProfileId > 0)
+                {
+                    journalItem.SecuritySet += "P" + journalItem.ProfileId + ",";
+                }
+            }
+            else if (journalItem.SecuritySet == "U,")
+            {
+                journalItem.SecuritySet += "U" + journalItem.UserId + ",";
+            }
+            else if (journalItem.SecuritySet == "R,")
+            {
+                if (journalItem.SocialGroupId > 0)
+                {
+                    journalItem.SecuritySet += "R" + journalItem.SocialGroupId + ",";
+                }
+            }
+
+            if (journalItem.ProfileId > 0 && journalItem.UserId != journalItem.ProfileId)
+            {
+                if (!journalItem.SecuritySet.Contains("P" + journalItem.ProfileId + ","))
+                {
+                    journalItem.SecuritySet += "P" + journalItem.ProfileId + ",";
+                }
+
+                if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId + ","))
+                {
+                    journalItem.SecuritySet += "U" + journalItem.UserId + ",";
+                }
+            }
+
+            if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId + ","))
+            {
+                journalItem.SecuritySet += "U" + journalItem.UserId + ",";
+            }
+
+            // if the post is marked as private, we shouldn't make it visible to the group.
+            if (journalItem.SocialGroupId > 0 && originalSecuritySet.Contains("U,"))
+            {
+                var item = journalItem;
+                var role = RoleController.Instance.GetRole(
+                    journalItem.PortalId,
+                    r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+
+                if (role != null && !role.IsPublic)
+                {
+                    journalItem.SecuritySet = journalItem.SecuritySet.Replace("E,", string.Empty).Replace("C,", string.Empty);
+                }
+            }
+
+            // clean up and remove duplicates
+            var parts = journalItem.SecuritySet
+                .Replace(" ", string.Empty)
+                .Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                .Distinct()
+                .Except(InvalidSecuritySetsWithoutId)
+                .Where(p => p.IndexOfAny(ValidSecurityDescriptors) >= 0);
+
+            // TODO: validate existence and visibility/accessability of all Roles added to the set (if any)
+            journalItem.SecuritySet = string.Join(",", parts);
         }
     }
 }

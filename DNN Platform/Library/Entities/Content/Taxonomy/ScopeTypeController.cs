@@ -49,11 +49,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
-        private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillQueryable<ScopeType>(this._DataService.GetScopeTypes()).ToList();
-        }
-
         public void DeleteScopeType(ScopeType scopeType)
         {
             // Argument Contract
@@ -82,6 +77,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
+        }
+
+        private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillQueryable<ScopeType>(this._DataService.GetScopeTypes()).ToList();
         }
     }
 }

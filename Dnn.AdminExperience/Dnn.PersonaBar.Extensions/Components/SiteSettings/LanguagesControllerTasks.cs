@@ -23,8 +23,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
     internal class LanguagesControllerTasks
     {
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesControllerTasks));
         private const string LocalizationProgressFile = "PersonaBarLocalizationProgress.txt";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesControllerTasks));
 
         public static void LocalizeSitePages(LocalizationProgress progress, int portalId, bool translatePages, string defaultLanguage)
         {

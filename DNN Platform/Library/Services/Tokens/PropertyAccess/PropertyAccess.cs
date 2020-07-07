@@ -77,16 +77,6 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
-        {
-            if (this.obj == null)
-            {
-                return string.Empty;
-            }
-
-            return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref PropertyNotFound);
-        }
-
         /// <summary>
         ///     Returns the localized property of any object as string using reflection.
         /// </summary>
@@ -134,6 +124,16 @@ namespace DotNetNuke.Services.Tokens
 
             PropertyNotFound = true;
             return string.Empty;
+        }
+
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        {
+            if (this.obj == null)
+            {
+                return string.Empty;
+            }
+
+            return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref PropertyNotFound);
         }
     }
 }

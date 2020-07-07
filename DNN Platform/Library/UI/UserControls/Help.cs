@@ -22,11 +22,11 @@ namespace DotNetNuke.UI.UserControls
     {
         protected LinkButton cmdCancel;
         protected HyperLink cmdHelp;
-        private string MyFileName = "Help.ascx";
-        private string _key;
         protected Literal helpFrame;
         protected Label lblHelp;
         protected Label lblInfo;
+        private string MyFileName = "Help.ascx";
+        private string _key;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

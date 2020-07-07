@@ -102,6 +102,56 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Items.Add(new ListItem(text, value));
         }
 
+        public void InsertItem(int index, string text, string value)
+        {
+            this.Items.Insert(index, new ListItem(text, value));
+        }
+
+        public void DataBind(string initialValue)
+        {
+            this.DataBind(initialValue, false);
+        }
+
+        public void DataBind(string initial, bool findByText)
+        {
+            base.DataBind();
+
+            this.Select(initial, findByText);
+        }
+
+        public void Select(string initial, bool findByText)
+        {
+            if (findByText)
+            {
+                if (this.FindItemByText(initial, true) != null)
+                {
+                    this.FindItemByText(initial, true).Selected = true;
+                }
+            }
+            else
+            {
+                if (this.FindItemByValue(initial, true) != null)
+                {
+                    this.FindItemByValue(initial, true).Selected = true;
+                }
+            }
+        }
+
+        public ListItem FindItemByText(string text, bool ignoreCase = false)
+        {
+            return ignoreCase ? this.Items.FindByText(text) : this.Items.FindByTextWithIgnoreCase(text);
+        }
+
+        public ListItem FindItemByValue(string value, bool ignoreCase = false)
+        {
+            return ignoreCase ? this.Items.FindByValue(value) : this.Items.FindByValueWithIgnoreCase(value);
+        }
+
+        public int FindItemIndexByValue(string value)
+        {
+            return this.Items.IndexOf(this.FindItemByValue(value));
+        }
+
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var postData = postCollection[postDataKey];
@@ -154,56 +204,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.RegisterRequestResources();
 
             base.OnPreRender(e);
-        }
-
-        public void InsertItem(int index, string text, string value)
-        {
-            this.Items.Insert(index, new ListItem(text, value));
-        }
-
-        public void DataBind(string initialValue)
-        {
-            this.DataBind(initialValue, false);
-        }
-
-        public void DataBind(string initial, bool findByText)
-        {
-            base.DataBind();
-
-            this.Select(initial, findByText);
-        }
-
-        public void Select(string initial, bool findByText)
-        {
-            if (findByText)
-            {
-                if (this.FindItemByText(initial, true) != null)
-                {
-                    this.FindItemByText(initial, true).Selected = true;
-                }
-            }
-            else
-            {
-                if (this.FindItemByValue(initial, true) != null)
-                {
-                    this.FindItemByValue(initial, true).Selected = true;
-                }
-            }
-        }
-
-        public ListItem FindItemByText(string text, bool ignoreCase = false)
-        {
-            return ignoreCase ? this.Items.FindByText(text) : this.Items.FindByTextWithIgnoreCase(text);
-        }
-
-        public ListItem FindItemByValue(string value, bool ignoreCase = false)
-        {
-            return ignoreCase ? this.Items.FindByValue(value) : this.Items.FindByValueWithIgnoreCase(value);
-        }
-
-        public int FindItemIndexByValue(string value)
-        {
-            return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
         private void RegisterRequestResources()

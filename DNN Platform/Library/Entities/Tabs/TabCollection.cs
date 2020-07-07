@@ -84,131 +84,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        private static bool IsLocalizationEnabled()
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return (portalSettings != null) ? portalSettings.ContentLocalizationEnabled : Null.NullBoolean;
-        }
-
-        private static bool IsLocalizationEnabled(int portalId)
-        {
-            return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
-        }
-
-        private void AddInternal(TabInfo tab)
-        {
-            if (tab.ParentId == Null.NullInteger)
-            {
-                // Add tab to Children collection
-                this.AddToChildren(tab);
-
-                // Add to end of List as all zero-level tabs are returned in order first
-                this._list.Add(tab);
-            }
-            else
-            {
-                // Find Parent in list
-                for (int index = 0; index <= this._list.Count - 1; index++)
-                {
-                    TabInfo parentTab = this._list[index];
-                    if (parentTab.TabID == tab.ParentId)
-                    {
-                        int childCount = this.AddToChildren(tab);
-
-                        // Insert tab in master List
-                        this._list.Insert(index + childCount, tab);
-                    }
-                }
-            }
-
-            // Add to localized tabs
-            if (tab.PortalID == Null.NullInteger || IsLocalizationEnabled(tab.PortalID))
-            {
-                this.AddToLocalizedTabs(tab);
-            }
-        }
-
-        private int AddToChildren(TabInfo tab)
-        {
-            List<TabInfo> childList;
-            if (!this._children.TryGetValue(tab.ParentId, out childList))
-            {
-                childList = new List<TabInfo>();
-                this._children.Add(tab.ParentId, childList);
-            }
-
-            // Add tab to end of child list as children are returned in order
-            childList.Add(tab);
-            return childList.Count;
-        }
-
-        private void AddToLocalizedTabCollection(TabInfo tab, string cultureCode)
-        {
-            List<TabInfo> localizedTabCollection;
-
-            var key = cultureCode.ToLowerInvariant();
-            if (!this._localizedTabs.TryGetValue(key, out localizedTabCollection))
-            {
-                localizedTabCollection = new List<TabInfo>();
-                this._localizedTabs.Add(key, localizedTabCollection);
-            }
-
-            // Add tab to end of localized tabs
-            localizedTabCollection.Add(tab);
-        }
-
-        private void AddToLocalizedTabs(TabInfo tab)
-        {
-            if (string.IsNullOrEmpty(tab.CultureCode))
-            {
-                // Add to all cultures
-                foreach (var locale in LocaleController.Instance.GetLocales(tab.PortalID).Values)
-                {
-                    this.AddToLocalizedTabCollection(tab, locale.Code);
-                }
-            }
-            else
-            {
-                this.AddToLocalizedTabCollection(tab, tab.CultureCode);
-            }
-        }
-
-        private List<TabInfo> GetDescendants(int tabId, int tabLevel)
-        {
-            var descendantTabs = new List<TabInfo>();
-            for (int index = 0; index <= this._list.Count - 1; index++)
-            {
-                TabInfo parentTab = this._list[index];
-                if (parentTab.TabID == tabId)
-                {
-                    // Found Parent - so add descendents
-                    for (int descendantIndex = index + 1; descendantIndex <= this._list.Count - 1; descendantIndex++)
-                    {
-                        TabInfo descendantTab = this._list[descendantIndex];
-
-                        if (tabLevel == Null.NullInteger)
-                        {
-                            tabLevel = parentTab.Level;
-                        }
-
-                        if (descendantTab.Level > tabLevel)
-                        {
-                            // Descendant so add to collection
-                            descendantTabs.Add(descendantTab);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    break;
-                }
-            }
-
-            return descendantTabs;
-        }
-
         public List<TabInfo> AsList()
         {
             return this._list;
@@ -341,6 +216,131 @@ namespace DotNetNuke.Entities.Tabs
                     });
                 }
             }
+        }
+
+        private static bool IsLocalizationEnabled()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return (portalSettings != null) ? portalSettings.ContentLocalizationEnabled : Null.NullBoolean;
+        }
+
+        private static bool IsLocalizationEnabled(int portalId)
+        {
+            return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
+        }
+
+        private void AddInternal(TabInfo tab)
+        {
+            if (tab.ParentId == Null.NullInteger)
+            {
+                // Add tab to Children collection
+                this.AddToChildren(tab);
+
+                // Add to end of List as all zero-level tabs are returned in order first
+                this._list.Add(tab);
+            }
+            else
+            {
+                // Find Parent in list
+                for (int index = 0; index <= this._list.Count - 1; index++)
+                {
+                    TabInfo parentTab = this._list[index];
+                    if (parentTab.TabID == tab.ParentId)
+                    {
+                        int childCount = this.AddToChildren(tab);
+
+                        // Insert tab in master List
+                        this._list.Insert(index + childCount, tab);
+                    }
+                }
+            }
+
+            // Add to localized tabs
+            if (tab.PortalID == Null.NullInteger || IsLocalizationEnabled(tab.PortalID))
+            {
+                this.AddToLocalizedTabs(tab);
+            }
+        }
+
+        private int AddToChildren(TabInfo tab)
+        {
+            List<TabInfo> childList;
+            if (!this._children.TryGetValue(tab.ParentId, out childList))
+            {
+                childList = new List<TabInfo>();
+                this._children.Add(tab.ParentId, childList);
+            }
+
+            // Add tab to end of child list as children are returned in order
+            childList.Add(tab);
+            return childList.Count;
+        }
+
+        private void AddToLocalizedTabCollection(TabInfo tab, string cultureCode)
+        {
+            List<TabInfo> localizedTabCollection;
+
+            var key = cultureCode.ToLowerInvariant();
+            if (!this._localizedTabs.TryGetValue(key, out localizedTabCollection))
+            {
+                localizedTabCollection = new List<TabInfo>();
+                this._localizedTabs.Add(key, localizedTabCollection);
+            }
+
+            // Add tab to end of localized tabs
+            localizedTabCollection.Add(tab);
+        }
+
+        private void AddToLocalizedTabs(TabInfo tab)
+        {
+            if (string.IsNullOrEmpty(tab.CultureCode))
+            {
+                // Add to all cultures
+                foreach (var locale in LocaleController.Instance.GetLocales(tab.PortalID).Values)
+                {
+                    this.AddToLocalizedTabCollection(tab, locale.Code);
+                }
+            }
+            else
+            {
+                this.AddToLocalizedTabCollection(tab, tab.CultureCode);
+            }
+        }
+
+        private List<TabInfo> GetDescendants(int tabId, int tabLevel)
+        {
+            var descendantTabs = new List<TabInfo>();
+            for (int index = 0; index <= this._list.Count - 1; index++)
+            {
+                TabInfo parentTab = this._list[index];
+                if (parentTab.TabID == tabId)
+                {
+                    // Found Parent - so add descendents
+                    for (int descendantIndex = index + 1; descendantIndex <= this._list.Count - 1; descendantIndex++)
+                    {
+                        TabInfo descendantTab = this._list[descendantIndex];
+
+                        if (tabLevel == Null.NullInteger)
+                        {
+                            tabLevel = parentTab.Level;
+                        }
+
+                        if (descendantTab.Level > tabLevel)
+                        {
+                            // Descendant so add to collection
+                            descendantTabs.Add(descendantTab);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            return descendantTabs;
         }
     }
 }

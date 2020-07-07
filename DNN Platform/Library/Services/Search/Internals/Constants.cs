@@ -52,8 +52,6 @@ namespace DotNetNuke.Services.Search.Internals
         // Field Boost Settings - they are scaled down by 10.
         internal const int DefaultSearchTitleBoost = 50;
         internal const int DefaultSearchTagBoost = 40;
-
-        internal static Version LuceneVersion = Version.LUCENE_30;
         internal const int DefaultSearchKeywordBoost = 35;
         internal const int DefaultSearchDescriptionBoost = 20;
         internal const int DefaultSearchAuthorBoost = 15;
@@ -72,21 +70,6 @@ namespace DotNetNuke.Services.Search.Internals
         // search index tokenizers word lengths
         internal const int MinimumMinLen = 1;
         internal const int DefaultMinLen = 3;
-
-        internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
-
-        internal static readonly string[] KeyWordSearchFields =
-        {
-            TitleTag,
-                                                                Tag,
-                                                                DescriptionTag,
-                                                                BodyTag,
-                                                                ContentTag,
-                                                                KeywordsPrefixTag + TitleTag,
-                                                                KeywordsPrefixTag + SubjectTag,
-                                                                KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag,
-        };
         internal const int MaximumMinLen = 10;
 
         internal const int MinimumMaxLen = 10;
@@ -105,5 +88,22 @@ namespace DotNetNuke.Services.Search.Internals
 
         // misc.
         internal const string TlsSearchInfo = "TLS_SEARCH_INFO";
-    }
+
+        internal static Version LuceneVersion = Version.LUCENE_30;
+        internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
+
+        internal static readonly string[] KeyWordSearchFields =
+        {
+            TitleTag,
+                                                                Tag,
+                                                                DescriptionTag,
+                                                                BodyTag,
+                                                                ContentTag,
+                                                                KeywordsPrefixTag + TitleTag,
+                                                                KeywordsPrefixTag + SubjectTag,
+                                                                KeywordsPrefixTag + CommentsTag,
+                                                                KeywordsPrefixTag + AuthorNameTag,
+        };
+
+        }
 }

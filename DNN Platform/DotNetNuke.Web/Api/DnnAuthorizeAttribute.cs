@@ -69,14 +69,6 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        internal static void AppendToDefaultAuthTypes(string authType)
-        {
-            if (!string.IsNullOrEmpty(authType))
-            {
-                DefaultAuthTypes.Add(authType.Trim());
-            }
-        }
-
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);
@@ -119,6 +111,14 @@ namespace DotNetNuke.Web.Api
             }
 
             return true;
+        }
+
+        internal static void AppendToDefaultAuthTypes(string authType)
+        {
+            if (!string.IsNullOrEmpty(authType))
+            {
+                DefaultAuthTypes.Add(authType.Trim());
+            }
         }
 
         private static string[] SplitString(string original)

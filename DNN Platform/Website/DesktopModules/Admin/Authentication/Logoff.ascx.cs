@@ -74,6 +74,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this.DoLogoff();
         }
 
+        protected void UserRedirect(object sender, EventArgs e)
+        {
+            this.Redirect();
+        }
+
         private void Redirect()
         {
             // Redirect browser back to portal
@@ -97,11 +102,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 Exceptions.ProcessPageLoadException(exc);
             }
-        }
-
-        protected void UserRedirect(object sender, EventArgs e)
-        {
-            this.Redirect();
         }
     }
 }

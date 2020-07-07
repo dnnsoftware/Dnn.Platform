@@ -36,16 +36,6 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderProviderType = folderProviderType;
         }
 
-        public int FolderMappingID { get; set; }
-
-        public int PortalID { get; set; }
-
-        public string MappingName { get; set; }
-
-        public string FolderProviderType { get; set; }
-
-        public int Priority { get; set; }
-
         public Hashtable FolderMappingSettings
         {
             get
@@ -86,6 +76,16 @@ namespace DotNetNuke.Services.FileSystem
                 return !DefaultFolderProviders.GetDefaultProviders().Contains(this.FolderProviderType);
             }
         }
+
+        public int FolderMappingID { get; set; }
+
+        public int PortalID { get; set; }
+
+        public string MappingName { get; set; }
+
+        public string FolderProviderType { get; set; }
+
+        public int Priority { get; set; }
 
         public bool SyncAllSubFolders
         {

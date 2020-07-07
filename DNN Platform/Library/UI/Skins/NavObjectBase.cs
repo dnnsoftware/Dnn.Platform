@@ -150,14 +150,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        protected NavigationProvider Control
-        {
-            get
-            {
-                return this.m_objControl;
-            }
-        }
-
         public bool PopulateNodesFromClient
         {
             get
@@ -2306,6 +2298,14 @@ namespace DotNetNuke.UI.Skins
                 {
                     this.Control.EffectsShadowDirection = value;
                 }
+            }
+        }
+
+        protected NavigationProvider Control
+        {
+            get
+            {
+                return this.m_objControl;
             }
         }
 

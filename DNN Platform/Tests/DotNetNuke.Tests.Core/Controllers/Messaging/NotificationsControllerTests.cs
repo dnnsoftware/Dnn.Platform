@@ -92,12 +92,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._notificationsController.CreateNotificationType(null);
         }
 
-        private void SetupDataProvider()
-        {
-            // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-        }
-
         [Test]
         [TestCase("")]
         [TestCase(null)]
@@ -1168,6 +1162,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             };
 
             return mockPortalGroupInfo;
+        }
+
+        private void SetupDataProvider()
+        {
+            // Standard DataProvider Path for Logging
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
         }
 
         private void SetupDataTables()

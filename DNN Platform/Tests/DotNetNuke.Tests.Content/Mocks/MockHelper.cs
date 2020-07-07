@@ -59,163 +59,6 @@ namespace DotNetNuke.Tests.Content.Mocks
             return CreateContentTypeTable().CreateDataReader();
         }
 
-        private static void AddBaseEntityColumns(DataTable table)
-        {
-            table.Columns.Add("CreatedByUserID", typeof(int));
-            table.Columns.Add("CreatedOnDate", typeof(DateTime));
-            table.Columns.Add("LastModifiedByUserID", typeof(int));
-            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-        }
-
-        private static void AddContentItemToTable(DataTable table, int id, string content, string contentKey, bool indexed, int userId, string term)
-        {
-            table.Rows.Add(new object[] { id, content, Null.NullInteger, Null.NullInteger, Null.NullInteger, contentKey, indexed, userId, term });
-        }
-
-        private static void AddContentTypeToTable(DataTable table, int id, string contentType)
-        {
-            table.Rows.Add(new object[] { id, contentType });
-        }
-
-        private static void AddScopeTypeToTable(DataTable table, int id, string scopeType)
-        {
-            table.Rows.Add(new object[] { id, scopeType });
-        }
-
-        private static void AddTermToTable(DataTable table, int id, int contentItemId, int vocabularyId, string name, string description, int weight, int parentId)
-        {
-            table.Rows.Add(new object[] { id, contentItemId, vocabularyId, name, description, weight, parentId });
-        }
-
-        private static void AddVocabularyToTable(DataTable table, int id, int typeId, string name, string description, int scopeId, int scopeTypeId, int weight)
-        {
-            table.Rows.Add(new object[] { id, typeId, false, name, description, scopeId, scopeTypeId, weight });
-        }
-
-        private static DataTable CreateContentItemTable()
-        {
-            // Create Categories table.
-            DataTable table = new DataTable();
-
-            // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("ContentItemID", typeof(int));
-            table.Columns.Add("Content", typeof(string));
-            table.Columns.Add("ContentTypeID", typeof(int));
-            table.Columns.Add("TabID", typeof(int));
-            table.Columns.Add("ModuleID", typeof(int));
-            table.Columns.Add("ContentKey", typeof(string));
-            table.Columns.Add("Indexed", typeof(bool));
-            table.Columns.Add("UserID", typeof(int));
-            table.Columns.Add("Term", typeof(string));
-            table.Columns.Add("StateID", typeof(int));
-            AddBaseEntityColumns(table);
-
-            // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] { idColumn };
-
-            return table;
-        }
-
-        private static DataTable CreateContentTypeTable()
-        {
-            // Create ContentTypes table.
-            DataTable table = new DataTable();
-
-            // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("ContentTypeID", typeof(int));
-            table.Columns.Add("ContentType", typeof(string));
-
-            // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] { idColumn };
-
-            return table;
-        }
-
-        private static DataTable CreateScopeTypeTable()
-        {
-            // Create ScopeTypes table.
-            DataTable table = new DataTable();
-
-            // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("ScopeTypeID", typeof(int));
-            table.Columns.Add("ScopeType", typeof(string));
-
-            // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] { idColumn };
-
-            return table;
-        }
-
-        private static DataTable CreateTermTable()
-        {
-            // Create Vocabulary table.
-            DataTable table = new DataTable();
-
-            // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("TermID", typeof(int));
-            table.Columns.Add("ContentItemID", typeof(int));
-            table.Columns.Add("VocabularyID", typeof(int));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("Description", typeof(string));
-            table.Columns.Add("Weight", typeof(int));
-            table.Columns.Add("ParentTermID", typeof(int));
-            table.Columns.Add("TermLeft", typeof(int));
-            table.Columns.Add("TermRight", typeof(int));
-            AddBaseEntityColumns(table);
-
-            // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] { idColumn };
-
-            return table;
-        }
-
-        private static DataTable CreateVocabularyTable()
-        {
-            // Create Vocabulary table.
-            DataTable table = new DataTable();
-
-            // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("VocabularyID", typeof(int));
-            table.Columns.Add("VocabularyTypeID", typeof(int));
-            table.Columns.Add("IsSystem", typeof(bool));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("Description", typeof(string));
-            table.Columns.Add("ScopeID", typeof(int));
-            table.Columns.Add("ScopeTypeID", typeof(int));
-            table.Columns.Add("Weight", typeof(int));
-            AddBaseEntityColumns(table);
-
-            // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] { idColumn };
-
-            return table;
-        }
-
-        private static Mock<TMock> RegisterMockController<TMock>(Mock<TMock> mock)
-            where TMock : class
-        {
-            if (ComponentFactory.Container == null)
-            {
-                // Create a Container
-                ComponentFactory.Container = new SimpleContainer();
-            }
-
-            // Try and get mock
-            var getMock = ComponentFactory.GetComponent<Mock<TMock>>();
-
-            if (getMock == null)
-            {
-                // Create the mock
-                getMock = mock;
-
-                // Add both mock and mock.Object to Container
-                ComponentFactory.RegisterComponentInstance<Mock<TMock>>(getMock);
-                ComponentFactory.RegisterComponentInstance<TMock>(getMock.Object);
-            }
-
-            return getMock;
-        }
-
         internal static IDataReader CreateEmptyScopeTypeReader()
         {
             return CreateScopeTypeTable().CreateDataReader();
@@ -462,6 +305,163 @@ namespace DotNetNuke.Tests.Content.Mocks
 
             fm.Setup(f => f.GetFile(It.IsAny<int>())).Returns((int fileId) => CreateRandomFile(fileId));
             return fm;
+        }
+
+        private static void AddBaseEntityColumns(DataTable table)
+        {
+            table.Columns.Add("CreatedByUserID", typeof(int));
+            table.Columns.Add("CreatedOnDate", typeof(DateTime));
+            table.Columns.Add("LastModifiedByUserID", typeof(int));
+            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+        }
+
+        private static void AddContentItemToTable(DataTable table, int id, string content, string contentKey, bool indexed, int userId, string term)
+        {
+            table.Rows.Add(new object[] { id, content, Null.NullInteger, Null.NullInteger, Null.NullInteger, contentKey, indexed, userId, term });
+        }
+
+        private static void AddContentTypeToTable(DataTable table, int id, string contentType)
+        {
+            table.Rows.Add(new object[] { id, contentType });
+        }
+
+        private static void AddScopeTypeToTable(DataTable table, int id, string scopeType)
+        {
+            table.Rows.Add(new object[] { id, scopeType });
+        }
+
+        private static void AddTermToTable(DataTable table, int id, int contentItemId, int vocabularyId, string name, string description, int weight, int parentId)
+        {
+            table.Rows.Add(new object[] { id, contentItemId, vocabularyId, name, description, weight, parentId });
+        }
+
+        private static void AddVocabularyToTable(DataTable table, int id, int typeId, string name, string description, int scopeId, int scopeTypeId, int weight)
+        {
+            table.Rows.Add(new object[] { id, typeId, false, name, description, scopeId, scopeTypeId, weight });
+        }
+
+        private static DataTable CreateContentItemTable()
+        {
+            // Create Categories table.
+            DataTable table = new DataTable();
+
+            // Create columns, ID and Name.
+            DataColumn idColumn = table.Columns.Add("ContentItemID", typeof(int));
+            table.Columns.Add("Content", typeof(string));
+            table.Columns.Add("ContentTypeID", typeof(int));
+            table.Columns.Add("TabID", typeof(int));
+            table.Columns.Add("ModuleID", typeof(int));
+            table.Columns.Add("ContentKey", typeof(string));
+            table.Columns.Add("Indexed", typeof(bool));
+            table.Columns.Add("UserID", typeof(int));
+            table.Columns.Add("Term", typeof(string));
+            table.Columns.Add("StateID", typeof(int));
+            AddBaseEntityColumns(table);
+
+            // Set the ID column as the primary key column.
+            table.PrimaryKey = new[] { idColumn };
+
+            return table;
+        }
+
+        private static DataTable CreateContentTypeTable()
+        {
+            // Create ContentTypes table.
+            DataTable table = new DataTable();
+
+            // Create columns, ID and Name.
+            DataColumn idColumn = table.Columns.Add("ContentTypeID", typeof(int));
+            table.Columns.Add("ContentType", typeof(string));
+
+            // Set the ID column as the primary key column.
+            table.PrimaryKey = new[] { idColumn };
+
+            return table;
+        }
+
+        private static DataTable CreateScopeTypeTable()
+        {
+            // Create ScopeTypes table.
+            DataTable table = new DataTable();
+
+            // Create columns, ID and Name.
+            DataColumn idColumn = table.Columns.Add("ScopeTypeID", typeof(int));
+            table.Columns.Add("ScopeType", typeof(string));
+
+            // Set the ID column as the primary key column.
+            table.PrimaryKey = new[] { idColumn };
+
+            return table;
+        }
+
+        private static DataTable CreateTermTable()
+        {
+            // Create Vocabulary table.
+            DataTable table = new DataTable();
+
+            // Create columns, ID and Name.
+            DataColumn idColumn = table.Columns.Add("TermID", typeof(int));
+            table.Columns.Add("ContentItemID", typeof(int));
+            table.Columns.Add("VocabularyID", typeof(int));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("Description", typeof(string));
+            table.Columns.Add("Weight", typeof(int));
+            table.Columns.Add("ParentTermID", typeof(int));
+            table.Columns.Add("TermLeft", typeof(int));
+            table.Columns.Add("TermRight", typeof(int));
+            AddBaseEntityColumns(table);
+
+            // Set the ID column as the primary key column.
+            table.PrimaryKey = new[] { idColumn };
+
+            return table;
+        }
+
+        private static DataTable CreateVocabularyTable()
+        {
+            // Create Vocabulary table.
+            DataTable table = new DataTable();
+
+            // Create columns, ID and Name.
+            DataColumn idColumn = table.Columns.Add("VocabularyID", typeof(int));
+            table.Columns.Add("VocabularyTypeID", typeof(int));
+            table.Columns.Add("IsSystem", typeof(bool));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("Description", typeof(string));
+            table.Columns.Add("ScopeID", typeof(int));
+            table.Columns.Add("ScopeTypeID", typeof(int));
+            table.Columns.Add("Weight", typeof(int));
+            AddBaseEntityColumns(table);
+
+            // Set the ID column as the primary key column.
+            table.PrimaryKey = new[] { idColumn };
+
+            return table;
+        }
+
+        private static Mock<TMock> RegisterMockController<TMock>(Mock<TMock> mock)
+            where TMock : class
+        {
+            if (ComponentFactory.Container == null)
+            {
+                // Create a Container
+                ComponentFactory.Container = new SimpleContainer();
+            }
+
+            // Try and get mock
+            var getMock = ComponentFactory.GetComponent<Mock<TMock>>();
+
+            if (getMock == null)
+            {
+                // Create the mock
+                getMock = mock;
+
+                // Add both mock and mock.Object to Container
+                ComponentFactory.RegisterComponentInstance<Mock<TMock>>(getMock);
+                ComponentFactory.RegisterComponentInstance<TMock>(getMock.Object);
+            }
+
+            return getMock;
         }
     }
 }

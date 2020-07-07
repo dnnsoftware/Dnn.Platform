@@ -76,47 +76,6 @@ namespace DotNetNuke.Services.FileSystem
             this.SHA1Hash = hash;
         }
 
-        [XmlElement("contenttype")]
-        public string ContentType { get; set; }
-
-        [XmlElement("extension")]
-        public string Extension { get; set; }
-
-        [XmlElement("fileid")]
-        public int FileId { get; set; }
-
-        [XmlElement("uniqueid")]
-        public Guid UniqueId { get; set; }
-
-        [XmlElement("versionguid")]
-        public Guid VersionGuid { get; set; }
-
-        [XmlElement("filename")]
-        public string FileName { get; set; }
-
-        [XmlElement("folder")]
-        public string Folder
-        {
-            get
-            {
-                return this._folder;
-            }
-
-            set
-            {
-                // Make sure folder name ends with /
-                if (!string.IsNullOrEmpty(value) && !value.EndsWith("/"))
-                {
-                    value = value + "/";
-                }
-
-                this._folder = value;
-            }
-        }
-
-        [XmlElement("folderid")]
-        public int FolderId { get; set; }
-
         [XmlElement("height")]
         public int Height
         {
@@ -181,9 +140,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        [XmlIgnore]
-        public int PortalId { get; set; }
-
         public string RelativePath
         {
             get
@@ -191,6 +147,103 @@ namespace DotNetNuke.Services.FileSystem
                 return this.Folder + this.FileName;
             }
         }
+
+        public FileAttributes? FileAttributes
+        {
+            get
+            {
+                FileAttributes? _fileAttributes = null;
+
+                if (this.SupportsFileAttributes)
+                {
+                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
+                    _fileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).GetFileAttributes(this);
+                }
+
+                return _fileAttributes;
+            }
+        }
+
+        public bool SupportsFileAttributes
+        {
+            get
+            {
+                if (!this._supportsFileAttributes.HasValue)
+                {
+                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
+
+                    try
+                    {
+                        this._supportsFileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).SupportsFileAttributes();
+                    }
+                    catch
+                    {
+                        this._supportsFileAttributes = false;
+                    }
+                }
+
+                return this._supportsFileAttributes.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the file is enabled,
+        /// considering if the publish period is active and if the current date is within the publish period.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get
+            {
+                var today = DateTime.Today;
+                return !this.EnablePublishPeriod
+                    || (this.StartDate.Date <= today && (this.EndDate == Null.NullDate || today <= this.EndDate.Date));
+            }
+        }
+
+        [XmlElement("contenttype")]
+        public string ContentType { get; set; }
+
+        [XmlElement("extension")]
+        public string Extension { get; set; }
+
+        [XmlElement("fileid")]
+        public int FileId { get; set; }
+
+        [XmlElement("uniqueid")]
+        public Guid UniqueId { get; set; }
+
+        [XmlElement("versionguid")]
+        public Guid VersionGuid { get; set; }
+
+        [XmlElement("filename")]
+        public string FileName { get; set; }
+
+        [XmlElement("folder")]
+        public string Folder
+        {
+            get
+            {
+                return this._folder;
+            }
+
+            set
+            {
+                // Make sure folder name ends with /
+                if (!string.IsNullOrEmpty(value) && !value.EndsWith("/"))
+                {
+                    value = value + "/";
+                }
+
+                this._folder = value;
+            }
+        }
+
+        [XmlElement("folderid")]
+        public int FolderId { get; set; }
+
+
+        [XmlIgnore]
+        public int PortalId { get; set; }
 
         [XmlElement("size")]
         public int Size { get; set; }
@@ -233,44 +286,6 @@ namespace DotNetNuke.Services.FileSystem
             set
             {
                 this._sha1Hash = value;
-            }
-        }
-
-        public FileAttributes? FileAttributes
-        {
-            get
-            {
-                FileAttributes? _fileAttributes = null;
-
-                if (this.SupportsFileAttributes)
-                {
-                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
-                    _fileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).GetFileAttributes(this);
-                }
-
-                return _fileAttributes;
-            }
-        }
-
-        public bool SupportsFileAttributes
-        {
-            get
-            {
-                if (!this._supportsFileAttributes.HasValue)
-                {
-                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
-
-                    try
-                    {
-                        this._supportsFileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).SupportsFileAttributes();
-                    }
-                    catch
-                    {
-                        this._supportsFileAttributes = false;
-                    }
-                }
-
-                return this._supportsFileAttributes.Value;
             }
         }
 
@@ -376,20 +391,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         [XmlIgnore]
         public bool HasBeenPublished { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the file is enabled,
-        /// considering if the publish period is active and if the current date is within the publish period.
-        /// </summary>
-        public bool IsEnabled
-        {
-            get
-            {
-                var today = DateTime.Today;
-                return !this.EnablePublishPeriod
-                    || (this.StartDate.Date <= today && (this.EndDate == Null.NullDate || today <= this.EndDate.Date));
-            }
-        }
 
         /// <summary>
         /// Gets or sets a reference to ContentItem, to use in Workflows.

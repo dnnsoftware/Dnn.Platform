@@ -30,15 +30,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool AllowTagging { get; set; }
 
-        private Vocabulary TagVocabulary
-        {
-            get
-            {
-                VocabularyController vocabularyController = new VocabularyController();
-                return (from v in vocabularyController.GetVocabularies() where v.IsSystem && v.Name == "Tags" select v).SingleOrDefault();
-            }
-        }
-
         public string CancelImageUrl { get; set; }
 
         public ContentItem ContentItem { get; set; }
@@ -95,6 +86,15 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool ShowCategories { get; set; }
 
         public bool ShowTags { get; set; }
+
+        private Vocabulary TagVocabulary
+        {
+            get
+            {
+                VocabularyController vocabularyController = new VocabularyController();
+                return (from v in vocabularyController.GetVocabularies() where v.IsSystem && v.Name == "Tags" select v).SingleOrDefault();
+            }
+        }
 
         public override void RenderControl(HtmlTextWriter writer)
         {
@@ -211,6 +211,29 @@ namespace DotNetNuke.Web.UI.WebControls
             this._Tags = postCollection[postDataKey];
 
             return true;
+        }
+
+        public void RaisePostDataChangedEvent()
+        {
+        }
+
+        public void RaisePostBackEvent(string eventArgument)
+        {
+            switch (eventArgument)
+            {
+                case "Add":
+                    this.IsEditMode = true;
+                    break;
+                case "Cancel":
+                    this.IsEditMode = false;
+                    break;
+                case "Save":
+                    this.SaveTags();
+                    break;
+                default:
+                    this.IsEditMode = false;
+                    break;
+            }
         }
 
         protected void OnTagsUpdate(EventArgs e)
@@ -335,29 +358,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
             // Raise the Tags Updated Event
             this.OnTagsUpdate(EventArgs.Empty);
-        }
-
-        public void RaisePostDataChangedEvent()
-        {
-        }
-
-        public void RaisePostBackEvent(string eventArgument)
-        {
-            switch (eventArgument)
-            {
-                case "Add":
-                    this.IsEditMode = true;
-                    break;
-                case "Cancel":
-                    this.IsEditMode = false;
-                    break;
-                case "Save":
-                    this.SaveTags();
-                    break;
-                default:
-                    this.IsEditMode = false;
-                    break;
-            }
         }
     }
 }

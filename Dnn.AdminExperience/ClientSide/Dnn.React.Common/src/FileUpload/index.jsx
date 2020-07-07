@@ -430,6 +430,7 @@ FileUpload.propTypes = {
     //---REQUIRED PROPS---
     utils: PropTypes.object.isRequired,
     onSelectFile: PropTypes.func.isRequired,
+    validationCode: PropTypes.string.isRequired,
 
     //---OPTIONAL PROPS---
     selectedFile: PropTypes.object,
@@ -466,7 +467,6 @@ FileUpload.defaultProps = {
     cropImagePreview: false,
     portalId: -1,
     fileFormats: [],
-
     browseButtonText: "Browse Filesystem",
     uploadButtonText: "Upload a File",
     linkButtonText: "Enter URL Link",

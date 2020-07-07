@@ -49,11 +49,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return subscriptions.Where(s => this.subscriptionSecurityController.HasPermission(s));
         }
 
-        protected override Func<ISubscriptionController> GetFactory()
-        {
-            return () => new SubscriptionController();
-        }
-
         public bool IsSubscribed(Subscription subscription)
         {
             var fetchedSubscription = CBO.FillObject<Subscription>(this.dataService.IsSubscribed(
@@ -116,6 +111,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
         public void DeleteSubscriptionsByObjectKey(int portalId, string objectKey)
         {
             this.dataService.DeleteSubscriptionsByObjectKey(portalId, objectKey);
+        }
+
+        protected override Func<ISubscriptionController> GetFactory()
+        {
+            return () => new SubscriptionController();
         }
     }
 }

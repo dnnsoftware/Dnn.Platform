@@ -282,550 +282,6 @@ namespace DotNetNuke.Security.Membership
             DataCache.ClearCache();
         }
 
-        private static bool AutoUnlockUser(MembershipUser aspNetUser)
-        {
-            if (Host.AutoAccountUnlockDuration != 0)
-            {
-                if (aspNetUser.LastLockoutDate < DateTime.Now.AddMinutes(-1 * Host.AutoAccountUnlockDuration))
-                {
-                    // Unlock user in Data Store
-                    if (aspNetUser.UnlockUser())
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private static UserCreateStatus CreateMemberhipUser(UserInfo user)
-        {
-            var portalSecurity = PortalSecurity.Instance;
-            string userName = portalSecurity.InputFilter(
-                user.Username,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
-            string email = portalSecurity.InputFilter(
-                user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
-            MembershipCreateStatus status;
-            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
-            {
-                System.Web.Security.Membership.CreateUser(
-                    userName,
-                    user.Membership.Password,
-                    email,
-                    user.Membership.PasswordQuestion,
-                    user.Membership.PasswordAnswer,
-                    true,
-                    out status);
-            }
-            else
-            {
-                System.Web.Security.Membership.CreateUser(
-                    userName,
-                    user.Membership.Password,
-                    email,
-                    null,
-                    null,
-                    true,
-                    out status);
-            }
-
-            var createStatus = UserCreateStatus.Success;
-            switch (status)
-            {
-                case MembershipCreateStatus.DuplicateEmail:
-                    createStatus = UserCreateStatus.DuplicateEmail;
-                    break;
-                case MembershipCreateStatus.DuplicateProviderUserKey:
-                    createStatus = UserCreateStatus.DuplicateProviderUserKey;
-                    break;
-                case MembershipCreateStatus.DuplicateUserName:
-                    createStatus = UserCreateStatus.DuplicateUserName;
-                    break;
-                case MembershipCreateStatus.InvalidAnswer:
-                    createStatus = UserCreateStatus.InvalidAnswer;
-                    break;
-                case MembershipCreateStatus.InvalidEmail:
-                    createStatus = UserCreateStatus.InvalidEmail;
-                    break;
-                case MembershipCreateStatus.InvalidPassword:
-                    createStatus = UserCreateStatus.InvalidPassword;
-                    break;
-                case MembershipCreateStatus.InvalidProviderUserKey:
-                    createStatus = UserCreateStatus.InvalidProviderUserKey;
-                    break;
-                case MembershipCreateStatus.InvalidQuestion:
-                    createStatus = UserCreateStatus.InvalidQuestion;
-                    break;
-                case MembershipCreateStatus.InvalidUserName:
-                    createStatus = UserCreateStatus.InvalidUserName;
-                    break;
-                case MembershipCreateStatus.ProviderError:
-                    createStatus = UserCreateStatus.ProviderError;
-                    break;
-                case MembershipCreateStatus.UserRejected:
-                    createStatus = UserCreateStatus.UserRejected;
-                    break;
-            }
-
-            return createStatus;
-        }
-
-        private static void DeleteMembershipUser(UserInfo user)
-        {
-            try
-            {
-                System.Web.Security.Membership.DeleteUser(user.Username, true);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-        }
-
-        private UserCreateStatus CreateDNNUser(ref UserInfo user)
-        {
-            var objSecurity = PortalSecurity.Instance;
-            var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
-            user.Username = objSecurity.InputFilter(user.Username, filterFlags);
-            user.Email = objSecurity.InputFilter(user.Email, filterFlags);
-            user.LastName = objSecurity.InputFilter(user.LastName, filterFlags);
-            user.FirstName = objSecurity.InputFilter(user.FirstName, filterFlags);
-            user.DisplayName = objSecurity.InputFilter(user.DisplayName, filterFlags);
-            if (user.DisplayName.Contains("<") || user.DisplayName.Contains(">"))
-            {
-                user.DisplayName = HttpUtility.HtmlEncode(user.DisplayName);
-            }
-
-            var updatePassword = user.Membership.UpdatePassword;
-            var isApproved = user.Membership.Approved;
-            var createStatus = UserCreateStatus.Success;
-            try
-            {
-                user.UserID =
-                    Convert.ToInt32(this._dataProvider.AddUser(
-                        user.PortalID,
-                        user.Username,
-                        user.FirstName,
-                        user.LastName,
-                        user.AffiliateID,
-                        user.IsSuperUser,
-                        user.Email,
-                        user.DisplayName,
-                        updatePassword,
-                        isApproved,
-                        UserController.Instance.GetCurrentUserInfo().UserID));
-
-                // Save the user password history
-                new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
-            }
-            catch (Exception ex)
-            {
-                // Clear User (duplicate User information)
-                Exceptions.LogException(ex);
-                user = null;
-                createStatus = UserCreateStatus.ProviderError;
-            }
-
-            return createStatus;
-        }
-
-        private static ArrayList FillUserCollection(int portalId, IDataReader dr, ref int totalRecords)
-        {
-            // Note:  the DataReader returned from this method should contain 2 result sets.  The first set
-            //       contains the TotalRecords, that satisfy the filter, the second contains the page
-            //       of data
-            var arrUsers = new ArrayList();
-            try
-            {
-                while (dr.Read())
-                {
-                    // fill business object
-                    UserInfo user = FillUserInfo(portalId, dr, false);
-
-                    // add to collection
-                    arrUsers.Add(user);
-                }
-
-                // Get the next result (containing the total)
-                dr.NextResult();
-
-                // Get the total no of records from the second result
-                totalRecords = Globals.GetTotalRecords(ref dr);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return arrUsers;
-        }
-
-        private static IList<UserInfo> FillUserList(int portalId, IDataReader dr)
-        {
-            var users = new List<UserInfo>();
-            try
-            {
-                while (dr.Read())
-                {
-                    // fill business object
-                    UserInfo user = FillUserAndProfile(portalId, dr);
-
-                    // add to collection
-                    users.Add(user);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return users;
-        }
-
-        private static UserInfo FillUserAndProfile(int portalId, IDataReader dr)
-        {
-            UserInfo user = null;
-            bool bContinue = string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase);
-
-            // Ensure the data reader returned is valid
-            if (bContinue)
-            {
-                user = new UserInfo
-                {
-                    PortalID = Null.SetNullInteger(dr["PortalID"]),
-                    IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
-                    IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]),
-                    UserID = Null.SetNullInteger(dr["UserID"]),
-                    DisplayName = Null.SetNullString(dr["DisplayName"]),
-                    Username = Null.SetNullString(dr["Username"]),
-                    Email = Null.SetNullString(dr["Email"]),
-                    AffiliateID = Null.SetNullInteger(dr["AffiliateID"]),
-                };
-                user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
-
-                UserController.GetUserMembership(user);
-                user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
-                if (!user.IsSuperUser)
-                {
-                    user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
-                }
-
-                if (user.PortalID == Null.NullInteger)
-                {
-                    user.PortalID = portalId;
-                }
-
-                var userProfile = new UserProfile(user);
-                userProfile.InitialiseProfile(portalId);
-
-                for (int i = 0; i < dr.FieldCount; i++)
-                {
-                    switch (dr.GetName(i))
-                    {
-                        case "PortalID":
-                        case "IsSuperUser":
-                        case "IsDeleted":
-                        case "UserID":
-                        case "DisplayName":
-                        case "Username":
-                        case "Email":
-                        case "AffiliateID":
-                        case "UpdatePassword":
-                        case "Authorised":
-                        case "CreateDate":
-                        case "LastActivityDate":
-                        case "LastLockoutDate":
-                        case "LastLoginDate":
-                        case "LastPasswordChangedDate":
-                        case "IsLockedOut":
-                        case "PasswordQuestion":
-                        case "IsApproved":
-                        case "PasswordResetToken":
-                        case "PasswordResetExpiration":
-                            break;
-                        default:
-                            // Probably a profile property
-                            string name = dr.GetName(i);
-                            userProfile.SetProfileProperty(name, Null.SetNullString(dr[name]));
-                            break;
-                    }
-                }
-
-                user.Profile = userProfile;
-            }
-
-            return user;
-        }
-
-        private static UserInfo FillUserInfo(int portalId, IDataReader dr, bool closeDataReader)
-        {
-            UserInfo user = null;
-            try
-            {
-                // read datareader
-                bool bContinue = true;
-                if (closeDataReader)
-                {
-                    bContinue = false;
-                    if (dr.Read())
-                    {
-                        // Ensure the data reader returned is valid
-                        if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            bContinue = true;
-                        }
-                    }
-                }
-
-                if (bContinue)
-                {
-                    user = new UserInfo
-                    {
-                        PortalID = Null.SetNullInteger(dr["PortalID"]),
-                        IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
-                        UserID = Null.SetNullInteger(dr["UserID"]),
-                        DisplayName = Null.SetNullString(dr["DisplayName"]),
-                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
-                    };
-
-                    var schema = dr.GetSchemaTable();
-                    if (schema != null)
-                    {
-                        if (schema.Select("ColumnName = 'IsDeleted'").Length > 0)
-                        {
-                            user.IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
-                        }
-
-                        if (schema.Select("ColumnName = 'VanityUrl'").Length > 0)
-                        {
-                            user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
-                        }
-
-                        if (schema.Select("ColumnName = 'HasAgreedToTerms'").Length > 0)
-                        {
-                            user.HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]);
-                        }
-
-                        if (schema.Select("ColumnName = 'HasAgreedToTermsOn'").Length > 0)
-                        {
-                            user.HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]);
-                        }
-                        else
-                        {
-                            user.HasAgreedToTermsOn = Null.NullDate;
-                        }
-
-                        if (schema.Select("ColumnName = 'RequestsRemoval'").Length > 0)
-                        {
-                            user.RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"]);
-                        }
-
-                        if (schema.Select("ColumnName = 'PasswordResetExpiration'").Length > 0)
-                        {
-                            user.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
-                        }
-
-                        if (schema.Select("ColumnName = 'PasswordResetToken'").Length > 0)
-                        {
-                            user.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
-                        }
-                    }
-
-                    user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
-                    user.Username = Null.SetNullString(dr["Username"]);
-                    UserController.GetUserMembership(user);
-                    user.Email = Null.SetNullString(dr["Email"]);
-                    user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
-
-                    if (!user.IsSuperUser)
-                    {
-                        user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
-                    }
-
-                    if (user.PortalID == Null.NullInteger)
-                    {
-                        user.PortalID = portalId;
-                    }
-
-                    user.FillBaseProperties(dr);
-                }
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, closeDataReader);
-            }
-
-            return user;
-        }
-
-        private static void FillUserMembership(MembershipUser aspNetUser, UserInfo user)
-        {
-            // Fill Membership Property
-            if (aspNetUser != null)
-            {
-                if (user.Membership == null)
-                {
-                    user.Membership = new UserMembership(user);
-                }
-
-                user.Membership.CreatedDate = aspNetUser.CreationDate;
-                user.Membership.LastActivityDate = aspNetUser.LastActivityDate;
-                user.Membership.LastLockoutDate = aspNetUser.LastLockoutDate;
-                user.Membership.LastLoginDate = aspNetUser.LastLoginDate;
-                user.Membership.LastPasswordChangeDate = aspNetUser.LastPasswordChangedDate;
-                user.Membership.LockedOut = aspNetUser.IsLockedOut;
-                user.Membership.PasswordQuestion = aspNetUser.PasswordQuestion;
-                user.Membership.IsDeleted = user.IsDeleted;
-
-                if (user.IsSuperUser)
-                {
-                    // For superusers the Approved info is stored in aspnet membership
-                    user.Membership.Approved = aspNetUser.IsApproved;
-                }
-            }
-        }
-
-        private static MembershipUser GetMembershipUser(UserInfo user)
-        {
-            return GetMembershipUser(user.Username);
-        }
-
-        private static MembershipUser GetMembershipUser(string userName)
-        {
-            return
-                CBO.GetCachedObject<MembershipUser>(
-                    new CacheItemArgs(GetCacheKey(userName), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
-                                      userName), GetMembershipUserCallBack);
-        }
-
-        private static MembershipUser GetMembershipUserByUserKey(string userKey)
-        {
-            return
-                CBO.GetCachedObject<MembershipUser>(
-                    new CacheItemArgs(GetCacheKey(userKey), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
-                        userKey), GetMembershipUserByUserKeyCallBack);
-        }
-
-        private static string GetCacheKey(string cacheKey)
-        {
-            return $"MembershipUser_{cacheKey}";
-        }
-
-        private static object GetMembershipUserCallBack(CacheItemArgs cacheItemArgs)
-        {
-            string userName = cacheItemArgs.ParamList[0].ToString();
-
-            return System.Web.Security.Membership.GetUser(userName);
-        }
-
-        private static object GetMembershipUserByUserKeyCallBack(CacheItemArgs cacheItemArgs)
-        {
-            string userKey = cacheItemArgs.ParamList[0].ToString();
-
-            return System.Web.Security.Membership.GetUser(new Guid(userKey));
-        }
-
-        private static void UpdateUserMembership(UserInfo user)
-        {
-            var portalSecurity = PortalSecurity.Instance;
-            string email = portalSecurity.InputFilter(
-                user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
-
-            // Persist the Membership Properties to the AspNet Data Store
-            MembershipUser membershipUser = System.Web.Security.Membership.GetUser(user.Username);
-            membershipUser.Email = email;
-            membershipUser.LastActivityDate = DateTime.Now;
-            if (user.IsSuperUser)
-            {
-                membershipUser.IsApproved = user.Membership.Approved;
-            }
-
-            try
-            {
-                System.Web.Security.Membership.UpdateUser(membershipUser);
-            }
-            catch (ProviderException ex)
-            {
-                throw new Exception(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
-            }
-
-            DataCache.RemoveCache(GetCacheKey(user.Username));
-        }
-
-        private static UserLoginStatus ValidateLogin(string username, string authType, UserInfo user,
-                                                     UserLoginStatus loginStatus, string password, ref bool bValid,
-                                                     int portalId)
-        {
-            if (loginStatus != UserLoginStatus.LOGIN_USERLOCKEDOUT &&
-                (loginStatus != UserLoginStatus.LOGIN_USERNOTAPPROVED || user.IsInRole("Unverified Users")))
-            {
-                if (authType == "DNN")
-                {
-                    if (user.IsSuperUser)
-                    {
-                        if (ValidateUser(username, password))
-                        {
-                            loginStatus = UserLoginStatus.LOGIN_SUPERUSER;
-                            bValid = true;
-                        }
-                    }
-                    else
-                    {
-                        if (ValidateUser(username, password))
-                        {
-                            loginStatus = UserLoginStatus.LOGIN_SUCCESS;
-                            bValid = true;
-                        }
-                    }
-                }
-                else
-                {
-                    if (user.IsSuperUser)
-                    {
-                        loginStatus = UserLoginStatus.LOGIN_SUPERUSER;
-                        bValid = true;
-                    }
-                    else
-                    {
-                        loginStatus = UserLoginStatus.LOGIN_SUCCESS;
-                        bValid = true;
-                    }
-                }
-            }
-
-            return loginStatus;
-        }
-
-        private static bool ValidateUser(string username, string password)
-        {
-            return System.Web.Security.Membership.ValidateUser(username, password);
-        }
-
-        private string GetStringSetting(Hashtable settings, string settingKey)
-        {
-            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePassword attempts to change the users password.
@@ -1009,49 +465,6 @@ namespace DotNetNuke.Security.Membership
             }
 
             return retValue;
-        }
-
-        private UserCreateStatus ValidateForProfanity(UserInfo user)
-        {
-            var portalSecurity = PortalSecurity.Instance;
-            var createStatus = UserCreateStatus.AddUser;
-
-            Hashtable settings = UserController.GetUserSettings(user.PortalID);
-            bool useProfanityFilter = Convert.ToBoolean(settings["Registration_UseProfanityFilter"]);
-
-            // Validate Profanity
-            if (useProfanityFilter)
-            {
-                if (!portalSecurity.ValidateInput(user.Username, PortalSecurity.FilterFlag.NoProfanity))
-                {
-                    createStatus = UserCreateStatus.InvalidUserName;
-                }
-
-                if (!string.IsNullOrEmpty(user.DisplayName))
-                {
-                    if (!portalSecurity.ValidateInput(user.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
-                    {
-                        createStatus = UserCreateStatus.InvalidDisplayName;
-                    }
-                }
-            }
-
-            return createStatus;
-        }
-
-        private void ValidateForDuplicateDisplayName(UserInfo user, ref UserCreateStatus createStatus)
-        {
-            Hashtable settings = UserController.GetUserSettings(user.PortalID);
-            bool requireUniqueDisplayName = Convert.ToBoolean(settings["Registration_RequireUniqueDisplayName"]);
-
-            if (requireUniqueDisplayName)
-            {
-                UserInfo duplicateUser = this.GetUserByDisplayName(user.PortalID, user.DisplayName);
-                if (duplicateUser != null)
-                {
-                    createStatus = UserCreateStatus.DuplicateDisplayName;
-                }
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -1841,13 +1254,6 @@ namespace DotNetNuke.Security.Membership
             ProfileController.UpdateUserProfile(user);
         }
 
-        private string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates UserOnline info
@@ -1993,6 +1399,600 @@ namespace DotNetNuke.Security.Membership
             }
 
             return user;
+        }
+
+        private static bool AutoUnlockUser(MembershipUser aspNetUser)
+        {
+            if (Host.AutoAccountUnlockDuration != 0)
+            {
+                if (aspNetUser.LastLockoutDate < DateTime.Now.AddMinutes(-1 * Host.AutoAccountUnlockDuration))
+                {
+                    // Unlock user in Data Store
+                    if (aspNetUser.UnlockUser())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static UserCreateStatus CreateMemberhipUser(UserInfo user)
+        {
+            var portalSecurity = PortalSecurity.Instance;
+            string userName = portalSecurity.InputFilter(
+                user.Username,
+                PortalSecurity.FilterFlag.NoScripting |
+                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                         PortalSecurity.FilterFlag.NoMarkup);
+            string email = portalSecurity.InputFilter(
+                user.Email,
+                PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+            MembershipCreateStatus status;
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
+            {
+                System.Web.Security.Membership.CreateUser(
+                    userName,
+                    user.Membership.Password,
+                    email,
+                    user.Membership.PasswordQuestion,
+                    user.Membership.PasswordAnswer,
+                    true,
+                    out status);
+            }
+            else
+            {
+                System.Web.Security.Membership.CreateUser(
+                    userName,
+                    user.Membership.Password,
+                    email,
+                    null,
+                    null,
+                    true,
+                    out status);
+            }
+
+            var createStatus = UserCreateStatus.Success;
+            switch (status)
+            {
+                case MembershipCreateStatus.DuplicateEmail:
+                    createStatus = UserCreateStatus.DuplicateEmail;
+                    break;
+                case MembershipCreateStatus.DuplicateProviderUserKey:
+                    createStatus = UserCreateStatus.DuplicateProviderUserKey;
+                    break;
+                case MembershipCreateStatus.DuplicateUserName:
+                    createStatus = UserCreateStatus.DuplicateUserName;
+                    break;
+                case MembershipCreateStatus.InvalidAnswer:
+                    createStatus = UserCreateStatus.InvalidAnswer;
+                    break;
+                case MembershipCreateStatus.InvalidEmail:
+                    createStatus = UserCreateStatus.InvalidEmail;
+                    break;
+                case MembershipCreateStatus.InvalidPassword:
+                    createStatus = UserCreateStatus.InvalidPassword;
+                    break;
+                case MembershipCreateStatus.InvalidProviderUserKey:
+                    createStatus = UserCreateStatus.InvalidProviderUserKey;
+                    break;
+                case MembershipCreateStatus.InvalidQuestion:
+                    createStatus = UserCreateStatus.InvalidQuestion;
+                    break;
+                case MembershipCreateStatus.InvalidUserName:
+                    createStatus = UserCreateStatus.InvalidUserName;
+                    break;
+                case MembershipCreateStatus.ProviderError:
+                    createStatus = UserCreateStatus.ProviderError;
+                    break;
+                case MembershipCreateStatus.UserRejected:
+                    createStatus = UserCreateStatus.UserRejected;
+                    break;
+            }
+
+            return createStatus;
+        }
+
+        private static void DeleteMembershipUser(UserInfo user)
+        {
+            try
+            {
+                System.Web.Security.Membership.DeleteUser(user.Username, true);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+        }
+
+        private static ArrayList FillUserCollection(int portalId, IDataReader dr, ref int totalRecords)
+        {
+            // Note:  the DataReader returned from this method should contain 2 result sets.  The first set
+            //       contains the TotalRecords, that satisfy the filter, the second contains the page
+            //       of data
+            var arrUsers = new ArrayList();
+            try
+            {
+                while (dr.Read())
+                {
+                    // fill business object
+                    UserInfo user = FillUserInfo(portalId, dr, false);
+
+                    // add to collection
+                    arrUsers.Add(user);
+                }
+
+                // Get the next result (containing the total)
+                dr.NextResult();
+
+                // Get the total no of records from the second result
+                totalRecords = Globals.GetTotalRecords(ref dr);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return arrUsers;
+        }
+
+        private static IList<UserInfo> FillUserList(int portalId, IDataReader dr)
+        {
+            var users = new List<UserInfo>();
+            try
+            {
+                while (dr.Read())
+                {
+                    // fill business object
+                    UserInfo user = FillUserAndProfile(portalId, dr);
+
+                    // add to collection
+                    users.Add(user);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return users;
+        }
+
+        private static UserInfo FillUserAndProfile(int portalId, IDataReader dr)
+        {
+            UserInfo user = null;
+            bool bContinue = string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase);
+
+            // Ensure the data reader returned is valid
+            if (bContinue)
+            {
+                user = new UserInfo
+                {
+                    PortalID = Null.SetNullInteger(dr["PortalID"]),
+                    IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
+                    IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]),
+                    UserID = Null.SetNullInteger(dr["UserID"]),
+                    DisplayName = Null.SetNullString(dr["DisplayName"]),
+                    Username = Null.SetNullString(dr["Username"]),
+                    Email = Null.SetNullString(dr["Email"]),
+                    AffiliateID = Null.SetNullInteger(dr["AffiliateID"]),
+                };
+                user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
+
+                UserController.GetUserMembership(user);
+                user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
+                if (!user.IsSuperUser)
+                {
+                    user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
+                }
+
+                if (user.PortalID == Null.NullInteger)
+                {
+                    user.PortalID = portalId;
+                }
+
+                var userProfile = new UserProfile(user);
+                userProfile.InitialiseProfile(portalId);
+
+                for (int i = 0; i < dr.FieldCount; i++)
+                {
+                    switch (dr.GetName(i))
+                    {
+                        case "PortalID":
+                        case "IsSuperUser":
+                        case "IsDeleted":
+                        case "UserID":
+                        case "DisplayName":
+                        case "Username":
+                        case "Email":
+                        case "AffiliateID":
+                        case "UpdatePassword":
+                        case "Authorised":
+                        case "CreateDate":
+                        case "LastActivityDate":
+                        case "LastLockoutDate":
+                        case "LastLoginDate":
+                        case "LastPasswordChangedDate":
+                        case "IsLockedOut":
+                        case "PasswordQuestion":
+                        case "IsApproved":
+                        case "PasswordResetToken":
+                        case "PasswordResetExpiration":
+                            break;
+                        default:
+                            // Probably a profile property
+                            string name = dr.GetName(i);
+                            userProfile.SetProfileProperty(name, Null.SetNullString(dr[name]));
+                            break;
+                    }
+                }
+
+                user.Profile = userProfile;
+            }
+
+            return user;
+        }
+
+        private static UserInfo FillUserInfo(int portalId, IDataReader dr, bool closeDataReader)
+        {
+            UserInfo user = null;
+            try
+            {
+                // read datareader
+                bool bContinue = true;
+                if (closeDataReader)
+                {
+                    bContinue = false;
+                    if (dr.Read())
+                    {
+                        // Ensure the data reader returned is valid
+                        if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            bContinue = true;
+                        }
+                    }
+                }
+
+                if (bContinue)
+                {
+                    user = new UserInfo
+                    {
+                        PortalID = Null.SetNullInteger(dr["PortalID"]),
+                        IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
+                        UserID = Null.SetNullInteger(dr["UserID"]),
+                        DisplayName = Null.SetNullString(dr["DisplayName"]),
+                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
+                    };
+
+                    var schema = dr.GetSchemaTable();
+                    if (schema != null)
+                    {
+                        if (schema.Select("ColumnName = 'IsDeleted'").Length > 0)
+                        {
+                            user.IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
+                        }
+
+                        if (schema.Select("ColumnName = 'VanityUrl'").Length > 0)
+                        {
+                            user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
+                        }
+
+                        if (schema.Select("ColumnName = 'HasAgreedToTerms'").Length > 0)
+                        {
+                            user.HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]);
+                        }
+
+                        if (schema.Select("ColumnName = 'HasAgreedToTermsOn'").Length > 0)
+                        {
+                            user.HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]);
+                        }
+                        else
+                        {
+                            user.HasAgreedToTermsOn = Null.NullDate;
+                        }
+
+                        if (schema.Select("ColumnName = 'RequestsRemoval'").Length > 0)
+                        {
+                            user.RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"]);
+                        }
+
+                        if (schema.Select("ColumnName = 'PasswordResetExpiration'").Length > 0)
+                        {
+                            user.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
+                        }
+
+                        if (schema.Select("ColumnName = 'PasswordResetToken'").Length > 0)
+                        {
+                            user.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
+                        }
+                    }
+
+                    user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
+                    user.Username = Null.SetNullString(dr["Username"]);
+                    UserController.GetUserMembership(user);
+                    user.Email = Null.SetNullString(dr["Email"]);
+                    user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
+
+                    if (!user.IsSuperUser)
+                    {
+                        user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
+                    }
+
+                    if (user.PortalID == Null.NullInteger)
+                    {
+                        user.PortalID = portalId;
+                    }
+
+                    user.FillBaseProperties(dr);
+                }
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, closeDataReader);
+            }
+
+            return user;
+        }
+
+        private static void FillUserMembership(MembershipUser aspNetUser, UserInfo user)
+        {
+            // Fill Membership Property
+            if (aspNetUser != null)
+            {
+                if (user.Membership == null)
+                {
+                    user.Membership = new UserMembership(user);
+                }
+
+                user.Membership.CreatedDate = aspNetUser.CreationDate;
+                user.Membership.LastActivityDate = aspNetUser.LastActivityDate;
+                user.Membership.LastLockoutDate = aspNetUser.LastLockoutDate;
+                user.Membership.LastLoginDate = aspNetUser.LastLoginDate;
+                user.Membership.LastPasswordChangeDate = aspNetUser.LastPasswordChangedDate;
+                user.Membership.LockedOut = aspNetUser.IsLockedOut;
+                user.Membership.PasswordQuestion = aspNetUser.PasswordQuestion;
+                user.Membership.IsDeleted = user.IsDeleted;
+
+                if (user.IsSuperUser)
+                {
+                    // For superusers the Approved info is stored in aspnet membership
+                    user.Membership.Approved = aspNetUser.IsApproved;
+                }
+            }
+        }
+
+        private static MembershipUser GetMembershipUser(UserInfo user)
+        {
+            return GetMembershipUser(user.Username);
+        }
+
+        private static MembershipUser GetMembershipUser(string userName)
+        {
+            return
+                CBO.GetCachedObject<MembershipUser>(
+                    new CacheItemArgs(GetCacheKey(userName), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
+                                      userName), GetMembershipUserCallBack);
+        }
+
+        private static MembershipUser GetMembershipUserByUserKey(string userKey)
+        {
+            return
+                CBO.GetCachedObject<MembershipUser>(
+                    new CacheItemArgs(GetCacheKey(userKey), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
+                        userKey), GetMembershipUserByUserKeyCallBack);
+        }
+
+        private static string GetCacheKey(string cacheKey)
+        {
+            return $"MembershipUser_{cacheKey}";
+        }
+
+        private static object GetMembershipUserCallBack(CacheItemArgs cacheItemArgs)
+        {
+            string userName = cacheItemArgs.ParamList[0].ToString();
+
+            return System.Web.Security.Membership.GetUser(userName);
+        }
+
+        private static object GetMembershipUserByUserKeyCallBack(CacheItemArgs cacheItemArgs)
+        {
+            string userKey = cacheItemArgs.ParamList[0].ToString();
+
+            return System.Web.Security.Membership.GetUser(new Guid(userKey));
+        }
+
+        private static void UpdateUserMembership(UserInfo user)
+        {
+            var portalSecurity = PortalSecurity.Instance;
+            string email = portalSecurity.InputFilter(
+                user.Email,
+                PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+
+            // Persist the Membership Properties to the AspNet Data Store
+            MembershipUser membershipUser = System.Web.Security.Membership.GetUser(user.Username);
+            membershipUser.Email = email;
+            membershipUser.LastActivityDate = DateTime.Now;
+            if (user.IsSuperUser)
+            {
+                membershipUser.IsApproved = user.Membership.Approved;
+            }
+
+            try
+            {
+                System.Web.Security.Membership.UpdateUser(membershipUser);
+            }
+            catch (ProviderException ex)
+            {
+                throw new Exception(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
+            }
+
+            DataCache.RemoveCache(GetCacheKey(user.Username));
+        }
+
+        private static UserLoginStatus ValidateLogin(string username, string authType, UserInfo user,
+                                                     UserLoginStatus loginStatus, string password, ref bool bValid,
+                                                     int portalId)
+        {
+            if (loginStatus != UserLoginStatus.LOGIN_USERLOCKEDOUT &&
+                (loginStatus != UserLoginStatus.LOGIN_USERNOTAPPROVED || user.IsInRole("Unverified Users")))
+            {
+                if (authType == "DNN")
+                {
+                    if (user.IsSuperUser)
+                    {
+                        if (ValidateUser(username, password))
+                        {
+                            loginStatus = UserLoginStatus.LOGIN_SUPERUSER;
+                            bValid = true;
+                        }
+                    }
+                    else
+                    {
+                        if (ValidateUser(username, password))
+                        {
+                            loginStatus = UserLoginStatus.LOGIN_SUCCESS;
+                            bValid = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (user.IsSuperUser)
+                    {
+                        loginStatus = UserLoginStatus.LOGIN_SUPERUSER;
+                        bValid = true;
+                    }
+                    else
+                    {
+                        loginStatus = UserLoginStatus.LOGIN_SUCCESS;
+                        bValid = true;
+                    }
+                }
+            }
+
+            return loginStatus;
+        }
+
+        private static bool ValidateUser(string username, string password)
+        {
+            return System.Web.Security.Membership.ValidateUser(username, password);
+        }
+
+        private UserCreateStatus CreateDNNUser(ref UserInfo user)
+        {
+            var objSecurity = PortalSecurity.Instance;
+            var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
+            user.Username = objSecurity.InputFilter(user.Username, filterFlags);
+            user.Email = objSecurity.InputFilter(user.Email, filterFlags);
+            user.LastName = objSecurity.InputFilter(user.LastName, filterFlags);
+            user.FirstName = objSecurity.InputFilter(user.FirstName, filterFlags);
+            user.DisplayName = objSecurity.InputFilter(user.DisplayName, filterFlags);
+            if (user.DisplayName.Contains("<") || user.DisplayName.Contains(">"))
+            {
+                user.DisplayName = HttpUtility.HtmlEncode(user.DisplayName);
+            }
+
+            var updatePassword = user.Membership.UpdatePassword;
+            var isApproved = user.Membership.Approved;
+            var createStatus = UserCreateStatus.Success;
+            try
+            {
+                user.UserID =
+                    Convert.ToInt32(this._dataProvider.AddUser(
+                        user.PortalID,
+                        user.Username,
+                        user.FirstName,
+                        user.LastName,
+                        user.AffiliateID,
+                        user.IsSuperUser,
+                        user.Email,
+                        user.DisplayName,
+                        updatePassword,
+                        isApproved,
+                        UserController.Instance.GetCurrentUserInfo().UserID));
+
+                // Save the user password history
+                new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
+            }
+            catch (Exception ex)
+            {
+                // Clear User (duplicate User information)
+                Exceptions.LogException(ex);
+                user = null;
+                createStatus = UserCreateStatus.ProviderError;
+            }
+
+            return createStatus;
+        }
+
+        private string GetStringSetting(Hashtable settings, string settingKey)
+        {
+            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
+        }
+
+        private UserCreateStatus ValidateForProfanity(UserInfo user)
+        {
+            var portalSecurity = PortalSecurity.Instance;
+            var createStatus = UserCreateStatus.AddUser;
+
+            Hashtable settings = UserController.GetUserSettings(user.PortalID);
+            bool useProfanityFilter = Convert.ToBoolean(settings["Registration_UseProfanityFilter"]);
+
+            // Validate Profanity
+            if (useProfanityFilter)
+            {
+                if (!portalSecurity.ValidateInput(user.Username, PortalSecurity.FilterFlag.NoProfanity))
+                {
+                    createStatus = UserCreateStatus.InvalidUserName;
+                }
+
+                if (!string.IsNullOrEmpty(user.DisplayName))
+                {
+                    if (!portalSecurity.ValidateInput(user.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
+                    {
+                        createStatus = UserCreateStatus.InvalidDisplayName;
+                    }
+                }
+            }
+
+            return createStatus;
+        }
+
+        private void ValidateForDuplicateDisplayName(UserInfo user, ref UserCreateStatus createStatus)
+        {
+            Hashtable settings = UserController.GetUserSettings(user.PortalID);
+            bool requireUniqueDisplayName = Convert.ToBoolean(settings["Registration_RequireUniqueDisplayName"]);
+
+            if (requireUniqueDisplayName)
+            {
+                UserInfo duplicateUser = this.GetUserByDisplayName(user.PortalID, user.DisplayName);
+                if (duplicateUser != null)
+                {
+                    createStatus = UserCreateStatus.DuplicateDisplayName;
+                }
+            }
+        }
+
+        private string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         /// -----------------------------------------------------------------------------

@@ -120,29 +120,6 @@ namespace DotNetNuke.Entities.Urls
             return homeTabId;
         }
 
-        private static string AppendToTabPath(string path, TabInfo tab, FriendlyUrlOptions options, out bool modified)
-        {
-            string tabName = tab.TabName;
-            var result = new StringBuilder(tabName.Length);
-
-            // 922 : change to harmonise cleaning of tab + other url name items
-            tabName = FriendlyUrlController.CleanNameForUrl(tabName, options, out modified);
-            if (!modified
-                && string.IsNullOrEmpty(options.PunctuationReplacement) == false
-                && tab.TabName.Contains(" ")
-                && tabName.Contains(" ") == false)
-            {
-                modified = true;
-
-                // spaces replaced - the modified parameter is for all other replacements but space replacements
-            }
-
-            result.Append(tabName);
-            result.Insert(0, "//");
-            result.Insert(0, path); // effectively adds result to the end of the path
-            return result.ToString();
-        }
-
         internal static string GetTabAliasSkinForTabAndAlias(int portalId, string httpAlias, string culture)
         {
             string skin = null;
@@ -392,6 +369,29 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return isTabHomePage;
+        }
+
+        private static string AppendToTabPath(string path, TabInfo tab, FriendlyUrlOptions options, out bool modified)
+        {
+            string tabName = tab.TabName;
+            var result = new StringBuilder(tabName.Length);
+
+            // 922 : change to harmonise cleaning of tab + other url name items
+            tabName = FriendlyUrlController.CleanNameForUrl(tabName, options, out modified);
+            if (!modified
+                && string.IsNullOrEmpty(options.PunctuationReplacement) == false
+                && tab.TabName.Contains(" ")
+                && tabName.Contains(" ") == false)
+            {
+                modified = true;
+
+                // spaces replaced - the modified parameter is for all other replacements but space replacements
+            }
+
+            result.Append(tabName);
+            result.Insert(0, "//");
+            result.Insert(0, path); // effectively adds result to the end of the path
+            return result.ToString();
         }
     }
 }

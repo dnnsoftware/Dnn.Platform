@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     using System;
@@ -32,16 +31,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public JavaScriptLibrary GetLibrary(Func<JavaScriptLibrary, bool> predicate)
         {
             return this.GetLibraries(predicate).OrderByDescending(l => l.Version).FirstOrDefault();
-        }
-
-        protected override Func<IJavaScriptLibraryController> GetFactory()
-        {
-            return () => new JavaScriptLibraryController();
-        }
-
-        private void ClearCache()
-        {
-            DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
         }
 
         /// <summary>Gets all of the <see cref="JavaScriptLibrary"/> instances matching the given <paramref name="predicate"/>.</summary>
@@ -82,6 +71,16 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 library.PreferredScriptLocation,
                 library.CDNPath);
             this.ClearCache();
+        }
+
+        protected override Func<IJavaScriptLibraryController> GetFactory()
+        {
+            return () => new JavaScriptLibraryController();
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
         }
     }
 }

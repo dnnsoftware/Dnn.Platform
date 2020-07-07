@@ -9,11 +9,6 @@ namespace DotNetNuke.Services.Connections
     public interface IConnector
     {
         /// <summary>
-        /// Gets or sets id of the connector. It is required if SupportsMultiple is true.
-        /// </summary>
-        string Id { get; set; }
-
-        /// <summary>
         /// Gets unique name of the connector. It is used to distinguish between different types of connectors.
         /// </summary>
         string Name { get; }
@@ -29,11 +24,6 @@ namespace DotNetNuke.Services.Connections
         bool SupportsMultiple { get; }
 
         /// <summary>
-        /// Gets or sets display name of the connector.
-        /// </summary>
-        string DisplayName { get; set; }
-
-        /// <summary>
         /// Gets icon url of the connector.
         /// </summary>
         string IconUrl { get; }
@@ -47,6 +37,16 @@ namespace DotNetNuke.Services.Connections
         /// Gets a value indicating whether determines if it is engage connector or not.
         /// </summary>
         bool IsEngageConnector { get; }
+
+        /// <summary>
+        /// Gets or sets id of the connector. It is required if SupportsMultiple is true.
+        /// </summary>
+        string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets display name of the connector.
+        /// </summary>
+        string DisplayName { get; set; }
 
         /// <summary>
         /// Checks if the connector has been configured or not.

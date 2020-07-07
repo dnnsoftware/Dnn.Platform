@@ -28,6 +28,23 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Permission Collection.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public FolderPermissionCollection Permissions
+        {
+            get
+            {
+                // First Update Permissions in case they have been changed
+                this.UpdatePermissions();
+
+                // Return the FolderPermissions
+                return this.FolderPermissions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and Sets the path of the Folder.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -43,23 +60,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 this._folderPath = value;
                 this._refreshGrid = true;
                 this.GetFolderPermissions();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Permission Collection.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public FolderPermissionCollection Permissions
-        {
-            get
-            {
-                // First Update Permissions in case they have been changed
-                this.UpdatePermissions();
-
-                // Return the FolderPermissions
-                return this.FolderPermissions;
             }
         }
 
@@ -125,49 +125,6 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             // Clear Permission List
             this._permissionsList = null;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
-        /// </summary>
-        /// <param name="settings">A string array of settings.</param>
-        /// -----------------------------------------------------------------------------
-        private FolderPermissionInfo ParseKeys(string[] settings)
-        {
-            var objFolderPermission = new FolderPermissionInfo();
-
-            // Call base class to load base properties
-            this.ParsePermissionKeys(objFolderPermission, settings);
-            if (string.IsNullOrEmpty(settings[2]))
-            {
-                objFolderPermission.FolderPermissionID = -1;
-            }
-            else
-            {
-                objFolderPermission.FolderPermissionID = Convert.ToInt32(settings[2]);
-            }
-
-            objFolderPermission.FolderPath = this.FolderPath;
-            return objFolderPermission;
-        }
-
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            var item = e.Item;
-
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
-                {
-                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
-                    if (actionImage != null)
-                    {
-                        actionImage.Visible = false;
-                    }
-                }
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -334,21 +291,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)
-        {
-            return this.IsSystemFolderPermission(permissionInfo);
-        }
-
-        private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
-        {
-            return this._systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
-        }
-
-        private bool IsImplicitRole(int portalId, int roleId)
-        {
-            return FolderPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
-        }
-
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this.FolderPermissions.Remove(permissionID, roleID, userID);
@@ -413,6 +355,64 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return this.IsSystemFolderPermission(permissionInfo);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
+        /// </summary>
+        /// <param name="settings">A string array of settings.</param>
+        /// -----------------------------------------------------------------------------
+        private FolderPermissionInfo ParseKeys(string[] settings)
+        {
+            var objFolderPermission = new FolderPermissionInfo();
+
+            // Call base class to load base properties
+            this.ParsePermissionKeys(objFolderPermission, settings);
+            if (string.IsNullOrEmpty(settings[2]))
+            {
+                objFolderPermission.FolderPermissionID = -1;
+            }
+            else
+            {
+                objFolderPermission.FolderPermissionID = Convert.ToInt32(settings[2]);
+            }
+
+            objFolderPermission.FolderPath = this.FolderPath;
+            return objFolderPermission;
+        }
+
+        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                {
+                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
+                    if (actionImage != null)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
+        }
+
+        private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)
+        {
+            return this.IsSystemFolderPermission(permissionInfo);
+        }
+
+        private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
+        {
+            return this._systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
+        }
+
+        private bool IsImplicitRole(int portalId, int roleId)
+        {
+            return FolderPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
     }
 }

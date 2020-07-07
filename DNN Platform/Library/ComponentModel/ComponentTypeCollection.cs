@@ -8,6 +8,5 @@ namespace DotNetNuke.ComponentModel
     using DotNetNuke.Collections.Internal;
 
     internal class ComponentTypeCollection : SharedDictionary<Type, ComponentType>
-    {
-    }
+    {}
 }

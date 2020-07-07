@@ -105,50 +105,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(contentItem.Files[2].FileId, 2);
         }
 
-        private static Mock<IDataService> DataServiceFactory()
-        {
-            var dataService = new Mock<IDataService>();
-
-            dataService.Setup(ds =>
-             ds.SynchronizeMetaData(
-                 It.IsAny<ContentItem>(),
-                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>(),
-                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>()))
-             .Callback<ContentItem, IEnumerable<KeyValuePair<string, string>>, IEnumerable<KeyValuePair<string, string>>>(
-                 (ci, added, deleted) =>
-                 {
-                     deleted.ToList().ForEach(
-                         item => dataService.Object.DeleteMetaData(ci, item.Key, item.Value));
-
-                     added.ToList().ForEach(
-                         item => dataService.Object.AddMetaData(ci, item.Key, item.Value));
-                 });
-
-            // Register controller types that are dependent on our IDataService.
-            var contentController = new ContentController(dataService.Object);
-
-            ComponentFactory.RegisterComponentInstance<IAttachmentController>(new FileController(contentController));
-            ComponentFactory.RegisterComponentInstance<IContentController>(contentController);
-            ComponentFactory.RegisterComponentInstance<IFileManager>(MockHelper.CreateMockFileManager().Object);
-
-            return dataService;
-        }
-
-        private static Mock<IDataService> DataServiceFactoryWithLocalMetaData(ref Dictionary<string, string> metadata)
-        {
-            var dataService = DataServiceFactory();
-
-            var closure = metadata;
-
-            dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(() => MockHelper.CreateMetaDataReaderFromDictionary(closure));
-            dataService.Setup(ds => ds.AddMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>())).
-                Callback<ContentItem, string, string>((ci, name, value) => closure[name] = value);
-            dataService.Setup(ds => ds.DeleteMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Callback<ContentItem, string, string>((ci, key, val) => closure.Remove(key));
-
-            return dataService;
-        }
-
         [Test]
         public void Test_Add_Attachments_With_FileController()
         {
@@ -290,6 +246,50 @@ namespace DotNetNuke.Tests.Content
 
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Exactly(2));
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
+        }
+
+        private static Mock<IDataService> DataServiceFactory()
+        {
+            var dataService = new Mock<IDataService>();
+
+            dataService.Setup(ds =>
+             ds.SynchronizeMetaData(
+                 It.IsAny<ContentItem>(),
+                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>(),
+                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>()))
+             .Callback<ContentItem, IEnumerable<KeyValuePair<string, string>>, IEnumerable<KeyValuePair<string, string>>>(
+                 (ci, added, deleted) =>
+                 {
+                     deleted.ToList().ForEach(
+                         item => dataService.Object.DeleteMetaData(ci, item.Key, item.Value));
+
+                     added.ToList().ForEach(
+                         item => dataService.Object.AddMetaData(ci, item.Key, item.Value));
+                 });
+
+            // Register controller types that are dependent on our IDataService.
+            var contentController = new ContentController(dataService.Object);
+
+            ComponentFactory.RegisterComponentInstance<IAttachmentController>(new FileController(contentController));
+            ComponentFactory.RegisterComponentInstance<IContentController>(contentController);
+            ComponentFactory.RegisterComponentInstance<IFileManager>(MockHelper.CreateMockFileManager().Object);
+
+            return dataService;
+        }
+
+        private static Mock<IDataService> DataServiceFactoryWithLocalMetaData(ref Dictionary<string, string> metadata)
+        {
+            var dataService = DataServiceFactory();
+
+            var closure = metadata;
+
+            dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(() => MockHelper.CreateMetaDataReaderFromDictionary(closure));
+            dataService.Setup(ds => ds.AddMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>())).
+                Callback<ContentItem, string, string>((ci, name, value) => closure[name] = value);
+            dataService.Setup(ds => ds.DeleteMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<ContentItem, string, string>((ci, key, val) => closure.Remove(key));
+
+            return dataService;
         }
     }
 }

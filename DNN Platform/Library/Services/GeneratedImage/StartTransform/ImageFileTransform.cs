@@ -24,6 +24,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
+        /// Gets provides an Unique String for the image transformation.
+        /// </summary>
+        public override string UniqueString => base.UniqueString + "-" + this.ImageFilePath + this.ImageUrl;
+
+        /// <summary>
         /// Gets or sets file path of the image.
         /// </summary>
         public string ImageFilePath { get; set; }
@@ -37,11 +42,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Gets or sets the Image to return if no image or error.
         /// </summary>
         public Image EmptyImage { get; set; }
-
-        /// <summary>
-        /// Gets provides an Unique String for the image transformation.
-        /// </summary>
-        public override string UniqueString => base.UniqueString + "-" + this.ImageFilePath + this.ImageUrl;
 
         /// <summary>
         /// Processes an input image applying a file image transformation.

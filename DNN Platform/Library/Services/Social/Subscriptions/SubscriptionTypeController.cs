@@ -45,11 +45,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.GetSubscriptionTypes().SingleOrDefault(predicate);
         }
 
-        protected override Func<ISubscriptionTypeController> GetFactory()
-        {
-            return () => new SubscriptionTypeController();
-        }
-
         public IEnumerable<SubscriptionType> GetSubscriptionTypes()
         {
             var cacheArgs = new CacheItemArgs(
@@ -76,6 +71,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
             this.dataService.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId);
             CleanCache();
+        }
+
+        protected override Func<ISubscriptionTypeController> GetFactory()
+        {
+            return () => new SubscriptionTypeController();
         }
 
         private static void CleanCache()

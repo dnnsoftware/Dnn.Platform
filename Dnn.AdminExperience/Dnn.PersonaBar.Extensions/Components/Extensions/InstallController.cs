@@ -89,11 +89,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             return parseResult;
         }
 
-        protected override Func<IInstallController> GetFactory()
-        {
-            return () => new InstallController();
-        }
-
         public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)
         {
             var installResult = new InstallResultDto();
@@ -157,6 +152,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
             return installResult;
+        }
+
+        protected override Func<IInstallController> GetFactory()
+        {
+            return () => new InstallController();
         }
 
         private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null, bool isPortalPackage = false)

@@ -67,17 +67,6 @@ namespace Dnn.PersonaBar.Users.Tests
             Assert.IsTrue(result.IsError);
         }
 
-        protected override DeleteUser CreateCommand()
-        {
-            return new DeleteUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
-        }
-
-        protected override void ChildSetup()
-        {
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
-        }
-
         [Test]
         public void Run_DeleteUserFailed_ReturnErrorResponse()
         {
@@ -119,6 +108,17 @@ namespace Dnn.PersonaBar.Users.Tests
 
             // Assert
             Assert.IsTrue(result.IsError);
+        }
+
+        protected override DeleteUser CreateCommand()
+        {
+            return new DeleteUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
+        }
+
+        protected override void ChildSetup()
+        {
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
         }
     }
 }

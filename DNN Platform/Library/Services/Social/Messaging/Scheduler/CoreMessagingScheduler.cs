@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
                 var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "AcceptFriend");
                 var profileUrl = GetProfileUrl(portalSettings, authorId);
-                var linkContent = GetFriendRequestActionsTemplate(defaultLanguage);
+                var linkContent = GetFriendRequestActionsTemplate(portalSettings, defaultLanguage);
                 emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));
             }
 
@@ -167,7 +167,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
                 var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "FollowBack");
                 var profileUrl = GetProfileUrl(portalSettings, authorId);
-                var linkContent = GetFollowRequestActionsTemplate(defaultLanguage);
+                var linkContent = GetFollowRequestActionsTemplate(portalSettings, defaultLanguage);
                 emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));
             }
 
@@ -191,23 +191,23 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the email body item template.</summary>
         /// <param name="language">The language.</param>
         /// <returns>The email body template item from the Global Resource File: EMAIL_MESSAGING_DISPATCH_ITEM.</returns>
-        private static string GetEmailBodyItemTemplate(string language)
+        private static string GetEmailBodyItemTemplate(PortalSettings portalSettings, string language)
         {
-            return Localization.GetString("EMAIL_MESSAGING_DISPATCH_ITEM", Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_MESSAGING_DISPATCH_ITEM", Localization.GlobalResourceFile, portalSettings, language);
         }
 
         /// <summary>Gets the email body template.</summary>
         /// <param name="language">The language.</param>
         /// <returns>The email body template from the Global Resource File: EMAIL_MESSAGING_DISPATCH_BODY.</returns>
-        private static string GetEmailBodyTemplate(string language)
+        private static string GetEmailBodyTemplate(PortalSettings portalSettings, string language)
         {
-            return Localization.GetString("EMAIL_MESSAGING_DISPATCH_BODY", Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_MESSAGING_DISPATCH_BODY", Localization.GlobalResourceFile, portalSettings, language);
         }
 
         /// <summary>Gets the email subject template.</summary>
         /// <param name="language">The language.</param>
         /// <returns>The email subject template from the Global Resource File: EMAIL_SUBJECT_FORMAT.</returns>
-        private static string GetEmailSubjectTemplate(string language)
+        private static string GetEmailSubjectTemplate(PortalSettings portalSettings, string language)
         {
             return Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.GlobalResourceFile, language);
         }
@@ -215,17 +215,17 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the friend request actions template.</summary>
         /// <param name="language">The language.</param>
         /// <returns>The friend request actions defined in the Global Resource File: EMAIL_SOCIAL_FRIENDREQUESTACTIONS.</returns>
-        private static string GetFriendRequestActionsTemplate(string language)
+        private static string GetFriendRequestActionsTemplate(PortalSettings portalSettings, string language)
         {
-            return Localization.GetString("EMAIL_SOCIAL_FRIENDREQUESTACTIONS", Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_SOCIAL_FRIENDREQUESTACTIONS", Localization.GlobalResourceFile, portalSettings, language);
         }
 
         /// <summary>Gets the follow request actions template.</summary>
         /// <param name="language">The language.</param>
         /// <returns>The follow request actions defined in the Global Resource File: EMAIL_SOCIAL_FOLLOWREQUESTACTIONS.</returns>
-        private static string GetFollowRequestActionsTemplate(string language)
+        private static string GetFollowRequestActionsTemplate(PortalSettings portalSettings, string language)
         {
-            return Localization.GetString("EMAIL_SOCIAL_FOLLOWREQUESTACTIONS", Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_SOCIAL_FOLLOWREQUESTACTIONS", Localization.GlobalResourceFile, portalSettings, language);
         }
 
         /// <summary>Gets the name of the sender.</summary>
@@ -584,9 +584,9 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             var defaultLanguage = recipientUser.Profile.PreferredLocale;
 
-            var emailSubjectTemplate = GetEmailSubjectTemplate(defaultLanguage);
-            var emailBodyTemplate = GetEmailBodyTemplate(defaultLanguage);
-            var emailBodyItemTemplate = GetEmailBodyItemTemplate(defaultLanguage);
+            var emailSubjectTemplate = GetEmailSubjectTemplate(portalSettings, defaultLanguage);
+            var emailBodyTemplate = GetEmailBodyTemplate(portalSettings, defaultLanguage);
+            var emailBodyItemTemplate = GetEmailBodyItemTemplate(portalSettings, defaultLanguage);
 
             var emailBodyItemContent = messageRecipients.Aggregate(
                 string.Empty,
@@ -694,13 +694,13 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             }
 
             var defaultLanguage = toUser.Profile.PreferredLocale;
+            var portalSettings = new PortalSettings(message.PortalID);
 
-            var emailSubjectTemplate = GetEmailSubjectTemplate(defaultLanguage);
-            var emailBodyTemplate = GetEmailBodyTemplate(defaultLanguage);
-            var emailBodyItemTemplate = GetEmailBodyItemTemplate(defaultLanguage);
+            var emailSubjectTemplate = GetEmailSubjectTemplate(portalSettings, defaultLanguage);
+            var emailBodyTemplate = GetEmailBodyTemplate(portalSettings, defaultLanguage);
+            var emailBodyItemTemplate = GetEmailBodyItemTemplate(portalSettings, defaultLanguage);
 
             var author = UserController.Instance.GetUser(message.PortalID, message.SenderUserID);
-            var portalSettings = new PortalSettings(message.PortalID);
             var fromAddress = (UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email) != null) ?
                 string.Format("{0} < {1} >", UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email).DisplayName, portalSettings.Email) : portalSettings.Email;
             var toAddress = toUser.Email;

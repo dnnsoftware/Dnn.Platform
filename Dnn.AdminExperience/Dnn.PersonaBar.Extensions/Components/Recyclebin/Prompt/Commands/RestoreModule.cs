@@ -16,11 +16,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_RestoreModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("pageid", "Prompt_RestoreModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         private int ModuleId { get; set; }
         private int PageId { get; set; }
 

@@ -12,10 +12,10 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         {
         }
 
-        public int TotalCount { get; set; }
-
         public UserBasicDto2(UserInfo user) : base(user)
         {
         }
+
+        public int TotalCount { get; set; }
     }
 }

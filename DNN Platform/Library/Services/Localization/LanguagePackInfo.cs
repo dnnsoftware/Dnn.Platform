@@ -18,6 +18,21 @@ namespace DotNetNuke.Services.Localization
         private int _LanguagePackID = Null.NullInteger;
         private int _PackageID = Null.NullInteger;
 
+        public LanguagePackType PackageType
+        {
+            get
+            {
+                if (this.DependentPackageID == -2)
+                {
+                    return LanguagePackType.Core;
+                }
+                else
+                {
+                    return LanguagePackType.Extension;
+                }
+            }
+        }
+
         public int LanguagePackID
         {
             get
@@ -67,21 +82,6 @@ namespace DotNetNuke.Services.Localization
             set
             {
                 this._DependentPackageID = value;
-            }
-        }
-
-        public LanguagePackType PackageType
-        {
-            get
-            {
-                if (this.DependentPackageID == -2)
-                {
-                    return LanguagePackType.Core;
-                }
-                else
-                {
-                    return LanguagePackType.Extension;
-                }
             }
         }
 

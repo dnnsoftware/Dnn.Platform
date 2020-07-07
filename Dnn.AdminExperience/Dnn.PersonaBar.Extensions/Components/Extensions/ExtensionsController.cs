@@ -28,10 +28,12 @@ namespace Dnn.PersonaBar.Extensions.Components
     public class ExtensionsController
     {
         private const string OwnerUpdateService = "DotNetNuke Update Service";
+
         public ExtensionsController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
         protected INavigationManager NavigationManager { get; }
 
         public IDictionary<string, PackageType> GetPackageTypes()
@@ -158,80 +160,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             return null;
         }
 
-        private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
-        {
-            try
-            {
-                StreamReader myResponseReader = UpdateService.GetLanguageList();
-                var xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.Load(myResponseReader);
-                XmlNodeList languages = xmlDoc.SelectNodes("available/language");
-
-                if (languages != null)
-                {
-                    var installedPackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "CoreLanguagePack");
-                    var installedLanguages = installedPackages.Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID)).ToList();
-                    foreach (XmlNode language in languages)
-                    {
-                        string cultureCode = "";
-                        string version = "";
-                        foreach (XmlNode child in language.ChildNodes)
-                        {
-                            if (child.Name == "culturecode")
-                            {
-                                cultureCode = child.InnerText;
-                            }
-
-                            if (child.Name == "version")
-                            {
-                                version = child.InnerText;
-                            }
-                        }
-                        if (!string.IsNullOrEmpty(cultureCode) && !string.IsNullOrEmpty(version) && version.Length == 6)
-                        {
-                            var myCIintl = new CultureInfo(cultureCode, true);
-                            version = version.Insert(4, ".").Insert(2, ".");
-                            var package = new PackageInfo { Owner = OwnerUpdateService, Name = "LanguagePack-" + myCIintl.Name, FriendlyName = myCIintl.NativeName };
-                            package.Name = myCIintl.NativeName;
-                            package.PackageType = "CoreLanguagePack";
-                            package.Description = cultureCode;
-                            Version ver = null;
-                            Version.TryParse(version, out ver);
-                            package.Version = ver;
-
-                            if (
-                                installedLanguages.Any(
-                                    l =>
-                                    LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant())
-                                    && installedPackages.First(p => p.PackageID == l.PackageID).Version >= ver))
-                            {
-                                continue;
-                            }
-
-                            if (validPackages.Values.Any(p => p.Name == package.Name))
-                            {
-                                var existPackage = validPackages.Values.First(p => p.Name == package.Name);
-                                if (package.Version > existPackage.Version)
-                                {
-                                    existPackage.Version = package.Version;
-                                }
-                            }
-                            else
-                            {
-                                validPackages.Add(cultureCode, package);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                //suppress for now - need to decide what to do when webservice is unreachable
-                //throw;
-                //same problem happens in InstallWizard.aspx.cs in BindLanguageList method
-            }
-        }
-
         public string GetFormattedTabLink(int portalId, TabInfo tab)
         {
             var returnValue = new StringBuilder();
@@ -286,16 +214,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             return string.Empty;
         }
 
-        private static void AddModulesToList(int portalId, List<PackageInfo> packages)
-        {
-            Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
-            packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
-                              let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
-                              from portalModule in portalModules.Values
-                              where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
-                              select modulePackage);
-        }
-
         internal static string UpgradeRedirect(Version version, string packageType, string packageName)
         {
             return Upgrade.UpgradeRedirect(version, packageType, packageName, "");
@@ -344,6 +262,16 @@ namespace Dnn.PersonaBar.Extensions.Components
         internal static IDictionary<int, PackageInfo> GetPackagesInUse(bool forHost)
         {
             return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, forHost);
+        }
+
+        private static void AddModulesToList(int portalId, List<PackageInfo> packages)
+        {
+            Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
+            packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
+                let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
+                from portalModule in portalModules.Values
+                where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
+                select modulePackage);
         }
 
         private static string FixIconUrl(string url)
@@ -398,6 +326,80 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return false;
             }
 
+        }
+
+        private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
+        {
+            try
+            {
+                StreamReader myResponseReader = UpdateService.GetLanguageList();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
+                xmlDoc.Load(myResponseReader);
+                XmlNodeList languages = xmlDoc.SelectNodes("available/language");
+
+                if (languages != null)
+                {
+                    var installedPackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "CoreLanguagePack");
+                    var installedLanguages = installedPackages.Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID)).ToList();
+                    foreach (XmlNode language in languages)
+                    {
+                        string cultureCode = "";
+                        string version = "";
+                        foreach (XmlNode child in language.ChildNodes)
+                        {
+                            if (child.Name == "culturecode")
+                            {
+                                cultureCode = child.InnerText;
+                            }
+
+                            if (child.Name == "version")
+                            {
+                                version = child.InnerText;
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(cultureCode) && !string.IsNullOrEmpty(version) && version.Length == 6)
+                        {
+                            var myCIintl = new CultureInfo(cultureCode, true);
+                            version = version.Insert(4, ".").Insert(2, ".");
+                            var package = new PackageInfo { Owner = OwnerUpdateService, Name = "LanguagePack-" + myCIintl.Name, FriendlyName = myCIintl.NativeName };
+                            package.Name = myCIintl.NativeName;
+                            package.PackageType = "CoreLanguagePack";
+                            package.Description = cultureCode;
+                            Version ver = null;
+                            Version.TryParse(version, out ver);
+                            package.Version = ver;
+
+                            if (
+                                installedLanguages.Any(
+                                    l =>
+                                        LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant())
+                                        && installedPackages.First(p => p.PackageID == l.PackageID).Version >= ver))
+                            {
+                                continue;
+                            }
+
+                            if (validPackages.Values.Any(p => p.Name == package.Name))
+                            {
+                                var existPackage = validPackages.Values.First(p => p.Name == package.Name);
+                                if (package.Version > existPackage.Version)
+                                {
+                                    existPackage.Version = package.Version;
+                                }
+                            }
+                            else
+                            {
+                                validPackages.Add(cultureCode, package);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //suppress for now - need to decide what to do when webservice is unreachable
+                //throw;
+                //same problem happens in InstallWizard.aspx.cs in BindLanguageList method
+            }
         }
     }
 }

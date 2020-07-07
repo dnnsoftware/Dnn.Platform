@@ -31,10 +31,9 @@ namespace DotNetNuke.UI.UserControls
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
+        private const string MyFileName = "TextEditor.ascx";
         protected Panel PanelTextEditor;
         protected RadioButtonList OptRender;
-        private const string MyFileName = "TextEditor.ascx";
-        private HtmlEditorProvider _richTextEditor;
         protected RadioButtonList OptView;
         protected PlaceHolder PlcEditor;
         protected HtmlGenericControl DivBasicTextBox;
@@ -42,12 +41,55 @@ namespace DotNetNuke.UI.UserControls
         protected HtmlGenericControl DivRichTextBox;
         protected Panel PanelView;
         protected TextBox TxtDesktopHTML;
+        private HtmlEditorProvider _richTextEditor;
 
         public TextEditor()
         {
             this.HtmlEncode = true;
             this.ChooseRender = true;
             this.ChooseMode = true;
+        }
+
+        public bool IsRichEditorAvailable
+        {
+            get
+            {
+                return this._richTextEditor != null;
+            }
+        }
+
+        /// <summary>Gets allows public access ot the HtmlEditorProvider.</summary>
+        public HtmlEditorProvider RichText
+        {
+            get
+            {
+                return this._richTextEditor;
+            }
+        }
+
+        /// <summary>Gets allows public access of the BasicTextEditor.</summary>
+        public TextBox BasicTextEditor
+        {
+            get
+            {
+                return this.TxtDesktopHTML;
+            }
+        }
+
+        public string OptViewClientId
+        {
+            get
+            {
+                return this.OptView.ClientID;
+            }
+        }
+
+        public string LocalResourceFile
+        {
+            get
+            {
+                return this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + MyFileName;
+            }
         }
 
         /// <summary>Gets or sets a value indicating whether enables/Disables the option to allow the user to select between Rich/Basic Mode, Default is true.</summary>
@@ -210,48 +252,6 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>Gets or sets /Sets the Width of the control.</summary>
         public Unit Width { get; set; }
 
-        public bool IsRichEditorAvailable
-        {
-            get
-            {
-                return this._richTextEditor != null;
-            }
-        }
-
-        /// <summary>Gets allows public access ot the HtmlEditorProvider.</summary>
-        public HtmlEditorProvider RichText
-        {
-            get
-            {
-                return this._richTextEditor;
-            }
-        }
-
-        /// <summary>Gets allows public access of the BasicTextEditor.</summary>
-        public TextBox BasicTextEditor
-        {
-            get
-            {
-                return this.TxtDesktopHTML;
-            }
-        }
-
-        public string OptViewClientId
-        {
-            get
-            {
-                return this.OptView.ClientID;
-            }
-        }
-
-        public string LocalResourceFile
-        {
-            get
-            {
-                return this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + MyFileName;
-            }
-        }
-
         public void ChangeMode(string mode)
         {
             this.OptView.SelectedItem.Value = mode;
@@ -262,117 +262,6 @@ namespace DotNetNuke.UI.UserControls
         {
             this.OptRender.SelectedItem.Value = textRenderMode;
             this.OptRenderSelectedIndexChanged(this.OptRender, EventArgs.Empty);
-        }
-
-        private static string RemoveBaseTags(string strInput)
-        {
-            return Globals.BaseTagRegex.Replace(strInput, " ");
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Decodes the html.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="strHtml">Html to decode.</param>
-        /// <returns>The decoded html.</returns>
-        /// -----------------------------------------------------------------------------
-        private string Decode(string strHtml)
-        {
-            return this.HtmlEncode ? this.Server.HtmlDecode(strHtml) : strHtml;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Encodes the html.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="strHtml">Html to encode.</param>
-        /// <returns>The encoded html.</returns>
-        /// -----------------------------------------------------------------------------
-        private string Encode(string strHtml)
-        {
-            return this.HtmlEncode ? this.Server.HtmlEncode(strHtml) : strHtml;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Builds the radio button lists.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void PopulateLists()
-        {
-            if (this.OptRender.Items.Count == 0)
-            {
-                this.OptRender.Items.Add(new ListItem(Localization.GetString("Text", Localization.GetResourceFile(this, MyFileName)), "T"));
-                this.OptRender.Items.Add(new ListItem(Localization.GetString("Html", Localization.GetResourceFile(this, MyFileName)), "H"));
-                this.OptRender.Items.Add(new ListItem(Localization.GetString("Raw", Localization.GetResourceFile(this, MyFileName)), "R"));
-            }
-
-            if (this.OptView.Items.Count == 0)
-            {
-                this.OptView.Items.Add(new ListItem(Localization.GetString("BasicTextBox", Localization.GetResourceFile(this, MyFileName)), "BASIC"));
-                if (this.IsRichEditorAvailable)
-                {
-                    this.OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets the Mode displayed.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void SetPanels()
-        {
-            if (this.OptView.SelectedIndex != -1)
-            {
-                this.Mode = this.OptView.SelectedItem.Value;
-            }
-
-            if (!string.IsNullOrEmpty(this.Mode))
-            {
-                this.OptView.Items.FindByValue(this.Mode).Selected = true;
-            }
-            else
-            {
-                this.OptView.SelectedIndex = 0;
-            }
-
-            // Set the text render mode for basic mode
-            if (this.OptRender.SelectedIndex != -1)
-            {
-                this.TextRenderMode = this.OptRender.SelectedItem.Value;
-            }
-
-            if (!string.IsNullOrEmpty(this.TextRenderMode))
-            {
-                this.OptRender.Items.FindByValue(this.TextRenderMode).Selected = true;
-            }
-            else
-            {
-                this.OptRender.SelectedIndex = 0;
-            }
-
-            if (this.OptView.SelectedItem.Value == "BASIC")
-            {
-                this.DivBasicTextBox.Visible = true;
-                this.DivRichTextBox.Visible = false;
-                this.PanelView.CssClass = "dnnTextPanelView dnnTextPanelView-basic";
-            }
-            else
-            {
-                this.DivBasicTextBox.Visible = false;
-                this.DivRichTextBox.Visible = true;
-                this.PanelView.CssClass = "dnnTextPanelView";
-            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -509,6 +398,117 @@ namespace DotNetNuke.UI.UserControls
             }
 
             this.SetPanels();
+        }
+
+        private static string RemoveBaseTags(string strInput)
+        {
+            return Globals.BaseTagRegex.Replace(strInput, " ");
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Decodes the html.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="strHtml">Html to decode.</param>
+        /// <returns>The decoded html.</returns>
+        /// -----------------------------------------------------------------------------
+        private string Decode(string strHtml)
+        {
+            return this.HtmlEncode ? this.Server.HtmlDecode(strHtml) : strHtml;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Encodes the html.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="strHtml">Html to encode.</param>
+        /// <returns>The encoded html.</returns>
+        /// -----------------------------------------------------------------------------
+        private string Encode(string strHtml)
+        {
+            return this.HtmlEncode ? this.Server.HtmlEncode(strHtml) : strHtml;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Builds the radio button lists.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void PopulateLists()
+        {
+            if (this.OptRender.Items.Count == 0)
+            {
+                this.OptRender.Items.Add(new ListItem(Localization.GetString("Text", Localization.GetResourceFile(this, MyFileName)), "T"));
+                this.OptRender.Items.Add(new ListItem(Localization.GetString("Html", Localization.GetResourceFile(this, MyFileName)), "H"));
+                this.OptRender.Items.Add(new ListItem(Localization.GetString("Raw", Localization.GetResourceFile(this, MyFileName)), "R"));
+            }
+
+            if (this.OptView.Items.Count == 0)
+            {
+                this.OptView.Items.Add(new ListItem(Localization.GetString("BasicTextBox", Localization.GetResourceFile(this, MyFileName)), "BASIC"));
+                if (this.IsRichEditorAvailable)
+                {
+                    this.OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Sets the Mode displayed.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void SetPanels()
+        {
+            if (this.OptView.SelectedIndex != -1)
+            {
+                this.Mode = this.OptView.SelectedItem.Value;
+            }
+
+            if (!string.IsNullOrEmpty(this.Mode))
+            {
+                this.OptView.Items.FindByValue(this.Mode).Selected = true;
+            }
+            else
+            {
+                this.OptView.SelectedIndex = 0;
+            }
+
+            // Set the text render mode for basic mode
+            if (this.OptRender.SelectedIndex != -1)
+            {
+                this.TextRenderMode = this.OptRender.SelectedItem.Value;
+            }
+
+            if (!string.IsNullOrEmpty(this.TextRenderMode))
+            {
+                this.OptRender.Items.FindByValue(this.TextRenderMode).Selected = true;
+            }
+            else
+            {
+                this.OptRender.SelectedIndex = 0;
+            }
+
+            if (this.OptView.SelectedItem.Value == "BASIC")
+            {
+                this.DivBasicTextBox.Visible = true;
+                this.DivRichTextBox.Visible = false;
+                this.PanelView.CssClass = "dnnTextPanelView dnnTextPanelView-basic";
+            }
+            else
+            {
+                this.DivBasicTextBox.Visible = false;
+                this.DivRichTextBox.Visible = true;
+                this.PanelView.CssClass = "dnnTextPanelView";
+            }
         }
     }
 }

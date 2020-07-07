@@ -285,6 +285,19 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// The UnInstall method uninstalls the skin component.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void UnInstall()
+        {
+            this.DeleteSkinPackage();
+
+            // Call base class to prcoess files
+            base.UnInstall();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// The ProcessFile method determines what to do with parsed "file" node.
         /// </summary>
         /// <param name="file">The file represented by the node.</param>
@@ -330,6 +343,26 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// The UnInstallFile method unInstalls a single file.
+        /// </summary>
+        /// <param name="unInstallFile">The InstallFile to unInstall.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void UnInstallFile(InstallFile unInstallFile)
+        {
+            // Uninstall file
+            base.UnInstallFile(unInstallFile);
+
+            if (unInstallFile.Extension == "htm" || unInstallFile.Extension == "html")
+            {
+                // Try to remove "processed file"
+                string fileName = unInstallFile.FullName;
+                fileName = fileName.Replace(Path.GetExtension(fileName), ".ascx");
+                Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// The DeleteSkinPackage method deletes the Skin Package
         /// from the data Store.
         /// </summary>
@@ -351,39 +384,6 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Log.AddFailure(ex);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstallFile method unInstalls a single file.
-        /// </summary>
-        /// <param name="unInstallFile">The InstallFile to unInstall.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void UnInstallFile(InstallFile unInstallFile)
-        {
-            // Uninstall file
-            base.UnInstallFile(unInstallFile);
-
-            if (unInstallFile.Extension == "htm" || unInstallFile.Extension == "html")
-            {
-                // Try to remove "processed file"
-                string fileName = unInstallFile.FullName;
-                fileName = fileName.Replace(Path.GetExtension(fileName), ".ascx");
-                Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the skin component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void UnInstall()
-        {
-            this.DeleteSkinPackage();
-
-            // Call base class to prcoess files
-            base.UnInstall();
         }
     }
 }

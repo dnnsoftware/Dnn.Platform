@@ -474,35 +474,47 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        private int ValidateTabId(int tabId)
-        {
-            var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-            return tab?.TabID ?? Null.NullInteger;
-        }
+        #endregion
 
-        private string GetTabName(int tabId)
-        {
-            if (tabId == Null.NullInteger)
-            {
-                return "";
-            }
-            else
-            {
-                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabName : "";
-            }
-        }
+        #region SSL Settings
 
-        private string GetTabPath(int tabId)
+        /// GET: api/Security/GetSslSettings
+        /// <summary>
+        /// Gets portal's SSL settings
+        /// </summary>
+        /// <returns>Portal's ssl settings</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage GetSslSettings()
         {
-            if (tabId == Null.NullInteger)
+            try
             {
-                return "";
+                dynamic settings = new ExpandoObject();
+                settings.SSLEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
+                settings.SSLEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
+                settings.SSLURL = PortalController.GetPortalSetting("SSLURL", this.PortalId, Null.NullString);
+                settings.STDURL = PortalController.GetPortalSetting("STDURL", this.PortalId, Null.NullString);
+
+                if (this.UserInfo.IsSuperUser)
+                {
+                    settings.SSLOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", "");
+                }
+
+                var response = new
+                {
+                    Success = true,
+                    Results = new
+                    {
+                        Settings = settings
+                    }
+                };
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
-            else
+            catch (Exception exc)
             {
-                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabPath : "";
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -547,50 +559,6 @@ namespace Dnn.PersonaBar.Security.Services
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRegister", request.UseCaptchaRegister.ToString(), false);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        #endregion
-
-        #region SSL Settings
-
-        /// GET: api/Security/GetSslSettings
-        /// <summary>
-        /// Gets portal's SSL settings
-        /// </summary>
-        /// <returns>Portal's ssl settings</returns>
-        [HttpGet]
-        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-        public HttpResponseMessage GetSslSettings()
-        {
-            try
-            {
-                dynamic settings = new ExpandoObject();
-                settings.SSLEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
-                settings.SSLEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
-                settings.SSLURL = PortalController.GetPortalSetting("SSLURL", this.PortalId, Null.NullString);
-                settings.STDURL = PortalController.GetPortalSetting("STDURL", this.PortalId, Null.NullString);
-
-                if (this.UserInfo.IsSuperUser)
-                {
-                    settings.SSLOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", "");
-                }
-
-                var response = new
-                {
-                    Success = true,
-                    Results = new
-                    {
-                        Settings = settings
-                    }
-                };
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
@@ -1080,6 +1048,38 @@ namespace Dnn.PersonaBar.Security.Services
                 }
             }
             return portalAlias;
+        }
+
+        private int ValidateTabId(int tabId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+            return tab?.TabID ?? Null.NullInteger;
+        }
+
+        private string GetTabName(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+                return tab != null ? tab.TabName : "";
+            }
+        }
+
+        private string GetTabPath(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+                return tab != null ? tab.TabPath : "";
+            }
         }
 
         private string DisplayDate(DateTime userDate)

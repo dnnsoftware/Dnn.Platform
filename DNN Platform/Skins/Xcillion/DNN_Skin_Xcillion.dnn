@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="1.0">
   <packages>
-    <package name="Skin.Xcillion" type="Skin" version="09.06.01">
+    <package name="Skin.Xcillion" type="Skin" version="09.06.02">
       <friendlyName>Xcillion</friendlyName>
       <iconFile></iconFile>
       <description><![CDATA[A new default DNN skin]]></description>
@@ -29,7 +29,7 @@
         </component>
       </components>
     </package>
-    <package name="Container.Xcillion" type="Container" version="09.06.01">
+    <package name="Container.Xcillion" type="Container" version="09.06.02">
       <friendlyName>Xcillion</friendlyName>
       <iconFile></iconFile>
       <description><![CDATA[DNN container]]></description>

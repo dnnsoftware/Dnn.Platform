@@ -103,6 +103,16 @@ namespace Dnn.Module.ModuleCreator
             this.LoadFile();
         }
 
+        protected void OnLanguageSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadModuleTemplates();
+        }
+
+        protected void cboTemplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadReadMe();
+        }
+
         private void BindFiles(string controlSrc)
         {
             string[] fileList;
@@ -474,16 +484,6 @@ namespace Dnn.Module.ModuleCreator
         private string GetControl()
         {
             return this.txtControl.Text.Replace(" ", string.Empty);
-        }
-
-        protected void OnLanguageSelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.LoadModuleTemplates();
-        }
-
-        protected void cboTemplate_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.LoadReadMe();
         }
 
         private void OnUpdateClick(object sender, EventArgs e)

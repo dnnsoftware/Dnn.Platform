@@ -61,15 +61,6 @@ namespace DotNetNuke.UI.Skins
     {
         public const string OnInitMessage = "Skin_InitMessage";
         public const string OnInitMessageType = "Skin_InitMessageType";
-
-        // ReSharper disable InconsistentNaming
-        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
-        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
-        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
-
-        private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
-
-        // ReSharper restore InconsistentNaming
         private ArrayList _actionEventListeners;
         private Control _controlPanel;
         private Dictionary<string, Pane> _panes;
@@ -97,6 +88,20 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Path for this skin.
+        /// </summary>
+        /// <returns>A String.</returns>
+        /// -----------------------------------------------------------------------------
+        public string SkinPath
+        {
+            get
+            {
+                return this.TemplateSourceDirectory + "/";
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets an ArrayList of ActionEventListeners.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -112,6 +117,14 @@ namespace DotNetNuke.UI.Skins
                 this._actionEventListeners = value;
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Source for this skin.
+        /// </summary>
+        /// <returns>A String.</returns>
+        /// -----------------------------------------------------------------------------
+        public string SkinSrc { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -145,28 +158,6 @@ namespace DotNetNuke.UI.Skins
 
         protected INavigationManager NavigationManager { get; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Path for this skin.
-        /// </summary>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
-        public string SkinPath
-        {
-            get
-            {
-                return this.TemplateSourceDirectory + "/";
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Source for this skin.
-        /// </summary>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
-        public string SkinSrc { get; set; }
-
         public static void AddModuleMessage(PortalModuleBase control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
@@ -175,540 +166,6 @@ namespace DotNetNuke.UI.Skins
         public static void AddModuleMessage(PortalModuleBase control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddModuleMessage(control, heading, message, moduleMessageType, Null.NullString);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnInit runs when the Skin is initialised.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            // Load the Panes
-            this.LoadPanes();
-
-            // Load the Module Control(s)
-            bool success = Globals.IsAdminControl() ? this.ProcessSlaveModule() : this.ProcessMasterModules();
-
-            // Load the Control Panel
-            this.InjectControlPanel();
-
-            // Register any error messages on the Skin
-            if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
-            {
-                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
-
-                if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-                {
-                    ServicesFramework.Instance.RequestAjaxScriptSupport();
-                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-                    JavaScript.RequestRegistration(CommonJs.jQueryUI);
-                    JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
-                    ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.logViewer.js");
-                }
-            }
-
-            if (!TabPermissionController.CanAdminPage() && !success)
-            {
-                // only display the warning to non-administrators (administrators will see the errors)
-                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
-            }
-
-            this.InvokeSkinEvents(SkinEventType.OnSkinInit);
-
-            if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
-            {
-                var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
-                if (HttpContext.Current.Items.Contains(OnInitMessageType))
-                {
-                    messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
-                }
-
-                AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
-
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            }
-
-            // Process the Panes attributes
-            this.ProcessPanes();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs when the Skin is loaded.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.InvokeSkinEvents(SkinEventType.OnSkinLoad);
-        }
-
-        private static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
-        {
-            if (control != null)
-            {
-                if (!string.IsNullOrEmpty(message))
-                {
-                    var messagePlaceHolder = ControlUtilities.FindControl<PlaceHolder>(control, "MessagePlaceHolder", true);
-                    if (messagePlaceHolder != null)
-                    {
-                        messagePlaceHolder.Visible = true;
-                        ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
-                        messagePlaceHolder.Controls.Add(moduleMessage);
-                    }
-                }
-            }
-        }
-
-        private static void AddPageMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
-        {
-            if (!string.IsNullOrEmpty(message))
-            {
-                Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
-
-                if (contentPane != null)
-                {
-                    ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
-                    contentPane.Controls.AddAt(0, moduleMessage);
-                }
-            }
-        }
-
-        private static Control FindControlRecursive(Control rootControl, string controlId)
-        {
-            if (rootControl.ID == controlId)
-            {
-                return rootControl;
-            }
-
-            foreach (Control controlToSearch in rootControl.Controls)
-            {
-                Control controlToReturn = FindControlRecursive(controlToSearch, controlId);
-                if (controlToReturn != null)
-                {
-                    return controlToReturn;
-                }
-            }
-
-            return null;
-        }
-
-        private static Skin LoadSkin(PageBase page, string skinPath)
-        {
-            Skin ctlSkin = null;
-            try
-            {
-                string skinSrc = skinPath;
-                if (skinPath.IndexOf(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
-                }
-
-                ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
-                ctlSkin.SkinSrc = skinSrc;
-
-                // call databind so that any server logic in the skin is executed
-                ctlSkin.DataBind();
-            }
-            catch (Exception exc)
-            {
-                // could not load user control
-                var lex = new PageLoadException("Unhandled error loading page.", exc);
-                if (TabPermissionController.CanAdminPage())
-                {
-                    // only display the error to administrators
-                    var skinError = (Label)page.FindControl("SkinError");
-                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
-                    skinError.Visible = true;
-                }
-
-                Exceptions.LogException(lex);
-            }
-
-            return ctlSkin;
-        }
-
-        private bool CheckExpired()
-        {
-            bool blnExpired = false;
-            if (this.PortalSettings.ExpiryDate != Null.NullDate)
-            {
-                if (Convert.ToDateTime(this.PortalSettings.ExpiryDate) < DateTime.Now && !Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID))
-                {
-                    blnExpired = true;
-                }
-            }
-
-            return blnExpired;
-        }
-
-        private Pane GetPane(ModuleInfo module)
-        {
-            Pane pane;
-            bool found = this.Panes.TryGetValue(module.PaneName.ToLowerInvariant(), out pane);
-
-            if (!found)
-            {
-                this.Panes.TryGetValue(Globals.glbDefaultPane.ToLowerInvariant(), out pane);
-            }
-
-            return pane;
-        }
-
-        private void InjectControlPanel()
-        {
-            // if querystring dnnprintmode=true, controlpanel will not be shown
-            if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && this.Request.QueryString["hidecommandbar"] != "true")
-            {
-                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal()))
-                {
-                    // ControlPanel processing
-                    var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
-                    var form = (HtmlForm)this.Parent.FindControl("Form");
-
-                    if (controlPanel.IncludeInControlHierarchy)
-                    {
-                        // inject ControlPanel control into skin
-                        if (this.ControlPanel == null || HostController.Instance.GetBoolean("IgnoreControlPanelWrapper", false))
-                        {
-                            if (form != null)
-                            {
-                                form.Controls.AddAt(0, controlPanel);
-                            }
-                            else
-                            {
-                                this.Page.Controls.AddAt(0, controlPanel);
-                            }
-                        }
-                        else
-                        {
-                            this.ControlPanel.Controls.Add(controlPanel);
-                        }
-
-                        // register admin.css
-                        ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
-                    }
-                }
-            }
-        }
-
-        private void InvokeSkinEvents(SkinEventType skinEventType)
-        {
-            SharedList<SkinEventListener> list = ((NaiveLockingList<SkinEventListener>)DotNetNukeContext.Current.SkinEventListeners).SharedList;
-
-            using (list.GetReadLock())
-            {
-                foreach (var listener in list.Where(x => x.EventType == skinEventType))
-                {
-                    listener.SkinEvent.Invoke(this, new SkinEventArgs(this));
-                }
-            }
-        }
-
-        private void LoadPanes()
-        {
-            // iterate page controls
-            foreach (Control ctlControl in this.Controls)
-            {
-                var objPaneControl = ctlControl as HtmlContainerControl;
-
-                // Panes must be runat=server controls so they have to have an ID
-                if (objPaneControl != null && !string.IsNullOrEmpty(objPaneControl.ID))
-                {
-                    // load the skin panes
-                    switch (objPaneControl.TagName.ToLowerInvariant())
-                    {
-                        case "td":
-                        case "div":
-                        case "span":
-                        case "p":
-                        case "section":
-                        case "header":
-                        case "footer":
-                        case "main":
-                        case "article":
-                        case "aside":
-                            // content pane
-                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                // Add to the PortalSettings (for use in the Control Panel)
-                                this.PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
-
-                                // Add to the Panes collection
-                                this.Panes.Add(objPaneControl.ID.ToLowerInvariant(), new Pane(objPaneControl));
-                            }
-                            else
-                            {
-                                // Control Panel pane
-                                this._controlPanel = objPaneControl;
-                            }
-
-                            break;
-                    }
-                }
-            }
-        }
-
-        private bool ProcessModule(ModuleInfo module)
-        {
-            var success = true;
-            if (ModuleInjectionManager.CanInjectModule(module, this.PortalSettings))
-            {
-                // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
-                this.EnsureContentItemForModule(module);
-
-                Pane pane = this.GetPane(module);
-
-                if (pane != null)
-                {
-                    success = this.InjectModule(pane, module);
-                }
-                else
-                {
-                    var lex = new ModuleLoadException(Localization.GetString("PaneNotFound.Error"));
-                    this.Controls.Add(new ErrorContainer(this.PortalSettings, MODULELOAD_ERROR, lex).Container);
-                    Exceptions.LogException(lex);
-                }
-            }
-
-            return success;
-        }
-
-        /// <summary>
-        /// Handle access denied errors by displaying an error message
-        /// or by performing a redirect to a predefined "access denied URL".
-        /// </summary>
-        /// <param name="redirect"></param>
-        private void HandleAccesDenied(bool redirect = false)
-        {
-            var message = Localization.GetString("TabAccess.Error");
-            if (redirect)
-            {
-                var redirectUrl = Globals.AccessDeniedURL(message);
-                this.Response.Redirect(redirectUrl, true);
-            }
-            else
-            {
-                AddPageMessage(this, string.Empty, message, ModuleMessage.ModuleMessageType.YellowWarning);
-            }
-        }
-
-        private bool ProcessMasterModules()
-        {
-            bool success = true;
-            if (TabPermissionController.CanViewPage())
-            {
-                // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
-                this.EnsureContentItemForTab(this.PortalSettings.ActiveTab);
-
-                // Versioning checks.
-                if (!TabController.CurrentPage.HasAVisibleVersion)
-                {
-                    this.HandleAccesDenied(true);
-                }
-
-                int urlVersion;
-                if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
-                {
-                    if (!TabVersionUtils.CanSeeVersionedPages())
-                    {
-                        this.HandleAccesDenied(false);
-                        return true;
-                    }
-
-                    if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
-                    {
-                        this.Response.Redirect(this.NavigationManager.NavigateURL(this.PortalSettings.ErrorPage404, string.Empty, "status=404"));
-                    }
-                }
-
-                // check portal expiry date
-                if (!this.CheckExpired())
-                {
-                    if ((this.PortalSettings.ActiveTab.StartDate < DateAndTime.Now && this.PortalSettings.ActiveTab.EndDate > DateAndTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
-                    {
-                        foreach (var objModule in PortalSettingsController.Instance().GetTabModules(this.PortalSettings))
-                        {
-                            success = this.ProcessModule(objModule);
-                        }
-                    }
-                    else
-                    {
-                        this.HandleAccesDenied(false);
-                    }
-                }
-                else
-                {
-                    AddPageMessage(
-                        this,
-                        string.Empty,
-                        string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
-                        ModuleMessage.ModuleMessageType.RedError);
-                }
-            }
-            else
-            {
-                // If request localized page which haven't complete translate yet, redirect to default language version.
-                var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
-
-                // Current locale will use default if did'nt find any
-                Locale currentLocale = LocaleController.Instance.GetCurrentLocale(this.PortalSettings.PortalId);
-                if (this.PortalSettings.ContentLocalizationEnabled &&
-                    TabController.CurrentPage.CultureCode != currentLocale.Code)
-                {
-                    redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code }.ReplaceEnvironmentTokens("[URL]");
-                }
-
-                this.Response.Redirect(redirectUrl, true);
-            }
-
-            return success;
-        }
-
-        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
-        {
-            // If tab exists but ContentItem not, then we create it
-            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
-            {
-                TabController.Instance.CreateContentItem(tabInfo);
-                TabController.Instance.UpdateTab(tabInfo);
-            }
-        }
-
-        private void EnsureContentItemForModule(ModuleInfo module)
-        {
-            // If module exists but ContentItem not, then we create it
-            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
-            {
-                ModuleController.Instance.CreateContentItem(module);
-                ModuleController.Instance.UpdateModule(module);
-            }
-        }
-
-        private void ProcessPanes()
-        {
-            foreach (KeyValuePair<string, Pane> kvp in this.Panes)
-            {
-                kvp.Value.ProcessPane();
-            }
-        }
-
-        private bool ProcessSlaveModule()
-        {
-            var success = true;
-            var key = UIUtilities.GetControlKey();
-            var moduleId = UIUtilities.GetModuleId(key);
-            var slaveModule = UIUtilities.GetSlaveModule(moduleId, key, this.PortalSettings.ActiveTab.TabID);
-
-            Pane pane;
-            this.Panes.TryGetValue(Globals.glbDefaultPane.ToLowerInvariant(), out pane);
-            slaveModule.PaneName = Globals.glbDefaultPane;
-            slaveModule.ContainerSrc = this.PortalSettings.ActiveTab.ContainerSrc;
-            if (string.IsNullOrEmpty(slaveModule.ContainerSrc))
-            {
-                slaveModule.ContainerSrc = this.PortalSettings.DefaultPortalContainer;
-            }
-
-            slaveModule.ContainerSrc = SkinController.FormatSkinSrc(slaveModule.ContainerSrc, this.PortalSettings);
-            slaveModule.ContainerPath = SkinController.FormatSkinPath(slaveModule.ContainerSrc);
-
-            var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID);
-            if (moduleControl != null)
-            {
-                slaveModule.ModuleControlId = moduleControl.ModuleControlID;
-                slaveModule.IconFile = moduleControl.IconFile;
-
-                string permissionKey;
-                switch (slaveModule.ModuleControl.ControlSrc)
-                {
-                    case "Admin/Modules/ModuleSettings.ascx":
-                        permissionKey = "MANAGE";
-                        break;
-                    case "Admin/Modules/Import.ascx":
-                        permissionKey = "IMPORT";
-                        break;
-                    case "Admin/Modules/Export.ascx":
-                        permissionKey = "EXPORT";
-                        break;
-                    default:
-                        permissionKey = "CONTENT";
-                        break;
-                }
-
-                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, permissionKey, slaveModule))
-                {
-                    success = this.InjectModule(pane, slaveModule);
-                }
-                else
-                {
-                    this.Response.Redirect(Globals.AccessDeniedURL(Localization.GetString("ModuleAccess.Error")), true);
-                }
-            }
-
-            return success;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs just before the Skin is rendered.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            this.InvokeSkinEvents(SkinEventType.OnSkinPreRender);
-            var isSpecialPageMode = UrlUtils.InPopUp() || this.Request.QueryString["dnnprintmode"] == "true";
-            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
-            {
-                // Register Drag and Drop plugin
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
-                ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.dragDrop.js");
-
-                // Register Client Script
-                var sb = new StringBuilder();
-                sb.AppendLine(" (function ($) {");
-                sb.AppendLine("     $(document).ready(function () {");
-                sb.AppendLine("         $('.dnnSortable').dnnModuleDragDrop({");
-                sb.AppendLine("             tabId: " + this.PortalSettings.ActiveTab.TabID + ",");
-                sb.AppendLine("             draggingHintText: '" + Localization.GetSafeJSString("DraggingHintText", Localization.GlobalResourceFile) + "',");
-                sb.AppendLine("             dragHintText: '" + Localization.GetSafeJSString("DragModuleHint", Localization.GlobalResourceFile) + "',");
-                sb.AppendLine("             dropHintText: '" + Localization.GetSafeJSString("DropModuleHint", Localization.GlobalResourceFile) + "',");
-                sb.AppendLine("             dropTargetText: '" + Localization.GetSafeJSString("DropModuleTarget", Localization.GlobalResourceFile) + "'");
-                sb.AppendLine("         });");
-                sb.AppendLine("     });");
-                sb.AppendLine(" } (jQuery));");
-
-                var script = sb.ToString();
-                if (ScriptManager.GetCurrent(this.Page) != null)
-                {
-                    // respect MS AJAX
-                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "DragAndDrop", script, true);
-                }
-                else
-                {
-                    this.Page.ClientScript.RegisterStartupScript(this.GetType(), "DragAndDrop", script, true);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnUnLoad runs when the Skin is unloaded.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-
-            this.InvokeSkinEvents(SkinEventType.OnSkinUnLoad);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1041,6 +498,220 @@ namespace DotNetNuke.UI.Skins
             this.ActionEventListeners.Add(new ModuleActionEventListener(moduleId, e));
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnInit runs when the Skin is initialised.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            // Load the Panes
+            this.LoadPanes();
+
+            // Load the Module Control(s)
+            bool success = Globals.IsAdminControl() ? this.ProcessSlaveModule() : this.ProcessMasterModules();
+
+            // Load the Control Panel
+            this.InjectControlPanel();
+
+            // Register any error messages on the Skin
+            if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
+            {
+                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
+
+                if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+                {
+                    ServicesFramework.Instance.RequestAjaxScriptSupport();
+                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+                    JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                    JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+                    ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.logViewer.js");
+                }
+            }
+
+            if (!TabPermissionController.CanAdminPage() && !success)
+            {
+                // only display the warning to non-administrators (administrators will see the errors)
+                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
+            }
+
+            this.InvokeSkinEvents(SkinEventType.OnSkinInit);
+
+            if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
+            {
+                var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                if (HttpContext.Current.Items.Contains(OnInitMessageType))
+                {
+                    messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
+                }
+
+                AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            }
+
+            // Process the Panes attributes
+            this.ProcessPanes();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnLoad runs when the Skin is loaded.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.InvokeSkinEvents(SkinEventType.OnSkinLoad);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnLoad runs just before the Skin is rendered.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            this.InvokeSkinEvents(SkinEventType.OnSkinPreRender);
+            var isSpecialPageMode = UrlUtils.InPopUp() || this.Request.QueryString["dnnprintmode"] == "true";
+            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
+            {
+                // Register Drag and Drop plugin
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                ClientResourceManager.RegisterStyleSheet(this.Page, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
+                ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.dragDrop.js");
+
+                // Register Client Script
+                var sb = new StringBuilder();
+                sb.AppendLine(" (function ($) {");
+                sb.AppendLine("     $(document).ready(function () {");
+                sb.AppendLine("         $('.dnnSortable').dnnModuleDragDrop({");
+                sb.AppendLine("             tabId: " + this.PortalSettings.ActiveTab.TabID + ",");
+                sb.AppendLine("             draggingHintText: '" + Localization.GetSafeJSString("DraggingHintText", Localization.GlobalResourceFile) + "',");
+                sb.AppendLine("             dragHintText: '" + Localization.GetSafeJSString("DragModuleHint", Localization.GlobalResourceFile) + "',");
+                sb.AppendLine("             dropHintText: '" + Localization.GetSafeJSString("DropModuleHint", Localization.GlobalResourceFile) + "',");
+                sb.AppendLine("             dropTargetText: '" + Localization.GetSafeJSString("DropModuleTarget", Localization.GlobalResourceFile) + "'");
+                sb.AppendLine("         });");
+                sb.AppendLine("     });");
+                sb.AppendLine(" } (jQuery));");
+
+                var script = sb.ToString();
+                if (ScriptManager.GetCurrent(this.Page) != null)
+                {
+                    // respect MS AJAX
+                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "DragAndDrop", script, true);
+                }
+                else
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.GetType(), "DragAndDrop", script, true);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnUnLoad runs when the Skin is unloaded.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+
+            this.InvokeSkinEvents(SkinEventType.OnSkinUnLoad);
+        }
+
+        private static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
+        {
+            if (control != null)
+            {
+                if (!string.IsNullOrEmpty(message))
+                {
+                    var messagePlaceHolder = ControlUtilities.FindControl<PlaceHolder>(control, "MessagePlaceHolder", true);
+                    if (messagePlaceHolder != null)
+                    {
+                        messagePlaceHolder.Visible = true;
+                        ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
+                        messagePlaceHolder.Controls.Add(moduleMessage);
+                    }
+                }
+            }
+        }
+
+        private static void AddPageMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
+
+                if (contentPane != null)
+                {
+                    ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
+                    contentPane.Controls.AddAt(0, moduleMessage);
+                }
+            }
+        }
+
+        private static Control FindControlRecursive(Control rootControl, string controlId)
+        {
+            if (rootControl.ID == controlId)
+            {
+                return rootControl;
+            }
+
+            foreach (Control controlToSearch in rootControl.Controls)
+            {
+                Control controlToReturn = FindControlRecursive(controlToSearch, controlId);
+                if (controlToReturn != null)
+                {
+                    return controlToReturn;
+                }
+            }
+
+            return null;
+        }
+
+        private static Skin LoadSkin(PageBase page, string skinPath)
+        {
+            Skin ctlSkin = null;
+            try
+            {
+                string skinSrc = skinPath;
+                if (skinPath.IndexOf(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
+                }
+
+                ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
+                ctlSkin.SkinSrc = skinSrc;
+
+                // call databind so that any server logic in the skin is executed
+                ctlSkin.DataBind();
+            }
+            catch (Exception exc)
+            {
+                // could not load user control
+                var lex = new PageLoadException("Unhandled error loading page.", exc);
+                if (TabPermissionController.CanAdminPage())
+                {
+                    // only display the error to administrators
+                    var skinError = (Label)page.FindControl("SkinError");
+                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
+                    skinError.Visible = true;
+                }
+
+                Exceptions.LogException(lex);
+            }
+
+            return ctlSkin;
+        }
+
         private static bool isFallbackSkin(string skinPath)
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
@@ -1052,5 +723,334 @@ namespace DotNetNuke.UI.Skins
 
             return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
         }
+
+        private bool CheckExpired()
+        {
+            bool blnExpired = false;
+            if (this.PortalSettings.ExpiryDate != Null.NullDate)
+            {
+                if (Convert.ToDateTime(this.PortalSettings.ExpiryDate) < DateTime.Now && !Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID))
+                {
+                    blnExpired = true;
+                }
+            }
+
+            return blnExpired;
+        }
+
+        private Pane GetPane(ModuleInfo module)
+        {
+            Pane pane;
+            bool found = this.Panes.TryGetValue(module.PaneName.ToLowerInvariant(), out pane);
+
+            if (!found)
+            {
+                this.Panes.TryGetValue(Globals.glbDefaultPane.ToLowerInvariant(), out pane);
+            }
+
+            return pane;
+        }
+
+        private void InjectControlPanel()
+        {
+            // if querystring dnnprintmode=true, controlpanel will not be shown
+            if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && this.Request.QueryString["hidecommandbar"] != "true")
+            {
+                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal()))
+                {
+                    // ControlPanel processing
+                    var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
+                    var form = (HtmlForm)this.Parent.FindControl("Form");
+
+                    if (controlPanel.IncludeInControlHierarchy)
+                    {
+                        // inject ControlPanel control into skin
+                        if (this.ControlPanel == null || HostController.Instance.GetBoolean("IgnoreControlPanelWrapper", false))
+                        {
+                            if (form != null)
+                            {
+                                form.Controls.AddAt(0, controlPanel);
+                            }
+                            else
+                            {
+                                this.Page.Controls.AddAt(0, controlPanel);
+                            }
+                        }
+                        else
+                        {
+                            this.ControlPanel.Controls.Add(controlPanel);
+                        }
+
+                        // register admin.css
+                        ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
+                    }
+                }
+            }
+        }
+
+        private void InvokeSkinEvents(SkinEventType skinEventType)
+        {
+            SharedList<SkinEventListener> list = ((NaiveLockingList<SkinEventListener>)DotNetNukeContext.Current.SkinEventListeners).SharedList;
+
+            using (list.GetReadLock())
+            {
+                foreach (var listener in list.Where(x => x.EventType == skinEventType))
+                {
+                    listener.SkinEvent.Invoke(this, new SkinEventArgs(this));
+                }
+            }
+        }
+
+        private void LoadPanes()
+        {
+            // iterate page controls
+            foreach (Control ctlControl in this.Controls)
+            {
+                var objPaneControl = ctlControl as HtmlContainerControl;
+
+                // Panes must be runat=server controls so they have to have an ID
+                if (objPaneControl != null && !string.IsNullOrEmpty(objPaneControl.ID))
+                {
+                    // load the skin panes
+                    switch (objPaneControl.TagName.ToLowerInvariant())
+                    {
+                        case "td":
+                        case "div":
+                        case "span":
+                        case "p":
+                        case "section":
+                        case "header":
+                        case "footer":
+                        case "main":
+                        case "article":
+                        case "aside":
+                            // content pane
+                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                // Add to the PortalSettings (for use in the Control Panel)
+                                this.PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
+
+                                // Add to the Panes collection
+                                this.Panes.Add(objPaneControl.ID.ToLowerInvariant(), new Pane(objPaneControl));
+                            }
+                            else
+                            {
+                                // Control Panel pane
+                                this._controlPanel = objPaneControl;
+                            }
+
+                            break;
+                    }
+                }
+            }
+        }
+
+        private bool ProcessModule(ModuleInfo module)
+        {
+            var success = true;
+            if (ModuleInjectionManager.CanInjectModule(module, this.PortalSettings))
+            {
+                // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
+                this.EnsureContentItemForModule(module);
+
+                Pane pane = this.GetPane(module);
+
+                if (pane != null)
+                {
+                    success = this.InjectModule(pane, module);
+                }
+                else
+                {
+                    var lex = new ModuleLoadException(Localization.GetString("PaneNotFound.Error"));
+                    this.Controls.Add(new ErrorContainer(this.PortalSettings, MODULELOAD_ERROR, lex).Container);
+                    Exceptions.LogException(lex);
+                }
+            }
+
+            return success;
+        }
+
+        /// <summary>
+        /// Handle access denied errors by displaying an error message
+        /// or by performing a redirect to a predefined "access denied URL".
+        /// </summary>
+        /// <param name="redirect"></param>
+        private void HandleAccesDenied(bool redirect = false)
+        {
+            var message = Localization.GetString("TabAccess.Error");
+            if (redirect)
+            {
+                var redirectUrl = Globals.AccessDeniedURL(message);
+                this.Response.Redirect(redirectUrl, true);
+            }
+            else
+            {
+                AddPageMessage(this, string.Empty, message, ModuleMessage.ModuleMessageType.YellowWarning);
+            }
+        }
+
+        private bool ProcessMasterModules()
+        {
+            bool success = true;
+            if (TabPermissionController.CanViewPage())
+            {
+                // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
+                this.EnsureContentItemForTab(this.PortalSettings.ActiveTab);
+
+                // Versioning checks.
+                if (!TabController.CurrentPage.HasAVisibleVersion)
+                {
+                    this.HandleAccesDenied(true);
+                }
+
+                int urlVersion;
+                if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+                {
+                    if (!TabVersionUtils.CanSeeVersionedPages())
+                    {
+                        this.HandleAccesDenied(false);
+                        return true;
+                    }
+
+                    if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
+                    {
+                        this.Response.Redirect(this.NavigationManager.NavigateURL(this.PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                    }
+                }
+
+                // check portal expiry date
+                if (!this.CheckExpired())
+                {
+                    if ((this.PortalSettings.ActiveTab.StartDate < DateAndTime.Now && this.PortalSettings.ActiveTab.EndDate > DateAndTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
+                    {
+                        foreach (var objModule in PortalSettingsController.Instance().GetTabModules(this.PortalSettings))
+                        {
+                            success = this.ProcessModule(objModule);
+                        }
+                    }
+                    else
+                    {
+                        this.HandleAccesDenied(false);
+                    }
+                }
+                else
+                {
+                    AddPageMessage(
+                        this,
+                        string.Empty,
+                        string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
+                        ModuleMessage.ModuleMessageType.RedError);
+                }
+            }
+            else
+            {
+                // If request localized page which haven't complete translate yet, redirect to default language version.
+                var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
+
+                // Current locale will use default if did'nt find any
+                Locale currentLocale = LocaleController.Instance.GetCurrentLocale(this.PortalSettings.PortalId);
+                if (this.PortalSettings.ContentLocalizationEnabled &&
+                    TabController.CurrentPage.CultureCode != currentLocale.Code)
+                {
+                    redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code }.ReplaceEnvironmentTokens("[URL]");
+                }
+
+                this.Response.Redirect(redirectUrl, true);
+            }
+
+            return success;
+        }
+
+        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
+        {
+            // If tab exists but ContentItem not, then we create it
+            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
+            {
+                TabController.Instance.CreateContentItem(tabInfo);
+                TabController.Instance.UpdateTab(tabInfo);
+            }
+        }
+
+        private void EnsureContentItemForModule(ModuleInfo module)
+        {
+            // If module exists but ContentItem not, then we create it
+            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            {
+                ModuleController.Instance.CreateContentItem(module);
+                ModuleController.Instance.UpdateModule(module);
+            }
+        }
+
+        private void ProcessPanes()
+        {
+            foreach (KeyValuePair<string, Pane> kvp in this.Panes)
+            {
+                kvp.Value.ProcessPane();
+            }
+        }
+
+        private bool ProcessSlaveModule()
+        {
+            var success = true;
+            var key = UIUtilities.GetControlKey();
+            var moduleId = UIUtilities.GetModuleId(key);
+            var slaveModule = UIUtilities.GetSlaveModule(moduleId, key, this.PortalSettings.ActiveTab.TabID);
+
+            Pane pane;
+            this.Panes.TryGetValue(Globals.glbDefaultPane.ToLowerInvariant(), out pane);
+            slaveModule.PaneName = Globals.glbDefaultPane;
+            slaveModule.ContainerSrc = this.PortalSettings.ActiveTab.ContainerSrc;
+            if (string.IsNullOrEmpty(slaveModule.ContainerSrc))
+            {
+                slaveModule.ContainerSrc = this.PortalSettings.DefaultPortalContainer;
+            }
+
+            slaveModule.ContainerSrc = SkinController.FormatSkinSrc(slaveModule.ContainerSrc, this.PortalSettings);
+            slaveModule.ContainerPath = SkinController.FormatSkinPath(slaveModule.ContainerSrc);
+
+            var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID);
+            if (moduleControl != null)
+            {
+                slaveModule.ModuleControlId = moduleControl.ModuleControlID;
+                slaveModule.IconFile = moduleControl.IconFile;
+
+                string permissionKey;
+                switch (slaveModule.ModuleControl.ControlSrc)
+                {
+                    case "Admin/Modules/ModuleSettings.ascx":
+                        permissionKey = "MANAGE";
+                        break;
+                    case "Admin/Modules/Import.ascx":
+                        permissionKey = "IMPORT";
+                        break;
+                    case "Admin/Modules/Export.ascx":
+                        permissionKey = "EXPORT";
+                        break;
+                    default:
+                        permissionKey = "CONTENT";
+                        break;
+                }
+
+                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, permissionKey, slaveModule))
+                {
+                    success = this.InjectModule(pane, slaveModule);
+                }
+                else
+                {
+                    this.Response.Redirect(Globals.AccessDeniedURL(Localization.GetString("ModuleAccess.Error")), true);
+                }
+            }
+
+            return success;
+        }
+
+        // ReSharper disable InconsistentNaming
+        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+
+        private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
+
+        // ReSharper restore InconsistentNaming
     }
 }

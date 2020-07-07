@@ -20,12 +20,12 @@ namespace DotNetNuke.UI.WebControls
         protected Repeater PageNumbers;
         protected TableCell cellDisplayLinks;
         protected TableCell cellDisplayStatus;
+        protected Table tablePageNumbers;
         private int _totalPages = -1;
         private string _CSSClassLinkActive;
         private string _CSSClassLinkInactive;
         private string _CSSClassPagingStatus;
         private PagingControlMode _Mode = PagingControlMode.URL;
-        protected Table tablePageNumbers;
 
         public event EventHandler PageChanged;
 
@@ -160,6 +160,25 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.PageChanged(this, e);
             }
+        }
+
+        protected override void Render(HtmlTextWriter output)
+        {
+            if (this.PageNumbers == null)
+            {
+                this.CreateChildControls();
+            }
+
+            var str = new StringBuilder();
+            str.Append(this.GetFirstLink() + "&nbsp;&nbsp;&nbsp;");
+            str.Append(this.GetPreviousLink() + "&nbsp;&nbsp;&nbsp;");
+            var result = new StringBuilder(1024);
+            this.PageNumbers.RenderControl(new HtmlTextWriter(new StringWriter(result)));
+            str.Append(result.ToString());
+            str.Append(this.GetNextLink() + "&nbsp;&nbsp;&nbsp;");
+            str.Append(this.GetLastLink() + "&nbsp;&nbsp;&nbsp;");
+            this.cellDisplayLinks.Controls.Add(new LiteralControl(str.ToString()));
+            this.tablePageNumbers.RenderControl(output);
         }
 
         private void BindPageNumbers(int TotalRecords, int RecordsPerPage)
@@ -332,25 +351,6 @@ namespace DotNetNuke.UI.WebControls
             return this.CSSClassLinkInactive.Trim().Length > 0
                        ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>"
                        : "<span>" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>";
-        }
-
-        protected override void Render(HtmlTextWriter output)
-        {
-            if (this.PageNumbers == null)
-            {
-                this.CreateChildControls();
-            }
-
-            var str = new StringBuilder();
-            str.Append(this.GetFirstLink() + "&nbsp;&nbsp;&nbsp;");
-            str.Append(this.GetPreviousLink() + "&nbsp;&nbsp;&nbsp;");
-            var result = new StringBuilder(1024);
-            this.PageNumbers.RenderControl(new HtmlTextWriter(new StringWriter(result)));
-            str.Append(result.ToString());
-            str.Append(this.GetNextLink() + "&nbsp;&nbsp;&nbsp;");
-            str.Append(this.GetLastLink() + "&nbsp;&nbsp;&nbsp;");
-            this.cellDisplayLinks.Controls.Add(new LiteralControl(str.ToString()));
-            this.tablePageNumbers.RenderControl(output);
         }
 
         public class PageNumberLinkTemplate : ITemplate

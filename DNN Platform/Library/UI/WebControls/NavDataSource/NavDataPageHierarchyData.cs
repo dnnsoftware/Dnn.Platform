@@ -153,6 +153,22 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
+        /// Gets node description.
+        /// </summary>
+        /// <value>
+        /// <placeholder>Returns Node description</placeholder>
+        /// </value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public virtual string Description
+        {
+            get
+            {
+                return this.GetSafeValue(this.m_objNode.ToolTip, string.Empty);
+            }
+        }
+
+        /// <summary>
         /// Gets an enumeration object that represents all the child nodes of the current hierarchical node.
         /// </summary>
         /// <returns></returns>
@@ -185,22 +201,6 @@ namespace DotNetNuke.UI.WebControls
             else
             {
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets node description.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Returns Node description</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public virtual string Description
-        {
-            get
-            {
-                return this.GetSafeValue(this.m_objNode.ToolTip, string.Empty);
             }
         }
 

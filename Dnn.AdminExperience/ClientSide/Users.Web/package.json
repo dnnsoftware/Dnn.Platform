@@ -1,6 +1,6 @@
 {
   "name": "users",
-  "version": "9.6.1",
+  "version": "9.6.2",
   "private": true,
   "scripts": {
     "start": "npm run webpack",
@@ -51,7 +51,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "9.6.1",
+    "@dnnsoftware/dnn-react-common": "9.6.2",
     "localization": "^1.0.2",
     "react-widgets": "^4.4.6"
   }

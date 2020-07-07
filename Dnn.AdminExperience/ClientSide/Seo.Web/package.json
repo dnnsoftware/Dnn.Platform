@@ -1,6 +1,6 @@
 {
   "name": "seo",
-  "version": "9.6.1",
+  "version": "9.6.2",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p",
@@ -14,10 +14,9 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.6.1",
+    "@dnnsoftware/dnn-react-common": "9.6.2",
     "array.prototype.find": "2.0.4",
     "array.prototype.findindex": "2.0.2",
-    "babel-core": "6.26.3",
     "babel-loader": "8.0.6",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",

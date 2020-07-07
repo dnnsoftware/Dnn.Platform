@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     using System;
@@ -169,33 +168,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return this.PublishVersion(this.GetCurrentPortalId(), tabId, createdByUserId, newVersion);
         }
 
-        private void DiscardVersion(int tabId, TabVersion tabVersion)
-        {
-            var unPublishedDetails = this._tabVersionDetailController.GetTabVersionDetails(tabVersion.TabVersionId);
-
-            var currentPublishedVersion = this.GetCurrentVersion(tabId);
-            TabVersionDetail[] publishedChanges = null;
-
-            if (currentPublishedVersion != null)
-            {
-                publishedChanges = this.GetVersionModulesDetails(tabId, this.GetCurrentVersion(tabId).Version).ToArray();
-            }
-
-            foreach (var unPublishedDetail in unPublishedDetails)
-            {
-                if (publishedChanges == null)
-                {
-                    this.DiscardDetailWithoutPublishedTabVersions(tabId, unPublishedDetail);
-                }
-                else
-                {
-                    this.DiscardDetailWithPublishedTabVersions(tabId, unPublishedDetail, publishedChanges);
-                }
-            }
-
-            this._tabVersionController.DeleteTabVersion(tabId, tabVersion.TabVersionId);
-        }
-
         public TabVersion CreateNewVersion(int tabId, int createdByUserId)
         {
             return this.CreateNewVersion(this.GetCurrentPortalId(), tabId, createdByUserId);
@@ -327,6 +299,33 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return newVersionDetail;
         }
 
+        private void DiscardVersion(int tabId, TabVersion tabVersion)
+        {
+            var unPublishedDetails = this._tabVersionDetailController.GetTabVersionDetails(tabVersion.TabVersionId);
+
+            var currentPublishedVersion = this.GetCurrentVersion(tabId);
+            TabVersionDetail[] publishedChanges = null;
+
+            if (currentPublishedVersion != null)
+            {
+                publishedChanges = this.GetVersionModulesDetails(tabId, this.GetCurrentVersion(tabId).Version).ToArray();
+            }
+
+            foreach (var unPublishedDetail in unPublishedDetails)
+            {
+                if (publishedChanges == null)
+                {
+                    this.DiscardDetailWithoutPublishedTabVersions(tabId, unPublishedDetail);
+                }
+                else
+                {
+                    this.DiscardDetailWithPublishedTabVersions(tabId, unPublishedDetail, publishedChanges);
+                }
+            }
+
+            this._tabVersionController.DeleteTabVersion(tabId, tabVersion.TabVersionId);
+        }
+
         private IEnumerable<ModuleInfo> GetCurrentModulesInternal(int tabId)
         {
             var versioningEnabled = this._portalSettings != null &&
@@ -364,8 +363,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this._moduleController.DeleteTabModule(tabId, unPublishedDetail.ModuleId, true);
         }
 
-        private void DiscardDetailWithPublishedTabVersions(int tabId, TabVersionDetail unPublishedDetail,
-            TabVersionDetail[] publishedChanges)
+        private void DiscardDetailWithPublishedTabVersions(int tabId, TabVersionDetail unPublishedDetail, TabVersionDetail[] publishedChanges)
         {
             if (unPublishedDetail.Action == TabVersionDetailAction.Deleted)
             {

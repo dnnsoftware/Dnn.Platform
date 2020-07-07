@@ -48,24 +48,6 @@ namespace DotNetNuke.Modules.MemberDirectory
             get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
-
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
-            this.AddIe7StyleSheet();
-
-            this.searchBar.Visible = this.DisplaySearch != "None";
-            this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
-            this.popUpPanel.Visible = this.EnablePopUp;
-            this.loadMore.Visible = !this.DisablePaging;
-
-            base.OnInit(e);
-        }
-
         protected bool EnablePopUp
         {
             get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "EnablePopUp", "false")); }
@@ -161,6 +143,24 @@ namespace DotNetNuke.Modules.MemberDirectory
         protected UserInfo UserInfo
         {
             get { return UserController.Instance.GetCurrentUserInfo(); }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+            JavaScript.RequestRegistration(CommonJs.Knockout);
+
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
+            this.AddIe7StyleSheet();
+
+            this.searchBar.Visible = this.DisplaySearch != "None";
+            this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
+            this.popUpPanel.Visible = this.EnablePopUp;
+            this.loadMore.Visible = !this.DisablePaging;
+
+            base.OnInit(e);
         }
 
         private void AddIe7StyleSheet()

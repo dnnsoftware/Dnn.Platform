@@ -310,25 +310,6 @@ namespace DotNetNuke.Framework
             return HttpContext.Current.Server.MapPath(JQueryUIFile(getMinFile));
         }
 
-        private static bool GetSettingAsBoolean(string key, bool defaultValue)
-        {
-            bool retValue = defaultValue;
-            try
-            {
-                object setting = HttpContext.Current.Items[key];
-                if (setting != null)
-                {
-                    retValue = Convert.ToBoolean(setting);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-
-            return retValue;
-        }
-
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryFile(bool getMinFile)
         {
@@ -481,6 +462,25 @@ namespace DotNetNuke.Framework
         public static void RequestHoverIntentRegistration()
         {
             JavaScript.RequestRegistration(CommonJs.HoverIntent);
+        }
+
+        private static bool GetSettingAsBoolean(string key, bool defaultValue)
+        {
+            bool retValue = defaultValue;
+            try
+            {
+                object setting = HttpContext.Current.Items[key];
+                if (setting != null)
+                {
+                    retValue = Convert.ToBoolean(setting);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
+            return retValue;
         }
     }
 #pragma warning restore 618

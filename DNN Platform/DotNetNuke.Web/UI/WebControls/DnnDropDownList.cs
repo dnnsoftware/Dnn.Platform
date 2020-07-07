@@ -1,13 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Runtime.Serialization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -20,13 +18,6 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls.Extensions;
-
-    [DataContract]
-    public class DnnDropDownListState
-    {
-        [DataMember(Name = "selectedItem")]
-        public SerializableKeyValuePair<string, string> SelectedItem;
-    }
 
     [ToolboxData("<{0}:DnnDropDownList runat='server'></{0}:DnnDropDownList>")]
     public class DnnDropDownList : Panel, INamingContainer
@@ -65,66 +56,6 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the selected item in the control, or selects the item in the control.
-        /// </summary>
-        public ListItem SelectedItem
-        {
-            get
-            {
-                if (this.StateControl.TypedValue != null && this.StateControl.TypedValue.SelectedItem != null)
-                {
-                    return new ListItem { Text = this.StateControl.TypedValue.SelectedItem.Value, Value = this.StateControl.TypedValue.SelectedItem.Key };
-                }
-
-                return null;
-            }
-
-            set
-            {
-                this.StateControl.TypedValueOrDefault.SelectedItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
-            }
-        }
-
-        internal DnnDropDownListOptions Options
-        {
-            get
-            {
-                return this._options.Value;
-            }
-        }
-
-        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return this._stateControl;
-            }
-        }
-
-        private HtmlAnchor SelectedValue
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return this._selectedValue;
-            }
-        }
-
-        private bool UseUndefinedItem
-        {
-            get
-            {
-                return this.ViewState.GetValue("UseUndefinedItem", false);
-            }
-
-            set
-            {
-                this.ViewState.SetValue("UseUndefinedItem", value, false);
-            }
-        }
-
-        /// <summary>
         /// Gets when this method returns, contains the 32-bit signed integer value equivalent to the number contained in
         /// SelectedItem.Value, if the conversion succeeded, or Null.NullInteger if the conversion failed.
         /// </summary>
@@ -142,6 +73,46 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 return Null.NullInteger;
+            }
+        }
+
+        public ItemListServicesOptions Services
+        {
+            get
+            {
+                return this.Options.Services;
+            }
+        }
+
+        /// <summary>
+        /// Gets register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
+        /// </summary>
+        public List<string> OnClientSelectionChanged
+        {
+            get
+            {
+                return this.Options.OnClientSelectionChanged;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the selected item in the control, or selects the item in the control.
+        /// </summary>
+        public ListItem SelectedItem
+        {
+            get
+            {
+                if (this.StateControl.TypedValue != null && this.StateControl.TypedValue.SelectedItem != null)
+                {
+                    return new ListItem { Text = this.StateControl.TypedValue.SelectedItem.Value, Value = this.StateControl.TypedValue.SelectedItem.Key };
+                }
+
+                return null;
+            }
+
+            set
+            {
+                this.StateControl.TypedValueOrDefault.SelectedItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
             }
         }
 
@@ -177,14 +148,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Options.ItemList.FirstItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
                 this.UseUndefinedItem = false;
-            }
-        }
-
-        public ItemListServicesOptions Services
-        {
-            get
-            {
-                return this.Options.Services;
             }
         }
 
@@ -257,17 +220,6 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
-        /// </summary>
-        public List<string> OnClientSelectionChanged
-        {
-            get
-            {
-                return this.Options.OnClientSelectionChanged;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets when the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
         /// we need expand its parent nodes to make it selected.
         /// </summary>
@@ -281,6 +233,45 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 ClientAPI.RegisterClientVariable(this.Page, this.ClientID + "_expandPath", value, true);
+            }
+        }
+
+        internal DnnDropDownListOptions Options
+        {
+            get
+            {
+                return this._options.Value;
+            }
+        }
+
+        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this._stateControl;
+            }
+        }
+
+        private HtmlAnchor SelectedValue
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this._selectedValue;
+            }
+        }
+
+        private bool UseUndefinedItem
+        {
+            get
+            {
+                return this.ViewState.GetValue("UseUndefinedItem", false);
+            }
+
+            set
+            {
+                this.ViewState.SetValue("UseUndefinedItem", value, false);
             }
         }
 

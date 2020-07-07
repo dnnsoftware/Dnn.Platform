@@ -24,17 +24,6 @@ namespace DNN.Connectors.GoogleAnalytics
             get { return "Core Google Analytics Connector"; }
         }
 
-        public string DisplayName
-        {
-            get
-            {
-                return
-                    string.IsNullOrEmpty(this._displayName) ? DefaultDisplayName : this._displayName;
-            }
-
-            set { this._displayName = value; }
-        }
-
         public string IconUrl
         {
             get { return "~/DesktopModules/Connectors/GoogleAnalytics/Images/GoogleAnalytics_32X32_Standard.png"; }
@@ -53,12 +42,23 @@ namespace DNN.Connectors.GoogleAnalytics
             }
         }
 
-        public string Id { get; set; }
-
         public ConnectorCategories Type => ConnectorCategories.Analytics;
 
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
         public bool SupportsMultiple => false;
+
+        public string DisplayName
+        {
+            get
+            {
+                return
+                    string.IsNullOrEmpty(this._displayName) ? DefaultDisplayName : this._displayName;
+            }
+
+            set { this._displayName = value; }
+        }
+
+        public string Id { get; set; }
 
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {

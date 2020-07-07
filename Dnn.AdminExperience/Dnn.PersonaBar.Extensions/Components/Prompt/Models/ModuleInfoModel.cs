@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int ModuleDefId { get; set; }
         public int TabModuleId { get; set; }
         public string AddedToPages { get; set; }
+
         public static ModuleInfoModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule, bool? deleted = null)
         {
             var mim = new ModuleInfoModel
