@@ -872,6 +872,9 @@
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
     <Compile Include="Services\Tokens\Scope.cs" />
+    <Compile Include="Services\Tokens\CoreTokenProvider.cs" />
+    <Compile Include="Services\Tokens\TokenContext.cs" />
+    <Compile Include="Services\Tokens\TokenProvider.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />

@@ -1,9 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Services.Tokens
 {
+    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -28,6 +28,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [SetUp]
         public void SetUp()
         {
+            ComponentFactory.RegisterComponentInstance<TokenProvider>(new CoreTokenProvider());
             this._mockCache = MockComponentProvider.CreateDataCacheProvider();
             this._mockHostController = new Mock<IHostController>();
             this._portalController = new Mock<IPortalController>();
