@@ -355,6 +355,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE26
 		DNN Platform\Website\Install\Config\09.05.00.config = DNN Platform\Website\Install\Config\09.05.00.config
 		DNN Platform\Website\Install\Config\09.06.00.config = DNN Platform\Website\Install\Config\09.06.00.config
 		DNN Platform\Website\Install\Config\09.06.02.config = DNN Platform\Website\Install\Config\09.06.02.config
+		DNN Platform\Website\Install\Config\09.07.00.config = DNN Platform\Website\Install\Config\09.07.00.config
 		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
 		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
 		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config
