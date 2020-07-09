@@ -49,10 +49,7 @@ namespace DotNetNuke.Services.Search
             var searchDocuments = new List<SearchDocument>();
             var tabs = (
                 from t in TabController.Instance.GetTabsByPortal(portalId).AsList()
-                where t.LastModifiedOnDate > startDateLocal && (t.TabSettings["AllowIndex"] == null ||
-                                                                "true".Equals(
-                                                                    t.TabSettings["AllowIndex"].ToString(),
-                                                                    StringComparison.CurrentCultureIgnoreCase))
+                where t.LastModifiedOnDate > startDateLocal && (t.AllowIndex)
                 select t).OrderBy(t => t.LastModifiedOnDate).ThenBy(t => t.TabID).ToArray();
 
             if (tabs.Any())

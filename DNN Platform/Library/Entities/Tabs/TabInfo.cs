@@ -116,6 +116,16 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [XmlIgnore]
+        public bool AllowIndex
+        {
+            get
+            {
+                return this.TabSettings["AllowIndex"] == null 
+                       || "true".Equals(this.TabSettings["AllowIndex"].ToString(), StringComparison.CurrentCultureIgnoreCase);
+            }
+        }
+
+        [XmlIgnore]
         public Dictionary<int, ModuleInfo> ChildModules
         {
             get
