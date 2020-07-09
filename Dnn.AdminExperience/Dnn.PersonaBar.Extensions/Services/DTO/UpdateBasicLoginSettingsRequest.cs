@@ -17,12 +17,6 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         [UserExist(RoleNames = new string[] { Library.Constants.AdminsRoleName })]
         public int PrimaryAdministratorId { get; set; }
 
-        [TabExist]
-        public int RedirectAfterLoginTabId { get; set; }
-
-        [TabExist]
-        public int RedirectAfterLogoutTabId { get; set; }
-
         public bool RequireValidProfileAtLogin { get; set; }
 
         public bool CaptchaLogin { get; set; }

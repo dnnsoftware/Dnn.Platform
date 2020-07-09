@@ -42,9 +42,6 @@ namespace Dnn.PersonaBar.Security.Services.Dto
 
         public bool UseCaptchaRegister { get; set; }
 
-        [TabExist]
-        public int RedirectAfterRegistrationTabId { get; set; }
-
         public bool EnableRegisterNotification { get; set; }
     }
 }
