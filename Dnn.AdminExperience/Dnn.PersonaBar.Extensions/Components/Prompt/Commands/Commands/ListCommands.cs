@@ -1,4 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿using Dnn.PersonaBar.Prompt.Components.Models;
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -21,11 +22,18 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
 
         public override ConsoleResultModel Run()
         {
-
             try
             {
-                var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name).ToList();
-                return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
+                var lstNewCommands = DotNetNuke.Prompt.CommandRepository.Instance.GetCommands().Select(c => new Command
+                {
+                    Name = c.Name,
+                    Category = c.Category,
+                    Description = c.Description,
+                    Key = c.Key,
+                    Version = c.Version
+                });
+                var lstOut = CommandRepository.Instance.GetCommands().Values.Concat(lstNewCommands).OrderBy(c => c.Name + '.' + c.Name).ToList();
+                return new ConsoleResultModel(string.Format(LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
                 {
                     Records = lstOut.Count,
                     Data = lstOut,
