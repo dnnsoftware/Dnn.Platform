@@ -1,45 +1,77 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using DotNetNuke.Common;
-using DotNetNuke.UI.WebControls;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.DDRMenu
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.UI.WebControls;
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
+
     [Serializable]
     [XmlRoot("root", Namespace = "")]
     public class MenuNode : IXmlSerializable
     {
-        public static List<MenuNode> ConvertDNNNodeCollection(DNNNodeCollection dnnNodes, MenuNode parent)
+        private List<MenuNode> _Children;
+
+        public MenuNode()
         {
-            var result = new List<MenuNode>();
-            foreach (DNNNode node in dnnNodes)
-                result.Add(new MenuNode(node, parent));
-            return result;
         }
 
-        public int TabId { get; set; }
-        public string Text { get; set; }
-        public string Title { get; set; }
-        public string Url { get; set; }
-        public bool Enabled { get; set; }
-        public bool Selected { get; set; }
-        public bool Breadcrumb { get; set; }
-        public bool Separator { get; set; }
-        public string Icon { get; set; }
-        public string LargeImage { get; set; }
-        public string CommandName { get; set; }
-        public string CommandArgument { get; set; }
-        public bool First { get { return (Parent == null) || (Parent.Children[0] == this); } }
-        public bool Last { get { return (Parent == null) || (Parent.Children[Parent.Children.Count - 1] == this); } }
-        public string Target { get; set; }
+        public MenuNode(DNNNodeCollection dnnNodes)
+        {
+            this.Children = ConvertDNNNodeCollection(dnnNodes, this);
+        }
+
+        public MenuNode(List<MenuNode> nodes)
+        {
+            this.Children = nodes;
+            this.Children.ForEach(c => c.Parent = this);
+        }
+
+        public MenuNode(DNNNode dnnNode, MenuNode parent)
+        {
+            this.TabId = Convert.ToInt32(dnnNode.ID);
+            this.Text = dnnNode.Text;
+            this.Url = (dnnNode.ClickAction == eClickAction.PostBack)
+                    ? "postback:" + dnnNode.ID
+                    : string.IsNullOrEmpty(dnnNode.JSFunction) ? dnnNode.NavigateURL : "javascript:" + dnnNode.JSFunction;
+            this.Enabled = dnnNode.Enabled;
+            this.Selected = dnnNode.Selected;
+            this.Breadcrumb = dnnNode.BreadCrumb;
+            this.Separator = dnnNode.IsBreak;
+            this.Icon = dnnNode.Image;
+            this.Target = dnnNode.Target;
+            this.Title = null;
+            this.Keywords = null;
+            this.Description = null;
+            this.Parent = parent;
+            this.CommandName = dnnNode.get_CustomAttribute("CommandName");
+            this.CommandArgument = dnnNode.get_CustomAttribute("CommandArgument");
+
+            DNNAbstract.DNNNodeToMenuNode(dnnNode, this);
+
+            if ((dnnNode.DNNNodes != null) && (dnnNode.DNNNodes.Count > 0))
+            {
+                this.Children = ConvertDNNNodeCollection(dnnNode.DNNNodes, this);
+            }
+        }
+
+        public bool First
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
+        }
+
+        public bool Last
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); }
+        }
 
         public int Depth
         {
@@ -52,69 +84,74 @@ namespace DotNetNuke.Web.DDRMenu
                     result++;
                     current = current.Parent;
                 }
+
                 return result;
             }
         }
 
+        public int TabId { get; set; }
+
+        public string Text { get; set; }
+
+        public string Title { get; set; }
+
+        public string Url { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public bool Selected { get; set; }
+
+        public bool Breadcrumb { get; set; }
+
+        public bool Separator { get; set; }
+
+        public string Icon { get; set; }
+
+        public string LargeImage { get; set; }
+
+        public string CommandName { get; set; }
+
+        public string CommandArgument { get; set; }
+
+        public string Target { get; set; }
+
         public string Keywords { get; set; }
+
         public string Description { get; set; }
 
-        private List<MenuNode> _Children;
-        public List<MenuNode> Children { get { return _Children ?? (_Children = new List<MenuNode>()); } set { _Children = value; } }
+        public List<MenuNode> Children
+        {
+            get { return this._Children ?? (this._Children = new List<MenuNode>()); }
+            set { this._Children = value; }
+        }
 
         public MenuNode Parent { get; set; }
 
-        public MenuNode()
+        public static List<MenuNode> ConvertDNNNodeCollection(DNNNodeCollection dnnNodes, MenuNode parent)
         {
-        }
+            var result = new List<MenuNode>();
+            foreach (DNNNode node in dnnNodes)
+            {
+                result.Add(new MenuNode(node, parent));
+            }
 
-        public MenuNode(DNNNodeCollection dnnNodes)
-        {
-            Children = ConvertDNNNodeCollection(dnnNodes, this);
-        }
-
-        public MenuNode(List<MenuNode> nodes)
-        {
-            Children = nodes;
-            Children.ForEach(c => c.Parent = this);
-        }
-
-        public MenuNode(DNNNode dnnNode, MenuNode parent)
-        {
-            TabId = Convert.ToInt32(dnnNode.ID);
-            Text = dnnNode.Text;
-            Url = (dnnNode.ClickAction == eClickAction.PostBack)
-                    ? "postback:" + dnnNode.ID
-                    : String.IsNullOrEmpty(dnnNode.JSFunction) ? dnnNode.NavigateURL : "javascript:" + dnnNode.JSFunction;
-            Enabled = dnnNode.Enabled;
-            Selected = dnnNode.Selected;
-            Breadcrumb = dnnNode.BreadCrumb;
-            Separator = dnnNode.IsBreak;
-            Icon = dnnNode.Image;
-            Target = dnnNode.Target;
-            Title = null;
-            Keywords = null;
-            Description = null;
-            Parent = parent;
-            CommandName = dnnNode.get_CustomAttribute("CommandName");
-            CommandArgument = dnnNode.get_CustomAttribute("CommandArgument");
-
-            DNNAbstract.DNNNodeToMenuNode(dnnNode, this);
-
-            if ((dnnNode.DNNNodes != null) && (dnnNode.DNNNodes.Count > 0))
-                Children = ConvertDNNNodeCollection(dnnNode.DNNNodes, this);
+            return result;
         }
 
         public MenuNode FindById(int tabId)
         {
-            if (tabId == TabId)
+            if (tabId == this.TabId)
+            {
                 return this;
+            }
 
-            foreach (var child in Children)
+            foreach (var child in this.Children)
             {
                 var result = child.FindById(tabId);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -122,14 +159,18 @@ namespace DotNetNuke.Web.DDRMenu
 
         public MenuNode FindByName(string tabName)
         {
-            if (tabName.Equals(Text, StringComparison.InvariantCultureIgnoreCase))
+            if (tabName.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return this;
+            }
 
-            foreach (var child in Children)
+            foreach (var child in this.Children)
             {
                 var result = child.FindByName(tabName);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -137,7 +178,6 @@ namespace DotNetNuke.Web.DDRMenu
 
         public List<MenuNode> FlattenChildren(MenuNode root)
         {
-
             var flattened = new List<MenuNode>();
             if (root.TabId != 0)
             {
@@ -150,7 +190,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 foreach (var child in children)
                 {
-                    flattened.AddRange(FlattenChildren(child));
+                    flattened.AddRange(this.FlattenChildren(child));
                 }
             }
 
@@ -159,60 +199,31 @@ namespace DotNetNuke.Web.DDRMenu
 
         public MenuNode FindByNameOrId(string tabNameOrId)
         {
-            if (tabNameOrId.Equals(Text, StringComparison.InvariantCultureIgnoreCase))
+            if (tabNameOrId.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return this;
-            if (tabNameOrId == TabId.ToString())
-                return this;
+            }
 
-            foreach (var child in Children)
+            if (tabNameOrId == this.TabId.ToString())
+            {
+                return this;
+            }
+
+            foreach (var child in this.Children)
             {
                 var result = child.FindByNameOrId(tabNameOrId);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
         }
 
-        internal void RemoveAll(List<MenuNode> filteredNodes)
-        {
-            this.Children.RemoveAll(filteredNodes.Contains);
-            foreach (var child in Children)
-            {
-                child.RemoveAll(filteredNodes);
-            }
-        }        
-
         public bool HasChildren()
         {
-            return (Children.Count > 0);
-        }
-
-        internal void ApplyContext(string defaultImagePath)
-        {
-            Icon = ApplyContextToImagePath(Icon, defaultImagePath);
-            LargeImage = ApplyContextToImagePath(LargeImage, defaultImagePath);
-
-            if (Url != null && Url.StartsWith("postback:"))
-            {
-                var postbackControl = DNNContext.Current.HostControl;
-                Url = postbackControl.Page.ClientScript.GetPostBackClientHyperlink(postbackControl, Url.Substring(9));
-            }
-
-            Children.ForEach(c => c.ApplyContext(defaultImagePath));
-        }
-
-        private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
-        {
-            var result = imagePath;
-            if (!String.IsNullOrEmpty(result))
-            {
-                if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
-                    result = Globals.ResolveUrl(result);
-                else if (!(result.Contains("://") || result.StartsWith("/")))
-                    result = defaultImagePath + result;
-            }
-            return result;
+            return this.Children.Count > 0;
         }
 
         public XmlSchema GetSchema()
@@ -231,53 +242,56 @@ namespace DotNetNuke.Web.DDRMenu
                     switch (reader.Name.ToLowerInvariant())
                     {
                         case "id":
-                            TabId = Convert.ToInt32(reader.Value);
+                            this.TabId = Convert.ToInt32(reader.Value);
                             break;
                         case "text":
-                            Text = reader.Value;
+                            this.Text = reader.Value;
                             break;
                         case "title":
-                            Title = reader.Value;
+                            this.Title = reader.Value;
                             break;
                         case "url":
-                            Url = reader.Value;
+                            this.Url = reader.Value;
                             break;
                         case "enabled":
-                            Enabled = (reader.Value == "1");
+                            this.Enabled = reader.Value == "1";
                             break;
                         case "selected":
-                            Selected = (reader.Value == "1");
+                            this.Selected = reader.Value == "1";
                             break;
                         case "breadcrumb":
-                            Breadcrumb = (reader.Value == "1");
+                            this.Breadcrumb = reader.Value == "1";
                             break;
                         case "separator":
-                            Separator = (reader.Value == "1");
+                            this.Separator = reader.Value == "1";
                             break;
                         case "icon":
-                            Icon = reader.Value;
+                            this.Icon = reader.Value;
                             break;
                         case "largeimage":
-                            LargeImage = reader.Value;
+                            this.LargeImage = reader.Value;
                             break;
                         case "commandname":
-                            CommandName = reader.Value;
+                            this.CommandName = reader.Value;
                             break;
                         case "commandargument":
-                            CommandArgument = reader.Value;
+                            this.CommandArgument = reader.Value;
                             break;
                         case "target":
-                            Target = reader.Value;
+                            this.Target = reader.Value;
                             break;
-                        //default:
-                        //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
+
+                            // default:
+                            //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
                     }
                 }
                 while (reader.MoveToNextAttribute());
             }
 
             if (empty)
+            {
                 return;
+            }
 
             while (reader.Read())
             {
@@ -289,19 +303,20 @@ namespace DotNetNuke.Web.DDRMenu
                             case "node":
                                 var child = new MenuNode { Parent = this };
                                 child.ReadXml(reader);
-                                Children.Add(child);
+                                this.Children.Add(child);
                                 break;
                             case "keywords":
-                                Keywords = reader.ReadElementContentAsString().Trim();
+                                this.Keywords = reader.ReadElementContentAsString().Trim();
                                 break;
                             case "description":
-                                Description = reader.ReadElementContentAsString().Trim();
+                                this.Description = reader.ReadElementContentAsString().Trim();
                                 break;
                             case "root":
                                 break;
                             default:
-                                throw new XmlException(String.Format("Unexpected element '{0}'", reader.Name));
+                                throw new XmlException(string.Format("Unexpected element '{0}'", reader.Name));
                         }
+
                         break;
                     case XmlNodeType.EndElement:
                         reader.ReadEndElement();
@@ -312,41 +327,68 @@ namespace DotNetNuke.Web.DDRMenu
 
         public void WriteXml(XmlWriter writer)
         {
-            if (Parent != null)
+            if (this.Parent != null)
             {
                 writer.WriteStartElement("node");
 
-                AddXmlAttribute(writer, "id", TabId);
-                AddXmlAttribute(writer, "text", Text);
-                AddXmlAttribute(writer, "title", Title);
-                AddXmlAttribute(writer, "url", Url);
-                AddXmlAttribute(writer, "enabled", Enabled);
-                AddXmlAttribute(writer, "selected", Selected);
-                AddXmlAttribute(writer, "breadcrumb", Breadcrumb);
-                AddXmlAttribute(writer, "separator", Separator);
-                AddXmlAttribute(writer, "target", Target);
-                AddXmlAttribute(writer, "icon", Icon);
-                AddXmlAttribute(writer, "largeimage", LargeImage);
-                AddXmlAttribute(writer, "commandname", CommandName);
-                AddXmlAttribute(writer, "commandargument", CommandArgument);
-                AddXmlAttribute(writer, "first", First);
-                AddXmlAttribute(writer, "last", Last);
-                AddXmlAttribute(writer, "only", First && Last);
-                AddXmlAttribute(writer, "depth", Depth);
-                AddXmlElement(writer, "keywords", Keywords);
-                AddXmlElement(writer, "description", Description);
+                AddXmlAttribute(writer, "id", this.TabId);
+                AddXmlAttribute(writer, "text", this.Text);
+                AddXmlAttribute(writer, "title", this.Title);
+                AddXmlAttribute(writer, "url", this.Url);
+                AddXmlAttribute(writer, "enabled", this.Enabled);
+                AddXmlAttribute(writer, "selected", this.Selected);
+                AddXmlAttribute(writer, "breadcrumb", this.Breadcrumb);
+                AddXmlAttribute(writer, "separator", this.Separator);
+                AddXmlAttribute(writer, "target", this.Target);
+                AddXmlAttribute(writer, "icon", this.Icon);
+                AddXmlAttribute(writer, "largeimage", this.LargeImage);
+                AddXmlAttribute(writer, "commandname", this.CommandName);
+                AddXmlAttribute(writer, "commandargument", this.CommandArgument);
+                AddXmlAttribute(writer, "first", this.First);
+                AddXmlAttribute(writer, "last", this.Last);
+                AddXmlAttribute(writer, "only", this.First && this.Last);
+                AddXmlAttribute(writer, "depth", this.Depth);
+                AddXmlElement(writer, "keywords", this.Keywords);
+                AddXmlElement(writer, "description", this.Description);
             }
 
-            Children.ForEach(c => c.WriteXml(writer));
+            this.Children.ForEach(c => c.WriteXml(writer));
 
-            if (Parent != null)
+            if (this.Parent != null)
+            {
                 writer.WriteEndElement();
+            }
+        }
+
+        internal void RemoveAll(List<MenuNode> filteredNodes)
+        {
+            this.Children.RemoveAll(filteredNodes.Contains);
+            foreach (var child in this.Children)
+            {
+                child.RemoveAll(filteredNodes);
+            }
+        }
+
+        internal void ApplyContext(string defaultImagePath)
+        {
+            this.Icon = this.ApplyContextToImagePath(this.Icon, defaultImagePath);
+            this.LargeImage = this.ApplyContextToImagePath(this.LargeImage, defaultImagePath);
+
+            if (this.Url != null && this.Url.StartsWith("postback:"))
+            {
+                var postbackControl = DNNContext.Current.HostControl;
+                this.Url = postbackControl.Page.ClientScript.GetPostBackClientHyperlink(postbackControl, this.Url.Substring(9));
+            }
+
+            this.Children.ForEach(c => c.ApplyContext(defaultImagePath));
         }
 
         private static void AddXmlAttribute(XmlWriter writer, string name, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
+            {
                 writer.WriteAttributeString(name, value);
+            }
         }
 
         private static void AddXmlAttribute(XmlWriter writer, string name, int value)
@@ -361,8 +403,28 @@ namespace DotNetNuke.Web.DDRMenu
 
         private static void AddXmlElement(XmlWriter writer, string name, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
+            {
                 writer.WriteElementString(name, value);
+            }
+        }
+
+        private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
+        {
+            var result = imagePath;
+            if (!string.IsNullOrEmpty(result))
+            {
+                if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    result = Globals.ResolveUrl(result);
+                }
+                else if (!(result.Contains("://") || result.StartsWith("/")))
+                {
+                    result = defaultImagePath + result;
+                }
+            }
+
+            return result;
         }
     }
 }

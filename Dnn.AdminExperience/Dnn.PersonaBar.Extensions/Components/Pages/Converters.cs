@@ -1,32 +1,34 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Pages.Components.Security;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using Dnn.PersonaBar.Themes.Components;
-using Dnn.PersonaBar.Themes.Components.DTO;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using Dnn.PersonaBar.Themes.Components;
+    using Dnn.PersonaBar.Themes.Components.DTO;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class Converters
     {
         private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+
         public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs) where T : PageItem, new()
         {
             return new T
@@ -68,29 +70,6 @@ namespace Dnn.PersonaBar.Pages.Components
             IsPortable = module.DesktopModule?.IsPortable,
             AllTabs = module.AllTabs
         };
-
-        private static string GetModuleEditSettingUrl(ModuleInfo module)
-        {
-            var parameters = new List<string> { "ModuleId=" + module.ModuleID, "popUp=true" };
-            return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
-        }
-
-        private static string GetModuleEditContentUrl(ModuleInfo module)
-        {
-            var moduleControl = ModuleControlController.GetModuleControlByControlKey("Edit", module.ModuleDefID);
-            if(moduleControl != null && moduleControl.ControlType == SecurityAccessLevel.Edit && !string.IsNullOrEmpty(moduleControl.ControlTitle))
-            {
-                var parameters = new List<string>{ "mid=" + module.ModuleID };
-                if (moduleControl.SupportsPopUps)
-                {
-                    parameters.Add("popUp=true");
-                }
-
-                return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
-            }
-
-            return string.Empty;
-        }
 
         public static T ConvertToPageSettings<T>(TabInfo tab) where T : PageSettings, new()
         {
@@ -160,6 +139,29 @@ namespace Dnn.PersonaBar.Pages.Components
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 PagePermissions = SecurityService.Instance.GetPagePermissions(tab)
             };
+        }
+
+        private static string GetModuleEditSettingUrl(ModuleInfo module)
+        {
+            var parameters = new List<string> { "ModuleId=" + module.ModuleID, "popUp=true" };
+            return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
+        }
+
+        private static string GetModuleEditContentUrl(ModuleInfo module)
+        {
+            var moduleControl = ModuleControlController.GetModuleControlByControlKey("Edit", module.ModuleDefID);
+            if (moduleControl != null && moduleControl.ControlType == SecurityAccessLevel.Edit && !string.IsNullOrEmpty(moduleControl.ControlTitle))
+            {
+                var parameters = new List<string> { "mid=" + module.ModuleID };
+                if (moduleControl.SupportsPopUps)
+                {
+                    parameters.Add("popUp=true");
+                }
+
+                return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
+            }
+
+            return string.Empty;
         }
 
         private static ThemeFileInfo GetThemeFileFromSkinSrc(string skinSrc)

@@ -1,28 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-
-using DotNetNuke.Entities.Urls;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Entities.Urls;
+
     public static class PortalAliasExtensions
     {
         public static bool ContainsAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string httpAlias)
         {
             return aliases.Where(alias => alias.PortalID == portalId || portalId == -1)
-                            .Any(alias => String.Compare(alias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0);
+                            .Any(alias => string.Compare(alias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         public static bool ContainsSpecificSkins(this IEnumerable<PortalAliasInfo> aliases)
         {
-            return aliases.Any(alias => !String.IsNullOrEmpty(alias.Skin));
+            return aliases.Any(alias => !string.IsNullOrEmpty(alias.Skin));
         }
 
         public static Dictionary<string, string> GetAliasesAndCulturesForPortalId(this IEnumerable<PortalAliasInfo> aliases, int portalId)
@@ -35,11 +35,12 @@ namespace DotNetNuke.Entities.Portals
                     aliasCultures.Add(cpa.HTTPAlias.ToLowerInvariant(), cpa.CultureCode);
                 }
             }
+
             return aliasCultures;
         }
 
         /// <summary>
-        /// Returns the chosen portal alias for a specific portal Id and culture Code
+        /// Returns the chosen portal alias for a specific portal Id and culture Code.
         /// </summary>
         /// <param name="aliases"></param>
         /// <param name="portalId"></param>
@@ -49,13 +50,15 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, FriendlyUrlSettings settings)
         {
             var browserType = BrowserTypes.Normal;
-            //if required, and possible, detect browser type
+
+            // if required, and possible, detect browser type
             if (HttpContext.Current != null && settings != null)
             {
                 HttpRequest request = HttpContext.Current.Request;
                 HttpResponse response = HttpContext.Current.Response;
                 browserType = FriendlyUrlController.GetBrowserType(request, response, settings);
             }
+
             return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
         }
 
@@ -63,7 +66,8 @@ namespace DotNetNuke.Entities.Portals
         {
             var browserType = BrowserTypes.Normal;
             UrlAction result = null;
-            //if required, and possible, detect browser type
+
+            // if required, and possible, detect browser type
             if (HttpContext.Current != null && settings != null)
             {
                 HttpRequest request = HttpContext.Current.Request;
@@ -77,6 +81,7 @@ namespace DotNetNuke.Entities.Portals
                     HttpAlias = requestedAlias,
                 };
             }
+
             return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
         }
 
@@ -86,61 +91,62 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Returns a ChosenPortalAlias object where the portalId, culture code and isMobile matches
+        /// Returns a ChosenPortalAlias object where the portalId, culture code and isMobile matches.
         /// </summary>
         /// <param name="aliases"></param>
         /// <param name="portalId"></param>
         /// <param name="result"></param>
         /// <param name="cultureCode"></param>
         /// <param name="browserType"></param>
-        /// <returns>A ChosenPOrtalAlias</returns>
-        /// <remarks>Note will return a best-match by portal if no specific culture Code match found</remarks>
+        /// <returns>A ChosenPOrtalAlias.</returns>
+        /// <remarks>Note will return a best-match by portal if no specific culture Code match found.</remarks>
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, BrowserTypes browserType)
         {
             var aliasList = aliases.ToList();
 
-            //First check if our current alias is already a perfect match.
+            // First check if our current alias is already a perfect match.
             PortalAliasInfo foundAlias = null;
             if (result != null && !string.IsNullOrEmpty(result.HttpAlias))
             {
-                //try to find exact match
+                // try to find exact match
                 foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
-                                                         (String.Compare(a.CultureCode, cultureCode,
+                                                         (string.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias == result.HttpAlias);
-                if (foundAlias == null) //let us try again using Startswith() to find matching Hosts
+                if (foundAlias == null) // let us try again using Startswith() to find matching Hosts
                 {
                     foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
-                                                         (String.Compare(a.CultureCode, cultureCode,
+                                                         (string.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
                 }
             }
-            //27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
+
+            // 27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
             if (foundAlias == null)
             {
                 foundAlias = aliasList.Where(a => a.BrowserType == browserType
-                                            && (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
+                                            && (string.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || string.IsNullOrEmpty(a.CultureCode))
                                             && a.PortalID == portalId)
                     .OrderByDescending(a => a.IsPrimary)
                     .ThenByDescending(a => a.CultureCode)
                     .FirstOrDefault();
             }
 
-            //JIRA DNN-4882 : DevPCI fix bug with url Mobile -> Search alias with culture code
+            // JIRA DNN-4882 : DevPCI fix bug with url Mobile -> Search alias with culture code
             // START DNN-4882
             if (foundAlias == null)
             {
-                foundAlias = aliasList.Where(a => (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
+                foundAlias = aliasList.Where(a => (string.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || string.IsNullOrEmpty(a.CultureCode))
                                            && a.PortalID == portalId)
                        .OrderByDescending(a => a.IsPrimary)
                        .ThenByDescending(a => a.CultureCode)
                        .FirstOrDefault();
             }
-            // END DNN-4882
 
+            // END DNN-4882
             if (foundAlias != null)
             {
                 if (result != null && result.PortalAlias != null)
@@ -181,13 +187,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 httpAliases.Add(cpa.HTTPAlias.ToLowerInvariant());
             }
+
             return httpAliases;
         }
 
         public static string GetCultureByPortalIdAndAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string alias)
         {
             return (from cpa in aliases
-                    where cpa.PortalID == portalId && String.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0
+                    where cpa.PortalID == portalId && string.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0
                     select cpa.CultureCode)
                     .FirstOrDefault();
         }
@@ -196,21 +203,20 @@ namespace DotNetNuke.Entities.Portals
         {
             culture = null;
             browserType = BrowserTypes.Normal;
-            skin = "";
+            skin = string.Empty;
             foreach (var cpa in aliases)
             {
-                if (cpa.PortalID == portalId && String.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0)
+                if (cpa.PortalID == portalId && string.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    //this is a match
+                    // this is a match
                     culture = cpa.CultureCode;
                     browserType = cpa.BrowserType;
-                    //852 : add skin per portal alias
+
+                    // 852 : add skin per portal alias
                     skin = cpa.Skin;
                     break;
                 }
             }
         }
-
-
     }
 }

@@ -1,40 +1,47 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Common;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Abstractions;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.Groups.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class GroupViewParser
     {
-        protected INavigationManager NavigationManager { get; }
-        PortalSettings PortalSettings { get; set; }
-        RoleInfo RoleInfo { get; set; }
-        UserInfo CurrentUser { get; set; }
-        public string Template { get; set; }
-        public int GroupViewTabId { get; set; }
-        public string GroupEditUrl { get; set; }
-
         public GroupViewParser(PortalSettings portalSettings, RoleInfo roleInfo, UserInfo currentUser, string template, int groupViewTabId)
         {
-            PortalSettings = portalSettings;
-            RoleInfo = roleInfo;
-            CurrentUser = currentUser;
-            Template = template;
-            GroupViewTabId = groupViewTabId;
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.PortalSettings = portalSettings;
+            this.RoleInfo = roleInfo;
+            this.CurrentUser = currentUser;
+            this.Template = template;
+            this.GroupViewTabId = groupViewTabId;
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        public string Template { get; set; }
+
+        public int GroupViewTabId { get; set; }
+
+        public string GroupEditUrl { get; set; }
+
+        protected INavigationManager NavigationManager { get; }
+
+        private PortalSettings PortalSettings { get; set; }
+
+        private RoleInfo RoleInfo { get; set; }
+
+        private UserInfo CurrentUser { get; set; }
 
         public string ParseView()
         {
@@ -43,7 +50,7 @@ namespace DotNetNuke.Modules.Groups.Components
 
             if (HttpContext.Current.Request.IsAuthenticated)
             {
-                var userRoleInfo = CurrentUser.Social.Roles.FirstOrDefault(r => r.RoleID == RoleInfo.RoleID);
+                var userRoleInfo = this.CurrentUser.Social.Roles.FirstOrDefault(r => r.RoleID == this.RoleInfo.RoleID);
 
                 if (userRoleInfo != null)
                 {
@@ -53,7 +60,8 @@ namespace DotNetNuke.Modules.Groups.Components
                         membershipPending = true;
                     }
                 }
-                if (RoleInfo.CreatedByUserID == CurrentUser.UserID || CurrentUser.IsSuperUser)
+
+                if (this.RoleInfo.CreatedByUserID == this.CurrentUser.UserID || this.CurrentUser.IsSuperUser)
                 {
                     isOwner = true;
                 }
@@ -63,44 +71,49 @@ namespace DotNetNuke.Modules.Groups.Components
 
             if (isOwner)
             {
-
-                Template = Template.Replace("[GROUPEDITBUTTON]", String.Format(editUrl, GroupEditUrl));
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotOwner", false);
-                Template = Utilities.ParseTokenWrapper(Template, "IsOwner", true);
+                this.Template = this.Template.Replace("[GROUPEDITBUTTON]", string.Format(editUrl, this.GroupEditUrl));
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", false);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", true);
             }
-            else if (CurrentUser.IsInRole(RoleInfo.RoleName))
+            else if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName))
             {
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotOwner", true);
-                Template = Utilities.ParseTokenWrapper(Template, "IsOwner", false);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", true);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", false);
             }
 
-            Template = Utilities.ParseTokenWrapper(Template, "IsNotOwner", false);
-            Template = Utilities.ParseTokenWrapper(Template, "IsOwner", false);
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", false);
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", false);
 
-            if (CurrentUser.IsInRole(RoleInfo.RoleName) || !HttpContext.Current.Request.IsAuthenticated || membershipPending)
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotMember", false);
-            else
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotMember", true);
-
-            if (CurrentUser.IsInRole(RoleInfo.RoleName))
+            if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName) || !HttpContext.Current.Request.IsAuthenticated || membershipPending)
             {
-                Template = Utilities.ParseTokenWrapper(Template, "IsMember", true);
-                Template = Utilities.ParseTokenWrapper(Template, "IsPendingMember", false);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotMember", false);
             }
             else
-                Template = Utilities.ParseTokenWrapper(Template, "IsMember", false);
+            {
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotMember", true);
+            }
 
-            Template = Utilities.ParseTokenWrapper(Template, "AllowJoin", RoleInfo.IsPublic);
+            if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName))
+            {
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsMember", true);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsPendingMember", false);
+            }
+            else
+            {
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsMember", false);
+            }
 
-            Template = Template.Replace("[GROUPEDITBUTTON]", String.Empty);
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "AllowJoin", this.RoleInfo.IsPublic);
 
-            var url = NavigationManager.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + RoleInfo.RoleID.ToString() });
+            this.Template = this.Template.Replace("[GROUPEDITBUTTON]", string.Empty);
 
-            Template = Utilities.ParseTokenWrapper(Template, "IsPendingMember", membershipPending);
-            Template = Template.Replace("[groupviewurl]", url);
-            Components.GroupItemTokenReplace tokenReplace = new Components.GroupItemTokenReplace(RoleInfo);
-            Template = tokenReplace.ReplaceGroupItemTokens(Template);
-            return Template;
+            var url = this.NavigationManager.NavigateURL(this.GroupViewTabId, string.Empty, new string[] { "groupid=" + this.RoleInfo.RoleID.ToString() });
+
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "IsPendingMember", membershipPending);
+            this.Template = this.Template.Replace("[groupviewurl]", url);
+            Components.GroupItemTokenReplace tokenReplace = new Components.GroupItemTokenReplace(this.RoleInfo);
+            this.Template = tokenReplace.ReplaceGroupItemTokens(this.Template);
+            return this.Template;
         }
     }
 }

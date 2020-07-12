@@ -1,34 +1,40 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Linq;
-using NUnit.Framework;
-using Dnn.PersonaBar.Library.Prompt;
-using DotNetNuke.Entities.Portals;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Tests
 {
-    public abstract class CommandTests<T> where T : ConsoleCommandBase
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using NUnit.Framework;
+
+    public abstract class CommandTests<T>
+        where T : ConsoleCommandBase
     {
         protected abstract string CommandName { get; }
-        protected abstract T CreateCommand();
-        protected abstract void ChildSetup();        
 
         protected int testPortalId { get; set; }
+
         protected PortalSettings portalSettings { get; set; }
-        protected ConsoleErrorResultModel errorResultModel { get; set; }        
+
+        protected ConsoleErrorResultModel errorResultModel { get; set; }
+
+        protected abstract T CreateCommand();
+
+        protected abstract void ChildSetup();
 
         [SetUp]
         protected void Setup()
         {
-            ChildSetup();
-            errorResultModel = null;
-            portalSettings = new PortalSettings();
-            portalSettings.PortalId = testPortalId;
-            testPortalId = 0;
+            this.ChildSetup();
+            this.errorResultModel = null;
+            this.portalSettings = new PortalSettings();
+            this.portalSettings.PortalId = this.testPortalId;
+            this.testPortalId = 0;
         }
 
         protected UserInfo GetUser(int userId, bool isDeleted)
@@ -39,14 +45,14 @@ namespace Dnn.PersonaBar.Users.Tests
             userInfo.UserID = userId;
             userInfo.Profile = profile;
             userInfo.IsDeleted = isDeleted;
-            userInfo.PortalID = testPortalId;
+            userInfo.PortalID = this.testPortalId;
             return userInfo;
         }
 
         protected ConsoleResultModel RunCommand(params string[] args)
         {
-            var command = CreateCommand();
-            command.Initialize((new[] { CommandName }.Concat(args)).ToArray(), portalSettings, null, -1);
+            var command = this.CreateCommand();
+            command.Initialize(new[] { this.CommandName }.Concat(args).ToArray(), this.portalSettings, null, -1);
             return command.Run();
         }
     }

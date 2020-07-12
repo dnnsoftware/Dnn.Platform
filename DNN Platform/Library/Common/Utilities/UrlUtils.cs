@@ -1,28 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.UI;
-using DotNetNuke.UI.Skins;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.UI;
+    using DotNetNuke.UI.Skins;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class UrlUtils
     {
         private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -30,9 +26,15 @@ namespace DotNetNuke.Common.Utilities
         public static string Combine(string baseUrl, string relativeUrl)
         {
             if (baseUrl.Length == 0)
+            {
                 return relativeUrl;
+            }
+
             if (relativeUrl.Length == 0)
+            {
                 return baseUrl;
+            }
+
             return string.Format("{0}/{1}", baseUrl.TrimEnd(new[] { '/', '\\' }), relativeUrl.TrimStart(new[] { '/', '\\' }));
         }
 
@@ -51,7 +53,8 @@ namespace DotNetNuke.Common.Utilities
         public static string DecryptParameter(string value, string encryptionKey)
         {
             var objSecurity = PortalSecurity.Instance;
-            //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
+
+            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
             var toDecrypt = new StringBuilder(value);
             toDecrypt.Replace("_", "/");
             toDecrypt.Replace("-", "+");
@@ -79,7 +82,7 @@ namespace DotNetNuke.Common.Utilities
             var objSecurity = PortalSecurity.Instance;
             var parameterValue = new StringBuilder(objSecurity.Encrypt(encryptionKey, value));
 
-            //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
+            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
             parameterValue.Replace("/", "_");
             parameterValue.Replace("+", "-");
             parameterValue.Replace("=", "%3d");
@@ -99,7 +102,8 @@ namespace DotNetNuke.Common.Utilities
             {
                 return nameValues[1];
             }
-            return "";
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -107,11 +111,12 @@ namespace DotNetNuke.Common.Utilities
         /// in order to prep for navigateUrl.
         /// we don't ever want a tabid, a ctl and a language parameter in the qs
         /// either, the portalid param is not allowed when the tab is a supertab
-        /// (because NavigateUrl adds the portalId param to the qs)
+        /// (because NavigateUrl adds the portalId param to the qs).
         /// </summary>
+        /// <returns></returns>
         public static string[] GetQSParamsForNavigateURL()
         {
-            string returnValue = "";
+            string returnValue = string.Empty;
             var coll = HttpContext.Current.Request.QueryString;
             string[] keys = coll.AllKeys;
             for (var i = 0; i <= keys.GetUpperBound(0); i++)
@@ -123,53 +128,53 @@ namespace DotNetNuke.Common.Utilities
                         case "tabid":
                         case "ctl":
                         case "language":
-                            //skip parameter
+                            // skip parameter
                             break;
                         default:
-                            if ((keys[i].Equals("portalid", StringComparison.InvariantCultureIgnoreCase)) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if (keys[i].Equals("portalid", StringComparison.InvariantCultureIgnoreCase) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
                             {
-                                //skip parameter
-                                //navigateURL adds portalid to querystring if tab is superTab
-
+                                // skip parameter
+                                // navigateURL adds portalid to querystring if tab is superTab
                             }
                             else
                             {
                                 string[] values = coll.GetValues(i);
                                 for (int j = 0; j <= values.GetUpperBound(0); j++)
                                 {
-                                    if (!String.IsNullOrEmpty(returnValue))
+                                    if (!string.IsNullOrEmpty(returnValue))
                                     {
                                         returnValue += "&";
                                     }
+
                                     returnValue += keys[i] + "=" + values[j];
                                 }
                             }
+
                             break;
                     }
                 }
             }
-            //return the new querystring as a string array
-            return returnValue.Split('&');
 
+            // return the new querystring as a string array
+            return returnValue.Split('&');
         }
 
         /// <summary>
         /// check if connection is HTTPS
-        /// or is HTTP but with ssloffload enabled on a secure page
+        /// or is HTTP but with ssloffload enabled on a secure page.
         /// </summary>
-        /// <param name="request">current request</param>
-        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise</returns>
+        /// <param name="request">current request.</param>
+        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
         {
-            var isSecureTab = PortalController.Instance.GetCurrentPortalSettings()?.ActiveTab.IsSecure ?? false;
-            return request.IsSecureConnection || (IsSslOffloadEnabled(request) && isSecureTab);
+            return request.IsSecureConnection || IsSslOffloadEnabled(request);
         }
 
         public static bool IsSslOffloadEnabled(HttpRequest request)
         {
-            var ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader", "");
+            var ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
 
-            //if the ssloffloadheader variable has been set check to see if a request header with that type exists
+            // if the ssloffloadheader variable has been set check to see if a request header with that type exists
             if (!string.IsNullOrEmpty(ssloffloadheader))
             {
                 var ssloffloadValue = string.Empty;
@@ -183,9 +188,10 @@ namespace DotNetNuke.Common.Utilities
                 string ssloffload = request.Headers[ssloffloadheader];
                 if (!string.IsNullOrEmpty(ssloffload) && (string.IsNullOrWhiteSpace(ssloffloadValue) || ssloffloadValue == ssloffload))
                 {
-                        return true;
+                    return true;
                 }
             }
+
             return false;
         }
 
@@ -211,40 +217,41 @@ namespace DotNetNuke.Common.Utilities
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect, int windowHeight, int windowWidth, bool refresh, string closingUrl)
         {
-
             if (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request))
             {
                 url = url.Replace("http://", "https://");
             }
+
             var popUpUrl = url;
-            //ensure delimiters are not used
-	        if (!popUpUrl.Contains("dnnModal.show"))
-	        {
-				popUpUrl = Uri.EscapeUriString(url);
-		        popUpUrl = popUpUrl.Replace("\"", "");
-		        popUpUrl = popUpUrl.Replace("'", "");
-	        }
+
+            // ensure delimiters are not used
+            if (!popUpUrl.Contains("dnnModal.show"))
+            {
+                popUpUrl = Uri.EscapeUriString(url);
+                popUpUrl = popUpUrl.Replace("\"", string.Empty);
+                popUpUrl = popUpUrl.Replace("'", string.Empty);
+            }
 
             var delimiter = popUpUrl.Contains("?") ? "&" : "?";
-            var popUpScriptFormat = String.Empty;
+            var popUpScriptFormat = string.Empty;
 
-            //create a the querystring for use on a Response.Redirect
+            // create a the querystring for use on a Response.Redirect
             if (responseRedirect)
             {
                 popUpScriptFormat = "{0}{1}popUp=true";
-                popUpUrl = String.Format(popUpScriptFormat, popUpUrl, delimiter);
+                popUpUrl = string.Format(popUpScriptFormat, popUpUrl, delimiter);
             }
             else
             {
                 if (!popUpUrl.Contains("dnnModal.show"))
                 {
                     popUpScriptFormat = "dnnModal.show('{0}{1}popUp=true',/*showReturn*/{2},{3},{4},{5},'{6}')";
-                    closingUrl = (closingUrl != Null.NullString) ? closingUrl : String.Empty;
-                    popUpUrl = "javascript:" + String.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
+                    closingUrl = (closingUrl != Null.NullString) ? closingUrl : string.Empty;
+                    popUpUrl = "javascript:" + string.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
                 }
                 else
                 {
-                    //Determines if the resulting JS call should return or not.
+                    // Determines if the resulting JS call should return or not.
                     if (popUpUrl.Contains("/*showReturn*/false"))
                     {
                         popUpUrl = popUpUrl.Replace("/*showReturn*/false", "/*showReturn*/" + onClickEvent.ToString().ToLowerInvariant());
@@ -257,18 +264,24 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // Removes the javascript txt for onClick scripts
-            if (onClickEvent && popUpUrl.StartsWith("javascript:")) popUpUrl = popUpUrl.Replace("javascript:", "");
+            if (onClickEvent && popUpUrl.StartsWith("javascript:"))
+            {
+                popUpUrl = popUpUrl.Replace("javascript:", string.Empty);
+            }
 
             return popUpUrl;
         }
 
-        public static string ClosePopUp(Boolean refresh, string url, bool onClickEvent)
+        public static string ClosePopUp(bool refresh, string url, bool onClickEvent)
         {
             var closePopUpStr = "dnnModal.closePopUp({0}, {1})";
             closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");
 
             // Removes the javascript txt for onClick scripts)
-            if (onClickEvent && closePopUpStr.StartsWith("javascript:")) closePopUpStr = closePopUpStr.Replace("javascript:", "");
+            if (onClickEvent && closePopUpStr.StartsWith("javascript:"))
+            {
+                closePopUpStr = closePopUpStr.Replace("javascript:", string.Empty);
+            }
 
             return closePopUpStr;
         }
@@ -303,24 +316,24 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (string.IsNullOrEmpty(url))
                 {
-                    //DNN-10193: returns the same value as passed in rather than empty string
+                    // DNN-10193: returns the same value as passed in rather than empty string
                     return url;
                 }
 
                 url = url.Replace("\\", "/");
                 if (url.ToLowerInvariant().Contains("data:"))
                 {
-                    return "";
+                    return string.Empty;
                 }
 
-                //clean the return url to avoid possible XSS attack.
+                // clean the return url to avoid possible XSS attack.
                 var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
                 if (url != cleanUrl)
                 {
-                    return "";
+                    return string.Empty;
                 }
 
-                //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                // redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
                 var urlWithNoQuery = url;
                 if (urlWithNoQuery.Contains("?"))
                 {
@@ -337,13 +350,13 @@ namespace DotNetNuke.Common.Utilities
                     // protocol switching (HTTP <=> HTTPS) is allowed by not being checked here
                     if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        return "";
+                        return string.Empty;
                     }
 
                     // this check is mainly for child portals
                     if (!uri1.AbsolutePath.StartsWith(uri2.AbsolutePath, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return "";
+                        return string.Empty;
                     }
                 }
 
@@ -356,10 +369,11 @@ namespace DotNetNuke.Common.Utilities
                 {
                     var urlWithNoProtocol = url.Substring(2);
                     var portalSettings = PortalSettings.Current;
+
                     // note: this can redirict from parent to childe and vice versa
                     if (!urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return "";
+                        return string.Empty;
                     }
                 }
 
@@ -367,11 +381,11 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (UriFormatException)
             {
-                return "";
+                return string.Empty;
             }
         }
 
-        //Whether current page is show in popup.
+        // Whether current page is show in popup.
         public static bool InPopUp()
         {
             return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
@@ -379,7 +393,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static bool IsPopUp(string url)
         {
-            return url .IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
+            return url.IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>

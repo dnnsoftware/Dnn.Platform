@@ -1,65 +1,56 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.EditBar.UI.Controllers;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using DotNetNuke.Web.InternalServices;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.EditBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.EditBar.UI.Controllers;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+    using DotNetNuke.Web.InternalServices;
+
     [DnnAuthorize]
     [DnnPageEditor]
     public class ContentEditorController : DnnApiController
     {
-        #region Fields
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
-
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 
-        #endregion
-
-        #region Properties
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
 
         private string LocalResourcesFile
         {
             get { return Path.Combine(ContentEditorManager.ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx"); }
         }
 
-        #endregion
-
-        #region API
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DeleteModule([FromUri]int moduleId)
+        public HttpResponseMessage DeleteModule([FromUri] int moduleId)
         {
-            var module = ModuleController.Instance.GetModule(moduleId, PortalSettings.ActiveTab.TabID, false);
+            var module = ModuleController.Instance.GetModule(moduleId, this.PortalSettings.ActiveTab.TabID, false);
             if (module == null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = LocalizeString("Service_ModuleNotExist") });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = this.LocalizeString("Service_ModuleNotExist") });
             }
 
-            var tabId = PortalSettings.ActiveTab.TabID;
+            var tabId = this.PortalSettings.ActiveTab.TabID;
             ModuleController.Instance.DeleteTabModule(tabId, moduleId, false);
 
-            //remove related modules
+            // remove related modules
             ModuleController.Instance.GetTabModules(tabId).Values
                 .Where(m => m.CreatedOnDate > module.CreatedOnDate && m.CreatedByUserID == module.CreatedByUserID)
                 .ForEach(m =>
@@ -67,23 +58,23 @@ namespace Dnn.EditBar.UI.Services
                     ModuleController.Instance.DeleteTabModule(tabId, m.ModuleID, false);
                 });
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpGet]
         public HttpResponseMessage GetRecommendedModules()
         {
-            var recommendedModuleNames = new List<string> ();
-            var filteredList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.PortalId)
+            var recommendedModuleNames = new List<string>();
+            var filteredList = DesktopModuleController.GetPortalDesktopModules(this.PortalSettings.PortalId)
                                         .Where(kvp => kvp.Value.DesktopModule.Category == "Recommended");
 
             var result = filteredList.Select(kvp => new ControlBarController.ModuleDefDTO
             {
                 ModuleID = kvp.Value.DesktopModuleID,
                 ModuleName = kvp.Key,
-                ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
+                ModuleImage = this.GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
                 Bookmarked = true,
-                ExistsInBookmarkCategory = true
+                ExistsInBookmarkCategory = true,
             }).ToList();
 
             foreach (var moduleName in recommendedModuleNames)
@@ -94,16 +85,15 @@ namespace Dnn.EditBar.UI.Services
                     {
                         ModuleID = Null.NullInteger,
                         ModuleName = moduleName,
-                        ModuleImage = GetDeskTopModuleImage(Null.NullInteger),
+                        ModuleImage = this.GetDeskTopModuleImage(Null.NullInteger),
                         Bookmarked = true,
-                        ExistsInBookmarkCategory = true
+                        ExistsInBookmarkCategory = true,
                     });
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, result.OrderBy(m => recommendedModuleNames.IndexOf(m.ModuleName)));
+            return this.Request.CreateResponse(HttpStatusCode.OK, result.OrderBy(m => recommendedModuleNames.IndexOf(m.ModuleName)));
         }
-
 
         [HttpGet]
         public HttpResponseMessage LoadModuleScript(int desktopModuleId)
@@ -131,22 +121,18 @@ namespace Dnn.EditBar.UI.Services
                 moduleStylePath = string.Empty;
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath });
         }
-
-        #endregion
-
-        #region Private Methods
 
         private string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourcesFile);
+            return Localization.GetString(key, this.LocalResourcesFile);
         }
 
         private string GetDeskTopModuleImage(int moduleId)
         {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.PortalId);
-            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.PortalId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(this.PortalSettings.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(this.PortalSettings.PortalId);
 
             string imageUrl =
                     (from pkgs in packages
@@ -154,11 +140,8 @@ namespace Dnn.EditBar.UI.Services
                      where portMods.Value.DesktopModuleID == moduleId
                      select pkgs.IconFile).FirstOrDefault();
 
-            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
-
-        #endregion
     }
-
 }

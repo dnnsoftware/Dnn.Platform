@@ -1,36 +1,38 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Routing;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class StandardModuleRoutingProvider : ModuleRoutingProvider
     {
-        protected INavigationManager NavigationManager { get; }
         private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
         private const string ExcludedRouteValues = "mid,ctl,popup";
+
         public StandardModuleRoutingProvider()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        protected INavigationManager NavigationManager { get; }
 
         public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
         {
-            //Look for a module control
-            string controlKey = (routeValues.ContainsKey("ctl")) ? (string)routeValues["ctl"] : String.Empty;
+            // Look for a module control
+            string controlKey = routeValues.ContainsKey("ctl") ? (string)routeValues["ctl"] : string.Empty;
 
             List<string> additionalParams = (from routeValue in routeValues
                                              where !ExcludedRouteValues.Split(',').ToList().Contains(routeValue.Key.ToLowerInvariant())
@@ -38,14 +40,14 @@ namespace DotNetNuke.Web.Mvc.Routing
                                              .ToList();
 
             string url;
-            if (String.IsNullOrEmpty(controlKey))
+            if (string.IsNullOrEmpty(controlKey))
             {
                 additionalParams.Insert(0, "moduleId=" + moduleContext.Configuration.ModuleID);
-                url = NavigationManager.NavigateURL("", additionalParams.ToArray());
+                url = this.NavigationManager.NavigateURL(string.Empty, additionalParams.ToArray());
             }
             else
             {
-                url = moduleContext.EditUrl(String.Empty, String.Empty, controlKey, additionalParams.ToArray());
+                url = moduleContext.EditUrl(string.Empty, string.Empty, controlKey, additionalParams.ToArray());
             }
 
             return url;
@@ -53,8 +55,8 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public override RouteData GetRouteData(HttpContextBase httpContext, ModuleControlInfo moduleControl)
         {
-            var segments = moduleControl.ControlSrc.Replace(".mvc", "").Split('/');
-            string routeNamespace = String.Empty;
+            var segments = moduleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
+            string routeNamespace = string.Empty;
             string routeControllerName;
             string routeActionName;
             if (segments.Length == 3)
@@ -86,7 +88,8 @@ namespace DotNetNuke.Web.Mvc.Routing
                     }
                 }
             }
-            if (!String.IsNullOrEmpty(routeNamespace))
+
+            if (!string.IsNullOrEmpty(routeNamespace))
             {
                 routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
             }

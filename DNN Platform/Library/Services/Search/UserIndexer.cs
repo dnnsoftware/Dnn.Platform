@@ -1,33 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-using Lucene.Net.QueryParsers;
-using Lucene.Net.Search;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlTypes;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+    using Lucene.Net.QueryParsers;
+    using Lucene.Net.Search;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.Index
@@ -35,43 +31,37 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The TabIndexer is an implementation of the abstract IndexingProvider
-    /// class
+    /// class.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    public class UserIndexer : IndexingProvider
+    public class UserIndexer : IndexingProviderBase
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
         internal const string ValueSplitFlag = "$$$";
-
-        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
-
-        #region Private Properties
-
         private const int BatchSize = 250;
         private const int ClauseMaxCount = 1024;
 
+        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
+
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
-
-        #endregion
-
-        #region Override Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Searches for and indexes modified users for the given portal.
         /// </summary>
-        /// <returns>Count of indexed records</returns>
+        /// <returns>Count of indexed records.</returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(int portalId,
+        public override int IndexSearchDocuments(
+            int portalId,
             ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = BatchSize;
             var totalIndexed = 0;
             var checkpointModified = false;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
+            startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new Dictionary<string, SearchDocument>();
 
             var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
@@ -93,7 +83,7 @@ namespace DotNetNuke.Services.Search
             try
             {
                 int startUserId;
-                var checkpointData = GetLastCheckpointData(portalId, schedule.ScheduleID);
+                var checkpointData = this.GetLastCheckpointData(portalId, schedule.ScheduleID);
                 if (string.IsNullOrEmpty(checkpointData) || !int.TryParse(checkpointData, out startUserId))
                 {
                     startUserId = Null.NullInteger;
@@ -108,23 +98,24 @@ namespace DotNetNuke.Services.Search
 
                     if (rowsAffected > 0 && searchDocuments.Count >= saveThreshold)
                     {
-                        //remove existing indexes
+                        // remove existing indexes
                         DeleteDocuments(portalId, indexedUsers);
                         var values = searchDocuments.Values;
-                        totalIndexed += IndexCollectedDocs(indexer, values);
-                        SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
-                        SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
+                        totalIndexed += this.IndexCollectedDocs(indexer, values);
+                        this.SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
+                        this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
                         searchDocuments.Clear();
                         checkpointModified = true;
                     }
-                } while (rowsAffected > 0);
+                }
+                while (rowsAffected > 0);
 
                 if (searchDocuments.Count > 0)
                 {
-                    //remove existing indexes
+                    // remove existing indexes
                     DeleteDocuments(portalId, indexedUsers);
                     var values = searchDocuments.Values;
-                    totalIndexed += IndexCollectedDocs(indexer, values);
+                    totalIndexed += this.IndexCollectedDocs(indexer, values);
                     checkpointModified = true;
                 }
 
@@ -142,17 +133,11 @@ namespace DotNetNuke.Services.Search
             if (checkpointModified)
             {
                 // at last reset start user pointer
-                SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
-                SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
+                this.SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
+                this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
             }
-            return totalIndexed;
-        }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
-        {
-            indexer.Invoke(searchDocuments);
-            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
-            return total;
+            return totalIndexed;
         }
 
         private static int FindModifiedUsers(int portalId, DateTime startDateLocal,
@@ -166,11 +151,14 @@ namespace DotNetNuke.Services.Search
                 while (reader.Read())
                 {
                     var userSearch = GetUserSearch(reader);
-                    if (userSearch == null) continue;
+                    if (userSearch == null)
+                    {
+                        continue;
+                    }
 
                     AddBasicInformation(searchDocuments, indexedUsers, userSearch, portalId);
 
-                    //log the userid so that it can get the correct user collection next time.
+                    // log the userid so that it can get the correct user collection next time.
                     if (userSearch.UserId > startUserId)
                     {
                         startUserId = userSearch.UserId;
@@ -195,7 +183,7 @@ namespace DotNetNuke.Services.Search
                         var splitValues = Regex.Split(propertyValue, Regex.Escape(ValueSplitFlag));
 
                         propertyValue = splitValues[0];
-                        var visibilityMode = ((UserVisibilityMode)Convert.ToInt32(splitValues[1]));
+                        var visibilityMode = (UserVisibilityMode)Convert.ToInt32(splitValues[1]);
                         var extendedVisibility = splitValues[2];
                         var modifiedTime = Convert.ToDateTime(splitValues[3]).ToUniversalTime();
 
@@ -204,7 +192,7 @@ namespace DotNetNuke.Services.Search
                             continue;
                         }
 
-                        //DNN-5740 / DNN-9040: replace split flag if it included in property value.
+                        // DNN-5740 / DNN-9040: replace split flag if it included in property value.
                         propertyValue = propertyValue.Replace("[$]", "$");
                         var uniqueKey = string.Format("{0}_{1}", userSearch.UserId, visibilityMode).ToLowerInvariant();
                         if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
@@ -224,7 +212,7 @@ namespace DotNetNuke.Services.Search
                         }
                         else
                         {
-                            //Need remove use exists index for all visibilities.
+                            // Need remove use exists index for all visibilities.
                             if (!indexedUsers.Contains(userSearch.UserId))
                             {
                                 indexedUsers.Add(userSearch.UserId);
@@ -239,7 +227,7 @@ namespace DotNetNuke.Services.Search
                                     PortalId = portalId,
                                     ModifiedTimeUtc = modifiedTime,
                                     Description = userSearch.FirstName,
-                                    Title = userSearch.DisplayName
+                                    Title = userSearch.DisplayName,
                                 };
                                 searchDoc.Keywords.Add(propertyName, propertyValue);
                                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
@@ -251,6 +239,7 @@ namespace DotNetNuke.Services.Search
                     rowsAffected++;
                 }
             }
+
             return rowsAffected;
         }
 
@@ -264,8 +253,9 @@ namespace DotNetNuke.Services.Search
                 {
                     indexedUsers.Add(userSearch.UserId);
                 }
-                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
-                //so that can make sure DisplayName will be indexed
+
+                // if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                // so that can make sure DisplayName will be indexed
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
@@ -276,7 +266,7 @@ namespace DotNetNuke.Services.Search
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
                     Description = userSearch.FirstName,
-                    Title = userSearch.DisplayName
+                    Title = userSearch.DisplayName,
                 };
                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
@@ -290,8 +280,9 @@ namespace DotNetNuke.Services.Search
                 {
                     indexedUsers.Add(userSearch.UserId);
                 }
-                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
-                //so that can make sure DisplayName will be indexed
+
+                // if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                // so that can make sure DisplayName will be indexed
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
@@ -302,7 +293,7 @@ namespace DotNetNuke.Services.Search
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
                     Description = userSearch.FirstName,
-                    Title = userSearch.DisplayName
+                    Title = userSearch.DisplayName,
                 };
 
                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
@@ -327,7 +318,7 @@ namespace DotNetNuke.Services.Search
                     UserName = reader["Username"].ToString(),
                     SuperUser = Convert.ToBoolean(reader["IsSuperUser"]),
                     LastModifiedOnDate = Convert.ToDateTime(modifiedOn).ToUniversalTime(),
-                    CreatedOnDate = Convert.ToDateTime(createdOn).ToUniversalTime()
+                    CreatedOnDate = Convert.ToDateTime(createdOn).ToUniversalTime(),
                 };
 
                 if (!string.IsNullOrEmpty(userSearch.FirstName) && userSearch.FirstName.Contains(ValueSplitFlag))
@@ -344,10 +335,6 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static void DeleteDocuments(int portalId, ICollection<int> usersList)
         {
             if (usersList == null || usersList.Count == 0)
@@ -355,7 +342,7 @@ namespace DotNetNuke.Services.Search
                 return;
             }
 
-            var values = Enum.GetValues(typeof (UserVisibilityMode));
+            var values = Enum.GetValues(typeof(UserVisibilityMode));
 
             var clauseCount = 0;
             foreach (var item in values)
@@ -363,12 +350,13 @@ namespace DotNetNuke.Services.Search
                 var keyword = new StringBuilder("(");
                 foreach (var userId in usersList)
                 {
-                    var mode = Enum.GetName(typeof (UserVisibilityMode), item);
+                    var mode = Enum.GetName(typeof(UserVisibilityMode), item);
                     keyword.AppendFormat("{2} {0}_{1} OR {0}_{1}* ", userId, mode,
                         keyword.Length > 1 ? "OR " : string.Empty);
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
-                        //max cluaseCount is 1024, if reach the max value, perform a delete action. 
+
+                    // max cluaseCount is 1024, if reach the max value, perform a delete action.
                     {
                         keyword.Append(")");
                         PerformDelete(portalId, keyword.ToString().ToLowerInvariant());
@@ -389,11 +377,11 @@ namespace DotNetNuke.Services.Search
         {
             var query = new BooleanQuery
             {
-                {NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST},
+                { NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST },
                 {
                     NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, UserSearchTypeId, UserSearchTypeId, true, true),
                     Occur.MUST
-                }
+                },
             };
 
             var parserContent = new QueryParser(Constants.LuceneVersion, Constants.UniqueKeyTag,
@@ -410,29 +398,30 @@ namespace DotNetNuke.Services.Search
             return schema != null && schema.Select("ColumnName = '" + col + "'").Length > 0;
         }
 
-        #endregion
-
-        #region Obsoleted Methods
-
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
         {
-            return null;
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
+            return total;
         }
-
-        #endregion
-
     }
 
     internal class UserSearch
     {
         public int UserId { get; set; }
+
         public string DisplayName { get; set; }
+
         public string FirstName { get; set; }
+
         public string Email { get; set; }
+
         public string UserName { get; set; }
+
         public bool SuperUser { get; set; }
+
         public DateTime LastModifiedOnDate { get; set; }
+
         public DateTime CreatedOnDate { get; set; }
     }
 }

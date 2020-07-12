@@ -121,6 +121,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		Packages\repositories.config = Packages\repositories.config
 		SolutionInfo.cs = SolutionInfo.cs
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
@@ -303,6 +304,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA
 		DNN Platform\Website\Install\Cleanup\08.00.00.06.txt = DNN Platform\Website\Install\Cleanup\08.00.00.06.txt
 		DNN Platform\Website\Install\Cleanup\08.00.00.13.txt = DNN Platform\Website\Install\Cleanup\08.00.00.13.txt
 		DNN Platform\Website\Install\Cleanup\08.00.00.16.txt = DNN Platform\Website\Install\Cleanup\08.00.00.16.txt
+		DNN Platform\Website\Install\Cleanup\08.00.00.17.txt = DNN Platform\Website\Install\Cleanup\08.00.00.17.txt
 		DNN Platform\Website\Install\Cleanup\09.01.00.txt = DNN Platform\Website\Install\Cleanup\09.01.00.txt
 		DNN Platform\Website\Install\Cleanup\09.01.01.txt = DNN Platform\Website\Install\Cleanup\09.01.01.txt
 		DNN Platform\Website\Install\Cleanup\09.02.00.txt = DNN Platform\Website\Install\Cleanup\09.02.00.txt
@@ -349,6 +351,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE26
 		DNN Platform\Website\Install\Config\09.01.01.config = DNN Platform\Website\Install\Config\09.01.01.config
 		DNN Platform\Website\Install\Config\09.02.00.config = DNN Platform\Website\Install\Config\09.02.00.config
 		DNN Platform\Website\Install\Config\09.03.00.config = DNN Platform\Website\Install\Config\09.03.00.config
+		DNN Platform\Website\Install\Config\09.04.00.config = DNN Platform\Website\Install\Config\09.04.00.config
+		DNN Platform\Website\Install\Config\09.05.00.config = DNN Platform\Website\Install\Config\09.05.00.config
+		DNN Platform\Website\Install\Config\09.06.00.config = DNN Platform\Website\Install\Config\09.06.00.config
+		DNN Platform\Website\Install\Config\09.06.02.config = DNN Platform\Website\Install\Config\09.06.02.config
+		DNN Platform\Website\Install\Config\09.07.00.config = DNN Platform\Website\Install\Config\09.07.00.config
 		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
 		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
 		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config

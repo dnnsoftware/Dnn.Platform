@@ -1,23 +1,35 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class PortalGroupInfo : BaseEntityInfo, IHydratable
     {
+        public string MasterPortalName
+        {
+            get
+            {
+                string portalName = string.Empty;
+                if (this.MasterPortalId > -1)
+                {
+                    var portal = PortalController.Instance.GetPortal(this.MasterPortalId);
+                    if (portal != null)
+                    {
+                        portalName = portal.PortalName;
+                    }
+                }
+
+                return portalName;
+            }
+        }
 
         public int PortalGroupId { get; set; }
 
@@ -25,54 +37,34 @@ namespace DotNetNuke.Entities.Portals
 
         public int MasterPortalId { get; set; }
 
-        public string MasterPortalName
-        {
-            get
-            {
-                string portalName = String.Empty;
-                if (MasterPortalId > -1)
-                {
-                    var portal = PortalController.Instance.GetPortal(MasterPortalId);
-                    if (portal != null)
-                    {
-                        portalName = portal.PortalName;
-                    }
-                }
-                return portalName;
-            }
-        }
-
-        [Required()]
+        [Required]
         public string PortalGroupDescription { get; set; }
 
-        [Required()]
+        [Required]
         public string PortalGroupName { get; set; }
-
-        #region IHydratable Members
 
         public int KeyID
         {
             get
             {
-                return PortalGroupId;
+                return this.PortalGroupId;
             }
+
             set
             {
-                PortalGroupId = value;
+                this.PortalGroupId = value;
             }
         }
 
         public void Fill(IDataReader dr)
         {
-            FillInternal(dr);
+            this.FillInternal(dr);
 
-            PortalGroupId = Null.SetNullInteger(dr["PortalGroupID"]);
-            PortalGroupName = Null.SetNullString(dr["PortalGroupName"]);
-            PortalGroupDescription = Null.SetNullString(dr["PortalGroupDescription"]);
-            MasterPortalId = Null.SetNullInteger(dr["MasterPortalID"]);
-            AuthenticationDomain = Null.SetNullString(dr["AuthenticationDomain"]);
+            this.PortalGroupId = Null.SetNullInteger(dr["PortalGroupID"]);
+            this.PortalGroupName = Null.SetNullString(dr["PortalGroupName"]);
+            this.PortalGroupDescription = Null.SetNullString(dr["PortalGroupDescription"]);
+            this.MasterPortalId = Null.SetNullInteger(dr["MasterPortalID"]);
+            this.AuthenticationDomain = Null.SetNullString(dr["AuthenticationDomain"]);
         }
-
-        #endregion
     }
 }

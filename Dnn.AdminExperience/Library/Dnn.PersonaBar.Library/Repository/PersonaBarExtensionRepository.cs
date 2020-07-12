@@ -1,40 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.PersonaBar.Library.Data;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Data;
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+
     public class PersonaBarExtensionRepository : ServiceLocator<IPersonaBarExtensionRepository, PersonaBarExtensionRepository>,
         IPersonaBarExtensionRepository
     {
-        #region Fields
-        private readonly IDataService _dataService = new DataService();
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
         private static readonly object ThreadLocker = new object();
-        #endregion
-
-        private void ClearCache()
-        {
-            DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
-        }
-
-        protected override Func<IPersonaBarExtensionRepository> GetFactory()
-        {
-            return () => new PersonaBarExtensionRepository();
-        }
+        private readonly IDataService _dataService = new DataService();
 
         public void SaveExtension(PersonaBarExtension extension)
         {
-            _dataService.SavePersonaBarExtension(
+            this._dataService.SavePersonaBarExtension(
                 extension.Identifier,
                 extension.MenuId,
                 extension.FolderName,
@@ -43,22 +32,21 @@ namespace Dnn.PersonaBar.Library.Repository
                 extension.Path,
                 extension.Order,
                 extension.Enabled,
-                UserController.Instance.GetCurrentUserInfo().UserID
-                );
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
-            ClearCache();
+            this.ClearCache();
         }
 
         public void DeleteExtension(PersonaBarExtension extension)
         {
-            DeleteExtension(extension.Identifier);
+            this.DeleteExtension(extension.Identifier);
         }
 
         public void DeleteExtension(string identifier)
         {
-            _dataService.DeletePersonaBarExtension(identifier);
+            this._dataService.DeletePersonaBarExtension(identifier);
 
-            ClearCache();
+            this.ClearCache();
         }
 
         public IList<PersonaBarExtension> GetExtensions()
@@ -71,7 +59,7 @@ namespace Dnn.PersonaBar.Library.Repository
                     extensions = DataCache.GetCache<IList<PersonaBarExtension>>(PersonaBarExtensionsCacheKey);
                     if (extensions == null)
                     {
-                        extensions = CBO.FillCollection<PersonaBarExtension>(_dataService.GetPersonaBarExtensions())
+                        extensions = CBO.FillCollection<PersonaBarExtension>(this._dataService.GetPersonaBarExtensions())
                             .OrderBy(e => e.Order).ToList();
 
                         DataCache.SetCache(PersonaBarExtensionsCacheKey, extensions);
@@ -84,7 +72,17 @@ namespace Dnn.PersonaBar.Library.Repository
 
         public IList<PersonaBarExtension> GetExtensions(int menuId)
         {
-            return GetExtensions().Where(t => t.MenuId == menuId).ToList();
+            return this.GetExtensions().Where(t => t.MenuId == menuId).ToList();
+        }
+
+        protected override Func<IPersonaBarExtensionRepository> GetFactory()
+        {
+            return () => new PersonaBarExtensionRepository();
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
         }
     }
 }

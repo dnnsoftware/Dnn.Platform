@@ -115,10 +115,11 @@ const PageService = function () {
         });
     };
 
-    const toFrontEndPage = function (page) {
+    const toFrontEndPage = function (pageResult) {
         return {
-            ...page,
-            schedulingEnabled: page.startDate || page.endDate
+            ...pageResult.page,
+            schedulingEnabled: pageResult.page.startDate || pageResult.page.endDate,
+            validationCode: pageResult.ValidationCode,
         };
     };
 

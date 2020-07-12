@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+
     public class SyndicationHandlerBase : GenericRssHttpHandlerBase
     {
         private int _moduleId = Null.NullInteger;
@@ -33,14 +28,15 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                if (_tabId == Null.NullInteger && Request.QueryString["tabid"] != null)
+                if (this._tabId == Null.NullInteger && this.Request.QueryString["tabid"] != null)
                 {
-                    if (! Int32.TryParse(Request.QueryString["tabid"], out _tabId))
+                    if (!int.TryParse(this.Request.QueryString["tabid"], out this._tabId))
                     {
-                        _tabId = Null.NullInteger;
+                        this._tabId = Null.NullInteger;
                     }
                 }
-                return _tabId;
+
+                return this._tabId;
             }
         }
 
@@ -48,14 +44,15 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                if (_moduleId == Null.NullInteger && Request.QueryString["moduleid"] != null)
+                if (this._moduleId == Null.NullInteger && this.Request.QueryString["moduleid"] != null)
                 {
-                    if (! Int32.TryParse(Request.QueryString["moduleid"], out _moduleId))
+                    if (!int.TryParse(this.Request.QueryString["moduleid"], out this._moduleId))
                     {
-                        _moduleId = Null.NullInteger;
+                        this._moduleId = Null.NullInteger;
                     }
                 }
-                return _moduleId;
+
+                return this._moduleId;
             }
         }
 

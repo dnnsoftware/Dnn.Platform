@@ -1,30 +1,41 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Threading;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Scheduling
 {
-	/// <summary>
-	/// This class is inherited by any class that wants to run tasks in the scheduler.
-	/// </summary>
+    using System;
+    using System.Threading;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+
+    /// <summary>
+    /// This class is inherited by any class that wants to run tasks in the scheduler.
+    /// </summary>
     public abstract class SchedulerClient
     {
         public SchedulerClient()
         {
-            SchedulerEventGUID = Null.NullString;
-            aProcessMethod = Null.NullString;
-            Status = Null.NullString;
-            ScheduleHistoryItem = new ScheduleHistoryItem();
+            this.SchedulerEventGUID = Null.NullString;
+            this.aProcessMethod = Null.NullString;
+            this.Status = Null.NullString;
+            this.ScheduleHistoryItem = new ScheduleHistoryItem();
+        }
+
+        public event WorkStarted ProcessStarted;
+
+        public event WorkProgressing ProcessProgressing;
+
+        public event WorkCompleted ProcessCompleted;
+
+        public event WorkErrored ProcessErrored;
+
+        public int ThreadID
+        {
+            get
+            {
+                return Thread.CurrentThread.ManagedThreadId;
+            }
         }
 
         public ScheduleHistoryItem ScheduleHistoryItem { get; set; }
@@ -35,57 +46,44 @@ namespace DotNetNuke.Services.Scheduling
 
         public string Status { get; set; }
 
-        public int ThreadID
-        {
-            get
-            {
-                return Thread.CurrentThread.ManagedThreadId;
-            }
-        }
-
-        public event WorkStarted ProcessStarted;
-        public event WorkProgressing ProcessProgressing;
-        public event WorkCompleted ProcessCompleted;
-        public event WorkErrored ProcessErrored;
-
         public void Started()
         {
-            if (ProcessStarted != null)
+            if (this.ProcessStarted != null)
             {
-                ProcessStarted(this);
+                this.ProcessStarted(this);
             }
         }
 
         public void Progressing()
         {
-            if (ProcessProgressing != null)
+            if (this.ProcessProgressing != null)
             {
-                ProcessProgressing(this);
+                this.ProcessProgressing(this);
             }
         }
 
         public void Completed()
         {
-            if (ProcessCompleted != null)
+            if (this.ProcessCompleted != null)
             {
-                ProcessCompleted(this);
+                this.ProcessCompleted(this);
             }
         }
 
         public void Errored(ref Exception objException)
         {
-            if (ProcessErrored != null)
+            if (this.ProcessErrored != null)
             {
-                ProcessErrored(this, objException);
+                this.ProcessErrored(this, objException);
             }
         }
 
         /// '''''''''''''''''''''''''''''''''''''''''''''''''''
-		/// <summary>
+        /// <summary>
         /// This is the sub that kicks off the actual
-        /// work within the SchedulerClient's subclass
-		/// </summary>
-		/// '''''''''''''''''''''''''''''''''''''''''''''''''''
-		public abstract void DoWork();
+        /// work within the SchedulerClient's subclass.
+        /// </summary>
+        /// '''''''''''''''''''''''''''''''''''''''''''''''''''
+        public abstract void DoWork();
     }
 }

@@ -1,17 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
-    ///-----------------------------------------------------------------------------
+    using System;
+    using System.Web.UI;
+
+    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The MultiLineTextEditControl control provides a standard UI component for editing
     /// string/text properties.
@@ -24,10 +19,10 @@ namespace DotNetNuke.UI.WebControls
     {
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            string propValue = Convert.ToString(Value);
-            ControlStyle.AddAttributesToRender(writer);
-			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            string propValue = Convert.ToString(this.Value);
+            this.ControlStyle.AddAttributesToRender(writer);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.AddAttribute("aria-label", "editor");
             writer.RenderBeginTag(HtmlTextWriterTag.Textarea);
             writer.Write(propValue);

@@ -1,19 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-// 
-// Influenced by http://sameproblemmorecode.blogspot.nl/2013/07/petapoco-as-its-meant-to-be-with.html
-// https://github.com/luuksommers/PetaPoco
-
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Web.Caching;
-using PetaPoco;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Web.Caching;
+    using global::PetaPoco;
+
     [CLSCompliant(false)]
     public class FluentMapper<TModel> : IMapper
     {
@@ -21,13 +17,13 @@ namespace DotNetNuke.Data.PetaPoco
 
         public FluentMapper(string tablePrefix)
         {
-            CacheKey = String.Empty;
-            CachePriority = CacheItemPriority.Default;
-            CacheTimeOut = 0;
-            Mappings = new Dictionary<string, FluentColumnMap>();
-            Scope = String.Empty;
-            TableInfo = new TableInfo();
-            _tablePrefix = tablePrefix;
+            this.CacheKey = string.Empty;
+            this.CachePriority = CacheItemPriority.Default;
+            this.CacheTimeOut = 0;
+            this.Mappings = new Dictionary<string, FluentColumnMap>();
+            this.Scope = string.Empty;
+            this.TableInfo = new TableInfo();
+            this._tablePrefix = tablePrefix;
         }
 
         public string CacheKey { get; set; }
@@ -44,14 +40,17 @@ namespace DotNetNuke.Data.PetaPoco
 
         public TableInfo GetTableInfo(Type pocoType)
         {
-            return TableInfo;
+            return this.TableInfo;
         }
 
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
         {
             var fluentMap = default(FluentColumnMap);
-            if (Mappings.TryGetValue(pocoProperty.Name, out fluentMap))
+            if (this.Mappings.TryGetValue(pocoProperty.Name, out fluentMap))
+            {
                 return fluentMap.ColumnInfo;
+            }
+
             return null;
         }
 
@@ -59,8 +58,11 @@ namespace DotNetNuke.Data.PetaPoco
         {
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
-            if (Mappings.TryGetValue(targetProperty.Name, out fluentMap))
+            if (this.Mappings.TryGetValue(targetProperty.Name, out fluentMap))
+            {
                 return fluentMap.FromDbConverter;
+            }
+
             return null;
         }
 
@@ -68,14 +70,17 @@ namespace DotNetNuke.Data.PetaPoco
         {
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
-            if (Mappings.TryGetValue(sourceProperty.Name, out fluentMap))
+            if (this.Mappings.TryGetValue(sourceProperty.Name, out fluentMap))
+            {
                 return fluentMap.ToDbConverter;
+            }
+
             return null;
         }
 
         public string GetTablePrefix()
         {
-            return _tablePrefix;
+            return this._tablePrefix;
         }
     }
 }

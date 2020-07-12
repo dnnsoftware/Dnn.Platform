@@ -1,161 +1,151 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Social.Notifications
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Notifications
     /// Class:      Notification
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Notification class describes the a notification received by a user as a consecuence of an action
+    /// The Notification class describes the a notification received by a user as a consecuence of an action.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class Notification : BaseEntityInfo, IHydratable
     {
-        #region Private Properties
-
         private int _notificationID = -1;
         private string _displayDate;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        /// NotificationID - The primary key
+        /// Initializes a new instance of the <see cref="Notification"/> class.
+        /// Default constructor.
         /// </summary>
-        [XmlAttribute]
-        public int NotificationID
+        public Notification()
         {
-            get
-            {
-                return _notificationID;
-            }
-            set
-            {
-                _notificationID = value;
-            }
+            this.SendToast = true;
         }
 
         /// <summary>
-        /// The message type identifier.
-        /// </summary>
-        [XmlAttribute]
-        public int NotificationTypeID { get; set; }
-
-        /// <summary>
-        /// To list for the message. This information is saved for faster display of To list in the message
-        /// </summary>
-        [XmlAttribute]
-        public string To { get; set; }
-
-        /// <summary>
-        /// Message From
-        /// </summary>
-        [XmlAttribute]
-        public string From { get; set; }
-
-        /// <summary>
-        /// Message Subject
-        /// </summary>
-        [XmlAttribute]
-        public string Subject { get; set; }
-
-        /// <summary>
-        /// Message body
-        /// </summary>
-        [XmlAttribute]
-        public string Body { get; set; }
-
-        /// <summary>
-        /// Context set by creator of the notification
-        /// </summary>
-        [XmlAttribute]
-        public string Context { get; set; }
-
-        /// <summary>
-        /// The UserID of the sender of the message
-        /// </summary>
-        [XmlAttribute]
-        public int SenderUserID { get; set; }
-
-        /// <summary>
-        /// A pretty printed string with the time since the message was created
+        /// Gets a pretty printed string with the time since the message was created.
         /// </summary>
         [XmlAttribute]
         public string DisplayDate
         {
             get
             {
-                if (string.IsNullOrEmpty(_displayDate))
+                if (string.IsNullOrEmpty(this._displayDate))
                 {
-                    _displayDate = DateUtils.CalculateDateForDisplay(CreatedOnDate);
+                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
-                return _displayDate;
+
+                return this._displayDate;
             }
         }
 
         /// <summary>
-        /// For notifications, this field indicates when it has to be removed (or not displayed)
+        /// Gets or sets notificationID - The primary key.
+        /// </summary>
+        [XmlAttribute]
+        public int NotificationID
+        {
+            get
+            {
+                return this._notificationID;
+            }
+
+            set
+            {
+                this._notificationID = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the message type identifier.
+        /// </summary>
+        [XmlAttribute]
+        public int NotificationTypeID { get; set; }
+
+        /// <summary>
+        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message.
+        /// </summary>
+        [XmlAttribute]
+        public string To { get; set; }
+
+        /// <summary>
+        /// Gets or sets message From.
+        /// </summary>
+        [XmlAttribute]
+        public string From { get; set; }
+
+        /// <summary>
+        /// Gets or sets message Subject.
+        /// </summary>
+        [XmlAttribute]
+        public string Subject { get; set; }
+
+        /// <summary>
+        /// Gets or sets message body.
+        /// </summary>
+        [XmlAttribute]
+        public string Body { get; set; }
+
+        /// <summary>
+        /// Gets or sets context set by creator of the notification.
+        /// </summary>
+        [XmlAttribute]
+        public string Context { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UserID of the sender of the message.
+        /// </summary>
+        [XmlAttribute]
+        public int SenderUserID { get; set; }
+
+        /// <summary>
+        /// Gets or sets for notifications, this field indicates when it has to be removed (or not displayed).
         /// </summary>
         [XmlAttribute]
         public DateTime ExpirationDate { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID
         {
             get
             {
-                return NotificationID;
+                return this.NotificationID;
             }
+
             set
             {
-                NotificationID = value;
+                this.NotificationID = value;
             }
         }
 
         /// <summary>
-        /// Should this notification support a dismiss action
+        /// Gets or sets a value indicating whether should this notification support a dismiss action.
         /// </summary>
         [XmlAttribute]
         public bool IncludeDismissAction { get; set; }
 
         /// <summary>
-        /// The notification is displayed on the UI as a toast notification
+        /// Gets or sets a value indicating whether the notification is displayed on the UI as a toast notification.
         /// </summary>
-		[XmlAttribute]
-		public bool SendToast { get; set; }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public Notification()
-        {
-            SendToast = true;
-        }
-
-        #endregion
-
-        #region Public Methods
+        [XmlAttribute]
+        public bool SendToast { get; set; }
 
         /// <summary>
         /// Fill the object with data from database.
@@ -163,34 +153,32 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            NotificationID = Convert.ToInt32(dr["MessageID"]);
-            NotificationTypeID = Convert.ToInt32(dr["NotificationTypeID"]);
-            To = Null.SetNullString(dr["To"]);
-            From = Null.SetNullString(dr["From"]);
-            Subject = Null.SetNullString(dr["Subject"]);
-            Body = Null.SetNullString(dr["Body"]);
-            Context = Null.SetNullString(dr["Context"]);
-            SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
-            ExpirationDate = Null.SetNullDateTime(dr["ExpirationDate"]);
-            IncludeDismissAction = Null.SetNullBoolean(dr["IncludeDismissAction"]);
+            this.NotificationID = Convert.ToInt32(dr["MessageID"]);
+            this.NotificationTypeID = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.To = Null.SetNullString(dr["To"]);
+            this.From = Null.SetNullString(dr["From"]);
+            this.Subject = Null.SetNullString(dr["Subject"]);
+            this.Body = Null.SetNullString(dr["Body"]);
+            this.Context = Null.SetNullString(dr["Context"]);
+            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
+            this.ExpirationDate = Null.SetNullDateTime(dr["ExpirationDate"]);
+            this.IncludeDismissAction = Null.SetNullBoolean(dr["IncludeDismissAction"]);
 
-			var schema = dr.GetSchemaTable();
-			if (schema != null)
-			{
-				if (schema.Select("ColumnName = 'SendToast'").Length > 0)
-				{
-					SendToast = Null.SetNullBoolean(dr["SendToast"]);
-				}
-				else
-				{
-                    SendToast = false;
-				}
-			}
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'SendToast'").Length > 0)
+                {
+                    this.SendToast = Null.SetNullBoolean(dr["SendToast"]);
+                }
+                else
+                {
+                    this.SendToast = false;
+                }
+            }
 
-            //add audit column data
-            FillInternal(dr);
+            // add audit column data
+            this.FillInternal(dr);
         }
-
-        #endregion
     }
 }

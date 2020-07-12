@@ -1,50 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Localization;
+
     public class DnnLiteral : Literal, ILocalizable
     {
         private bool _Localize = true;
-
-        #region "Protected Methods"
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            LocalizeStrings();
-            base.Render(writer);
-        }
-
-        #endregion
-
-        #region "ILocalizable Implementation"
 
         public bool Localize
         {
             get
             {
-                return _Localize;
+                return this._Localize;
             }
+
             set
             {
-                _Localize = value;
+                this._Localize = value;
             }
         }
 
@@ -52,15 +30,25 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
-                    Text = Localization.GetString(Text, LocalResourceFile);
+                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
                 }
             }
         }
 
-        #endregion
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
+        }
     }
 }

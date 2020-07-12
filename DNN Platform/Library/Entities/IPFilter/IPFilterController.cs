@@ -1,57 +1,43 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Common.Utils;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Host
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Common.Utils;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+
     public class IPFilterController : ComponentBase<IIPFilterController, IPFilterController>, IIPFilterController
     {
-        #region Private
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (IPFilterController));
-        
-        private enum FilterType
-        {
-            Allow=1,
-            Deny=2
-        }
-        #endregion
-
-        #region Constructor
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IPFilterController));
 
         internal IPFilterController()
         {
         }
 
-        #endregion
-
-        #region IIPFilterController Members
+        private enum FilterType
+        {
+            Allow = 1,
+            Deny = 2,
+        }
 
         /// <summary>
-        /// add a new IP filter
+        /// add a new IP filter.
         /// </summary>
-        /// <param name="ipFilter">filter details</param>
-        /// <returns>filter id</returns>
+        /// <param name="ipFilter">filter details.</param>
+        /// <returns>filter id.</returns>
         public int AddIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
@@ -62,9 +48,9 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// update an existing IP filter
+        /// update an existing IP filter.
         /// </summary>
-        /// <param name="ipFilter">filter details</param>
+        /// <param name="ipFilter">filter details.</param>
         public void UpdateIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
@@ -80,94 +66,42 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// get an IP filter 
+        /// get an IP filter.
         /// </summary>
-        /// <param name="ipFilter">filter details</param>
-        /// <returns>the selected IP filter</returns>
+        /// <param name="ipFilter">filter details.</param>
+        /// <returns>the selected IP filter.</returns>
         public IPFilterInfo GetIPFilter(int ipFilter)
         {
-            return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));       
-        }
-    
-        /// <summary>
-        /// get the list of IP filters
-        /// </summary>
-        /// <returns>list of IP filters</returns>
-        IList<IPFilterInfo> IIPFilterController.GetIPFilters()
-        {
-            return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
+            return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
 
         [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
         public void IsIPAddressBanned(string ipAddress)
         {
-            if (CheckIfBannedIPAddress(ipAddress))
-            {//should throw 403.6
-            throw new HttpException(403, "");
+            if (this.CheckIfBannedIPAddress(ipAddress))
+            {// should throw 403.6
+                throw new HttpException(403, string.Empty);
             }
         }
 
         /// <summary>
-        /// Check the set of rules to see if an IP address is banned (used on login)
+        /// Check the set of rules to see if an IP address is banned (used on login).
         /// </summary>
-        /// <param name="ipAddress">IP address</param>
-        /// <returns>true if banned</returns>
+        /// <param name="ipAddress">IP address.</param>
+        /// <returns>true if banned.</returns>
         public bool IsIPBanned(string ipAddress)
         {
-
-            return CheckIfBannedIPAddress(ipAddress);
-        }
-
-        private bool CheckIfBannedIPAddress(string ipAddress)
-        {
-            IList<IPFilterInfo> filterList = Instance.GetIPFilters();
-            bool ipAllowed = true;
-            foreach (var ipFilterInfo in filterList)
-            {
-                //if a single deny exists, this win's
-                if (ipFilterInfo.RuleType == (int)FilterType.Deny)
-                {
-                    if (NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
-                    {
-                        //log
-                        LogBannedIPAttempt(ipAddress);
-                        return true;
-
-                    }
-                }
-                //check any allows - if one exists set flag but let processing continue to verify no deny overrides
-                if (ipFilterInfo.RuleType == (int)FilterType.Allow)
-                {
-                    if (ipFilterInfo.IPAddress=="*" || NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
-                    {
-                        ipAllowed = false;
-
-                    }
-                }
-            }
-            return ipAllowed;
-        }
-
-        
-
-        private void LogBannedIPAttempt(string ipAddress)
-        {
-            var log = new LogInfo
-            {
-                LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()
-            };
-            log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
-            LogController.Instance.AddLog(log);
+            return this.CheckIfBannedIPAddress(ipAddress);
         }
 
         /// <summary>
         /// Check if an IP address range can still access based on a set of rules
-        /// note: this set is typically the list of IP filter rules minus a proposed delete
+        /// note: this set is typically the list of IP filter rules minus a proposed delete.
         /// </summary>
-        /// <param name="myip">IP address</param>
-        /// <param name="filterList">list of IP filters</param>
-        /// <returns>true if IP can access, false otherwise</returns>
-        public bool CanIPStillAccess(string myip,IList<IPFilterInfo> filterList)
+        /// <param name="myip">IP address.</param>
+        /// <param name="filterList">list of IP filters.</param>
+        /// <returns>true if IP can access, false otherwise.</returns>
+        public bool CanIPStillAccess(string myip, IList<IPFilterInfo> filterList)
         {
             var allowAllIPs = false;
             var globalAllow = (from p in filterList
@@ -186,14 +120,15 @@ namespace DotNetNuke.Entities.Host
             var denyRules = (from p in filterList
                              where p.RuleType == (int)FilterType.Deny
                              select p).ToList();
-            //if global allow and no deny
-            if (allowAllIPs & denyRules.Count==0)
+
+            // if global allow and no deny
+            if (allowAllIPs & denyRules.Count == 0)
             {
                 return true;
             }
 
-            //if global allow, check if a deny rule would override
-            if (allowAllIPs & denyRules.Count>0)
+            // if global allow, check if a deny rule would override
+            if (allowAllIPs & denyRules.Count > 0)
             {
                 if (denyRules.Any(ipf => NetworkUtils.IsIPInRange(myip, ipf.IPAddress, ipf.SubnetMask)))
                 {
@@ -201,8 +136,8 @@ namespace DotNetNuke.Entities.Host
                 }
             }
 
-            //if no global allow, check if a deny rule would apply
-            if (allowAllIPs==false & denyRules.Count > 0)
+            // if no global allow, check if a deny rule would apply
+            if (allowAllIPs == false & denyRules.Count > 0)
             {
                 if (denyRules.Any(ipf => NetworkUtils.IsIPInRange(myip, ipf.IPAddress, ipf.SubnetMask)))
                 {
@@ -210,7 +145,7 @@ namespace DotNetNuke.Entities.Host
                 }
             }
 
-            //if no global allow, and no deny rules check if an allow rule would apply
+            // if no global allow, and no deny rules check if an allow rule would apply
             if (allowAllIPs == false & denyRules.Count == 0)
             {
                 if (allowRules.Any(ipf => NetworkUtils.IsIPInRange(myip, ipf.IPAddress, ipf.SubnetMask)))
@@ -223,14 +158,14 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Check if a new rule would block the existing IP address
+        /// Check if a new rule would block the existing IP address.
         /// </summary>
-        /// <param name="currentIP">current IP address</param>
-        /// <param name="ipFilter">new propose rule</param>
-        /// <returns>true if rule would not block current IP, false otherwise</returns>
+        /// <param name="currentIP">current IP address.</param>
+        /// <param name="ipFilter">new propose rule.</param>
+        /// <returns>true if rule would not block current IP, false otherwise.</returns>
         public bool IsAllowableDeny(string currentIP, IPFilterInfo ipFilter)
         {
-            if (ipFilter.RuleType==(int)FilterType.Allow)
+            if (ipFilter.RuleType == (int)FilterType.Allow)
             {
                 return true;
             }
@@ -239,10 +174,9 @@ namespace DotNetNuke.Entities.Host
             {
                 return false;
             }
+
             return true;
         }
-
-        #endregion
 
         private static void AssertValidIPFilter(IPFilterInfo ipFilter)
         {
@@ -257,6 +191,55 @@ namespace DotNetNuke.Entities.Host
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("SubnetMaskIncorrect", "Subnet mask is not in correct format"));
             }
+        }
+
+        /// <summary>
+        /// get the list of IP filters.
+        /// </summary>
+        /// <returns>list of IP filters.</returns>
+        IList<IPFilterInfo> IIPFilterController.GetIPFilters()
+        {
+            return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
+        }
+
+        private bool CheckIfBannedIPAddress(string ipAddress)
+        {
+            IList<IPFilterInfo> filterList = Instance.GetIPFilters();
+            bool ipAllowed = true;
+            foreach (var ipFilterInfo in filterList)
+            {
+                // if a single deny exists, this win's
+                if (ipFilterInfo.RuleType == (int)FilterType.Deny)
+                {
+                    if (NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
+                    {
+                        // log
+                        this.LogBannedIPAttempt(ipAddress);
+                        return true;
+                    }
+                }
+
+                // check any allows - if one exists set flag but let processing continue to verify no deny overrides
+                if (ipFilterInfo.RuleType == (int)FilterType.Allow)
+                {
+                    if (ipFilterInfo.IPAddress == "*" || NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
+                    {
+                        ipAllowed = false;
+                    }
+                }
+            }
+
+            return ipAllowed;
+        }
+
+        private void LogBannedIPAttempt(string ipAddress)
+        {
+            var log = new LogInfo
+            {
+                LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+            };
+            log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
+            LogController.Instance.AddLog(log);
         }
     }
 }

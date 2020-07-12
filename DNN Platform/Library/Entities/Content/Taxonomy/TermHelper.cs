@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+
     public class TermHelper
     {
         public const string PageTagsVocabulary = "PageTags";
@@ -26,9 +27,9 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             var termController = new TermController();
             var vocabularyController = Util.GetVocabularyController();
-            var vocabulary = (vocabularyController.GetVocabularies()
+            var vocabulary = vocabularyController.GetVocabularies()
                                 .Cast<Vocabulary>()
-                                .Where(v => v.Name == PageTagsVocabulary && v.ScopeId == tabPortalId))
+                                .Where(v => v.Name == PageTagsVocabulary && v.ScopeId == tabPortalId)
                                 .SingleOrDefault();
 
             var vocabularyId = Null.NullInteger;
@@ -44,7 +45,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                     new Vocabulary(PageTagsVocabulary, string.Empty, VocabularyType.Simple)
                     {
                         ScopeTypeId = scopeType.ScopeTypeId,
-                        ScopeId = tabPortalId
+                        ScopeId = tabPortalId,
                     });
             }
             else
@@ -52,10 +53,10 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 vocabularyId = vocabulary.VocabularyId;
             }
 
-            //get all terms info
+            // get all terms info
             var allTerms = new List<Term>();
             var vocabularies = from v in vocabularyController.GetVocabularies()
-                               where (v.ScopeType.ScopeType == "Portal" && v.ScopeId == tabPortalId && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase))
+                               where v.ScopeType.ScopeType == "Portal" && v.ScopeId == tabPortalId && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase)
                                select v;
             foreach (var v in vocabularies)
             {

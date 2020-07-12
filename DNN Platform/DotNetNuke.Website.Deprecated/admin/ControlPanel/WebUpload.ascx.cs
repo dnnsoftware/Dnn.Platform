@@ -1,81 +1,74 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.Common;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Admin.FileManager
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.Common;
+    using Microsoft.Extensions.DependencyInjection;
+
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : WebUpload
+    /// Project  : DotNetNuke
+    /// Class    : WebUpload
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Supplies the functionality for uploading files to the Portal
+    /// Supplies the functionality for uploading files to the Portal.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class WebUpload : PortalModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (WebUpload));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebUpload));
         private readonly INavigationManager _navigationManager;
-        public WebUpload()
-        {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-		#region "Members"
 
         private string _DestinationFolder;
         private UploadType _FileType;
         private string _FileTypeName;
+
         private string _RootFolder;
         private string _UploadRoles;
 
-		#endregion
-
-		#region "Public Properties"
+        public WebUpload()
+        {
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         public string DestinationFolder
         {
             get
             {
-                if (_DestinationFolder == null)
+                if (this._DestinationFolder == null)
                 {
-                    _DestinationFolder = string.Empty;
-                    if ((Request.QueryString["dest"] != null))
+                    this._DestinationFolder = string.Empty;
+                    if (this.Request.QueryString["dest"] != null)
                     {
-                        _DestinationFolder = Globals.QueryStringDecode(Request.QueryString["dest"]);
+                        this._DestinationFolder = Globals.QueryStringDecode(this.Request.QueryString["dest"]);
                     }
                 }
-                return PathUtils.Instance.RemoveTrailingSlash(_DestinationFolder.Replace("\\", "/"));
+
+                return PathUtils.Instance.RemoveTrailingSlash(this._DestinationFolder.Replace("\\", "/"));
             }
         }
 
@@ -83,18 +76,19 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             get
             {
-                _FileType = UploadType.File;
-                if ((Request.QueryString["ftype"] != null))
+                this._FileType = UploadType.File;
+                if (this.Request.QueryString["ftype"] != null)
                 {
-					//The select statement ensures that the parameter can be converted to UploadType
-                    switch (Request.QueryString["ftype"].ToLowerInvariant())
+                    // The select statement ensures that the parameter can be converted to UploadType
+                    switch (this.Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
-                            _FileType = (UploadType) Enum.Parse(typeof (UploadType), Request.QueryString["ftype"]);
+                            this._FileType = (UploadType)Enum.Parse(typeof(UploadType), this.Request.QueryString["ftype"]);
                             break;
                     }
                 }
-                return _FileType;
+
+                return this._FileType;
             }
         }
 
@@ -102,11 +96,12 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             get
             {
-                if (_FileTypeName == null)
+                if (this._FileTypeName == null)
                 {
-                    _FileTypeName = Localization.GetString(FileType.ToString(), LocalResourceFile);
+                    this._FileTypeName = Localization.GetString(this.FileType.ToString(), this.LocalResourceFile);
                 }
-                return _FileTypeName;
+
+                return this._FileTypeName;
             }
         }
 
@@ -114,13 +109,13 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             get
             {
-                if (IsHostMenu)
+                if (this.IsHostMenu)
                 {
                     return Null.NullInteger;
                 }
                 else
                 {
-                    return PortalId;
+                    return this.PortalId;
                 }
             }
         }
@@ -129,18 +124,19 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             get
             {
-                if (_RootFolder == null)
+                if (this._RootFolder == null)
                 {
-                    if (IsHostMenu)
+                    if (this.IsHostMenu)
                     {
-                        _RootFolder = Globals.HostMapPath;
+                        this._RootFolder = Globals.HostMapPath;
                     }
                     else
                     {
-                        _RootFolder = PortalSettings.HomeDirectoryMapPath;
+                        this._RootFolder = this.PortalSettings.HomeDirectoryMapPath;
                     }
                 }
-                return _RootFolder;
+
+                return this._RootFolder;
             }
         }
 
@@ -148,35 +144,118 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             get
             {
-                if (_UploadRoles == null)
+                if (this._UploadRoles == null)
                 {
-                    _UploadRoles = string.Empty;
+                    this._UploadRoles = string.Empty;
 
-                    if (Convert.ToString(Settings["uploadroles"]) != null)
+                    if (Convert.ToString(this.Settings["uploadroles"]) != null)
                     {
-                        _UploadRoles = Convert.ToString(Settings["uploadroles"]);
+                        this._UploadRoles = Convert.ToString(this.Settings["uploadroles"]);
                     }
                 }
-                return _UploadRoles;
+
+                return this._UploadRoles;
             }
         }
 
-		#endregion
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine determines the Return Url.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public string ReturnURL()
+        {
+            int TabID = this.PortalSettings.HomeTabId;
 
-		#region "Private Methods"
+            if (this.Request.Params["rtab"] != null)
+            {
+                TabID = int.Parse(this.Request.Params["rtab"]);
+            }
+
+            return this._navigationManager.NavigateURL(TabID);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            // Customise the Control Title
+            this.ModuleConfiguration.ModuleTitle = Localization.GetString("UploadType" + this.FileType, this.LocalResourceFile);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine checks the Access Security
+        /// The Page_Load runs when the page loads.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.cmdReturn1.Click += this.cmdReturn_Click;
+            this.cmdReturn2.Click += this.cmdReturn_Click;
+
+            try
+            {
+                this.CheckSecurity();
+
+                // Get localized Strings
+                string strHost = Localization.GetString("HostRoot", this.LocalResourceFile);
+                string strPortal = Localization.GetString("PortalRoot", this.LocalResourceFile);
+
+                this.maxSizeWarningLabel.Text = string.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), Config.GetMaxUploadSize() / (1024 * 1024));
+
+                if (!this.Page.IsPostBack)
+                {
+                    this.cmdAdd.Text = Localization.GetString("UploadType" + this.FileType, this.LocalResourceFile);
+                    if (this.FileType == UploadType.File)
+                    {
+                        this.foldersRow.Visible = true;
+                        this.rootRow.Visible = true;
+                        this.unzipRow.Visible = true;
+
+                        if (this.IsHostMenu)
+                        {
+                            this.lblRootType.Text = strHost + ":";
+                            this.lblRootFolder.Text = this.RootFolder;
+                        }
+                        else
+                        {
+                            this.lblRootType.Text = strPortal + ":";
+                            this.lblRootFolder.Text = this.RootFolder;
+                        }
+
+                        this.LoadFolders();
+                    }
+
+                    this.chkUnzip.Checked = false;
+                }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine checks the Access Security.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            if (!ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
+            if (!ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
             {
-                Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
+                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
             }
         }
 
@@ -192,111 +271,25 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            var folders = FolderManager.Instance.GetFolders(FolderPortalID, "ADD", user.UserID);
-            ddlFolders.Services.Parameters.Add("permission", "ADD");
-            if (!String.IsNullOrEmpty(DestinationFolder))
+            var folders = FolderManager.Instance.GetFolders(this.FolderPortalID, "ADD", user.UserID);
+            this.ddlFolders.Services.Parameters.Add("permission", "ADD");
+            if (!string.IsNullOrEmpty(this.DestinationFolder))
             {
-                ddlFolders.SelectedFolder = folders.SingleOrDefault(f => f.FolderPath == DestinationFolder);
+                this.ddlFolders.SelectedFolder = folders.SingleOrDefault(f => f.FolderPath == this.DestinationFolder);
             }
             else
             {
-                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == "");
+                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == string.Empty);
                 if (rootFolder != null)
                 {
-                    ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
+                    this.ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
                 }
             }
         }
 
-		#endregion
-
-		#region "Public Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine determines the Return Url
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        public string ReturnURL()
-        {
-            int TabID = PortalSettings.HomeTabId;
-
-            if (Request.Params["rtab"] != null)
-            {
-                TabID = int.Parse(Request.Params["rtab"]);
-            }
-            return _navigationManager.NavigateURL(TabID);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            //Customise the Control Title
-            ModuleConfiguration.ModuleTitle = Localization.GetString("UploadType" + FileType, LocalResourceFile);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Page_Load runs when the page loads
-        /// </summary>
-        /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            cmdAdd.Click += cmdAdd_Click;
-            cmdReturn1.Click += cmdReturn_Click;
-            cmdReturn2.Click += cmdReturn_Click;
-
-            try
-            {
-                CheckSecurity();
-
-                //Get localized Strings
-                string strHost = Localization.GetString("HostRoot", LocalResourceFile);
-                string strPortal = Localization.GetString("PortalRoot", LocalResourceFile);
-
-                maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", LocalResourceFile), (Config.GetMaxUploadSize()/(1024 *1024)));
-
-                if (!Page.IsPostBack)
-                {
-                    cmdAdd.Text = Localization.GetString("UploadType" + FileType, LocalResourceFile);
-                    if (FileType == UploadType.File)
-                    {
-                        foldersRow.Visible = true;
-                        rootRow.Visible = true;
-                        unzipRow.Visible = true;
-
-                        if (IsHostMenu)
-                        {
-                            lblRootType.Text = strHost + ":";
-                            lblRootFolder.Text = RootFolder;
-                        }
-                        else
-                        {
-                            lblRootType.Text = strPortal + ":";
-                            lblRootFolder.Text = RootFolder;
-                        }
-                        LoadFolders();
-                    }
-                    chkUnzip.Checked = false;
-                }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The cmdAdd_Click runs when the Add Button is clicked
+        /// The cmdAdd_Click runs when the Add Button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -307,25 +300,25 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             try
             {
-                CheckSecurity();
-                var strMessage = "";
+                this.CheckSecurity();
+                var strMessage = string.Empty;
 
-                var postedFile = cmdBrowse.PostedFile;
+                var postedFile = this.cmdBrowse.PostedFile;
 
-                //Get localized Strings
-                Localization.GetString("InvalidExt", LocalResourceFile);
+                // Get localized Strings
+                Localization.GetString("InvalidExt", this.LocalResourceFile);
                 var strFileName = Path.GetFileName(postedFile.FileName);
-                if (!String.IsNullOrEmpty(postedFile.FileName))
+                if (!string.IsNullOrEmpty(postedFile.FileName))
                 {
-                    switch (FileType)
+                    switch (this.FileType)
                     {
-                        case UploadType.File: //content files
+                        case UploadType.File: // content files
                             try
                             {
-                                var folder = FolderManager.Instance.GetFolder(ddlFolders.SelectedItemValueAsInt);
+                                var folder = FolderManager.Instance.GetFolder(this.ddlFolders.SelectedItemValueAsInt);
                                 var fileManager = Services.FileSystem.FileManager.Instance;
                                 var file = fileManager.AddFile(folder, strFileName, postedFile.InputStream, true, true, postedFile.ContentType);
-                                if (chkUnzip.Checked && file.Extension == "zip")
+                                if (this.chkUnzip.Checked && file.Extension == "zip")
                                 {
                                     fileManager.UnzipFile(file, folder);
                                 }
@@ -333,7 +326,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                             catch (PermissionsNotMetException exc)
                             {
                                 Logger.Warn(exc);
-                                strMessage += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), ddlFolders.SelectedItemValueAsInt);
+                                strMessage += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), this.ddlFolders.SelectedItemValueAsInt);
                             }
                             catch (NoSpaceAvailableException exc)
                             {
@@ -350,27 +343,29 @@ namespace DotNetNuke.Modules.Admin.FileManager
                                 Logger.Error(exc);
                                 strMessage += "<br />" + string.Format(Localization.GetString("SaveFileError"), strFileName);
                             }
+
                             break;
                     }
                 }
                 else
                 {
-                    strMessage = Localization.GetString("NoFile", LocalResourceFile);
+                    strMessage = Localization.GetString("NoFile", this.LocalResourceFile);
                 }
-                if (phPaLogs.Controls.Count > 0)
+
+                if (this.phPaLogs.Controls.Count > 0)
                 {
-                    tblLogs.Visible = true;
+                    this.tblLogs.Visible = true;
                 }
-                else if (String.IsNullOrEmpty(strMessage))
+                else if (string.IsNullOrEmpty(strMessage))
                 {
-                    Skin.AddModuleMessage(this, String.Format(Localization.GetString("FileUploadSuccess", LocalResourceFile), strFileName), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    Skin.AddModuleMessage(this, string.Format(Localization.GetString("FileUploadSuccess", this.LocalResourceFile), strFileName), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
                 else
                 {
-                    lblMessage.Text = strMessage;
+                    this.lblMessage.Text = strMessage;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -378,18 +373,16 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The cmdReturn_Click runs when the Return Button is clicked
+        /// The cmdReturn_Click runs when the Return Button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void cmdReturn_Click(Object sender, EventArgs e)
+        private void cmdReturn_Click(object sender, EventArgs e)
         {
-            Response.Redirect(ReturnURL(), true);
+            this.Response.Redirect(this.ReturnURL(), true);
         }
-
-		#endregion
     }
 }

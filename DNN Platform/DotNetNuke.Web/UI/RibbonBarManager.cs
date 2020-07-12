@@ -1,39 +1,56 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
-using System.Xml;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    using System.Text.RegularExpressions;
+    using System.Xml;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+
+    public enum DotNetNukeErrorCode
+    {
+        NotSet,
+        PageExists,
+        PageNameRequired,
+        PageNameInvalid,
+        DeserializePanesFailed,
+        PageCircularReference,
+        ParentTabInvalid,
+        PageEditorPermissionError,
+        HostBeforeAfterError,
+        DuplicateWithAlias,
+    }
+
+    public enum TabRelativeLocation
+    {
+        NOTSET,
+        BEFORE,
+        AFTER,
+        CHILD,
+    }
+
     public class RibbonBarManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RibbonBarManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
+
         public static TabInfo InitTabInfoObject()
         {
             return InitTabInfoObject(null, TabRelativeLocation.AFTER);
@@ -46,9 +63,9 @@ namespace DotNetNuke.Web.UI
 
         public static TabInfo InitTabInfoObject(TabInfo relativeToTab, TabRelativeLocation location)
         {
-            if (((relativeToTab == null)))
+            if (relativeToTab == null)
             {
-                if (((PortalSettings.Current != null) && (PortalSettings.Current.ActiveTab != null)))
+                if ((PortalSettings.Current != null) && (PortalSettings.Current.ActiveTab != null))
                 {
                     relativeToTab = PortalSettings.Current.ActiveTab;
                 }
@@ -57,26 +74,27 @@ namespace DotNetNuke.Web.UI
             var newTab = new TabInfo
             {
                 TabID = Null.NullInteger,
-                TabName = "",
-                Title = "",
+                TabName = string.Empty,
+                Title = string.Empty,
                 IsVisible = false,
                 DisableLink = false,
                 IsDeleted = false,
                 IsSecure = false,
-                PermanentRedirect = false
+                PermanentRedirect = false,
             };
 
             TabInfo parentTab = GetParentTab(relativeToTab, location);
 
-            if (((parentTab != null)))
+            if (parentTab != null)
             {
                 newTab.PortalID = parentTab.PortalID;
                 newTab.ParentId = parentTab.TabID;
                 newTab.Level = parentTab.Level + 1;
-                if ((PortalSettings.Current.SSLEnabled))
+                if (PortalSettings.Current.SSLEnabled)
                 {
                     newTab.IsSecure = parentTab.IsSecure;
-                    //Inherit from parent
+
+                    // Inherit from parent
                 }
             }
             else
@@ -86,15 +104,15 @@ namespace DotNetNuke.Web.UI
                 newTab.Level = 0;
             }
 
-            //Inherit permissions from parent
+            // Inherit permissions from parent
             newTab.TabPermissions.Clear();
-            if ((newTab.PortalID != Null.NullInteger && (parentTab != null)))
+            if (newTab.PortalID != Null.NullInteger && (parentTab != null))
             {
                 newTab.TabPermissions.AddRange(parentTab.TabPermissions);
             }
-            else if ((newTab.PortalID != Null.NullInteger))
+            else if (newTab.PortalID != Null.NullInteger)
             {
-                //Give admin full permission
+                // Give admin full permission
                 ArrayList permissions = PermissionController.GetPermissionsByTab();
 
                 foreach (PermissionInfo permission in permissions)
@@ -114,17 +132,17 @@ namespace DotNetNuke.Web.UI
 
         public static TabInfo GetParentTab(TabInfo relativeToTab, TabRelativeLocation location)
         {
-            if (((relativeToTab == null)))
+            if (relativeToTab == null)
             {
                 return null;
             }
 
             TabInfo parentTab = null;
-            if ((location == TabRelativeLocation.CHILD))
+            if (location == TabRelativeLocation.CHILD)
             {
                 parentTab = relativeToTab;
             }
-            else if (((relativeToTab != null) && relativeToTab.ParentId != Null.NullInteger))
+            else if ((relativeToTab != null) && relativeToTab.ParentId != Null.NullInteger)
             {
                 parentTab = TabController.Instance.GetTab(relativeToTab.ParentId, relativeToTab.PortalID, false);
             }
@@ -136,9 +154,9 @@ namespace DotNetNuke.Web.UI
         {
             IList<TabInfo> portalTabs = null;
             UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
-            if (((userInfo != null) && userInfo.UserID != Null.NullInteger))
+            if ((userInfo != null) && userInfo.UserID != Null.NullInteger)
             {
-                if ((userInfo.IsSuperUser && PortalSettings.Current.ActiveTab.IsSuperTab))
+                if (userInfo.IsSuperUser && PortalSettings.Current.ActiveTab.IsSuperTab)
                 {
                     portalTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger).AsList();
                 }
@@ -148,7 +166,7 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-            if (((portalTabs == null)))
+            if (portalTabs == null)
             {
                 portalTabs = new List<TabInfo>();
             }
@@ -158,34 +176,34 @@ namespace DotNetNuke.Web.UI
 
         public static bool IsHostConsolePage()
         {
-            return (PortalSettings.Current.ActiveTab.IsSuperTab && PortalSettings.Current.ActiveTab.TabPath == "//Host");
+            return PortalSettings.Current.ActiveTab.IsSuperTab && PortalSettings.Current.ActiveTab.TabPath == "//Host";
         }
 
         public static bool IsHostConsolePage(TabInfo tab)
         {
-            return (tab.IsSuperTab && tab.TabPath == "//Host");
+            return tab.IsSuperTab && tab.TabPath == "//Host";
         }
 
         public static bool CanMovePage()
         {
-            //Cannot move the host console page
-            if ((IsHostConsolePage()))
+            // Cannot move the host console page
+            if (IsHostConsolePage())
             {
                 return false;
             }
 
-            //Page Editors - Can only move children they have 'Manage' permission to, they cannot move the top level page
-            if ((!PortalSecurity.IsInRole("Administrators")))
+            // Page Editors - Can only move children they have 'Manage' permission to, they cannot move the top level page
+            if (!PortalSecurity.IsInRole("Administrators"))
             {
                 int parentTabID = PortalSettings.Current.ActiveTab.ParentId;
-                if ((parentTabID == Null.NullInteger))
+                if (parentTabID == Null.NullInteger)
                 {
                     return false;
                 }
 
                 TabInfo parentTab = TabController.Instance.GetTab(parentTabID, PortalSettings.Current.ActiveTab.PortalID, false);
                 string permissionList = "MANAGE";
-                if ((!TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList)))
+                if (!TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList))
                 {
                     return false;
                 }
@@ -196,21 +214,21 @@ namespace DotNetNuke.Web.UI
 
         public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
         {
-            //Validation:
-            //Tab name is required
-            //Tab name is invalid
-			string invalidType;
-			if (!TabController.IsValidTabName(tab.TabName, out invalidType))
-			{
-				switch (invalidType)
-				{
-					case "EmptyTabName":
-						throw new DotNetNukeException("Page name is required.", DotNetNukeErrorCode.PageNameRequired);
-					case "InvalidTabName":
-						throw new DotNetNukeException("Page name is invalid.", DotNetNukeErrorCode.PageNameInvalid);
-				}
-			}
-            else if ((Validate_IsCircularReference(tab.PortalID, tab.TabID)))
+            // Validation:
+            // Tab name is required
+            // Tab name is invalid
+            string invalidType;
+            if (!TabController.IsValidTabName(tab.TabName, out invalidType))
+            {
+                switch (invalidType)
+                {
+                    case "EmptyTabName":
+                        throw new DotNetNukeException("Page name is required.", DotNetNukeErrorCode.PageNameRequired);
+                    case "InvalidTabName":
+                        throw new DotNetNukeException("Page name is invalid.", DotNetNukeErrorCode.PageNameInvalid);
+                }
+            }
+            else if (Validate_IsCircularReference(tab.PortalID, tab.TabID))
             {
                 throw new DotNetNukeException("Cannot move page to that location.", DotNetNukeErrorCode.PageCircularReference);
             }
@@ -219,31 +237,32 @@ namespace DotNetNuke.Web.UI
 
             if (PortalSettings.Current.ContentLocalizationEnabled)
             {
-                if ((!usingDefaultLanguage))
+                if (!usingDefaultLanguage)
                 {
                     TabInfo defaultLanguageSelectedTab = tab.DefaultLanguageTab;
 
-                    if ((defaultLanguageSelectedTab == null))
+                    if (defaultLanguageSelectedTab == null)
                     {
-                        //get the siblings from the selectedtab and iterate through until you find a sibbling with a corresponding defaultlanguagetab
-                        //if none are found get a list of all the tabs from the default language and then select the last one
+                        // get the siblings from the selectedtab and iterate through until you find a sibbling with a corresponding defaultlanguagetab
+                        // if none are found get a list of all the tabs from the default language and then select the last one
                         var selectedTabSibblings = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
                         foreach (TabInfo sibling in selectedTabSibblings)
                         {
                             TabInfo siblingDefaultTab = sibling.DefaultLanguageTab;
-                            if (((siblingDefaultTab != null)))
+                            if (siblingDefaultTab != null)
                             {
                                 defaultLanguageSelectedTab = siblingDefaultTab;
                                 break;
                             }
                         }
 
-                        //still haven't found it
-                        if ((defaultLanguageSelectedTab == null))
+                        // still haven't found it
+                        if (defaultLanguageSelectedTab == null)
                         {
                             var defaultLanguageTabs = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(PortalSettings.Current.DefaultLanguage, true).AsList();
                             defaultLanguageSelectedTab = defaultLanguageTabs[defaultLanguageTabs.Count];
-                            //get the last tab
+
+                            // get the last tab
                         }
                     }
 
@@ -251,28 +270,29 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-
-            if ((location != TabRelativeLocation.NOTSET))
+            if (location != TabRelativeLocation.NOTSET)
             {
-                //Check Host tab - don't allow adding before or after
-                if ((IsHostConsolePage(relativeToTab) && (location == TabRelativeLocation.AFTER || location == TabRelativeLocation.BEFORE)))
+                // Check Host tab - don't allow adding before or after
+                if (IsHostConsolePage(relativeToTab) && (location == TabRelativeLocation.AFTER || location == TabRelativeLocation.BEFORE))
                 {
                     throw new DotNetNukeException("You cannot add or move pages before or after the Host tab.", DotNetNukeErrorCode.HostBeforeAfterError);
                 }
 
                 TabInfo parentTab = GetParentTab(relativeToTab, location);
                 string permissionList = "ADD,COPY,EDIT,MANAGE";
-                //Check permissions for Page Editors when moving or inserting
-                if ((!PortalSecurity.IsInRole("Administrators")))
+
+                // Check permissions for Page Editors when moving or inserting
+                if (!PortalSecurity.IsInRole("Administrators"))
                 {
-                    if (((parentTab == null) || !TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList)))
+                    if ((parentTab == null) || !TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList))
                     {
-                        throw new DotNetNukeException("You do not have permissions to add or move pages to this location. You can only add or move pages as children of pages you can edit.",
-                                                      DotNetNukeErrorCode.PageEditorPermissionError);
+                        throw new DotNetNukeException(
+                            "You do not have permissions to add or move pages to this location. You can only add or move pages as children of pages you can edit.",
+                            DotNetNukeErrorCode.PageEditorPermissionError);
                     }
                 }
 
-                if (((parentTab != null)))
+                if (parentTab != null)
                 {
                     tab.ParentId = parentTab.TabID;
                     tab.Level = parentTab.Level + 1;
@@ -284,25 +304,26 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-            if ((tab.TabID > Null.NullInteger && tab.TabID == tab.ParentId))
+            if (tab.TabID > Null.NullInteger && tab.TabID == tab.ParentId)
             {
                 throw new DotNetNukeException("Parent page is invalid.", DotNetNukeErrorCode.ParentTabInvalid);
             }
 
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
-            //check whether have conflict between tab path and portal alias.
-            if(TabController.IsDuplicateWithPortalAlias(PortalSettings.Current.PortalId, tab.TabPath))
+
+            // check whether have conflict between tab path and portal alias.
+            if (TabController.IsDuplicateWithPortalAlias(PortalSettings.Current.PortalId, tab.TabPath))
             {
                 throw new DotNetNukeException("The page path is duplicate with a site alias", DotNetNukeErrorCode.DuplicateWithAlias);
             }
 
             try
             {
-                if ((tab.TabID < 0))
+                if (tab.TabID < 0)
                 {
-                    if ((tab.TabPermissions.Count == 0 && tab.PortalID != Null.NullInteger))
+                    if (tab.TabPermissions.Count == 0 && tab.PortalID != Null.NullInteger)
                     {
-                        //Give admin full permission
+                        // Give admin full permission
                         ArrayList permissions = PermissionController.GetPermissionsByTab();
 
                         foreach (PermissionInfo permission in permissions)
@@ -329,11 +350,11 @@ namespace DotNetNuke.Web.UI
                         tab.CultureCode = Null.NullString;
                     }
 
-                    if ((location == TabRelativeLocation.AFTER && (relativeToTab != null)))
+                    if (location == TabRelativeLocation.AFTER && (relativeToTab != null))
                     {
                         tab.TabID = TabController.Instance.AddTabAfter(tab, relativeToTab.TabID);
                     }
-                    else if ((location == TabRelativeLocation.BEFORE && (relativeToTab != null)))
+                    else if (location == TabRelativeLocation.BEFORE && (relativeToTab != null))
                     {
                         tab.TabID = TabController.Instance.AddTabBefore(tab, relativeToTab.TabID);
                     }
@@ -347,22 +368,22 @@ namespace DotNetNuke.Web.UI
                         TabController.Instance.CreateLocalizedCopies(tab);
                     }
 
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheProvider", "");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheDuration", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheProvider", string.Empty);
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheDuration", string.Empty);
                     TabController.Instance.UpdateTabSetting(tab.TabID, "CacheIncludeExclude", "0");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "IncludeVaryBy", "");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", "");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "MaxVaryByCount", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "IncludeVaryBy", string.Empty);
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", string.Empty);
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "MaxVaryByCount", string.Empty);
                 }
                 else
                 {
                     TabController.Instance.UpdateTab(tab);
 
-                    if ((location == TabRelativeLocation.AFTER && (relativeToTab != null)))
+                    if (location == TabRelativeLocation.AFTER && (relativeToTab != null))
                     {
                         TabController.Instance.MoveTabAfter(tab, relativeToTab.TabID);
                     }
-                    else if ((location == TabRelativeLocation.BEFORE && (relativeToTab != null)))
+                    else if (location == TabRelativeLocation.BEFORE && (relativeToTab != null))
                     {
                         TabController.Instance.MoveTabBefore(tab, relativeToTab.TabID);
                     }
@@ -384,11 +405,11 @@ namespace DotNetNuke.Web.UI
                 XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
                 try
                 {
-	                var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
-					xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
+                    var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
+                    xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
                     TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
-                    
-                    //save tab permissions
+
+                    // save tab permissions
                     DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
                 }
                 catch (Exception ex)
@@ -397,7 +418,7 @@ namespace DotNetNuke.Web.UI
                     throw new DotNetNukeException("Unable to process page template.", ex, DotNetNukeErrorCode.DeserializePanesFailed);
                 }
             }
-            
+
             return tab.TabID;
         }
 
@@ -407,20 +428,24 @@ namespace DotNetNuke.Web.UI
             {
                 TabInfo objtab = TabController.Instance.GetTab(tabID, portalID, false);
 
-                if (((objtab == null)))
+                if (objtab == null)
                 {
                     return false;
                 }
+
                 if (objtab.Level == 0)
                 {
                     return false;
                 }
+
                 if (tabID == objtab.ParentId)
                 {
                     return true;
                 }
+
                 return Validate_IsCircularReference(portalID, objtab.ParentId);
             }
+
             return false;
         }
 
@@ -452,8 +477,10 @@ namespace DotNetNuke.Web.UI
                         {
                             roleId = role.RoleID;
                         }
+
                         break;
                 }
+
                 if (roleId != int.MinValue &&
                         !tab.TabPermissions.Cast<TabPermissionInfo>().Any(p =>
                                                                             p.RoleID == roleId
@@ -464,7 +491,7 @@ namespace DotNetNuke.Web.UI
                         TabID = tab.TabID,
                         PermissionID = permissionId,
                         RoleID = roleId,
-                        AllowAccess = allowAccess
+                        AllowAccess = allowAccess,
                     };
 
                     tab.TabPermissions.Add(tabPermission);
@@ -483,25 +510,30 @@ namespace DotNetNuke.Web.UI
         {
         }
 
-        public DotNetNukeException(string message) : base(message)
+        public DotNetNukeException(string message)
+            : base(message)
         {
         }
 
-        public DotNetNukeException(string message, Exception innerException) : base(message, innerException)
+        public DotNetNukeException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
-        public DotNetNukeException(string message, DotNetNukeErrorCode errorCode) : base(message)
+        public DotNetNukeException(string message, DotNetNukeErrorCode errorCode)
+            : base(message)
         {
-            _ErrorCode = errorCode;
+            this._ErrorCode = errorCode;
         }
 
-        public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode) : base(message, innerException)
+        public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode)
+            : base(message, innerException)
         {
-            _ErrorCode = errorCode;
+            this._ErrorCode = errorCode;
         }
 
-        public DotNetNukeException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public DotNetNukeException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -509,30 +541,8 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return _ErrorCode;
+                return this._ErrorCode;
             }
         }
-    }
-
-    public enum DotNetNukeErrorCode
-    {
-        NotSet,
-        PageExists,
-        PageNameRequired,
-        PageNameInvalid,
-        DeserializePanesFailed,
-        PageCircularReference,
-        ParentTabInvalid,
-        PageEditorPermissionError,
-        HostBeforeAfterError,
-        DuplicateWithAlias
-    }
-
-    public enum TabRelativeLocation
-    {
-        NOTSET,
-        BEFORE,
-        AFTER,
-        CHILD
     }
 }

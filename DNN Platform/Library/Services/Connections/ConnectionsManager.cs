@@ -1,38 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
-﻿using DotNetNuke.Services.Installer.Packages;
-using System.Reflection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Connections
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+
     public sealed class ConnectionsManager : ServiceLocator<IConnectionsManager, ConnectionsManager>, IConnectionsManager
     {
-        #region Service Locator Implements
-
-        protected override Func<IConnectionsManager> GetFactory()
-        {
-            return  () => new ConnectionsManager();
-        }
-
-        #endregion
-
-        #region Properties
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectionsManager));
         private static readonly object LockerObject = new object();
         private static IDictionary<string, IConnector> _processors;
-
-        #endregion
-
-        #region Public Methods
 
         public void RegisterConnections()
         {
@@ -42,7 +28,7 @@ namespace DotNetNuke.Services.Connections
                 {
                     if (_processors == null)
                     {
-                        LoadProcessors();
+                        this.LoadProcessors();
                     }
                 }
             }
@@ -50,27 +36,28 @@ namespace DotNetNuke.Services.Connections
 
         public IList<IConnector> GetConnectors()
         {
-            return _processors.Values.Where(x => IsPackageInstalled(x.GetType().Assembly)).ToList();
+            return _processors.Values.Where(x => this.IsPackageInstalled(x.GetType().Assembly)).ToList();
         }
 
-        #endregion
-
-        #region Private Methods
+        protected override Func<IConnectionsManager> GetFactory()
+        {
+            return () => new ConnectionsManager();
+        }
 
         private void LoadProcessors()
         {
             _processors = new Dictionary<string, IConnector>();
 
             var typeLocator = new TypeLocator();
-            var types = typeLocator.GetAllMatchingTypes(IsValidFilter);
+            var types = typeLocator.GetAllMatchingTypes(this.IsValidFilter);
 
             foreach (var type in types)
             {
                 try
                 {
                     var processor = Activator.CreateInstance(type) as IConnector;
-                    if (processor != null 
-                            && !string.IsNullOrEmpty(processor.Name) 
+                    if (processor != null
+                            && !string.IsNullOrEmpty(processor.Name)
                             && !_processors.ContainsKey(processor.Name))
                     {
                         _processors.Add(processor.Name, processor);
@@ -90,10 +77,9 @@ namespace DotNetNuke.Services.Connections
 
         private bool IsPackageInstalled(Assembly assembly)
         {
-            return PackageController.Instance.GetExtensionPackages(-1,
+            return PackageController.Instance.GetExtensionPackages(
+                -1,
                 info => info.Name == assembly.GetName().Name && info.IsValid).Count > 0;
         }
-
-        #endregion
     }
 }

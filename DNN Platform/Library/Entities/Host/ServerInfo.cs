@@ -1,35 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Host
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class ServerInfo : IHydratable
     {
-        public ServerInfo() : this(DateTime.Now, DateTime.Now)
+        public ServerInfo()
+            : this(DateTime.Now, DateTime.Now)
         {
         }
 
         public ServerInfo(DateTime created, DateTime lastactivity)
         {
-            IISAppName = Globals.IISAppName;
-            ServerName = Globals.ServerName;
-            ServerGroup = String.Empty;
-            CreatedDate = created;
-            LastActivityDate = lastactivity;
-            Enabled = true;
+            this.IISAppName = Globals.IISAppName;
+            this.ServerName = Globals.ServerName;
+            this.ServerGroup = string.Empty;
+            this.CreatedDate = created;
+            this.LastActivityDate = lastactivity;
+            this.Enabled = true;
         }
 
         public int ServerID { get; set; }
@@ -52,60 +48,59 @@ namespace DotNetNuke.Entities.Host
 
         public string UniqueId { get; set; }
 
-        #region IHydratable Members
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        public int KeyID
+        {
+            get
+            {
+                return this.ServerID;
+            }
+
+            set
+            {
+                this.ServerID = value;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ServerInfo from a Data Reader
+        /// Fills a ServerInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            ServerID = Null.SetNullInteger(dr["ServerID"]);
-            IISAppName = Null.SetNullString(dr["IISAppName"]);
-            ServerName = Null.SetNullString(dr["ServerName"]);
-            Url = Null.SetNullString(dr["URL"]);
-            Enabled = Null.SetNullBoolean(dr["Enabled"]);
-            CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
-            LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
+            this.ServerID = Null.SetNullInteger(dr["ServerID"]);
+            this.IISAppName = Null.SetNullString(dr["IISAppName"]);
+            this.ServerName = Null.SetNullString(dr["ServerName"]);
+            this.Url = Null.SetNullString(dr["URL"]);
+            this.Enabled = Null.SetNullBoolean(dr["Enabled"]);
+            this.CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
+            this.LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
 
             var schema = dr.GetSchemaTable();
             if (schema != null)
             {
                 if (schema.Select("ColumnName = 'PingFailureCount'").Length > 0)
                 {
-                    PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
+                    this.PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
                 }
+
                 if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
                 {
-                    ServerGroup = Null.SetNullString(dr["ServerGroup"]);
+                    this.ServerGroup = Null.SetNullString(dr["ServerGroup"]);
                 }
+
                 if (schema.Select("ColumnName = 'UniqueId'").Length > 0)
                 {
-                    UniqueId = Null.SetNullString(dr["UniqueId"]);
+                    this.UniqueId = Null.SetNullString(dr["UniqueId"]);
                 }
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Key ID
-        /// </summary>
-        /// <returns>An Integer</returns>
-        /// -----------------------------------------------------------------------------
-        public int KeyID
-        {
-            get
-            {
-                return ServerID;
-            }
-            set
-            {
-                ServerID = value;
-            }
-        }
-
-        #endregion
     }
 }

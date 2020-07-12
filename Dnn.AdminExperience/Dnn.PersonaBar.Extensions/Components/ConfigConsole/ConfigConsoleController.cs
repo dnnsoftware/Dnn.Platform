@@ -1,22 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.ConfigConsole.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+
     public class ConfigConsoleController
     {
         public IEnumerable<string> GetConfigFilesList()
@@ -28,7 +24,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public string GetConfigFile(string configFile)
         {
-            ValidateFilePath(configFile);
+            this.ValidateFilePath(configFile);
 
             var configDoc = Config.Load(configFile);
             using (var txtWriter = new StringWriter())
@@ -44,7 +40,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public void UpdateConfigFile(string fileName, string fileContent)
         {
-            ValidateFilePath(fileName);
+            this.ValidateFilePath(fileName);
 
             var configDoc = new XmlDocument { XmlResolver = null };
             configDoc.LoadXml(fileContent);
@@ -53,7 +49,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public void MergeConfigFile(string fileContent)
         {
-            if (IsValidXmlMergDocument(fileContent))
+            if (this.IsValidXmlMergDocument(fileContent))
             {
                 var doc = new XmlDocument { XmlResolver = null };
                 doc.LoadXml(fileContent);
@@ -62,8 +58,6 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                 merge.UpdateConfigs();
             }
         }
-
-        #region Private Functions
 
         private bool IsValidXmlMergDocument(string mergeDocText)
         {
@@ -84,7 +78,5 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                 throw new ArgumentException("Invalid File Path");
             }
         }
-
-        #endregion
     }
 }

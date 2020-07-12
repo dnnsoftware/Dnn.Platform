@@ -1,49 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Installer.Packages;
-
-using Telerik.Web.UI;
-
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Installer.Packages;
+    using Telerik.Web.UI;
+
     public class DnnModuleComboBox : WebControl
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 
-        #region Public Events
+        private DnnComboBox _moduleCombo;
+        private string _originalValue;
 
         public event EventHandler ItemChanged;
-
-        #endregion
-
-        #region Public Properties
-
-        public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
         public int ItemCount
         {
             get
             {
-                return _moduleCombo.Items.Count;
+                return this._moduleCombo.Items.Count;
             }
         }
 
@@ -51,7 +39,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _moduleCombo.SelectedValue;
+                return this._moduleCombo.SelectedValue;
             }
         }
 
@@ -59,43 +47,78 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _moduleCombo.ClientID;
+                return this._moduleCombo.ClientID;
             }
         }
 
-        public override bool Enabled {
+        public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
+
+        public override bool Enabled
+        {
             get
             {
-                return _moduleCombo.Enabled;
+                return this._moduleCombo.Enabled;
             }
+
             set
             {
-                _moduleCombo.Enabled = value;
+                this._moduleCombo.Enabled = value;
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private Dictionary<int, string> GetPortalDesktopModules()
+        public void BindAllPortalDesktopModules()
         {
-            IOrderedEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList;
-            if (Filter == null)
+            this._moduleCombo.SelectedValue = null;
+            this._moduleCombo.DataSource = this.GetPortalDesktopModules();
+            this._moduleCombo.DataBind();
+            this.BindPortalDesktopModuleImages();
+        }
+
+        public void BindTabModulesByTabID(int tabID)
+        {
+            this._moduleCombo.SelectedValue = null;
+            this._moduleCombo.DataSource = GetTabModules(tabID);
+            this._moduleCombo.DataBind();
+            this.BindTabModuleImages(tabID);
+        }
+
+        public void SetModule(string code)
+        {
+            this._moduleCombo.SelectedIndex = this._moduleCombo.FindItemIndexByValue(code);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this._moduleCombo = new DnnComboBox();
+            this._moduleCombo.DataValueField = "key";
+            this._moduleCombo.DataTextField = "value";
+            this.Controls.Add(this._moduleCombo);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this._originalValue = this.SelectedValue;
+        }
+
+        protected virtual void OnItemChanged()
+        {
+            if (this.ItemChanged != null)
             {
-                portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                    .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || String.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
-                    .OrderBy(c => c.Key);
+                this.ItemChanged(this, new EventArgs());
             }
-            else
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            if (this._moduleCombo.Items.FindItemByValue(this._originalValue) != null)
             {
-                portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                    .Where(Filter)
-                    .OrderBy(c => c.Key);
+                this._moduleCombo.Items.FindItemByValue(this._originalValue).Selected = true;
             }
 
-            return portalModulesList.ToDictionary(portalModule => portalModule.Value.DesktopModuleID, 
-                                                    portalModule => portalModule.Key);
+            this._moduleCombo.Width = this.Width;
+            base.OnPreRender(e);
         }
 
         private static Dictionary<int, string> GetTabModules(int tabID)
@@ -122,12 +145,33 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        private Dictionary<int, string> GetPortalDesktopModules()
+        {
+            IOrderedEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList;
+            if (this.Filter == null)
+            {
+                portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+                    .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || string.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
+                    .OrderBy(c => c.Key);
+            }
+            else
+            {
+                portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+                    .Where(this.Filter)
+                    .OrderBy(c => c.Key);
+            }
+
+            return portalModulesList.ToDictionary(
+                portalModule => portalModule.Value.DesktopModuleID,
+                portalModule => portalModule.Key);
+        }
+
         private void BindPortalDesktopModuleImages()
         {
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
-            foreach (RadComboBoxItem item in _moduleCombo.Items)
+            foreach (RadComboBoxItem item in this._moduleCombo.Items)
             {
                 string imageUrl =
                     (from pkgs in packages
@@ -135,7 +179,7 @@ namespace DotNetNuke.Web.UI.WebControls
                      where portMods.Value.DesktopModuleID.ToString() == item.Value
                      select pkgs.IconFile).FirstOrDefault();
 
-                item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+                item.ImageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             }
         }
 
@@ -146,7 +190,7 @@ namespace DotNetNuke.Web.UI.WebControls
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
-            foreach (RadComboBoxItem item in _moduleCombo.Items)
+            foreach (RadComboBoxItem item in this._moduleCombo.Items)
             {
                 string imageUrl = (from pkgs in packages
                                    join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
@@ -155,76 +199,8 @@ namespace DotNetNuke.Web.UI.WebControls
                                    where tabMods.Value.ModuleID.ToString() == item.Value
                                    select pkgs.IconFile).FirstOrDefault();
 
-                item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+                item.ImageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             }
         }
-
-        #endregion
-
-        #region Protected Methods
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            _moduleCombo = new DnnComboBox();
-            _moduleCombo.DataValueField = "key";
-            _moduleCombo.DataTextField = "value";
-            Controls.Add(_moduleCombo);
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            _originalValue = SelectedValue;
-        }
-
-        protected virtual void OnItemChanged()
-        {
-            if (ItemChanged != null)
-            {
-                ItemChanged(this, new EventArgs());
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            if (_moduleCombo.Items.FindItemByValue(_originalValue) != null)
-            {
-                _moduleCombo.Items.FindItemByValue(_originalValue).Selected = true;
-            }
-
-            _moduleCombo.Width = Width;
-            base.OnPreRender(e);
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        public void BindAllPortalDesktopModules()
-        {
-            _moduleCombo.SelectedValue = null;
-            _moduleCombo.DataSource = GetPortalDesktopModules();
-            _moduleCombo.DataBind();
-            BindPortalDesktopModuleImages();
-        }
-
-        public void BindTabModulesByTabID(int tabID)
-        {
-            _moduleCombo.SelectedValue = null;
-            _moduleCombo.DataSource = GetTabModules(tabID);
-            _moduleCombo.DataBind();
-            BindTabModuleImages(tabID);
-        }
-
-        public void SetModule(string code)
-        {
-            _moduleCombo.SelectedIndex = _moduleCombo.FindItemIndexByValue(code);
-        }
-
-        #endregion
-
-        private DnnComboBox _moduleCombo;
-        private string _originalValue;
     }
 }

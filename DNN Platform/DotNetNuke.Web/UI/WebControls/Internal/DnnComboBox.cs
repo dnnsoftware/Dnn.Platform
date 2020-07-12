@@ -1,54 +1,44 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-using Newtonsoft.Json;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    using System;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+    using Newtonsoft.Json;
+
+    /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     public class DnnComboBox : DropDownList
     {
-        #region Fields
-
         private string _initValue;
         private string _multipleValue;
-
-        #endregion
-
-        #region Properties
 
         public override string SelectedValue
         {
             get
             {
                 return base.SelectedValue;
-
             }
+
             set
             {
                 if (this.RequiresDataBinding)
                 {
-                    _initValue = value;
+                    this._initValue = value;
                 }
 
-                if (Items.Cast<ListItem>().Any(i => i.Value == value))
+                if (this.Items.Cast<ListItem>().Any(i => i.Value == value))
                 {
                     base.SelectedValue = value;
                 }
@@ -65,45 +55,109 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                if (TagKey == HtmlTextWriterTag.Input)
+                if (this.TagKey == HtmlTextWriterTag.Input)
                 {
-                    return _multipleValue ?? string.Empty;
+                    return this._multipleValue ?? string.Empty;
                 }
 
-                return SelectedValue ?? string.Empty;
+                return this.SelectedValue ?? string.Empty;
             }
+
             set
             {
-                if (TagKey == HtmlTextWriterTag.Input)
+                if (this.TagKey == HtmlTextWriterTag.Input)
                 {
-                    Attributes.Remove("value");
-                    Attributes.Add("value", value);
+                    this.Attributes.Remove("value");
+                    this.Attributes.Add("value", value);
                 }
 
-                SelectedValue = value;
-            }
-        }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return MultipleSelect || CheckBoxes ? HtmlTextWriterTag.Input : HtmlTextWriterTag.Select;
+                this.SelectedValue = value;
             }
         }
 
         public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
 
-        #endregion
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return this.MultipleSelect || this.CheckBoxes ? HtmlTextWriterTag.Input : HtmlTextWriterTag.Select;
+            }
+        }
 
-        #region Override Methods
+        public override void DataBind()
+        {
+            if (!string.IsNullOrEmpty(this._initValue))
+            {
+                this.DataBind(this._initValue);
+            }
+            else
+            {
+                base.DataBind();
+            }
+        }
+
+        public void AddItem(string text, string value)
+        {
+            this.Items.Add(new ListItem(text, value));
+        }
+
+        public void InsertItem(int index, string text, string value)
+        {
+            this.Items.Insert(index, new ListItem(text, value));
+        }
+
+        public void DataBind(string initialValue)
+        {
+            this.DataBind(initialValue, false);
+        }
+
+        public void DataBind(string initial, bool findByText)
+        {
+            base.DataBind();
+
+            this.Select(initial, findByText);
+        }
+
+        public void Select(string initial, bool findByText)
+        {
+            if (findByText)
+            {
+                if (this.FindItemByText(initial, true) != null)
+                {
+                    this.FindItemByText(initial, true).Selected = true;
+                }
+            }
+            else
+            {
+                if (this.FindItemByValue(initial, true) != null)
+                {
+                    this.FindItemByValue(initial, true).Selected = true;
+                }
+            }
+        }
+
+        public ListItem FindItemByText(string text, bool ignoreCase = false)
+        {
+            return ignoreCase ? this.Items.FindByText(text) : this.Items.FindByTextWithIgnoreCase(text);
+        }
+
+        public ListItem FindItemByValue(string value, bool ignoreCase = false)
+        {
+            return ignoreCase ? this.Items.FindByValue(value) : this.Items.FindByValueWithIgnoreCase(value);
+        }
+
+        public int FindItemIndexByValue(string value)
+        {
+            return this.Items.IndexOf(this.FindItemByValue(value));
+        }
 
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var postData = postCollection[postDataKey];
             if (!string.IsNullOrEmpty(postData))
             {
-                _multipleValue = postData;
+                this._multipleValue = postData;
             }
 
             return base.LoadPostData(postDataKey, postCollection);
@@ -111,7 +165,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
-            if (TagKey == HtmlTextWriterTag.Select)
+            if (this.TagKey == HtmlTextWriterTag.Select)
             {
                 base.RenderContents(writer);
             }
@@ -121,110 +175,36 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             Utilities.ApplySkin(this);
 
-            if (TagKey == HtmlTextWriterTag.Input)
+            if (this.TagKey == HtmlTextWriterTag.Input)
             {
-                Options.Items = Items.Cast<ListItem>();
-                Value = string.Join(",", Options.Items.Where(i => i.Selected).Select(i => i.Value));
+                this.Options.Items = this.Items.Cast<ListItem>();
+                this.Value = string.Join(",", this.Options.Items.Where(i => i.Selected).Select(i => i.Value));
             }
             else
             {
-                if (Items.Cast<ListItem>().Any(i => string.IsNullOrEmpty(i.Value)))
+                if (this.Items.Cast<ListItem>().Any(i => string.IsNullOrEmpty(i.Value)))
                 {
-                    Options.AllowEmptyOption = true;
+                    this.Options.AllowEmptyOption = true;
                 }
             }
 
-            if (!Options.Localization.ContainsKey("ItemsChecked"))
+            if (!this.Options.Localization.ContainsKey("ItemsChecked"))
             {
-                Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
-            }
-            if (!Options.Localization.ContainsKey("AllItemsChecked"))
-            {
-                Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
+                this.Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
             }
 
-            Options.Checkbox = CheckBoxes;
-            Options.OnChangeEvent = OnClientSelectedIndexChanged;
+            if (!this.Options.Localization.ContainsKey("AllItemsChecked"))
+            {
+                this.Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
+            }
 
-            RegisterRequestResources();
+            this.Options.Checkbox = this.CheckBoxes;
+            this.Options.OnChangeEvent = this.OnClientSelectedIndexChanged;
+
+            this.RegisterRequestResources();
 
             base.OnPreRender(e);
         }
-
-        public override void DataBind()
-        {
-            if (!string.IsNullOrEmpty(_initValue))
-            {
-                DataBind(_initValue);
-            }
-            else
-            {
-                base.DataBind();
-            }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        public void AddItem(string text, string value)
-        {
-            Items.Add(new ListItem(text, value));
-        }
-
-        public void InsertItem(int index, string text, string value)
-        {
-            Items.Insert(index, new ListItem(text, value));
-        }
-
-        public void DataBind(string initialValue)
-        {
-            DataBind(initialValue, false);
-        }
-
-        public void DataBind(string initial, bool findByText)
-        {
-            base.DataBind();
-
-            Select(initial, findByText);
-        }
-
-        public void Select(string initial, bool findByText)
-        {
-            if (findByText)
-            {
-                if (FindItemByText(initial, true) != null)
-                {
-					FindItemByText(initial, true).Selected = true;
-                }
-            }
-            else
-            {
-				if (FindItemByValue(initial, true) != null)
-                {
-					FindItemByValue(initial, true).Selected = true;
-                }
-            } 
-        }
-
-        public ListItem FindItemByText(string text, bool ignoreCase = false)
-        {
-            return ignoreCase ? Items.FindByText(text) : Items.FindByTextWithIgnoreCase(text);
-        }
-
-        public ListItem FindItemByValue(string value, bool ignoreCase = false)
-        {
-            return ignoreCase ? Items.FindByValue(value) : Items.FindByValueWithIgnoreCase(value);
-        }
-
-        public int FindItemIndexByValue(string value)
-        {
-            return Items.IndexOf(FindItemByValue(value));
-        }
-
-        #endregion
-
-        #region Private Methods
 
         private void RegisterRequestResources()
         {
@@ -240,23 +220,21 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     var libraryPath =
                         $"~/Resources/Libraries/{package.LibraryName}/{Globals.FormatVersion(package.Version, "00", 3, "_")}/";
 
-                    ClientResourceManager.RegisterScript(Page, $"{libraryPath}dnn.combobox.js");
-                    ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.css");
-                    ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.default.css");
+                    ClientResourceManager.RegisterScript(this.Page, $"{libraryPath}dnn.combobox.js");
+                    ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.css");
+                    ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.default.css");
 
-                    var options = JsonConvert.SerializeObject(Options, Formatting.None,
+                    var options = JsonConvert.SerializeObject(this.Options, Formatting.None,
                                     new JsonSerializerSettings
                                     {
-                                        NullValueHandling = NullValueHandling.Ignore
+                                        NullValueHandling = NullValueHandling.Ignore,
                                     });
 
-                    var initScripts = $"$('#{ClientID}').dnnComboBox({options});";
+                    var initScripts = $"$('#{this.ClientID}').dnnComboBox({options});";
 
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), $"{ClientID}Sctipts", initScripts, true);
+                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), $"{this.ClientID}Sctipts", initScripts, true);
                 }
             }
         }
-
-        #endregion
     }
 }

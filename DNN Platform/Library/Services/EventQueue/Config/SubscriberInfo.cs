@@ -1,33 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Security;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.EventQueue.Config
 {
+    using System;
+
+    using DotNetNuke.Security;
+
     [Serializable]
     public class SubscriberInfo
     {
         public SubscriberInfo()
         {
-            ID = Guid.NewGuid().ToString();
-            Name = "";
-            Description = "";
-            Address = "";
+            this.ID = Guid.NewGuid().ToString();
+            this.Name = string.Empty;
+            this.Description = string.Empty;
+            this.Address = string.Empty;
             var oPortalSecurity = PortalSecurity.Instance;
-            PrivateKey = oPortalSecurity.CreateKey(16);
+            this.PrivateKey = oPortalSecurity.CreateKey(16);
         }
 
-        public SubscriberInfo(string subscriberName) : this()
+        public SubscriberInfo(string subscriberName)
+            : this()
         {
-            Name = subscriberName;
+            this.Name = subscriberName;
         }
 
         public string ID { get; set; }

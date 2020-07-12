@@ -1,33 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Specialized;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Web;
-
-#endregion
-
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System.Collections.Specialized;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Net.Mime;
+    using System.Web;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      CaptchaHandler
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CaptchaHandler control provides a validator to validate a CAPTCHA Challenge
+    /// The CaptchaHandler control provides a validator to validate a CAPTCHA Challenge.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class CaptchaHandler : IHttpHandler
     {
         private const int MAX_IMAGE_WIDTH = 600;
         private const int MAX_IMAGE_HEIGHT = 600;
-
-        #region IHttpHandler Members
 
         public bool IsReusable
         {
@@ -42,13 +36,12 @@ namespace DotNetNuke.UI.WebControls
             NameValueCollection queryString = context.Request.QueryString;
             string text = queryString[CaptchaControl.KEY];
             HttpResponse response = context.Response;
+            response.ContentType = MediaTypeNames.Image.Jpeg;
             Bitmap bmp = CaptchaControl.GenerateImage(text);
             if (bmp != null)
             {
                 bmp.Save(response.OutputStream, ImageFormat.Jpeg);
             }
         }
-
-        #endregion
     }
 }

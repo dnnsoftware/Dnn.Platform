@@ -1,46 +1,39 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Caching;
-using Dnn.PersonaBar.Library.Data;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Library.Permissions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Caching;
+
+    using Dnn.PersonaBar.Library.Data;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+
+    using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
+
     public class MenuPermissionController
     {
-        #region Private Members
-
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuPermissionController));
-
-        private static readonly IDataService DataService = new DataService();
-        private static readonly object ThreadLocker = new object();
-        private static readonly object DefaultPermissionLocker = new object();
-
         private const string PersonaBarMenuPermissionsCacheKey = "PersonaBarMenuPermissions{0}";
         private const string PersonaBarPermissionsCacheKey = "PersonaBarPermissions";
         private const string PermissionInitializedKey = "PersonaBarMenuPermissionsInitialized";
 
         private const string ViewPermissionKey = "VIEW";
 
-        #endregion
+        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuPermissionController));
 
-        #region Public Methods
+        private static readonly IDataService DataService = new DataService();
+        private static readonly object ThreadLocker = new object();
+        private static readonly object DefaultPermissionLocker = new object();
 
         public static bool CanView(int portalId, MenuItem menu)
         {
@@ -134,6 +127,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 hasPermission = PortalSecurity.IsInRoles(menuPermissions.ToString(permissionKey));
             }
+
             return hasPermission;
         }
 
@@ -202,10 +196,6 @@ namespace Dnn.PersonaBar.Library.Permissions
             return PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static void SetPermissionIntialized(int portalId)
         {
             PortalController.UpdatePortalSetting(portalId, PermissionInitializedKey, "Y");
@@ -248,7 +238,6 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 Logger.Error(ex);
             }
-
         }
 
         private static void SaveMenuDefaultPermissions(int portalId, MenuItem menuItem, string roleName, bool ignoreExists)
@@ -260,13 +249,14 @@ namespace Dnn.PersonaBar.Library.Permissions
                 {
                     roleName = defaultPermissions[0];
                 }
+
                 defaultPermissions.RemoveAt(0);
                 var administratorRole = PortalController.Instance.GetPortal(portalId).AdministratorRoleName;
 
                 var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing);
                 var permissions = GetPermissions(menuItem.MenuId)
                     .Where(p => p.MenuId == Null.NullInteger
-                                    || (roleName == administratorRole && defaultPermissions.Count == 0)//Administrator gets all granular permissions only if no permission specified explicity.
+                                    || (roleName == administratorRole && defaultPermissions.Count == 0) // Administrator gets all granular permissions only if no permission specified explicity.
                                     || defaultPermissions.Contains(p.PermissionKey));
 
                 var roleId = nullRoleId;
@@ -288,6 +278,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                         {
                             Logger.Error($"Role \"{roleName}\" in portal \"{portalId}\" doesn't marked as system role, will ignore add this default permission to {menuItem.Identifier}.");
                         }
+
                         break;
                 }
 
@@ -302,6 +293,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                                     !menuPermissions.ToList()
                                         .Exists(y => y.PermissionID == x.PermissionId && y.RoleID == roleId));
                     }
+
                     foreach (var permission in permissions)
                     {
                         var menuPermissionInfo = new MenuPermissionInfo
@@ -311,7 +303,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                             PermissionID = permission.PermissionId,
                             RoleID = roleId,
                             UserID = Null.NullInteger,
-                            AllowAccess = true
+                            AllowAccess = true,
                         };
 
                         SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
@@ -348,7 +340,5 @@ namespace Dnn.PersonaBar.Library.Permissions
             return CBO.GetCachedObject<IList<PermissionInfo>>(cacheItemArgs, c =>
                 CBO.FillCollection<PermissionInfo>(DataService.GetPersonaBarPermissions()));
         }
-
-        #endregion
     }
 }

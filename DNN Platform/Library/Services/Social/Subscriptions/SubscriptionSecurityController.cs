@@ -1,30 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Social.Subscriptions
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+
     /// <summary>
     /// This controller provides permission info about the User Subscription.
     /// </summary>
     public class SubscriptionSecurityController : ServiceLocator<ISubscriptionSecurityController, SubscriptionSecurityController>, ISubscriptionSecurityController
     {
-        protected override Func<ISubscriptionSecurityController> GetFactory()
-        {
-            return () => new SubscriptionSecurityController();
-        }
-
         public bool HasPermission(Subscription subscription)
         {
             var userInfo = GetUserFromSubscription(subscription);
@@ -44,7 +39,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return true;
         }
 
-        #region Private Static Methods
+        protected override Func<ISubscriptionSecurityController> GetFactory()
+        {
+            return () => new SubscriptionSecurityController();
+        }
+
         private static bool HasUserModuleViewPermission(UserInfo userInfo, ModuleInfo moduleInfo)
         {
             var portalSettings = new PortalSettings(moduleInfo.PortalID);
@@ -71,6 +70,5 @@ namespace DotNetNuke.Services.Social.Subscriptions
         {
             return UserController.Instance.GetUser(subscription.PortalId, subscription.UserId);
         }
-        #endregion
     }
 }

@@ -1,15 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvp
 {
+    using System;
+
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public abstract class ModulePresenter<TView, TModel> : ModulePresenterBase<TView> where TView : class, IModuleView<TModel> where TModel : class, new()
+    public abstract class ModulePresenter<TView, TModel> : ModulePresenterBase<TView>
+        where TView : class, IModuleView<TModel>
+        where TModel : class, new()
     {
-        protected ModulePresenter(TView view) : base(view)
+        protected ModulePresenter(TView view)
+            : base(view)
         {
         }
     }

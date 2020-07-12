@@ -1,18 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.UI;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Newtonsoft.Json;
+
     public class JavaScriptDto
     {
         [JsonProperty("jsname")]
@@ -40,54 +41,57 @@ namespace DotNetNuke.Services.Tokens
 
         public JavaScriptPropertyAccess(Page page)
         {
-            _page = page;
+            this._page = page;
         }
 
         protected override string ProcessToken(JavaScriptDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            if (String.IsNullOrEmpty(model.JsName))
+            if (string.IsNullOrEmpty(model.JsName))
             {
-                if (String.IsNullOrEmpty(model.Path))
+                if (string.IsNullOrEmpty(model.Path))
                 {
                     throw new ArgumentException("If the jsname property is not specified then the JavaScript token must specify a path or property.");
                 }
+
                 if (model.Priority == 0)
                 {
                     model.Priority = (int)FileOrder.Js.DefaultPriority;
                 }
-                if (String.IsNullOrEmpty(model.Provider))
+
+                if (string.IsNullOrEmpty(model.Provider))
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority);
                 }
                 else
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, model.Provider);
                 }
             }
-            else if (!String.IsNullOrEmpty(model.Path))
+            else if (!string.IsNullOrEmpty(model.Path))
             {
                 if (model.Priority == 0)
                 {
                     model.Priority = (int)FileOrder.Js.DefaultPriority;
                 }
-                if (String.IsNullOrEmpty(model.Provider))
+
+                if (string.IsNullOrEmpty(model.Provider))
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, "", model.JsName, model.Version);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, string.Empty, model.JsName, model.Version);
                 }
                 else
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider, model.JsName, model.Version);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, model.Provider, model.JsName, model.Version);
                 }
             }
             else
             {
                 Version version = null;
                 SpecificVersion specific = SpecificVersion.Latest;
-                if (!String.IsNullOrEmpty(model.Version))
+                if (!string.IsNullOrEmpty(model.Version))
                 {
                     version = new Version(model.Version);
 
-                    if (!String.IsNullOrEmpty(model.Specific))
+                    if (!string.IsNullOrEmpty(model.Specific))
                     {
                         switch (model.Specific)
                         {
@@ -106,10 +110,11 @@ namespace DotNetNuke.Services.Tokens
                         }
                     }
                 }
+
                 JavaScript.RequestRegistration(model.JsName, version, specific);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

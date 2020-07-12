@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+
     public class DnnFormTextBoxItem : DnnFormItemBase
     {
         private TextBox _textBox;
@@ -30,66 +25,64 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState.GetValue("TextBoxCssClass", string.Empty);
+                return this.ViewState.GetValue("TextBoxCssClass", string.Empty);
             }
+
             set
             {
-                ViewState.SetValue("TextBoxCssClass", value, string.Empty);
+                this.ViewState.SetValue("TextBoxCssClass", value, string.Empty);
             }
         }
 
         public TextBoxMode TextMode { get; set; }
 
-		/// <summary>
-		/// do not output field's value after post back when text mode set to password mode.
-		/// </summary>
-	    public bool ClearContentInPasswordMode { get; set; }
-
-        private void TextChanged(object sender, EventArgs e)
-        {
-            UpdateDataSource(Value, _textBox.Text, DataField);
-        }
+        /// <summary>
+        /// Gets or sets a value indicating whether do not output field's value after post back when text mode set to password mode.
+        /// </summary>
+        public bool ClearContentInPasswordMode { get; set; }
 
         protected override WebControl CreateControlInternal(Control container)
         {
+            this._textBox = new TextBox { ID = this.ID + "_TextBox" };
 
-            _textBox = new TextBox { ID = ID + "_TextBox" };
+            this._textBox.Rows = this.Rows;
+            this._textBox.Columns = this.Columns;
+            this._textBox.TextMode = this.TextMode;
+            this._textBox.CssClass = this.TextBoxCssClass;
+            this._textBox.AutoCompleteType = this.AutoCompleteType;
+            this._textBox.TextChanged += this.TextChanged;
+            this._textBox.Attributes.Add("aria-label", this.DataField);
 
-            _textBox.Rows = Rows;
-            _textBox.Columns = Columns;
-            _textBox.TextMode = TextMode;
-            _textBox.CssClass = TextBoxCssClass;
-            _textBox.AutoCompleteType = AutoCompleteType;
-            _textBox.TextChanged += TextChanged;
-            _textBox.Attributes.Add("aria-label", DataField);
-
-            //Load from ControlState
-            _textBox.Text = Convert.ToString(Value);
-            if (TextMode == TextBoxMode.Password)
+            // Load from ControlState
+            this._textBox.Text = Convert.ToString(this.Value);
+            if (this.TextMode == TextBoxMode.Password)
             {
-                _textBox.Attributes.Add("autocomplete", "off");
-            }
-            if (MaxLength > 0)
-            {
-                _textBox.MaxLength = MaxLength;
+                this._textBox.Attributes.Add("autocomplete", "off");
             }
 
-            container.Controls.Add(_textBox);
+            if (this.MaxLength > 0)
+            {
+                this._textBox.MaxLength = this.MaxLength;
+            }
 
-            return _textBox;
+            container.Controls.Add(this._textBox);
+
+            return this._textBox;
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            if (TextMode == TextBoxMode.Password && !ClearContentInPasswordMode)
+            if (this.TextMode == TextBoxMode.Password && !this.ClearContentInPasswordMode)
             {
-                _textBox.Attributes.Add("value", Convert.ToString(Value));
+                this._textBox.Attributes.Add("value", Convert.ToString(this.Value));
             }
         }
 
+        private void TextChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this.Value, this._textBox.Text, this.DataField);
+        }
     }
-
 }
-

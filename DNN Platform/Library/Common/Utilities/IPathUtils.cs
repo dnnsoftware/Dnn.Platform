@@ -1,13 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+
+    using DotNetNuke.Entities.Users;
+
     public interface IPathUtils
     {
         /// <summary>
@@ -27,16 +27,19 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the physical path for the specified relative path.
         /// </summary>
+        /// <returns></returns>
         string GetPhysicalPath(int portalID, string relativePath);
 
         /// <summary>
         /// Gets the relative path for the specified physical path.
         /// </summary>
+        /// <returns></returns>
         string GetRelativePath(int portalID, string physicalPath);
 
         /// <summary>
-        /// Gets the physical root folder path for the specified portal
+        /// Gets the physical root folder path for the specified portal.
         /// </summary>
+        /// <returns></returns>
         string GetRootFolderMapPath(int portalID);
 
         /// <summary>
@@ -58,13 +61,13 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// The MapPath method maps the specified relative or virtual path to the corresponding physical directory on the server.
         /// </summary>
-        /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either 
-        /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path 
-        /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed</param>
+        /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either
+        /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path
+        /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed.</param>
         /// <returns></returns>
         /// <remarks>
-        /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path 
-        /// of the directory that contains the current application
+        /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path
+        /// of the directory that contains the current application.
         /// </remarks>
         string MapPath(string path);
 

@@ -1,0 +1,36 @@
+name: Update Versions
+on: create
+
+# Sets the manifest and other files version upon creation of a release branch
+jobs:
+  updateVersions:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/') }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get the release branch version
+      uses: valadas/get-release-branch-version@v1
+      id: branchVersion
+      
+    - name: Set versions
+      uses: valadas/set-dnn-manifest-versions@v1
+      with:
+        version: ${{ steps.branchVersion.outputs.manifestSafeVersionString }}
+        skipFile: './Build/Cake/unversionedManifests.txt'
+        includeSolutionInfo: true
+        includeIssueTemplates: true
+        includePackageJson: true
+        includeDnnReactCommon: true
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v2.7.1
+      with:
+        commit-message: Updates versions as per release candidate creation
+        title: Updates versions as per release candidate creation
+        body: This is a release management task and we are self-approving it for that reason.
+        # A comma separated list of labels.
+        labels: 'Type: Build/Release'
+        # The pull request branch name.
+        branch: update-versions/patch
+        # The branch suffix type.
+        branch-suffix: short-commit-hash

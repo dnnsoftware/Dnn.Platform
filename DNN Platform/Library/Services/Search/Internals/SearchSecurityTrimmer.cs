@@ -1,68 +1,57 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using DotNetNuke.Services.Search.Entities;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Services.Search.Entities;
+    using Lucene.Net.Documents;
+    using Lucene.Net.Index;
+    using Lucene.Net.Search;
+
     internal delegate bool SecurityCheckerDelegate(Document luceneResult, SearchQuery searchQuery);
 
     internal class SearchSecurityTrimmer : Collector
     {
         private readonly SecurityCheckerDelegate _securityChecker;
         private readonly IndexSearcher _searcher;
-
-        private Scorer _scorer;
-        private int _docBase, _totalHits;
         private readonly LuceneQuery _luceneQuery;
         private readonly SearchQuery _searchQuery;
         private readonly List<ScoreDoc> _hitDocs;
+
+        private Scorer _scorer;
+        private int _docBase;
+        private int _totalHits;
         private List<ScoreDoc> _scoreDocs;
 
         public SearchSecurityTrimmer(SearchSecurityTrimmerContext searchContext)
         {
-            _securityChecker = searchContext.SecurityChecker;
-            _searcher = searchContext.Searcher;
-            _luceneQuery = searchContext.LuceneQuery;
-            _searchQuery = searchContext.SearchQuery;
-            _hitDocs = new List<ScoreDoc>(16);
+            this._securityChecker = searchContext.SecurityChecker;
+            this._searcher = searchContext.Searcher;
+            this._luceneQuery = searchContext.LuceneQuery;
+            this._searchQuery = searchContext.SearchQuery;
+            this._hitDocs = new List<ScoreDoc>(16);
         }
 
-        public override bool AcceptsDocsOutOfOrder { get { return false; } }
-
-        public override void SetNextReader(IndexReader reader, int docBase)
+        public override bool AcceptsDocsOutOfOrder
         {
-            _docBase = docBase;
-        }
-
-        public override void SetScorer(Scorer scorer)
-        {
-            _scorer = scorer;
-        }
-
-        public override void Collect(int doc)
-        {
-            _hitDocs.Add(new ScoreDoc(doc + _docBase, _scorer.Score()));
+            get { return false; }
         }
 
         public int TotalHits
         {
             get
             {
-                if (_scoreDocs == null) PrepareScoreDocs();
-                return _totalHits;
+                if (this._scoreDocs == null)
+                {
+                    this.PrepareScoreDocs();
+                }
+
+                return this._totalHits;
             }
         }
 
@@ -70,25 +59,50 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                if (_scoreDocs == null) PrepareScoreDocs();
-                return _scoreDocs;
+                if (this._scoreDocs == null)
+                {
+                    this.PrepareScoreDocs();
+                }
+
+                return this._scoreDocs;
             }
+        }
+
+        public override void SetNextReader(IndexReader reader, int docBase)
+        {
+            this._docBase = docBase;
+        }
+
+        public override void SetScorer(Scorer scorer)
+        {
+            this._scorer = scorer;
+        }
+
+        public override void Collect(int doc)
+        {
+            this._hitDocs.Add(new ScoreDoc(doc + this._docBase, this._scorer.Score()));
         }
 
         private string GetStringFromField(Document doc, SortField sortField)
         {
             var field = doc.GetField(sortField.Field);
-            return field == null ? "" : field.StringValue;
+            return field == null ? string.Empty : field.StringValue;
         }
 
         private long GetLongFromField(Document doc, SortField sortField)
         {
             var field = doc.GetField(sortField.Field);
-            if (field == null) return 0;
+            if (field == null)
+            {
+                return 0;
+            }
 
             long data;
-            if (long.TryParse(field.StringValue, out data) && data >= 0) return data;
-            
+            if (long.TryParse(field.StringValue, out data) && data >= 0)
+            {
+                return data;
+            }
+
             return 0;
         }
 
@@ -96,20 +110,20 @@ namespace DotNetNuke.Services.Search.Internals
         {
             int skippedSoFar;
             var collectedSoFar = skippedSoFar = 0;
-            var pageSize = _luceneQuery.PageSize;
-            var toSkip = _luceneQuery.PageIndex <= 1 ? 0 : ((_luceneQuery.PageIndex - 1) * pageSize);
+            var pageSize = this._luceneQuery.PageSize;
+            var toSkip = this._luceneQuery.PageIndex <= 1 ? 0 : ((this._luceneQuery.PageIndex - 1) * pageSize);
             IEnumerable<ScoreDoc> tempDocs = new List<ScoreDoc>();
 
-            _totalHits = _hitDocs.Count;
+            this._totalHits = this._hitDocs.Count;
 
             var useRelevance = false;
-            if (ReferenceEquals(Sort.RELEVANCE, _luceneQuery.Sort))
+            if (ReferenceEquals(Sort.RELEVANCE, this._luceneQuery.Sort))
             {
                 useRelevance = true;
             }
             else
             {
-                var fields = _luceneQuery.Sort.GetSort();
+                var fields = this._luceneQuery.Sort.GetSort();
                 if (fields == null || fields.Count() != 1)
                 {
                     useRelevance = true;
@@ -119,42 +133,52 @@ namespace DotNetNuke.Services.Search.Internals
                     var field = fields[0];
                     if (field.Type == SortField.INT || field.Type == SortField.LONG)
                     {
-                        if(field.Reverse)
-                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                                       .OrderByDescending(rec => GetLongFromField(rec.Document, field))
+                        if (field.Reverse)
+                        {
+                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                                       .OrderByDescending(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
+                        }
                         else
-                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                                       .OrderBy(rec => GetLongFromField(rec.Document, field))
+                        {
+                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                                       .OrderBy(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
+                        }
                     }
                     else
                     {
                         if (field.Reverse)
-                            tempDocs = _hitDocs.Select(d => new {SDoc = d, Document = _searcher.Doc(d.Doc)})
-                                           .OrderByDescending(rec => GetStringFromField(rec.Document, field))
+                        {
+                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                                           .OrderByDescending(rec => this.GetStringFromField(rec.Document, field))
                                            .ThenByDescending(rec => rec.Document.Boost)
                                            .Select(rec => rec.SDoc);
+                        }
                         else
-                            tempDocs = _hitDocs.Select(d => new { SDoc = d, Document = _searcher.Doc(d.Doc) })
-                                       .OrderBy(rec => GetStringFromField(rec.Document, field))
+                        {
+                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                                       .OrderBy(rec => this.GetStringFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
+                        }
                     }
                 }
             }
 
             if (useRelevance)
-                tempDocs = _hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+            {
+                tempDocs = this._hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+            }
 
             var scoreDocSize = Math.Min(tempDocs.Count(), pageSize);
-            _scoreDocs = new List<ScoreDoc>(scoreDocSize);
+            this._scoreDocs = new List<ScoreDoc>(scoreDocSize);
 
-           foreach (var scoreDoc in tempDocs)
+            foreach (var scoreDoc in tempDocs)
             {
-                if (_securityChecker == null || _securityChecker(_searcher.Doc(scoreDoc.Doc), _searchQuery))
+                if (this._securityChecker == null || this._securityChecker(this._searcher.Doc(scoreDoc.Doc), this._searchQuery))
                 {
                     if (skippedSoFar < toSkip)
                     {
@@ -167,12 +191,12 @@ namespace DotNetNuke.Services.Search.Internals
                         continue;
                     }
 
-                    _scoreDocs.Add(scoreDoc);
+                    this._scoreDocs.Add(scoreDoc);
                     ++collectedSoFar;
                 }
                 else
                 {
-                    _totalHits--;
+                    this._totalHits--;
                 }
             }
         }

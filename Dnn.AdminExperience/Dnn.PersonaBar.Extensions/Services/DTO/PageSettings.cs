@@ -1,17 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using Dnn.PersonaBar.Pages.Components.Dto;
-using Dnn.PersonaBar.Themes.Components;
-using Newtonsoft.Json.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+
+    using Dnn.PersonaBar.Pages.Components.Dto;
+    using Dnn.PersonaBar.Themes.Components;
+    using Newtonsoft.Json.Linq;
+
     [DataContract]
     public class PageSettings
     {
@@ -68,10 +69,10 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "customUrlEnabled")]
         public bool CustomUrlEnabled { get; set; }
-        
+
         [DataMember(Name = "pageType")]
         public string PageType { get; set; }
-        
+
         [DataMember(Name = "startDate")]
         public DateTime? StartDate { get; set; }
 
@@ -119,7 +120,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "sitemapPriority")]
         public float SiteMapPriority { get; set; }
-        
+
         [DataMember(Name = "permanentRedirect")]
         public bool PermanentRedirect { get; set; }
 
@@ -128,7 +129,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "pageStyleSheet")]
         public string PageStyleSheet { get; set; }
-        
+
         [DataMember(Name = "themeName")]
         public string ThemeName { get; set; }
 
@@ -137,7 +138,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "skinSrc")]
         public string SkinSrc { get; set; }
-        
+
         [DataMember(Name = "containerSrc")]
         public string ContainerSrc { get; set; }
 
@@ -158,10 +159,13 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "siteAliases")]
         public IEnumerable<KeyValuePair<int, string>> SiteAliases { get; set; }
+
         [DataMember(Name = "primaryAliasId")]
         public int? PrimaryAliasId { get; set; }
+
         [DataMember(Name = "locales")]
         public IOrderedEnumerable<KeyValuePair<int, string>> Locales { get; set; }
+
         [DataMember(Name = "hasParent")]
         public bool HasParent { get; set; }
 

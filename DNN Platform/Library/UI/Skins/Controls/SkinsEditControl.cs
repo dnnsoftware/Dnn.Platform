@@ -1,24 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Web.UI;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.Skins.Controls
@@ -35,12 +30,11 @@ namespace DotNetNuke.UI.Skins.Controls
     public class SkinsEditControl : EditControl, IPostBackEventHandler
     {
         private string _AddedItem = Null.NullString;
-		
-		#region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a SkinsEditControl
+        /// Initializes a new instance of the <see cref="SkinsEditControl"/> class.
+        /// Constructs a SkinsEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public SkinsEditControl()
@@ -49,100 +43,102 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a SkinsEditControl
+        /// Initializes a new instance of the <see cref="SkinsEditControl"/> class.
+        /// Constructs a SkinsEditControl.
         /// </summary>
-        /// <param name="type">The type of the property</param>
+        /// <param name="type">The type of the property.</param>
         /// -----------------------------------------------------------------------------
         public SkinsEditControl(string type)
         {
-            SystemType = type;
-        }
-		
-		#endregion
-
-		#region "Protected Properties"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DictionaryValue returns the Dictionary(Of Integer, String) representation of the Value
-        /// </summary>
-        /// <value>A Dictionary(Of Integer, String) representing the Value</value>
-        /// -----------------------------------------------------------------------------
-        protected Dictionary<int, string> DictionaryValue
-        {
-            get
-            {
-                return Value as Dictionary<int, string>;
-            }
-            set
-            {
-                Value = value;
-            }
+            this.SystemType = type;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue
+        /// Gets oldStringValue returns the String representation of the OldValue.
         /// </summary>
-        /// <value>A Dictionary(Of Integer, String) representing the OldValue</value>
-        /// -----------------------------------------------------------------------------
-        protected Dictionary<int, string> OldDictionaryValue
-        {
-            get
-            {
-                return OldValue as Dictionary<int, string>;
-            }
-            set
-            {
-                OldValue = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OldStringValue returns the String representation of the OldValue
-        /// </summary>
-        /// <value>A String representing the OldValue</value>
+        /// <value>A String representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
             get
             {
                 string strValue = Null.NullString;
-                if (OldDictionaryValue != null)
+                if (this.OldDictionaryValue != null)
                 {
-                    foreach (string Skin in OldDictionaryValue.Values)
+                    foreach (string Skin in this.OldDictionaryValue.Values)
                     {
                         strValue += Skin + ",";
                     }
                 }
+
                 return strValue;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A Dictionary(Of Integer, String) representing the Value.</value>
+        /// -----------------------------------------------------------------------------
+        protected Dictionary<int, string> DictionaryValue
+        {
+            get
+            {
+                return this.Value as Dictionary<int, string>;
+            }
+
+            set
+            {
+                this.Value = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue.
+        /// </summary>
+        /// <value>A Dictionary(Of Integer, String) representing the OldValue.</value>
+        /// -----------------------------------------------------------------------------
+        protected Dictionary<int, string> OldDictionaryValue
+        {
+            get
+            {
+                return this.OldValue as Dictionary<int, string>;
+            }
+
+            set
+            {
+                this.OldValue = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets stringValue is the value of the control expressed as a String.
+        /// </summary>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
             {
                 string strValue = Null.NullString;
-                if (DictionaryValue != null)
+                if (this.DictionaryValue != null)
                 {
-                    foreach (string Skin in DictionaryValue.Values)
+                    foreach (string Skin in this.DictionaryValue.Values)
                     {
                         strValue += Skin + ",";
                     }
                 }
+
                 return strValue;
             }
+
             set
             {
-                Value = value;
+                this.Value = value;
             }
         }
 
@@ -150,15 +146,14 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _AddedItem;
+                return this._AddedItem;
             }
+
             set
             {
-                _AddedItem = value;
+                this._AddedItem = value;
             }
         }
-
-        #region IPostBackEventHandler Members
 
         public void RaisePostBackEvent(string eventArgument)
         {
@@ -166,177 +161,31 @@ namespace DotNetNuke.UI.Skins.Controls
             switch (eventArgument.Substring(0, 3))
             {
                 case "Del":
-                    args = new PropertyEditorEventArgs(Name);
-                    args.Value = DictionaryValue;
-                    args.OldValue = OldDictionaryValue;
+                    args = new PropertyEditorEventArgs(this.Name);
+                    args.Value = this.DictionaryValue;
+                    args.OldValue = this.OldDictionaryValue;
                     args.Key = int.Parse(eventArgument.Substring(7));
                     args.Changed = true;
-                    base.OnItemDeleted(args);
+                    this.OnItemDeleted(args);
                     break;
                 case "Add":
-                    args = new PropertyEditorEventArgs(Name);
-                    args.Value = AddedItem;
-                    args.StringValue = AddedItem;
+                    args = new PropertyEditorEventArgs(this.Name);
+                    args.Value = this.AddedItem;
+                    args.StringValue = this.AddedItem;
                     args.Changed = true;
-                    base.OnItemAdded(args);
+                    this.OnItemAdded(args);
                     break;
             }
         }
-
-        #endregion
-		
-		#endregion
-
-		#region "Protected Methods"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnDataChanged(EventArgs e)
-        {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = DictionaryValue;
-            args.OldValue = OldDictionaryValue;
-            args.StringValue = "";
-            args.Changed = true;
-            base.OnValueChanged(args);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnPreRender runs just before the control is due to be rendered
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            //Register control for PostBack
-            Page.RegisterRequiresPostBack(this);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
-        /// </summary>
-        /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void RenderEditMode(HtmlTextWriter writer)
-        {
-            int length = Null.NullInteger;
-            if ((CustomAttributes != null))
-            {
-                foreach (Attribute attribute in CustomAttributes)
-                {
-                    if (attribute is MaxLengthAttribute)
-                    {
-                        var lengthAtt = (MaxLengthAttribute) attribute;
-                        length = lengthAtt.Length;
-                        break;
-                    }
-                }
-            }
-            if (DictionaryValue != null)
-            {
-                foreach (KeyValuePair<int, string> kvp in DictionaryValue)
-                {
-					//Render Hyperlink
-                    writer.AddAttribute(HtmlTextWriterAttribute.Href, Page.ClientScript.GetPostBackClientHyperlink(this, "Delete_" + kvp.Key, false));
-                    writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "javascript:return confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteItem")) + "');");
-                    writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdDelete", LocalResourceFile));
-                    writer.RenderBeginTag(HtmlTextWriterTag.A);
-
-                    //Render Image
-                    writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Delete"));
-                    writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
-                    writer.RenderBeginTag(HtmlTextWriterTag.Img);
-
-                    //Render end of Image
-                    writer.RenderEndTag();
-
-                    //Render end of Hyperlink
-                    writer.RenderEndTag();
-
-                    ControlStyle.AddAttributesToRender(writer);
-                    writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-                    writer.AddAttribute(HtmlTextWriterAttribute.Value, kvp.Value);
-                    if (length > Null.NullInteger)
-                    {
-                        writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
-                    }
-                    writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + "_skin" + kvp.Key);
-                    writer.RenderBeginTag(HtmlTextWriterTag.Input);
-                    writer.RenderEndTag();
-
-                    writer.WriteBreak();
-                }
-                writer.WriteBreak();
-
-                //Create Add Row
-                //Render Hyperlink
-                writer.AddAttribute(HtmlTextWriterAttribute.Href, Page.ClientScript.GetPostBackClientHyperlink(this, "Add", false));
-                writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdAdd", LocalResourceFile));
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
-
-                //Render Image
-                writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Add"));
-                writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
-                writer.RenderBeginTag(HtmlTextWriterTag.Img);
-
-                //Render end of Image
-                writer.RenderEndTag();
-
-                //Render end of Hyperlink
-                writer.RenderEndTag();
-
-                ControlStyle.AddAttributesToRender(writer);
-                writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
-                if (length > Null.NullInteger)
-                {
-                    writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
-                }
-                writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + "_skinnew");
-                writer.RenderBeginTag(HtmlTextWriterTag.Input);
-                writer.RenderEndTag();
-                writer.WriteBreak();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
-        /// </summary>
-        /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void RenderViewMode(HtmlTextWriter writer)
-        {
-            if (DictionaryValue != null)
-            {
-                foreach (KeyValuePair<int, string> kvp in DictionaryValue)
-                {
-                    ControlStyle.AddAttributesToRender(writer);
-                    writer.RenderBeginTag(HtmlTextWriterTag.Span);
-                    writer.Write(kvp.Value);
-                    writer.RenderEndTag();
-                    writer.WriteBreak();
-                }
-            }
-        }
-		
-		#endregion
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
             string postedValue;
             var newDictionaryValue = new Dictionary<int, string>();
-            foreach (KeyValuePair<int, string> kvp in DictionaryValue)
+            foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
             {
-                postedValue = postCollection[UniqueID + "_skin" + kvp.Key];
+                postedValue = postCollection[this.UniqueID + "_skin" + kvp.Key];
                 if (kvp.Value.Equals(postedValue))
                 {
                     newDictionaryValue[kvp.Key] = kvp.Value;
@@ -347,13 +196,157 @@ namespace DotNetNuke.UI.Skins.Controls
                     dataChanged = true;
                 }
             }
-            postedValue = postCollection[UniqueID + "_skinnew"];
+
+            postedValue = postCollection[this.UniqueID + "_skinnew"];
             if (!string.IsNullOrEmpty(postedValue))
             {
-                AddedItem = postedValue;
+                this.AddedItem = postedValue;
             }
-            DictionaryValue = newDictionaryValue;
+
+            this.DictionaryValue = newDictionaryValue;
             return dataChanged;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
+        /// Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnDataChanged(EventArgs e)
+        {
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.DictionaryValue;
+            args.OldValue = this.OldDictionaryValue;
+            args.StringValue = string.Empty;
+            args.Changed = true;
+            this.OnValueChanged(args);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnPreRender runs just before the control is due to be rendered.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            // Register control for PostBack
+            this.Page.RegisterRequiresPostBack(this);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RenderEditMode renders the Edit mode of the control.
+        /// </summary>
+        /// <param name="writer">A HtmlTextWriter.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void RenderEditMode(HtmlTextWriter writer)
+        {
+            int length = Null.NullInteger;
+            if (this.CustomAttributes != null)
+            {
+                foreach (Attribute attribute in this.CustomAttributes)
+                {
+                    if (attribute is MaxLengthAttribute)
+                    {
+                        var lengthAtt = (MaxLengthAttribute)attribute;
+                        length = lengthAtt.Length;
+                        break;
+                    }
+                }
+            }
+
+            if (this.DictionaryValue != null)
+            {
+                foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
+                {
+                    // Render Hyperlink
+                    writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, "Delete_" + kvp.Key, false));
+                    writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "javascript:return confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteItem")) + "');");
+                    writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdDelete", this.LocalResourceFile));
+                    writer.RenderBeginTag(HtmlTextWriterTag.A);
+
+                    // Render Image
+                    writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Delete"));
+                    writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
+                    writer.RenderBeginTag(HtmlTextWriterTag.Img);
+
+                    // Render end of Image
+                    writer.RenderEndTag();
+
+                    // Render end of Hyperlink
+                    writer.RenderEndTag();
+
+                    this.ControlStyle.AddAttributesToRender(writer);
+                    writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
+                    writer.AddAttribute(HtmlTextWriterAttribute.Value, kvp.Value);
+                    if (length > Null.NullInteger)
+                    {
+                        writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                    }
+
+                    writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skin" + kvp.Key);
+                    writer.RenderBeginTag(HtmlTextWriterTag.Input);
+                    writer.RenderEndTag();
+
+                    writer.WriteBreak();
+                }
+
+                writer.WriteBreak();
+
+                // Create Add Row
+                // Render Hyperlink
+                writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, "Add", false));
+                writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdAdd", this.LocalResourceFile));
+                writer.RenderBeginTag(HtmlTextWriterTag.A);
+
+                // Render Image
+                writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Add"));
+                writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
+                writer.RenderBeginTag(HtmlTextWriterTag.Img);
+
+                // Render end of Image
+                writer.RenderEndTag();
+
+                // Render end of Hyperlink
+                writer.RenderEndTag();
+
+                this.ControlStyle.AddAttributesToRender(writer);
+                writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
+                if (length > Null.NullInteger)
+                {
+                    writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                }
+
+                writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skinnew");
+                writer.RenderBeginTag(HtmlTextWriterTag.Input);
+                writer.RenderEndTag();
+                writer.WriteBreak();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RenderViewMode renders the View (readonly) mode of the control.
+        /// </summary>
+        /// <param name="writer">A HtmlTextWriter.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void RenderViewMode(HtmlTextWriter writer)
+        {
+            if (this.DictionaryValue != null)
+            {
+                foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
+                {
+                    this.ControlStyle.AddAttributesToRender(writer);
+                    writer.RenderBeginTag(HtmlTextWriterTag.Span);
+                    writer.Write(kvp.Value);
+                    writer.RenderEndTag();
+                    writer.WriteBreak();
+                }
+            }
         }
     }
 }

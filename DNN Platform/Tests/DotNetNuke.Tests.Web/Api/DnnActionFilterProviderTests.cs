@@ -1,19 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using Moq;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Filters;
+
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DnnActionFilterProviderTests
     {
@@ -32,11 +33,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             var filterProvider = new DnnActionFilterProvider();
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, filters.Count);
             Assert.IsInstanceOf<RequireHostAttribute>(filters.First().Instance);
         }
@@ -46,7 +47,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
             var adMock = new Mock<HttpActionDescriptor>();
-            adMock.Setup(ad => ad.GetFilters()).Returns(new Collection<IFilter>(new []{ new DnnAuthorizeAttribute() }));
+            adMock.Setup(ad => ad.GetFilters()).Returns(new Collection<IFilter>(new[] { new DnnAuthorizeAttribute() }));
 
             var cdMock = new Mock<HttpControllerDescriptor>();
             cdMock.Setup(cd => cd.GetFilters()).Returns(new Collection<IFilter>());
@@ -56,11 +57,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             var filterProvider = new DnnActionFilterProvider();
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, filters.Count);
             Assert.IsInstanceOf<DnnAuthorizeAttribute>(filters.First().Instance);
         }
@@ -80,11 +81,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             var filterProvider = new DnnActionFilterProvider();
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(2, filters.Count);
             Assert.IsInstanceOf<RequireHostAttribute>(filters.Last().Instance);
         }

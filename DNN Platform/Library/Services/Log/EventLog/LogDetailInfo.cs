@@ -1,42 +1,39 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Text;
-using System.Xml;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.Text;
+    using System.Xml;
+
     [Serializable]
     public class LogDetailInfo
     {
         private string _PropertyName;
         private string _PropertyValue;
 
-        public LogDetailInfo() : this("", "")
+        public LogDetailInfo()
+            : this(string.Empty, string.Empty)
         {
         }
 
         public LogDetailInfo(string name, string value)
         {
-            _PropertyName = name;
-            _PropertyValue = value;
+            this._PropertyName = name;
+            this._PropertyValue = value;
         }
 
         public string PropertyName
         {
             get
             {
-                return _PropertyName;
+                return this._PropertyName;
             }
+
             set
             {
-                _PropertyName = value;
+                this._PropertyName = value;
             }
         }
 
@@ -44,23 +41,24 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             get
             {
-                return _PropertyValue;
+                return this._PropertyValue;
             }
+
             set
             {
-                _PropertyValue = value;
+                this._PropertyValue = value;
             }
         }
 
         public void ReadXml(XmlReader reader)
         {
             reader.ReadStartElement("PropertyName");
-            PropertyName = reader.ReadString();
+            this.PropertyName = reader.ReadString();
             reader.ReadEndElement();
             if (!reader.IsEmptyElement)
             {
                 reader.ReadStartElement("PropertyValue");
-                PropertyValue = reader.ReadString();
+                this.PropertyValue = reader.ReadString();
                 reader.ReadEndElement();
             }
             else
@@ -73,9 +71,9 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             var sb = new StringBuilder();
             sb.Append("<p><strong>");
-            sb.Append(PropertyName);
+            sb.Append(this.PropertyName);
             sb.Append("</strong>: ");
-            sb.Append(PropertyValue);
+            sb.Append(this.PropertyValue);
             sb.Append("</p>");
             return sb.ToString();
         }
@@ -83,8 +81,8 @@ namespace DotNetNuke.Services.Log.EventLog
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("LogProperty");
-            writer.WriteElementString("PropertyName", PropertyName);
-            writer.WriteElementString("PropertyValue", PropertyValue);
+            writer.WriteElementString("PropertyName", this.PropertyName);
+            writer.WriteElementString("PropertyValue", this.PropertyValue);
             writer.WriteEndElement();
         }
     }

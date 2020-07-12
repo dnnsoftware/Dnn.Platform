@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.UI.WebControls;
+
     public class DnnFormEditControlItem : DnnFormItemBase
     {
         private EditControl control;
@@ -23,30 +18,30 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            control = Reflection.CreateObject(ControlType, ControlType) as EditControl;
+            this.control = Reflection.CreateObject(this.ControlType, this.ControlType) as EditControl;
 
-            if (control != null)
+            if (this.control != null)
             {
-                control.ID = ID + "_Control";
-                control.Name = ID;
-                control.EditMode = PropertyEditorMode.Edit;
-                control.Required = false;
-                control.Value = Value;
-                control.OldValue = Value;
-                control.ValueChanged += ValueChanged;
-	            control.DataField = DataField;
+                this.control.ID = this.ID + "_Control";
+                this.control.Name = this.ID;
+                this.control.EditMode = PropertyEditorMode.Edit;
+                this.control.Required = false;
+                this.control.Value = this.Value;
+                this.control.OldValue = this.Value;
+                this.control.ValueChanged += this.ValueChanged;
+                this.control.DataField = this.DataField;
 
-                control.CssClass = "dnnFormInput";
+                this.control.CssClass = "dnnFormInput";
 
-                container.Controls.Add(control);
+                container.Controls.Add(this.control);
             }
 
-            return control;
+            return this.control;
         }
 
-        void ValueChanged(object sender, PropertyEditorEventArgs e)
+        private void ValueChanged(object sender, PropertyEditorEventArgs e)
         {
-            UpdateDataSource(Value, e.Value, DataField);
+            this.UpdateDataSource(this.Value, e.Value, this.DataField);
         }
     }
 }

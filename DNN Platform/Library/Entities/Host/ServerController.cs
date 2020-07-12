@@ -1,31 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Caching;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Host
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Log.EventLog;
+
     public class ServerController
     {
-
         public const string DefaultUrlAdapter = "DotNetNuke.Entities.Host.ServerWebRequestAdapter, DotNetNuke";
 
         private const string cacheKey = "WebServers";
@@ -43,6 +37,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     uniqueServers[server.ServerName] = server.IISAppName;
                 }
+
                 return uniqueServers.Count < GetEnabledServers().Count;
             }
         }
@@ -72,6 +67,7 @@ namespace DotNetNuke.Entities.Host
                     }
                 }
             }
+
             return servers;
         }
 
@@ -82,6 +78,7 @@ namespace DotNetNuke.Entities.Host
             {
                 executingServerName += "-" + Globals.IISAppName;
             }
+
             Logger.Debug("GetExecutingServerName:" + executingServerName);
             return executingServerName;
         }
@@ -93,6 +90,7 @@ namespace DotNetNuke.Entities.Host
             {
                 serverName += "-" + webServer.IISAppName;
             }
+
             Logger.Debug("GetServerName:" + serverName);
             return serverName;
         }
@@ -113,27 +111,27 @@ namespace DotNetNuke.Entities.Host
         {
             var existServer = GetServers().FirstOrDefault(s => s.ServerName == server.ServerName && s.IISAppName == server.IISAppName);
             var serverId = DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate, server.PingFailureCount, server.Enabled);
-            
+
             server.ServerID = serverId;
             if (existServer == null
                 || string.IsNullOrEmpty(existServer.Url)
                 || (string.IsNullOrEmpty(existServer.UniqueId) && !string.IsNullOrEmpty(GetServerUniqueId())))
             {
-                //try to detect the server url from url adapter.
+                // try to detect the server url from url adapter.
                 server.Url = existServer == null || string.IsNullOrEmpty(existServer.Url) ? GetServerUrl() : existServer.Url;
-                //try to detect the server unique id from url adapter.
+
+                // try to detect the server unique id from url adapter.
                 server.UniqueId = existServer == null || string.IsNullOrEmpty(existServer.UniqueId) ? GetServerUniqueId() : existServer.UniqueId;
 
                 UpdateServer(server);
             }
 
-            
-            //log the server info
+            // log the server info
             var log = new LogInfo();
             log.AddProperty(existServer != null ? "Server Updated" : "Add New Server", server.ServerName);
             log.AddProperty("IISAppName", server.IISAppName);
             log.AddProperty("Last Activity Date", server.LastActivityDate.ToString());
-            log.LogTypeKey = existServer != null ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString() 
+            log.LogTypeKey = existServer != null ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString()
                                         : EventLogController.EventLogType.WEBSERVER_CREATED.ToString();
             LogController.Instance.AddLog(log);
 

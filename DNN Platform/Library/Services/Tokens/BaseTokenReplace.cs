@@ -1,17 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-
-using DotNetNuke.Common.Utilities;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Globalization;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+
+    using DotNetNuke.Common.Utilities;
+
     /// <summary>
     /// The BaseTokenReplace class provides the tokenization of tokens formatted  
     /// [object:property] or [object:property|format|ifEmpty] or [custom:no] within a string
@@ -20,6 +19,8 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseTokenReplace
     {
+
+        protected const string ObjectLessToken = "no_object";
         private const string ExpressionDefault =
             "(?:(?<text>\\[\\])|\\[(?:(?<object>[^{}\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])|(?<text>\\[[^\\]\\[]+\\])|(?<text>[^\\]\\[]+)";
 
@@ -35,24 +36,20 @@ namespace DotNetNuke.Services.Tokens
         private CultureInfo _formatProvider;
         private string _language;
 
-        protected const string ObjectLessToken = "no_object";
-
-        protected bool UseObjectLessExpression { get; set; }
-
         /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture
+        /// Gets the Format provider as Culture info from stored language or current culture.
         /// </summary>
-        /// <value>An CultureInfo</value>
-        protected CultureInfo FormatProvider
+        /// <value>An CultureInfo.</value>
+        protected virtual CultureInfo FormatProvider
         {
             get { return _formatProvider ?? (_formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
-        /// Gets/sets the language to be used, e.g. for date format
+        /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
-        /// <value>A string, representing the locale</value>
-        public string Language
+        /// <value>A string, representing the locale.</value>
+        public virtual string Language
         {
             get
             {
@@ -66,23 +63,26 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets the Regular expression for the token to be replaced
+        /// Gets the Regular expression for the token to be replaced.
         /// </summary>
-        /// <value>A regular Expression</value>   
+        /// <value>A regular Expression.</value>
         protected Regex TokenizerRegex
         {
             get
             {
-                var cacheKey = (UseObjectLessExpression) ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
+                var cacheKey = this.UseObjectLessExpression ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
                 var tokenizer = DataCache.GetCache(cacheKey) as Regex;
                 if (tokenizer == null)
                 {
-                    tokenizer = RegexUtils.GetCachedRegex(UseObjectLessExpression ? ExpressionObjectLess : ExpressionDefault);
+                    tokenizer = RegexUtils.GetCachedRegex(this.UseObjectLessExpression ? ExpressionObjectLess : ExpressionDefault);
                     DataCache.SetCache(cacheKey, tokenizer);
                 }
+
                 return tokenizer;
             }
         }
+
+        protected bool UseObjectLessExpression { get; set; }
 
         // ReSharper disable once InconsistentNaming
         protected abstract string replacedTokenValue(string objectName, string propertyName, string format);
@@ -93,24 +93,27 @@ namespace DotNetNuke.Services.Tokens
             {
                 return string.Empty;
             }
+
             var result = new StringBuilder();
-            foreach (Match currentMatch in TokenizerRegex.Matches(sourceText))
+            foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
             {
                 string objectName = currentMatch.Result("${object}");
-                if (!String.IsNullOrEmpty(objectName))
+                if (!string.IsNullOrEmpty(objectName))
                 {
                     if (objectName == "[")
                     {
                         objectName = ObjectLessToken;
                     }
+
                     string propertyName = currentMatch.Result("${property}");
                     string format = currentMatch.Result("${format}");
                     string ifEmptyReplacment = currentMatch.Result("${ifEmpty}");
-                    string conversion = replacedTokenValue(objectName, propertyName, format);
-                    if (!String.IsNullOrEmpty(ifEmptyReplacment) && String.IsNullOrEmpty(conversion))
+                    string conversion = this.replacedTokenValue(objectName, propertyName, format);
+                    if (!string.IsNullOrEmpty(ifEmptyReplacment) && string.IsNullOrEmpty(conversion))
                     {
                         conversion = ifEmptyReplacment;
                     }
+
                     result.Append(conversion);
                 }
                 else
@@ -118,6 +121,7 @@ namespace DotNetNuke.Services.Tokens
                     result.Append(currentMatch.Result("${text}"));
                 }
             }
+
             return result.ToString();
         }
     }

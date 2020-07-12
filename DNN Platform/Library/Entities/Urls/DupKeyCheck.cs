@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
@@ -11,15 +11,18 @@ namespace DotNetNuke.Entities.Urls
     {
         public DupKeyCheck(string tabKey, string tabIdOriginal, string tabPath, bool isDeleted)
         {
-            TabKey = tabKey;
-            TabIdOriginal = tabIdOriginal;
-            TabPath = tabPath;
-            IsDeleted = isDeleted;
+            this.TabKey = tabKey;
+            this.TabIdOriginal = tabIdOriginal;
+            this.TabPath = tabPath;
+            this.IsDeleted = isDeleted;
         }
 
         public string TabKey { get; set; }
+
         public string TabIdOriginal { get; set; }
+
         public string TabPath { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }

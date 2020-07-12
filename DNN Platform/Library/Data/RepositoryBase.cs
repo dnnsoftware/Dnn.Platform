@@ -1,35 +1,39 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Caching;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Data
 {
-    public abstract class RepositoryBase<T> : IRepository<T> where T : class
-    {
-        #region Constructors
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Caching;
 
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
+    public abstract class RepositoryBase<T> : IRepository<T>
+        where T : class
+    {
         protected RepositoryBase()
         {
-            InitializeInternal();
+            this.InitializeInternal();
         }
 
-        #endregion
+        protected CacheItemArgs CacheArgs { get; private set; }
 
-        #region IRepository<T> Implementation
+        protected string Scope { get; private set; }
+
+        protected bool IsCacheable { get; private set; }
+
+        protected bool IsScoped { get; private set; }
 
         public void Delete(T item)
         {
-            DeleteInternal(item);
-            ClearCache(item);
+            this.DeleteInternal(item);
+            this.ClearCache(item);
         }
 
         public abstract void Delete(string sqlCondition, params object[] args);
@@ -40,139 +44,88 @@ namespace DotNetNuke.Data
 
         public IEnumerable<T> Get()
         {
-            return IsCacheable && !IsScoped
-                ? DataCache.GetCachedData<IEnumerable<T>>(CacheArgs, c => GetInternal())
-                : GetInternal();
+            return this.IsCacheable && !this.IsScoped
+                ? DataCache.GetCachedData<IEnumerable<T>>(this.CacheArgs, c => this.GetInternal())
+                : this.GetInternal();
         }
 
         public IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
-            CheckIfScoped();
+            this.CheckIfScoped();
 
-            if(IsCacheable)
+            if (this.IsCacheable)
             {
-                CacheArgs.CacheKey = String.Format(CacheArgs.CacheKey, scopeValue);
+                this.CacheArgs.CacheKey = string.Format(this.CacheArgs.CacheKey, scopeValue);
             }
 
-            return IsCacheable
-                ? DataCache.GetCachedData<IEnumerable<T>>(CacheArgs, c => GetByScopeInternal(scopeValue))
-                : GetByScopeInternal(scopeValue);
+            return this.IsCacheable
+                ? DataCache.GetCachedData<IEnumerable<T>>(this.CacheArgs, c => this.GetByScopeInternal(scopeValue))
+                : this.GetByScopeInternal(scopeValue);
         }
 
         public T GetById<TProperty>(TProperty id)
         {
-            return IsCacheable && !IsScoped
-                        ? Get().SingleOrDefault(t => CompareTo(GetPrimaryKey<TProperty>(t), id) == 0)
-                        : GetByIdInternal(id);
+            return this.IsCacheable && !this.IsScoped
+                        ? this.Get().SingleOrDefault(t => this.CompareTo(this.GetPrimaryKey<TProperty>(t), id) == 0)
+                        : this.GetByIdInternal(id);
         }
 
         public T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
-            CheckIfScoped();
+            this.CheckIfScoped();
 
-            return Get(scopeValue).SingleOrDefault(t => CompareTo(GetPrimaryKey<TProperty>(t), id) == 0);
+            return this.Get(scopeValue).SingleOrDefault(t => this.CompareTo(this.GetPrimaryKey<TProperty>(t), id) == 0);
         }
 
         public IPagedList<T> GetPage(int pageIndex, int pageSize)
         {
-            return IsCacheable && !IsScoped
-                ? Get().InPagesOf(pageSize).GetPage(pageIndex)
-                : GetPageInternal(pageIndex, pageSize);
+            return this.IsCacheable && !this.IsScoped
+                ? this.Get().InPagesOf(pageSize).GetPage(pageIndex)
+                : this.GetPageInternal(pageIndex, pageSize);
         }
 
         public IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
-            CheckIfScoped();
+            this.CheckIfScoped();
 
-            return IsCacheable
-                ? Get(scopeValue).InPagesOf(pageSize).GetPage(pageIndex)
-                : GetPageByScopeInternal(scopeValue, pageIndex, pageSize);
+            return this.IsCacheable
+                ? this.Get(scopeValue).InPagesOf(pageSize).GetPage(pageIndex)
+                : this.GetPageByScopeInternal(scopeValue, pageIndex, pageSize);
         }
 
         public void Insert(T item)
         {
-            InsertInternal(item);
-            ClearCache(item);
+            this.InsertInternal(item);
+            this.ClearCache(item);
         }
 
         public void Update(T item)
         {
-            UpdateInternal(item);
-            ClearCache(item);
+            this.UpdateInternal(item);
+            this.ClearCache(item);
         }
 
         public abstract void Update(string sqlCondition, params object[] args);
 
-        #endregion
-
-        #region Private Methods
-
-        private void CheckIfScoped()
+        public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
         {
-            if (!IsScoped)
+            this.Scope = scope;
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
+            this.IsCacheable = !string.IsNullOrEmpty(cacheKey);
+            if (this.IsCacheable)
             {
-                throw new NotSupportedException("This method requires the model to be cacheable and have a cache scope defined");
-            }
-        }
-
-        private void ClearCache(T item)
-        {
-            if (IsCacheable)
-            {
-                DataCache.RemoveCache(IsScoped
-                                          ? String.Format(CacheArgs.CacheKey, GetScopeValue<object>(item))
-                                          : CacheArgs.CacheKey);
-            }
-        }
-
-        private void InitializeInternal()
-        {
-            var type = typeof (T);
-            Scope = String.Empty;
-            IsCacheable = false;
-            IsScoped = false;
-            CacheArgs = null;
-
-            var scopeAttribute = DataUtil.GetAttribute<ScopeAttribute>(type);
-            if (scopeAttribute != null)
-            {
-                Scope = scopeAttribute.Scope;
-            }
-
-            IsScoped = (!String.IsNullOrEmpty(Scope));
-
-            var cacheableAttribute = DataUtil.GetAttribute<CacheableAttribute>(type);
-            if (cacheableAttribute != null)
-            {
-                IsCacheable = true;
-                var cacheKey = !String.IsNullOrEmpty(cacheableAttribute.CacheKey)
-                                ? cacheableAttribute.CacheKey
-                                : String.Format("OR_{0}", type.Name);
-                var cachePriority = cacheableAttribute.CachePriority;
-                var cacheTimeOut = cacheableAttribute.CacheTimeOut;
-
-                if (IsScoped)
+                if (this.IsScoped)
                 {
-                    cacheKey += "_" + Scope + "_{0}";
+                    cacheKey += "_" + this.Scope + "_{0}";
                 }
 
-                CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
+                this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
+            }
+            else
+            {
+                this.CacheArgs = null;
             }
         }
-
-        #endregion
-
-        #region Protected Properties
-
-        protected CacheItemArgs CacheArgs { get; private set; }
-
-        protected string Scope { get; private set; }
-
-        protected bool IsCacheable { get; private set; }
-
-        protected bool IsScoped { get; private set; }
-
-        #endregion
 
         protected int CompareTo<TProperty>(TProperty first, TProperty second)
         {
@@ -182,9 +135,10 @@ namespace DotNetNuke.Data
             var firstComparable = first as IComparable;
             var secondComparable = second as IComparable;
 
-// ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             return firstComparable.CompareTo(secondComparable);
-// ReSharper restore PossibleNullReferenceException
+
+            // ReSharper restore PossibleNullReferenceException
         }
 
         protected TProperty GetPropertyValue<TProperty>(T item, string propertyName)
@@ -199,10 +153,8 @@ namespace DotNetNuke.Data
 
         protected TProperty GetScopeValue<TProperty>(T item)
         {
-            return DataUtil.GetPropertyValue<T, TProperty>(item, Scope);
+            return DataUtil.GetPropertyValue<T, TProperty>(item, this.Scope);
         }
-
-        #region Abstract Methods
 
         protected abstract void DeleteInternal(T item);
 
@@ -220,24 +172,56 @@ namespace DotNetNuke.Data
 
         protected abstract void UpdateInternal(T item);
 
-        #endregion
-
-        public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
+        private void CheckIfScoped()
         {
-            Scope = scope;
-            IsScoped = (!String.IsNullOrEmpty(Scope));
-            IsCacheable = (!String.IsNullOrEmpty(cacheKey));
-            if (IsCacheable)
+            if (!this.IsScoped)
             {
-                if (IsScoped)
-                {
-                    cacheKey += "_" + Scope + "_{0}";
-                }
-                CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
+                throw new NotSupportedException("This method requires the model to be cacheable and have a cache scope defined");
             }
-            else
+        }
+
+        private void ClearCache(T item)
+        {
+            if (this.IsCacheable)
             {
-                CacheArgs = null;
+                DataCache.RemoveCache(this.IsScoped
+                                          ? string.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
+                                          : this.CacheArgs.CacheKey);
+            }
+        }
+
+        private void InitializeInternal()
+        {
+            var type = typeof(T);
+            this.Scope = string.Empty;
+            this.IsCacheable = false;
+            this.IsScoped = false;
+            this.CacheArgs = null;
+
+            var scopeAttribute = DataUtil.GetAttribute<ScopeAttribute>(type);
+            if (scopeAttribute != null)
+            {
+                this.Scope = scopeAttribute.Scope;
+            }
+
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
+
+            var cacheableAttribute = DataUtil.GetAttribute<CacheableAttribute>(type);
+            if (cacheableAttribute != null)
+            {
+                this.IsCacheable = true;
+                var cacheKey = !string.IsNullOrEmpty(cacheableAttribute.CacheKey)
+                                ? cacheableAttribute.CacheKey
+                                : string.Format("OR_{0}", type.Name);
+                var cachePriority = cacheableAttribute.CachePriority;
+                var cacheTimeOut = cacheableAttribute.CacheTimeOut;
+
+                if (this.IsScoped)
+                {
+                    cacheKey += "_" + this.Scope + "_{0}";
+                }
+
+                this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
             }
         }
     }

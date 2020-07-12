@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Module")]
     [ToolboxData("<{0}:EditPageTabExtensionControl runat=server></{0}:EditPageTabExtensionControl>")]
     public class EditPageTabExtensionControl : DefaultExtensionControl
@@ -21,12 +21,13 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (String)ViewState["TabControlId"];
-                return (s ?? String.Empty);
+                var s = (string)this.ViewState["TabControlId"];
+                return s ?? string.Empty;
             }
+
             set
             {
-                ViewState["TabControlId"] = value;
+                this.ViewState["TabControlId"] = value;
             }
         }
 
@@ -36,45 +37,19 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (String)ViewState["PanelControlId"];
-                return (s ?? String.Empty);
+                var s = (string)this.ViewState["PanelControlId"];
+                return s ?? string.Empty;
             }
+
             set
             {
-                ViewState["PanelControlId"] = value;
-            }
-        }
-        
-        protected override void OnInit(EventArgs e)
-        {
-            var extensionPointManager = new ExtensionPointManager();
-            
-            var tabs = (HtmlGenericControl)Parent.FindControl(TabControlId);
-            var panel = Parent.FindControl(PanelControlId);
-
-            foreach (var extension in extensionPointManager.GetEditPageTabExtensionPoints(Module, Group))
-            {
-                if (extension.Visible)
-                {
-                    var liElement = new HtmlGenericControl("li")
-                    {
-                        InnerHtml = "<a href=\"#" + extension.EditPageTabId + "\">" + extension.Text + "</a>",
-                    };
-                    liElement.Attributes.Add("class", extension.CssClass);
-                    tabs.Controls.Add(liElement);
-
-                    var container = new PanelTabExtensionControl { PanelId = extension.EditPageTabId };
-                    var control = Page.LoadControl(extension.UserControlSrc);
-                    control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
-                    container.Controls.Add(control);
-                    panel.Controls.Add(container);
-                }
+                this.ViewState["PanelControlId"] = value;
             }
         }
 
         public void BindAction(int portalId, int tabId, int moduleId)
         {
-            var panel = Parent.FindControl(PanelControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
 
             foreach (var control in panel.Controls)
             {
@@ -95,7 +70,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void SaveAction(int portalId, int tabId, int moduleId)
         {
-            var panel = Parent.FindControl(PanelControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
 
             foreach (var control in panel.Controls)
             {
@@ -116,7 +91,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void CancelAction(int portalId, int tabId, int moduleId)
         {
-            var panel = Parent.FindControl(PanelControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
 
             foreach (var control in panel.Controls)
             {
@@ -135,6 +110,32 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            var extensionPointManager = new ExtensionPointManager();
+
+            var tabs = (HtmlGenericControl)this.Parent.FindControl(this.TabControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
+
+            foreach (var extension in extensionPointManager.GetEditPageTabExtensionPoints(this.Module, this.Group))
+            {
+                if (extension.Visible)
+                {
+                    var liElement = new HtmlGenericControl("li")
+                    {
+                        InnerHtml = "<a href=\"#" + extension.EditPageTabId + "\">" + extension.Text + "</a>",
+                    };
+                    liElement.Attributes.Add("class", extension.CssClass);
+                    tabs.Controls.Add(liElement);
+
+                    var container = new PanelTabExtensionControl { PanelId = extension.EditPageTabId };
+                    var control = this.Page.LoadControl(extension.UserControlSrc);
+                    control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
+                    container.Controls.Add(control);
+                    panel.Controls.Add(container);
+                }
+            }
+        }
     }
 
     public class PanelTabExtensionControl : WebControl
@@ -143,19 +144,19 @@ namespace DotNetNuke.ExtensionPoints
 
         public override void RenderBeginTag(HtmlTextWriter writer)
         {
-            writer.Write("");
+            writer.Write(string.Empty);
         }
 
         public override void RenderEndTag(HtmlTextWriter writer)
         {
-            writer.Write("");
-        } 
+            writer.Write(string.Empty);
+        }
 
         protected override void RenderContents(HtmlTextWriter op)
         {
-            op.Write("<div class=\"ehccContent dnnClear\" id=\"" + PanelId + "\">");
+            op.Write("<div class=\"ehccContent dnnClear\" id=\"" + this.PanelId + "\">");
             base.RenderContents(op);
             op.Write("</div>");
-        } 
+        }
     }
 }

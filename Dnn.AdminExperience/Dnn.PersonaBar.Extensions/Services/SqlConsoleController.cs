@@ -1,53 +1,54 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.SqlConsole.Components;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Web.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.SqlConsole.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text.RegularExpressions;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.SqlConsole.Components;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SqlConsoleController : PersonaBarApiController
     {
-        private ISqlQueryController _controller = SqlQueryController.Instance;
         const string ScriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+
         private static readonly Regex SqlObjRegex = new Regex(ScriptDelimiterRegex,
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-        //private const int MaxOutputRecords = 500;
+        private ISqlQueryController _controller = SqlQueryController.Instance;
 
-        #region API
+        //private const int MaxOutputRecords = 500;
 
         [HttpGet]
         public HttpResponseMessage GetSavedQueries()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, new
+            return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
-                queries = _controller.GetQueries(),
-                connections = _controller.GetConnections()
+                queries = this._controller.GetQueries(),
+                connections = this._controller.GetConnections()
             });
         }
 
         [HttpGet]
         public HttpResponseMessage GetSavedQuery(int id)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, _controller.GetQuery(id));
+            return this.Request.CreateResponse(HttpStatusCode.OK, this._controller.GetQuery(id));
         }
 
         [HttpPost]
@@ -55,13 +56,13 @@ namespace Dnn.PersonaBar.SqlConsole.Services
         public HttpResponseMessage SaveQuery(SqlQuery query)
         {
             query.CreatedOnDate = DateTime.Now;
-            query.CreatedByUserId = UserInfo.UserID;
+            query.CreatedByUserId = this.UserInfo.UserID;
             query.LastModifiedOnDate = DateTime.Now;
-            query.LastModifiedByUserId = UserInfo.UserID;
+            query.LastModifiedByUserId = this.UserInfo.UserID;
 
             if (query.QueryId <= 0)
             {
-                var saveQueries = _controller.GetQueries();
+                var saveQueries = this._controller.GetQueries();
                 var saveQuery = saveQueries.FirstOrDefault(q => q.Name.Equals(query.Name, StringComparison.OrdinalIgnoreCase));
                 if (saveQuery != null)
                 {
@@ -71,29 +72,29 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
             if (query.QueryId > 0)
             {
-                _controller.UpdateQuery(query);
+                this._controller.UpdateQuery(query);
             }
             else
             {
-                _controller.AddQuery(query);
+                this._controller.AddQuery(query);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, query);
+            return this.Request.CreateResponse(HttpStatusCode.OK, query);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteQuery(SqlQuery query)
         {
-            var savedQuery = _controller.GetQuery(query.QueryId);
+            var savedQuery = this._controller.GetQuery(query.QueryId);
             if (savedQuery != null)
             {
-                _controller.DeleteQuery(savedQuery);
+                this._controller.DeleteQuery(savedQuery);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
 
-            return Request.CreateResponse(HttpStatusCode.NoContent);
+            return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
         [HttpPost]
@@ -105,7 +106,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             var outputTables = new List<DataTable>();
             string errorMessage;
 
-            var runAsQuery = RunAsScript(query.Query);
+            var runAsQuery = this.RunAsScript(query.Query);
             if (runAsQuery)
             {
                 errorMessage = DataProvider.Instance().ExecuteScript(connectionstring, query.Query, query.Timeout);
@@ -132,24 +133,20 @@ namespace Dnn.PersonaBar.SqlConsole.Services
                 }
             }
 
-            RecordAuditEventLog(query.Query);
+            this.RecordAuditEventLog(query.Query);
 
             var statusCode = string.IsNullOrEmpty(errorMessage) ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
-            return Request.CreateResponse(statusCode,  new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
+            return this.Request.CreateResponse(statusCode, new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void RecordAuditEventLog(string query)
         {
-            var props = new LogProperties { new LogDetailInfo("User", UserInfo.Username), new LogDetailInfo("SQL Query", query) };
+            var props = new LogProperties { new LogDetailInfo("User", this.UserInfo.Username), new LogDetailInfo("SQL Query", query) };
 
             //Add the event log with host portal id.
             var log = new LogInfo
             {
-                LogUserID = UserInfo.UserID,
+                LogUserID = this.UserInfo.UserID,
                 LogTypeKey = EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(),
                 LogProperties = props,
                 BypassBuffering = true,
@@ -163,7 +160,5 @@ namespace Dnn.PersonaBar.SqlConsole.Services
         {
             return SqlObjRegex.IsMatch(query);
         }
-
-        #endregion
     }
 }

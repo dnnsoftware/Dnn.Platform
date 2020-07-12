@@ -260,9 +260,11 @@
     <Compile Include="Services\MobileHelperController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UI\WebControls\DnnDropDownListState.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
     <Compile Include="UI\WebControls\DnnFileUpload.cs" />
+    <Compile Include="UI\WebControls\DnnFileUploadResources.cs" />
     <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListOptions.cs" />
     <Compile Include="UI\WebControls\DnnFolderDropDownList.cs" />
@@ -412,6 +414,9 @@
     <Compile Include="UI\WebControls\TermsEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
@@ -432,6 +437,10 @@
       <Project>{c4823821-cfb3-4394-851f-e39d0974efbd}</Project>
       <Name>DotNetNuke.ModulePipeline</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1444,7 +1444,7 @@
     <value>Only Images</value>
   </data>
   <data name="plAllowedExtensionsWhitelist.Help" xml:space="preserve">
-    <value>A comma separated list of file extensions that end users are allowed to upload to the site. Note this can be through uploading a profile picture, content to the journal or from a file upload module. The extensions you enter are checked against a global permitted list and may be restricted as a result.</value>
+    <value>A comma separated extension list for files that end users are allowed to upload to the site. Note this can be through uploading a profile picture, content to the journal or from a file upload module. The extensions you enter are checked against a global permitted list and may be restricted as a result.</value>
   </data>
   <data name="plAllowedExtensionsWhitelist.Text" xml:space="preserve">
     <value>Allowed File Extensions</value>
@@ -1457,5 +1457,23 @@
   </data>
   <data name="WhitelistSettings.Text" xml:space="preserve">
     <value>Permitted File Extension List</value>
+  </data>
+  <data name="Redirect_AfterLogin.Help" xml:space="preserve">
+    <value>Optionally select the page that users will be redirected to upon successful login.</value>
+  </data>
+  <data name="Redirect_AfterLogin.Text" xml:space="preserve">
+    <value>Redirect After Login</value>
+  </data>
+  <data name="Redirect_AfterLogout.Help" xml:space="preserve">
+    <value>Optionally select the page that users will be redirected to upon logout.</value>
+  </data>
+  <data name="Redirect_AfterLogout.Text" xml:space="preserve">
+    <value>Redirect After Logout</value>
+  </data>
+  <data name="Redirect_AfterRegistration.Help" xml:space="preserve">
+    <value>Optionally select the page that users will be redirected to upon successful registration.</value>
+  </data>
+  <data name="Redirect_AfterRegistration.Text" xml:space="preserve">
+    <value>Redirect After Registration</value>
   </data>
 </root>

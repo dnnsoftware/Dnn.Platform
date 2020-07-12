@@ -1,96 +1,97 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.IO;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization.Internal;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.UserProfile
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization.Internal;
+
     public class UserProfilePicHandler : IHttpHandler
     {
-        #region Private Fields
-
         private static object _locker = new object();
 
-        #endregion
-
-        #region IHttpHandler Members
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void ProcessRequest(HttpContext context)
         {
-            SetupCulture();
+            this.SetupCulture();
 
             var userId = -1;
             var width = 55;
             var height = 55;
-            var size = "";
+            var size = string.Empty;
             try
             {
-                if (!String.IsNullOrEmpty(context.Request.QueryString["userid"]))
+                if (!string.IsNullOrEmpty(context.Request.QueryString["userid"]))
                 {
                     userId = Convert.ToInt32(context.Request.QueryString["userid"]);
                 }
 
-                if (!String.IsNullOrEmpty(context.Request.QueryString["w"]))
+                if (!string.IsNullOrEmpty(context.Request.QueryString["w"]))
                 {
                     width = Convert.ToInt32(context.Request.QueryString["w"]);
                 }
 
-                if (!String.IsNullOrEmpty(context.Request.QueryString["h"]))
+                if (!string.IsNullOrEmpty(context.Request.QueryString["h"]))
                 {
                     height = Convert.ToInt32(context.Request.QueryString["h"]);
                 }
-                if (!String.IsNullOrEmpty(context.Request.QueryString["size"]))
+
+                if (!string.IsNullOrEmpty(context.Request.QueryString["size"]))
                 {
                     size = context.Request.QueryString["size"];
                 }
-
             }
             catch (Exception)
             {
                 Exceptions.Exceptions.ProcessHttpException(context.Request);
             }
 
-            if (height > 128) { height = 128; }
-            if (width > 128) { width = 128; }
+            if (height > 128)
+            {
+                height = 128;
+            }
 
-           
-            CalculateSize(ref height, ref width, ref size);
+            if (width > 128)
+            {
+                width = 128;
+            }
+
+            this.CalculateSize(ref height, ref width, ref size);
 
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             var user = UserController.Instance.GetUser(settings.PortalId, userId);
 
             IFileInfo photoFile = null;
             var photoLoaded = false;
-            if (user != null && TryGetPhotoFile(user, out photoFile))
+            if (user != null && this.TryGetPhotoFile(user, out photoFile))
             {
-                if (!IsImageExtension(photoFile.Extension))
+                if (!this.IsImageExtension(photoFile.Extension))
                 {
-	                try
-	                {
-						context.Response.End();
-	                }
-					catch (ThreadAbortException)//if ThreadAbortException will shown, should catch it and do nothing.
-	                {
-		                
-	                }
-                    
+                    try
+                    {
+                        context.Response.End();
+                    }
+                    catch (ThreadAbortException) // if ThreadAbortException will shown, should catch it and do nothing.
+                    {
+                    }
                 }
 
                 var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
@@ -125,7 +126,6 @@ namespace DotNetNuke.Services.UserProfile
                         case "gif":
                             context.Response.ContentType = "image/gif";
                             break;
-
                     }
 
                     using (var memoryStream = new MemoryStream())
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.UserProfile
             context.ApplicationInstance.CompleteRequest();
         }
 
-        //whether current user has permission to view target user's photo.
+        // whether current user has permission to view target user's photo.
         private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
         {
             bool isVisible = false;
@@ -162,7 +162,7 @@ namespace DotNetNuke.Services.UserProfile
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {
-	            isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
+                isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
 
                 if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                 {
@@ -207,8 +207,9 @@ namespace DotNetNuke.Services.UserProfile
                 width = 128;
                 size = "xl";
             }
-            //set a default if unprocessed
-            if (String.IsNullOrEmpty(size))
+
+            // set a default if unprocessed
+            if (string.IsNullOrEmpty(size))
             {
                 height = 32;
                 width = 32;
@@ -230,7 +231,10 @@ namespace DotNetNuke.Services.UserProfile
         private void SetupCulture()
         {
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null) return;
+            if (settings == null)
+            {
+                return;
+            }
 
             CultureInfo pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
             if (pageLocale != null)
@@ -238,16 +242,5 @@ namespace DotNetNuke.Services.UserProfile
                 TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
             }
         }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        #endregion
-
     }
 }

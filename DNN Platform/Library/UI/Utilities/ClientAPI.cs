@@ -1,28 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Utilities
 {
+    using System;
+    using System.Collections;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : ClientAPI
+    /// Project  : DotNetNuke
+    /// Class    : ClientAPI
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -32,42 +28,34 @@ namespace DotNetNuke.UI.Utilities
     /// </remarks>
     public class DNNClientAPI
     {
-        #region MinMaxPersistanceType enum
+        private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
 
         public enum MinMaxPersistanceType
         {
             None,
             Page,
             Cookie,
-            Personalization
+            Personalization,
         }
-
-        #endregion
-
-        #region PageCallBackType enum
 
         public enum PageCallBackType
         {
             GetPersonalization = 0,
-            SetPersonalization = 1
+            SetPersonalization = 1,
         }
-
-        #endregion
-
-        private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds client side body.onload event handler
+        /// Adds client side body.onload event handler.
         /// </summary>
-        /// <param name="objPage">Current page rendering content</param>
-        /// <param name="strJSFunction">Javascript function name to execute</param>
+        /// <param name="objPage">Current page rendering content.</param>
+        /// <param name="strJSFunction">Javascript function name to execute.</param>
         /// <remarks>
         /// </remarks>
         [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release. Scheduled removal in v10.0.0.")]
         public static void AddBodyOnloadEventHandler(Page objPage, string strJSFunction)
         {
-            //legacy implementation replaced
+            // legacy implementation replaced
             AddBodyOnLoad(objPage, strJSFunction, strJSFunction);
         }
 
@@ -96,19 +84,13 @@ namespace DotNetNuke.UI.Utilities
             AddBodyOnLoad(objPage, "initFileManager", "initFileManager();");
         }
 
-        private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)
-        {
-            JavaScript.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
-            objPage.ClientScript.RegisterStartupScript(objPage.GetType(), scriptKey, strJSFunction, true);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows any module to have drag and drop functionality enabled
+        /// Allows any module to have drag and drop functionality enabled.
         /// </summary>
-        /// <param name="objTitle">Title element that responds to the click and dragged</param>
-        /// <param name="objContainer">Container</param>
-        /// <param name="ModuleID">Module ID</param>
+        /// <param name="objTitle">Title element that responds to the click and dragged.</param>
+        /// <param name="objContainer">Container.</param>
+        /// <param name="ModuleID">Module ID.</param>
         /// <remarks>
         /// This sub also will send down information to notify the client of the panes that have been defined in the current skin.
         /// </remarks>
@@ -120,9 +102,9 @@ namespace DotNetNuke.UI.Utilities
 
                 JavaScript.RegisterClientReference(objTitle.Page, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_dragDrop", objContainer.ClientID + " " + objTitle.ClientID + " " + ModuleID + ";", false);
-                string strPanes = "";
-                string strPaneNames = "";
-                var objPortalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                string strPanes = string.Empty;
+                string strPaneNames = string.Empty;
+                var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 
                 Control objCtl;
                 foreach (string strPane in objPortalSettings.ActiveTab.Panes)
@@ -132,8 +114,10 @@ namespace DotNetNuke.UI.Utilities
                     {
                         strPanes += objCtl.ClientID + ";";
                     }
+
                     strPaneNames += strPane + ";";
                 }
+
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_Panes", strPanes, true);
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_PaneNames", strPaneNames, true);
             }
@@ -141,23 +125,23 @@ namespace DotNetNuke.UI.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows a button and a content area to support client side min/max functionality
+        /// Allows a button and a content area to support client side min/max functionality.
         /// </summary>
-        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown</param>
-        /// <param name="objContent">Content area that is hidden/shown</param>
-        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true</param>
-        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None</param>
+        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown.</param>
+        /// <param name="objContent">Content area that is hidden/shown.</param>
+        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true.</param>
+        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None.</param>
         /// <remarks>
         /// This method's purpose is to provide a higher level of abstraction between the ClientAPI and the module developer.
         /// </remarks>
         public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
-            EnableMinMax(objButton, objContent, -1, blnDefaultMin, "", "", ePersistanceType);
+            EnableMinMax(objButton, objContent, -1, blnDefaultMin, string.Empty, string.Empty, ePersistanceType);
         }
 
         public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
-            EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, "", "", ePersistanceType);
+            EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, string.Empty, string.Empty, ePersistanceType);
         }
 
         public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType)
@@ -167,15 +151,15 @@ namespace DotNetNuke.UI.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows a button and a content area to support client side min/max functionality
+        /// Allows a button and a content area to support client side min/max functionality.
         /// </summary>
-        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown</param>
-        /// <param name="objContent">Content area that is hidden/shown</param>
-        /// <param name="intModuleId">Module id of button/content, used only for persistance type of Cookie</param>
-        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true</param>
-        /// <param name="strMinIconLoc">Location of minimized icon</param>
-        /// <param name="strMaxIconLoc">Location of maximized icon</param>
-        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None</param>
+        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown.</param>
+        /// <param name="objContent">Content area that is hidden/shown.</param>
+        /// <param name="intModuleId">Module id of button/content, used only for persistance type of Cookie.</param>
+        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true.</param>
+        /// <param name="strMinIconLoc">Location of minimized icon.</param>
+        /// <param name="strMaxIconLoc">Location of maximized icon.</param>
+        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None.</param>
         /// <remarks>
         /// This method's purpose is to provide a higher level of abstraction between the ClientAPI and the module developer.
         /// </remarks>
@@ -206,19 +190,21 @@ namespace DotNetNuke.UI.Utilities
                 {
                     case MinMaxPersistanceType.None:
                         AddAttribute(objButton, "onclick", "if (__dnn_SectionMaxMin(this,  '" + objContent.ClientID + "')) return false;");
-                        if (!String.IsNullOrEmpty(strMinIconLoc))
+                        if (!string.IsNullOrEmpty(strMinIconLoc))
                         {
                             AddAttribute(objButton, "max_icon", strMaxIconLoc);
                             AddAttribute(objButton, "min_icon", strMinIconLoc);
                         }
+
                         break;
                     case MinMaxPersistanceType.Page:
                         AddAttribute(objButton, "onclick", "if (__dnn_SectionMaxMin(this,  '" + objContent.ClientID + "')) return false;");
-                        if (!String.IsNullOrEmpty(strMinIconLoc))
+                        if (!string.IsNullOrEmpty(strMinIconLoc))
                         {
                             AddAttribute(objButton, "max_icon", strMaxIconLoc);
                             AddAttribute(objButton, "min_icon", strMinIconLoc);
                         }
+
                         break;
                     case MinMaxPersistanceType.Cookie:
                         if (intModuleId != -1)
@@ -238,35 +224,39 @@ namespace DotNetNuke.UI.Utilities
                                 ClientAPI.RegisterClientVariable(objButton.Page, "__dnn_" + intModuleId + ":defminimized", "true", true);
                             }
                         }
+
                         break;
                     case MinMaxPersistanceType.Personalization:
-                        //Regardless if we determine whether or not the browser supports client-side personalization
-                        //we need to store these keys to properly display or hide the content (They are needed in MinMaxContentVisible)
+                        // Regardless if we determine whether or not the browser supports client-side personalization
+                        // we need to store these keys to properly display or hide the content (They are needed in MinMaxContentVisible)
                         AddAttribute(objButton, "userctr", strPersonalizationNamingCtr);
                         AddAttribute(objButton, "userkey", strPersonalizationKey);
                         if (EnableClientPersonalization(strPersonalizationNamingCtr, strPersonalizationKey, objButton.Page))
                         {
                             AddAttribute(objButton, "onclick", "if (__dnn_SectionMaxMin(this,  '" + objContent.ClientID + "')) return false;");
-                            if (!String.IsNullOrEmpty(strMinIconLoc))
+                            if (!string.IsNullOrEmpty(strMinIconLoc))
                             {
                                 AddAttribute(objButton, "max_icon", strMaxIconLoc);
                                 AddAttribute(objButton, "min_icon", strMinIconLoc);
                             }
                         }
+
                         break;
                 }
             }
+
             if (MinMaxContentVisibile(objButton, intModuleId, blnDefaultMin, ePersistanceType))
             {
                 if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML))
                 {
-                    AddStyleAttribute(objContent, "display", "");
+                    AddStyleAttribute(objContent, "display", string.Empty);
                 }
                 else
                 {
                     objContent.Visible = true;
                 }
-                if (!String.IsNullOrEmpty(strMinIconLoc))
+
+                if (!string.IsNullOrEmpty(strMinIconLoc))
                 {
                     SetMinMaxProperties(objButton, strMinIconLoc, Localization.GetString("Minimize"), Localization.GetString("Minimize"));
                 }
@@ -281,59 +271,16 @@ namespace DotNetNuke.UI.Utilities
                 {
                     objContent.Visible = false;
                 }
-                if (!String.IsNullOrEmpty(strMaxIconLoc))
+
+                if (!string.IsNullOrEmpty(strMaxIconLoc))
                 {
                     SetMinMaxProperties(objButton, strMaxIconLoc, Localization.GetString("Maximize"), Localization.GetString("Maximize"));
                 }
             }
+
             if (intAnimationFrames != 5)
             {
                 ClientAPI.RegisterClientVariable(objButton.Page, "animf_" + objContent.ClientID, intAnimationFrames.ToString(), true);
-            }
-        }
-
-        private static void SetMinMaxProperties(Control objButton, string strImage, string strToolTip, string strAltText)
-        {
-            if (objButton is LinkButton)
-            {
-                var objLB = (LinkButton) objButton;
-                objLB.ToolTip = strToolTip;
-                if (objLB.Controls.Count > 0)
-                {
-                    SetImageProperties(objLB.Controls[0], strImage, strToolTip, strAltText);
-                }
-            }
-            else if (objButton is Image)
-            {
-                SetImageProperties(objButton, strImage, strToolTip, strAltText);
-            }
-            else if (objButton is ImageButton)
-            {
-                SetImageProperties(objButton, strImage, strToolTip, strAltText);
-            }
-        }
-
-        private static void SetImageProperties(Control objControl, string strImage, string strToolTip, string strAltText)
-        {
-            if (objControl is Image)
-            {
-                var objImage = (Image) objControl;
-                objImage.ImageUrl = strImage;
-                objImage.AlternateText = strAltText;
-                objImage.ToolTip = strToolTip;
-            }
-            else if (objControl is ImageButton)
-            {
-                var objImage = (ImageButton) objControl;
-                objImage.ImageUrl = strImage;
-                objImage.AlternateText = strAltText;
-                objImage.ToolTip = strToolTip;
-            }
-            else if (objControl is HtmlImage)
-            {
-                var objImage = (HtmlImage) objControl;
-                objImage.Src = strImage;
-                objImage.Alt = strAltText;
             }
         }
 
@@ -355,7 +302,7 @@ namespace DotNetNuke.UI.Utilities
                 {
                     case MinMaxPersistanceType.Page:
                         string sExpanded = ClientAPI.GetClientVariable(objButton.Page, objButton.ClientID + ":exp");
-                        if (!String.IsNullOrEmpty(sExpanded))
+                        if (!string.IsNullOrEmpty(sExpanded))
                         {
                             return sExpanded == "1" ? true : false;
                         }
@@ -363,6 +310,7 @@ namespace DotNetNuke.UI.Utilities
                         {
                             return !blnDefaultMin;
                         }
+
                     case MinMaxPersistanceType.Cookie:
                         if (intModuleId != -1)
                         {
@@ -380,6 +328,7 @@ namespace DotNetNuke.UI.Utilities
                         {
                             return true;
                         }
+
                     case MinMaxPersistanceType.Personalization:
                         string strVisible = Convert.ToString(Personalization.GetProfile(Globals.GetAttribute(objButton, "userctr"), Globals.GetAttribute(objButton, "userkey")));
                         if (string.IsNullOrEmpty(strVisible))
@@ -390,10 +339,12 @@ namespace DotNetNuke.UI.Utilities
                         {
                             return Convert.ToBoolean(strVisible);
                         }
+
                     default:
                         return !blnDefaultMin;
                 }
             }
+
             return Null.NullBoolean;
         }
 
@@ -410,7 +361,7 @@ namespace DotNetNuke.UI.Utilities
                         var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLowerInvariant())
                         {
                             Expires = DateTime.MaxValue,
-                            Path = (!string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/")
+                            Path = !string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/",
                         };
                         HttpContext.Current.Response.AppendCookie(objModuleVisible);
                         break;
@@ -421,15 +372,99 @@ namespace DotNetNuke.UI.Utilities
             }
         }
 
+        // enables callbacks for request, and registers personalization key to be accessible from client
+        // returns true when browser is capable of callbacks
+        public static bool EnableClientPersonalization(string strNamingContainer, string strKey, Page objPage)
+        {
+            if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP))
+            {
+                // Instead of sending the callback js function down to the client, we are hardcoding
+                // it on the client.  DNN owns the interface, so there is no worry about an outside
+                // entity changing it on us.  We are simply calling this here to register all the appropriate
+                // js libraries
+                ClientAPI.GetCallbackEventReference(objPage, string.Empty, string.Empty, string.Empty, string.Empty);
+
+                // in order to limit the keys that can be accessed and written we are storing the enabled keys
+                // in this shared hash table
+                lock (m_objEnabledClientPersonalizationKeys.SyncRoot)
+                {
+                    if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)
+                    {
+                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, string.Empty);
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsPersonalizationKeyRegistered(string strKey)
+        {
+            return m_objEnabledClientPersonalizationKeys.ContainsKey(strKey);
+        }
+
+        private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)
+        {
+            JavaScript.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
+            objPage.ClientScript.RegisterStartupScript(objPage.GetType(), scriptKey, strJSFunction, true);
+        }
+
+        private static void SetMinMaxProperties(Control objButton, string strImage, string strToolTip, string strAltText)
+        {
+            if (objButton is LinkButton)
+            {
+                var objLB = (LinkButton)objButton;
+                objLB.ToolTip = strToolTip;
+                if (objLB.Controls.Count > 0)
+                {
+                    SetImageProperties(objLB.Controls[0], strImage, strToolTip, strAltText);
+                }
+            }
+            else if (objButton is Image)
+            {
+                SetImageProperties(objButton, strImage, strToolTip, strAltText);
+            }
+            else if (objButton is ImageButton)
+            {
+                SetImageProperties(objButton, strImage, strToolTip, strAltText);
+            }
+        }
+
+        private static void SetImageProperties(Control objControl, string strImage, string strToolTip, string strAltText)
+        {
+            if (objControl is Image)
+            {
+                var objImage = (Image)objControl;
+                objImage.ImageUrl = strImage;
+                objImage.AlternateText = strAltText;
+                objImage.ToolTip = strToolTip;
+            }
+            else if (objControl is ImageButton)
+            {
+                var objImage = (ImageButton)objControl;
+                objImage.ImageUrl = strImage;
+                objImage.AlternateText = strAltText;
+                objImage.ToolTip = strToolTip;
+            }
+            else if (objControl is HtmlImage)
+            {
+                var objImage = (HtmlImage)objControl;
+                objImage.Src = strImage;
+                objImage.Alt = strAltText;
+            }
+        }
+
         private static void AddAttribute(Control objControl, string strName, string strValue)
         {
             if (objControl is HtmlControl)
             {
-                ((HtmlControl) objControl).Attributes.Add(strName, strValue);
+                ((HtmlControl)objControl).Attributes.Add(strName, strValue);
             }
             else if (objControl is WebControl)
             {
-                ((WebControl) objControl).Attributes.Add(strName, strValue);
+                ((WebControl)objControl).Attributes.Add(strName, strValue);
             }
         }
 
@@ -437,57 +472,26 @@ namespace DotNetNuke.UI.Utilities
         {
             if (objControl is HtmlControl)
             {
-                if (!String.IsNullOrEmpty(strValue))
+                if (!string.IsNullOrEmpty(strValue))
                 {
-                    ((HtmlControl) objControl).Style.Add(strName, strValue);
+                    ((HtmlControl)objControl).Style.Add(strName, strValue);
                 }
                 else
                 {
-                    ((HtmlControl) objControl).Style.Remove(strName);
+                    ((HtmlControl)objControl).Style.Remove(strName);
                 }
             }
             else if (objControl is WebControl)
             {
-                if (!String.IsNullOrEmpty(strValue))
+                if (!string.IsNullOrEmpty(strValue))
                 {
-                    ((WebControl) objControl).Style.Add(strName, strValue);
+                    ((WebControl)objControl).Style.Add(strName, strValue);
                 }
                 else
                 {
-                    ((WebControl) objControl).Style.Remove(strName);
+                    ((WebControl)objControl).Style.Remove(strName);
                 }
             }
-        }
-
-        //enables callbacks for request, and registers personalization key to be accessible from client
-        //returns true when browser is capable of callbacks
-        public static bool EnableClientPersonalization(string strNamingContainer, string strKey, Page objPage)
-        {
-            if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP))
-            {
-				//Instead of sending the callback js function down to the client, we are hardcoding
-                //it on the client.  DNN owns the interface, so there is no worry about an outside
-                //entity changing it on us.  We are simply calling this here to register all the appropriate
-                //js libraries
-                ClientAPI.GetCallbackEventReference(objPage, "", "", "", "");
-
-                //in order to limit the keys that can be accessed and written we are storing the enabled keys
-                //in this shared hash table
-                lock (m_objEnabledClientPersonalizationKeys.SyncRoot)
-                {
-                    if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)
-                    {
-                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, "");
-                    }
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public static bool IsPersonalizationKeyRegistered(string strKey)
-        {
-            return m_objEnabledClientPersonalizationKeys.ContainsKey(strKey);
         }
     }
 }

@@ -1,39 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     public class DnnModuleAuthorizeAttribute : AuthorizeAttributeBase
     {
         private ModuleInfo _module;
 
         public DnnModuleAuthorizeAttribute()
         {
-            AccessLevel = SecurityAccessLevel.Host;
+            this.AccessLevel = SecurityAccessLevel.Host;
         }
 
         public SecurityAccessLevel AccessLevel { get; set; }
 
         public string PermissionKey { get; set; }
-
-        protected override bool AuthorizeCore(HttpContextBase httpContext)
-        {
-            if (_module != null)
-            {
-                return HasModuleAccess();
-            }
-
-            return false;
-        }
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -44,14 +35,24 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
 
-            _module = controller.ModuleContext.Configuration;
+            this._module = controller.ModuleContext.Configuration;
 
             base.OnAuthorization(filterContext);
         }
 
+        protected override bool AuthorizeCore(HttpContextBase httpContext)
+        {
+            if (this._module != null)
+            {
+                return this.HasModuleAccess();
+            }
+
+            return false;
+        }
+
         protected virtual bool HasModuleAccess()
         {
-            return ModulePermissionController.HasModuleAccess(AccessLevel, PermissionKey, _module);
+            return ModulePermissionController.HasModuleAccess(this.AccessLevel, this.PermissionKey, this._module);
         }
     }
 }

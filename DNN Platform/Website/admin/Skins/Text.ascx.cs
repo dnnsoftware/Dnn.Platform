@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Tokens;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+
     public partial class Text : SkinObjectBase
     {
         public string ShowText { get; set; }
@@ -27,38 +22,39 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            string strText = ShowText;
-			
-			//load resources
-            if (!String.IsNullOrEmpty(ResourceKey))
+            string strText = this.ShowText;
+
+            // load resources
+            if (!string.IsNullOrEmpty(this.ResourceKey))
             {
-				//localization
-                string strFile = Path.GetFileName(Server.MapPath(PortalSettings.ActiveTab.SkinSrc));
-                strFile = PortalSettings.ActiveTab.SkinPath + Localization.LocalResourceDirectory + "/" + strFile;
-                string strLocalization = Localization.GetString(ResourceKey, strFile);
-                if (!String.IsNullOrEmpty(strLocalization))
+                // localization
+                string strFile = Path.GetFileName(this.Server.MapPath(this.PortalSettings.ActiveTab.SkinSrc));
+                strFile = this.PortalSettings.ActiveTab.SkinPath + Localization.LocalResourceDirectory + "/" + strFile;
+                string strLocalization = Localization.GetString(this.ResourceKey, strFile);
+                if (!string.IsNullOrEmpty(strLocalization))
                 {
                     strText = strLocalization;
                 }
             }
-			
-            //If no value is found then use the value set the the Text attribute
+
+            // If no value is found then use the value set the the Text attribute
             if (string.IsNullOrEmpty(strText))
             {
-                strText = ShowText;
+                strText = this.ShowText;
             }
-			
-			//token replace
-            if (ReplaceTokens)
+
+            // token replace
+            if (this.ReplaceTokens)
             {
                 var tr = new TokenReplace();
-                tr.AccessingUser = PortalSettings.UserInfo;
+                tr.AccessingUser = this.PortalSettings.UserInfo;
                 strText = tr.ReplaceEnvironmentTokens(strText);
             }
-            lblText.Text = strText;
-            if (!String.IsNullOrEmpty(CssClass))
+
+            this.lblText.Text = strText;
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                lblText.CssClass = CssClass;
+                this.lblText.CssClass = this.CssClass;
             }
         }
     }

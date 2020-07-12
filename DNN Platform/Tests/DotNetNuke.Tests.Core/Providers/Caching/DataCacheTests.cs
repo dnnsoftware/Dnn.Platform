@@ -1,51 +1,43 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.Caching;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Providers.Caching;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Providers.Caching
 {
+    using System;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Providers.Caching;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
-    ///   Summary description for DataCacheTests
+    ///   Summary description for DataCacheTests.
     /// </summary>
     [TestFixture]
     public class DataCacheTests
     {
         private Mock<CachingProvider> mockCache;
 
-        #region Test Initialization and Cleanup
-
         [SetUp]
         public void SetUp()
         {
-            //Create a Container
+            // Create a Container
             ComponentFactory.Container = new SimpleContainer();
 
-            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
         }
-
-        #endregion
-
-        #region GetCache Tests
 
         [Test]
         public void DataCache_GetCache_Should_Return_On_Correct_CacheKey()
         {
             // Arrange
-            mockCache.Setup(cache => cache.GetItem(GetDnnCacheKey(Constants.CACHEING_ValidKey))).ReturnsValidValue();
+            this.mockCache.Setup(cache => cache.GetItem(this.GetDnnCacheKey(Constants.CACHEING_ValidKey))).ReturnsValidValue();
 
             // Act
             object cacheValue = DataCache.GetCache(Constants.CACHEING_ValidKey);
@@ -59,7 +51,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         public void DataCache_GetCache_Should_Return_Null_On_Incorrect_CacheKey()
         {
             // Arrange
-            mockCache.Setup(cache => cache.GetItem(GetDnnCacheKey(Constants.CACHEING_InValidKey))).Returns(null);
+            this.mockCache.Setup(cache => cache.GetItem(this.GetDnnCacheKey(Constants.CACHEING_InValidKey))).Returns(null);
 
             // Act
             object cacheValue = DataCache.GetCache(Constants.CACHEING_InValidKey);
@@ -76,15 +68,11 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             Assert.Throws<ArgumentException>(() => DataCache.GetCache(key));
         }
 
-        #endregion
-
-        #region GetCache Tests
-
         [Test]
         public void DataCache_GetCacheOfT_Should_Return_On_Correct_CacheKey()
         {
             // Arrange
-            mockCache.Setup(cache => cache.GetItem(GetDnnCacheKey(Constants.CACHEING_ValidKey))).ReturnsValidValue();
+            this.mockCache.Setup(cache => cache.GetItem(this.GetDnnCacheKey(Constants.CACHEING_ValidKey))).ReturnsValidValue();
 
             // Act
             object cacheValue = DataCache.GetCache<string>(Constants.CACHEING_ValidKey);
@@ -98,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         public void DataCache_GetCacheOfT_Should_Return_Null_On_Incorrect_CacheKey()
         {
             // Arrange
-            mockCache.Setup(cache => cache.GetItem(GetDnnCacheKey(Constants.CACHEING_InValidKey))).Returns(null);
+            this.mockCache.Setup(cache => cache.GetItem(this.GetDnnCacheKey(Constants.CACHEING_InValidKey))).Returns(null);
 
             // Act
             object cacheValue = DataCache.GetCache<string>(Constants.CACHEING_InValidKey);
@@ -115,10 +103,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             Assert.Throws<ArgumentException>(() => DataCache.GetCache<string>(key));
         }
 
-        #endregion
-
-        #region RemoveCache Tests
-
         [Test]
         public void DataCache_RemoveCache_Should_Succeed_On_Valid_CacheKey()
         {
@@ -128,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             DataCache.RemoveCache(Constants.CACHEING_ValidKey);
 
             // Assert
-            mockCache.Verify(cache => cache.Remove(GetDnnCacheKey(Constants.CACHEING_ValidKey)));
+            this.mockCache.Verify(cache => cache.Remove(this.GetDnnCacheKey(Constants.CACHEING_ValidKey)));
         }
 
         [Test]
@@ -138,12 +122,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         {
             Assert.Throws<ArgumentException>(() => DataCache.RemoveCache(key));
         }
-
-        #endregion
-
-        #region SetCache Tests
-
-        #region SetCache(string, object) Tests
 
         [Test]
         [TestCase(null)]
@@ -163,27 +141,24 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             // Assert
             DNNCacheDependency dep = null;
-            mockCache.Verify(
+            this.mockCache.Verify(
                 cache =>
-                cache.Insert(GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             Cache.NoAbsoluteExpiration,
-                             Cache.NoSlidingExpiration,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    Cache.NoAbsoluteExpiration,
+                    Cache.NoSlidingExpiration,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, CacheDependency) Tests
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
         public void DataCache_SetCache_With_Dependency_Should_Throw_On_Null_CacheKey(string key)
         {
-            DNNCacheDependency dep = CreateTestDependency(); // Dependency type or value doesn't matter
+            DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
             Assert.Throws<ArgumentException>(() => DataCache.SetCache(key, Constants.CACHEING_ValidValue, dep));
         }
 
@@ -191,26 +166,23 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         public void DataCache_SetCache_With_Dependency_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
-            DNNCacheDependency dep = CreateTestDependency(); // Dependency type or value doesn't matter
+            DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
 
             // Act
             DataCache.SetCache(Constants.CACHEING_ValidKey, Constants.CACHEING_ValidValue, dep);
 
             // Assert
-            mockCache.Verify(
+            this.mockCache.Verify(
                 cache =>
-                cache.Insert(GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             Cache.NoAbsoluteExpiration,
-                             Cache.NoSlidingExpiration,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    Cache.NoAbsoluteExpiration,
+                    Cache.NoSlidingExpiration,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, DateTime) Tests
 
         [Test]
         [TestCase(null)]
@@ -232,20 +204,17 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             // Assert
             DNNCacheDependency dep = null;
-            mockCache.Verify(
+            this.mockCache.Verify(
                 cache =>
-                cache.Insert(GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             absExpiry,
-                             Cache.NoSlidingExpiration,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    absExpiry,
+                    Cache.NoSlidingExpiration,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, TimeSpan) Tests
 
         [Test]
         [TestCase(null)]
@@ -268,27 +237,24 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             // Assert
             // Assert
             DNNCacheDependency dep = null;
-            mockCache.Verify(
+            this.mockCache.Verify(
                 cache =>
-                cache.Insert(GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             Cache.NoAbsoluteExpiration,
-                             slidingExpiry,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    Cache.NoAbsoluteExpiration,
+                    slidingExpiry,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, CacheDependency, DateTime, TimeSpan) Tests
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
         public void DataCache_SetCache_With_CacheDependency_AbsoluteExpiration_SlidingExpiration_Should_Throw_On_Null_CacheKey(string key)
         {
-            DNNCacheDependency dep = CreateTestDependency(); // Dependency type or value doesn't matter
+            DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
             DateTime absExpiry = DateTime.Today.AddDays(1); // DateTime doesn't matter
             TimeSpan slidingExpiry = TimeSpan.FromMinutes(5); // TimeSpan doesn't matter
             Assert.Throws<ArgumentException>(() => DataCache.SetCache(key, Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry));
@@ -298,7 +264,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         public void DataCache_SetCache_With_CacheDependency_AbsoluteExpiration_SlidingExpiration_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
-            DNNCacheDependency dep = CreateTestDependency(); // Dependency type or value doesn't matter
+            DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
             DateTime absExpiry = DateTime.Today.AddDays(1); // DateTime doesn't matter
             TimeSpan slidingExpiry = TimeSpan.FromMinutes(5); // TimeSpan doesn't matter
 
@@ -306,21 +272,17 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             DataCache.SetCache(Constants.CACHEING_ValidKey, Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry);
 
             // Assert
-            mockCache.Verify(
+            this.mockCache.Verify(
                 cache =>
-                cache.Insert(GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, DataCache.ItemRemovedCallback));
+                cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, CacheDependency, DateTime, TimeSpan, CacheItemPriority, CacheItemRemovedCallback) Tests
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
         public void DataCache_SetCache_With_Priority_Should_Throw_On_Null_CacheKey(string key)
         {
-            DNNCacheDependency dep = CreateTestDependency(); // Dependency type or value doesn't matter
+            DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
             DateTime absExpiry = DateTime.Today.AddDays(1); // DateTime doesn't matter
             TimeSpan slidingExpiry = TimeSpan.FromMinutes(5); // TimeSpan doesn't matter
             CacheItemPriority priority = CacheItemPriority.High; // Priority doesn't matter
@@ -331,7 +293,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         public void DataCache_SetCache_With_Priority_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
-            DNNCacheDependency dep = CreateTestDependency(); // Dependency type or value doesn't matter
+            DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
             DateTime absExpiry = DateTime.Today.AddDays(1); // DateTime doesn't matter
             TimeSpan slidingExpiry = TimeSpan.FromMinutes(5); // TimeSpan doesn't matter
             CacheItemPriority priority = CacheItemPriority.High; // Priority doesn't matter
@@ -340,31 +302,25 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             DataCache.SetCache(Constants.CACHEING_ValidKey, Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, priority, null);
 
             // Assert
-            mockCache.Verify(cache => cache.Insert(GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, priority, DataCache.ItemRemovedCallback));
+            this.mockCache.Verify(cache => cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, priority, DataCache.ItemRemovedCallback));
         }
 
         [Test]
         public void DataCache_SetCache_With_Callback_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
-            DNNCacheDependency dep = CreateTestDependency(); // Dependency type or value doesn't matter
+            DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
             DateTime absExpiry = DateTime.Today.AddDays(1); // DateTime doesn't matter
             TimeSpan slidingExpiry = TimeSpan.FromMinutes(5); // TimeSpan doesn't matter
-            CacheItemRemovedCallback callback = ItemRemovedCallback;
+            CacheItemRemovedCallback callback = this.ItemRemovedCallback;
 
             // Act
-            DataCache.SetCache(Constants.CACHEING_ValidKey, Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, ItemRemovedCallback);
+            DataCache.SetCache(Constants.CACHEING_ValidKey, Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, this.ItemRemovedCallback);
 
             // Assert
-            mockCache.Verify(
-                cache => cache.Insert(GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, ItemRemovedCallback));
+            this.mockCache.Verify(
+                cache => cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, this.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #endregion
-
-        #region Private Helper Methods
 
         private DNNCacheDependency CreateTestDependency()
         {
@@ -373,14 +329,12 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
         private string GetDnnCacheKey(string cacheKey)
         {
-            return String.Format("DNN_{0}", cacheKey);
+            return string.Format("DNN_{0}", cacheKey);
         }
 
         private void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
         {
-            //do nothing
+            // do nothing
         }
-
-        #endregion
     }
 }

@@ -1,28 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-using Dnn.PersonaBar.Security.Components;
-using DotNetNuke.Services.Registration;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Security.Attributes
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Security.Components;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Registration;
+
     [AttributeUsage(AttributeTargets.Property)]
     class RegistrationFieldsAttribute : ValidationAttribute
     {
-        public string RegistrationFormTypePropertyName { get; private set; }
-        public string RequireUniqueDisplayNamePropertyName { get; private set; }
-
         public RegistrationFieldsAttribute(string registrationFormType, string requireUniqueDisplayName)
         {
-            RegistrationFormTypePropertyName = registrationFormType;
-            RequireUniqueDisplayNamePropertyName = requireUniqueDisplayName;
+            this.RegistrationFormTypePropertyName = registrationFormType;
+            this.RequireUniqueDisplayNamePropertyName = requireUniqueDisplayName;
         }
+
+        public string RegistrationFormTypePropertyName { get; private set; }
+        public string RequireUniqueDisplayNamePropertyName { get; private set; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -30,23 +31,23 @@ namespace Dnn.PersonaBar.Security.Attributes
 
             try
             {
-                registrationFormTypeValue = validationContext.ObjectType.GetProperty(RegistrationFormTypePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
+                registrationFormTypeValue = validationContext.ObjectType.GetProperty(this.RegistrationFormTypePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
             }
             catch
             {
-                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RegistrationFormTypePropertyName, registrationFormTypeValue));
+                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName, registrationFormTypeValue));
             }
 
             if (string.IsNullOrWhiteSpace(registrationFormTypeValue))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), RegistrationFormTypePropertyName));
+                return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName));
             }
 
             int registrationFormType;
 
             if (!Int32.TryParse(registrationFormTypeValue, out registrationFormType))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RegistrationFormTypePropertyName, registrationFormTypeValue));
+                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName, registrationFormTypeValue));
             }
 
             if (registrationFormType == 1)
@@ -72,23 +73,23 @@ namespace Dnn.PersonaBar.Security.Attributes
 
                 try
                 {
-                    requireUniqueDisplayNameValue = validationContext.ObjectType.GetProperty(RequireUniqueDisplayNamePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
+                    requireUniqueDisplayNameValue = validationContext.ObjectType.GetProperty(this.RequireUniqueDisplayNamePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
                 }
                 catch
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
+                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
                 }
 
                 if (string.IsNullOrWhiteSpace(requireUniqueDisplayNameValue))
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), RequireUniqueDisplayNamePropertyName));
+                    return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName));
                 }
 
                 bool requireUniqueDisplayName;
 
                 if (!bool.TryParse(requireUniqueDisplayNameValue, out requireUniqueDisplayName))
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
+                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
                 }
 
                 if (!registrationFields.Contains("DisplayName") && requireUniqueDisplayName)

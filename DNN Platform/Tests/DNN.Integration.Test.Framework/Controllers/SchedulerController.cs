@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using DNN.Integration.Test.Framework.Helpers;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DNN.Integration.Test.Framework.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Threading;
+
+    using DNN.Integration.Test.Framework.Helpers;
+
     public enum SchedulingMode
     {
         Disabled = 0,
@@ -20,8 +21,7 @@ namespace DNN.Integration.Test.Framework.Controllers
 
     public static class SchedulerController
     {
-        //private const string SchedulerModeName = "SchedulerMode";
-
+        // private const string SchedulerModeName = "SchedulerMode";
         public static void DisableAllSchedulers(bool clearCache = true)
         {
             SetSchedulingMode(SchedulingMode.Disabled, clearCache);
@@ -31,7 +31,9 @@ namespace DNN.Integration.Test.Framework.Controllers
         {
             DatabaseHelper.ExecuteStoredProcedure("UpdateHostSetting", "SchedulerdelayAtAppStart", "0", false, 1);
             if (clearCache)
+            {
                 WebApiTestHelper.ClearHostCache();
+            }
         }
 
         public static void DisableScheduler(string schedulerName, bool clearCache = false)
@@ -40,7 +42,9 @@ namespace DNN.Integration.Test.Framework.Controllers
                 "UPDATE {{objectQualifier}}Schedule SET Enabled=0 WHERE FriendlyName = '{0}';", schedulerName);
             DatabaseHelper.ExecuteNonQuery(query);
             if (clearCache)
+            {
                 WebApiTestHelper.ClearHostCache();
+            }
         }
 
         public static void EnableScheduler(string schedulerName, bool clearCache = false)
@@ -49,7 +53,9 @@ namespace DNN.Integration.Test.Framework.Controllers
                 "UPDATE {{objectQualifier}}Schedule SET Enabled=1 WHERE FriendlyName = '{0}';", schedulerName);
             DatabaseHelper.ExecuteNonQuery(query);
             if (clearCache)
+            {
                 WebApiTestHelper.ClearHostCache();
+            }
         }
 
         public static SchedulingMode GetSchedulingMode()
@@ -69,7 +75,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             {
                 DatabaseHelper.ExecuteStoredProcedure("UpdateHostSetting", "SchedulerMode", mode.ToString("D"), false, 1);
                 if (clearCache)
+                {
                     WebApiTestHelper.ClearHostCache(); // must clear the site Cache afterwards
+                }
             }
         }
 
@@ -92,11 +100,11 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Runs a specific scheduler and returns the resul depending on the passed flags
+        /// Runs a specific scheduler and returns the resul depending on the passed flags.
         /// </summary>
-        /// <param name="schedulerName">Name of the scheduler in the database</param>
+        /// <param name="schedulerName">Name of the scheduler in the database.</param>
         /// <param name="maxWaitSeconds">Maimum amount of time to wait for the task to finish.</param>
-        /// <returns>Result of running the taske (depends on the flags)</returns>
+        /// <returns>Result of running the taske (depends on the flags).</returns>
         /// <remarks>
         /// If maxWaitSeconds is less than or equals 0: the return result is only the result of the call
         /// to the "Run Now" button of the Edit Scheduler UI page.
@@ -113,7 +121,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             {
                 var schedulInfo = GetSchedulerByName(schedulerName);
                 if (schedulInfo == null || schedulInfo.Count == 0)
+                {
                     return false;
+                }
 
                 // HOST modules have only single instance, so don't worry about receiving multiple rows
                 var results = ModuleController.GetModulesByFriendlyName(DnnDataHelper.PortalId, "Scheduler");
@@ -129,20 +139,24 @@ namespace DNN.Integration.Test.Framework.Controllers
                 }
 
                 var resp = TriggerScheduler(schedulInfo, moduleId);
+
                 // only OK is a successful POST in this case; all other codes are failures
                 if (resp.StatusCode != HttpStatusCode.OK)
                 {
-                    Console.WriteLine(@"Error running scheduler {0}. Status: {1} - {2}",
+                    Console.WriteLine(
+                        @"Error running scheduler {0}. Status: {1} - {2}",
                         schedulerName, resp.StatusCode, resp.StatusDescription);
                     return false;
                 }
 
-                //DisableScheduler(schedulerName); // un-necessary
+                // DisableScheduler(schedulerName); // un-necessary
                 SetSchedulingMode(SchedulingMode.Disabled);
                 disabled = true;
 
                 if (maxWaitSeconds <= 0)
+                {
                     return true;
+                }
 
                 // wait for task to finish
                 var latestRunInfo = WaitForTaskToFinish(lastRunInfo, maxWaitSeconds);
@@ -151,7 +165,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             finally
             {
                 if (!disabled)
+                {
                     SetSchedulingMode(SchedulingMode.Disabled);
+                }
             }
         }
 
@@ -166,22 +182,23 @@ namespace DNN.Integration.Test.Framework.Controllers
             var fieldsPrefix = string.Format("dnn$ctr{0}$EditSchedule", moduleId);
             var postData = new Dictionary<string, object>
             {
-                {fieldsPrefix + "$chkEnabled", "on"},
-                {fieldsPrefix + "$txtServers", ""},
-                {fieldsPrefix + "$ddlAttachToEvent", "None"},
-                {fieldsPrefix + "$ddlRetainHistoryNum", "100"},
-                {fieldsPrefix + "$ddlRetryTimeLapseMeasurement", "Minutes"},
-                {fieldsPrefix + "$ddlTimeLapseMeasurement", "Hours"},
-                {fieldsPrefix + "$startScheduleDatePicker$dateInput", ""},
-                {fieldsPrefix + "$startScheduleDatePicker", ""},
-                {fieldsPrefix + "$txtFriendlyName", scheduleFriendlyName},
-                {fieldsPrefix + "$txtObjectDependencies", objectDependencies},
-                {fieldsPrefix + "$txtRetryTimeLapse", "30"},
-                {fieldsPrefix + "$txtTimeLapse", "1"},
-                {fieldsPrefix + "$txtType", scheduleTypeName},
-                {"__EVENTTARGET", fieldsPrefix + "$cmdRun"}, // button action; if missing, no click action is performed
-                {"__EVENTARGUMENT", ""},
-                {"__ASYNCPOST", ""},
+                { fieldsPrefix + "$chkEnabled", "on" },
+                { fieldsPrefix + "$txtServers", string.Empty },
+                { fieldsPrefix + "$ddlAttachToEvent", "None" },
+                { fieldsPrefix + "$ddlRetainHistoryNum", "100" },
+                { fieldsPrefix + "$ddlRetryTimeLapseMeasurement", "Minutes" },
+                { fieldsPrefix + "$ddlTimeLapseMeasurement", "Hours" },
+                { fieldsPrefix + "$startScheduleDatePicker$dateInput", string.Empty },
+                { fieldsPrefix + "$startScheduleDatePicker", string.Empty },
+                { fieldsPrefix + "$txtFriendlyName", scheduleFriendlyName },
+                { fieldsPrefix + "$txtObjectDependencies", objectDependencies },
+                { fieldsPrefix + "$txtRetryTimeLapse", "30" },
+                { fieldsPrefix + "$txtTimeLapse", "1" },
+                { fieldsPrefix + "$txtType", scheduleTypeName },
+                { "__EVENTTARGET", fieldsPrefix + "$cmdRun" }, // button action; if missing, no click action is performed
+                { "__EVENTARGUMENT", string.Empty },
+                { "__ASYNCPOST", string.Empty },
+
                 // all other inputs/fields are left as is
             };
 
@@ -212,10 +229,10 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Finds the last time a specific scheduler was run and the ID of the last run
+        /// Finds the last time a specific scheduler was run and the ID of the last run.
         /// </summary>
-        /// <param name="scheduleId">Scheduler ID to inquire</param>
-        /// <remarks>If no previous run exists, it returns ID as -1</remarks>
+        /// <param name="scheduleId">Scheduler ID to inquire.</param>
+        /// <remarks>If no previous run exists, it returns ID as -1.</remarks>
         private static ScheduleHistoryInfo LastRunningScheduleItem(int scheduleId)
         {
             const string script = @"IF EXISTS (SELECT 1 FROM {{objectQualifier}}ScheduleHistory WHERE ScheduleId = {0})
@@ -236,21 +253,15 @@ namespace DNN.Integration.Test.Framework.Controllers
 
     public class ScheduleHistoryInfo
     {
-        public int ScheduleId { get; }
-        public int ScheduleHistoryId { get; }
-        public DateTime EndDate { get; }
-        public bool Succeeded { get; }
-        public string LogNotes { get; }
-
         public ScheduleHistoryInfo(IDictionary<string, object> queryResult)
         {
             try
             {
-                ScheduleId = Convert.ToInt32(queryResult["ScheduleId"]);
-                ScheduleHistoryId = Convert.ToInt32(queryResult["ScheduleHistoryId"]);
-                EndDate = Convert.ToDateTime(queryResult["EndDate"]);
-                Succeeded = Convert.ToBoolean(queryResult["Succeeded"]);
-                LogNotes = queryResult["LogNotes"].ToString();
+                this.ScheduleId = Convert.ToInt32(queryResult["ScheduleId"]);
+                this.ScheduleHistoryId = Convert.ToInt32(queryResult["ScheduleHistoryId"]);
+                this.EndDate = Convert.ToDateTime(queryResult["EndDate"]);
+                this.Succeeded = Convert.ToBoolean(queryResult["Succeeded"]);
+                this.LogNotes = queryResult["LogNotes"].ToString();
             }
             catch (Exception e)
             {
@@ -262,21 +273,31 @@ namespace DNN.Integration.Test.Framework.Controllers
 
         internal ScheduleHistoryInfo(int scheduleId, int scheduleHistoryID, DateTime endDate, bool succeeded)
         {
-            ScheduleId = scheduleId;
-            ScheduleHistoryId = scheduleHistoryID;
-            EndDate = endDate;
-            Succeeded = succeeded;
-            LogNotes = string.Empty;
+            this.ScheduleId = scheduleId;
+            this.ScheduleHistoryId = scheduleHistoryID;
+            this.EndDate = endDate;
+            this.Succeeded = succeeded;
+            this.LogNotes = string.Empty;
         }
 
         // clones another info with success as false
         internal ScheduleHistoryInfo(ScheduleHistoryInfo lastRunInfo)
         {
-            ScheduleId = lastRunInfo.ScheduleId;
-            ScheduleHistoryId = lastRunInfo.ScheduleHistoryId;
-            EndDate = lastRunInfo.EndDate;
-            Succeeded = false;
-            LogNotes = lastRunInfo.LogNotes;
+            this.ScheduleId = lastRunInfo.ScheduleId;
+            this.ScheduleHistoryId = lastRunInfo.ScheduleHistoryId;
+            this.EndDate = lastRunInfo.EndDate;
+            this.Succeeded = false;
+            this.LogNotes = lastRunInfo.LogNotes;
         }
+
+        public int ScheduleId { get; }
+
+        public int ScheduleHistoryId { get; }
+
+        public DateTime EndDate { get; }
+
+        public bool Succeeded { get; }
+
+        public string LogNotes { get; }
     }
 }

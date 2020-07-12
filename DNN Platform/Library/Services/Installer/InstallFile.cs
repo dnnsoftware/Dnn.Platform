@@ -1,23 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Text.RegularExpressions;
-
-using ICSharpCode.SharpZipLib.Zip;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
+    using ICSharpCode.SharpZipLib.Zip;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The InstallFile class represents a single file in an Installer Package
+    /// The InstallFile class represents a single file in an Installer Package.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -27,339 +22,329 @@ namespace DotNetNuke.Services.Installer
     {
         private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
 
-		#region Private Members
-
-        #endregion
-
-		#region Constructors
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance from a ZipInputStream and a ZipEntry
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
+        /// This Constructor creates a new InstallFile instance from a ZipInputStream and a ZipEntry.
         /// </summary>
         /// <remarks>The ZipInputStream is read into a byte array (Buffer), and the ZipEntry is used to
         /// set up the properties of the InstallFile class.</remarks>
-        /// <param name="zip">The ZipInputStream</param>
-        /// <param name="entry">The ZipEntry</param>
-        /// <param name="info">An INstallerInfo instance</param>
+        /// <param name="zip">The ZipInputStream.</param>
+        /// <param name="entry">The ZipEntry.</param>
+        /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
         {
-            Encoding = TextEncoding.UTF8;
-            InstallerInfo = info;
-            ReadZip(zip, entry);
+            this.Encoding = TextEncoding.UTF8;
+            this.InstallerInfo = info;
+            this.ReadZip(zip, entry);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The fileName of the File</param>
+        /// <param name="fileName">The fileName of the File.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName)
         {
-            Encoding = TextEncoding.UTF8;
-            ParseFileName(fileName);
+            this.Encoding = TextEncoding.UTF8;
+            this.ParseFileName(fileName);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The fileName of the File</param>
-        /// <param name="info">An INstallerInfo instance</param>
+        /// <param name="fileName">The fileName of the File.</param>
+        /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, InstallerInfo info)
         {
-            Encoding = TextEncoding.UTF8;
-            ParseFileName(fileName);
-            InstallerInfo = info;
+            this.Encoding = TextEncoding.UTF8;
+            this.ParseFileName(fileName);
+            this.InstallerInfo = info;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The fileName of the File</param>
+        /// <param name="fileName">The fileName of the File.</param>
         /// <param name="sourceFileName">Source file name.</param>
-        /// <param name="info">An INstallerInfo instance</param>
+        /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string sourceFileName, InstallerInfo info)
         {
-            Encoding = TextEncoding.UTF8;
-            ParseFileName(fileName);
-            SourceFileName = sourceFileName;
-            InstallerInfo = info;
+            this.Encoding = TextEncoding.UTF8;
+            this.ParseFileName(fileName);
+            this.SourceFileName = sourceFileName;
+            this.InstallerInfo = info;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The file name of the File</param>
-        /// <param name="filePath">The file path of the file</param>
+        /// <param name="fileName">The file name of the File.</param>
+        /// <param name="filePath">The file path of the file.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string filePath)
         {
-            Encoding = TextEncoding.UTF8;
-            Name = fileName;
-            Path = filePath;
+            this.Encoding = TextEncoding.UTF8;
+            this.Name = fileName;
+            this.Path = filePath;
         }
-		
-		#endregion
-
-		#region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Action for this file
+        /// Gets the location of the backup file.
         /// </summary>
-        /// <value>A string</value>
-        /// -----------------------------------------------------------------------------
-        public string Action { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the location of the backup file
-        /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string BackupFileName
         {
             get
             {
-                return System.IO.Path.Combine(BackupPath, Name + ".config");
+                return System.IO.Path.Combine(this.BackupPath, this.Name + ".config");
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the location of the backup folder
+        /// Gets the location of the backup folder.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public virtual string BackupPath
         {
             get
             {
-                return System.IO.Path.Combine(InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", Path));
+                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", this.Path));
             }
         }
 
-        public TextEncoding Encoding { get; private set; }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the File Extension of the file
+        /// Gets the File Extension of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string Extension
         {
             get
             {
-                string ext = System.IO.Path.GetExtension(Name);
-                if (String.IsNullOrEmpty(ext))
+                string ext = System.IO.Path.GetExtension(this.Name);
+                if (string.IsNullOrEmpty(ext))
                 {
-                    return "";
+                    return string.Empty;
                 }
+
                 return ext.Substring(1);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Full Name of the file
+        /// Gets the Full Name of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string FullName
         {
             get
             {
-                return System.IO.Path.Combine(Path, Name);
+                return System.IO.Path.Combine(this.Path, this.Name);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated InstallerInfo
+        /// Gets the location of the temporary file.
         /// </summary>
-        /// <value>An InstallerInfo object</value>
+        /// <value>A string.</value>
+        /// -----------------------------------------------------------------------------
+        public string TempFileName
+        {
+            get
+            {
+                string fileName = this.SourceFileName;
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = this.FullName;
+                }
+
+                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, fileName);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Action for this file.
+        /// </summary>
+        /// <value>A string.</value>
+        /// -----------------------------------------------------------------------------
+        public string Action { get; set; }
+
+        public TextEncoding Encoding { get; private set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the associated InstallerInfo.
+        /// </summary>
+        /// <value>An InstallerInfo object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public InstallerInfo InstallerInfo { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Name of the file
+        /// Gets the Name of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string Name { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Path of the file
+        /// Gets the Path of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string Path { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the source file name
+        /// Gets the source file name.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string SourceFileName { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the location of the temporary file
+        /// Gets or sets and sets the Type of the file.
         /// </summary>
-        /// <value>A string</value>
-        /// -----------------------------------------------------------------------------
-        public string TempFileName
-        {
-            get
-            {
-                string fileName = SourceFileName;
-                if (string.IsNullOrEmpty(fileName))
-                {
-                    fileName = FullName;
-                }
-                return System.IO.Path.Combine(InstallerInfo.TempInstallFolder, fileName);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Type of the file
-        /// </summary>
-        /// <value>An InstallFileType Enumeration</value>
+        /// <value>An InstallFileType Enumeration.</value>
         /// -----------------------------------------------------------------------------
         public InstallFileType Type { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Version of the file
+        /// Gets the Version of the file.
         /// </summary>
-        /// <value>A System.Version</value>
+        /// <value>A System.Version.</value>
         /// -----------------------------------------------------------------------------
         public Version Version { get; private set; }
 
-        #endregion
-
-		#region Private Methods
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The SetVersion method sets the version of the file.
+        /// </summary>
+        /// <param name="version">The version of the file.</param>
+        /// -----------------------------------------------------------------------------
+        public void SetVersion(Version version)
+        {
+            this.Version = version;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ParseFileName parses the ZipEntry metadata
+        /// The ParseFileName parses the ZipEntry metadata.
         /// </summary>
-        /// <param name="fileName">A String representing the file name</param>
+        /// <param name="fileName">A String representing the file name.</param>
         /// -----------------------------------------------------------------------------
         private void ParseFileName(string fileName)
         {
             int i = fileName.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal);
             if (i < 0)
             {
-                Name = fileName.Substring(0, fileName.Length);
-                Path = "";
+                this.Name = fileName.Substring(0, fileName.Length);
+                this.Path = string.Empty;
             }
             else
             {
-                Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
-                Path = fileName.Substring(0, i);
+                this.Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
+                this.Path = fileName.Substring(0, i);
             }
-            if (string.IsNullOrEmpty(Path) && fileName.StartsWith("[app_code]"))
+
+            if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]"))
             {
-                Name = fileName.Substring(10, fileName.Length - 10);
-                Path = fileName.Substring(0, 10);
+                this.Name = fileName.Substring(10, fileName.Length - 10);
+                this.Path = fileName.Substring(0, 10);
             }
-            if (Name.Equals("manifest.xml", StringComparison.InvariantCultureIgnoreCase))
+
+            if (this.Name.Equals("manifest.xml", StringComparison.InvariantCultureIgnoreCase))
             {
-                Type = InstallFileType.Manifest;
+                this.Type = InstallFileType.Manifest;
             }
             else
             {
-                switch (Extension.ToLowerInvariant())
+                switch (this.Extension.ToLowerInvariant())
                 {
                     case "ascx":
-                        Type = InstallFileType.Ascx;
+                        this.Type = InstallFileType.Ascx;
                         break;
                     case "dll":
-                        Type = InstallFileType.Assembly;
+                        this.Type = InstallFileType.Assembly;
                         break;
                     case "dnn":
                     case "dnn5":
                     case "dnn6":
                     case "dnn7":
-                        Type = InstallFileType.Manifest;
+                        this.Type = InstallFileType.Manifest;
                         break;
                     case "resx":
-                        Type = InstallFileType.Language;
+                        this.Type = InstallFileType.Language;
                         break;
                     case "resources":
                     case "zip":
-                        Type = InstallFileType.Resources;
+                        this.Type = InstallFileType.Resources;
                         break;
                     default:
-                        if (Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || Extension.Equals("sql", StringComparison.InvariantCultureIgnoreCase))
+                        if (this.Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || this.Extension.Equals("sql", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            Type = InstallFileType.Script;
+                            this.Type = InstallFileType.Script;
                         }
-                        else if (Path.StartsWith("[app_code]"))
+                        else if (this.Path.StartsWith("[app_code]"))
                         {
-                            Type = InstallFileType.AppCode;
+                            this.Type = InstallFileType.AppCode;
                         }
                         else
                         {
-                            Type = FileTypeMatchRegex.IsMatch(Name) ? InstallFileType.CleanUp : InstallFileType.Other;
+                            this.Type = FileTypeMatchRegex.IsMatch(this.Name) ? InstallFileType.CleanUp : InstallFileType.Other;
                         }
+
                         break;
                 }
             }
-			
-            //remove [app_code] token
-            Path = Path.Replace("[app_code]", "");
 
-            //remove starting "\"
-            if (Path.StartsWith("\\"))
+            // remove [app_code] token
+            this.Path = this.Path.Replace("[app_code]", string.Empty);
+
+            // remove starting "\"
+            if (this.Path.StartsWith("\\"))
             {
-                Path = Path.Substring(1);
+                this.Path = this.Path.Substring(1);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ReadZip method reads the zip stream and parses the ZipEntry metadata
+        /// The ReadZip method reads the zip stream and parses the ZipEntry metadata.
         /// </summary>
-        /// <param name="unzip">A ZipStream containing the file content</param>
-        /// <param name="entry">A ZipEntry containing the file metadata</param>
+        /// <param name="unzip">A ZipStream containing the file content.</param>
+        /// <param name="entry">A ZipEntry containing the file metadata.</param>
         /// -----------------------------------------------------------------------------
         private void ReadZip(ZipInputStream unzip, ZipEntry entry)
         {
-            ParseFileName(entry.Name);
-            Util.WriteStream(unzip, TempFileName);
-            File.SetLastWriteTime(TempFileName, entry.DateTime);
+            this.ParseFileName(entry.Name);
+            Util.WriteStream(unzip, this.TempFileName);
+            File.SetLastWriteTime(this.TempFileName, entry.DateTime);
         }
-		
-		#endregion
-
-		#region Public Methods
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The SetVersion method sets the version of the file
-        /// </summary>
-        /// <param name="version">The version of the file</param>
-        /// -----------------------------------------------------------------------------
-        public void SetVersion(Version version)
-        {
-            Version = version;
-        }
-		
-		#endregion
     }
 }

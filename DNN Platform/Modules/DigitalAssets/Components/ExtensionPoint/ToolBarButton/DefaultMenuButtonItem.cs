@@ -1,29 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.UI.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
+    using System;
+
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.UI.Modules;
+
     public class DefaultMenuButtonItem : IMenuButtonItemExtensionPoint
     {
-        #region Private fields
-
-        #endregion
-
         public DefaultMenuButtonItem(string itemId, string itemType, string itemCssClass, string itemText, string itemAction, string itemIcon, int itemOrder, string itemAttributes)
         {
-            ItemId = itemId;
-            Attributes = itemAttributes;
-            Type = itemType;
-            Text = itemText;
-            Icon = itemIcon;
-            Order = itemOrder;
-            CssClass = itemCssClass;
-            Action = itemAction;
+            this.ItemId = itemId;
+            this.Attributes = itemAttributes;
+            this.Type = itemType;
+            this.Text = itemText;
+            this.Icon = itemIcon;
+            this.Order = itemOrder;
+            this.CssClass = itemCssClass;
+            this.Action = itemAction;
+        }
+
+        public bool Visible
+        {
+            get { return true; }
         }
 
         public string ItemId { get; private set; }
@@ -41,11 +43,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         public string Action { get; private set; }
 
         public string CssClass { get; private set; }
-
-        public bool Visible
-        {
-            get { return true; }
-        }
 
         public ModuleInstanceContext ModuleContext { get; set; }
     }

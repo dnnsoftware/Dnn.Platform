@@ -1,20 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Providers;
-using Newtonsoft.Json;
-using System.IO;
-using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+    using System.IO;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Providers;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using Newtonsoft.Json;
+
     public class ExportController : BaseController
     {
         public int QueueOperation(int userId, ExportDto exportDto)
@@ -26,18 +27,21 @@ namespace Dnn.ExportImport.Components.Controllers
             var directory = dbTime.ToString("yyyy-MM-dd_HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
-                exportDto.FromDateUtc = GetLastJobTime(exportDto.PortalId, JobType.Export);
+                exportDto.FromDateUtc = this.GetLastJobTime(exportDto.PortalId, JobType.Export);
             }
+
             var dataObject = JsonConvert.SerializeObject(exportDto);
-            exportDto.IsDirty = false;//This should be set to false for new job.
+            exportDto.IsDirty = false; // This should be set to false for new job.
             var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,
                 JobType.Export, exportDto.ExportName, exportDto.ExportDescription, directory, dataObject);
-            //Run the scheduler if required.
+
+            // Run the scheduler if required.
             if (exportDto.RunNow)
             {
                 EntitiesController.Instance.RunSchedule();
             }
-            AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
+
+            this.AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
             return jobId;
         }
 
@@ -53,7 +57,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Name = exportJob.Name,
                 Description = exportJob.Description,
                 ExporTime = exportJob.CreatedOnDate,
-                PortalName = portal?.PortalName
+                PortalName = portal?.PortalName,
             };
             Util.WriteJson(filePath, packageInfo);
         }

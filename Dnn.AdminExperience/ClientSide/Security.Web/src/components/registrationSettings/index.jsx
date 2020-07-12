@@ -10,7 +10,6 @@ import {
     RadioButtons,
     Label,
     Button,
-    PagePicker,
     Tooltip
 } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
@@ -272,23 +271,7 @@ class RegistrationSettingsPanelBody extends Component {
                                 enabled={canEdit} />
                         </div>
                     </InputGroup>
-                    <InputGroup>
-                        <div className="registrationSettings-row-input">
-                            <Label
-                                tooltipMessage={resx.get("Redirect_AfterRegistration.Help") }
-                                label={resx.get("Redirect_AfterRegistration") } />
-                            <PagePicker
-                                serviceFramework={util.utilities.sf}
-                                style={{ width: "100%", zIndex: 1 }}
-                                selectedTabId={state.registrationSettings.RedirectAfterRegistrationTabId}
-                                OnSelect={this.onSettingChange.bind(this, "RedirectAfterRegistrationTabId") }
-                                defaultLabel={state.registrationSettings.RedirectAfterRegistrationTabName !== "" ? state.registrationSettings.RedirectAfterRegistrationTabName : noneSpecifiedText}
-                                noneSpecifiedText={noneSpecifiedText}
-                                CountText={"{0} Results"}
-                                PortalTabsParameters={RedirectAfterRegistrationParameters}
-                                enabled={canEdit} />
-                        </div>
-                    </InputGroup>
+                    <div style={{paddingBottom: "15px", fontStyle: "italic"}}>{resx.get("RedirectionMovedToSiteSettings")}</div>
                     <InputGroup>
                         <div className="registrationSettings-row_switch">
                             <Label

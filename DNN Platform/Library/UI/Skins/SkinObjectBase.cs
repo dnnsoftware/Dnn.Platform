@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.ComponentModel;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.UI.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins
 {
+    using System.ComponentModel;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.UI.Modules;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SkinObject class defines a custom base class inherited by all
@@ -25,10 +20,11 @@ namespace DotNetNuke.UI.Skins
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the portal Settings for this Skin Control
+        /// Gets the portal Settings for this Skin Control.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
         {
             get
@@ -39,7 +35,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether we are in Admin Mode
+        /// Gets a value indicating whether gets whether we are in Admin Mode.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool AdminMode
@@ -50,15 +46,11 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #region ISkinControl Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the associated ModuleControl for this SkinControl
+        /// Gets or sets and sets the associated ModuleControl for this SkinControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
-
-        #endregion
     }
 }

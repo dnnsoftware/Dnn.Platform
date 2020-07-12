@@ -102,6 +102,9 @@
     <Content Include="09.02.00.txt" />
     <Content Include="AzureFolderProvider\images\FolderAzure_16x16_Standard.png" />
     <Content Include="AzureFolderProvider\images\FolderAzure_32x32_Standard.png" />
+    <AdditionalFiles Include="..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="FolderProviders.dnn">
       <SubType>Designer</SubType>
@@ -114,6 +117,7 @@
     <Content Include="Provider.build">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AzureFolderProvider\App_LocalResources\Settings.ascx.resx" />
@@ -127,6 +131,10 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Provider.build" />

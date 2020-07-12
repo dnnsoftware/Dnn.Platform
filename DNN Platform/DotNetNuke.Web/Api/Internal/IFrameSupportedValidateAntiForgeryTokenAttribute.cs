@@ -1,19 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Net.Http;
-using System.Web.Http.Controllers;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api.Internal
 {
+    using System;
+    using System.Net.Http;
+    using System.Web.Http.Controllers;
+
     public class IFrameSupportedValidateAntiForgeryTokenAttribute : ValidateAntiForgeryTokenAttribute
     {
         protected override Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
         {
             var result = base.IsAuthorized(actionContext);
-            if (result.Item1) return SuccessResult;
+            if (result.Item1)
+            {
+                return SuccessResult;
+            }
 
             try
             {
@@ -27,6 +30,7 @@ namespace DotNetNuke.Web.Api.Internal
                         break;
                     }
                 }
+
                 var cookieValue = GetAntiForgeryCookieValue(actionContext);
 
                 AntiForgery.Instance.Validate(cookieValue, token);

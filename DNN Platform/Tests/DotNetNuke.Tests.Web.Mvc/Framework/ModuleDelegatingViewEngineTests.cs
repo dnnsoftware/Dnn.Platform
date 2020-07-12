@@ -1,20 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Linq;
-using System.Web.Mvc;
-using DotNetNuke.Common;
-using DotNetNuke.Web.Mvc.Framework;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Mvc.Framework
 {
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Web.Mvc.Framework;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Routing;
+    using Microsoft.Extensions.DependencyInjection;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ModuleDelegatingViewEngineTests
     {
@@ -31,12 +32,14 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         {
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
-            var result = new ViewEngineResult(new[] {"foo", "bar", "baz"});
+            var result = new ViewEngineResult(new[] { "foo", "bar", "baz" });
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindPartialView(context, viewName))
                        .Returns(result);
@@ -60,13 +63,15 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         {
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
-            var result = new ViewEngineResult(new[] {"foo", "bar", "baz"});
+            var result = new ViewEngineResult(new[] { "foo", "bar", "baz" });
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             var viewName = "Foo";
             var masterName = "Bar";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindView(context, viewName, masterName))
                        .Returns(result);
@@ -96,9 +101,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
             string masterName = "Bar";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindView(context, viewName, masterName))
                        .Returns(result);
@@ -126,8 +133,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindPartialView(context, viewName))
                        .Returns(result);
@@ -189,12 +198,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             (context.Controller as IDnnController).ViewEngineCollectionEx = engines;
 
             var activeModuleRequest = new ModuleRequestResult
-                                            {
-                                                ModuleApplication = mockApp.Object
-                                            };
+            {
+                ModuleApplication = mockApp.Object,
+            };
 
             context.HttpContext.SetModuleRequestResult(activeModuleRequest);
         }
     }
-
 }

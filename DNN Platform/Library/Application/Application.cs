@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Diagnostics;
-using System.Reflection;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Application
 {
+    using System;
+    using System.Diagnostics;
+    using System.Reflection;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+
     /// <summary>
     /// The Application class contains properties that describe the DotNetNuke Application.
     /// </summary>
@@ -31,7 +26,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the company to which the DotNetNuke application is related.
         /// </summary>
-        /// <value>Fixed result: DotNetNuke Corporation</value>
+        /// <value>Fixed result: DotNetNuke Corporation.</value>
         public string Company
         {
             get
@@ -54,9 +49,9 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the description of the application
+        /// Gets the description of the application.
         /// </summary>
-        /// <value>Fixed result: DNN Platform</value>
+        /// <value>Fixed result: DNN Platform.</value>
         public virtual string Description
         {
             get
@@ -66,9 +61,9 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the help URL related to the DotNetNuke application
+        /// Gets the help URL related to the DotNetNuke application.
         /// </summary>
-        /// <value>Fixed result: https://dnndocs.com/ </value>
+        /// <value>Fixed result: https://dnndocs.com/. </value>
         public string HelpUrl
         {
             get
@@ -80,19 +75,19 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the legal copyright.
         /// </summary>
-        /// <value>Dynamic: DNN Platform is copyright 2002-todays year by .NET Foundation"</value>
+        /// <value>Dynamic: DNN Platform is copyright 2002-todays year by .NET Foundation".</value>
         public string LegalCopyright
         {
             get
             {
-                return string.Concat("DNN Platform is copyright 2002-", DateTime.Today.ToString("yyyy")," by .NET Foundation");
+                return string.Concat("DNN Platform is copyright 2002-", DateTime.Today.ToString("yyyy"), " by .NET Foundation");
             }
         }
 
         /// <summary>
-        /// Gets the name of the application
+        /// Gets the name of the application.
         /// </summary>
-        /// <value>Fixed result: DNNCORP.CE</value>
+        /// <value>Fixed result: DNNCORP.CE.</value>
         public virtual string Name
         {
             get
@@ -102,9 +97,9 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the SKU (Stock Keeping Unit)
+        /// Gets the SKU (Stock Keeping Unit).
         /// </summary>
-        /// <value>Fixed result: DNN</value>
+        /// <value>Fixed result: DNN.</value>
         public virtual string SKU
         {
             get
@@ -114,13 +109,13 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the status of the DotnetNuke application
+        /// Gets the status of the DotnetNuke application.
         /// </summary>
         /// <remarks>
-		/// If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.
+        /// If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.
         /// </remarks>
         /// <value>
-        /// The value can be: None, Alpha, Beta, RC, Stable
+        /// The value can be: None, Alpha, Beta, RC, Stable.
         /// </value>
         public ReleaseMode Status
         {
@@ -129,21 +124,22 @@ namespace DotNetNuke.Application
                 if (_status == ReleaseMode.None)
                 {
                     Assembly assy = Assembly.GetExecutingAssembly();
-                    if (Attribute.IsDefined(assy, typeof (AssemblyStatusAttribute)))
+                    if (Attribute.IsDefined(assy, typeof(AssemblyStatusAttribute)))
                     {
-                        Attribute attr = Attribute.GetCustomAttribute(assy, typeof (AssemblyStatusAttribute));
+                        Attribute attr = Attribute.GetCustomAttribute(assy, typeof(AssemblyStatusAttribute));
                         if (attr != null)
                         {
-                            _status = ((AssemblyStatusAttribute) attr).Status;
+                            _status = ((AssemblyStatusAttribute)attr).Status;
                         }
                     }
                 }
+
                 return _status;
             }
         }
 
         /// <summary>
-        /// Gets the title of the application
+        /// Gets the title of the application.
         /// </summary>
         /// <value>Fixed value: DotNetNuke.</value>
         public string Title
@@ -157,7 +153,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the trademark.
         /// </summary>
-        /// <value>Fixed value: DotNetNuke,DNN</value>
+        /// <value>Fixed value: DotNetNuke,DNN.</value>
         public string Trademark
         {
             get
@@ -167,9 +163,9 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the type of the application
+        /// Gets the type of the application.
         /// </summary>
-        /// <value>Fixed value: Framework</value>
+        /// <value>Fixed value: Framework.</value>
         public string Type
         {
             get
@@ -181,24 +177,25 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the upgrade URL.
         /// </summary>
-        /// <value>Fixed value: https://dnnplatform.io </value>
+        /// <value>Fixed value: https://dnnplatform.io. </value>
         public string UpgradeUrl
         {
             get
             {
-	            var url = Config.GetSetting("UpdateServiceUrl");
-				if (string.IsNullOrEmpty(url))
-				{
-					return "https://dnnplatform.io";
-				}
-	            return url;
+                var url = Config.GetSetting("UpdateServiceUrl");
+                if (string.IsNullOrEmpty(url))
+                {
+                    return "https://dnnplatform.io";
+                }
+
+                return url;
             }
         }
 
         /// <summary>
-        /// Gets the URL of the application
+        /// Gets the URL of the application.
         /// </summary>
-        /// <value>Fixed value: https://dnncommunity.org</value>
+        /// <value>Fixed value: https://dnncommunity.org.</value>
         public string Url
         {
             get
@@ -208,7 +205,7 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the version of the DotNetNuke framework/application
+        /// Gets the version of the DotNetNuke framework/application.
         /// </summary>
         /// <value>The version as retreieved from the Executing assembly.</value>
         public virtual Version Version
@@ -221,20 +218,16 @@ namespace DotNetNuke.Application
             }
         }
 
-        #region "Public Functions"
-
         /// <summary>
-        ///   Determine whether a product specific change is to be applied
+        ///   Determine whether a product specific change is to be applied.
         /// </summary>
-        /// <param name = "productNames">list of product names</param>
-        /// <returns>true if product is within list of names</returns>
+        /// <param name = "productNames">list of product names.</param>
+        /// <returns>true if product is within list of names.</returns>
         /// <remarks>
         /// </remarks>
         public virtual bool ApplyToProduct(string productNames)
         {
-            return productNames.Contains(Name);
+            return productNames.Contains(this.Name);
         }
-
-        #endregion
     }
 }

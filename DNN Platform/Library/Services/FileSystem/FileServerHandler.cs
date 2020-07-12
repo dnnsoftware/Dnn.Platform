@@ -1,40 +1,36 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Globalization;
-using System.IO;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem.EventArgs;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem.EventArgs;
+    using DotNetNuke.Services.Localization;
+
     public class FileServerHandler : IHttpHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileServerHandler));
-        #region IHttpHandler Members
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
+
+        public bool IsReusable => true;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This handler handles requests for LinkClick.aspx, but only those specifc
-        /// to file serving
+        /// to file serving.
         /// </summary>
-        /// <param name="context">System.Web.HttpContext)</param>
+        /// <param name="context">System.Web.HttpContext).</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -45,25 +41,25 @@ namespace DotNetNuke.Services.FileSystem
             var ModuleId = -1;
             try
             {
-                //get TabId
+                // get TabId
                 if (context.Request.QueryString["tabid"] != null)
                 {
-                    Int32.TryParse(context.Request.QueryString["tabid"], out TabId);
+                    int.TryParse(context.Request.QueryString["tabid"], out TabId);
                 }
 
-                //get ModuleId
+                // get ModuleId
                 if (context.Request.QueryString["mid"] != null)
                 {
-                    Int32.TryParse(context.Request.QueryString["mid"], out ModuleId);
+                    int.TryParse(context.Request.QueryString["mid"], out ModuleId);
                 }
             }
             catch (Exception)
             {
-                //The TabId or ModuleId are incorrectly formatted (potential DOS)
-                Handle404Exception(context, context.Request.RawUrl);
+                // The TabId or ModuleId are incorrectly formatted (potential DOS)
+                this.Handle404Exception(context, context.Request.RawUrl);
             }
 
-            //get Language
+            // get Language
             string Language = _portalSettings.DefaultLanguage;
             if (context.Request.QueryString["language"] != null)
             {
@@ -76,47 +72,51 @@ namespace DotNetNuke.Services.FileSystem
                     Language = context.Request.Cookies["language"].Value;
                 }
             }
+
             if (LocaleController.Instance.IsEnabled(ref Language, _portalSettings.PortalId))
             {
-                Localization.Localization.SetThreadCultures(new CultureInfo(Language), _portalSettings);
-                Localization.Localization.SetLanguage(Language);
+                Localization.SetThreadCultures(new CultureInfo(Language), _portalSettings);
+                Localization.SetLanguage(Language);
             }
 
-            //get the URL
-            string URL = "";
+            // get the URL
+            string URL = string.Empty;
             if (context.Request.QueryString["fileticket"] != null)
             {
-
                 URL = "FileID=" + FileLinkClickController.Instance.GetFileIdFromLinkClick(context.Request.QueryString);
             }
+
             if (context.Request.QueryString["userticket"] != null)
             {
                 URL = "UserId=" + UrlUtils.DecryptParameter(context.Request.QueryString["userticket"]);
             }
+
             if (context.Request.QueryString["link"] != null)
             {
                 URL = context.Request.QueryString["link"];
                 if (URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    URL = ""; //restrict direct access by FileID
+                    URL = string.Empty; // restrict direct access by FileID
                 }
             }
-            if (!String.IsNullOrEmpty(URL))
+
+            if (!string.IsNullOrEmpty(URL))
             {
                 URL = URL.Replace(@"\", @"/");
 
-                //update clicks, this must be done first, because the url tracker works with unmodified urls, like tabid, fileid etc
+                // update clicks, this must be done first, because the url tracker works with unmodified urls, like tabid, fileid etc
                 var objUrls = new UrlController();
                 objUrls.UpdateUrlTracking(_portalSettings.PortalId, URL, ModuleId, -1);
                 TabType UrlType = Globals.GetURLType(URL);
-                if(UrlType == TabType.Tab)
+                if (UrlType == TabType.Tab)
                 {
-                    //verify whether the tab is exist, otherwise throw out 404.
+                    // verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
-                        Handle404Exception(context, context.Request.RawUrl);
+                        this.Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
+
                 if (UrlType != TabType.File)
                 {
                     URL = Globals.LinkClick(URL, TabId, ModuleId, false);
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (UrlType == TabType.File && URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                 {
-                    //to handle legacy scenarios before the introduction of the FileServerHandler
+                    // to handle legacy scenarios before the introduction of the FileServerHandler
                     var fileName = Path.GetFileName(URL);
 
                     var folderPath = URL.Substring(0, URL.LastIndexOf(fileName, StringComparison.InvariantCulture));
@@ -135,15 +135,16 @@ namespace DotNetNuke.Services.FileSystem
                     URL = "FileID=" + file.FileId;
                 }
 
-                //get optional parameters
+                // get optional parameters
                 bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                     bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
+                    bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
                 }
+
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
 
-                //clear the current response
+                // clear the current response
                 context.Response.Clear();
                 var fileManager = FileManager.Instance;
                 try
@@ -155,11 +156,11 @@ namespace DotNetNuke.Services.FileSystem
                             var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(URL)));
                             if (file != null)
                             {
-                                if (!file.IsEnabled || !HasAPublishedVersion(file))
+                                if (!file.IsEnabled || !this.HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
-                                        context.Response.Redirect(Globals.AccessDeniedURL(Localization.Localization.GetString("FileAccess.Error")), true);
+                                        context.Response.Redirect(Globals.AccessDeniedURL(Localization.GetString("FileAccess.Error")), true);
                                     }
                                     else
                                     {
@@ -175,7 +176,7 @@ namespace DotNetNuke.Services.FileSystem
                                     EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
                                     {
                                         FileInfo = file,
-                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID
+                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID,
                                     });
 
                                     if (directUrl.Contains("LinkClick") || (blnForceDownload && folderMapping.FolderProviderType == "StandardFolderProvider"))
@@ -192,16 +193,15 @@ namespace DotNetNuke.Services.FileSystem
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
-                                        context.Response.Redirect(Globals.AccessDeniedURL(Localization.Localization.GetString("FileAccess.Error")), true);
+                                        context.Response.Redirect(Globals.AccessDeniedURL(Localization.GetString("FileAccess.Error")), true);
                                     }
                                     else
                                     {
                                         context.Response.Redirect(Globals.AccessDeniedURL(), true);
                                     }
                                 }
-                                catch (ThreadAbortException) //if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
+                                catch (ThreadAbortException) // if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
                                 {
-
                                 }
                                 catch (Exception ex)
                                 {
@@ -211,18 +211,20 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                Handle404Exception(context, URL);
+                                this.Handle404Exception(context, URL);
                             }
+
                             break;
                         case TabType.Url:
-                            //prevent phishing by verifying that URL exists in URLs table for Portal
+                            // prevent phishing by verifying that URL exists in URLs table for Portal
                             if (objUrls.GetUrl(_portalSettings.PortalId, URL) != null)
                             {
                                 context.Response.Redirect(URL, true);
                             }
+
                             break;
                         default:
-                            //redirect to URL
+                            // redirect to URL
                             context.Response.Redirect(URL, true);
                             break;
                     }
@@ -232,12 +234,12 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    Handle404Exception(context, URL);
+                    this.Handle404Exception(context, URL);
                 }
             }
             else
             {
-                Handle404Exception(context, URL);
+                this.Handle404Exception(context, URL);
             }
         }
 
@@ -247,7 +249,8 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return true;
             }
-            //We should allow creator to see the file that is pending to be approved
+
+            // We should allow creator to see the file that is pending to be approved
             var user = UserController.Instance.GetCurrentUserInfo();
             return user != null && user.UserID == file.CreatedByUserID;
         }
@@ -263,9 +266,5 @@ namespace DotNetNuke.Services.FileSystem
                 UrlUtils.Handle404Exception(context.Response, PortalController.Instance.GetCurrentPortalSettings());
             }
         }
-
-        public bool IsReusable => true;
-
-        #endregion
     }
 }

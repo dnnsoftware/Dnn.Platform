@@ -1,17 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using Version = Lucene.Net.Util.Version;
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
+    using System;
+
+    using Version = Lucene.Net.Util.Version;
+
     /// <summary>
-    /// Constants
+    /// Constants.
     /// </summary>
     internal static class Constants
     {
@@ -45,46 +42,31 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string StatusTag = "status";
         internal const string RoleIdTag = "role";
 
-        //internal const string FolderIdTag = "folderid";
-        //internal const string FileIdTag = "fileid";
-        //internal const string FolderNameTag = "foldername";
-        //internal const string FileNameTag = "filename";
-
+        // internal const string FolderIdTag = "folderid";
+        // internal const string FileIdTag = "fileid";
+        // internal const string FolderNameTag = "foldername";
+        // internal const string FileNameTag = "filename";
         internal const string DateTimeFormat = "yyyyMMddHHmmssfff";
         internal const string ReindexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
-        internal static Version LuceneVersion = Version.LUCENE_30;
-
-        //Field Boost Settings - they are scaled down by 10.
+        // Field Boost Settings - they are scaled down by 10.
         internal const int DefaultSearchTitleBoost = 50;
         internal const int DefaultSearchTagBoost = 40;
         internal const int DefaultSearchKeywordBoost = 35;
         internal const int DefaultSearchDescriptionBoost = 20;
         internal const int DefaultSearchAuthorBoost = 15;
-        internal const int StandardLuceneBoost = 10; //Lucene's default boost is 1.0f
+        internal const int StandardLuceneBoost = 10; // Lucene's default boost is 1.0f
 
-        //Field Bosst Setting Names
+        // Field Bosst Setting Names
         internal const string SearchTitleBoostSetting = "Search_Title_Boost";
         internal const string SearchTagBoostSetting = "Search_Tag_Boost";
         internal const string SearchContentBoostSetting = "Search_Content_Boost";
         internal const string SearchDescriptionBoostSetting = "Search_Description_Boost";
         internal const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
-        //If weighted sum of Likes, Comment and Weight is the number below, Document gets a boost of 1.0
+        // If weighted sum of Likes, Comment and Weight is the number below, Document gets a boost of 1.0
         internal const int DefaultDocumentBoostScale = 1000;
 
-        internal readonly static string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
-
-        internal readonly static string[] KeyWordSearchFields = { TitleTag, 
-                                                                Tag, 
-                                                                DescriptionTag, 
-                                                                BodyTag, 
-                                                                ContentTag, 
-                                                                KeywordsPrefixTag + TitleTag,
-                                                                KeywordsPrefixTag + SubjectTag,
-                                                                KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag};
-        
         // search index tokenizers word lengths
         internal const int MinimumMinLen = 1;
         internal const int DefaultMinLen = 3;
@@ -106,5 +88,22 @@ namespace DotNetNuke.Services.Search.Internals
 
         // misc.
         internal const string TlsSearchInfo = "TLS_SEARCH_INFO";
-    }
+
+        internal static Version LuceneVersion = Version.LUCENE_30;
+        internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
+
+        internal static readonly string[] KeyWordSearchFields =
+        {
+            TitleTag,
+                                                                Tag,
+                                                                DescriptionTag,
+                                                                BodyTag,
+                                                                ContentTag,
+                                                                KeywordsPrefixTag + TitleTag,
+                                                                KeywordsPrefixTag + SubjectTag,
+                                                                KeywordsPrefixTag + CommentsTag,
+                                                                KeywordsPrefixTag + AuthorNameTag,
+        };
+
+        }
 }

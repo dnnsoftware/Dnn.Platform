@@ -1,13 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
 {
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+
     [ConsoleCommand("echo", Constants.GeneralCategory, "Prompt_Echo_Description")]
     public class Echo : ConsoleCommandBase
     {
@@ -15,14 +15,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
 
         public override ConsoleResultModel Run()
         {
-            if (Args.Length > 1)
+            if (this.Args.Length > 1)
             {
-                return new ConsoleResultModel(Args[1]);
+                return new ConsoleResultModel(this.Args[1]);
             }
 
-
-            return new ConsoleErrorResultModel(LocalizeString("Prompt_Echo_Nothing"));
+            return new ConsoleErrorResultModel(this.LocalizeString("Prompt_Echo_Nothing"));
         }
-
     }
 }

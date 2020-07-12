@@ -1,31 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.HttpModules.Compression
 {
+    using System;
+    using System.IO;
+
     public abstract class HttpOutputFilter : Stream
     {
         private readonly Stream _sink;
 
         protected HttpOutputFilter(Stream baseStream)
         {
-            _sink = baseStream;
-        }
-
-        protected Stream BaseStream
-        {
-            get
-            {
-                return _sink;
-            }
+            this._sink = baseStream;
         }
 
         public override bool CanRead
@@ -48,7 +35,7 @@ namespace DotNetNuke.HttpModules.Compression
         {
             get
             {
-                return _sink.CanWrite;
+                return this._sink.CanWrite;
             }
         }
 
@@ -66,9 +53,18 @@ namespace DotNetNuke.HttpModules.Compression
             {
                 throw new NotSupportedException();
             }
+
             set
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        protected Stream BaseStream
+        {
+            get
+            {
+                return this._sink;
             }
         }
 
@@ -84,12 +80,12 @@ namespace DotNetNuke.HttpModules.Compression
 
         public override void Close()
         {
-            _sink.Close();
+            this._sink.Close();
         }
 
         public override void Flush()
         {
-            _sink.Flush();
+            this._sink.Flush();
         }
 
         public override int Read(byte[] buffer, int offset, int count)

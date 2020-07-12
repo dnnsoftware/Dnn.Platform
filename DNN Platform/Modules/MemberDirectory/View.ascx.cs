@@ -1,71 +1,61 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Reflection;
-using System.Web.Routing;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.MemberDirectory
 {
+    using System;
+    using System.Collections;
+    using System.Reflection;
+    using System.Web.Routing;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class View : ProfileModuleUserControlBase
     {
-        protected override void OnInit(EventArgs e)
+        public override bool DisplayModule
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            get
+            {
+                return !(this.ProfileUserId == this.ModuleContext.PortalSettings.UserId && this.FilterBy == "User") && this.ModuleContext.PortalSettings.UserId > -1;
+            }
+        }
 
-            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
-            AddIe7StyleSheet();
-
-            searchBar.Visible = DisplaySearch != "None";
-	        advancedSearchBar.Visible = DisplaySearch == "Both";
-            popUpPanel.Visible = EnablePopUp;
-            loadMore.Visible = !DisablePaging;
-
-            base.OnInit(e);
+        public string ProfileResourceFile
+        {
+            get { return "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx"; }
         }
 
         protected string AlternateItemTemplate
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
         }
 
         protected bool DisablePaging
         {
-            get { return bool.Parse(GetSetting(ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false")); }
+            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false")); }
         }
 
         protected string DisplaySearch
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
         }
 
         protected bool EnablePopUp
         {
-            get { return bool.Parse(GetSetting(ModuleContext.Configuration.TabModuleSettings, "EnablePopUp", "false")); }
+            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "EnablePopUp", "false")); }
         }
 
         protected string FilterBy
         {
-            get { return GetSetting(ModuleContext.Configuration.ModuleSettings, "FilterBy", "None"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.ModuleSettings, "FilterBy", "None"); }
         }
 
         protected int GroupId
@@ -73,43 +63,31 @@ namespace DotNetNuke.Modules.MemberDirectory
             get
             {
                 int groupId = Null.NullInteger;
-                if (!string.IsNullOrEmpty(Request.Params["GroupId"]))
+                if (!string.IsNullOrEmpty(this.Request.Params["GroupId"]))
                 {
-                    groupId = Int32.Parse(Request.Params["GroupId"]);
+                    groupId = int.Parse(this.Request.Params["GroupId"]);
                 }
+
                 return groupId;
             }
         }
 
         protected string ItemTemplate
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "ItemTemplate", Settings.DefaultItemTemplate); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "ItemTemplate", Settings.DefaultItemTemplate); }
         }
 
         protected int PageSize
         {
             get
             {
-                return GetSettingAsInt32(ModuleContext.Configuration.TabModuleSettings, "PageSize", Settings.DefaultPageSize);
+                return this.GetSettingAsInt32(this.ModuleContext.Configuration.TabModuleSettings, "PageSize", Settings.DefaultPageSize);
             }
         }
 
         protected string PopUpTemplate
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate); }
-        }
-
-        public override bool DisplayModule
-        {
-            get
-            {
-                return !(ProfileUserId == ModuleContext.PortalSettings.UserId && FilterBy == "User") && ModuleContext.PortalSettings.UserId > -1;
-            }
-        }
-
-        public string ProfileResourceFile
-        {
-            get { return "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx"; }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate); }
         }
 
         protected string ProfileUrlUserToken
@@ -122,61 +100,76 @@ namespace DotNetNuke.Modules.MemberDirectory
 
         protected string SearchField1
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField1", "DisplayName"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField1", "DisplayName"); }
         }
 
         protected string SearchField2
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField2", "Email"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField2", "Email"); }
         }
 
         protected string SearchField3
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField3", "City"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField3", "City"); }
         }
 
         protected string SearchField4
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField4", "Country"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField4", "Country"); }
         }
 
         protected string ViewProfileUrl
         {
             get
             {
-                return NavigationManager.NavigateURL(ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
+                return this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, string.Empty, "userId=PROFILEUSER");
             }
         }
 
-		protected bool DisablePrivateMessage
-		{
-			get
-			{
-				return PortalSettings.DisablePrivateMessage && !UserInfo.IsSuperUser
-					&& !UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+        protected bool DisablePrivateMessage
+        {
+            get
+            {
+                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
+                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+            }
+        }
 
-			}
-		}
+        protected PortalSettings PortalSettings
+        {
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
+        }
 
-	    protected PortalSettings PortalSettings
-	    {
-		    get { return PortalController.Instance.GetCurrentPortalSettings(); }
-	    }
+        protected UserInfo UserInfo
+        {
+            get { return UserController.Instance.GetCurrentUserInfo(); }
+        }
 
-		protected UserInfo UserInfo
-		{
-			get { return UserController.Instance.GetCurrentUserInfo(); }
-		}
+        protected override void OnInit(EventArgs e)
+        {
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+            JavaScript.RequestRegistration(CommonJs.Knockout);
 
-        #region Private Helper Functions
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
+            this.AddIe7StyleSheet();
+
+            this.searchBar.Visible = this.DisplaySearch != "None";
+            this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
+            this.popUpPanel.Visible = this.EnablePopUp;
+            this.loadMore.Visible = !this.DisablePaging;
+
+            base.OnInit(e);
+        }
 
         private void AddIe7StyleSheet()
         {
-            var browser = Request.Browser;
+            var browser = this.Request.Browser;
             if (browser.Type == "IE" || browser.MajorVersion < 8)
             {
                 const string cssLink = @"<link href=""/DesktopModules/MemberDirectory/ie-member-directory.css"" rel=""stylesheet"" type=""text/css"" />";
-                Page.Header.Controls.Add(new LiteralControl(cssLink));
+                this.Page.Header.Controls.Add(new LiteralControl(cssLink));
             }
         }
 
@@ -187,6 +180,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 setting = Convert.ToString(settings[key]);
             }
+
             return setting;
         }
 
@@ -197,9 +191,8 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 setting = Convert.ToInt32(settings[key]);
             }
+
             return setting;
         }
-
-        #endregion
     }
 }

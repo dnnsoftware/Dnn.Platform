@@ -1,34 +1,46 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DNN.Integration.Test.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+
     public interface IWebApiConnector
     {
         int UserId { get; }
+
         string UserName { get; }
+
         bool IsLoggedIn { get; }
+
         CookieContainer SessionCookies { get; }
-        DateTime LoggedInAtTime { get;  }
-        TimeSpan Timeout { get; set; }
+
+        DateTime LoggedInAtTime { get; }
+
         Uri Domain { get; }
+
+        TimeSpan Timeout { get; set; }
+
         string UserAgentValue { get; set; }
 
+        bool AvoidCaching { get; set; }
+
         void Logout();
+
         bool Login(string password);
 
         HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1);
+
         HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName);
 
         bool UploadCmsFile(string fileName, string portalFolder);
 
-        HttpResponseMessage PostJson(string relativeUrl,
+        HttpResponseMessage PostJson(
+            string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false);
 
         HttpWebResponse PostUserForm(string relativeUrl, IDictionary<string, object> formFields,
@@ -40,9 +52,8 @@ namespace DNN.Integration.Test.Framework
         HttpResponseMessage GetContent(
             string relativeUrl, object parameters, Dictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool autoRedirect = true);
 
-        HttpResponseMessage GetContent(string relativeUrl,
+        HttpResponseMessage GetContent(
+            string relativeUrl,
             Dictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool autoRedirect = true);
-
-        bool AvoidCaching { get; set; }
     }
 }

@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Xml;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
+    using System.Xml;
+
     public class InstalledModuleInfo
     {
         public int DesktopModuleId { get; set; }
@@ -24,15 +19,15 @@ namespace DotNetNuke.Entities.Modules
 
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst 
+            // Write start of main elemenst
             writer.WriteStartElement("module");
 
-            writer.WriteElementString("moduleName", ModuleName);
-            writer.WriteElementString("friendlyName", FriendlyName);
-            writer.WriteElementString("version", Version);
-            writer.WriteElementString("instances", Instances.ToString());
+            writer.WriteElementString("moduleName", this.ModuleName);
+            writer.WriteElementString("friendlyName", this.FriendlyName);
+            writer.WriteElementString("version", this.Version);
+            writer.WriteElementString("instances", this.Instances.ToString());
 
-            //Write end of Host Info 
+            // Write end of Host Info
             writer.WriteEndElement();
         }
     }

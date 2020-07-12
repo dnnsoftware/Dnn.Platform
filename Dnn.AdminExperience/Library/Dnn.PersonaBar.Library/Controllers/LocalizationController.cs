@@ -1,35 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web.Caching;
-using System.Xml;
-using System.Xml.XPath;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Cache;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.Caching;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Cache;
+
     public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
-
-        #region Overrides of ServiceLocator
-
-        protected override Func<ILocalizationController> GetFactory()
-        {
-            return () => new LocalizationController();
-        }
-
-        #endregion
 
         public string CultureName
         {
@@ -38,7 +30,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public long GetResxTimeStamp(string resourceFile, Dto.Localization localization)
         {
-            return GetLastModifiedTime(resourceFile, CultureName, localization).Ticks;
+            return this.GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
         }
 
         public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Dto.Localization localization)
@@ -48,10 +40,12 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var cacheKey = string.Format(localization.ResxDataCacheKey, culture, resourceFile);
             var localizedDict = DataCache.GetCache(cacheKey) as Dictionary<string, string>;
-            if (localizedDict != null) return localizedDict;
+            if (localizedDict != null)
+            {
+                return localizedDict;
+            }
 
             var dictionary = new Dictionary<string, string>();
-
 
             foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
             {
@@ -62,44 +56,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                                Cache.NoAbsoluteExpiration, FiveMinutes, CacheItemPriority.Normal, null);
 
             return dictionary;
-        }
-
-        private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
-        {
-            Requires.NotNullOrEmpty("culture", culture);
-
-            var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
-            var cachedData = DataCache.GetCache(cacheKey);
-            if (cachedData is DateTime) return (DateTime)DataCache.GetCache(cacheKey);
-            var lastModifiedDate = GetLastModifiedTimeInternal(resourceFile, culture);
-
-
-            DataCache.SetCache(cacheKey, lastModifiedDate, (DNNCacheDependency)null,
-                               Cache.NoAbsoluteExpiration, OneHour, CacheItemPriority.Normal, null);
-
-            return lastModifiedDate;
-        }
-
-        private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
-        {
-
-            var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", "") + "." + culture + ".resx");
-            var lastModifiedDate = DateTime.MinValue;
-
-            if (File.Exists(cultureSpecificFile))
-            {
-                lastModifiedDate = File.GetLastWriteTime(cultureSpecificFile);
-            }
-            else
-            {
-                var cultureNeutralFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile);
-                if (File.Exists(cultureNeutralFile))
-                {
-                    lastModifiedDate = File.GetLastWriteTime(cultureNeutralFile);
-                }
-
-            }
-            return lastModifiedDate;
         }
 
         public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
@@ -116,7 +72,10 @@ namespace Dnn.PersonaBar.Library.Controllers
             return dictionary;
         }
 
-        #region Private Methods
+        protected override Func<ILocalizationController> GetFactory()
+        {
+            return () => new LocalizationController();
+        }
 
         private static string GetNameAttribute(XmlNode node)
         {
@@ -162,12 +121,13 @@ namespace Dnn.PersonaBar.Library.Controllers
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
-                // ReSharper restore AssignNullToNotNullAttribute
 
+                // ReSharper restore AssignNullToNotNullAttribute
                 AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+
                 // ReSharper restore AssignNullToNotNullAttribute
                 {
                     if (navigator.NodeType == XPathNodeType.Comment)
@@ -197,6 +157,44 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
-        #endregion
+        private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
+        {
+            Requires.NotNullOrEmpty("culture", culture);
+
+            var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
+            var cachedData = DataCache.GetCache(cacheKey);
+            if (cachedData is DateTime)
+            {
+                return (DateTime)DataCache.GetCache(cacheKey);
+            }
+
+            var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
+
+            DataCache.SetCache(cacheKey, lastModifiedDate, (DNNCacheDependency)null,
+                               Cache.NoAbsoluteExpiration, OneHour, CacheItemPriority.Normal, null);
+
+            return lastModifiedDate;
+        }
+
+        private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
+        {
+            var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
+            var lastModifiedDate = DateTime.MinValue;
+
+            if (File.Exists(cultureSpecificFile))
+            {
+                lastModifiedDate = File.GetLastWriteTime(cultureSpecificFile);
+            }
+            else
+            {
+                var cultureNeutralFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile);
+                if (File.Exists(cultureNeutralFile))
+                {
+                    lastModifiedDate = File.GetLastWriteTime(cultureNeutralFile);
+                }
+            }
+
+            return lastModifiedDate;
+        }
     }
 }

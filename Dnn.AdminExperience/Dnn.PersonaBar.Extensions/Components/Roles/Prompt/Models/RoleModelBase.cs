@@ -1,14 +1,35 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Dnn.PersonaBar.Library.Prompt.Common;
-using DotNetNuke.Security.Roles;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 {
+    using Dnn.PersonaBar.Library.Prompt.Common;
+    using DotNetNuke.Security.Roles;
+
     public class RoleModelBase
     {
+        public RoleModelBase()
+        {
+        }
+
+        public RoleModelBase(RoleInfo role)
+        {
+            this.AutoAssign = role.AutoAssignment;
+            this.ModifiedDate = role.LastModifiedOnDate.ToPromptShortDateString();
+            this.ModifiedBy = role.LastModifiedByUserID;
+            this.IsPublic = role.IsPublic;
+            this.RoleGroupId = role.RoleGroupID;
+            this.RoleId = role.RoleID;
+            this.RoleName = role.RoleName;
+            this.UserCount = role.UserCount;
+        }
+
+        public string __ModifiedBy => $"get-user {this.ModifiedBy}";
+
+        public string __RoleId => $"get-role {this.RoleId}";
+        public string __UserCount => $"list-users --role '{this.RoleName}'";
+
         public int RoleId { get; set; }
         public int RoleGroupId { get; set; }
         public string RoleName { get; set; }
@@ -17,31 +38,5 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         public int UserCount { get; set; }
         public string ModifiedDate { get; set; }
         public int ModifiedBy { get; set; }
-
-        #region Constructors
-        public RoleModelBase()
-        {
-        }
-
-        public RoleModelBase(RoleInfo role)
-        {
-            AutoAssign = role.AutoAssignment;
-            ModifiedDate = role.LastModifiedOnDate.ToPromptShortDateString();
-            ModifiedBy = role.LastModifiedByUserID;
-            IsPublic = role.IsPublic;
-            RoleGroupId = role.RoleGroupID;
-            RoleId = role.RoleID;
-            RoleName = role.RoleName;
-            UserCount = role.UserCount;
-        }
-        #endregion
-
-        #region Command Links
-        public string __ModifiedBy => $"get-user {ModifiedBy}";
-
-        public string __RoleId => $"get-role {RoleId}";
-        public string __UserCount => $"list-users --role '{RoleName}'";
-
-        #endregion
-    }
+     }
 }

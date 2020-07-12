@@ -1,40 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Content.Taxonomy;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+
+    using DotNetNuke.Entities.Content.Taxonomy;
+
     public class TermsEventArgs : EventArgs
     {
         private readonly Term _SelectedTerm;
 
-        #region "Constructors"
-
         public TermsEventArgs(Term selectedTerm)
         {
-            _SelectedTerm = selectedTerm;
+            this._SelectedTerm = selectedTerm;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         public Term SelectedTerm
         {
             get
             {
-                return _SelectedTerm;
+                return this._SelectedTerm;
             }
         }
-
-        #endregion
     }
 }

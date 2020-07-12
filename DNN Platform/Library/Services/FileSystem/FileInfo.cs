@@ -1,34 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Web;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+    using System.Web;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : FileInfo
-    /// 
+    /// Project  : DotNetNuke
+    /// Class    : FileInfo
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Represents the File object and holds the Properties of that object
+    ///   Represents the File object and holds the Properties of that object.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
@@ -45,12 +40,10 @@ namespace DotNetNuke.Services.FileSystem
         private int? _height = null;
         private string _sha1Hash = null;
 
-        #region Constructors
-
         public FileInfo()
         {
-            UniqueId = Guid.NewGuid();
-            VersionGuid = Guid.NewGuid();
+            this.UniqueId = Guid.NewGuid();
+            this.VersionGuid = Guid.NewGuid();
         }
 
         public FileInfo(int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached)
@@ -67,25 +60,145 @@ namespace DotNetNuke.Services.FileSystem
         public FileInfo(Guid uniqueId, Guid versionGuid, int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId,
                         int storageLocation, bool cached, string hash)
         {
-            UniqueId = uniqueId;
-            VersionGuid = versionGuid;
-            PortalId = portalId;
-            FileName = filename;
-            Extension = extension;
-            Size = filesize;
-            Width = width;
-            Height = height;
-            ContentType = contentType;
-            Folder = folder;
-            FolderId = folderId;
-            StorageLocation = storageLocation;
-            IsCached = cached;
-            SHA1Hash = hash;
+            this.UniqueId = uniqueId;
+            this.VersionGuid = versionGuid;
+            this.PortalId = portalId;
+            this.FileName = filename;
+            this.Extension = extension;
+            this.Size = filesize;
+            this.Width = width;
+            this.Height = height;
+            this.ContentType = contentType;
+            this.Folder = folder;
+            this.FolderId = folderId;
+            this.StorageLocation = storageLocation;
+            this.IsCached = cached;
+            this.SHA1Hash = hash;
         }
 
-        #endregion
+        [XmlElement("height")]
+        public int Height
+        {
+            get
+            {
+                if (this.FileId != 0 && (!this._height.HasValue || this._height.Value == Null.NullInteger))
+                {
+                    this.LoadImageProperties();
+                }
 
-        #region Properties
+                return this._height.Value;
+            }
+
+            set
+            {
+                this._height = value;
+            }
+        }
+
+        [XmlElement("iscached")]
+        public bool IsCached { get; set; }
+
+        [XmlElement("physicalpath")]
+        public string PhysicalPath
+        {
+            get
+            {
+                string physicalPath = Null.NullString;
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current != null)
+                {
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                }
+
+                if (this.PortalId == Null.NullInteger)
+                {
+                    physicalPath = Globals.HostMapPath + this.RelativePath;
+                }
+                else
+                {
+                    if (portalSettings == null || portalSettings.PortalId != this.PortalId)
+                    {
+                        // Get the PortalInfo  based on the Portalid
+                        var portal = PortalController.Instance.GetPortal(this.PortalId);
+                        if (portal != null)
+                        {
+                            physicalPath = portal.HomeDirectoryMapPath + this.RelativePath;
+                        }
+                    }
+                    else
+                    {
+                        physicalPath = portalSettings.HomeDirectoryMapPath + this.RelativePath;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(physicalPath))
+                {
+                    physicalPath = physicalPath.Replace("/", "\\");
+                }
+
+                return physicalPath;
+            }
+        }
+
+        public string RelativePath
+        {
+            get
+            {
+                return this.Folder + this.FileName;
+            }
+        }
+
+        public FileAttributes? FileAttributes
+        {
+            get
+            {
+                FileAttributes? _fileAttributes = null;
+
+                if (this.SupportsFileAttributes)
+                {
+                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
+                    _fileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).GetFileAttributes(this);
+                }
+
+                return _fileAttributes;
+            }
+        }
+
+        public bool SupportsFileAttributes
+        {
+            get
+            {
+                if (!this._supportsFileAttributes.HasValue)
+                {
+                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
+
+                    try
+                    {
+                        this._supportsFileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).SupportsFileAttributes();
+                    }
+                    catch
+                    {
+                        this._supportsFileAttributes = false;
+                    }
+                }
+
+                return this._supportsFileAttributes.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the file is enabled,
+        /// considering if the publish period is active and if the current date is within the publish period.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get
+            {
+                var today = DateTime.Today;
+                return !this.EnablePublishPeriod
+                    || (this.StartDate.Date <= today && (this.EndDate == Null.NullDate || today <= this.EndDate.Date));
+            }
+        }
 
         [XmlElement("contenttype")]
         public string ContentType { get; set; }
@@ -110,96 +223,27 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                return _folder;
+                return this._folder;
             }
+
             set
             {
-                //Make sure folder name ends with /
+                // Make sure folder name ends with /
                 if (!string.IsNullOrEmpty(value) && !value.EndsWith("/"))
                 {
                     value = value + "/";
                 }
 
-                _folder = value;
+                this._folder = value;
             }
         }
 
         [XmlElement("folderid")]
         public int FolderId { get; set; }
 
-        [XmlElement("height")]
-        public int Height
-        {
-            get
-            {
-                if (FileId != 0 && (!_height.HasValue || _height.Value == Null.NullInteger))
-                {
-                    LoadImageProperties();
-                }
-
-                return _height.Value;
-            }
-            set
-            {
-                _height = value;
-            }
-        }
-
-        [XmlElement("iscached")]
-        public bool IsCached { get; set; }
-
-        [XmlElement("physicalpath")]
-        public string PhysicalPath
-        {
-            get
-            {
-                string physicalPath = Null.NullString;
-                PortalSettings portalSettings = null;
-                if (HttpContext.Current != null)
-                {
-                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                }
-
-                if (PortalId == Null.NullInteger)
-                {
-                    physicalPath = Globals.HostMapPath + RelativePath;
-                }
-                else
-                {
-                    if (portalSettings == null || portalSettings.PortalId != PortalId)
-                    {
-                        //Get the PortalInfo  based on the Portalid
-                        var portal = PortalController.Instance.GetPortal(PortalId);
-                        if ((portal != null))
-                        {
-                            physicalPath = portal.HomeDirectoryMapPath + RelativePath;
-                        }
-                    }
-                    else
-                    {
-                        physicalPath = portalSettings.HomeDirectoryMapPath + RelativePath;
-                    }
-                }
-
-                if ((!string.IsNullOrEmpty(physicalPath)))
-                {
-                    physicalPath = physicalPath.Replace("/", "\\");
-                }
-
-                return physicalPath;
-            }
-        }
 
         [XmlIgnore]
         public int PortalId { get; set; }
-
-        public string RelativePath
-        {
-            get
-            {
-                return Folder + FileName;
-            }
-        }
 
         [XmlElement("size")]
         public int Size { get; set; }
@@ -212,16 +256,17 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (FileId != 0 && (!_width.HasValue || _width.Value == Null.NullInteger))
+                if (this.FileId != 0 && (!this._width.HasValue || this._width.Value == Null.NullInteger))
                 {
-                    LoadImageProperties();
+                    this.LoadImageProperties();
                 }
 
-                return _width.Value;
+                return this._width.Value;
             }
+
             set
             {
-                _width = value;
+                this._width = value;
             }
         }
 
@@ -230,54 +275,17 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (FileId > 0 && string.IsNullOrEmpty(_sha1Hash))
+                if (this.FileId > 0 && string.IsNullOrEmpty(this._sha1Hash))
                 {
-                    LoadHashProperty();
+                    this.LoadHashProperty();
                 }
 
-                return _sha1Hash;
+                return this._sha1Hash;
             }
+
             set
             {
-                _sha1Hash = value;
-            }
-        }
-
-        public FileAttributes? FileAttributes
-        {
-            get
-            {
-                FileAttributes? _fileAttributes = null;
-
-                if (SupportsFileAttributes)
-                {
-                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(PortalId, FolderMappingID);
-                    _fileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).GetFileAttributes(this);
-                }
-
-                return _fileAttributes;
-            }
-        }
-
-        public bool SupportsFileAttributes
-        {
-            get
-            {
-                if (!_supportsFileAttributes.HasValue)
-                {
-                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(PortalId, FolderMappingID);
-
-                    try
-                    {
-                        _supportsFileAttributes = FolderProvider.Instance(folderMapping.FolderProviderType).SupportsFileAttributes();
-                    }
-                    catch
-                    {
-                        _supportsFileAttributes = false;
-                    }
-                }
-
-                return _supportsFileAttributes.Value;
+                this._sha1Hash = value;
             }
         }
 
@@ -285,9 +293,9 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if(!_lastModificationTime.HasValue)
+                if (!this._lastModificationTime.HasValue)
                 {
-                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(PortalId, FolderMappingID);
+                    var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
 
                     try
                     {
@@ -299,11 +307,12 @@ namespace DotNetNuke.Services.FileSystem
                     }
                 }
 
-                return _lastModificationTime.Value;
+                return this._lastModificationTime.Value;
             }
+
             set
             {
-                _lastModificationTime = value;
+                this._lastModificationTime = value;
             }
         }
 
@@ -311,129 +320,82 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (_folderMappingID == 0)
+                if (this._folderMappingID == 0)
                 {
-                    if (FolderId > 0)
+                    if (this.FolderId > 0)
                     {
-                        var folder = FolderManager.Instance.GetFolder(FolderId);
+                        var folder = FolderManager.Instance.GetFolder(this.FolderId);
 
                         if (folder != null)
                         {
-                            _folderMappingID = folder.FolderMappingID;
-                            return _folderMappingID;
+                            this._folderMappingID = folder.FolderMappingID;
+                            return this._folderMappingID;
                         }
                     }
 
-                    switch (StorageLocation)
+                    switch (this.StorageLocation)
                     {
                         case (int)FolderController.StorageLocationTypes.InsecureFileSystem:
-                            _folderMappingID = FolderMappingController.Instance.GetFolderMapping(PortalId, "Standard").FolderMappingID;
+                            this._folderMappingID = FolderMappingController.Instance.GetFolderMapping(this.PortalId, "Standard").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                            _folderMappingID = FolderMappingController.Instance.GetFolderMapping(PortalId, "Secure").FolderMappingID;
+                            this._folderMappingID = FolderMappingController.Instance.GetFolderMapping(this.PortalId, "Secure").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                            _folderMappingID = FolderMappingController.Instance.GetFolderMapping(PortalId, "Database").FolderMappingID;
+                            this._folderMappingID = FolderMappingController.Instance.GetFolderMapping(this.PortalId, "Database").FolderMappingID;
                             break;
                         default:
-                            _folderMappingID = FolderMappingController.Instance.GetDefaultFolderMapping(PortalId).FolderMappingID;
+                            this._folderMappingID = FolderMappingController.Instance.GetDefaultFolderMapping(this.PortalId).FolderMappingID;
                             break;
                     }
                 }
 
-                return _folderMappingID;
+                return this._folderMappingID;
             }
+
             set
             {
-                _folderMappingID = value;
+                this._folderMappingID = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets a metadata field with an optional title associated to the file
+        /// Gets or sets a metadata field with an optional title associated to the file.
         /// </summary>
         public string Title { get; set; }
 
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the date on which the file starts to be published
+        /// Gets or sets the date on which the file starts to be published.
         /// </summary>
         public DateTime StartDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the date on which the file ends to be published
+        /// Gets or sets the date on which the file ends to be published.
         /// </summary>
         public DateTime EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether publish period is enabled for the file
+        /// Gets or sets a value indicating whether publish period is enabled for the file.
         /// </summary>
         public bool EnablePublishPeriod { get; set; }
 
         /// <summary>
-        /// Gets or sets the published version number of the file
+        /// Gets or sets the published version number of the file.
         /// </summary>
         public int PublishedVersion { get; set; }
 
         /// <summary>
-        /// Gets a flag which says whether the file has ever been published
+        /// Gets a value indicating whether gets a flag which says whether the file has ever been published.
         /// </summary>
         [XmlIgnore]
         public bool HasBeenPublished { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether the file is enabled,
-        /// considering if the publish period is active and if the current date is within the publish period
-        /// </summary>
-        public bool IsEnabled
-        {
-            get
-            {
-                var today = DateTime.Today;
-                return !EnablePublishPeriod
-                    || (StartDate.Date <= today && (EndDate == Null.NullDate || today <= EndDate.Date));
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a reference to ContentItem, to use in Workflows
+        /// Gets or sets a reference to ContentItem, to use in Workflows.
         /// </summary>
         public int ContentItemID { get; set; }
-
-        #endregion
-
-        #region IHydratable Implementation
-
-        public void Fill(IDataReader dr)
-        {
-            ContentType = Null.SetNullString(dr["ContentType"]);
-            Extension = Null.SetNullString(dr["Extension"]);
-            FileId = Null.SetNullInteger(dr["FileId"]);
-            FileName = Null.SetNullString(dr["FileName"]);
-            Folder = Null.SetNullString(dr["Folder"]);
-            FolderId = Null.SetNullInteger(dr["FolderId"]);
-            Height = Null.SetNullInteger(dr["Height"]);
-            IsCached = Null.SetNullBoolean(dr["IsCached"]);
-            PortalId  = Null.SetNullInteger(dr["PortalId"]);
-            SHA1Hash = Null.SetNullString(dr["SHA1Hash"]);
-            Size = Null.SetNullInteger(dr["Size"]);
-            StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
-            UniqueId = Null.SetNullGuid(dr["UniqueId"]);
-            VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
-            Width = Null.SetNullInteger(dr["Width"]);
-            LastModificationTime = Null.SetNullDateTime(dr["LastModificationTime"]);
-            FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
-            Title = Null.SetNullString(dr["Title"]);
-            Description = Null.SetNullString(dr["Description"]);
-            EnablePublishPeriod = Null.SetNullBoolean(dr["EnablePublishPeriod"]);
-            StartDate = Null.SetNullDateTime(dr["StartDate"]);
-            EndDate  = Null.SetNullDateTime(dr["EndDate"]);
-            ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
-            PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
-            HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
-            FillBaseProperties(dr);
-        }
 
         [XmlIgnore]
         public int KeyID
@@ -442,29 +404,57 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return this.FileId;
             }
+
             set
             {
-                FileId = value;
+                this.FileId = value;
             }
         }
 
-        #endregion
-
-        #region Private methods
+        public void Fill(IDataReader dr)
+        {
+            this.ContentType = Null.SetNullString(dr["ContentType"]);
+            this.Extension = Null.SetNullString(dr["Extension"]);
+            this.FileId = Null.SetNullInteger(dr["FileId"]);
+            this.FileName = Null.SetNullString(dr["FileName"]);
+            this.Folder = Null.SetNullString(dr["Folder"]);
+            this.FolderId = Null.SetNullInteger(dr["FolderId"]);
+            this.Height = Null.SetNullInteger(dr["Height"]);
+            this.IsCached = Null.SetNullBoolean(dr["IsCached"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+            this.SHA1Hash = Null.SetNullString(dr["SHA1Hash"]);
+            this.Size = Null.SetNullInteger(dr["Size"]);
+            this.StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
+            this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
+            this.VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
+            this.Width = Null.SetNullInteger(dr["Width"]);
+            this.LastModificationTime = Null.SetNullDateTime(dr["LastModificationTime"]);
+            this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
+            this.Title = Null.SetNullString(dr["Title"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.EnablePublishPeriod = Null.SetNullBoolean(dr["EnablePublishPeriod"]);
+            this.StartDate = Null.SetNullDateTime(dr["StartDate"]);
+            this.EndDate = Null.SetNullDateTime(dr["EndDate"]);
+            this.ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
+            this.PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
+            this.HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
+            this.FillBaseProperties(dr);
+        }
 
         private void LoadImageProperties()
-        {            
+        {
             var fileManager = (FileManager)FileManager.Instance;
             if (!fileManager.IsImageFile(this))
             {
-                _width = _height = 0;
+                this._width = this._height = 0;
                 return;
             }
+
             var fileContent = fileManager.GetFileContent(this);
 
             if (fileContent == null)
             {
-                //If can't get file content then just exit the function, so it will load again next time.
+                // If can't get file content then just exit the function, so it will load again next time.
                 return;
             }
 
@@ -480,14 +470,14 @@ namespace DotNetNuke.Services.FileSystem
             {
                 image = fileManager.GetImageFromStream(fileContent);
 
-                _width = image.Width;
-                _height = image.Height;
+                this._width = image.Width;
+                this._height = image.Height;
             }
             catch
             {
-                _width = 0;
-                _height = 0;
-                ContentType = "application/octet-stream";
+                this._width = 0;
+                this._height = 0;
+                this.ContentType = "application/octet-stream";
             }
             finally
             {
@@ -495,23 +485,22 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     image.Dispose();
                 }
+
                 fileContent.Position = 0;
-            }    
+            }
+
             fileContent.Close();
         }
 
         private void LoadHashProperty()
         {
             var fileManager = (FileManager)FileManager.Instance;
-            var currentHashCode = FolderProvider.Instance( FolderMappingController.Instance.GetFolderMapping(FolderMappingID).FolderProviderType).GetHashCode(this);
-            if (currentHashCode != _sha1Hash)
+            var currentHashCode = FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(this.FolderMappingID).FolderProviderType).GetHashCode(this);
+            if (currentHashCode != this._sha1Hash)
             {
-                _sha1Hash = currentHashCode;
+                this._sha1Hash = currentHashCode;
                 fileManager.UpdateFile(this);
             }
-            
         }
-
-        #endregion
     }
 }

@@ -1,21 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Web;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utils
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Web;
+
     /// <summary>
-    /// Utility functions for network information
+    /// Enumration of IP AddressTyes.
+    /// </summary>
+    public enum AddressType
+    {
+        IPv4,
+        IPv6,
+    }
+
+    /// <summary>
+    /// Utility functions for network information.
     /// </summary>
     public class NetworkUtils
     {
@@ -24,7 +28,7 @@ namespace DotNetNuke.Common.Utils
         /// </summary>
         /// <param name="Host">The host.</param>
         /// <param name="AddressFormat">The address format.</param>
-        /// <returns>Returns IP address</returns>
+        /// <returns>Returns IP address.</returns>
         /// <remarks><seealso cref="AddressType"></seealso></remarks>
         public static string GetAddress(string Host, AddressType AddressFormat)
         {
@@ -38,11 +42,13 @@ namespace DotNetNuke.Common.Utils
                     addrFamily = AddressFamily.InterNetworkV6;
                     break;
             }
+
             IPHostEntry IPE = Dns.GetHostEntry(Host);
             if (Host != IPE.HostName)
             {
                 IPE = Dns.GetHostEntry(IPE.HostName);
             }
+
             foreach (IPAddress IPA in IPE.AddressList)
             {
                 if (IPA.AddressFamily == addrFamily)
@@ -50,65 +56,61 @@ namespace DotNetNuke.Common.Utils
                     return IPA.ToString();
                 }
             }
+
             return string.Empty;
         }
+
         /// <summary>
-        /// Convert IP address to long integer
+        /// Convert IP address to long integer.
         /// </summary>
-        /// <param name="ip">The ip address</param>
-        /// <returns>IP Address in long</returns>
+        /// <param name="ip">The ip address.</param>
+        /// <returns>IP Address in long.</returns>
         public static long IPtoLong(IPAddress ip)
         {
-            //convert IP to number
-
+            // convert IP to number
             byte[] addressBytes = ip.GetAddressBytes();
-            //get the octets
-            long addr = 0;
-            //accumulator for address
 
+            // get the octets
+            long addr = 0;
+
+            // accumulator for address
             for (int x = 0; x <= 3; x++)
             {
-                addr = addr | (Convert.ToInt64(addressBytes[x]) << (3 - x) * 8);
+                addr = addr | (Convert.ToInt64(addressBytes[x]) << ((3 - x) * 8));
             }
+
             return addr;
         }
 
         /// <summary>
         /// Longs to ip address.
         /// </summary>
-        /// <param name="ip">The ip address</param>
-        /// <returns>IP Number as formatted string</returns>
+        /// <param name="ip">The ip address.</param>
+        /// <returns>IP Number as formatted string.</returns>
         public static string LongToIp(long ip)
         {
-            //convert number back to IP
-
+            // convert number back to IP
             var ipByte = new byte[4];
-            //4 octets
-            string addr = "";
-            //accumulator for address
 
+            // 4 octets
+            string addr = string.Empty;
+
+            // accumulator for address
             long mask8 = MaskFromCidr(8);
-            //create eight bit mask
 
-            //get the octets
+            // create eight bit mask
+
+            // get the octets
             for (int x = 0; x <= 3; x++)
             {
                 ipByte[x] = Convert.ToByte((ip & mask8) >> ((3 - x) * 8));
                 mask8 = mask8 >> 8;
                 addr += ipByte[x].ToString() + ".";
-                //add current octet to string
-            }
-            return addr.TrimEnd('.');
-        }
 
-        /// <summary>
-        /// Masks from cidr.
-        /// </summary>
-        /// <param name="cidr">The Classless Inter-Domain Routing (cidr)</param>
-        /// <returns></returns>
-        private static long MaskFromCidr(int cidr)
-        {
-            return Convert.ToInt64(Math.Pow(2, ((32 - cidr))) - 1) ^ 4294967295L;
+                // add current octet to string
+            }
+
+            return addr.TrimEnd('.');
         }
 
         /// <summary>
@@ -116,10 +118,10 @@ namespace DotNetNuke.Common.Utils
         /// </summary>
         /// <param name="startIP">The start ip.</param>
         /// <param name="subnetMask">The subnet mask.</param>
-        /// <returns>Classless Inter-Domain Routing</returns>
+        /// <returns>Classless Inter-Domain Routing.</returns>
         public static string FormatAsCidr(string startIP, string subnetMask)
         {
-            if (String.IsNullOrEmpty(subnetMask))
+            if (string.IsNullOrEmpty(subnetMask))
             {
                 return startIP;
             }
@@ -130,16 +132,21 @@ namespace DotNetNuke.Common.Utils
             long ipL = IPtoLong(ipAddress);
             long maskL = IPtoLong(mask);
 
-            //Convert  Mask to CIDR(1-30)
+            // Convert  Mask to CIDR(1-30)
             long oneBit = 0x80000000L;
             int cidr = 0;
 
             for (int x = 31; x >= 0; x += -1)
             {
                 if ((maskL & oneBit) == oneBit)
+                {
                     cidr += 1;
+                }
                 else
+                {
                     break;
+                }
+
                 oneBit = oneBit >> 1;
             }
 
@@ -181,17 +188,17 @@ namespace DotNetNuke.Common.Utils
             }
             catch (Exception)
             {
-                //catch case where IP cannot be resolved such as when debugger is attached
+                // catch case where IP cannot be resolved such as when debugger is attached
                 startIP = 0;
                 endIP = 0;
             }
         }
 
         /// <summary>
-        /// Convert IP to Integer
+        /// Convert IP to Integer.
         /// </summary>
         /// <param name="ipNumber">The ip number.</param>
-        /// <returns>IP number as integer</returns>
+        /// <returns>IP number as integer.</returns>
         public static uint IP2Int(string ipNumber)
         {
             uint ip = 0;
@@ -203,6 +210,7 @@ namespace DotNetNuke.Common.Utils
                 ip += Convert.ToUInt32(elements[2]) << 8;
                 ip += Convert.ToUInt32(elements[3]);
             }
+
             return ip;
         }
 
@@ -212,21 +220,27 @@ namespace DotNetNuke.Common.Utils
         /// <param name="currentIP">The current ip.</param>
         /// <param name="startIP">The start ip.</param>
         /// <param name="subnetmask">The subnetmask.</param>
-        /// <returns>True or False</returns>
+        /// <returns>True or False.</returns>
         public static bool IsIPInRange(string currentIP, string startIP, string subnetmask)
         {
             try
             {
-                //handle case where local adapter is localhost
-                if (currentIP=="::1")
+                // handle case where local adapter is localhost
+                if (currentIP == "::1")
                 {
                     currentIP = "127.0.0.1";
                 }
 
-                //handle case where we are matching on a single IP
-                if (String.IsNullOrEmpty(subnetmask)) if (currentIP == startIP) return true;
+                // handle case where we are matching on a single IP
+                if (string.IsNullOrEmpty(subnetmask))
+                {
+                    if (currentIP == startIP)
+                    {
+                        return true;
+                    }
+                }
 
-                //handle case where we have to build a CIDR, convert to an IP range and compare
+                // handle case where we have to build a CIDR, convert to an IP range and compare
                 string cidr = FormatAsCidr(startIP, subnetmask);
                 uint fromIP, toIP;
                 Network2IpRange(cidr, out fromIP, out toIP);
@@ -239,9 +253,10 @@ namespace DotNetNuke.Common.Utils
             }
             catch (Exception)
             {
-                //catch case where IP cannot be resolved such as when debugger is attached
+                // catch case where IP cannot be resolved such as when debugger is attached
                 return false;
             }
+
             return false;
         }
 
@@ -262,16 +277,15 @@ namespace DotNetNuke.Common.Utils
 
             return ipAddress;
         }
-    }
 
-    /// <summary>
-    /// Enumration of IP AddressTyes
-    /// </summary>
-    public enum AddressType
-    {
-        IPv4,
-        IPv6
+        /// <summary>
+        /// Masks from cidr.
+        /// </summary>
+        /// <param name="cidr">The Classless Inter-Domain Routing (cidr).</param>
+        /// <returns></returns>
+        private static long MaskFromCidr(int cidr)
+        {
+            return Convert.ToInt64(Math.Pow(2, 32 - cidr) - 1) ^ 4294967295L;
+        }
     }
-
- 
 }

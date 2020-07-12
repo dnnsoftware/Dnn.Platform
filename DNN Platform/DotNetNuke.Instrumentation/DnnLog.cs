@@ -1,31 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web.Compilation;
-using log4net.Config;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Instrumentation
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Web.Compilation;
+
+    using log4net.Config;
+
     [Obsolete("Deprecated in 7.0.1 due to poor performance, use LoggerSource.Instance. Scheduled removal in v11.0.0.")]
     public static class DnnLog
     {
         private const string ConfigFile = "DotNetNuke.log4net.config";
+        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(DnnLog));
+
+        private static readonly object ConfigLock = new object();
         private static bool _configured;
 
-        //use a single static logger to avoid the performance impact of type reflection on every call for logging
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(DnnLog));
-        
-        private static readonly object ConfigLock = new object();
+        // use a single static logger to avoid the performance impact of type reflection on every call for logging
 
         private static StackFrame CallingFrame
         {
@@ -43,8 +39,10 @@ namespace DotNetNuke.Instrumentation
                         frameDepth++;
                         reflectedType = stack[frameDepth].GetMethod().ReflectedType;
                     }
+
                     frame = stack[frameDepth];
                 }
+
                 return frame;
             }
         }
@@ -57,35 +55,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        private static void EnsureConfig()
-        {
-            if (!_configured)
-            {
-                lock (ConfigLock)
-                {
-                    if (!_configured)
-                    {
-
-                        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
-                        var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
-                        if (!File.Exists(configPath) && File.Exists(originalPath))
-                        {
-                            File.Copy(originalPath, configPath);
-                        }
-
-                        if (File.Exists(configPath))
-                        {
-                            XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
-                        }
-                        _configured = true;
-                    }
-
-                }
-            }
-        }
-
         /// <summary>
-        ///   Standard method to use on method entry
+        ///   Standard method to use on method entry.
         /// </summary>
         public static void MethodEntry()
         {
@@ -98,7 +69,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Standard method to use on method exit
+        ///   Standard method to use on method exit.
         /// </summary>
         public static void MethodExit(object returnObject)
         {
@@ -116,7 +87,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Standard method to use on method exit
+        ///   Standard method to use on method exit.
         /// </summary>
         public static void MethodExit()
         {
@@ -127,8 +98,6 @@ namespace DotNetNuke.Instrumentation
                 Logger.TraceFormat("Method [{0}] Returned", CallingFrame.GetMethod().Name);
             }
         }
-
-        #region Trace
 
         public static void Trace(string message)
         {
@@ -160,10 +129,6 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        #endregion
-
-        #region Debug
-
         public static void Debug(object message)
         {
             EnsureConfig();
@@ -180,13 +145,13 @@ namespace DotNetNuke.Instrumentation
 
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelDebug))
             {
-                if(!args.Any())
+                if (!args.Any())
                 {
                     Logger.Debug(format);
                 }
                 else
                 {
-                    Logger.DebugFormat(format, args);    
+                    Logger.DebugFormat(format, args);
                 }
             }
         }
@@ -200,10 +165,6 @@ namespace DotNetNuke.Instrumentation
                 Logger.DebugFormat(provider, format, args);
             }
         }
-
-        #endregion
-
-        #region Info
 
         public static void Info(object message)
         {
@@ -228,20 +189,16 @@ namespace DotNetNuke.Instrumentation
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelInfo))
             {
-                if(!args.Any())
+                if (!args.Any())
                 {
                     Logger.Info(format);
                 }
                 else
                 {
-                    Logger.InfoFormat(format, args);    
+                    Logger.InfoFormat(format, args);
                 }
             }
         }
-
-        #endregion
-
-        #region Warn
 
         public static void Warn(string message, Exception exception)
         {
@@ -270,13 +227,12 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-
         public static void Warn(string format, params object[] args)
         {
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelWarn))
             {
-                if(!args.Any())
+                if (!args.Any())
                 {
                     Logger.Warn(format);
                 }
@@ -287,10 +243,6 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        #endregion
-
-        #region Error
-
         public static void Error(string message, Exception exception)
         {
             EnsureConfig();
@@ -298,9 +250,7 @@ namespace DotNetNuke.Instrumentation
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelError))
             {
                 Logger.Error(message, exception);
-            }  
-
-            
+            }
         }
 
         public static void Error(object message)
@@ -346,10 +296,6 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        #endregion
-
-        #region Fatal
-
         public static void Fatal(string message, Exception exception)
         {
             EnsureConfig();
@@ -393,6 +339,30 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        #endregion
+        private static void EnsureConfig()
+        {
+            if (!_configured)
+            {
+                lock (ConfigLock)
+                {
+                    if (!_configured)
+                    {
+                        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
+                        var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
+                        if (!File.Exists(configPath) && File.Exists(originalPath))
+                        {
+                            File.Copy(originalPath, configPath);
+                        }
+
+                        if (File.Exists(configPath))
+                        {
+                            XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
+                        }
+
+                        _configured = true;
+                    }
+                }
+            }
+        }
     }
 }
