@@ -19,8 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
-
-    [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency", false)]
+    [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency. Will be removed in DNN 11.", false)]
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));

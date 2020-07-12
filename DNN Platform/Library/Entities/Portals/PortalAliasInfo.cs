@@ -1,4 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿using DotNetNuke.Abstractions.Portals;
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
@@ -14,7 +15,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Urls;
 
     [Serializable]
-    public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable
+    public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPortalAliasInfo
     {
         public PortalAliasInfo()
         {

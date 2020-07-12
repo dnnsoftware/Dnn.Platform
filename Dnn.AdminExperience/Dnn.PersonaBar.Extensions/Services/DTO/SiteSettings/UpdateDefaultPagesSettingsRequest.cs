@@ -1,9 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
-    using Newtonsoft.Json;
+    using Dnn.PersonaBar.Security.Attributes;
 
     public class UpdateDefaultPagesSettingsRequest
     {
@@ -32,5 +33,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public int PrivacyTabId { get; set; }
 
         public string PageHeadText { get; set; }
+
+        [TabExist]
+        public int RedirectAfterLoginTabId { get; set; }
+
+        [TabExist]
+        public int RedirectAfterLogoutTabId { get; set; }
+
+        [TabExist]
+        public int RedirectAfterRegistrationTabId { get; set; }
+
     }
 }
