@@ -1,15 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Common.Utilities;
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+
 namespace DotNetNuke.Services.FileSystem
 {
-using System;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using DotNetNuke.Common.Utilities;
+
     /// <summary>
     /// Do not implement.  This interface is meant for reference and unit test purposes only.
     /// There is no guarantee that this interface will not change.
@@ -282,6 +283,4 @@ using System;
         /// </summary>
         FileExtensionWhitelist WhiteList { get; }
     }
-using System.Collections.Generic;
-using System.IO;
 }
