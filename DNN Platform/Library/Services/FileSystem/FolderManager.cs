@@ -2447,7 +2447,8 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             /// <summary>
-            /// Gets the Souce folder.
+            /// Gets the Source folder.
+
             /// </summary>
             public string Source { get; private set; }
 
