@@ -451,7 +451,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets the folder that belongs to a specific user.
         /// </summary>
         /// <param name="userInfo">The user to get the folder for.</param>
-        /// <returns>The informaiton about the the user folder, <see cref="IFolderInfo"></see>.</returns>
+        /// <returns>The information about the the user folder, <see cref="IFolderInfo"></see>.</returns>
         public virtual IFolderInfo GetUserFolder(UserInfo userInfo)
         {
             // always use _default portal for a super user
