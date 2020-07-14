@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
@@ -18,7 +17,6 @@ namespace DotNetNuke.Services.FileSystem
     using System.Web;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -33,9 +31,7 @@ namespace DotNetNuke.Services.FileSystem
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Exposes methods to manage folders.
-    /// </summary>
+    /// <summary>Exposes methods to manage folders.</summary>
     public class FolderManager : ComponentBase<IFolderManager, FolderManager>, IFolderManager
     {
         private const string DefaultUsersFoldersPath = "Users";
@@ -44,9 +40,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly Dictionary<int, SyncFolderData> SyncFoldersData = new Dictionary<int, SyncFolderData>();
         private static readonly object ThreadLocker = new object();
 
-        /// <summary>
-        /// Gets the localization key for MyfolderName.
-        /// </summary>
+        /// <summary>Gets the localization key for MyFolderName.</summary>
         public virtual string MyFolderName
         {
             get
@@ -880,7 +874,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="eventLogType">The type of the log entry.</param>
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(folder, (PortalSettings)PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
+            EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
         }
 
         /// <summary>
@@ -891,7 +885,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="eventLogType">The type of log entry.</param>
         internal virtual void AddLogEntry(string propertyName, string propertyValue, EventLogController.EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(propertyName, propertyValue, (PortalSettings)PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), eventLogType);
+            EventLogController.Instance.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), eventLogType);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
