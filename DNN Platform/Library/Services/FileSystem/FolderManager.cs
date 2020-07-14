@@ -937,7 +937,7 @@ namespace DotNetNuke.Services.FileSystem
                 this.AddFolder(folderMapping, folderPath);
             }
 
-            // GetUserFolderPathElement is depreced without a replacement, it should have been internal only and will be removed in Dnn10, hence the warning disable here
+            // GetUserFolderPathElement is deprecated without a replacement, it should have been internal only and will be removed in DNN v10, hence the warning disable here
 #pragma warning disable 612,618
             folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
 #pragma warning restore 612,618
