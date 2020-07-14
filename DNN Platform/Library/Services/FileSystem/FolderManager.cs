@@ -912,7 +912,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         /// <returns>The added folder information, <see cref="IFolderInfo" />.</returns>
-        /// <param name="user">the user to add a forder for.</param>
+        /// <param name="user">the user to add a folder for.</param>
         internal virtual IFolderInfo AddUserFolder(UserInfo user)
         {
             // user _default portal for all super users
