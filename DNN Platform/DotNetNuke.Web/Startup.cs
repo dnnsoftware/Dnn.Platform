@@ -29,12 +29,16 @@ namespace DotNetNuke.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var thisAssembly = Assembly.GetAssembly(typeof(Startup));
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => x != Assembly.GetAssembly(typeof(Startup)))
+                .Where(x => x != thisAssembly)
+                .OrderBy(
+                    x => x.FullName.StartsWith("DotNetNuke", StringComparison.OrdinalIgnoreCase) ? 0 :
+                         x.FullName.StartsWith("DNN", StringComparison.OrdinalIgnoreCase) ? 1 : 2)
+                .ThenBy(x => x.FullName)
                 .SelectMany(x => x.SafeGetTypes())
-                .Where(x => typeof(IDnnStartup).IsAssignableFrom(x) &&
-                            x.IsClass &&
-                            !x.IsAbstract);
+                .Where(x => typeof(IDnnStartup).IsAssignableFrom(x) && x.IsClass && !x.IsAbstract)
+                .OrderBy(x => x.FullName ?? x.Name);
 
             var startupInstances = startupTypes
                 .Select(x => this.CreateInstance(x))
