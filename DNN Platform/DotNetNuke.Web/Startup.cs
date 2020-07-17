@@ -1,37 +1,37 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.DependencyInjection.Extensions;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.DependencyInjection;
     using DotNetNuke.Web.Extensions;
+
     using Microsoft.Extensions.DependencyInjection;
 
-    public class Startup : IDnnStartup
+    /// <summary>Initializes the Dependency Injection container.</summary>
+    public static class Startup
     {
-        private static readonly ILog _logger = LoggerSource.Instance.GetLogger(typeof(Startup));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Startup));
 
-        public Startup()
+        /// <summary>Builds the service provider.</summary>
+        /// <returns>An <see cref="IServiceProvider"/> instance.</returns>
+        public static IServiceProvider BuildServiceProvider()
         {
-            this.Configure();
+            var services = new ServiceCollection();
+            services.AddSingleton<IScopeAccessor, ScopeAccessor>();
+            ConfigureServices(services);
+            return services.BuildServiceProvider();
         }
 
-        public IServiceProvider DependencyProvider { get; private set; }
-
-        public void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services)
         {
-            var thisAssembly = Assembly.GetAssembly(typeof(Startup));
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => x != thisAssembly)
                 .OrderBy(
                     x => x.FullName.StartsWith("DotNetNuke", StringComparison.OrdinalIgnoreCase) ? 0 :
                          x.FullName.StartsWith("DNN", StringComparison.OrdinalIgnoreCase) ? 1 : 2)
@@ -41,10 +41,10 @@ namespace DotNetNuke.Web
                 .OrderBy(x => x.FullName ?? x.Name);
 
             var startupInstances = startupTypes
-                .Select(x => this.CreateInstance(x))
+                .Select(CreateInstance)
                 .Where(x => x != null);
 
-            foreach (IDnnStartup startup in startupInstances)
+            foreach (var startup in startupInstances)
             {
                 try
                 {
@@ -52,34 +52,24 @@ namespace DotNetNuke.Web
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error($"Unable to configure services for {typeof(Startup).FullName}, see exception for details", ex);
+                    Logger.Error($"Unable to configure services for {typeof(Startup).FullName}, see exception for details", ex);
                 }
             }
 
             services.AddWebApi();
         }
 
-        private void Configure()
+        private static IDnnStartup CreateInstance(Type startupType)
         {
-            var services = new ServiceCollection();
-            services.AddSingleton<IScopeAccessor, ScopeAccessor>();
-            this.ConfigureServices(services);
-            this.DependencyProvider = services.BuildServiceProvider();
-        }
-
-        private object CreateInstance(Type startupType)
-        {
-            IDnnStartup startup = null;
             try
             {
-                startup = (IDnnStartup)Activator.CreateInstance(startupType);
+                return (IDnnStartup)Activator.CreateInstance(startupType);
             }
             catch (Exception ex)
             {
-                _logger.Error($"Unable to instantiate startup code for {startupType.FullName}", ex);
+                Logger.Error($"Unable to instantiate startup code for {startupType.FullName}", ex);
+                return null;
             }
-
-            return startup;
         }
     }
 }
