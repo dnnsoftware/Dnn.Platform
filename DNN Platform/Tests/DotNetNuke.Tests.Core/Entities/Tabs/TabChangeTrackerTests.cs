@@ -1,15 +1,22 @@
-﻿using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using Moq;
-using NUnit.Framework;
-
-namespace DotNetNuke.Tests.Core.Entities.Tabs
+﻿namespace DotNetNuke.Tests.Core.Entities.Tabs
 {
+    using System;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using Moq;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Contains UTs for <see cref="TabChangeTracker"/>.
+    /// </summary>
     [TestFixture]
     public class TabChangeTrackerTests
     {
+        /// <summary>
+        /// UT for <see cref="TabChangeTracker.TrackModuleModification(ModuleInfo, int, int)" />.
+        /// </summary>
         [Test]
         public void TrackModuleModification_WithSharedModule_ThrowsException()
         {
