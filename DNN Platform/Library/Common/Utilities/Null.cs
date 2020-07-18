@@ -215,6 +215,13 @@ namespace DotNetNuke.Common.Utilities
             return objValue != DBNull.Value ? Convert.ToDateTime(objValue) : NullDate;
         }
 
+        public static DateTime SetNullDateTime(object objValue, DateTimeKind dateTimeKind)
+        {
+            return objValue != DBNull.Value
+                ? DateTime.SpecifyKind(Convert.ToDateTime(objValue), dateTimeKind)
+                : NullDate;
+        }
+
         public static int SetNullInteger(object objValue)
         {
             return objValue != DBNull.Value ? Convert.ToInt32(objValue) : NullInteger;
