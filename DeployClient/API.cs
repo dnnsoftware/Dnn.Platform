@@ -16,6 +16,8 @@ namespace DeployClient
 
         private static HttpClient BuildClient()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             HttpClient client = new HttpClient()
             {
                 BaseAddress = new Uri(new Uri(Program.Options.TargetUri), "DesktopModules/PolyDeploy/API/")

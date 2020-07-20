@@ -11,6 +11,73 @@
 /************************************************************/
 
 /*********************************************************************************************************/
+/*** MODULE STORED PROCEDURES ****************************************************************************/
+/*********************************************************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPage STORED PROCEDURE ***********************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]
+END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPageTotal STORED PROCEDURE ******************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]
+END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_EventLogsPaginated STORED PROCEDURE *********************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUserByAPIKey STORED PROCEDURE ************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_IPSpecByAddress STORED PROCEDURE ************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecByAddress]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecByAddress]
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_SpExists STORED PROCEDURE *******************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_SpExists]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_SpExists]
+GO
+
+
+/*********************************************************************************************************/
+/*** MODULE TABLES ***************************************************************************************/
+/*********************************************************************************************************/
+
+/*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
 /*********************************************************************************************************/
 
@@ -41,11 +108,79 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
 GO
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_EventLogs TABLE ****************************************************************/
+/*** Cantarus_PolyDeploy_EventLogs TABLE *****************************************************************/
 /*********************************************************************************************************/
 
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     BEGIN
         DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]
     END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_Settings TABLE ******************************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Settings]')
+        AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+    DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Settings]
+END
+GO
+
+
+/*********************************************************************************************************/
+/*** UPGRADE 0.9.0 MISC. *********************************************************************************/
+/*********************************************************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_DropUQConstraints STORED PROCEDURE **********************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUsers_PreEncryption TABLE ****************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_PreEncryption]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_PreEncryption]
+    END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_PostUpgrade_00.09.00 STORED PROCEDURE *******************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.00]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.00]
+GO
+
+
+/*********************************************************************************************************/
+/*** UPGRADE 0.9.1 MISC. *********************************************************************************/
+/*********************************************************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_IPSpecs_PreEncryption TABLE *****************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs_PreEncryption]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs_PreEncryption]
+    END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_PostUpgrade_00.09.01 STORED PROCEDURE *******************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.01]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.01]
 GO

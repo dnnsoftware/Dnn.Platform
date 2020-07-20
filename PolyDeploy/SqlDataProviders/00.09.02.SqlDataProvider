@@ -1,0 +1,100 @@
+﻿/************************************************************/
+/***** SqlDataProvider                                  *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+/*** Cantarus_PolyDeploy v0.9.2                           ***/
+/************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_EventLogs TABLE *****************************************************************/
+/***                                                                                                   ***/
+/*** Create index on EventLogs table to allow reasonable pagination performance.                       ***/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]')
+        AND OBJECTPROPERTY(id, N'IsTable') = 1)
+AND EXISTS (
+    SELECT *
+    FROM sys.columns
+    WHERE name = 'Date'
+        AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]'))
+BEGIN
+    IF EXISTS (
+        SELECT *
+        FROM sys.indexes
+        WHERE name = 'IN_{objectQualifier}Cantarus_Polydeploy_EventLogs_Date'
+            AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]'))
+    BEGIN
+        DROP INDEX [IN_{objectQualifier}Cantarus_PolyDeploy_EventLogs_Date]
+            ON {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]
+    END
+
+    CREATE NONCLUSTERED INDEX [IN_{objectQualifier}Cantarus_PolyDeploy_EventLogs_Date]
+        ON {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs] ([Date] DESC)
+END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPage STORED PROCEDURE ***********************************************/
+/***                                                                                                   ***/
+/*** Create stored procedure for retrieving pages of data from the EventLogs table.                    ***/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]
+    @PageNumber [INT],
+    @PageSize [INT],
+    @EventType [NVARCHAR](32) = null,
+    @Severity [INT] = null
+AS
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]
+    WHERE (@EventType IS NULL OR ([EventType] = @EventType))
+        AND (@Severity IS NULL OR ([Severity] = @Severity))
+    ORDER BY [Date] DESC
+    OFFSET @PageSize * @PageNumber ROWS
+    FETCH NEXT @PageSize ROWS ONLY
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPageTotal STORED PROCEDURE ******************************************/
+/***                                                                                                   ***/
+/*** Create stored procedure for retrieving total number of results when using pagination.             ***/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]
+    @PageNumber [INT],
+    @PageSize [INT],
+    @EventType [NVARCHAR](32) = null,
+    @Severity [INT] = null
+AS
+    SELECT COUNT(1) AS [RowCount]
+    FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]
+    WHERE (@EventType IS NULL OR ([EventType] = @EventType))
+        AND (@Severity IS NULL OR ([Severity] = @Severity))
+GO

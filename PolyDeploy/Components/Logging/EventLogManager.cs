@@ -14,6 +14,11 @@ namespace Cantarus.Modules.PolyDeploy.Components.Logging
             return LogDC.Browse(pageIndex, pageSize, eventType, severity);
         }
 
+        public static int BrowseCount(int pageIndex, int pageSize, string eventType, EventLogSeverity? severity)
+        {
+            return LogDC.BrowseCount(pageIndex, pageSize, eventType, severity);
+        }
+
         public static IEnumerable<string> GetEventTypes()
         {
             return LogDC.GetEventTypes();

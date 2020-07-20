@@ -1,10 +1,14 @@
-﻿<!-- Install Progression -->
-<div class="row">
-    <div class="col-xs-12">
-        <span>Install Progression</span>
+﻿<!-- Warnings -->
+<div ng-controller="WarningController">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger" ng-repeat="warning in warnings" ng-if="warning.active">
+                <strong>Warning!</strong> {{ warning.message }}
+            </div>
+        </div>
     </div>
 </div>
-<!-- /Install Progression -->
+<!-- /Warnings-->
 
 <!-- Subview -->
 <div class="row">

@@ -18,14 +18,20 @@
 
         // POST
         // Create a new IPSpec.
-        function createSpec(ipAddress) {
+        function createSpec(name, ipAddress) {
 
             // Make request.
-            return $http.post(controllerUrl + 'Create?ip=' + ipAddress).then(
+            return $http.post(controllerUrl + `Create?name=${name}&ip=${ipAddress}`).then(
                 function (response) {
-
-                    // Return unpacked data.
-                    return response.data;
+                    return {
+                        err: null,
+                        ipSpec: response.data
+                    }
+                },
+                function (response) {
+                    return {
+                        err: response.data.Message
+                    }
                 });
         }
 

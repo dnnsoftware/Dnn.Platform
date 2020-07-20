@@ -1,5 +1,5 @@
-﻿module.exports = ['$scope', 'SessionService',
-    function ($scope, SessionService) {
+﻿module.exports = ['$scope', '$state','SessionService',
+    function ($scope, $state, SessionService) {
 
         // Wait for session.
         SessionService.sessionPromise.then(
@@ -17,6 +17,29 @@
                     SessionService.install();
                 }
             });
+
+        // Start a new deploy.
+        $scope.restart = function () {
+
+            // Create a new session.
+            SessionService.newSession()
+                .then(function () {
+
+                    // Navigate back to beginning.
+                    $state.go('install.upload');
+                });
+        };
+
+        // Is the install complete?
+        $scope.isComplete = function () {
+
+            var session = $scope.session;
+
+            // Is the session complete?
+            return session
+                && session.Status
+                && session.Status === 2;
+        };
 
         // Current status.
         $scope.currentStatus = function (session) {
@@ -79,8 +102,6 @@
                 // Success?
                 panelClass = modPackage.Success ? 'panel-success' : 'panel-danger';
             }
-
-            console.log(panelClass);
 
             return panelClass;
         };

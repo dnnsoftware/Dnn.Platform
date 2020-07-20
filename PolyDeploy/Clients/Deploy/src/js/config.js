@@ -2,34 +2,25 @@
     function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
         // Default route.
-        $urlRouterProvider.otherwise('/install/upload');
+        $urlRouterProvider.otherwise('/upload');
 
         // States.
         $stateProvider
             .state('install', {
-                url: '/install',
-                template: require('./templates/install.html'),
-                controller: 'InstallController'
+                template: require('./templates/install.html')
             })
             .state('install.upload', {
                 url: '/upload',
                 template: require('./templates/upload.html'),
-                controller: require('./controllers/UploadController')
+                controller: 'UploadController'
             })
             .state('install.summary', {
-                url: '/summary',
                 template: require('./templates/summary.html'),
                 controller: 'SummaryController'
             })
             .state('install.result', {
-                url: '/result',
                 template: require('./templates/result.html'),
                 controller: 'ResultController'
-            })
-            .state('manage-users', {
-                url: '/manage-users',
-                template: require('./templates/manage-users.html'),
-                controller: 'ManageUsersController'
             });
 
         // Add $http interceptor for DNN Services Framework.
