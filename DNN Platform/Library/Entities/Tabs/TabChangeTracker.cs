@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Tabs
 {
     using System;
@@ -14,6 +13,8 @@ namespace DotNetNuke.Entities.Tabs
 
     public class TabChangeTracker : ServiceLocator<ITabChangeTracker, TabChangeTracker>, ITabChangeTracker
     {
+        public const string IsModuleDoesNotBelongToPage = nameof(IsModuleDoesNotBelongToPage);
+
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
             var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
@@ -32,9 +33,12 @@ namespace DotNetNuke.Entities.Tabs
         {
             if (ModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
             {
-                throw new InvalidOperationException(Localization.GetExceptionMessage(
+                var exceptionToThrow = new InvalidOperationException(
+                    Localization.GetExceptionMessage(
                     "ModuleDoesNotBelongToPage",
                     "This module does not belong to the page. Please, move to its master page to change the module"));
+                exceptionToThrow.Data.Add(IsModuleDoesNotBelongToPage, true);
+                throw exceptionToThrow;
             }
 
             var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
