@@ -52,7 +52,7 @@ namespace DotNetNuke.Web
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error($"Unable to configure services for {typeof(Startup).FullName}, see exception for details", ex);
+                    Logger.Error($"Unable to configure services for {startup.GetType().FullName}, see exception for details", ex);
                 }
             }
 
