@@ -259,6 +259,7 @@
     <Compile Include="Common\SharedConstants.cs" />
     <Compile Include="Services\MobileHelperController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="DependencyInjectionInitialize.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListState.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
