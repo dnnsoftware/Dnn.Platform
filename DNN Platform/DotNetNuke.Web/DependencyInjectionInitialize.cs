@@ -32,12 +32,11 @@ namespace DotNetNuke.Web
         {
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .OrderBy(
-                    x => x.FullName.StartsWith("DotNetNuke", StringComparison.OrdinalIgnoreCase) ? 0 :
-                         x.FullName.StartsWith("DNN", StringComparison.OrdinalIgnoreCase) ? 1 : 2)
-                .ThenBy(x => x.FullName)
-                .SelectMany(x => x.SafeGetTypes())
-                .Where(x => typeof(IDnnStartup).IsAssignableFrom(x) && x.IsClass && !x.IsAbstract)
-                .OrderBy(x => x.FullName ?? x.Name);
+                    assembly => assembly.FullName.StartsWith("DotNetNuke", StringComparison.OrdinalIgnoreCase) ? 0 :
+                         assembly.FullName.StartsWith("DNN", StringComparison.OrdinalIgnoreCase) ? 1 : 2)
+                .ThenBy(assembly => assembly.FullName)
+                .SelectMany(assembly => assembly.SafeGetTypes().OrderBy(type => type.FullName ?? type.Name))
+                .Where(type => typeof(IDnnStartup).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract);
 
             var startupInstances = startupTypes.Select(CreateInstance).Where(x => x != null);
             foreach (var startup in startupInstances)
