@@ -498,81 +498,81 @@ namespace DotNetNuke.Common
         {
             get
             {
-                if (_status == UpgradeStatus.Unknown)
+                if (_status != UpgradeStatus.Unknown && _status != UpgradeStatus.Error)
                 {
-                    var tempStatus = UpgradeStatus.Unknown;
+                    return _status;
+                }
 
-                    Logger.Trace("Getting application status");
-                    tempStatus = UpgradeStatus.None;
+                Logger.Trace("Getting application status");
+                var tempStatus = UpgradeStatus.None;
 
-                    // first call GetProviderPath - this insures that the Database is Initialised correctly
-                    // and also generates the appropriate error message if it cannot be initialised correctly
-                    string strMessage = DataProvider.Instance().GetProviderPath();
+                // first call GetProviderPath - this insures that the Database is Initialised correctly
+                // and also generates the appropriate error message if it cannot be initialised correctly
+                string strMessage = DataProvider.Instance().GetProviderPath();
 
-                    // get current database version from DB
-                    if (!strMessage.StartsWith("ERROR:"))
+                // get current database version from DB
+                if (!strMessage.StartsWith("ERROR:"))
+                {
+                    try
                     {
-                        try
-                        {
-                            _dataBaseVersion = DataProvider.Instance().GetVersion();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                            strMessage = "ERROR:" + ex.Message;
-                        }
+                        _dataBaseVersion = DataProvider.Instance().GetVersion();
                     }
-
-                    if (strMessage.StartsWith("ERROR"))
+                    catch (Exception ex)
                     {
-                        if (IsInstalled())
-                        {
-                            // Errors connecting to the database after an initial installation should be treated as errors.
-                            tempStatus = UpgradeStatus.Error;
-                        }
-                        else
-                        {
-                            // An error that occurs before the database has been installed should be treated as a new install
-                            tempStatus = UpgradeStatus.Install;
-                        }
+                        Logger.Error(ex);
+                        strMessage = "ERROR:" + ex.Message;
                     }
-                    else if (DataBaseVersion == null)
+                }
+
+                if (strMessage.StartsWith("ERROR"))
+                {
+                    if (IsInstalled())
                     {
-                        // No Db Version so Install
-                        tempStatus = UpgradeStatus.Install;
+                        // Errors connecting to the database after an initial installation should be treated as errors.
+                        tempStatus = UpgradeStatus.Error;
                     }
                     else
                     {
-                        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                        if (version.Major > DataBaseVersion.Major)
-                        {
-                            // Upgrade Required (Major Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
-                        {
-                            // Upgrade Required (Minor Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build > DataBaseVersion.Build)
-                        {
-                            // Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
-                        {
-                            // Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
+                        // An error that occurs before the database has been installed should be treated as a new install
+                        tempStatus = UpgradeStatus.Install;
                     }
-
-                    _status = tempStatus;
-
-                    Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
-                    Logger.Trace("Application status is " + _status);
                 }
+                else if (DataBaseVersion == null)
+                {
+                    // No Db Version so Install
+                    tempStatus = UpgradeStatus.Install;
+                }
+                else
+                {
+                    var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                    if (version.Major > DataBaseVersion.Major)
+                    {
+                        // Upgrade Required (Major Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                    else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
+                    {
+                        // Upgrade Required (Minor Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                    else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                             version.Build > DataBaseVersion.Build)
+                    {
+                        // Upgrade Required (Build Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                    else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                             version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
+                    {
+                        // Upgrade Required (Build Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                }
+
+                _status = tempStatus;
+
+                Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
+                Logger.Trace("Application status is " + _status);
 
                 return _status;
             }
