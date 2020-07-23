@@ -140,7 +140,10 @@ class EditUrl extends Component {
                         <Button type="secondary" onClick={onCancel} disabled={saving}>
                             {Localization.get("Cancel")}
                         </Button>
-                        <Button type="primary" onClick={onSave} disabled={!this.state.hasChanges || saving}>
+                        <Button
+                            type="primary"
+                            onClick={onSave}
+                            disabled={!this.state.hasChanges || url == null || url.siteAlias == null || url.siteAlias.Key == null || saving}>
                             {Localization.get("Save")}
                         </Button>
                     </div>
