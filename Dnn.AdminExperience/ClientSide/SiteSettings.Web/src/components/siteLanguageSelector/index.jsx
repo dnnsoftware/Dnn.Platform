@@ -65,37 +65,40 @@ class SiteLanguageSelector extends Component {
 
     onSiteChange(event) {
         let {state, props} = this;
-        if(event.value !== state.portalId){
-            props.dispatch(SearchActions.getCultureList(event.value, () => {
-                let culture = this.validateCultureCode();
-                if (state.cultureCode !== culture) {
-                    this.setState({
-                        portalId: event.value,
-                        cultureCode: culture
-                    });
-                    this.triggerEvent("portalIdCultureCodeChanged",
-                        {
-                            portalId: event.value,
-                            cultureCode: culture,
-                            referrer: props.referrer,
-                            referrerText: props.referrerText,
-                            backToReferrerFunc: props.backToReferrerFunc
-                        });
-                }
-                else {
-                    this.setState({
-                        portalId: event.value
-                    });
-                    this.triggerEvent("portalIdChanged",
-                        {
-                            portalId: event.value,
-                            referrer: props.referrer,
-                            referrerText: props.referrerText,
-                            backToReferrerFunc: props.backToReferrerFunc
-                        });
-                }
-            }));
+
+        if(event.value === state.portalId){
+            return;
         }
+
+        props.dispatch(SearchActions.getCultureList(event.value, () => {
+            let culture = this.validateCultureCode();
+            if (state.cultureCode !== culture) {
+                this.setState({
+                    portalId: event.value,
+                    cultureCode: culture
+                });
+                this.triggerEvent("portalIdCultureCodeChanged",
+                    {
+                        portalId: event.value,
+                        cultureCode: culture,
+                        referrer: props.referrer,
+                        referrerText: props.referrerText,
+                        backToReferrerFunc: props.backToReferrerFunc
+                    });
+            }
+            else {
+                this.setState({
+                    portalId: event.value
+                });
+                this.triggerEvent("portalIdChanged",
+                    {
+                        portalId: event.value,
+                        referrer: props.referrer,
+                        referrerText: props.referrerText,
+                        backToReferrerFunc: props.backToReferrerFunc
+                    });
+            }
+        }));
     }
 
     onLanguageChange(event) {
