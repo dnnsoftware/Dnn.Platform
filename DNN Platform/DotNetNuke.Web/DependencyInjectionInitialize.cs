@@ -18,6 +18,8 @@ namespace DotNetNuke.Web
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DependencyInjectionInitialize));
 
+        internal static IServiceCollection ServiceCollection { get; private set; }
+
         /// <summary>Builds the service provider.</summary>
         /// <returns>An <see cref="IServiceProvider"/> instance.</returns>
         public static IServiceProvider BuildServiceProvider()
@@ -25,6 +27,8 @@ namespace DotNetNuke.Web
             var services = new ServiceCollection();
             services.AddSingleton<IScopeAccessor, ScopeAccessor>();
             ConfigureAllStartupServices(services);
+
+            ServiceCollection = services;
             return services.BuildServiceProvider();
         }
 
