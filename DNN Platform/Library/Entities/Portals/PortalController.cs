@@ -44,7 +44,10 @@ namespace DotNetNuke.Entities.Portals
     // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
+
     using ICSharpCode.SharpZipLib.Zip;
+    
+    using Microsoft.Extensions.DependencyInjection;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
@@ -2090,7 +2093,7 @@ namespace DotNetNuke.Entities.Portals
             var typeClass = Type.GetType(providerBusinessClassNode.Attributes["type"].Value);
             if (typeClass != null)
             {
-                ComponentFactory.RegisterComponentInstance<TAbstract>(folderTypeConfig.Provider, Activator.CreateInstance(typeClass));
+                ComponentFactory.RegisterComponentInstance<TAbstract>(folderTypeConfig.Provider, ActivatorUtilities.CreateInstance(Globals.DependencyProvider, typeClass));
             }
         }
 
