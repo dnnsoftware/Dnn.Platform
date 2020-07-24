@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
@@ -23,9 +22,11 @@ namespace DotNetNuke.Services.GeneratedImage
     using DotNetNuke.Services.GeneratedImage.StartTransform;
     using DotNetNuke.Services.Localization.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Assembly = System.Reflection.Assembly;
 
-    public class DnnImageHandler : ImageHandler
+    public class DnnImageHandler : ImageHandler, IDisposable
     {
         /// <summary>
         /// While list of server folders where the system allow the dnn image handler to
@@ -37,6 +38,8 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ImagePath,
             Globals.ApplicationPath + "/Portals/",
         };
+
+        private Lazy<IServiceScope> serviceScope = new Lazy<IServiceScope>(() => Globals.DependencyProvider.CreateScope());
 
         private string _defaultImageFile = string.Empty;
 
@@ -94,6 +97,17 @@ namespace DotNetNuke.Services.GeneratedImage
                     Exceptions.Exceptions.LogException(ex);
                     return emptyBmp;
                 }
+            }
+        }
+
+        private IServiceProvider ServiceProvider => serviceScope.Value.ServiceProvider;
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (this.serviceScope.IsValueCreated)
+            {
+                this.serviceScope.Value.Dispose();
             }
         }
 
@@ -275,7 +289,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         var asm = Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\" +
                                                          imageTransformClassParts[1].Trim() + ".dll");
                         var t = asm.GetType(imageTransformClassParts[0].Trim());
-                        var imageTransform = (ImageTransform)Activator.CreateInstance(t);
+                        var imageTransform = (ImageTransform)ActivatorUtilities.CreateInstance(this.ServiceProvider, t);
 
                         foreach (var key in parameters.AllKeys)
                         {
