@@ -16,6 +16,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Prompt;
+    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -51,6 +52,7 @@ namespace DotNetNuke
 
             services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
             services.AddTransient<ICommandRepository, CommandRepository>();
+            services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
         }
     }
 }
