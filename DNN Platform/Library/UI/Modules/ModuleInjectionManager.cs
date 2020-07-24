@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.UI.Modules
 {
     using System;
@@ -9,10 +8,13 @@ namespace DotNetNuke.UI.Modules
     using System.Linq;
 
     using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     internal class ModuleInjectionManager
     {
@@ -49,7 +51,7 @@ namespace DotNetNuke.UI.Modules
                 IModuleInjectionFilter filter;
                 try
                 {
-                    filter = Activator.CreateInstance(filterType) as IModuleInjectionFilter;
+                    filter = ActivatorUtilities.CreateInstance(Globals.DependencyProvider, filterType) as IModuleInjectionFilter;
                 }
                 catch (Exception e)
                 {
