@@ -7,6 +7,7 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Prompt;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -14,6 +15,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Prompt;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -31,9 +33,11 @@ namespace DotNetNuke
             services.AddSingleton<ReflectedModuleControlFactory>();
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
 
+#pragma warning disable CS0618
             services.AddScoped<IEventLogger, EventLogController>();
             services.AddScoped<IEventLogConfigService, EventLogController>();
             services.AddScoped<IEventLogService, EventLogController>();
+#pragma warning restore CS0618
 
             services.AddTransient(x => PortalController.Instance);
             services.AddScoped<IHostSettingsService, HostController>();
@@ -46,6 +50,7 @@ namespace DotNetNuke
             services.AddScoped<IPortalAliasService, PortalAliasController>();
 
             services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
+            services.AddTransient<ICommandRepository, CommandRepository>();
         }
     }
 }
