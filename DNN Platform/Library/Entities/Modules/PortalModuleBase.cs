@@ -17,9 +17,10 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -42,13 +43,9 @@ namespace DotNetNuke.Entities.Modules
             RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly Lazy<IServiceScope> _serviceScope = new Lazy<IServiceScope>(Globals.DependencyProvider.CreateScope);
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
-
-        public PortalModuleBase()
-        {
-            this.DependencyProvider = Globals.DependencyProvider;
-        }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -368,7 +365,7 @@ namespace DotNetNuke.Entities.Modules
         /// <value>
         /// The Dependency Service.
         /// </value>
-        protected IServiceProvider DependencyProvider { get; }
+        protected IServiceProvider DependencyProvider => this._serviceScope.Value.ServiceProvider;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -415,6 +412,16 @@ namespace DotNetNuke.Entities.Modules
         public int GetNextActionID()
         {
             return this.ModuleContext.GetNextActionID();
+        }
+
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            base.Dispose();
+            if (this._serviceScope.IsValueCreated)
+            {
+                this._serviceScope.Value.Dispose();
+            }
         }
 
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
