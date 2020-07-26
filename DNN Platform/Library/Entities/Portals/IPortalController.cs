@@ -7,7 +7,7 @@ namespace DotNetNuke.Entities.Portals
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
+    using System.Xml.XPath;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Users;
 
@@ -220,5 +220,264 @@ namespace DotNetNuke.Entities.Portals
         /// Adds or Updates or Deletes a portal setting value.
         /// </summary>
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
+
+        /// <summary>
+        /// Adds the portal dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="tabId">The tab id.</param>
+        void AddPortalDictionary(int portalId, int tabId);
+
+        /// <summary>
+        /// Creates the root folder for a child portal.
+        /// </summary>
+        /// <remarks>
+        /// If call this method, it will create the specific folder if the folder doesn't exist;
+        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx'.
+        /// </remarks>
+        /// <param name="ChildPath">The child path.</param>
+        /// <returns>
+        /// If the method executed successful, it will return NullString, otherwise return error message.
+        /// </returns>
+        /// <example>
+        /// <code lang="C#">
+        /// string childPhysicalPath = Server.MapPath(childPath);
+        /// message = PortalController.CreateChildPortalFolder(childPhysicalPath);
+        /// </code>
+        /// </example>
+        string CreateChildPortalFolder(string childPath);
+
+        /// <summary>
+        /// Deletes all expired portals.
+        /// </summary>
+        /// <param name="serverPath">The server path.</param>
+        void DeleteExpiredPortals(string serverPath);
+
+        /// <summary>
+        /// Deletes the portal.
+        /// </summary>
+        /// <param name="portal">The portal.</param>
+        /// <param name="serverPath">The server path.</param>
+        /// <returns>If the method executed successful, it will return NullString, otherwise return error message.</returns>
+        string DeletePortal(PortalInfo portal, string serverPath);
+
+        /// <summary>
+        /// Get the portal folder froma child portal alias.
+        /// </summary>
+        /// <param name="alias">portal alias.</param>
+        /// <returns>folder path of the child portal.</returns>
+        string GetPortalFolder(string alias);
+
+        /// <summary>Delete the child portal folder and try to remove its parent when parent folder is empty.</summary>
+        /// <param name="serverPath">the server path.</param>
+        /// <param name="portalFolder">the child folder path.</param>
+        void DeletePortalFolder(string serverPath, string portalFolder);
+
+        /// <summary>
+        /// Gets the portal dictionary.
+        /// </summary>
+        /// <returns>portal dictionary. the dictionary's Key -> Value is: TabId -> PortalId.</returns>
+        Dictionary<int, int> GetPortalDictionary();
+
+        /// <summary>
+        /// GetPortalsByName gets all the portals whose name matches a provided filter expression.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="nameToMatch">The email address to use to find a match.</param>
+        /// <param name="pageIndex">The page of records to return.</param>
+        /// <param name="pageSize">The size of the page.</param>
+        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
+        /// <returns>An ArrayList of PortalInfo objects.</returns>
+        ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords);
+
+        ArrayList GetPortalsByUser(int userId);
+
+        int GetEffectivePortalId(int portalId);
+
+        /// <summary>
+        /// Gets all expired portals.
+        /// </summary>
+        /// <returns>all expired portals as array list.</returns>
+        ArrayList GetExpiredPortals();
+
+        /// <summary>
+        /// Determines whether the portal is child portal.
+        /// </summary>
+        /// <param name="portal">The portal.</param>
+        /// <param name="serverPath">The server path.</param>
+        /// <returns>
+        ///   <c>true</c> if the portal is child portal; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsChildPortal(PortalInfo portal, string serverPath);
+
+        bool IsMemberOfPortalGroup(int portalId);
+
+        /// <summary>
+        /// Deletes the portal setting (neutral and for all languages).
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        void DeletePortalSetting(int portalID, string settingName);
+
+        /// <summary>
+        /// Deletes the portal setting in this language.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        void DeletePortalSetting(int portalID, string settingName, string cultureCode);
+
+        /// <summary>
+        /// Deletes all portal settings by portal id.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        void DeletePortalSettings(int portalID);
+
+        /// <summary>
+        /// Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        void DeletePortalSettings(int portalID, string cultureCode);
+
+        /// <summary>
+        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.
+        /// </summary>
+        /// <param name="settingName">the setting to read.</param>
+        /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
+        /// <returns></returns>
+        string GetEncryptedString(string settingName, int portalID, string passPhrase);
+
+        /// <summary>
+        /// Gets the portal setting.
+        /// </summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        string GetPortalSetting(string settingName, int portalID, string defaultValue);
+
+        /// <summary>
+        /// Gets the portal setting for a specific language (or neutral).
+        /// </summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
+        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode);
+
+        /// <summary>
+        /// Gets the portal setting as boolean.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue);
+
+        /// <summary>
+        /// Gets the portal setting as boolean for a specific language (or neutral).
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
+        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode);
+
+        /// <summary>
+        /// Gets the portal setting as integer.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        int GetPortalSettingAsInteger(string key, int portalID, int defaultValue);
+
+        /// <summary>
+        /// Gets the portal setting as double.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal Id.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        double GetPortalSettingAsDouble(string key, int portalId, double defaultValue);
+
+        /// <summary>
+        /// Gets the portal setting as integer for a specific language (or neutral).
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
+        /// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
+        int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode);
+
+        /// <summary>
+        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">host settings key.</param>
+        /// <param name="settingValue">host settings value.</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
+        void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase);
+
+        /// <summary>
+        /// Updates a single neutral (not language specific) portal setting and clears it from the cache.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        void UpdatePortalSetting(int portalID, string settingName, string settingValue);
+
+        /// <summary>
+        /// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
+        void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache);
+
+        /// <summary>
+        /// Checks the desktop modules whether is installed.
+        /// </summary>
+        /// <param name="nav">The nav.</param>
+        /// <returns>Empty string if the module hasn't been installed, otherwise return the friendly name.</returns>
+        string CheckDesktopModulesInstalled(XPathNavigator nav);
+
+        /// <summary>
+        ///   function provides the language for portalinfo requests
+        ///   in case where language has not been installed yet, will return the core install default of en-us.
+        /// </summary>
+        /// <param name="portalID"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// </remarks>
+        string GetActivePortalLanguage(int portalID);
+
+        /// <summary>
+        ///   return the current DefaultLanguage value from the Portals table for the requested Portalid.
+        /// </summary>
+        /// <param name = "portalID"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// </remarks>
+        string GetPortalDefaultLanguage(int portalID);
+
+        /// <summary>
+        ///   set the required DefaultLanguage in the Portals table for a particular portal
+        ///   saves having to update an entire PortalInfo object.
+        /// </summary>
+        /// <param name="portalID"></param>
+        /// <param name="CultureCode"></param>
+        /// <remarks>
+        /// </remarks>
+        void UpdatePortalDefaultLanguage(int portalID, string cultureCode);
+
+        void IncrementCrmVersion(int portalID);
+
+        void IncrementOverridingPortalsCrmVersion();
     }
 }
