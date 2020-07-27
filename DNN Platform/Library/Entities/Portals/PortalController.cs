@@ -1157,7 +1157,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementOverridingPortalsCrmVersion' instnace method. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementOverridingPortalsCrmVersion' instance method. Scheduled removal in v11.0.0.")]
         public static void IncrementOverridingPortalsCrmVersion() => IncrementOverridingPortalsCrmVersion();
 
         void IPortalController.IncrementOverridingPortalsCrmVersion()
