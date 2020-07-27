@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Sitemap
                         (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
                         (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && this.IsTabPublic(tab.TabPermissions))
                     {
-                        if ((this.includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished && tab.Indexed)
+                        if ((this.includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished && tab.AllowIndex)
                         {
                             try
                             {
