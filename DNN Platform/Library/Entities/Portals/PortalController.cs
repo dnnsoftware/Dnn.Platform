@@ -1143,7 +1143,7 @@ namespace DotNetNuke.Entities.Portals
             DataProvider.Instance().EnsureLocalizationExists(portalID, CultureCode);
         }
 
-        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementCrmVersion' instnace method. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementCrmVersion' instance method. Scheduled removal in v11.0.0.")]
         public static void IncrementCrmVersion(int portalID) => IncrementCrmVersion(portalID);
 
         void IPortalController.IncrementCrmVersion(int portalID)
