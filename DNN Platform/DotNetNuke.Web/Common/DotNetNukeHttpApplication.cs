@@ -129,9 +129,9 @@ namespace DotNetNuke.Web.Common.Internal
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
-            Globals.DependencyProvider = new LazyServiceProvider();
-            var startup = new Startup();
-            (Globals.DependencyProvider as LazyServiceProvider).SetProvider(startup.DependencyProvider);
+            var dependencyProvider = new LazyServiceProvider();
+            Globals.DependencyProvider = dependencyProvider;
+            dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
             ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
 
             ComponentFactory.Container = new SimpleContainer();

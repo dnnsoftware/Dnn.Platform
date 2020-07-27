@@ -212,6 +212,7 @@
     <Compile Include="ConfigSection\AuthServicesConfiguration.cs" />
     <Compile Include="ConfigSection\MessageHandlerEntry.cs" />
     <Compile Include="ConfigSection\MessageHandlersCollection.cs" />
+    <Compile Include="Prompt\ListServices.cs" />
     <Compile Include="Models\ModuleDetail.cs" />
     <Compile Include="Models\ModuleInstance.cs" />
     <Compile Include="Models\SiteDetail.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Common\SharedConstants.cs" />
     <Compile Include="Services\MobileHelperController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="DependencyInjectionInitialize.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListState.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
