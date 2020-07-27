@@ -9,17 +9,23 @@ namespace Dnn.PersonaBar.Security.MenuControllers
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
 
+    /// <summary>
+    /// Controls the security menu.
+    /// </summary>
     public class SecurityMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();

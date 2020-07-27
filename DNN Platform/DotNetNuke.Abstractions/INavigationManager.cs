@@ -6,6 +6,9 @@ namespace DotNetNuke.Abstractions
 {
     using DotNetNuke.Abstractions.Portals;
 
+    /// <summary>
+    /// Provides navigation services.
+    /// </summary>
     public interface INavigationManager
     {
         /// <summary>
