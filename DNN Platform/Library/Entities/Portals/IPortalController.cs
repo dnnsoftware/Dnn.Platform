@@ -20,13 +20,11 @@ namespace DotNetNuke.Entities.Portals
     /// </remarks>
     public interface IPortalController
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Creates a new portal alias.
         /// </summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="portalAlias">Portal Alias to be created.</param>
-        /// -----------------------------------------------------------------------------
         void AddPortalAlias(int portalId, string portalAlias);
 
         /// <summary>

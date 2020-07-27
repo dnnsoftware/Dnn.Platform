@@ -74,11 +74,7 @@ namespace DotNetNuke.Entities.Portals
         public static void AddPortalDictionary(int portalId, int tabId) =>
             Instance.AddPortalDictionary(portalId, tabId);
 
-        /// <summary>
-        /// Adds the portal dictionary.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="tabId">The tab id.</param>
+        /// <inheritdoc />
         void IPortalController.AddPortalDictionary(int portalId, int tabId)
         {
             
@@ -108,23 +104,7 @@ namespace DotNetNuke.Entities.Portals
         public static string CreateChildPortalFolder(string ChildPath) =>
             Instance.CreateChildPortalFolder(ChildPath);
 
-        /// <summary>
-        /// Creates the root folder for a child portal.
-        /// </summary>
-        /// <remarks>
-        /// If call this method, it will create the specific folder if the folder doesn't exist;
-        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx'.
-        /// </remarks>
-        /// <param name="ChildPath">The child path.</param>
-        /// <returns>
-        /// If the method executed successful, it will return NullString, otherwise return error message.
-        /// </returns>
-        /// <example>
-        /// <code lang="C#">
-        /// string childPhysicalPath = Server.MapPath(childPath);
-        /// message = PortalController.CreateChildPortalFolder(childPhysicalPath);
-        /// </code>
-        /// </example>
+        /// <inheritdoc />
         string IPortalController.CreateChildPortalFolder(string ChildPath)
         {
             string message = Null.NullString;
@@ -161,10 +141,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeleteExpiredPortals(string serverPath) =>
             Instance.DeleteExpiredPortals(serverPath);
 
-        /// <summary>
-        /// Deletes all expired portals.
-        /// </summary>
-        /// <param name="serverPath">The server path.</param>
+        /// <inheritdoc />
         void IPortalController.DeleteExpiredPortals(string serverPath)
         {
             foreach (PortalInfo portal in GetExpiredPortals())
@@ -183,12 +160,7 @@ namespace DotNetNuke.Entities.Portals
         public static string DeletePortal(PortalInfo portal, string serverPath) =>
             Instance.DeletePortal(portal, serverPath);
 
-        /// <summary>
-        /// Deletes the portal.
-        /// </summary>
-        /// <param name="portal">The portal.</param>
-        /// <param name="serverPath">The server path.</param>
-        /// <returns>If the method executed successful, it will return NullString, otherwise return error message.</returns>
+        /// <inheritdoc />
         string IPortalController.DeletePortal(PortalInfo portal, string serverPath)
         {
             string message = string.Empty;
@@ -259,12 +231,8 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalFolder' instance method. Scheduled removal in v11.0.0.")]
         public static string GetPortalFolder(string alias) =>
             Instance.GetPortalFolder(alias);
-
-        /// <summary>
-        /// Get the portal folder froma child portal alias.
-        /// </summary>
-        /// <param name="alias">portal alias.</param>
-        /// <returns>folder path of the child portal.</returns>
+        
+        /// <inheritdoc />
         string IPortalController.GetPortalFolder(string alias)
         {
             alias = alias.ToLowerInvariant().Replace("http://", string.Empty).Replace("https://", string.Empty);
@@ -284,9 +252,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalFolder(string serverPath, string portalFolder) =>
             Instance.DeletePortalFolder(serverPath, portalFolder);
 
-        /// <summary>Delete the child portal folder and try to remove its parent when parent folder is empty.</summary>
-        /// <param name="serverPath">the server path.</param>
-        /// <param name="portalFolder">the child folder path.</param>
+        /// <inheritdoc />
         void IPortalController.DeletePortalFolder(string serverPath, string portalFolder)
         {
             var physicalPath = serverPath + portalFolder;
@@ -316,10 +282,7 @@ namespace DotNetNuke.Entities.Portals
         public static Dictionary<int, int> GetPortalDictionary() =>
             Instance.GetPortalDictionary();
 
-        /// <summary>
-        /// Gets the portal dictionary.
-        /// </summary>
-        /// <returns>portal dictionary. the dictionary's Key -> Value is: TabId -> PortalId.</returns>
+        /// <inheritdoc />
         Dictionary<int, int> IPortalController.GetPortalDictionary()
         {
             string cacheKey = string.Format(DataCache.PortalDictionaryCacheKey);
@@ -342,16 +305,7 @@ namespace DotNetNuke.Entities.Portals
         public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords) =>
             Instance.GetPortalsByName(nameToMatch, pageIndex, pageSize, ref totalRecords);
 
-        /// <summary>
-        /// GetPortalsByName gets all the portals whose name matches a provided filter expression.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="nameToMatch">The email address to use to find a match.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of PortalInfo objects.</returns>
+        /// <inheritdoc />
         ArrayList IPortalController.GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             if (pageIndex == -1)
@@ -367,6 +321,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalsByUser' instance method. Scheduled removal in v11.0.0.")]
         public static ArrayList GetPortalsByUser(int userId) => Instance.GetPortalsByUser(userId);
 
+        /// <inheritdoc />
         ArrayList IPortalController.GetPortalsByUser(int userId)
         {
             Type type = typeof(PortalInfo);
@@ -376,6 +331,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetEffectivePortalId' instance method. Scheduled removal in v11.0.0.")]
         public static int GetEffectivePortalId(int portalId) => Instance.GetEffectivePortalId(portalId);
 
+        /// <inheritdoc />
         int IPortalController.GetEffectivePortalId(int portalId)
         {
             if (portalId > Null.NullInteger && Globals.Status != Globals.UpgradeStatus.Upgrade)
@@ -402,10 +358,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetExpiredPortals' instance method. Scheduled removal in v11.0.0.")]
         public static ArrayList GetExpiredPortals() => Instance.GetExpiredPortals();
 
-        /// <summary>
-        /// Gets all expired portals.
-        /// </summary>
-        /// <returns>all expired portals as array list.</returns>
+        /// <inheritdoc />
         ArrayList IPortalController.GetExpiredPortals()
         {
             return CBO.FillCollection(DataProvider.Instance().GetExpiredPortals(), typeof(PortalInfo));
@@ -423,14 +376,7 @@ namespace DotNetNuke.Entities.Portals
         public static bool IsChildPortal(PortalInfo portal, string serverPath) =>
             Instance.IsChildPortal(portal, serverPath);
 
-        /// <summary>
-        /// Determines whether the portal is child portal.
-        /// </summary>
-        /// <param name="portal">The portal.</param>
-        /// <param name="serverPath">The server path.</param>
-        /// <returns>
-        ///   <c>true</c> if the portal is child portal; otherwise, <c>false</c>.
-        /// </returns>
+        /// <inheritdoc />
         bool IPortalController.IsChildPortal(PortalInfo portal, string serverPath)
         {
             bool isChild = Null.NullBoolean;
@@ -456,6 +402,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IsMemberOfPortalGroup' instance method. Scheduled removal in v11.0.0.")]
         public static bool IsMemberOfPortalGroup(int portalId) => Instance.IsMemberOfPortalGroup(portalId);
 
+        /// <inheritdoc />
         bool IPortalController.IsMemberOfPortalGroup(int portalId)
         {
             var portal = Instance.GetPortal(portalId);
@@ -472,11 +419,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSetting(int portalID, string settingName) =>
             Instance.DeletePortalSetting(portalID, settingName);
 
-        /// <summary>
-        /// Deletes the portal setting (neutral and for all languages).
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="settingName">Name of the setting.</param>
+        /// <inheritdoc />
         void IPortalController.DeletePortalSetting(int portalID, string settingName)
         {
             DeletePortalSetting(portalID, settingName, Null.NullString);
@@ -492,12 +435,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSetting(int portalID, string settingName, string cultureCode) =>
             Instance.DeletePortalSetting(portalID, settingName, cultureCode);
 
-        /// <summary>
-        /// Deletes the portal setting in this language.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="settingName">Name of the setting.</param>
-        /// <param name="cultureCode">The culture code.</param>
+        /// <inheritdoc />
         void IPortalController.DeletePortalSetting(int portalID, string settingName, string cultureCode)
         {
             DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLowerInvariant());
@@ -512,10 +450,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeletePortalSettings' instance method. Scheduled removal in v11.0.0.")]
         public static void DeletePortalSettings(int portalID) => Instance.DeletePortalSettings(portalID);
 
-        /// <summary>
-        /// Deletes all portal settings by portal id.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
+        /// <inheritdoc />
         void IPortalController.DeletePortalSettings(int portalID)
         {
             DeletePortalSettings(portalID, Null.NullString);
@@ -529,10 +464,7 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSettings(int portalID, string cultureCode) =>
             Instance.DeletePortalSettings(portalID, cultureCode);
 
-        /// <summary>
-        /// Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
+        /// <inheritdoc />
         void IPortalController.DeletePortalSettings(int portalID, string cultureCode)
         {
             DataProvider.Instance().DeletePortalSettings(portalID, cultureCode);
@@ -550,12 +482,7 @@ namespace DotNetNuke.Entities.Portals
         public static string GetEncryptedString(string settingName, int portalID, string passPhrase) =>
             Instance.GetEncryptedString(settingName, portalID, passPhrase);
 
-        /// <summary>
-        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.
-        /// </summary>
-        /// <param name="settingName">the setting to read.</param>
-        /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         string IPortalController.GetEncryptedString(string settingName, int portalID, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", settingName);
@@ -577,13 +504,7 @@ namespace DotNetNuke.Entities.Portals
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue) =>
             Instance.GetPortalSetting(settingName, portalID, defaultValue);
 
-        /// <summary>
-        /// Gets the portal setting.
-        /// </summary>
-        /// <param name="settingName">Name of the setting.</param>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        /// <inheritdoc />
         string IPortalController.GetPortalSetting(string settingName, int portalID, string defaultValue)
         {
             var retValue = Null.NullString;
@@ -613,14 +534,7 @@ namespace DotNetNuke.Entities.Portals
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode) =>
             Instance.GetPortalSetting(settingName, portalID, defaultValue, cultureCode);
 
-        /// <summary>
-        /// Gets the portal setting for a specific language (or neutral).
-        /// </summary>
-        /// <param name="settingName">Name of the setting.</param>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
-        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        /// <inheritdoc />
         string IPortalController.GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
         {
             var retValue = Null.NullString;
@@ -649,13 +563,7 @@ namespace DotNetNuke.Entities.Portals
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue) =>
             Instance.GetPortalSettingAsBoolean(key, portalID, defaultValue);
 
-        /// <summary>
-        /// Gets the portal setting as boolean.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="defaultValue">default value.</param>
-        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        /// <inheritdoc />
         bool IPortalController.GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue)
         {
             bool retValue = Null.NullBoolean;
@@ -692,14 +600,7 @@ namespace DotNetNuke.Entities.Portals
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode) =>
             Instance.GetPortalSettingAsBoolean(key, portalID, defaultValue, cultureCode);
 
-        /// <summary>
-        /// Gets the portal setting as boolean for a specific language (or neutral).
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="defaultValue">default value.</param>
-        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
-        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        /// <inheritdoc />
         bool IPortalController.GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
         {
             bool retValue = Null.NullBoolean;
@@ -735,13 +636,7 @@ namespace DotNetNuke.Entities.Portals
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue) =>
             Instance.GetPortalSettingAsInteger(key, portalID, defaultValue);
 
-        /// <summary>
-        /// Gets the portal setting as integer.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        /// <inheritdoc />
         int IPortalController.GetPortalSettingAsInteger(string key, int portalID, int defaultValue)
         {
             int retValue = Null.NullInteger;
@@ -777,13 +672,7 @@ namespace DotNetNuke.Entities.Portals
         public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue) =>
             Instance.GetPortalSettingAsDouble(key, portalId, defaultValue);
 
-        /// <summary>
-        /// Gets the portal setting as double.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="portalId">The portal Id.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        /// <inheritdoc />
         double IPortalController.GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
         {
             double retValue = Null.NullDouble;
@@ -820,14 +709,7 @@ namespace DotNetNuke.Entities.Portals
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode) =>
             Instance.GetPortalSettingAsInteger(key, portalID, defaultValue, cultureCode);
 
-        /// <summary>
-        /// Gets the portal setting as integer for a specific language (or neutral).
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
-        /// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
+        /// <inheritdoc />
         int IPortalController.GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
         {
             int retValue = Null.NullInteger;
@@ -863,13 +745,7 @@ namespace DotNetNuke.Entities.Portals
         public static void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase) =>
             Instance.UpdateEncryptedString(portalID, settingName, settingValue, passPhrase);
 
-        /// <summary>
-        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="settingName">host settings key.</param>
-        /// <param name="settingValue">host settings value.</param>
-        /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
+        /// <inheritdoc />
         void IPortalController.UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", settingName);
@@ -891,12 +767,7 @@ namespace DotNetNuke.Entities.Portals
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue) =>
             Instance.UpdatePortalSetting(portalID, settingName, settingValue);
 
-        /// <summary>
-        /// Updates a single neutral (not language specific) portal setting and clears it from the cache.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="settingName">Name of the setting.</param>
-        /// <param name="settingValue">The setting value.</param>
+        /// <inheritdoc />
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue)
         {
             UpdatePortalSetting(portalID, settingName, settingValue, true);
@@ -913,13 +784,7 @@ namespace DotNetNuke.Entities.Portals
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache) =>
             Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache);
 
-        /// <summary>
-        /// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="settingName">Name of the setting.</param>
-        /// <param name="settingValue">The setting value.</param>
-        /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
+        /// <inheritdoc />
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache)
         {
             UpdatePortalSetting(portalID, settingName, settingValue, clearCache, Null.NullString, false);
@@ -973,11 +838,7 @@ namespace DotNetNuke.Entities.Portals
         public static string CheckDesktopModulesInstalled(XPathNavigator nav) =>
             Instance.CheckDesktopModulesInstalled(nav);
 
-        /// <summary>
-        /// Checks the desktop modules whether is installed.
-        /// </summary>
-        /// <param name="nav">The nav.</param>
-        /// <returns>Empty string if the module hasn't been installed, otherwise return the friendly name.</returns>
+        /// <inheritdoc />
         string IPortalController.CheckDesktopModulesInstalled(XPathNavigator nav)
         {
             string friendlyName;
@@ -1027,14 +888,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetActivePortalLanguage' instance method. Scheduled removal in v11.0.0.")]
         public static string GetActivePortalLanguage(int portalID) => Instance.GetActivePortalLanguage(portalID);
 
-        /// <summary>
-        ///   function provides the language for portalinfo requests
-        ///   in case where language has not been installed yet, will return the core install default of en-us.
-        /// </summary>
-        /// <param name = "portalID"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         string IPortalController.GetActivePortalLanguage(int portalID)
         {
             // get Language
@@ -1101,10 +955,7 @@ namespace DotNetNuke.Entities.Portals
         public static string GetPortalDefaultLanguage(int portalID) =>
             Instance.GetPortalDefaultLanguage(portalID);
 
-        /// <summary>
-        ///   return the current DefaultLanguage value from the Portals table for the requested Portalid.
-        /// </summary>
-        /// <param name="portalID"></param>
+        /// <inheritdoc />
         string IPortalController.GetPortalDefaultLanguage(int portalID)
         {
             string cacheKey = string.Format("PortalDefaultLanguage_{0}", portalID);
@@ -1123,15 +974,7 @@ namespace DotNetNuke.Entities.Portals
         public static void UpdatePortalDefaultLanguage(int portalID, string CultureCode) =>
             Instance.UpdatePortalDefaultLanguage(portalID, CultureCode);
 
-
-        /// <summary>
-        ///   set the required DefaultLanguage in the Portals table for a particular portal
-        ///   saves having to update an entire PortalInfo object.
-        /// </summary>
-        /// <param name = "portalID"></param>
-        /// <param name = "CultureCode"></param>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         void IPortalController.UpdatePortalDefaultLanguage(int portalID, string CultureCode)
         {
             DataProvider.Instance().UpdatePortalDefaultLanguage(portalID, CultureCode);
@@ -1144,6 +987,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementCrmVersion' instance method. Scheduled removal in v11.0.0.")]
         public static void IncrementCrmVersion(int portalID) => Instance.IncrementCrmVersion(portalID);
 
+        /// <inheritdoc />
         void IPortalController.IncrementCrmVersion(int portalID)
         {
             int currentVersion;
@@ -1158,6 +1002,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementOverridingPortalsCrmVersion' instance method. Scheduled removal in v11.0.0.")]
         public static void IncrementOverridingPortalsCrmVersion() => Instance.IncrementOverridingPortalsCrmVersion();
 
+        /// <inheritdoc />
         void IPortalController.IncrementOverridingPortalsCrmVersion()
         {
             foreach (PortalInfo portal in Instance.GetPortals())
@@ -1174,11 +1019,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Creates a new portal alias.
-        /// </summary>
-        /// <param name="portalId">Id of the portal.</param>
-        /// <param name="portalAlias">Portal Alias to be created.</param>
+        /// <inheritdoc />
         public void AddPortalAlias(int portalId, string portalAlias)
         {
             // Check if the Alias exists
@@ -1192,11 +1033,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Copies the page template.
-        /// </summary>
-        /// <param name="templateFile">The template file.</param>
-        /// <param name="mappedHomeDirectory">The mapped home directory.</param>
+        /// <inheritdoc />
         public void CopyPageTemplate(string templateFile, string mappedHomeDirectory)
         {
             string hostTemplateFile = string.Format("{0}Templates\\{1}", Globals.HostMapPath, templateFile);
@@ -1217,20 +1054,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Creates the portal.
-        /// </summary>
-        /// <param name="portalName">Name of the portal.</param>
-        /// <param name="adminUserId">The obj admin user.</param>
-        /// <param name="description">The description.</param>
-        /// <param name="keyWords">The key words.</param>
-        /// <param name="template"> </param>
-        /// <param name="homeDirectory">The home directory.</param>
-        /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="serverPath">The server path.</param>
-        /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
-        /// <returns>Portal id.</returns>
+        /// <inheritdoc />
         public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
@@ -1293,20 +1117,7 @@ namespace DotNetNuke.Entities.Portals
             return portalId;
         }
 
-        /// <summary>
-        /// Creates the portal.
-        /// </summary>
-        /// <param name="portalName">Name of the portal.</param>
-        /// <param name="adminUser">The obj admin user.</param>
-        /// <param name="description">The description.</param>
-        /// <param name="keyWords">The key words.</param>
-        /// <param name="template"> </param>
-        /// <param name="homeDirectory">The home directory.</param>
-        /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="serverPath">The server path.</param>
-        /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
-        /// <returns>Portal id.</returns>
+        /// <inheritdoc />
         public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
@@ -1377,10 +1188,7 @@ namespace DotNetNuke.Entities.Portals
             return portalId;
         }
 
-        /// <summary>
-        /// Get all the available portal templates grouped by culture.
-        /// </summary>
-        /// <returns>List of PortalTemplateInfo objects.</returns>
+        /// <inheritdoc />
         public IList<PortalTemplateInfo> GetAvailablePortalTemplates()
         {
             var list = new List<PortalTemplateInfo>();
@@ -1409,11 +1217,7 @@ namespace DotNetNuke.Entities.Portals
             return list;
         }
 
-        /// <summary>
-        ///   Gets information of a portal.
-        /// </summary>
-        /// <param name = "portalId">Id of the portal.</param>
-        /// <returns>PortalInfo object with portal definition.</returns>
+        /// <inheritdoc />
         public PortalInfo GetPortal(int portalId)
         {
             if (portalId == -1)
@@ -1433,12 +1237,7 @@ namespace DotNetNuke.Entities.Portals
             return portal;
         }
 
-        /// <summary>
-        ///   Gets information of a portal.
-        /// </summary>
-        /// <param name = "portalId">Id of the portal.</param>
-        /// <param name="cultureCode">The culture code.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public PortalInfo GetPortal(int portalId, string cultureCode)
         {
             if (portalId == -1)
@@ -1486,30 +1285,19 @@ namespace DotNetNuke.Entities.Portals
             return portal;
         }
 
-        /// <summary>
-        /// Gets the portal.
-        /// </summary>
-        /// <param name="uniqueId">The unique id.</param>
-        /// <returns>Portal info.</returns>
+        /// <inheritdoc />
         public PortalInfo GetPortal(Guid uniqueId)
         {
             return this.GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
         }
 
-        /// <summary>
-        /// Gets information from all portals.
-        /// </summary>
-        /// <returns>ArrayList of PortalInfo objects.</returns>
+        /// <inheritdoc />
         public ArrayList GetPortals()
         {
             return new ArrayList(this.GetPortalList(Null.NullString));
         }
 
-        /// <summary>
-        /// Get portals in specific culture.
-        /// </summary>
-        /// <param name="cultureCode">The culture code.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public List<PortalInfo> GetPortalList(string cultureCode)
         {
             string cacheKey = string.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
@@ -1518,33 +1306,19 @@ namespace DotNetNuke.Entities.Portals
                 c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode)));
         }
 
-        /// <summary>
-        /// Gets the portal settings dictionary.
-        /// </summary>
-        /// <param name="portalId">The portal ID.</param>
-        /// <returns>portal settings.</returns>
+        /// <inheritdoc />
         public Dictionary<string, string> GetPortalSettings(int portalId)
         {
             return GetPortalSettingsDictionary(portalId, string.Empty);
         }
 
-        /// <summary>
-        /// Gets the portal settings dictionary.
-        /// </summary>
-        /// <param name="portalId">The portal ID.</param>
-        /// <param name="cultureCode">The culture code.</param>
-        /// <returns>portal settings.</returns>
+        /// <inheritdoc />
         public Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode)
         {
             return GetPortalSettingsDictionary(portalId, cultureCode);
         }
 
-        /// <summary>
-        /// Load info for a portal template.
-        /// </summary>
-        /// <param name="templatePath">Full path to the portal template.</param>
-        /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
-        /// <returns>A portal template.</returns>
+        /// <inheritdoc />
         public PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
         {
             var template = new PortalTemplateInfo(templatePath, cultureCode);
@@ -1557,11 +1331,7 @@ namespace DotNetNuke.Entities.Portals
             return template;
         }
 
-        /// <summary>
-        /// Gets the portal space used bytes.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>Space used in bytes.</returns>
+        /// <inheritdoc />
         public long GetPortalSpaceUsedBytes(int portalId)
         {
             long size = 0;
@@ -1588,12 +1358,7 @@ namespace DotNetNuke.Entities.Portals
             return size;
         }
 
-        /// <summary>
-        /// Verifies if there's enough space to upload a new file on the given portal.
-        /// </summary>
-        /// <param name="portalId">Id of the portal.</param>
-        /// <param name="fileSizeBytes">Size of the file being uploaded.</param>
-        /// <returns>True if there's enough space available to upload the file.</returns>
+        /// <inheritdoc />
         public bool HasSpaceAvailable(int portalId, long fileSizeBytes)
         {
             int hostSpace;
@@ -1618,12 +1383,7 @@ namespace DotNetNuke.Entities.Portals
             return (((this.GetPortalSpaceUsedBytes(portalId) + fileSizeBytes) / Math.Pow(1024, 2)) <= hostSpace) || hostSpace == 0;
         }
 
-        /// <summary>
-        ///   Remaps the Special Pages such as Home, Profile, Search
-        ///   to their localized versions.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         public void MapLocalizedSpecialPages(int portalId, string cultureCode)
         {
             DataCache.ClearHostCache(true);
@@ -1727,12 +1487,7 @@ namespace DotNetNuke.Entities.Portals
             this.UpdatePortalInternal(targetPortal, false);
         }
 
-        /// <summary>
-        /// Removes the related PortalLocalization record from the database, adds optional clear cache.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void RemovePortalLocalization(int portalId, string cultureCode, bool clearCache = true)
         {
             DataProvider.Instance().RemovePortalLocalization(portalId, cultureCode);
@@ -1742,17 +1497,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Processess a template file for the new portal.
-        /// </summary>
-        /// <param name="portalId">PortalId of the new portal.</param>
-        /// <param name="template">The template.</param>
-        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
-        /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
-        /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
-        /// <remarks>
-        /// The roles and settings nodes will only be processed on the portal template file.
-        /// </remarks>
+        /// <inheritdoc />
         public void ParseTemplate(int portalId, PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             string templatePath, templateFile;
@@ -1761,16 +1506,7 @@ namespace DotNetNuke.Entities.Portals
             this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
         }
 
-        /// <summary>
-        /// Processes the resource file for the template file selected.
-        /// </summary>
-        /// <param name="portalPath">New portal's folder.</param>
-        /// <param name="resoureceFile">full path to the resource file.</param>
-        /// <remarks>
-        /// The resource file is a zip file with the same name as the selected template file and with
-        /// an extension of .resources (to disable this file being downloaded).
-        /// For example: for template file "portal.template" a resource file "portal.template.resources" can be defined.
-        /// </remarks>
+        /// <inheritdoc />
         public void ProcessResourceFileExplicit(string portalPath, string resoureceFile)
         {
             try
@@ -1783,11 +1519,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Updates the portal expiry.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="cultureCode">The culture code.</param>
+        /// <inheritdoc />
         public void UpdatePortalExpiry(int portalId, string cultureCode)
         {
             var portal = this.GetPortal(portalId, cultureCode);
@@ -1802,10 +1534,7 @@ namespace DotNetNuke.Entities.Portals
             this.UpdatePortalInfo(portal);
         }
 
-        /// <summary>
-        /// Updates basic portal information.
-        /// </summary>
-        /// <param name="portal"></param>
+        /// <inheritdoc />
         public void UpdatePortalInfo(PortalInfo portal)
         {
             this.UpdatePortalInternal(portal, true);
@@ -3964,29 +3693,26 @@ namespace DotNetNuke.Entities.Portals
             DataCache.ClearHostCache(true);
         }
 
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
-        /// <returns>portal settings.</returns>
+        /// <inheritdoc />
         PortalSettings IPortalController.GetCurrentPortalSettings()
         {
             return GetCurrentPortalSettingsInternal();
         }
 
+        /// <inheritdoc />
         IAbPortalSettings IPortalController.GetCurrentSettings()
         {
             return GetCurrentPortalSettingsInternal();
         }
 
+        /// <inheritdoc />
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, false);
         }
 
-        /// <summary>
-        /// Adds or Updates or Deletes a portal setting value.
-        /// </summary>
+        /// <inheritdoc />
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
