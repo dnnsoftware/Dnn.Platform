@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Tabs
             get
             {
                 return this.TabSettings["AllowIndex"] == null 
-                       || "true".Equals(this.TabSettings["AllowIndex"].ToString(), StringComparison.CurrentCultureIgnoreCase);
+                       || "true".Equals(this.TabSettings["AllowIndex"].ToString(), StringComparison.OrdinalIgnoreCase);
             }
         }
 
