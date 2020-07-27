@@ -12,9 +12,12 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Users;
 
     /// <summary>
-    /// Do not implement.  This interface is meant for reference and unit test purposes only.
-    /// There is no guarantee that this interface will not change.
+    /// IPortalController provides business layer APIs for the portal.
     /// </summary>
+    /// <remarks>
+    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
+    /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
+    /// </remarks>
     public interface IPortalController
     {
         /// -----------------------------------------------------------------------------
