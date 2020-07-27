@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Prompt.MenuControllers
+namespace Dnn.PersonaBar.ConfigConsole.MenuControllers
 {
     using System.Collections.Generic;
 
@@ -11,9 +11,9 @@ namespace Dnn.PersonaBar.Prompt.MenuControllers
     using DotNetNuke.Entities.Users;
 
     /// <summary>
-    /// Controls the prompt menu.
+    /// Controls the config console menu.
     /// </summary>
-    public class PromptMenuController : IMenuItemController
+    public class ConfigConsoleMenuController : IMenuItemController
     {
         /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
