@@ -289,7 +289,7 @@
                 <menu>
                   <identifier>Dnn.SiteGroups</identifier>
                   <moduleName>SiteGroups</moduleName>
-                  <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                  <controller>Dnn.PersonaBar.Sites.MenuControllers.SitesMenuController, Dnn.PersonaBar.Extensions</controller>
                   <resourceKey>nav_SiteGroups</resourceKey>
                   <path>SiteGroups</path>
                   <parent>Manage</parent>
