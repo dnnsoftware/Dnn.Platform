@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="tabId">The tab id.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.AddPortalDictionary' instance method. Scheduled removal in v11.0.0.")]
         public static void AddPortalDictionary(int portalId, int tabId) =>
-            AddPortalDictionary(portalId, tabId);
+            Instance.AddPortalDictionary(portalId, tabId);
 
         /// <summary>
         /// Adds the portal dictionary.
@@ -106,7 +106,7 @@ namespace DotNetNuke.Entities.Portals
         /// </example>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.CreateChildPortalFolder' instance method. Scheduled removal in v11.0.0.")]
         public static string CreateChildPortalFolder(string ChildPath) =>
-            CreateChildPortalFolder(ChildPath);
+            Instance.CreateChildPortalFolder(ChildPath);
 
         /// <summary>
         /// Creates the root folder for a child portal.
@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="serverPath">The server path.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeleteExpiredPortals' instance method. Scheduled removal in v11.0.0.")]
         public static void DeleteExpiredPortals(string serverPath) =>
-            DeleteExpiredPortals(serverPath);
+            Instance.DeleteExpiredPortals(serverPath);
 
         /// <summary>
         /// Deletes all expired portals.
@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>If the method executed successful, it will return NullString, otherwise return error message.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeletePortal' instance method. Scheduled removal in v11.0.0.")]
         public static string DeletePortal(PortalInfo portal, string serverPath) =>
-            DeletePortal(portal, serverPath);
+            Instance.DeletePortal(portal, serverPath);
 
         /// <summary>
         /// Deletes the portal.
@@ -258,7 +258,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>folder path of the child portal.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalFolder' instance method. Scheduled removal in v11.0.0.")]
         public static string GetPortalFolder(string alias) =>
-            GetPortalFolder(alias);
+            Instance.GetPortalFolder(alias);
 
         /// <summary>
         /// Get the portal folder froma child portal alias.
@@ -282,7 +282,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalFolder">the child folder path.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalFolder' instance method. Scheduled removal in v11.0.0.")]
         public static void DeletePortalFolder(string serverPath, string portalFolder) =>
-            DeletePortalFolder(serverPath, portalFolder);
+            Instance.DeletePortalFolder(serverPath, portalFolder);
 
         /// <summary>Delete the child portal folder and try to remove its parent when parent folder is empty.</summary>
         /// <param name="serverPath">the server path.</param>
@@ -314,7 +314,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>portal dictionary. the dictionary's Key -> Value is: TabId -> PortalId.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalDictionary' instance method. Scheduled removal in v11.0.0.")]
         public static Dictionary<int, int> GetPortalDictionary() =>
-            GetPortalDictionary();
+            Instance.GetPortalDictionary();
 
         /// <summary>
         /// Gets the portal dictionary.
@@ -340,7 +340,7 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalsByName' instance method. Scheduled removal in v11.0.0.")]
         public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords) =>
-            GetPortalsByName(nameToMatch, pageIndex, pageSize, ref totalRecords);
+            Instance.GetPortalsByName(nameToMatch, pageIndex, pageSize, ref totalRecords);
 
         /// <summary>
         /// GetPortalsByName gets all the portals whose name matches a provided filter expression.
@@ -365,7 +365,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalsByUser' instance method. Scheduled removal in v11.0.0.")]
-        public static ArrayList GetPortalsByUser(int userId) => GetPortalsByUser(userId);
+        public static ArrayList GetPortalsByUser(int userId) => Instance.GetPortalsByUser(userId);
 
         ArrayList IPortalController.GetPortalsByUser(int userId)
         {
@@ -374,7 +374,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetEffectivePortalId' instance method. Scheduled removal in v11.0.0.")]
-        public static int GetEffectivePortalId(int portalId) => GetEffectivePortalId(portalId);
+        public static int GetEffectivePortalId(int portalId) => Instance.GetEffectivePortalId(portalId);
 
         int IPortalController.GetEffectivePortalId(int portalId)
         {
@@ -400,7 +400,7 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <returns>all expired portals as array list.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetExpiredPortals' instance method. Scheduled removal in v11.0.0.")]
-        public static ArrayList GetExpiredPortals() => GetExpiredPortals();
+        public static ArrayList GetExpiredPortals() => Instance.GetExpiredPortals();
 
         /// <summary>
         /// Gets all expired portals.
@@ -421,7 +421,7 @@ namespace DotNetNuke.Entities.Portals
         /// </returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IsChildPortal' instance method. Scheduled removal in v11.0.0.")]
         public static bool IsChildPortal(PortalInfo portal, string serverPath) =>
-            IsChildPortal(portal, serverPath);
+            Instance.IsChildPortal(portal, serverPath);
 
         /// <summary>
         /// Determines whether the portal is child portal.
@@ -454,7 +454,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IsMemberOfPortalGroup' instance method. Scheduled removal in v11.0.0.")]
-        public static bool IsMemberOfPortalGroup(int portalId) => IsMemberOfPortalGroup(portalId);
+        public static bool IsMemberOfPortalGroup(int portalId) => Instance.IsMemberOfPortalGroup(portalId);
 
         bool IPortalController.IsMemberOfPortalGroup(int portalId)
         {
@@ -470,7 +470,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeletePortalSetting' instance method. Scheduled removal in v11.0.0.")]
         public static void DeletePortalSetting(int portalID, string settingName) =>
-            DeletePortalSetting(portalID, settingName);
+            Instance.DeletePortalSetting(portalID, settingName);
 
         /// <summary>
         /// Deletes the portal setting (neutral and for all languages).
@@ -490,7 +490,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="cultureCode">The culture code.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeletePortalSetting' instance method. Scheduled removal in v11.0.0.")]
         public static void DeletePortalSetting(int portalID, string settingName, string cultureCode) =>
-            DeletePortalSetting(portalID, settingName, cultureCode);
+            Instance.DeletePortalSetting(portalID, settingName, cultureCode);
 
         /// <summary>
         /// Deletes the portal setting in this language.
@@ -510,7 +510,7 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeletePortalSettings' instance method. Scheduled removal in v11.0.0.")]
-        public static void DeletePortalSettings(int portalID) => DeletePortalSettings(portalID);
+        public static void DeletePortalSettings(int portalID) => Instance.DeletePortalSettings(portalID);
 
         /// <summary>
         /// Deletes all portal settings by portal id.
@@ -527,7 +527,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeletePortalSettings' instance method. Scheduled removal in v11.0.0.")]
         public static void DeletePortalSettings(int portalID, string cultureCode) =>
-            DeletePortalSettings(portalID, cultureCode);
+            Instance.DeletePortalSettings(portalID, cultureCode);
 
         /// <summary>
         /// Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).
@@ -548,7 +548,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns></returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetEncryptedString' instance method. Scheduled removal in v11.0.0.")]
         public static string GetEncryptedString(string settingName, int portalID, string passPhrase) =>
-            GetEncryptedString(settingName, portalID, passPhrase);
+            Instance.GetEncryptedString(settingName, portalID, passPhrase);
 
         /// <summary>
         /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.
@@ -575,7 +575,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalSetting' instance method. Scheduled removal in v11.0.0.")]
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue) =>
-            GetPortalSetting(settingName, portalID, defaultValue);
+            Instance.GetPortalSetting(settingName, portalID, defaultValue);
 
         /// <summary>
         /// Gets the portal setting.
@@ -611,7 +611,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalSetting' instance method. Scheduled removal in v11.0.0.")]
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode) =>
-            GetPortalSetting(settingName, portalID, defaultValue, cultureCode);
+            Instance.GetPortalSetting(settingName, portalID, defaultValue, cultureCode);
 
         /// <summary>
         /// Gets the portal setting for a specific language (or neutral).
@@ -647,7 +647,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalSettingAsBoolean' instance method. Scheduled removal in v11.0.0.")]
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue) =>
-            GetPortalSettingAsBoolean(key, portalID, defaultValue);
+            Instance.GetPortalSettingAsBoolean(key, portalID, defaultValue);
 
         /// <summary>
         /// Gets the portal setting as boolean.
@@ -690,7 +690,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalSettingAsBoolean' instance method. Scheduled removal in v11.0.0.")]
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode) =>
-            GetPortalSettingAsBoolean(key, portalID, defaultValue, cultureCode);
+            Instance.GetPortalSettingAsBoolean(key, portalID, defaultValue, cultureCode);
 
         /// <summary>
         /// Gets the portal setting as boolean for a specific language (or neutral).
@@ -733,7 +733,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalSettingAsInteger' instance method. Scheduled removal in v11.0.0.")]
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue) =>
-            GetPortalSettingAsInteger(key, portalID, defaultValue);
+            Instance.GetPortalSettingAsInteger(key, portalID, defaultValue);
 
         /// <summary>
         /// Gets the portal setting as integer.
@@ -775,7 +775,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalSettingAsDouble' instance method. Scheduled removal in v11.0.0.")]
         public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue) =>
-            GetPortalSettingAsDouble(key, portalId, defaultValue);
+            Instance.GetPortalSettingAsDouble(key, portalId, defaultValue);
 
         /// <summary>
         /// Gets the portal setting as double.
@@ -818,7 +818,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalSettingAsInteger' instance method. Scheduled removal in v11.0.0.")]
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode) =>
-            GetPortalSettingAsInteger(key, portalID, defaultValue, cultureCode);
+            Instance.GetPortalSettingAsInteger(key, portalID, defaultValue, cultureCode);
 
         /// <summary>
         /// Gets the portal setting as integer for a specific language (or neutral).
@@ -861,7 +861,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.UpdateEncryptedString' instance method. Scheduled removal in v11.0.0.")]
         public static void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase) =>
-            UpdateEncryptedString(portalID, settingName, settingValue, passPhrase);
+            Instance.UpdateEncryptedString(portalID, settingName, settingValue, passPhrase);
 
         /// <summary>
         /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores.
@@ -889,7 +889,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingValue">The setting value.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.UpdatePortalSetting' instance method. Scheduled removal in v11.0.0.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue) =>
-            UpdatePortalSetting(portalID, settingName, settingValue);
+            Instance.UpdatePortalSetting(portalID, settingName, settingValue);
 
         /// <summary>
         /// Updates a single neutral (not language specific) portal setting and clears it from the cache.
@@ -911,7 +911,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.UpdatePortalSetting' instance method. Scheduled removal in v11.0.0.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache) =>
-            UpdatePortalSetting(portalID, settingName, settingValue, clearCache);
+            Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache);
 
         /// <summary>
         /// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
@@ -933,10 +933,8 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingValue">The setting value.</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
-        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, string cultureCode)
-        {
-            UpdatePortalSetting(portalID, settingName, settingValue, true, cultureCode, false);
-        }
+        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, string cultureCode) =>
+            Instance.UpdatePortalSetting(portalID, settingName, settingValue, true, cultureCode, false);
 
         /// <summary>
         /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
@@ -948,7 +946,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.UpdatePortalSetting' instance method. Scheduled removal in v11.0.0.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode) =>
-            UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode);
+            Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode);
 
         /// <summary>
         /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
@@ -973,7 +971,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Empty string if the module hasn't been installed, otherwise return the friendly name.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.CheckDesktopModulesInstalled' instance method. Scheduled removal in v11.0.0.")]
         public static string CheckDesktopModulesInstalled(XPathNavigator nav) =>
-            CheckDesktopModulesInstalled(nav);
+            Instance.CheckDesktopModulesInstalled(nav);
 
         /// <summary>
         /// Checks the desktop modules whether is installed.
@@ -1027,7 +1025,7 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks>
         /// </remarks>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetActivePortalLanguage' instance method. Scheduled removal in v11.0.0.")]
-        public static string GetActivePortalLanguage(int portalID) => GetActivePortalLanguage(portalID);
+        public static string GetActivePortalLanguage(int portalID) => Instance.GetActivePortalLanguage(portalID);
 
         /// <summary>
         ///   function provides the language for portalinfo requests
@@ -1101,7 +1099,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID"></param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalDefaultLanguage' instance method. Scheduled removal in v11.0.0.")]
         public static string GetPortalDefaultLanguage(int portalID) =>
-            GetPortalDefaultLanguage(portalID);
+            Instance.GetPortalDefaultLanguage(portalID);
 
         /// <summary>
         ///   return the current DefaultLanguage value from the Portals table for the requested Portalid.
@@ -1123,7 +1121,7 @@ namespace DotNetNuke.Entities.Portals
         /// </remarks>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.UpdatePortalDefaultLanguage' instance method. Scheduled removal in v11.0.0.")]
         public static void UpdatePortalDefaultLanguage(int portalID, string CultureCode) =>
-            UpdatePortalDefaultLanguage(portalID, CultureCode);
+            Instance.UpdatePortalDefaultLanguage(portalID, CultureCode);
 
 
         /// <summary>
@@ -1144,7 +1142,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementCrmVersion' instance method. Scheduled removal in v11.0.0.")]
-        public static void IncrementCrmVersion(int portalID) => IncrementCrmVersion(portalID);
+        public static void IncrementCrmVersion(int portalID) => Instance.IncrementCrmVersion(portalID);
 
         void IPortalController.IncrementCrmVersion(int portalID)
         {
@@ -1158,7 +1156,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementOverridingPortalsCrmVersion' instance method. Scheduled removal in v11.0.0.")]
-        public static void IncrementOverridingPortalsCrmVersion() => IncrementOverridingPortalsCrmVersion();
+        public static void IncrementOverridingPortalsCrmVersion() => Instance.IncrementOverridingPortalsCrmVersion();
 
         void IPortalController.IncrementOverridingPortalsCrmVersion()
         {
