@@ -370,6 +370,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        [Obsolete("Deprecated in DNN 9.7.0, as this provides no use and always returns false.  Scheduled removal in v11.0.0.")]
         [XmlIgnore]
         public bool TabPermissionsSpecified
         {
