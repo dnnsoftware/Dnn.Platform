@@ -30,7 +30,6 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
-    using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Security.Permissions;
@@ -45,7 +44,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
     using ICSharpCode.SharpZipLib.Zip;
-
+    using Microsoft.Extensions.DependencyInjection;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
 
@@ -56,7 +55,7 @@ namespace DotNetNuke.Entities.Portals
     /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
     /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
     /// </remarks>
-    public partial class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
+    public partial class PortalController : IPortalController
     {
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
@@ -64,6 +63,24 @@ namespace DotNetNuke.Entities.Portals
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController' with Dependency Injection. Scheduled removal in v11.0.0.")]
+        protected static Func<IPortalController> Factory => () => Instance;
+
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController' with Dependency Injection. Scheduled removal in v11.0.0.")]
+        protected static Func<IPortalController> GetFactory() => Factory;
+
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController' with Dependency Injection. Scheduled removal in v11.0.0.")]
+        public static void SetTestableInstance(IPortalController instance) =>
+            throw new NotSupportedException("'PortalController.SetTestableInstance' is no longer supported, use Dependency Injection to resolve 'IPortalController'");
+
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController' with Dependency Injection. Scheduled removal in v11.0.0.")]
+        public static void ClearInstance() =>
+            throw new NotSupportedException("'PortalController.SetTestableInstance' is no longer supported, use Dependency Injection to resolve 'IPortalController'");
+
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController' with Dependency Injection. Scheduled removal in v11.0.0.")]
+        public static IPortalController Instance => Globals.DependencyProvider.GetService<IPortalController>();
+
 
         /// <summary>
         /// Adds the portal dictionary.
@@ -166,7 +183,7 @@ namespace DotNetNuke.Entities.Portals
             string message = string.Empty;
 
             // check if this is the last portal
-            var portals = Instance.GetPortals();
+            var portals = GetPortals();
             if (portals.Count > 1)
             {
                 if (portal != null)
@@ -319,7 +336,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetPortalsByUser' instance method. Scheduled removal in v11.0.0.")]
-        public static ArrayList GetPortalsByUser(int userId) => Instance.GetPortalsByUser(userId);
+        public static ArrayList GetPortalsByUser(int userId) =>
+            Instance.GetPortalsByUser(userId);
 
         /// <inheritdoc />
         ArrayList IPortalController.GetPortalsByUser(int userId)
@@ -329,14 +347,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetEffectivePortalId' instance method. Scheduled removal in v11.0.0.")]
-        public static int GetEffectivePortalId(int portalId) => Instance.GetEffectivePortalId(portalId);
+        public static int GetEffectivePortalId(int portalId) =>
+            Instance.GetEffectivePortalId(portalId);
 
         /// <inheritdoc />
         int IPortalController.GetEffectivePortalId(int portalId)
         {
             if (portalId > Null.NullInteger && Globals.Status != Globals.UpgradeStatus.Upgrade)
             {
-                var portal = Instance.GetPortal(portalId);
+                var portal = GetPortal(portalId);
                 var portalGroup = (from p in PortalGroupController.Instance.GetPortalGroups()
                                    where p.PortalGroupId == portal.PortalGroupID
                                    select p)
@@ -356,7 +375,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <returns>all expired portals as array list.</returns>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetExpiredPortals' instance method. Scheduled removal in v11.0.0.")]
-        public static ArrayList GetExpiredPortals() => Instance.GetExpiredPortals();
+        public static ArrayList GetExpiredPortals() =>
+            Instance.GetExpiredPortals();
 
         /// <inheritdoc />
         ArrayList IPortalController.GetExpiredPortals()
@@ -400,12 +420,13 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IsMemberOfPortalGroup' instance method. Scheduled removal in v11.0.0.")]
-        public static bool IsMemberOfPortalGroup(int portalId) => Instance.IsMemberOfPortalGroup(portalId);
+        public static bool IsMemberOfPortalGroup(int portalId) =>
+            Instance.IsMemberOfPortalGroup(portalId);
 
         /// <inheritdoc />
         bool IPortalController.IsMemberOfPortalGroup(int portalId)
         {
-            var portal = Instance.GetPortal(portalId);
+            var portal = GetPortal(portalId);
 
             return portal != null && portal.PortalGroupID > Null.NullInteger;
         }
@@ -448,7 +469,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.DeletePortalSettings' instance method. Scheduled removal in v11.0.0.")]
-        public static void DeletePortalSettings(int portalID) => Instance.DeletePortalSettings(portalID);
+        public static void DeletePortalSettings(int portalID) =>
+            Instance.DeletePortalSettings(portalID);
 
         /// <inheritdoc />
         void IPortalController.DeletePortalSettings(int portalID)
@@ -511,7 +533,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
+                GetPortalSettings(portalID).TryGetValue(settingName, out setting);
                 retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
@@ -541,7 +563,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                Instance.GetPortalSettings(portalID, cultureCode).TryGetValue(settingName, out setting);
+                GetPortalSettings(portalID, cultureCode).TryGetValue(settingName, out setting);
                 retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
@@ -570,7 +592,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
+                GetPortalSettings(portalID).TryGetValue(key, out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -643,7 +665,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
+                GetPortalSettings(portalID).TryGetValue(key, out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -679,7 +701,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                Instance.GetPortalSettings(portalId).TryGetValue(key, out setting);
+                GetPortalSettings(portalId).TryGetValue(key, out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -824,10 +846,9 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
         /// <param name="isSecure">When true it encrypt the value before storing it in the database.</param>
-        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
-        {
+        [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.UpdatePortalSetting' instance method. Scheduled removal in v11.0.0.")]
+        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure) =>
             Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
-        }
 
         /// <summary>
         /// Checks the desktop modules whether is installed.
@@ -886,7 +907,8 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks>
         /// </remarks>
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.GetActivePortalLanguage' instance method. Scheduled removal in v11.0.0.")]
-        public static string GetActivePortalLanguage(int portalID) => Instance.GetActivePortalLanguage(portalID);
+        public static string GetActivePortalLanguage(int portalID) =>
+            Instance.GetActivePortalLanguage(portalID);
 
         /// <inheritdoc />
         string IPortalController.GetActivePortalLanguage(int portalID)
@@ -985,7 +1007,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementCrmVersion' instance method. Scheduled removal in v11.0.0.")]
-        public static void IncrementCrmVersion(int portalID) => Instance.IncrementCrmVersion(portalID);
+        public static void IncrementCrmVersion(int portalID) =>
+            Instance.IncrementCrmVersion(portalID);
 
         /// <inheritdoc />
         void IPortalController.IncrementCrmVersion(int portalID)
@@ -1000,12 +1023,13 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [Obsolete("Deprecated in DNN 9.7.0. Use the 'IPortalController.IncrementOverridingPortalsCrmVersion' instance method. Scheduled removal in v11.0.0.")]
-        public static void IncrementOverridingPortalsCrmVersion() => Instance.IncrementOverridingPortalsCrmVersion();
+        public static void IncrementOverridingPortalsCrmVersion() =>
+            Instance.IncrementOverridingPortalsCrmVersion();
 
         /// <inheritdoc />
         void IPortalController.IncrementOverridingPortalsCrmVersion()
         {
-            foreach (PortalInfo portal in Instance.GetPortals())
+            foreach (PortalInfo portal in GetPortals())
             {
                 string setting = GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey, portal.PortalID, "False");
                 bool overriden;
@@ -1672,12 +1696,9 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        protected override Func<IPortalController> GetFactory()
-        {
-            return () => new PortalController();
-        }
+        
 
-        private static void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
+        private void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
         {
             // create required roles if not already created
             if (administratorRoleId == -1)
@@ -1705,7 +1726,7 @@ namespace DotNetNuke.Entities.Portals
             RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
         }
 
-        private static string CreateProfileDefinitions(int portalId, string templateFilePath)
+        private string CreateProfileDefinitions(int portalId, string templateFilePath)
         {
             string strMessage = Null.NullString;
             try
@@ -1743,7 +1764,7 @@ namespace DotNetNuke.Entities.Portals
             return strMessage;
         }
 
-        private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
+        private int CreatePortal(string portalName, string homeDirectory, string cultureCode)
         {
             // add portal
             int PortalId = -1;
@@ -1788,7 +1809,7 @@ namespace DotNetNuke.Entities.Portals
             return PortalId;
         }
 
-        private static int CreateRole(RoleInfo role)
+        private int CreateRole(RoleInfo role)
         {
             int roleId;
 
@@ -1806,7 +1827,7 @@ namespace DotNetNuke.Entities.Portals
             return roleId;
         }
 
-        private static int CreateRole(int portalId, string roleName, string description, float serviceFee, int billingPeriod, string billingFrequency, float trialFee, int trialPeriod, string trialFrequency,
+        private int CreateRole(int portalId, string roleName, string description, float serviceFee, int billingPeriod, string billingFrequency, float trialFee, int trialPeriod, string trialFrequency,
                                bool isPublic, bool isAuto)
         {
             RoleInfo objRoleInfo = new RoleInfo();
@@ -1825,7 +1846,7 @@ namespace DotNetNuke.Entities.Portals
             return CreateRole(objRoleInfo);
         }
 
-        private static void CreateRoleGroup(RoleGroupInfo roleGroup)
+        private void CreateRoleGroup(RoleGroupInfo roleGroup)
         {
             // First check if the role exists
             var objRoleGroupInfo = RoleController.GetRoleGroupByName(roleGroup.PortalID, roleGroup.RoleGroupName);
@@ -1840,11 +1861,11 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void DeletePortalInternal(int portalId)
+        private void DeletePortalInternal(int portalId)
         {
             UserController.DeleteUsers(portalId, false, true);
 
-            var portal = Instance.GetPortal(portalId);
+            var portal =  GetPortal(portalId);
 
             DataProvider.Instance().DeletePortalInfo(portalId);
 
@@ -1888,7 +1909,7 @@ namespace DotNetNuke.Entities.Portals
             return true;
         }
 
-        private static PortalSettings GetCurrentPortalSettingsInternal()
+        private PortalSettings GetCurrentPortalSettingsInternal()
         {
             PortalSettings objPortalSettings = null;
             if (HttpContext.Current != null)
@@ -1899,18 +1920,16 @@ namespace DotNetNuke.Entities.Portals
             return objPortalSettings;
         }
 
-        private static PortalInfo GetPortalInternal(int portalId, string cultureCode)
-        {
-            return Instance.GetPortalList(cultureCode).SingleOrDefault(p => p.PortalID == portalId);
-        }
+        private PortalInfo GetPortalInternal(int portalId, string cultureCode) =>
+            GetPortalList(cultureCode).SingleOrDefault(p => p.PortalID == portalId);
 
-        private static object GetPortalDefaultLanguageCallBack(CacheItemArgs cacheItemArgs)
+        private object GetPortalDefaultLanguageCallBack(CacheItemArgs cacheItemArgs)
         {
             int portalID = (int)cacheItemArgs.ParamList[0];
             return DataProvider.Instance().GetPortalDefaultLanguage(portalID);
         }
 
-        private static object GetPortalDictionaryCallback(CacheItemArgs cacheItemArgs)
+        private object GetPortalDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
             var portalDic = new Dictionary<int, int>();
             if (Host.Host.PerformanceSetting != Globals.PerformanceSettings.NoCaching)
@@ -1940,7 +1959,7 @@ namespace DotNetNuke.Entities.Portals
             return portalDic;
         }
 
-        private static object GetPortalSettingsDictionaryCallback(CacheItemArgs cacheItemArgs)
+        private object GetPortalSettingsDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
             var dicSettings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
@@ -1995,7 +2014,7 @@ namespace DotNetNuke.Entities.Portals
             return dicSettings;
         }
 
-        private static void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo folder)
+        private void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo folder)
         {
             var fileManager = FileManager.Instance;
 
@@ -2050,7 +2069,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void ParseFolderPermissions(XmlNodeList nodeFolderPermissions, int portalId, FolderInfo folder)
+        private void ParseFolderPermissions(XmlNodeList nodeFolderPermissions, int portalId, FolderInfo folder)
         {
             PermissionController permissionController = new PermissionController();
             int permissionId = 0;
@@ -2114,7 +2133,7 @@ namespace DotNetNuke.Entities.Portals
             FolderPermissionController.SaveFolderPermissions(folder);
         }
 
-        private static void EnsureRequiredProvidersForFolderTypes()
+        private void EnsureRequiredProvidersForFolderTypes()
         {
             if (ComponentFactory.GetComponent<CryptographyProvider>() == null)
             {
@@ -2123,7 +2142,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig, XmlDocument webConfig)
+        private void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig, XmlDocument webConfig)
             where TAbstract : class
         {
             var providerBusinessClassNode = webConfig.SelectSingleNode("configuration/dotnetnuke/folder/providers/add[@name='" + folderTypeConfig.Provider + "']");
@@ -2135,7 +2154,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static bool EnableBrowserLanguageInDefault(int portalId)
+        private bool EnableBrowserLanguageInDefault(int portalId)
         {
             bool retValue = Null.NullBoolean;
             try
@@ -2159,7 +2178,7 @@ namespace DotNetNuke.Entities.Portals
             return retValue;
         }
 
-        private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
+        private Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
         {
             var httpContext = HttpContext.Current;
 
@@ -2195,7 +2214,7 @@ namespace DotNetNuke.Entities.Portals
             return dictionary;
         }
 
-        private static string GetActivePortalLanguageFromHttpContext(HttpContext httpContext, int portalId)
+        private string GetActivePortalLanguageFromHttpContext(HttpContext httpContext, int portalId)
         {
             var cultureCode = string.Empty;
 
@@ -2218,7 +2237,7 @@ namespace DotNetNuke.Entities.Portals
             return cultureCode;
         }
 
-        private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int portalId)
+        private LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int portalId)
         {
             var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalId);
             var returnCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
@@ -2249,7 +2268,7 @@ namespace DotNetNuke.Entities.Portals
             return returnCollection;
         }
 
-        private static void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int portalId)
+        private void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int portalId)
         {
             var listController = new ListController();
             Dictionary<string, ListEntryInfo> colDataTypes = listController.GetListEntryInfoDictionary("DataType");
@@ -2332,7 +2351,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void ParsePortalDesktopModules(XPathNavigator nav, int portalID)
+        private void ParsePortalDesktopModules(XPathNavigator nav, int portalID)
         {
             foreach (XPathNavigator desktopModuleNav in nav.Select("portalDesktopModule"))
             {
@@ -2381,7 +2400,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
+        private void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
 
@@ -3441,7 +3460,7 @@ namespace DotNetNuke.Entities.Portals
             }
             else
             {
-                var portalInfo = Instance.GetPortal(portalId);
+                var portalInfo = GetPortal(portalId);
                 var defaultLocale = LocaleController.Instance.GetLocale(portalInfo.DefaultLanguage);
                 if (defaultLocale == null)
                 {

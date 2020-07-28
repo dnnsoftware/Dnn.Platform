@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by PortalController.Instance.GetCurrentPortalSettings. Scheduled removal in v10.0.0.")]
         public static PortalSettings GetCurrentPortalSettings()
         {
-            return GetCurrentPortalSettingsInternal();
+            return (Instance as PortalController)?.GetCurrentPortalSettingsInternal();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

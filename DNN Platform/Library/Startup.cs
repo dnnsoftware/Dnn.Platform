@@ -20,7 +20,7 @@ namespace DotNetNuke
             services.AddSingleton<Html5ModuleControlFactory>();
             services.AddSingleton<ReflectedModuleControlFactory>();
 
-            services.AddTransient(x => PortalController.Instance);
+            services.AddTransient(x => ActivatorUtilities.GetServiceOrCreateInstance<PortalController>(Globals.DependencyProvider));
             services.AddTransient<INavigationManager, NavigationManager>();
         }
     }

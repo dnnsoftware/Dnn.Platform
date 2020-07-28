@@ -6,7 +6,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -16,6 +16,8 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
     using DotNetNuke.Services.Social.Messaging.Data;
     using DotNetNuke.Services.Social.Messaging.Exceptions;
     using DotNetNuke.Services.Social.Messaging.Internal.Views;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -33,18 +35,22 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
         private readonly IDataService _dataService;
+        private readonly IPortalController _portalController;
 
         public InternalMessagingControllerImpl()
-            : this(DataService.Instance)
+            : this(DataService.Instance, Globals.DependencyProvider.GetService<IPortalController>())
         {
         }
 
-        public InternalMessagingControllerImpl(IDataService dataService)
+        public InternalMessagingControllerImpl(IDataService dataService, IPortalController portalController)
         {
             // Argument Contract
             Requires.NotNull("dataService", dataService);
+            Requires.NotNull(nameof(portalController), portalController);
 
-            this._dataService = dataService;
+            _dataService = dataService;
+            _portalController = portalController;
+
         }
 
         public virtual void DeleteMessageRecipient(int messageId, int userId)
@@ -123,7 +129,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             }
 
             // call ReplyMessage
-            var messageId = this._dataService.CreateMessageReply(conversationId, PortalController.GetEffectivePortalId(sender.PortalID), body, sender.UserID, sender.DisplayName, this.GetCurrentUserInfo().UserID);
+            var messageId = this._dataService.CreateMessageReply(conversationId, _portalController.GetEffectivePortalId(sender.PortalID), body, sender.UserID, sender.DisplayName, this.GetCurrentUserInfo().UserID);
             if (messageId == -1) // Parent message was not found or Recipient was not found in the message
             {
                 throw new MessageOrRecipientNotFoundException(Localization.GetString("MsgMessageOrRecipientNotFound", Localization.ExceptionsResourceFile));
@@ -176,7 +182,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="sender">Sender's UserInfo.</param>
         public virtual Message GetLastSentMessage(UserInfo sender)
         {
-            return CBO.FillObject<Message>(this._dataService.GetLastSentMessage(sender.UserID, PortalController.GetEffectivePortalId(sender.PortalID)));
+            return CBO.FillObject<Message>(this._dataService.GetLastSentMessage(sender.UserID, _portalController.GetEffectivePortalId(sender.PortalID)));
         }
 
         /// <summary>Whether or not attachments are included with outgoing email.</summary>
@@ -213,7 +219,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual MessageBoxView GetArchivedMessages(int userId, int afterMessageId, int numberOfRecords)
         {
-            var reader = this._dataService.GetArchiveBoxView(userId, PortalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, ConstSortColumnDate, !ConstAscending);
+            var reader = this._dataService.GetArchiveBoxView(userId, _portalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, ConstSortColumnDate, !ConstAscending);
             return new MessageBoxView { Conversations = CBO.FillCollection<MessageConversationView>(reader) };
         }
 
@@ -224,7 +230,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus)
         {
-            var reader = this._dataService.GetInBoxView(userId, PortalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, sortColumn, sortAscending, readStatus, archivedStatus, MessageSentStatus.Received);
+            var reader = this._dataService.GetInBoxView(userId, _portalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, sortColumn, sortAscending, readStatus, archivedStatus, MessageSentStatus.Received);
             return new MessageBoxView { Conversations = CBO.FillCollection<MessageConversationView>(reader) };
         }
 
@@ -294,7 +300,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus)
         {
-            var reader = this._dataService.GetSentBoxView(userId, PortalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, sortColumn, sortAscending);
+            var reader = this._dataService.GetSentBoxView(userId, _portalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, sortColumn, sortAscending);
             return new MessageBoxView { Conversations = CBO.FillCollection<MessageConversationView>(reader) };
         }
 
@@ -441,22 +447,22 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual int GetPortalSettingAsInteger(string key, int portalId, int defaultValue)
         {
-            return PortalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
+            return _portalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
         }
 
         internal virtual double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
         {
-            return PortalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
+            return _portalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
         }
 
         internal virtual string GetPortalSetting(string settingName, int portalId, string defaultValue)
         {
-            return PortalController.GetPortalSetting(settingName, portalId, defaultValue);
+            return _portalController.GetPortalSetting(settingName, portalId, defaultValue);
         }
 
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(_portalController.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
         internal virtual string InputFilter(string input)

@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Services.Social.Messaging.Data;
     using DotNetNuke.Services.Social.Messaging.Exceptions;
     using DotNetNuke.Services.Social.Messaging.Internal;
-
+    using Microsoft.Extensions.DependencyInjection;
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// -----------------------------------------------------------------------------
@@ -45,18 +45,21 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
         private readonly IDataService _dataService;
+        private readonly IPortalController _portalController;
 
         public MessagingController()
-            : this(DataService.Instance)
+            : this(DataService.Instance, Globals.DependencyProvider.GetService<IPortalController>())
         {
         }
 
-        public MessagingController(IDataService dataService)
+        public MessagingController(IDataService dataService, IPortalController portalController)
         {
             // Argument Contract
             Requires.NotNull("dataService", dataService);
+            Requires.NotNull(nameof(portalController), portalController);
 
             this._dataService = dataService;
+            this._portalController = portalController;
         }
 
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs)
@@ -178,7 +181,7 @@ namespace DotNetNuke.Services.Social.Messaging
             message.SenderUserID = sender.UserID;
             message.From = sender.DisplayName;
 
-            message.MessageID = this._dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
+            message.MessageID = this._dataService.SaveMessage(message, _portalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
 
             // associate attachments
             if (fileIDs != null)
@@ -240,17 +243,17 @@ namespace DotNetNuke.Services.Social.Messaging
 
         internal virtual string GetPortalSetting(string settingName, int portalId, string defaultValue)
         {
-            return PortalController.GetPortalSetting(settingName, portalId, defaultValue);
+            return _portalController.GetPortalSetting(settingName, portalId, defaultValue);
         }
 
         internal virtual int GetPortalSettingAsInteger(string key, int portalId, int defaultValue)
         {
-            return PortalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
+            return _portalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
         }
 
         internal virtual double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
         {
-            return PortalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
+            return _portalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
         }
 
         internal virtual string InputFilter(string input)
@@ -261,7 +264,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(_portalController.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
         protected override Func<IMessagingController> GetFactory()
