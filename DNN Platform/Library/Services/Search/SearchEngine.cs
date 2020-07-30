@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Search
     using System.Data.SqlTypes;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
@@ -20,11 +21,14 @@ namespace DotNetNuke.Services.Search
     /// <summary>The SearchEngine manages the Indexing of the Portal content.</summary>
     internal class SearchEngine
     {
+        private readonly IBusinessControllerProvider businessControllerProvider;
+
         /// <summary>Initializes a new instance of the <see cref="SearchEngine"/> class.</summary>
         /// <param name="scheduler"></param>
         /// <param name="startTime"></param>
-        internal SearchEngine(ScheduleHistoryItem scheduler, DateTime startTime)
+        internal SearchEngine(ScheduleHistoryItem scheduler, DateTime startTime, IBusinessControllerProvider businessControllerProvider)
         {
+            this.businessControllerProvider = businessControllerProvider;
             this.SchedulerItem = scheduler;
             this.IndexingStartTime = startTime;
         }
@@ -44,7 +48,7 @@ namespace DotNetNuke.Services.Search
             this.AddIdexingResults("Tabs Indexed", searchDocsCount);
 
             // Index MODULE META-DATA from modules that inherit from ModuleSearchBase
-            var moduleIndexer = new ModuleIndexer(true);
+            var moduleIndexer = new ModuleIndexer(true, this.businessControllerProvider);
             searchDocsCount = this.GetAndStoreModuleMetaData(moduleIndexer);
             indexedSearchDocumentCount += searchDocsCount;
             this.AddIdexingResults("Modules (Metadata) Indexed", searchDocsCount);

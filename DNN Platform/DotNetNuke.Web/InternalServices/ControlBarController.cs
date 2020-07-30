@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.InternalServices
 {
     using System;
@@ -14,6 +13,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Threading;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -22,6 +22,7 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
@@ -33,16 +34,20 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api.Internal;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [DnnAuthorize]
     public class ControlBarController : DnnApiController
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly Components.Controllers.IControlBarController controller;
         private IDictionary<string, string> nameDics;
 
-        public ControlBarController()
+        public ControlBarController(IBusinessControllerProvider businessControllerProvider)
         {
+            this.businessControllerProvider = businessControllerProvider;
             this.controller = Components.Controllers.ControlBarController.Instance;
         }
 
@@ -624,16 +629,20 @@ namespace DotNetNuke.Web.InternalServices
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                     {
-                        object objObject = DotNetNuke.Framework.Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                        if (objObject is IPortable)
+                        var portable = this.businessControllerProvider.GetInstance<IPortable>(newModule);
+                        if (portable is not null)
                         {
                             try
                             {
                                 SetCloneModuleContext(true);
-                                string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
+                                var content = portable.ExportModule(moduleId);
                                 if (!string.IsNullOrEmpty(content))
                                 {
-                                    ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                    portable.ImportModule(
+                                        newModule.ModuleID,
+                                        content,
+                                        newModule.DesktopModule.Version,
+                                        userID);
                                 }
                             }
                             finally

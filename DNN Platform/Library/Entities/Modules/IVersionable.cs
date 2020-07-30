@@ -5,8 +5,8 @@
 namespace DotNetNuke.Entities.Modules
 {
     /// <summary>
-    /// This interface allow the page to interact with his modules to delete/rollback or publish a specific version.
-    /// The module that wants support page versioning need to implement it in the Bussiness controller.
+    /// This interface allow the page to interact with the module to delete/rollback or publish a specific version.
+    /// The module that wants to support page versioning needs to implement it in the Business controller.
     /// </summary>
     public interface IVersionable
     {
