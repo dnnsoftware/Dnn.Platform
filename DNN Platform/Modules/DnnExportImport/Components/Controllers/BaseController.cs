@@ -71,7 +71,7 @@ namespace Dnn.ExportImport.Components.Controllers
         }
 
         /// <summary>
-        /// Retrieves one page of paginated proceessed jobs.
+        /// Retrieves one page of paginated processed jobs.
         /// </summary>
         /// <returns></returns>
         public AllJobsResult GetAllJobs(int portalId, int currentPortalId, int? pageSize, int? pageIndex, int? jobType, string keywords)

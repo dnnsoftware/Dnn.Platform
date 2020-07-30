@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Web;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
@@ -13,6 +14,8 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class EventMessageProcessor : EventMessageProcessorBase
     {
@@ -75,9 +78,9 @@ namespace DotNetNuke.Entities.Modules
         {
             try
             {
-                string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
-                if (controller is IPortable)
+                string businessControllerClass = message.Attributes["BusinessControllerClass"];
+                var controllerType = Reflection.CreateType(businessControllerClass);
+                if (typeof(IPortable).IsAssignableFrom(controllerType))
                 {
                     int ModuleId = Convert.ToInt32(message.Attributes["ModuleId"]);
                     string Content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
@@ -85,7 +88,11 @@ namespace DotNetNuke.Entities.Modules
                     int UserID = Convert.ToInt32(message.Attributes["UserId"]);
 
                     // call the IPortable interface for the module/version
-                    ((IPortable)controller).ImportModule(ModuleId, Content, Version, UserID);
+                    using (var servicesScope = Globals.DependencyProvider.CreateScope())
+                    {
+                        var controller = (IPortable)ActivatorUtilities.CreateInstance(servicesScope.ServiceProvider, controllerType);
+                        controller.ImportModule(ModuleId, Content, Version, UserID);
+                    }
 
                     // Synchronize Module Cache
                     ModuleController.SynchronizeModule(ModuleId);
@@ -104,31 +111,39 @@ namespace DotNetNuke.Entities.Modules
                 int desktopModuleId = Convert.ToInt32(message.Attributes["DesktopModuleId"]);
                 var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
 
-                string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
-                if (controller is IUpgradeable)
+                string businessControllerClass = message.Attributes["BusinessControllerClass"];
+                var controllerType = Reflection.CreateType(businessControllerClass); 
+                if (typeof(IUpgradeable).IsAssignableFrom(controllerType))
                 {
-                    // get the list of applicable versions
-                    string[] UpgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
-                    foreach (string Version in UpgradeVersions)
+                    using (var serviceScope = Globals.DependencyProvider.CreateScope())
                     {
-                        // call the IUpgradeable interface for the module/version
-                        string Results = ((IUpgradeable)controller).UpgradeModule(Version);
+                        var controller = (IUpgradeable)ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, controllerType);
 
-                        // log the upgrade results
-                        var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString() };
-                        log.AddProperty("Module Upgraded", BusinessControllerClass);
-                        log.AddProperty("Version", Version);
-                        if (!string.IsNullOrEmpty(Results))
+                        // get the list of applicable versions
+                        string[] upgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
+                        foreach (string version in upgradeVersions)
                         {
-                            log.AddProperty("Results", Results);
-                        }
+                            // call the IUpgradeable interface for the module/version
+                            string results = controller.UpgradeModule(version);
 
-                        LogController.Instance.AddLog(log);
+                            // log the upgrade results
+                            var log = new LogInfo
+                                      {
+                                          LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString()
+                                      };
+                            log.AddProperty("Module Upgraded", businessControllerClass);
+                            log.AddProperty("Version", version);
+                            if (!string.IsNullOrEmpty(results))
+                            {
+                                log.AddProperty("Results", results);
+                            }
+
+                            LogController.Instance.AddLog(log);
+                        }
                     }
                 }
 
-                UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
+                UpdateSupportedFeatures(controllerType, desktopModuleId);
             }
             catch (Exception exc)
             {
@@ -138,12 +153,12 @@ namespace DotNetNuke.Entities.Modules
 
         private static void UpdateSupportedFeatures(EventMessage message)
         {
-            string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-            object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
-            UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
+            string businessControllerClass = message.Attributes["BusinessControllerClass"];
+            var controllerType = Reflection.CreateType(businessControllerClass);
+            UpdateSupportedFeatures(controllerType, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
         }
 
-        private static void UpdateSupportedFeatures(object objController, int desktopModuleId)
+        private static void UpdateSupportedFeatures(Type controllerType, int desktopModuleId)
         {
             try
             {
@@ -154,11 +169,9 @@ namespace DotNetNuke.Entities.Modules
                     desktopModule.SupportedFeatures = 0;
 
                     // Test the interfaces
-                    desktopModule.IsPortable = objController is IPortable;
-#pragma warning disable 0618
-                    desktopModule.IsSearchable = (objController is ModuleSearchBase) || (objController is ISearchable);
-#pragma warning restore 0618
-                    desktopModule.IsUpgradeable = objController is IUpgradeable;
+                    desktopModule.IsPortable = typeof(IPortable).IsAssignableFrom(controllerType);
+                    desktopModule.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(controllerType) || typeof(ISearchable).IsAssignableFrom(controllerType);
+                    desktopModule.IsUpgradeable = typeof(IUpgradeable).IsAssignableFrom(controllerType);
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
 
                     foreach (PortalInfo portal in PortalController.Instance.GetPortals())

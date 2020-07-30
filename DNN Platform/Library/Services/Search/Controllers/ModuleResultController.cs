@@ -178,6 +178,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     if (!_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
                     {
+                        // TODO: enable dependency injection
                         var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
                         _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
                     }

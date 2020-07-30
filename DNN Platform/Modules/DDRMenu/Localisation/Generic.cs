@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu.Localisation
 {
     using System;
@@ -22,50 +21,55 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
         public bool HaveApi()
         {
-            if (!this.haveChecked)
+            if (this.haveChecked)
             {
-                var modules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-                foreach (var moduleKeyPair in modules)
+                return (this.locTab != null) || (this.locNodes != null);
+            }
+
+            var modules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            foreach (var module in modules.Values)
+            {
+                if (string.IsNullOrEmpty(module.BusinessControllerClass))
                 {
-                    if (!string.IsNullOrEmpty(moduleKeyPair.Value.BusinessControllerClass))
+                    continue;
+                }
+
+                try
+                {
+                    // TODO: enable dependency injection
+                    this.locApi = Reflection.CreateObject(module.BusinessControllerClass, module.BusinessControllerClass);
+                    this.locTab = this.locApi.GetType().GetMethod("LocaliseTab", new[] { typeof(TabInfo), typeof(int) });
+                    if (this.locTab != null)
                     {
-                        try
+                        if (this.locTab.IsStatic)
                         {
-                            this.locApi = Reflection.CreateObject(moduleKeyPair.Value.BusinessControllerClass, moduleKeyPair.Value.BusinessControllerClass);
-                            this.locTab = this.locApi.GetType().GetMethod("LocaliseTab", new[] { typeof(TabInfo), typeof(int) });
-                            if (this.locTab != null)
-                            {
-                                if (this.locTab.IsStatic)
-                                {
-                                    this.locApi = null;
-                                }
-
-                                break;
-                            }
-
-                            this.locNodes = this.locApi.GetType().GetMethod("LocaliseNodes", new[] { typeof(DNNNodeCollection) });
-                            if (this.locNodes != null)
-                            {
-                                if (this.locNodes.IsStatic)
-                                {
-                                    this.locApi = null;
-                                }
-
-                                break;
-                            }
+                            this.locApi = null;
                         }
 
-                        // ReSharper disable EmptyGeneralCatchClause
-                        catch
+                        break;
+                    }
+
+                    this.locNodes = this.locApi.GetType().GetMethod("LocaliseNodes", new[] { typeof(DNNNodeCollection) });
+                    if (this.locNodes != null)
+                    {
+                        if (this.locNodes.IsStatic)
                         {
+                            this.locApi = null;
                         }
 
-                        // ReSharper restore EmptyGeneralCatchClause
+                        break;
                     }
                 }
 
-                this.haveChecked = true;
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+                {
+                }
+
+                // ReSharper restore EmptyGeneralCatchClause
             }
+
+            this.haveChecked = true;
 
             return (this.locTab != null) || (this.locNodes != null);
         }

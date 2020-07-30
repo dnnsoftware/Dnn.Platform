@@ -610,21 +610,28 @@ namespace DotNetNuke.UI.ControlPanel
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                     {
-                        object objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                        if (objObject is IPortable)
+                        var businessControllerType = Reflection.CreateType(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass, UseCache: true);
+                        using (var serviceScope = Globals.DependencyProvider.CreateScope())
                         {
-                            try
+                            if (ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, businessControllerType) is IPortable controller)
                             {
-                                SetCloneModuleContext(true);
-                                string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
-                                if (!string.IsNullOrEmpty(content))
+                                try
                                 {
-                                    ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                    SetCloneModuleContext(true);
+                                    string content = Convert.ToString(controller.ExportModule(moduleId));
+                                    if (!string.IsNullOrEmpty(content))
+                                    {
+                                        controller.ImportModule(
+                                            newModule.ModuleID,
+                                            content,
+                                            newModule.DesktopModule.Version,
+                                            userID);
+                                    }
                                 }
-                            }
-                            finally
-                            {
-                                SetCloneModuleContext(false);
+                                finally
+                                {
+                                    SetCloneModuleContext(false);
+                                }
                             }
                         }
                     }

@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
+
     using Microsoft.Extensions.DependencyInjection;
 
     public partial class Import : PortalModuleBase
@@ -199,8 +200,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     try
                     {
-                        var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
-                        if (objObject is IPortable)
+                        var businessControllerType = Reflection.CreateType(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass, UseCache: true);
+                        if (ActivatorUtilities.CreateInstance(this.DependencyProvider, businessControllerType) is IPortable controller)
                         {
                             var xmlDoc = new XmlDocument { XmlResolver = null };
                             try
@@ -223,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     // DNN26810 if rootnode = "content", import only content(the old way)
                                     if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
                                     {
-                                        ((IPortable)objObject).ImportModule(this.ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
+                                        controller.ImportModule(this.ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
                                     }
 
                                     // otherwise (="module") import the new way

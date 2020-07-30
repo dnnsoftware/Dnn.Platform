@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc
 {
     using System;
@@ -13,6 +12,7 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.UI;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Modules;
@@ -24,10 +24,13 @@ namespace DotNetNuke.Web.Mvc
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class MvcHostControl : ModuleControlBase, IActionable
     {
         private ModuleRequestResult _result;
         private string _controlKey;
+        private Lazy<IServiceScope> serviceScope = new Lazy<IServiceScope>(Globals.DependencyProvider.CreateScope);
 
         public MvcHostControl()
         {
@@ -42,6 +45,18 @@ namespace DotNetNuke.Web.Mvc
         public ModuleActionCollection ModuleActions { get; private set; }
 
         protected bool ExecuteModuleImmediately { get; set; } = true;
+
+        private IServiceProvider ServiceProvider => this.serviceScope.Value.ServiceProvider;
+
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            base.Dispose();
+            if (this.serviceScope.IsValueCreated)
+            {
+                this.serviceScope.Value.Dispose();
+            }
+        }
 
         protected void ExecuteModule()
         {
@@ -106,7 +121,7 @@ namespace DotNetNuke.Web.Mvc
                 var moduleApplicationType = Reflection.CreateType(businessControllerClass);
                 if (moduleApplicationType != null)
                 {
-                    moduleApplication = Reflection.CreateInstance(moduleApplicationType) as ModuleApplication;
+                    moduleApplication = ActivatorUtilities.CreateInstance(this.ServiceProvider, moduleApplicationType) as ModuleApplication;
                     if (moduleApplication != null)
                     {
                         defaultRouteData.Values["controller"] = moduleApplication.DefaultControllerName;

@@ -24,11 +24,11 @@ namespace DotNetNuke.Entities.Modules
         /// It is important to include all the relevant Properties for Updated content (sames as supplied for New document), as partial SearchDocument cannot be Updated in Search Index.
         /// This is different from standard SQL Update where selective columns can updated. In this case, entire Document must be supplied during Update or else information will be lost.
         /// For Deleted content, set IsActive = false property.
-        /// When IsActive = true, an attempt is made to delete any existing document with same UniqueKey, PortalId, SearchTypeId=Module, ModuleDefitionId and ModuleId(if specified).
+        /// When IsActive = true, an attempt is made to delete any existing document with same UniqueKey, PortalId, SearchTypeId=Module, ModuleDefinitionId and ModuleId(if specified).
         /// System calls the module based on Scheduler Frequency. This call is performed for modules that have indicated supportedFeature type="Searchable" in manifest.
-        /// Call is performed for every Module Definition defined by the Module. If a module has more than one Module Defition, module must return data for the main Module Defition,
+        /// Call is performed for every Module Definition defined by the Module. If a module has more than one Module Definition, module must return data for the main Module Definition,
         /// or else duplicate content may get stored.
-        /// Module must include ModuleDefition Id in the SearchDocument. In addition ModuleId and / or TabId can also be specified if module has TabId / ModuleId specific content.</remarks>
+        /// Module must include ModuleDefinition Id in the SearchDocument. In addition ModuleId and / or TabId can also be specified if module has TabId / ModuleId specific content.</remarks>
         public abstract IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc);
     }
 }

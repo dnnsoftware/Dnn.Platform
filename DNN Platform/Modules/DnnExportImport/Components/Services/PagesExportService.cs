@@ -1364,78 +1364,90 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportPortableContent(int tabId, ModuleInfo localModule, ExportModule otherModule, bool isNew)
         {
             var exportedContent = this.Repository.FindItems<ExportModuleContent>(m => m.ModuleID == otherModule.ModuleID).ToList();
-            if (exportedContent.Count > 0)
+            if (exportedContent.Count <= 0)
             {
-                var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(localModule.ModuleDefID);
-                var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this._exportDto.PortalId);
-                if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
+                return 0;
+            }
+
+            var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(localModule.ModuleDefID);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this._exportDto.PortalId);
+            if (string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
+            {
+                return 0;
+            }
+
+            try
+            {
+                var module = this._moduleController.GetModule(localModule.ModuleID, tabId, true);
+                if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass)
+                    || !module.DesktopModule.IsPortable)
                 {
-                    try
+                    return 0;
+                }
+
+                // TODO: enable dependency injection
+                var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
+                var controller = businessController as IPortable;
+                if (controller == null)
+                {
+                    return 0;
+                }
+
+                // Note: there is no check whether the content exists or not to manage conflict resolution
+                if (!isNew && this._importDto.CollisionResolution != CollisionResolution.Overwrite)
+                {
+                    return 0;
+                }
+
+                var restoreCount = 0;
+                var version = DotNetNukeContext.Current.Application.Version.ToString(3);
+
+                this.ActionInWorkflowlessContext(tabId, () =>
+                {
+                    foreach (var moduleContent in exportedContent)
                     {
-                        var module = this._moduleController.GetModule(localModule.ModuleID, tabId, true);
-                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
+                        if (!moduleContent.IsRestored
+                            || !this._importContentList.Any(i => i.ExportModuleId == otherModule.ModuleID && i.LocalModuleId == localModule.ModuleID))
                         {
-                            var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                            var controller = businessController as IPortable;
-                            if (controller != null)
+                            try
                             {
-                                // Note: there is no chek whether the content exists or not to manage conflict resolution
-                                if (isNew || this._importDto.CollisionResolution == CollisionResolution.Overwrite)
+                                this._importContentList.Add(new ImportModuleMapping { ExportModuleId = otherModule.ModuleID, LocalModuleId = localModule.ModuleID });
+                                var content = moduleContent.XmlContent;
+                                if (content.IndexOf('\x03') >= 0)
                                 {
-                                    var restoreCount = 0;
-                                    var version = DotNetNukeContext.Current.Application.Version.ToString(3);
-
-                                    this.ActionInWorkflowlessContext(tabId, () =>
-                                    {
-                                        foreach (var moduleContent in exportedContent)
-                                        {
-                                            if (!moduleContent.IsRestored
-                                                || !this._importContentList.Any(i => i.ExportModuleId == otherModule.ModuleID && i.LocalModuleId == localModule.ModuleID))
-                                            {
-                                                try
-                                                {
-                                                    this._importContentList.Add(new ImportModuleMapping { ExportModuleId = otherModule.ModuleID, LocalModuleId = localModule.ModuleID });
-                                                    var content = moduleContent.XmlContent;
-                                                    if (content.IndexOf('\x03') >= 0)
-                                                    {
-                                                        // exported data contains this character sometimes
-                                                        content = content.Replace('\x03', ' ');
-                                                    }
-
-                                                    controller.ImportModule(localModule.ModuleID, content, version, this._exportImportJob.CreatedByUserId);
-                                                    moduleContent.IsRestored = true;
-                                                    this.Repository.UpdateItem(moduleContent);
-                                                    restoreCount++;
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    this.Result.AddLogEntry("Error importing module data, Module ID=" + localModule.ModuleID, ex.Message, ReportLevel.Error);
-                                                    Logger.ErrorFormat(
-                                                        "ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
-                                                        localModule.ModuleID, ex, Environment.NewLine, moduleContent.XmlContent);
-                                                }
-                                            }
-                                        }
-                                    });
-
-                                    if (restoreCount > 0)
-                                    {
-                                        this.Result.AddLogEntry("Added/Updated module content inside Tab ID=" + tabId, "Module ID=" + localModule.ModuleID);
-                                        return restoreCount;
-                                    }
+                                    // exported data contains this character sometimes
+                                    content = content.Replace('\x03', ' ');
                                 }
+
+                                controller.ImportModule(localModule.ModuleID, content, version, this._exportImportJob.CreatedByUserId);
+                                moduleContent.IsRestored = true;
+                                this.Repository.UpdateItem(moduleContent);
+                                restoreCount++;
+                            }
+                            catch (Exception ex)
+                            {
+                                this.Result.AddLogEntry("Error importing module data, Module ID=" + localModule.ModuleID, ex.Message, ReportLevel.Error);
+                                Logger.ErrorFormat(
+                                    "ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
+                                    localModule.ModuleID, ex, Environment.NewLine, moduleContent.XmlContent);
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        this.Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
-                        Logger.Error("Error cerating business class type. " + ex);
-                    }
-                }
-            }
+                });
 
-            return 0;
+                if (restoreCount > 0)
+                {
+                    this.Result.AddLogEntry("Added/Updated module content inside Tab ID=" + tabId, "Module ID=" + localModule.ModuleID);
+                    return restoreCount;
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                this.Result.AddLogEntry("Error creating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
+                Logger.Error("Error creating business class type. " + ex);
+            }
         }
 
         private void ActionInWorkflowlessContext(int tabId, Action action)
@@ -1857,51 +1869,56 @@ namespace Dnn.ExportImport.Components.Services
 
         // ReSharper enable UnusedParameter.Local
         {
-            // check if module's contnt was exported before
+            // check if module's content was exported before
             var existingItems = this.Repository.FindItems<ExportModuleContent>(m => m.ModuleID == exportModule.ModuleID);
-            if (!existingItems.Any())
+            if (existingItems.Any())
             {
-                var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
-                var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this._exportDto.PortalId);
-                if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
+                return 0;
+            }
+
+            var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this._exportDto.PortalId);
+            if (string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
+            {
+                return 0;
+            }
+
+            try
+            {
+                var module = this._moduleController.GetModule(exportModule.ModuleID, exportPage.TabId, true);
+                if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
                 {
                     try
                     {
-                        var module = this._moduleController.GetModule(exportModule.ModuleID, exportPage.TabId, true);
-                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
+                        // TODO: enable dependency injection
+                        var businessController = Reflection.CreateObject(
+                            module.DesktopModule.BusinessControllerClass,
+                            module.DesktopModule.BusinessControllerClass);
+                        var controller = businessController as IPortable;
+                        var content = controller?.ExportModule(module.ModuleID);
+                        if (!string.IsNullOrEmpty(content))
                         {
-                            try
-                            {
-                                var businessController = Reflection.CreateObject(
-                                    module.DesktopModule.BusinessControllerClass,
-                                    module.DesktopModule.BusinessControllerClass);
-                                var controller = businessController as IPortable;
-                                var content = controller?.ExportModule(module.ModuleID);
-                                if (!string.IsNullOrEmpty(content))
-                                {
-                                    var record = new ExportModuleContent
-                                    {
-                                        ModuleID = exportModule.ModuleID,
-                                        ModuleDefID = exportModule.ModuleDefID,
-                                        XmlContent = content,
-                                    };
+                            var record = new ExportModuleContent
+                                         {
+                                             ModuleID = exportModule.ModuleID,
+                                             ModuleDefID = exportModule.ModuleDefID,
+                                             XmlContent = content,
+                                         };
 
-                                    this.Repository.CreateItem(record, exportModule.Id);
-                                    return 1;
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                this.Result.AddLogEntry("Error exporting module data, Module ID=" + exportModule.ModuleID, e.Message, ReportLevel.Error);
-                            }
+                            this.Repository.CreateItem(record, exportModule.Id);
+                            return 1;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        this.Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
-                        Logger.Error("Error cerating business class type. " + ex);
+                        this.Result.AddLogEntry("Error exporting module data, Module ID=" + exportModule.ModuleID, e.Message, ReportLevel.Error);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                this.Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
+                Logger.Error("Error cerating business class type. " + ex);
             }
 
             return 0;

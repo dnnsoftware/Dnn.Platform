@@ -14,7 +14,7 @@ namespace DotNetNuke.UI.Modules
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleControlBase is a base class for Module Controls that inherits from the
-    /// Control base class.  As with all MontrolControl base classes it implements
+    /// Control base class.  As with all ModuleControl base classes it implements
     /// IModuleControl.
     /// </summary>
     /// -----------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.InternalServices
 {
     using System;
@@ -33,6 +32,8 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     [DnnAuthorize]
     public class ControlBarController : DnnApiController
@@ -620,21 +621,28 @@ namespace DotNetNuke.Web.InternalServices
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                     {
-                        object objObject = DotNetNuke.Framework.Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                        if (objObject is IPortable)
+                        var businessControllerType = DotNetNuke.Framework.Reflection.CreateType(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass, UseCache: true);
+                        using (var serviceScope = Globals.DependencyProvider.CreateScope())
                         {
-                            try
+                            if (ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, businessControllerType) is IPortable controller)
                             {
-                                SetCloneModuleContext(true);
-                                string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
-                                if (!string.IsNullOrEmpty(content))
+                                try
                                 {
-                                    ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                    SetCloneModuleContext(true);
+                                    string content = Convert.ToString(controller.ExportModule(moduleId));
+                                    if (!string.IsNullOrEmpty(content))
+                                    {
+                                        controller.ImportModule(
+                                            newModule.ModuleID,
+                                            content,
+                                            newModule.DesktopModule.Version,
+                                            userID);
+                                    }
                                 }
-                            }
-                            finally
-                            {
-                                SetCloneModuleContext(false);
+                                finally
+                                {
+                                    SetCloneModuleContext(false);
+                                }
                             }
                         }
                     }

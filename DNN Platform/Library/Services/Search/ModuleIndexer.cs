@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Search
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data.SqlTypes;
     using System.Linq;
@@ -19,6 +18,8 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -95,9 +96,14 @@ namespace DotNetNuke.Services.Search
                 {
                     try
                     {
-                        var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                        var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = (ModuleSearchBase)controller, ModInfo = module };
-                        var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
+                        IList<SearchDocument> searchItems;
+                        using (var servicesScope = Globals.DependencyProvider.CreateScope())
+                        {
+                            var businessControllerType = Reflection.CreateType(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass, UseCache: true);
+                            var controller = ActivatorUtilities.CreateInstance(servicesScope.ServiceProvider, businessControllerType);
+                            var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = (ModuleSearchBase)controller, ModInfo = module };
+                            searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
+                        }
 
                         if (searchItems != null && searchItems.Count > 0)
                         {
@@ -227,7 +233,7 @@ namespace DotNetNuke.Services.Search
 
         private IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
         {
-            var businessControllers = new Hashtable();
+            var businessControllers = new Dictionary<string, bool>();
             var searchModuleIds = new HashSet<int>();
             var searchModules = new List<ModuleIndexInfo>();
 
@@ -244,19 +250,14 @@ namespace DotNetNuke.Services.Search
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {
                         // Check if the business controller is in the Hashtable
-                        var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
-                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
+                        if (!businessControllers.TryGetValue(module.DesktopModule.BusinessControllerClass, out var supportsSearch))
                         {
-                            // If nothing create a new instance
-                            if (controller == null)
-                            {
-                                // Add to hashtable
-                                controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                                businessControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-                            }
+                            var controllerType = Reflection.CreateType(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass, UseCache: true);
+                            supportsSearch = typeof(ModuleSearchBase).IsAssignableFrom(controllerType);
+                            businessControllers.Add(module.DesktopModule.BusinessControllerClass, supportsSearch);
                         }
 
-                        searchModules.Add(new ModuleIndexInfo { ModuleInfo = module, SupportSearch = controller is ModuleSearchBase });
+                        searchModules.Add(new ModuleIndexInfo { ModuleInfo = module, SupportSearch = supportsSearch });
                     }
                 }
                 catch (Exception ex)

@@ -165,10 +165,10 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     try
                     {
-                        var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
-
+                        var businessControllerType = Reflection.CreateType(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass, UseCache: true);
+                        
                         // Double-check
-                        if (objObject is IPortable)
+                        if (typeof(IPortable).IsAssignableFrom(businessControllerType))
                         {
                             XmlDocument moduleXml = new XmlDocument { XmlResolver = null };
                             XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, this.Module, true);

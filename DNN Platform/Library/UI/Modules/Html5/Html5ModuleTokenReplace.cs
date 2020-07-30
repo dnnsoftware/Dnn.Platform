@@ -61,6 +61,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
             try
             {
+                // TODO: enable dependency injection
                 var controller = Reflection.CreateObject(bizClass, bizClass) as ICustomTokenProvider;
                 _businessControllers.Add(bizClass, controller);
 

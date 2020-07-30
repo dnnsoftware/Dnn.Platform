@@ -659,14 +659,11 @@ namespace DotNetNuke.Entities.Modules
 
         private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
         {
-            var businessController = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
-            var controller = Reflection.CreateObject(desktopModuleInfo.BusinessControllerClass, desktopModuleInfo.BusinessControllerClass);
+            var businessControllerType = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
 
-            desktopModuleInfo.IsPortable = businessController.GetInterfaces().Contains(typeof(IPortable));
-#pragma warning disable 0618
-            desktopModuleInfo.IsSearchable = (controller is ModuleSearchBase) || businessController.GetInterfaces().Contains(typeof(ISearchable));
-#pragma warning restore 0618
-            desktopModuleInfo.IsUpgradeable = businessController.GetInterfaces().Contains(typeof(IUpgradeable));
+            desktopModuleInfo.IsPortable = typeof(IPortable).IsAssignableFrom(businessControllerType);
+            desktopModuleInfo.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(businessControllerType) || typeof(ISearchable).IsAssignableFrom(businessControllerType);
+            desktopModuleInfo.IsUpgradeable = typeof(IUpgradeable).IsAssignableFrom(businessControllerType);
         }
     }
 }
