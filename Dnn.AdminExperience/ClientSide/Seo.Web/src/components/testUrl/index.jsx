@@ -102,7 +102,8 @@ class TestUrlPanelBody extends Component {
                     defaultLabel={noneSpecifiedText}
                     noneSpecifiedText={noneSpecifiedText}
                     CountText={"{0} Results"}
-                    PortalTabsParameters={PageToTestParameters} />
+                    PortalTabsParameters={PageToTestParameters} 
+                    isSeoPage={true} />
             </InputGroup>
             <InputGroup>
                 <Label

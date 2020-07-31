@@ -7,7 +7,6 @@ import "./style.less";
 import Service from "./Service";
 import PagePickerScrollbar from "./PagePickerScrollbar";
 
-
 function format() {
     let format = arguments[0];
     let methodsArguments = arguments;
@@ -279,10 +278,11 @@ class PagePicker extends Component {
 
     getSelected(page, isCurrentOrDescendant) {
         let className = "page-value";
-        if (page.Selectable && !isCurrentOrDescendant)      
+        if ((page.Selectable || this.props.isSeoPage) && !isCurrentOrDescendant)      
             className += (page.CheckedState !== 1 ? " selected" : "");
         else
             className += " non-selectable";
+
         return className;
     }
 
@@ -302,7 +302,7 @@ class PagePicker extends Component {
             return <li key={page.TabId} className={"page-item page-" + page.TabId + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
                 {(!page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
                 {(page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
-                <div className={this.getSelected(page, parentNotSelectable) } onClick={page.Selectable && !parentNotSelectable ? this.onPageSelect.bind(this, page) : void (0) }>
+                <div className={this.getSelected(page, parentNotSelectable) } onClick={(page.Selectable || this.props.isSeoPage) && !parentNotSelectable ? this.onPageSelect.bind(this, page) : void (0) }>
                     { props.ShowIcon &&
                         <div className={pageClass } dangerouslySetInnerHTML={{ __html: pageIcon }}></div>
                     }
@@ -735,8 +735,8 @@ PagePicker.defaultProps = {
         sortOrder: 0,
         includeDeletedChildren: true
     },
-    selectedTabId: -1
+    selectedTabId: -1,
+    isSeoPage: false
 };
-
 
 export default PagePicker;
