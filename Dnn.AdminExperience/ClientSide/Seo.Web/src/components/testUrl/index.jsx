@@ -103,7 +103,7 @@ class TestUrlPanelBody extends Component {
                     noneSpecifiedText={noneSpecifiedText}
                     CountText={"{0} Results"}
                     PortalTabsParameters={PageToTestParameters} 
-                    isSeoPage={true} />
+                    AllowSelectUnselectablePages={true} />
             </InputGroup>
             <InputGroup>
                 <Label

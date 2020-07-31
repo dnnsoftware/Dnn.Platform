@@ -278,7 +278,7 @@ class PagePicker extends Component {
 
     getSelected(page, isCurrentOrDescendant) {
         let className = "page-value";
-        if ((page.Selectable || this.props.isSeoPage) && !isCurrentOrDescendant)      
+        if ((page.Selectable || this.props.AllowSelectUnselectablePages) && !isCurrentOrDescendant)      
             className += (page.CheckedState !== 1 ? " selected" : "");
         else
             className += " non-selectable";
@@ -302,7 +302,7 @@ class PagePicker extends Component {
             return <li key={page.TabId} className={"page-item page-" + page.TabId + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
                 {(!page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
                 {(page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
-                <div className={this.getSelected(page, parentNotSelectable) } onClick={(page.Selectable || this.props.isSeoPage) && !parentNotSelectable ? this.onPageSelect.bind(this, page) : void (0) }>
+                <div className={this.getSelected(page, parentNotSelectable) } onClick={(page.Selectable || this.props.AllowSelectUnselectablePages) && !parentNotSelectable ? this.onPageSelect.bind(this, page) : void (0) }>
                     { props.ShowIcon &&
                         <div className={pageClass } dangerouslySetInnerHTML={{ __html: pageIcon }}></div>
                     }
@@ -736,7 +736,7 @@ PagePicker.defaultProps = {
         includeDeletedChildren: true
     },
     selectedTabId: -1,
-    isSeoPage: false
+    AllowSelectUnselectablePages: false
 };
 
 export default PagePicker;
