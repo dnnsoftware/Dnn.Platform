@@ -292,6 +292,10 @@ namespace DotNetNuke.Modules.Admin.Users
                     // Clear the Portal Cache
                     DataCache.ClearPortalCache(this.UserPortalID, true);
                 }
+                else
+                {
+                    DataCache.ClearUserCache(this.PortalId, this.User.Username);
+                }
 
                 try
                 {
@@ -306,6 +310,14 @@ namespace DotNetNuke.Modules.Admin.Users
                         {
                             throw new Exception("Display Name must be unique");
                         }
+                    }
+
+                    var prevUserEmail = UserController.Instance.GetUserById(this.PortalId, this.UserId)?.Email;
+
+                    if (!string.IsNullOrWhiteSpace(prevUserEmail) && !prevUserEmail.Equals(this.User.Email, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // on email address change need to invalidate existing 'reset password' link
+                        this.User.PasswordResetExpiration = Null.NullDate;
                     }
 
                     UserController.UpdateUser(this.UserPortalID, this.User);
