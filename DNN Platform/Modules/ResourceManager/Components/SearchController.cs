@@ -34,24 +34,12 @@ namespace Dnn.Modules.ResourceManager.Components
 
             search = (search ?? string.Empty).Trim();
 
-            // Lucene does not support wildcards as the beginning of the search
-            // For file names we can remove any existing wildcard at the beginning
-            var cleanedKeywords = TrimStartWildCards(search);
-
-            var files = FolderManager.Instance.SearchFiles(folder, cleanedKeywords, recursive);
+            var files = FolderManager.Instance.SearchFiles(folder, search, recursive);
             var sortProperties = SortProperties.Parse(sorting);
             var sortedFiles = SortFiles(files, sortProperties).ToList();
             totalCount = sortedFiles.Count;
 
             return sortedFiles.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-        }
-
-        private static string TrimStartWildCards(string search)
-        {
-            var keywords = from keyword in search.Split(' ')
-                           select keyword.TrimStart('*', '?');
-            search = string.Join(" ", keywords);
-            return search;
         }
 
         private static IEnumerable<IFileInfo> SortFiles(IEnumerable<IFileInfo> files, SortProperties sortProperties)
