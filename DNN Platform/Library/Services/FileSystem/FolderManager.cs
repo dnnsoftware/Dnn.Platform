@@ -1845,11 +1845,11 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (!pattern.Contains("*") && !pattern.Contains("?"))
             {
-                pattern = "^" + pattern + ".*$";
+                pattern = ".*" + Regex.Escape(pattern) + ".*";
             }
             else
             {
-                pattern = "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
+                pattern = Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".");
             }
 
             return RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase);
