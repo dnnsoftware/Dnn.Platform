@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Sitemap;
     using DotNetNuke.Services.Tokens;
+    using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
     /// <summary>
@@ -164,6 +165,7 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
 			ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("mail", typeof(MailProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
