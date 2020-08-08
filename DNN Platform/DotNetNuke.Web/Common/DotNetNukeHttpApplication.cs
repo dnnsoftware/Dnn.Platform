@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Sitemap;
     using DotNetNuke.Services.Tokens;
+    using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
     /// <summary>
@@ -42,7 +43,7 @@ namespace DotNetNuke.Web.Common.Internal
     /// </summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DotNetNukeHttpApplication));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
         private static readonly string[] Endings =
             {
@@ -163,7 +164,8 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
-			ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("mail", typeof(MailProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
@@ -231,14 +233,14 @@ namespace DotNetNuke.Web.Common.Internal
             Initialize.RunSchedule(app.Request);
         }
 
-		private void Application_PreSendRequestHeaders(object sender, EventArgs e)
-		{
-			if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
-			{
-				var page = HttpContext.Current.Handler as PageBase;
-				page.HeaderIsWritten = true;
-			}
-		}
+        private void Application_PreSendRequestHeaders(object sender, EventArgs e)
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
+            {
+                var page = HttpContext.Current.Handler as PageBase;
+                page.HeaderIsWritten = true;
+            }
+        }
 
         private bool IsInstallInProgress(HttpApplication app)
         {
