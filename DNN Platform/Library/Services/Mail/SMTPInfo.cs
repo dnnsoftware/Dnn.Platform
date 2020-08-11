@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DotNetNuke.Services.Mail
 {
-    public class SMTPInfo
+    public class SmtpInfo
     {
         /// <summary>
         /// Gets or sets SMTP Server.

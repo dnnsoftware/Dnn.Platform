@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Mail
             var styleLessHtml = HtmlUtils.RemoveInlineStyle(formattedHtml);
             return HtmlUtils.StripTags(styleLessHtml, true);
         }
-        public override string SendMail(MailInfo mailInfo, SMTPInfo smtpInfo = null)
+        public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
             // validate smtp server
             if (smtpInfo == null || string.IsNullOrEmpty(smtpInfo.Server))
@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Mail
                     return "SMTP Server not configured";
                 }
 
-                smtpInfo = new SMTPInfo()
+                smtpInfo = new SmtpInfo()
                 {
                     Server = Host.SMTPServer,
                     Authentication = Host.SMTPAuthentication,
@@ -48,12 +48,12 @@ namespace DotNetNuke.Services.Mail
 
             if (!string.IsNullOrEmpty(mailInfo.CC))
             {
-                mailInfo.To = mailInfo.To.Replace(";", ",");
+                mailInfo.CC = mailInfo.CC.Replace(";", ",");
             }
 
             if (!string.IsNullOrEmpty(mailInfo.BCC))
             {
-                mailInfo.To = mailInfo.To.Replace(";", ",");
+                mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
             }
 
             string retValue = string.Empty;
