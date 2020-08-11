@@ -817,7 +817,7 @@
     <Compile Include="Services\Mail\CoreMailProvider.cs" />
     <Compile Include="Services\Mail\MailInfo.cs" />
     <Compile Include="Services\Mail\MailProvider.cs" />
-    <Compile Include="Services\Mail\SMTPInfo.cs" />
+    <Compile Include="Services\Mail\SmtpInfo.cs" />
     <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
     <Compile Include="Services\OutputCache\Providers\DatabaseResponseFilter.cs" />
     <Compile Include="Services\OutputCache\Providers\FileProvider.cs" />

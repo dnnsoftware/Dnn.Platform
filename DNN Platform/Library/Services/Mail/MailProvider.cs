@@ -7,7 +7,7 @@ namespace DotNetNuke.Services.Mail
 {
     public abstract class MailProvider
     {
-        public abstract string SendMail(MailInfo mailInfo, SMTPInfo smtpInfo = null);
+        public abstract string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null);
 
         // return the provider
         public static MailProvider Instance()
