@@ -587,7 +587,9 @@ namespace DotNetNuke.Modules.Admin.Users
                 if (string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
                 {
                     var cleanDisplayName = PortalSecurity.Instance.InputFilter(this.User.DisplayName, filterFlags);
-                    if (!cleanDisplayName.Equals(this.User.DisplayName))
+                    var participantsAreEmptyOrNull = string.IsNullOrWhiteSpace(cleanDisplayName)
+                        && string.IsNullOrWhiteSpace(this.User.DisplayName);
+                    if (!participantsAreEmptyOrNull && !cleanDisplayName.Equals(this.User.DisplayName))
                     {
                         this.CreateStatus = UserCreateStatus.InvalidDisplayName;
                     }
