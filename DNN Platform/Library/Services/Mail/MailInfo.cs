@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Mail
         public Encoding BodyEncoding { get; set; }
 
         /// <summary>
-        /// Gets or sets Body Encoding.
+        /// Gets or sets Body Format.
         /// </summary>
         public MailFormat BodyFormat { get; set; }
 
