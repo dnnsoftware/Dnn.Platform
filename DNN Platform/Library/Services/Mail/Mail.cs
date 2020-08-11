@@ -393,7 +393,7 @@ namespace DotNetNuke.Services.Mail
         public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            SMTPInfo smtpInfo = new SMTPInfo()
+            SmtpInfo smtpInfo = new SmtpInfo()
             {
                 Server = smtpServer,
                 Authentication = smtpAuthentication,
