@@ -667,7 +667,7 @@
     <value>Allowable File Extensions:</value>
   </data>
   <data name="OtherSettingsUpdateSuccess.Text" xml:space="preserve">
-    <value>Settings has been updated.</value>
+    <value>Configuration has been updated.</value>
   </data>
   <data name="OtherSettingsError.Text" xml:space="preserve">
     <value>Could not update settings. Please try later.</value>
