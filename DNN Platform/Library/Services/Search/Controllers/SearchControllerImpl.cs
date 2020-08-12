@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using DotNetNuke.Services.Search.Internals;
     using Lucene.Net.Documents;
     using Lucene.Net.Index;
-    using Lucene.Net.QueryParsers;
+    using Lucene.Net.QueryParsers.Classic;
     using Lucene.Net.Search;
 
     /// -----------------------------------------------------------------------------
@@ -48,9 +48,11 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static void FillTagsValues(Document doc, SearchResult result)
         {
-            foreach (var field in doc.GetFields())
+            foreach (var field in doc.Fields)
             {
-                if (field.StringValue == null)
+                var stringValue = field.GetStringValue();
+
+                if (stringValue == null)
                 {
                     continue;
                 }
@@ -59,77 +61,77 @@ namespace DotNetNuke.Services.Search.Controllers
                 switch (field.Name)
                 {
                     case Constants.UniqueKeyTag:
-                        result.UniqueKey = field.StringValue;
+                        result.UniqueKey = stringValue;
                         break;
                     case Constants.TitleTag:
-                        var title = field.StringValue;
+                        var title = stringValue;
                         result.Title = title;
                         break;
                     case Constants.BodyTag:
-                        result.Body = field.StringValue;
+                        result.Body = stringValue;
                         break;
                     case Constants.DescriptionTag:
-                        result.Description = field.StringValue;
+                        result.Description = stringValue;
                         break;
                     case Constants.Tag:
-                        result.Tags = result.Tags.Concat(new[] { field.StringValue });
+                        result.Tags = result.Tags.Concat(new[] { stringValue });
                         break;
                     case Constants.PermissionsTag:
-                        result.Permissions = field.StringValue;
+                        result.Permissions = stringValue;
                         break;
                     case Constants.QueryStringTag:
-                        result.QueryString = field.StringValue;
+                        result.QueryString = stringValue;
                         break;
                     case Constants.UrlTag:
-                        result.Url = field.StringValue;
+                        result.Url = stringValue;
                         break;
                     case Constants.SearchTypeTag:
-                        if (int.TryParse(field.StringValue, out intField))
+                        if (int.TryParse(stringValue, out intField))
                         {
                             result.SearchTypeId = intField;
                         }
 
                         break;
                     case Constants.ModuleIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
+                        if (int.TryParse(stringValue, out intField))
                         {
                             result.ModuleId = intField;
                         }
 
                         break;
                     case Constants.ModuleDefIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
+                        if (int.TryParse(stringValue, out intField))
                         {
                             result.ModuleDefId = intField;
                         }
 
                         break;
                     case Constants.PortalIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
+                        if (int.TryParse(stringValue, out intField))
                         {
                             result.PortalId = intField;
                         }
 
                         break;
                     case Constants.AuthorIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
+                        if (int.TryParse(stringValue, out intField))
                         {
                             result.AuthorUserId = intField;
                         }
 
                         break;
                     case Constants.RoleIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
+                        if (int.TryParse(stringValue, out intField))
                         {
                             result.RoleId = intField;
                         }
 
                         break;
                     case Constants.AuthorNameTag:
-                        result.AuthorName = field.StringValue;
+                        result.AuthorName = stringValue;
                         break;
                     case Constants.TabIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
+                        if (int.TryParse(stringValue, out intField))
                         {
                             result.TabId = intField;
                         }
@@ -137,14 +139,14 @@ namespace DotNetNuke.Services.Search.Controllers
                         break;
                     case Constants.ModifiedTimeTag:
                         DateTime modifiedTimeUtc;
-                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, null, DateTimeStyles.None, out modifiedTimeUtc);
+                        DateTime.TryParseExact(stringValue, Constants.DateTimeFormat, null, DateTimeStyles.None, out modifiedTimeUtc);
                         result.ModifiedTimeUtc = modifiedTimeUtc;
                         break;
                     default:
                         if (field.Name.StartsWith(Constants.NumericKeyPrefixTag))
                         {
                             var key = field.Name.Substring(Constants.NumericKeyPrefixTag.Length);
-                            if (int.TryParse(field.StringValue, out intField))
+                            if (int.TryParse(stringValue, out intField))
                             {
                                 if (!result.NumericKeys.ContainsKey(key))
                                 {
@@ -157,7 +159,7 @@ namespace DotNetNuke.Services.Search.Controllers
                             var key = field.Name.Substring(Constants.KeywordsPrefixTag.Length);
                             if (!result.Keywords.ContainsKey(key))
                             {
-                                result.Keywords.Add(key, field.StringValue);
+                                result.Keywords.Add(key, stringValue);
                             }
                         }
 
@@ -216,8 +218,8 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (localeField != null)
             {
-                int id;
-                result.CultureCode = int.TryParse(localeField.StringValue, out id) && id >= 0
+                var id = localeField.GetInt32Value() ?? Null.NullInteger;
+                result.CultureCode = id >= 0
                     ? LocaleController.Instance.GetLocale(id).Code : Null.NullString;
             }
 
@@ -264,7 +266,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
                     query.Add(keywordQuery, Occur.MUST);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     foreach (var word in searchQuery.KeyWords.Split(' '))
                     {
@@ -276,7 +278,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var portalIdQuery = new BooleanQuery();
             foreach (var portalId in searchQuery.PortalIds)
             {
-                portalIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.SHOULD);
+                portalIdQuery.Add(NumericRangeQuery.NewInt32Range(Constants.PortalIdTag, portalId, portalId, true, true), Occur.SHOULD);
             }
 
             if (searchQuery.PortalIds.Any())
@@ -288,12 +290,12 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchQuery.BeginModifiedTimeUtc > DateTime.MinValue && searchQuery.EndModifiedTimeUtc >= searchQuery.BeginModifiedTimeUtc)
             {
-                query.Add(NumericRangeQuery.NewLongRange(Constants.ModifiedTimeTag, long.Parse(searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat)), long.Parse(searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat)), true, true), Occur.MUST);
+                query.Add(NumericRangeQuery.NewInt64Range(Constants.ModifiedTimeTag, long.Parse(searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat)), long.Parse(searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat)), true, true), Occur.MUST);
             }
 
             if (searchQuery.RoleId > 0)
             {
-                query.Add(NumericRangeQuery.NewIntRange(Constants.RoleIdTag, searchQuery.RoleId, searchQuery.RoleId, true, true), Occur.MUST);
+                query.Add(NumericRangeQuery.NewInt32Range(Constants.RoleIdTag, searchQuery.RoleId, searchQuery.RoleId, true, true), Occur.MUST);
             }
 
             foreach (var tag in searchQuery.Tags)
@@ -316,7 +318,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             foreach (var kvp in searchQuery.NumericKeys)
             {
-                query.Add(NumericRangeQuery.NewIntRange(Constants.NumericKeyPrefixTag + kvp.Key, kvp.Value, kvp.Value, true, true), Occur.MUST);
+                query.Add(NumericRangeQuery.NewInt32Range(Constants.NumericKeyPrefixTag + kvp.Key, kvp.Value, kvp.Value, true, true), Occur.MUST);
             }
 
             if (!string.IsNullOrEmpty(searchQuery.CultureCode))
@@ -324,8 +326,8 @@ namespace DotNetNuke.Services.Search.Controllers
                 var localeQuery = new BooleanQuery();
 
                 var languageId = Localization.GetCultureLanguageID(searchQuery.CultureCode);
-                localeQuery.Add(NumericRangeQuery.NewIntRange(Constants.LocaleTag, languageId, languageId, true, true), Occur.SHOULD);
-                localeQuery.Add(NumericRangeQuery.NewIntRange(Constants.LocaleTag, Null.NullInteger, Null.NullInteger, true, true), Occur.SHOULD);
+                localeQuery.Add(NumericRangeQuery.NewInt32Range(Constants.LocaleTag, languageId, languageId, true, true), Occur.SHOULD);
+                localeQuery.Add(NumericRangeQuery.NewInt32Range(Constants.LocaleTag, Null.NullInteger, Null.NullInteger, true, true), Occur.SHOULD);
                 query.Add(localeQuery, Occur.MUST);
             }
 
@@ -352,25 +354,25 @@ namespace DotNetNuke.Services.Search.Controllers
                 switch (query.SortField)
                 {
                     case SortFields.LastModified:
-                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, reverse));
+                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortFieldType.INT32, reverse));
                         break;
                     case SortFields.Title:
-                        sort = new Sort(new SortField(Constants.TitleTag, SortField.STRING, reverse));
+                        sort = new Sort(new SortField(Constants.TitleTag, SortFieldType.STRING, reverse));
                         break;
                     case SortFields.Tag:
-                        sort = new Sort(new SortField(Constants.Tag, SortField.STRING, reverse));
+                        sort = new Sort(new SortField(Constants.Tag, SortFieldType.STRING, reverse));
                         break;
                     case SortFields.NumericKey:
-                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.INT, reverse));
+                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortFieldType.INT32, reverse));
                         break;
                     case SortFields.Keyword:
-                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.STRING, reverse));
+                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortFieldType.STRING, reverse));
                         break;
                     case SortFields.CustomStringField:
-                        sort = new Sort(new SortField(query.CustomSortField, SortField.STRING, reverse));
+                        sort = new Sort(new SortField(query.CustomSortField, SortFieldType.STRING, reverse));
                         break;
                     case SortFields.CustomNumericField:
-                        sort = new Sort(new SortField(query.CustomSortField, SortField.INT, reverse));
+                        sort = new Sort(new SortField(query.CustomSortField, SortFieldType.INT32, reverse));
                         break;
                     default:
                         sort = Sort.RELEVANCE;
@@ -390,14 +392,14 @@ namespace DotNetNuke.Services.Search.Controllers
                 if (searchQuery.ModuleId > 0)
                 {
                     // this is the main hook for module based search. Occur.MUST is a requirement for this condition or else results from other modules will be found
-                    query.Add(NumericRangeQuery.NewIntRange(Constants.ModuleIdTag, searchQuery.ModuleId, searchQuery.ModuleId, true, true), Occur.MUST);
+                    query.Add(NumericRangeQuery.NewInt32Range(Constants.ModuleIdTag, searchQuery.ModuleId, searchQuery.ModuleId, true, true), Occur.MUST);
                 }
                 else
                 {
                     var modDefQuery = new BooleanQuery();
                     foreach (var moduleDefId in searchQuery.ModuleDefIds)
                     {
-                        modDefQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
+                        modDefQuery.Add(NumericRangeQuery.NewInt32Range(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                     }
 
                     if (searchQuery.ModuleDefIds.Any())
@@ -406,7 +408,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     }
                 }
 
-                query.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, this._moduleSearchTypeId, this._moduleSearchTypeId, true, true), Occur.MUST);
+                query.Add(NumericRangeQuery.NewInt32Range(Constants.SearchTypeTag, this._moduleSearchTypeId, this._moduleSearchTypeId, true, true), Occur.MUST);
             }
             else
             {
@@ -417,17 +419,17 @@ namespace DotNetNuke.Services.Search.Controllers
                     {
                         foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
                         {
-                            searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
+                            searchTypeIdQuery.Add(NumericRangeQuery.NewInt32Range(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }
 
                         if (!searchQuery.ModuleDefIds.Any())
                         {
-                            searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
+                            searchTypeIdQuery.Add(NumericRangeQuery.NewInt32Range(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
                         }
                     }
                     else
                     {
-                        searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
+                        searchTypeIdQuery.Add(NumericRangeQuery.NewInt32Range(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
                     }
                 }
 
@@ -447,8 +449,8 @@ namespace DotNetNuke.Services.Search.Controllers
             var localeField = luceneResult.Document.GetField(Constants.LocaleTag);
             if (localeField != null)
             {
-                int id;
-                if (int.TryParse(localeField.StringValue, out id) && id >= 0)
+                var id = localeField.GetInt32Value() ?? Null.NullInteger;
+                if (id >= 0)
                 {
                     result.CultureCode = LocaleController.Instance.GetLocale(id).Code;
                 }

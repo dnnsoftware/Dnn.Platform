@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -309,6 +309,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA
 		DNN Platform\Website\Install\Cleanup\09.01.01.txt = DNN Platform\Website\Install\Cleanup\09.01.01.txt
 		DNN Platform\Website\Install\Cleanup\09.02.00.txt = DNN Platform\Website\Install\Cleanup\09.02.00.txt
 		DNN Platform\Website\Install\Cleanup\09.04.00.txt = DNN Platform\Website\Install\Cleanup\09.04.00.txt
+		DNN Platform\Website\Install\Cleanup\09.07.00.txt = DNN Platform\Website\Install\Cleanup\09.07.00.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE268D-2073-4489-9BB2-26E34D65A8DC}"

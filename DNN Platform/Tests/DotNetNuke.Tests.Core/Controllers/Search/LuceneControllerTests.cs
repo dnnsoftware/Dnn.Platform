@@ -2,6 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System.Text.RegularExpressions;
+using DotNetNuke.Collections;
+using Lucene.Net.QueryParsers.Classic;
+
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     using System;
@@ -42,10 +46,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private const string SearchKeyword_Line1 = "fox";
         private const string SearchKeyword_Chinese = "中文";
+        private const string SearchKeyword_Chinese_Highlighted = "<b>中</b><b>文</b>";
 
         private const string EmptyCustomAnalyzer = "";
         private const string InvalidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseInvalidAnalyzer";
-        private const string ValidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseAnalyzer, Lucene.Net.Contrib.Analyzers";
+        private const string ValidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseAnalyzer, Lucene.Net.Analysis.Common";
         private const int DefaultSearchRetryTimes = 5;
 
         // Arrange
@@ -153,7 +158,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
+            Assert.True(hits.Results.ElementAt(0).ContentSnippet.Contains("<b>fox</b>"));
         }
 
         [Test]
@@ -162,7 +167,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             const string fieldName = "content";
             const string fieldValue = "<script src='fox' type='text/javascript'></script>";
-            const string expectedResult = " src=&#39;<b>fox</b>&#39; type=&#39;text/javascript&#39;&gt;&lt;/script&gt;";
+            const string expectedResult = "&lt;script src=&#39;<b>fox</b>&#39; type=&#39;text/javascript&#39;&gt;&lt;/script&gt;";
 
             // Note that we mustn't get " src='<b>fox</b>' type='text/javascript'></script>" as this causes browser rendering issues
 
@@ -195,7 +200,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController.Add(doc);
 
             // DONOT commit here to enable testing near-realtime of search writer
-            // _luceneController.Commit();
+            _luceneController.Commit();
             var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
@@ -293,8 +298,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, hits.Results.Count());
 
             // for some reason, this search's docs have scoring as
-            // Line1=0.3125, Line1=0.3125, Line2=0.3125, Line2=0.3750
-            Assert.AreEqual(Line1, hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue);
+            // Line1=0.375, Line2=0.3125, Line3=0.375
+            Assert.AreEqual(Line3, hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).GetStringValue());
         }
 
         [Test]
@@ -307,27 +312,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add first numeric field
             var doc1 = new Document();
-            doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
+            doc1.Add(new Int32Field(fieldName, 1, Field.Store.YES));
             this._luceneController.Add(doc1);
 
             // Add second numeric field
             var doc2 = new Document();
-            doc2.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(2));
+            doc2.Add(new Int32Field(fieldName, 2, Field.Store.YES));
             this._luceneController.Add(doc2);
 
             // Add third numeric field
             var doc3 = new Document();
-            doc3.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(3));
+            doc3.Add(new Int32Field(fieldName, 3, Field.Store.YES));
             this._luceneController.Add(doc3);
 
             // Add fourth numeric field
             var doc4 = new Document();
-            doc4.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(4));
+            doc4.Add(new Int32Field(fieldName, 4, Field.Store.YES));
             this._luceneController.Add(doc4);
 
             this._luceneController.Commit();
 
-            var query = NumericRangeQuery.NewIntRange(fieldName, 2, 3, true, true);
+            var query = NumericRangeQuery.NewInt32Range(fieldName, 2, 3, true, true);
             var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(2, hits.Results.Count());
         }
@@ -336,30 +341,30 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void LuceneController_DateRangeCheck()
         {
             // Arrange
-            const string fieldName = "content";
+            const string fieldName = "title";
             var dates = new List<DateTime> { DateTime.Now.AddYears(-3), DateTime.Now.AddYears(-2), DateTime.Now.AddYears(-1), DateTime.Now };
 
             // Act
             foreach (var date in dates)
             {
                 var doc = new Document();
-                doc.Add(new NumericField(fieldName, Field.Store.YES, true).SetLongValue(long.Parse(date.ToString(Constants.DateTimeFormat))));
+                doc.Add(new Int64Field(fieldName, long.Parse(date.ToString(Constants.DateTimeFormat)), Field.Store.YES));
                 this._luceneController.Add(doc);
             }
 
             this._luceneController.Commit();
 
             var futureTime = DateTime.Now.AddMinutes(1).ToString(Constants.DateTimeFormat);
-            var query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(futureTime), long.Parse(futureTime), true, true);
+            var query = NumericRangeQuery.NewInt64Range(fieldName, long.Parse(futureTime), long.Parse(futureTime), true, true);
 
             var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(0, hits.Results.Count());
 
-            query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-1).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
+            query = NumericRangeQuery.NewInt64Range(fieldName, long.Parse(DateTime.Now.AddDays(-1).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
             hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(1, hits.Results.Count());
 
-            query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-368).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
+            query = NumericRangeQuery.NewInt64Range(fieldName, long.Parse(DateTime.Now.AddDays(-368).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
             hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(2, hits.Results.Count());
         }
@@ -420,7 +425,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             if (customAlalyzer == ValidCustomAnalyzer)
             {
                 Assert.AreEqual(1, hits.Results.Count());
-                Assert.AreEqual(Line_Chinese.Replace(SearchKeyword_Chinese, string.Format("<b>{0}</b>", SearchKeyword_Chinese)), hits.Results.ElementAt(0).ContentSnippet);
+                Assert.AreEqual(Line_Chinese.Replace(SearchKeyword_Chinese, SearchKeyword_Chinese_Highlighted), hits.Results.ElementAt(0).ContentSnippet);
             }
             else
             {
@@ -458,7 +463,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
+            Assert.AreEqual("the quick brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
         }
 
         [Test]
@@ -496,7 +501,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             string[] keywords =
             {
-                "wuzza",
+                "wwuzza",
                 "homy",
                 };
 
@@ -532,7 +537,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add first numeric field
             var doc1 = new Document();
-            doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
+            doc1.Add(new Int32Field(fieldName, 1, Field.Store.YES));
             this._luceneController.Add(doc1);
             this._luceneController.Commit();
 
@@ -552,7 +557,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add first numeric field
             var doc1 = new Document();
-            doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
+            doc1.Add(new Int32Field(fieldName, 1, Field.Store.YES));
             this._luceneController.Add(doc1);
             this._luceneController.Commit();
 
@@ -572,7 +577,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add first numeric field
             var doc1 = new Document();
-            doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
+            doc1.Add(new Int32Field(fieldName, 1, Field.Store.YES));
             this._luceneController.Add(doc1);
             this._luceneController.Commit();
 
@@ -581,7 +586,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add second numeric field
             var doc2 = new Document();
-            doc2.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(2));
+            doc2.Add(new Int32Field(fieldName, 2, Field.Store.YES));
             this._luceneController.Add(doc2);
 
             // var lastAcccess = Directory.GetLastWriteTime(_luceneController.IndexFolder);
@@ -607,7 +612,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var doc1 = new Document();
-            doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
+            doc1.Add(new Int32Field(fieldName, 1, Field.Store.YES));
 
             // Assert
             Assert.True(File.Exists(lockFile));
@@ -623,7 +628,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var doc1 = new Document();
-            doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
+            doc1.Add(new Int32Field(fieldName, 1, Field.Store.YES));
             this._luceneController.Add(doc1);
 
             // create another controller then try to access the already locked index by the first one

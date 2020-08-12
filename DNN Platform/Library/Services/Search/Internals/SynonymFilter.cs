@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Search.Internals
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Search.Entities;
     using Lucene.Net.Analysis;
-    using Lucene.Net.Analysis.Tokenattributes;
+    using Lucene.Net.Analysis.TokenAttributes;
 
     /// <summary>
     /// SynonymFilter.
@@ -20,14 +20,14 @@ namespace DotNetNuke.Services.Search.Internals
     internal sealed class SynonymFilter : TokenFilter
     {
         private readonly Stack<string> _synonymStack = new Stack<string>();
-        private readonly TermAttribute _termAtt;
+        private readonly CharTermAttribute _termAtt;
         private readonly PositionIncrementAttribute _posIncrAtt;
         private State _current;
 
         public SynonymFilter(TokenStream input)
             : base(input)
         {
-            this._termAtt = (TermAttribute)this.AddAttribute<ITermAttribute>();
+            this._termAtt = (CharTermAttribute)this.AddAttribute<ICharTermAttribute>();
             this._posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();
         }
 
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var syn = this._synonymStack.Pop();
                 this.RestoreState(this._current);
-                this._termAtt.SetTermBuffer(syn);
+                this._termAtt.CopyBuffer(syn.ToCharArray(), 0, syn.Length);
 
                 // set position increment to 0
                 this._posIncrAtt.PositionIncrement = 0;
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             // read next token
-            if (!this.input.IncrementToken())
+            if (!this.m_input.IncrementToken())
             {
                 return false;
             }
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Search.Internals
                 cultureCode = Thread.CurrentThread.CurrentCulture.Name;
             }
 
-            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this._termAtt.Term).ToArray();
+            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this._termAtt.ToString()).ToArray();
             if (!synonyms.Any())
             {
                 return false;

@@ -5,7 +5,7 @@ namespace DotNetNuke.Services.Search.Internals
 {
     using System;
 
-    using Version = Lucene.Net.Util.Version;
+    using Version = Lucene.Net.Util.LuceneVersion;
 
     /// <summary>
     /// Constants.
@@ -89,21 +89,21 @@ namespace DotNetNuke.Services.Search.Internals
         // misc.
         internal const string TlsSearchInfo = "TLS_SEARCH_INFO";
 
-        internal static Version LuceneVersion = Version.LUCENE_30;
+        internal static Version LuceneVersion = Version.LUCENE_48;
         internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
 
         internal static readonly string[] KeyWordSearchFields =
         {
             TitleTag,
-                                                                Tag,
-                                                                DescriptionTag,
-                                                                BodyTag,
-                                                                ContentTag,
-                                                                KeywordsPrefixTag + TitleTag,
-                                                                KeywordsPrefixTag + SubjectTag,
-                                                                KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag,
+            Tag,
+            DescriptionTag,
+            BodyTag,
+            ContentTag,
+            KeywordsPrefixTag + TitleTag,
+            KeywordsPrefixTag + SubjectTag,
+            KeywordsPrefixTag + CommentsTag,
+            KeywordsPrefixTag + AuthorNameTag,
         };
 
-        }
+    }
 }

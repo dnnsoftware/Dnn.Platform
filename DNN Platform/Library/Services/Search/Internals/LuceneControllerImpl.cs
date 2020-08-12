@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Documents;
     using Lucene.Net.Index;
     using Lucene.Net.Search;
-    using Lucene.Net.Search.Vectorhighlight;
+    using Lucene.Net.Search.VectorHighlight;
     using Lucene.Net.Store;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
@@ -111,8 +111,8 @@ namespace DotNetNuke.Services.Search.Internals
                             this.CheckDisposed();
                             var writer = new IndexWriter(
                                 FSDirectory.Open(this.IndexFolder),
-                                this.GetCustomAnalyzer() ?? new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
-                            this._idxReader = writer.GetReader();
+                                new IndexWriterConfig(Constants.LuceneVersion, this.GetCustomAnalyzer() ?? new SynonymAnalyzer()));
+                            this._idxReader = writer.GetReader(false);
                             Thread.MemoryBarrier();
                             this._writer = writer;
                         }
@@ -139,8 +139,8 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 if (this._fastHighlighter == null)
                 {
-                    FragListBuilder fragListBuilder = new SimpleFragListBuilder();
-                    FragmentsBuilder fragmentBuilder = new ScoreOrderFragmentsBuilder(
+                    var fragListBuilder = new SimpleFragListBuilder();
+                    var fragmentBuilder = new ScoreOrderFragmentsBuilder(
                         new[] { HighlightPreTag }, new[] { HighlightPostTag });
                     this._fastHighlighter = new FastVectorHighlighter(true, true, fragListBuilder, fragmentBuilder);
                 }
@@ -212,7 +212,7 @@ namespace DotNetNuke.Services.Search.Internals
                         }).ToList();
                     break;
                 }
-                catch (Exception ex) when (ex is IOException || ex is AlreadyClosedException)
+                catch (Exception ex) when (ex is IOException)
                 {
                     this.DisposeReaders();
                     this.DisposeWriter(false);
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Search.Internals
         public void Add(Document doc)
         {
             Requires.NotNull("searchDocument", doc);
-            if (doc.GetFields().Count > 0)
+            if (doc.Fields.Count > 0)
             {
                 try
                 {
@@ -287,7 +287,7 @@ namespace DotNetNuke.Services.Search.Internals
                 this.CheckDisposed();
 
                 // optimize down to "> 1 segments" for better performance than down to 1
-                this._writer.Optimize(4, doWait);
+                this._writer.ForceMerge(4, doWait);
 
                 if (doWait)
                 {
@@ -319,7 +319,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             this.CheckDisposed();
             var searcher = this.GetSearcher();
-            return searcher.IndexReader.NumDocs();
+            return searcher.IndexReader.NumDocs;
         }
 
         // works on the computer (in a web-farm) that runs under the scheduler
@@ -334,7 +334,7 @@ namespace DotNetNuke.Services.Search.Internals
             return new SearchStatistics
             {
                 // Hack: seems that NumDocs/MaxDoc are buggy and return incorrect/swapped values
-                TotalActiveDocuments = searcher.IndexReader.NumDocs(),
+                TotalActiveDocuments = searcher.IndexReader.NumDocs,
                 TotalDeletedDocuments = searcher.IndexReader.NumDeletedDocs,
                 IndexLocation = this.IndexFolder,
                 LastModifiedOn = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder),
@@ -428,7 +428,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (this._idxReader != null)
             {
                 // use the Reopen() method for better near-realtime when the _writer ins't null
-                var newReader = this._idxReader.Reopen();
+                var newReader = DirectoryReader.Open(Writer, false);
                 if (this._idxReader != newReader)
                 {
                     // _idxReader.Dispose(); -- will get disposed upon disposing the searcher
@@ -441,7 +441,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 // Note: disposing the IndexSearcher instance obtained from the next
                 // statement will not close the underlying reader on dispose.
-                searcher = new IndexSearcher(FSDirectory.Open(this.IndexFolder));
+                searcher = new IndexSearcher(DirectoryReader.Open(FSDirectory.Open(this.IndexFolder)));
             }
 
             var reader = new CachedReader(searcher);
@@ -575,7 +575,6 @@ namespace DotNetNuke.Services.Search.Internals
 
             public void Dispose()
             {
-                this._searcher.Dispose();
                 this._searcher.IndexReader.Dispose();
             }
 

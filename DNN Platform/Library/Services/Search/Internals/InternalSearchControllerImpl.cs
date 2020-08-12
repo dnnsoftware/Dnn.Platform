@@ -248,7 +248,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         private static Query NumericValueQuery(string numericName, int numericVal)
         {
-            return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
+            return NumericRangeQuery.NewInt32Range(numericName, numericVal, numericVal, true, true);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             if (fieldValue > 0)
             {
-                doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
+                doc.Add(new Int32Field(fieldTag, fieldValue, Field.Store.YES));
             }
         }
 
@@ -478,11 +478,11 @@ namespace DotNetNuke.Services.Search.Internals
         {
             // mandatory fields
             doc.Add(new Field(Constants.UniqueKeyTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.UniqueKey, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            doc.Add(new NumericField(Constants.PortalIdTag, Field.Store.YES, true).SetIntValue(searchDocument.PortalId));
-            doc.Add(new NumericField(Constants.SearchTypeTag, Field.Store.YES, true).SetIntValue(searchDocument.SearchTypeId));
+            doc.Add(new Int32Field(Constants.PortalIdTag, searchDocument.PortalId, Field.Store.YES));
+            doc.Add(new Int32Field(Constants.SearchTypeTag, searchDocument.SearchTypeId, Field.Store.YES));
             doc.Add(!string.IsNullOrEmpty(searchDocument.CultureCode)
-                        ? new NumericField(Constants.LocaleTag, Field.Store.YES, true).SetIntValue(Localization.GetCultureLanguageID(searchDocument.CultureCode))
-                        : new NumericField(Constants.LocaleTag, Field.Store.YES, true).SetIntValue(-1));
+                        ? new Int32Field(Constants.LocaleTag, Localization.GetCultureLanguageID(searchDocument.CultureCode), Field.Store.YES)
+                        : new Int32Field(Constants.LocaleTag, Null.NullInteger, Field.Store.YES));
 
             if (!string.IsNullOrEmpty(searchDocument.Title))
             {
@@ -564,7 +564,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             foreach (var kvp in searchDocument.NumericKeys)
             {
-                doc.Add(new NumericField(SearchHelper.Instance.StripTagsNoAttributes(Constants.NumericKeyPrefixTag + kvp.Key, true), Field.Store.YES, true).SetIntValue(kvp.Value));
+                doc.Add(new Int32Field(SearchHelper.Instance.StripTagsNoAttributes(Constants.NumericKeyPrefixTag + kvp.Key, true), kvp.Value, Field.Store.YES));
             }
 
             bool tagBoostApplied = false;
@@ -609,7 +609,7 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new Field(Constants.PermissionsTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.Permissions, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             }
 
-            doc.Add(new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true).SetLongValue(long.Parse(searchDocument.ModifiedTimeUtc.ToString(Constants.DateTimeFormat))));
+            doc.Add(new Int64Field(Constants.ModifiedTimeTag, long.Parse(searchDocument.ModifiedTimeUtc.ToString(Constants.DateTimeFormat)), Field.Store.YES));
 
             if (sb.Length > 0)
             {

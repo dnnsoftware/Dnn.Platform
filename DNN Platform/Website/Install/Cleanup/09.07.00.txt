@@ -1,0 +1,2 @@
+bin\Lucene.Net.Contrib.Analyzers.dll
+bin\Lucene.Net.Contrib.FastVectorHighlighter.dll

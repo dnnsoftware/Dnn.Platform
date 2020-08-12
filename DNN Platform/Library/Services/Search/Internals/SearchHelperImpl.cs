@@ -23,7 +23,9 @@ namespace DotNetNuke.Services.Search.Internals
     using DotNetNuke.Services.Search.Entities;
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Standard;
-    using Lucene.Net.Analysis.Tokenattributes;
+    using Lucene.Net.Analysis.Core;
+    using Lucene.Net.Analysis.Miscellaneous;
+    using Lucene.Net.Analysis.TokenAttributes;
     using Lucene.Net.Util;
 
     internal class SearchHelperImpl : ISearchHelper
@@ -785,12 +787,12 @@ namespace DotNetNuke.Services.Search.Internals
 
             var cleanedPhrase = searchPhrase.Trim('\0');
 
-            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
-
+            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer(Constants.LuceneVersion, new StringReader(cleanedPhrase)));
+            asciiFilter.Reset();
             string space = string.Empty;
             while (asciiFilter.IncrementToken())
             {
-                sb.AppendFormat("{0}{1}", space ?? string.Empty, asciiFilter.GetAttribute<ITermAttribute>().Term);
+                sb.AppendFormat("{0}{1}", space ?? string.Empty, asciiFilter.GetAttribute<ICharTermAttribute>().ToString());
                 if (string.IsNullOrEmpty(space))
                 {
                     space = " ";

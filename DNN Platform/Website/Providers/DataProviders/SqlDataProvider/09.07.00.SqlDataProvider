@@ -1,0 +1,7 @@
+IF EXISTS(SELECT 1 FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName = 'Search_CustomAnalyzer' AND ISNULL(SettingValue, '') <> '')
+BEGIN
+    UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+        SET SettingValue = REPLACE(SettingValue, 'Lucene.Net.Contrib.Analyzers', 'Lucene.Net.Analysis.Common')
+        WHERE SettingName = 'Search_CustomAnalyzer'
+END
+GO

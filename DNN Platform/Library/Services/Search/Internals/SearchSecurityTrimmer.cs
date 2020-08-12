@@ -9,13 +9,15 @@ namespace DotNetNuke.Services.Search.Internals
     using System.Linq;
 
     using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Common.Utilities;
+
     using Lucene.Net.Documents;
     using Lucene.Net.Index;
     using Lucene.Net.Search;
 
     internal delegate bool SecurityCheckerDelegate(Document luceneResult, SearchQuery searchQuery);
 
-    internal class SearchSecurityTrimmer : Collector
+    internal class SearchSecurityTrimmer : ICollector
     {
         private readonly SecurityCheckerDelegate _securityChecker;
         private readonly IndexSearcher _searcher;
@@ -28,6 +30,8 @@ namespace DotNetNuke.Services.Search.Internals
         private int _totalHits;
         private List<ScoreDoc> _scoreDocs;
 
+        private ICollector _baseCollector;
+
         public SearchSecurityTrimmer(SearchSecurityTrimmerContext searchContext)
         {
             this._securityChecker = searchContext.SecurityChecker;
@@ -35,11 +39,32 @@ namespace DotNetNuke.Services.Search.Internals
             this._luceneQuery = searchContext.LuceneQuery;
             this._searchQuery = searchContext.SearchQuery;
             this._hitDocs = new List<ScoreDoc>(16);
+
+            _baseCollector = Collector.NewAnonymous(
+                (scorer) => this._scorer = scorer, 
+                (doc) => this._hitDocs.Add(new ScoreDoc(doc + this._docBase, this._scorer.GetScore())), 
+                (context) => this._docBase = context.DocBase, 
+                () => false);
         }
 
-        public override bool AcceptsDocsOutOfOrder
+        public void SetScorer(Scorer scorer)
         {
-            get { return false; }
+            _baseCollector.SetScorer(scorer);
+        }
+
+        public void Collect(int doc)
+        {
+            _baseCollector.Collect(doc);
+        }
+
+        public void SetNextReader(AtomicReaderContext context)
+        {
+            _baseCollector.SetNextReader(context);
+        }
+
+        public bool AcceptsDocsOutOfOrder
+        {
+            get { return _baseCollector.AcceptsDocsOutOfOrder; }
         }
 
         public int TotalHits
@@ -68,42 +93,18 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        public override void SetNextReader(IndexReader reader, int docBase)
-        {
-            this._docBase = docBase;
-        }
-
-        public override void SetScorer(Scorer scorer)
-        {
-            this._scorer = scorer;
-        }
-
-        public override void Collect(int doc)
-        {
-            this._hitDocs.Add(new ScoreDoc(doc + this._docBase, this._scorer.Score()));
-        }
+        
 
         private string GetStringFromField(Document doc, SortField sortField)
         {
             var field = doc.GetField(sortField.Field);
-            return field == null ? string.Empty : field.StringValue;
+            return field == null ? string.Empty : field.GetStringValue();
         }
 
         private long GetLongFromField(Document doc, SortField sortField)
         {
-            var field = doc.GetField(sortField.Field);
-            if (field == null)
-            {
-                return 0;
-            }
-
-            long data;
-            if (long.TryParse(field.StringValue, out data) && data >= 0)
-            {
-                return data;
-            }
-
-            return 0;
+            var value = doc.GetField(sortField.Field)?.GetInt64Value() ?? Null.NullInteger;
+            return value > 0 ? value : 0;
         }
 
         private void PrepareScoreDocs()
@@ -131,37 +132,37 @@ namespace DotNetNuke.Services.Search.Internals
                 else
                 {
                     var field = fields[0];
-                    if (field.Type == SortField.INT || field.Type == SortField.LONG)
+                    if (field.Type == SortFieldType.INT32 || field.Type == SortFieldType.INT64)
                     {
-                        if (field.Reverse)
+                        if (field.IsReverse)
                         {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                        .OrderByDescending(rec => this.GetLongFromField(rec.Document, field))
-                                       .ThenByDescending(rec => rec.Document.Boost)
+                                       //.ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         }
                         else
                         {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                        .OrderBy(rec => this.GetLongFromField(rec.Document, field))
-                                       .ThenByDescending(rec => rec.Document.Boost)
+                                       //.ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         }
                     }
                     else
                     {
-                        if (field.Reverse)
+                        if (field.IsReverse)
                         {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                            .OrderByDescending(rec => this.GetStringFromField(rec.Document, field))
-                                           .ThenByDescending(rec => rec.Document.Boost)
+                                           //.ThenByDescending(rec => rec.Document.Boost)
                                            .Select(rec => rec.SDoc);
                         }
                         else
                         {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                        .OrderBy(rec => this.GetStringFromField(rec.Document, field))
-                                       .ThenByDescending(rec => rec.Document.Boost)
+                                       //.ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         }
                     }

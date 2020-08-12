@@ -1841,6 +1841,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.6.0":
                             UpgradeToVersion960();
                             break;
+                        case "9.7.0":
+                            UpgradeToVersion970();
+                            break;
                     }
                 }
                 else
@@ -6247,6 +6250,21 @@ namespace DotNetNuke.Services.Upgrade
             var exts = new FileExtensionWhitelist("jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,zip,rar,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv,export");
             exts.RestrictBy(Host.AllowedExtensionWhitelist);
             HostController.Instance.Update("DefaultEndUserExtensionWhitelist", exts.ToStorageString());
+        }
+
+        private static void UpgradeToVersion970()
+        {
+            // Register System referenced 3rd party assemblies.
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "J2N.dll", "2.0.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.Analysis.Common.dll", "4.8.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.dll", "4.8.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.Highlighter.dll", "4.8.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.QueryParser.dll", "4.8.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.Extensions.Configuration.Abstractions.dll", "1.1.2");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.Extensions.Primitives.dll", "1.1.1");
+
+            DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "Lucene.Net.Contrib.FastVectorHighlighter.dll");
+            DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "Lucene.Net.Contrib.Analyzers.dll");
         }
 
         private static void FixFipsCompilanceAssembly(string filePath)
