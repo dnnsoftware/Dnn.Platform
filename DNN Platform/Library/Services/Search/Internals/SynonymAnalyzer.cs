@@ -23,6 +23,11 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     internal class SynonymAnalyzer : Analyzer
     {
+        public SynonymAnalyzer() : base(new NoneReuseStrategy())
+        {
+
+        }
+
         private TokenStream TokenStream(string fieldName, TextReader reader, TokenStream tokenlizer)
         {
             var stops = GetStopWords();
@@ -77,7 +82,7 @@ namespace DotNetNuke.Services.Search.Internals
                 var cultureInfo = new CultureInfo(cultureCode ?? "en-US");
                 var strArray = searchStopWords.StopWords.Split(',').Select(s => s.ToLower(cultureInfo)).ToArray();
                 var set = new CharArraySet(Constants.LuceneVersion, strArray.Length, false);
-                set.Add(strArray);
+                set.UnionWith(strArray);
                 stops = CharArraySet.UnmodifiableSet(set);
             }
 

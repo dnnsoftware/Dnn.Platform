@@ -853,6 +853,7 @@
     <Compile Include="Services\Search\Internals\ISearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\LuceneResults.cs" />
     <Compile Include="Services\Search\Internals\LuceneSearchContext.cs" />
+    <Compile Include="Services\Search\Internals\NoneReuseStrategy.cs" />
     <Compile Include="Services\Search\Internals\SearchQueryAnalyzer.cs" />
     <Compile Include="Services\Search\Internals\ISearchHelper.cs" />
     <Compile Include="Services\Search\Internals\SearchContentSource.cs" />

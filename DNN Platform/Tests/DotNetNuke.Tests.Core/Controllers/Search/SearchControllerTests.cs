@@ -22,6 +22,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Mocks;
     using Lucene.Net.Documents;
+    using Lucene.Net.QueryParsers.Classic;
     using Moq;
     using NUnit.Framework;
 
@@ -256,7 +257,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Add second document
             var doc2 = new SearchDocument { Title = docs[1], UniqueKey = Guid.NewGuid().ToString(), SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
             this._internalSearchController.AddSearchDocument(doc2);
-            this.CreateNewLuceneControllerInstance(); // to force a new reader for the next assertion
+            //this.CreateNewLuceneControllerInstance(); // to force a new reader for the next assertion
 
             // second luceneQuery
             var query2 = new SearchQuery { KeyWords = "fox", SearchTypeIds = new List<int> { OtherSearchTypeId } };
@@ -842,11 +843,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.IsTrue(
                 new[]
                 {
-                  "brown <b>fox</b> jumps over the lazy dog",
-                  "quick <b>fox</b> jumps over the black dog - Italian",
-                  "gold <b>fox</b> jumped over the lazy black dog",
-                  "e red <b>fox</b> jumped over the lazy dark gray dog",
-                  "quick <b>fox</b> jumps over the white dog - los de el Espana",
+                  "The quick brown <b>fox</b> jumps over the lazy dog",
+                  "The quick gold <b>fox</b> jumped over the lazy black dog",
+                  "the quick <b>fox</b> jumps over the black dog - Italian",
+                  "the red <b>fox</b> jumped over the lazy dark gray dog",
+                  "the quick <b>fox</b> jumps over the white dog - los de el Espana",
                 }.SequenceEqual(search.Results.Select(r => this.StipEllipses(r.Snippet))),
                 "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
         }
@@ -1723,8 +1724,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(3, search.TotalHits);
             Assert.AreEqual("I <b>ride</b> my bike to work", this.StipEllipses(search.Results[0].Snippet));
-            Assert.AreEqual("m are <b>riding</b> their bikes", this.StipEllipses(search.Results[1].Snippet));
-            Assert.AreEqual("e boy <b>rides</b> his bike to school", this.StipEllipses(search.Results[2].Snippet));
+            Assert.AreEqual("All team are <b>riding</b> their bikes", this.StipEllipses(search.Results[1].Snippet));
+            Assert.AreEqual("The boy <b>rides</b> his bike to school", this.StipEllipses(search.Results[2].Snippet));
         }
 
         [Test]
@@ -1740,10 +1741,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(added, search.TotalHits);
 
             var snippets = search.Results.Select(result => this.StipEllipses(result.Snippet)).OrderBy(s => s).ToArray();
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", snippets[0]);
-            Assert.AreEqual("e red <b>fox</b> jumped over the lazy dark gray dog", snippets[1]);
-            Assert.AreEqual("gold <b>fox</b> jumped over the lazy black dog", snippets[2]);
-            Assert.AreEqual("quick <b>fox</b> jumps over the black dog - Italian", snippets[3]);
+            Assert.AreEqual("the quick <b>fox</b> jumps over the black dog - Italian", snippets[0]);
+            Assert.AreEqual("the quick <b>fox</b> jumps over the white dog - los de el Espana", snippets[1]);
+            Assert.AreEqual("The quick brown <b>fox</b> jumps over the lazy dog", snippets[2]);
+            Assert.AreEqual("The quick gold <b>fox</b> jumped over the lazy black dog", snippets[3]);
         }
 
         [Test]
@@ -1908,9 +1909,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddFoldersAndFiles();
 
             // Act
-            var result1 = this.SearchForKeyword("kw-folderName:Images/*");
-            var result2 = this.SearchForKeyword("kw-folderName:Images/DNN/*");
-            var result3 = this.SearchForKeywordWithWildCard("kw-folderName:Images/* AND spacer");
+            var result1 = this.SearchForKeyword("kw-folderName:Images\\/*");
+            var result2 = this.SearchForKeyword("kw-folderName:Images\\/DNN\\/*");
+            var result3 = this.SearchForKeywordWithWildCard("kw-folderName:Images\\/* AND spacer");
 
             // Assert
             Assert.AreEqual(5, result1.TotalHits);
@@ -1925,9 +1926,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddFoldersAndFiles();
 
             // Act - Space is replaced by <
-            var query1 = new SearchQuery { KeyWords = "kw-folderName:Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = false };
-            var query2 = new SearchQuery { KeyWords = "kw-folderName:my<Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
-            var query3 = new SearchQuery { KeyWords = "kw-folderName:my<Images/my<dnn/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
+            var query1 = new SearchQuery { KeyWords = "kw-folderName:Images\\/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = false };
+            var query2 = new SearchQuery { KeyWords = "kw-folderName:my<Images\\/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
+            var query3 = new SearchQuery { KeyWords = "kw-folderName:my<Images\\/my<dnn\\/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
             var result1 = this._searchController.SiteSearch(query1);
             var result2 = this._searchController.SiteSearch(query2);
             var result3 = this._searchController.SiteSearch(query3);

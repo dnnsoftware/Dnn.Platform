@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly List<CachedReader> _oldReaders = new List<CachedReader>();
 
         private IndexWriter _writer;
-        private IndexReader _idxReader;
+        private DirectoryReader _idxReader;
         private CachedReader _reader;
         private FastVectorHighlighter _fastHighlighter;
         private int _isDisposed = UNDISPOSED;
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Search.Internals
                             var writer = new IndexWriter(
                                 FSDirectory.Open(this.IndexFolder),
                                 new IndexWriterConfig(Constants.LuceneVersion, this.GetCustomAnalyzer() ?? new SynonymAnalyzer()));
-                            this._idxReader = writer.GetReader(false);
+                            this._idxReader = writer.GetReader(true);
                             Thread.MemoryBarrier();
                             this._writer = writer;
                         }
@@ -428,8 +428,8 @@ namespace DotNetNuke.Services.Search.Internals
             if (this._idxReader != null)
             {
                 // use the Reopen() method for better near-realtime when the _writer ins't null
-                var newReader = DirectoryReader.Open(Writer, false);
-                if (this._idxReader != newReader)
+                var newReader = DirectoryReader.OpenIfChanged(this._idxReader);
+                if (newReader != null && this._idxReader != newReader)
                 {
                     // _idxReader.Dispose(); -- will get disposed upon disposing the searcher
                     Interlocked.Exchange(ref this._idxReader, newReader);
