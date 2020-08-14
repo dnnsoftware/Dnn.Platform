@@ -6,28 +6,23 @@ namespace DotNetNuke.Services.Localization
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Globalization;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-    using System.Xml;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization.Internal;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
@@ -41,8 +36,8 @@ namespace DotNetNuke.Services.Localization
     /// good support for international users. Otherwise we are limiting our potential user base to
     /// that using English as their base language.</para>
     /// <para>
-    /// You can store the muti language content in resource files and use the api below to get localization content.
-    /// Resouces files named as: Control(Page)Name + Extension (.aspx/.ascx ) + Language + ".resx"
+    /// You can store the multi language content in resource files and use the api below to get localization content.
+    /// Resources files named as: Control(Page)Name + Extension (.aspx/.ascx ) + Language + ".resx"
     /// e.g: Installwizard.aspx.de-DE.resx.
     /// </para>
     /// </remarks>
@@ -576,7 +571,26 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo.</returns>
+        [Obsolete("Deprecated in Platform 9.8.0. Scheduled removal in v11.0.0. Use overload taking IPortalSettings instead.")]
         public static CultureInfo GetPageLocale(PortalSettings portalSettings)
+        {
+            return GetPageLocale((IPortalSettings)portalSettings);
+        }
+
+        /// <summary>
+        /// Detects the current language for the request.
+        /// The order in which the language is being detect is:
+        ///         1. QueryString
+        ///         2. Cookie
+        ///         3. User profile (if request is authenticated)
+        ///         4. Browser preference (if portal has this option enabled)
+        ///         5. Portal default
+        ///         6. System default (en-US)
+        ///     At any point, if a valid language is detected nothing else should be done.
+        /// </summary>
+        /// <param name="portalSettings">Current PortalSettings.</param>
+        /// <returns>A valid CultureInfo.</returns>
+        public static CultureInfo GetPageLocale(IPortalSettings portalSettings)
         {
             CultureInfo pageCulture = null;
 
@@ -1583,20 +1597,31 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// <summary>
-        ///   Sets the culture codes on the current Thread.
-        /// </summary>
-        /// <param name = "cultureInfo">Culture Info for the current page.</param>
-        /// <param name = "portalSettings">The current portalSettings.</param>
+        /// <summary>Sets the culture codes on the current Thread.</summary>
+        /// <param name="cultureInfo">Culture Info for the current page.</param>
+        /// <param name="portalSettings">The current portal settings.</param>
         /// <remarks>
-        ///   This method will configure the Thread culture codes.  Any page which does not derive from PageBase should
-        ///   be sure to call this method in OnInit to ensure localiztion works correctly.  See the TelerikDialogHandler for an example.
+        ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
+        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.  See the <see cref="TelerikDialogHandler" /> for an example.
         /// </remarks>
+        [Obsolete("Deprecated in Platform 9.8.0. Scheduled removal in v11.0.0. Use overload taking IPortalSettings instead.")]
         public static void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
+        {
+            SetThreadCultures(cultureInfo, (IPortalSettings)portalSettings);
+        }
+
+        /// <summary>Sets the culture codes on the current Thread.</summary>
+        /// <param name="cultureInfo">Culture Info for the current page.</param>
+        /// <param name="portalSettings">The current portal settings.</param>
+        /// <remarks>
+        ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
+        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.  See the <see cref="TelerikDialogHandler" /> for an example.
+        /// </remarks>
+        public static void SetThreadCultures(CultureInfo cultureInfo, IPortalSettings portalSettings)
         {
             if (cultureInfo == null)
             {
-                throw new ArgumentNullException("cultureInfo");
+                throw new ArgumentNullException(nameof(cultureInfo));
             }
 
             if (cultureInfo.Name == "fa-IR")
@@ -1895,7 +1920,7 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromQs(PortalSettings portalSettings)
+        private static CultureInfo GetCultureFromQs(IPortalSettings portalSettings)
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
             {
@@ -1912,7 +1937,7 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromCookie(PortalSettings portalSettings)
+        private static CultureInfo GetCultureFromCookie(IPortalSettings portalSettings)
         {
             CultureInfo culture;
             if (HttpContext.Current == null || HttpContext.Current.Request.Cookies["language"] == null)
@@ -1930,7 +1955,7 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromProfile(PortalSettings portalSettings)
+        private static CultureInfo GetCultureFromProfile(IPortalSettings portalSettings)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
@@ -1950,7 +1975,7 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromBrowser(PortalSettings portalSettings)
+        private static CultureInfo GetCultureFromBrowser(IPortalSettings portalSettings)
         {
             if (!portalSettings.EnableBrowserLanguage)
             {
@@ -1967,7 +1992,7 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromPortal(PortalSettings portalSettings)
+        private static CultureInfo GetCultureFromPortal(IPortalSettings portalSettings)
         {
             CultureInfo culture = null;
             if (!string.IsNullOrEmpty(portalSettings.DefaultLanguage))
@@ -2004,13 +2029,13 @@ namespace DotNetNuke.Services.Localization
 
         /// <summary>
         /// When portal allows users to select their preferred UI language, this method
-        /// will return the user ui preferred language if defined. Otherwise defaults
+        /// will return the user UI preferred language if defined. Otherwise defaults
         /// to the current culture.
         /// </summary>
         /// <param name="currentCulture">Current culture.</param>
-        /// <param name="portalSettings">PortalSettings for the current request.</param>
-        /// <returns></returns>
-        private static CultureInfo GetUserUICulture(CultureInfo currentCulture, PortalSettings portalSettings)
+        /// <param name="portalSettings">Portal settings for the current request.</param>
+        /// <returns>A <see cref="CultureInfo"/> instance representing the user's UI culture.</returns>
+        private static CultureInfo GetUserUICulture(CultureInfo currentCulture, IPortalSettings portalSettings)
         {
             CultureInfo uiCulture = currentCulture;
             try

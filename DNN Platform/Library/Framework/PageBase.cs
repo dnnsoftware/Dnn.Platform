@@ -428,7 +428,8 @@ namespace DotNetNuke.Framework
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
             if (!isInstallPage)
             {
-                Localization.SetThreadCultures(this.PageCulture, this.PortalSettings);
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
+                Localization.SetThreadCultures(Localization.GetPageLocale(portalSettings), portalSettings);
             }
 
             if (ScriptManager.GetCurrent(this) == null)
