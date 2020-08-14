@@ -72,6 +72,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="DependencyInjection\ServiceRequestScopeModule.cs" />
+    <Compile Include="Localization\LocalizationModule.cs" />
     <Compile Include="MobileRedirect\MobileRedirectModule.cs" />
     <Compile Include="OutputCaching\OutputCacheModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
