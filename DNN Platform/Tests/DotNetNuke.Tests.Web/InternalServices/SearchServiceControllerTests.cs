@@ -12,7 +12,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Hosting;
-
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -30,6 +31,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.InternalServices;
     using DotNetNuke.Web.InternalServices.Views.Search;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -96,6 +98,10 @@ namespace DotNetNuke.Tests.Web.InternalServices
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this._mockDataProvider = MockComponentProvider.CreateDataProvider();
             this._mockLocaleController = MockComponentProvider.CreateLocaleController();
             this._mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
@@ -138,6 +144,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             this._luceneController.Dispose();
             this.DeleteIndexFolder();
             CBO.ClearInstance();
