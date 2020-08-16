@@ -9,6 +9,8 @@ namespace DotNetNuke.Tests.Content
     using System.Collections.Specialized;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -19,7 +21,11 @@ namespace DotNetNuke.Tests.Content
     using DotNetNuke.Tests.Content.Mocks;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -45,11 +51,19 @@ namespace DotNetNuke.Tests.Content
 
             this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
                 (string searchTypeName) => new SearchType { SearchTypeName = searchTypeName, SearchTypeId = ModuleSearchTypeId });
+
+            var serviceCollection = new ServiceCollection();
+
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             MockComponentProvider.ResetContainer();
         }
 

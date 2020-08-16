@@ -227,7 +227,7 @@ namespace DotNetNuke.Common
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
 
         private static IServiceProvider dependencyProvider;
-        private static IApplicationStatusInfo applicationStatusInfo = new ApplicationStatusInfo(new Application());
+        private static IApplicationStatusInfo applicationStatusInfo;
 
         // global constants for the life of the application ( set in Application_Start )
 
@@ -569,7 +569,13 @@ namespace DotNetNuke.Common
             {
                 dependencyProvider = value;
                 if (dependencyProvider is INotifyPropertyChanged hasPropertyChanged)
+                {
                     hasPropertyChanged.PropertyChanged += OnDependencyProviderChanged;
+                }
+                else
+                {
+                    OnDependencyProviderChanged(null, null);
+                }
             }
         }
 
@@ -3838,7 +3844,7 @@ namespace DotNetNuke.Common
         /// </summary>
         private static void OnDependencyProviderChanged(object sender, PropertyChangedEventArgs eventArguments)
         {
-            applicationStatusInfo = DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            applicationStatusInfo = DependencyProvider?.GetRequiredService<IApplicationStatusInfo>();
         }
     }
 }
