@@ -5,7 +5,6 @@ namespace DotNetNuke.Common
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics;
@@ -27,14 +26,11 @@ namespace DotNetNuke.Common
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -47,13 +43,10 @@ namespace DotNetNuke.Common
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Upgrade;
     using DotNetNuke.Services.Url.FriendlyUrl;
-    using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualBasic.CompilerServices;
@@ -228,6 +221,7 @@ namespace DotNetNuke.Common
 
         private static IServiceProvider dependencyProvider;
         private static IApplicationStatusInfo applicationStatusInfo;
+        private static INavigationManager navigationManager;
 
         // global constants for the life of the application ( set in Application_Start )
 
@@ -2315,7 +2309,6 @@ namespace DotNetNuke.Common
         /// <returns>URL to access denied view.</returns>
         public static string AccessDeniedURL(string Message)
         {
-            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL = string.Empty;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
@@ -2692,7 +2685,6 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
-            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string loginUrl;
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -2744,7 +2736,7 @@ namespace DotNetNuke.Common
             string strURL = string.Empty;
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            strURL = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", userId));
+            strURL = navigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", userId));
 
             return strURL;
         }
@@ -2758,7 +2750,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL()
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL();
+            return navigationManager.NavigateURL();
         }
 
         /// <summary>
@@ -2771,7 +2763,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID);
+            return navigationManager.NavigateURL(tabID);
         }
 
         /// <summary>
@@ -2785,7 +2777,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab);
+            return navigationManager.NavigateURL(tabID, isSuperTab);
         }
 
         /// <summary>
@@ -2798,7 +2790,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(controlKey);
+            return navigationManager.NavigateURL(controlKey);
         }
 
         /// <summary>
@@ -2812,7 +2804,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(controlKey, additionalParameters);
+            return navigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2826,7 +2818,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, controlKey);
+            return navigationManager.NavigateURL(tabID, controlKey);
         }
 
         /// <summary>
@@ -2841,7 +2833,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, controlKey, additionalParameters);
+            return navigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2857,7 +2849,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return navigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2874,7 +2866,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2890,7 +2882,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         /// <summary>
@@ -2907,7 +2899,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
         /// <summary>
@@ -2956,7 +2948,6 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string RegisterURL(string returnURL, string originalURL)
         {
-            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string extraParams = string.Empty;
@@ -3235,7 +3226,7 @@ namespace DotNetNuke.Common
                 switch (UrlType)
                 {
                     case TabType.Tab:
-                        strLink = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(int.Parse(Link));
+                        strLink = navigationManager.NavigateURL(int.Parse(Link));
                         break;
                     default:
                         strLink = Link;
@@ -3845,6 +3836,7 @@ namespace DotNetNuke.Common
         private static void OnDependencyProviderChanged(object sender, PropertyChangedEventArgs eventArguments)
         {
             applicationStatusInfo = DependencyProvider?.GetRequiredService<IApplicationStatusInfo>();
+            navigationManager = DependencyProvider?.GetRequiredService<INavigationManager>();
         }
     }
 }
