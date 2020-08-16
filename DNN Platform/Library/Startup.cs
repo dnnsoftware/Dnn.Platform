@@ -6,6 +6,7 @@ namespace DotNetNuke
 {
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Portals;
@@ -25,8 +26,10 @@ namespace DotNetNuke
 
             services.AddTransient(x => PortalController.Instance);
             services.AddTransient<INavigationManager, NavigationManager>();
+
             services.AddTransient<IApplicationInfo, Application.Application>();
-            services.AddTransient<IApplicationStatusInfo, Application.ApplicationStatusInfo>();
+            services.AddTransient<IApplicationStatusInfo, ApplicationStatusInfo>();
+            services.AddTransient<IDnnContext, DotNetNukeContext>();
         }
     }
 }
