@@ -226,6 +226,9 @@ namespace DotNetNuke.Common
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
 
+        private static IServiceProvider dependencyProvider;
+        private static IApplicationStatusInfo applicationStatusInfo = new ApplicationStatusInfo(new Application());
+
         // global constants for the life of the application ( set in Application_Start )
 
 
@@ -368,8 +371,7 @@ namespace DotNetNuke.Common
         /// The application map path.
         /// </value>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
-        public static string ApplicationMapPath =>
-            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().ApplicationMapPath;
+        public static string ApplicationMapPath => applicationStatusInfo.ApplicationMapPath;
 
         /// <summary>
         /// Gets the desktop module path.
@@ -409,10 +411,7 @@ namespace DotNetNuke.Common
         /// Gets the database version.
         /// </summary>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
-        public static Version DataBaseVersion 
-        {
-            get => DependencyProvider.GetRequiredService<IApplicationStatusInfo>().DatabaseVersion;
-        }
+        public static Version DataBaseVersion { get => applicationStatusInfo.DatabaseVersion; }
 
         /// <summary>
         /// Gets the host map path.
@@ -487,10 +486,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <seealso cref="GetStatus"/>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
-        public static UpgradeStatus Status
-        {
-            get => (UpgradeStatus)DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
-        }
+        public static UpgradeStatus Status { get => (UpgradeStatus)applicationStatusInfo.Status; }
 
         /// <summary>
         /// Gets image file types.
@@ -551,6 +547,7 @@ namespace DotNetNuke.Common
         /// </value>
         public static Version NETFrameworkVersion { get; set; }
 
+
         /// <summary>
         /// Gets or sets the database engine version.
         /// </summary>
@@ -565,7 +562,16 @@ namespace DotNetNuke.Common
         /// <value>
         /// The Dependency Service.
         /// </value>
-        internal static IServiceProvider DependencyProvider { get; set; }
+        internal static IServiceProvider DependencyProvider
+        {
+            get => dependencyProvider;
+            set
+            {
+                dependencyProvider = value;
+                if (dependencyProvider is INotifyPropertyChanged hasPropertyChanged)
+                    hasPropertyChanged.PropertyChanged += OnDependencyProviderChanged;
+            }
+        }
 
         /// <summary>
         /// Redirects the specified URL.
@@ -590,8 +596,7 @@ namespace DotNetNuke.Common
         }
 
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
-        public static bool IncrementalVersionExists(Version version) =>
-            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().IncrementalVersionExists(version);
+        public static bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
 
         /// <summary>
         /// Builds the cross tab dataset.
@@ -969,8 +974,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
-        public static void UpdateDataBaseVersion(Version version) =>
-            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().UpdateDatabaseVersion(version);
+        public static void UpdateDataBaseVersion(Version version) => applicationStatusInfo.UpdateDatabaseVersion(version);
 
         /// <summary>
         /// Updates the database version.
@@ -979,11 +983,11 @@ namespace DotNetNuke.Common
         /// <param name="increment">The increment.</param>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         public static void UpdateDataBaseVersionIncrement(Version version, int increment) =>
-            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().UpdateDatabaseVersionIncrement(version, increment);
+            applicationStatusInfo.UpdateDatabaseVersionIncrement(version, increment);
 
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         public static int GetLastAppliedIteration(Version version) =>
-            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().GetLastAppliedIteration(version);
+            applicationStatusInfo.GetLastAppliedIteration(version);
 
         /// <summary>
         /// Adds the port.
@@ -1329,7 +1333,7 @@ namespace DotNetNuke.Common
         /// <param name="status">The status.</param>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         public static void SetStatus(UpgradeStatus status) =>
-            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().SetStatus((DotNetNuke.Abstractions.Application.UpgradeStatus)status);
+            applicationStatusInfo.SetStatus((DotNetNuke.Abstractions.Application.UpgradeStatus)status);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -3724,7 +3728,7 @@ namespace DotNetNuke.Common
         /// wizard.
         /// </remarks>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
-        internal static bool IsInstalled() => DependencyProvider.GetRequiredService<IApplicationStatusInfo>().IsInstalled();
+        internal static bool IsInstalled() => applicationStatusInfo.IsInstalled();
 
         /// <summary>
         /// Gets the culture code of the tab.
@@ -3825,6 +3829,16 @@ namespace DotNetNuke.Common
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Resolves dependencies after the <see cref="Globals.DependencyProvider"/>
+        /// has been initialized. This should only be called once to resolve all
+        /// dependencies used by the <see cref="Globals"/> object.
+        /// </summary>
+        private static void OnDependencyProviderChanged(object sender, PropertyChangedEventArgs eventArguments)
+        {
+            applicationStatusInfo = DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
         }
     }
 }
