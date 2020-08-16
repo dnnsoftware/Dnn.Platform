@@ -53,7 +53,6 @@ namespace DotNetNuke.Tests.Content
                 (string searchTypeName) => new SearchType { SearchTypeName = searchTypeName, SearchTypeId = ModuleSearchTypeId });
 
             var serviceCollection = new ServiceCollection();
-
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);

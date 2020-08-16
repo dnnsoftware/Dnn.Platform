@@ -8,20 +8,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     using System.Collections.Generic;
     using System.Data;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Entities.Users.Social.Data;
-    using DotNetNuke.Entities.Users.Social.Internal;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -42,6 +46,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.Container = new SimpleContainer();
             var mockDataProvider = MockComponentProvider.CreateDataProvider();
             mockDataProvider.Setup(dp => dp.GetProviderPath()).Returns(string.Empty);
@@ -71,6 +81,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
             UserController.ClearInstance();

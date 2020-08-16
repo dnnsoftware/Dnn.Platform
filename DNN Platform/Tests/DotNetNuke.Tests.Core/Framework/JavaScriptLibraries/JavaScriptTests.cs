@@ -9,14 +9,18 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
     using System.Linq;
     using System.Reflection;
     using System.Web;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Tests.Instance.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     public class JavaScriptTests
@@ -31,14 +35,19 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void Setup()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => Mock.Of<IApplicationInfo>());
-            serviceCollection.AddTransient<IDnnContext>(container => (IDnnContext)ActivatorUtilities.GetServiceOrCreateInstance(container, typeof(DotNetNukeContext)));
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.None);
+
+            var mockApplication = new Mock<IApplicationInfo>();
+            mockApplication.Setup(app => app.Version).Returns(new Version("1.0.0.0"));
+
+            var dnnContext = new DotNetNukeContext(mockApplication.Object);
+
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<IApplicationInfo>(container => mockApplication.Object);
+            serviceCollection.AddTransient<IDnnContext>(container => dnnContext);
 
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
-            // fix Globals.Status
-            var status = typeof(Globals).GetField("_status", BindingFlags.Static | BindingFlags.NonPublic);
-            status.SetValue(null, Globals.UpgradeStatus.None);
 
             var httpContextMock = new Mock<HttpContextBase> { DefaultValue = DefaultValue.Mock, };
             httpContextMock.Setup(c => c.Items).Returns(new Dictionary<object, object>());
