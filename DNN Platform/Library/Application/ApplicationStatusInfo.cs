@@ -150,11 +150,28 @@ namespace DotNetNuke.Application
             return isInstalled || this.HasInstallVersion();
         }
 
+        /// <summary>
+        /// Sets the status.
+        /// </summary>
+        /// <param name="status">The status.</param>
+        public void SetStatus(UpgradeStatus status)
+        {
+            this.status = status;
+        }
+
         /// <inheritdoc />
         public void UpdateDatabaseVersion(Version version)
         {
             // update the version
             DataProvider.Instance().UpdateDatabaseVersion(version.Major, version.Minor, version.Build, this.applicationInfo.Name);
+            this.DatabaseVersion = version;
+        }
+
+        /// <inheritdoc />
+        public void UpdateDatabaseVersionIncrement(Version version, int increment)
+        {
+            // update the version and increment
+            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
             this.DatabaseVersion = version;
         }
 

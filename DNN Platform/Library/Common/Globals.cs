@@ -222,8 +222,6 @@ namespace DotNetNuke.Common
         private static string _hostPath;
         private static string _installMapPath;
         private static string _installPath;
-        private static Version _dataBaseVersion;
-        private static UpgradeStatus _status = UpgradeStatus.Unknown;
         private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
@@ -369,7 +367,7 @@ namespace DotNetNuke.Common
         /// <value>
         /// The application map path.
         /// </value>
-        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationStatusInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         public static string ApplicationMapPath =>
             DependencyProvider.GetRequiredService<IApplicationStatusInfo>().ApplicationMapPath;
 
@@ -410,13 +408,10 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Gets the database version.
         /// </summary>
-        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationStatusInfo' in Dependency Injection instead. New property name is 'DatabaseVersion'. Scheduled for removal in v11.0.0.")]
-        public static Version DataBaseVersion
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        public static Version DataBaseVersion 
         {
-            get
-            {
-                return _dataBaseVersion;
-            }
+            get => DependencyProvider.GetRequiredService<IApplicationStatusInfo>().DatabaseVersion;
         }
 
         /// <summary>
@@ -491,89 +486,10 @@ namespace DotNetNuke.Common
         /// Gets the status of application.
         /// </summary>
         /// <seealso cref="GetStatus"/>
-        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationStatusInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         public static UpgradeStatus Status
         {
-            get
-            {
-                if (_status != UpgradeStatus.Unknown && _status != UpgradeStatus.Error)
-                {
-                    return _status;
-                }
-
-                Logger.Trace("Getting application status");
-                var tempStatus = UpgradeStatus.None;
-
-                // first call GetProviderPath - this insures that the Database is Initialised correctly
-                // and also generates the appropriate error message if it cannot be initialised correctly
-                string strMessage = DataProvider.Instance().GetProviderPath();
-
-                // get current database version from DB
-                if (!strMessage.StartsWith("ERROR:"))
-                {
-                    try
-                    {
-                        _dataBaseVersion = DataProvider.Instance().GetVersion();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        strMessage = "ERROR:" + ex.Message;
-                    }
-                }
-
-                if (strMessage.StartsWith("ERROR"))
-                {
-                    if (IsInstalled())
-                    {
-                        // Errors connecting to the database after an initial installation should be treated as errors.
-                        tempStatus = UpgradeStatus.Error;
-                    }
-                    else
-                    {
-                        // An error that occurs before the database has been installed should be treated as a new install
-                        tempStatus = UpgradeStatus.Install;
-                    }
-                }
-                else if (DataBaseVersion == null)
-                {
-                    // No Db Version so Install
-                    tempStatus = UpgradeStatus.Install;
-                }
-                else
-                {
-                    var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                    if (version.Major > DataBaseVersion.Major)
-                    {
-                        // Upgrade Required (Major Version Upgrade)
-                        tempStatus = UpgradeStatus.Upgrade;
-                    }
-                    else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
-                    {
-                        // Upgrade Required (Minor Version Upgrade)
-                        tempStatus = UpgradeStatus.Upgrade;
-                    }
-                    else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                             version.Build > DataBaseVersion.Build)
-                    {
-                        // Upgrade Required (Build Version Upgrade)
-                        tempStatus = UpgradeStatus.Upgrade;
-                    }
-                    else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                             version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
-                    {
-                        // Upgrade Required (Build Version Upgrade)
-                        tempStatus = UpgradeStatus.Upgrade;
-                    }
-                }
-
-                _status = tempStatus;
-
-                Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
-                Logger.Trace("Application status is " + _status);
-
-                return _status;
-            }
+            get => (UpgradeStatus)DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
         }
 
         /// <summary>
@@ -673,7 +589,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationStatusInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         public static bool IncrementalVersionExists(Version version) =>
             DependencyProvider.GetRequiredService<IApplicationStatusInfo>().IncrementalVersionExists(version);
 
@@ -1052,7 +968,7 @@ namespace DotNetNuke.Common
         /// Updates the database version.
         /// </summary>
         /// <param name="version">The version.</param>
-        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationStatusInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         public static void UpdateDataBaseVersion(Version version) =>
             DependencyProvider.GetRequiredService<IApplicationStatusInfo>().UpdateDatabaseVersion(version);
 
@@ -1061,25 +977,13 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
-        public static void UpdateDataBaseVersionIncrement(Version version, int increment)
-        {
-            // update the version and increment
-            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
-            _dataBaseVersion = version;
-        }
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        public static void UpdateDataBaseVersionIncrement(Version version, int increment) =>
+            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().UpdateDatabaseVersionIncrement(version, increment);
 
-        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationStatusInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
-        public static int GetLastAppliedIteration(Version version)
-        {
-            try
-            {
-                return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        public static int GetLastAppliedIteration(Version version) =>
+            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().GetLastAppliedIteration(version);
 
         /// <summary>
         /// Adds the port.
@@ -1423,10 +1327,9 @@ namespace DotNetNuke.Common
         /// Sets the status.
         /// </summary>
         /// <param name="status">The status.</param>
-        public static void SetStatus(UpgradeStatus status)
-        {
-            _status = status;
-        }
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        public static void SetStatus(UpgradeStatus status) =>
+            DependencyProvider.GetRequiredService<IApplicationStatusInfo>().SetStatus((DotNetNuke.Abstractions.Application.UpgradeStatus)status);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -3820,7 +3723,7 @@ namespace DotNetNuke.Common
         /// since the connection string may not have been configured yet, which can occur during the installation
         /// wizard.
         /// </remarks>
-        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationStatusInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
         internal static bool IsInstalled() => DependencyProvider.GetRequiredService<IApplicationStatusInfo>().IsInstalled();
 
         /// <summary>

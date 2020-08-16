@@ -43,10 +43,23 @@ namespace DotNetNuke.Abstractions.Application
         bool IsInstalled();
 
         /// <summary>
+        /// Sets the status.
+        /// </summary>
+        /// <param name="status">The status.</param>
+        void SetStatus(UpgradeStatus status);
+
+        /// <summary>
         /// Updates the database version.
         /// </summary>
         /// <param name="version">The version.</param>
         void UpdateDatabaseVersion(Version version);
+
+        /// <summary>
+        /// Updates the database version.
+        /// </summary>
+        /// <param name="version">The version.</param>
+        /// <param name="increment">The increment.</param>
+        void UpdateDatabaseVersionIncrement(Version version, int increment);
 
         /// <summary>
         /// Needs documentation.
