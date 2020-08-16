@@ -5,6 +5,7 @@
 namespace DotNetNuke
 {
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Portals;
@@ -12,8 +13,10 @@ namespace DotNetNuke
     using DotNetNuke.UI.Modules.Html5;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <inheritdoc />
     public class Startup : IDnnStartup
     {
+        /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<WebFormsModuleControlFactory>();
@@ -22,6 +25,8 @@ namespace DotNetNuke
 
             services.AddTransient(x => PortalController.Instance);
             services.AddTransient<INavigationManager, NavigationManager>();
+            services.AddTransient<IApplicationInfo, Application.Application>();
+            services.AddTransient<IApplicationStatusInfo, Application.ApplicationStatusInfo>();
         }
     }
 }
