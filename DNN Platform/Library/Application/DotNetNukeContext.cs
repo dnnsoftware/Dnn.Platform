@@ -61,7 +61,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets get the application.
         /// </summary>
-        public Application Application { get => this.Application is Application app ? app : new Application(); }
+        public Application Application { get => this.applicationInfo is Application app ? app : new Application(); }
 
         /// <inheritdoc />
         IApplicationInfo IDnnContext.Application { get => this.applicationInfo; }

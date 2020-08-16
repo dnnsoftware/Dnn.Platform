@@ -9,12 +9,13 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
     using System.Linq;
     using System.Reflection;
     using System.Web;
-
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Tests.Instance.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -29,6 +30,12 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         [SetUp]
         public void Setup()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient(container => Mock.Of<IApplicationInfo>());
+            serviceCollection.AddTransient<IDnnContext>(container => (IDnnContext)ActivatorUtilities.GetServiceOrCreateInstance(container, typeof(DotNetNukeContext)));
+
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             // fix Globals.Status
             var status = typeof(Globals).GetField("_status", BindingFlags.Static | BindingFlags.NonPublic);
             status.SetValue(null, Globals.UpgradeStatus.None);
@@ -49,6 +56,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         {
             UnitTestHelper.ClearHttpContext();
             JavaScriptLibraryController.ClearInstance();
+            Globals.DependencyProvider = null;
         }
 
         [Test]
