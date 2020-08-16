@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -27,6 +28,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             var _mockData = MockComponentProvider.CreateDataProvider();

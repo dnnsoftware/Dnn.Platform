@@ -8,7 +8,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -37,6 +37,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             var serviceCollection = new ServiceCollection();
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 

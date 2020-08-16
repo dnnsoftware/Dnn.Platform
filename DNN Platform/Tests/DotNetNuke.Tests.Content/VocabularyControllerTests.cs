@@ -6,7 +6,7 @@ namespace DotNetNuke.Tests.Content
 {
     using System;
     using System.Linq;
-
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -35,6 +35,7 @@ namespace DotNetNuke.Tests.Content
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 

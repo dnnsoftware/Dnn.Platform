@@ -7,7 +7,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     using System;
     using System.Collections.Generic;
     using System.Data;
-
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -50,6 +50,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             ComponentFactory.Container = new SimpleContainer();

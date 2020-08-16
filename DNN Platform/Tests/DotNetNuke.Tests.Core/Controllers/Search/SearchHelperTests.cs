@@ -7,7 +7,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System;
     using System.Data;
     using System.Linq;
-
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -49,6 +49,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var serviceCollection = new ServiceCollection();
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 

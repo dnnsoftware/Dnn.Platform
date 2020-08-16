@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.IO;
     using System.Linq;
     using System.Threading;
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
@@ -68,6 +69,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
             var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 

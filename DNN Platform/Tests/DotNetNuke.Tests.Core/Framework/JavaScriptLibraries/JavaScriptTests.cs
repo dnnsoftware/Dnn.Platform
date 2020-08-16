@@ -9,7 +9,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
     using System.Linq;
     using System.Reflection;
     using System.Web;
-
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
@@ -46,6 +46,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             serviceCollection.AddTransient<IApplicationInfo>(container => mockApplication.Object);
             serviceCollection.AddTransient<IDnnContext>(container => dnnContext);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
 
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 

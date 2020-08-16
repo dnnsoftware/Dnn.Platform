@@ -8,7 +8,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
     using System.Web.Mvc;
     using System.Web.Routing;
-
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
@@ -34,8 +34,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             var services = new ServiceCollection();
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-            
+
             services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            services.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             services.AddSingleton<IControllerFactory, DefaultControllerFactory>();
 
             Globals.DependencyProvider = services.BuildServiceProvider();

@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
     using System.Collections.Generic;
     using System.Reflection;
     using System.Runtime.Serialization;
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -50,6 +51,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var mockApplicationInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationInfo.Setup(info => info.ApplicationMapPath).Returns("path/to/application");
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationInfo.Object);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

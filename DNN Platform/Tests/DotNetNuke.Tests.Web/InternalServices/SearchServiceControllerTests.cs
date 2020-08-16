@@ -12,6 +12,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Hosting;
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -100,6 +101,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this._mockDataProvider = MockComponentProvider.CreateDataProvider();

@@ -32,8 +32,10 @@ namespace DotNetNuke.Tests.Web.Api
             var navigationManagerMock = new Mock<INavigationManager>();
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+
             services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
+            
             Globals.DependencyProvider = services.BuildServiceProvider();
         }
 
