@@ -21,7 +21,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="Application"/> class.
         /// </summary>
-        protected internal Application()
+        public Application()
         {
         }
 
