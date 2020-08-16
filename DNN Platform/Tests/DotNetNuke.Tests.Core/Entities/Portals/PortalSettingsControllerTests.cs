@@ -8,7 +8,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
     using System.Collections.Generic;
     using System.Reflection;
     using System.Runtime.Serialization;
-
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -17,6 +17,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Tests.Utilities.Mocks;
     using DotNetNuke.UI.Skins;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -44,6 +45,12 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         public void SetUp()
         {
             MockComponentProvider.ResetContainer();
+
+            var serviceCollection = new ServiceCollection();
+            var mockApplicationInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationInfo.Setup(info => info.ApplicationMapPath).Returns("path/to/application");
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationInfo.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
         [TearDown]
@@ -51,6 +58,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             PortalController.ClearInstance();
             TabController.ClearInstance();
+            Globals.DependencyProvider = null;
+
         }
 
         [Test]

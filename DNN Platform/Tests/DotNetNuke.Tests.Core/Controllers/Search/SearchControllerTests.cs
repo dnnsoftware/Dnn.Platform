@@ -10,7 +10,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.IO;
     using System.Linq;
     using System.Threading;
-
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
@@ -22,6 +23,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Mocks;
     using Lucene.Net.Documents;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -139,6 +141,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this._mockDataProvider = MockComponentProvider.CreateDataProvider();
             this._mockLocaleController = MockComponentProvider.CreateLocaleController();
             this._mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
@@ -168,6 +174,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchHelper.ClearInstance();
             LuceneController.ClearInstance();
             this._luceneController = null;
+            Globals.DependencyProvider = null;
         }
 
         [Test]

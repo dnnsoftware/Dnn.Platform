@@ -98,9 +98,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             MockComponentProvider.ResetContainer();
 
             var serviceCollection = new ServiceCollection();
-            var mockApplicationInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationInfo.Setup(info => info.ApplicationMapPath).Returns("path/to/application");
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationInfo.Object);
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this._mockDataProvider = MockComponentProvider.CreateDataProvider();

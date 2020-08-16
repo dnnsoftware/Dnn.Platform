@@ -9,7 +9,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.IO;
     using System.Linq;
     using System.Threading;
-
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using Lucene.Net.Index;
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -65,6 +67,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             ComponentFactory.Container = new SimpleContainer();
             this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this._mockHostController = new Mock<IHostController>();
             this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
             this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
@@ -92,6 +98,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController.Dispose();
             this.DeleteIndexFolder();
             SearchHelper.ClearInstance();
+            Globals.DependencyProvider = null;
         }
 
         [Test]

@@ -23,7 +23,7 @@ namespace DotNetNuke.Application
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ApplicationStatusInfo));
 
         private UpgradeStatus status = UpgradeStatus.Unknown;
-        private string applicationMapPath = string.Empty;
+        private string applicationMapPath;
 
         private IApplicationInfo applicationInfo;
 
