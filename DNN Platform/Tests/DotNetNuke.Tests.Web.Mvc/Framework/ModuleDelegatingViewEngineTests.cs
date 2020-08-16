@@ -7,13 +7,17 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
     using System.Linq;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Web.Mvc.Framework;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -23,7 +27,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         public void Setup()
         {
             var services = new ServiceCollection();
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+
+            services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             services.AddSingleton<IControllerFactory, DefaultControllerFactory>();
+
             Globals.DependencyProvider = services.BuildServiceProvider();
         }
 

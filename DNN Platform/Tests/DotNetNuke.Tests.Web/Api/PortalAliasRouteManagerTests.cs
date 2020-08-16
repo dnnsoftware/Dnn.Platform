@@ -10,11 +10,16 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -23,15 +28,19 @@ namespace DotNetNuke.Tests.Web.Api
         [SetUp]
         public void SetUp()
         {
+            var services = new ServiceCollection();
             var navigationManagerMock = new Mock<INavigationManager>();
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
+            Globals.DependencyProvider = services.BuildServiceProvider();
         }
 
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             PortalController.ClearInstance();
             PortalAliasController.ClearInstance();
             TestableGlobals.ClearInstance();
