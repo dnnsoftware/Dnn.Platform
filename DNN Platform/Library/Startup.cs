@@ -23,13 +23,13 @@ namespace DotNetNuke
             services.AddSingleton<WebFormsModuleControlFactory>();
             services.AddSingleton<Html5ModuleControlFactory>();
             services.AddSingleton<ReflectedModuleControlFactory>();
+            services.AddSingleton<IDnnContext, DotNetNukeContext>();
 
             services.AddTransient(x => PortalController.Instance);
-            services.AddTransient<INavigationManager, NavigationManager>();
+            services.AddScoped<INavigationManager, NavigationManager>();
 
-            services.AddTransient<IApplicationInfo, Application.Application>();
-            services.AddTransient<IApplicationStatusInfo, ApplicationStatusInfo>();
-            services.AddTransient<IDnnContext, DotNetNukeContext>();
+            services.AddScoped<IApplicationInfo, Application.Application>();
+            services.AddScoped<IApplicationStatusInfo, ApplicationStatusInfo>();
         }
     }
 }
