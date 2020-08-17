@@ -11,7 +11,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.IO;
     using System.Reflection;
     using System.Text;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -27,10 +27,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     public class FileManagerTests
@@ -59,6 +61,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [SetUp]
         public void Setup()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this._mockData = MockComponentProvider.CreateDataProvider();
             this._mockFolder = MockComponentProvider.CreateFolderProvider(Constants.FOLDER_ValidFolderProviderType);
             this._mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -103,6 +109,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             TestableGlobals.ClearInstance();
             CBO.ClearInstance();
 

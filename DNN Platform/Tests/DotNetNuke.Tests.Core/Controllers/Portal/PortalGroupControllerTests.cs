@@ -8,16 +8,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Data;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     // ReSharper disable InconsistentNaming
     [TestFixture]
@@ -31,6 +35,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this._mockData = MockComponentProvider.CreateDataProvider();
             DataTable hostSettingsTable = new DataTable("HostSettings");
 
@@ -46,6 +54,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             MockComponentProvider.ResetContainer();
         }
 

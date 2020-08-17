@@ -5,10 +5,10 @@
 namespace DotNetNuke.Tests.Content
 {
     using System.Collections.Generic;
-    using System.Linq;
     using DotNetNuke.Abstractions;
+    using System.Linq;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Content;
@@ -18,15 +18,15 @@ namespace DotNetNuke.Tests.Content
     using DotNetNuke.Tests.Content.Mocks;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
-
     using Microsoft.Extensions.DependencyInjection;
-
     using Moq;
-
     using NUnit.Framework;
 
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
     using FileController = DotNetNuke.Entities.Content.AttachmentController;
     using Util = DotNetNuke.Entities.Content.Common.Util;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Common;
 
     [TestFixture]
     public class AttachmentControllerTests
@@ -39,6 +39,7 @@ namespace DotNetNuke.Tests.Content
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<INewHostController, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             // Register MockCachingProvider

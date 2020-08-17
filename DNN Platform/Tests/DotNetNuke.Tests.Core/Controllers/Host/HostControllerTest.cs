@@ -9,20 +9,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
     using System.Data;
     using System.Linq;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Tests.Utilities.Mocks;
-
     using Microsoft.Extensions.DependencyInjection;
-
     using Moq;
-
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     public class HostControllerTest
@@ -39,6 +38,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INewHostController, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this._mockCache = MockComponentProvider.CreateDataCacheProvider();

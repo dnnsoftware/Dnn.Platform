@@ -31,6 +31,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using Moq;
     using NUnit.Framework;
 
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
+
     /// <summary>
     ///   Summary description for RedirectionControllerTests.
     /// </summary>
@@ -111,8 +113,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 dataProviderField.SetValue(tabController, this._dataProvider.Object);
             }
-
-            
         }
 
         [TearDown]
@@ -491,6 +491,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             serviceCollection.AddTransient<INavigationManager>(container => mockNavigationManager.Object);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INewHostController, HostController>();
 
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }

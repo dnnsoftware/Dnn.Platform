@@ -10,6 +10,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
     using System.Runtime.Serialization;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;

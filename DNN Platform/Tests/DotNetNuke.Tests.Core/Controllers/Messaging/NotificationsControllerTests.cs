@@ -11,11 +11,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Globalization;
     using System.Text;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
@@ -27,12 +28,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Services.Social.Notifications.Data;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
-
     using Microsoft.Extensions.DependencyInjection;
-
     using Moq;
-
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     public class NotificationsControllerTests
@@ -59,6 +59,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<INewHostController, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             ComponentFactory.Container = new SimpleContainer();

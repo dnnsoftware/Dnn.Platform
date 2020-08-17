@@ -15,14 +15,13 @@ namespace DotNetNuke.Entities.Controllers
 
     using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
+    // None of the APIs are deprecated, but the IHostController
+    // is deprecated and moved to the abstractions project. When
+    // it is time to remove APIs we should remove the parent
+    // classes listed here
     /// <inheritdoc />
     public partial class HostController : ComponentBase<IHostController, HostController>, IHostController
     {
-        // None of the APIs are deprecated, but the IHostController
-        // is deprecated and moved to the abstractions project. When
-        // it is time to remove APIs we should remove the parent
-        // classes listed here
-
         private static IHostController currentInstance;
 
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Controllers.IHostController instead.")]

@@ -7,13 +7,17 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using System;
     using System.Collections.Generic;
     using System.Data;
-
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
     ///   Summary description for PreviewProfileControllerTests.
@@ -28,6 +32,10 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.Container = new SimpleContainer();
             this._dataProvider = MockComponentProvider.CreateDataProvider();
             this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
@@ -106,6 +114,12 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                                                                     this._dtProfiles.Rows.Remove(rows[0]);
                                                                                                 }
                                                                                             });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Globals.DependencyProvider = null;
         }
 
         [Test]

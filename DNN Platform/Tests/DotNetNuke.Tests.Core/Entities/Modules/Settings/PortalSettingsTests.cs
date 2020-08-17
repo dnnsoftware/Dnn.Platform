@@ -7,16 +7,34 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     public class PortalSettingsTests : BaseSettingsTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Globals.DependencyProvider = null;
+        }
+
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ar-JO")]

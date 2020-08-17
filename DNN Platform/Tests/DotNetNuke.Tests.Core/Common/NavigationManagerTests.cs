@@ -11,11 +11,15 @@ namespace DotNetNuke.Tests.Core.Common
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     public class NavigationManagerTests
@@ -31,6 +35,10 @@ namespace DotNetNuke.Tests.Core.Common
         [TestFixtureSetUp]
         public void Setup()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this._navigationManager = new NavigationManager(PortalControllerMock());
             TabController.SetTestableInstance(TabControllerMock());
             LocaleController.SetTestableInstance(LocaleControllerMock());
@@ -96,6 +104,7 @@ namespace DotNetNuke.Tests.Core.Common
         [TestFixtureTearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             this._navigationManager = null;
             TabController.ClearInstance();
             LocaleController.ClearInstance();

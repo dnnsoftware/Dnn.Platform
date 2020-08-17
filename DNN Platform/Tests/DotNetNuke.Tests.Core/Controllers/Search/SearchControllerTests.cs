@@ -11,8 +11,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.Linq;
     using System.Threading;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
@@ -29,6 +29,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using NUnit.Framework;
 
     using Constants = DotNetNuke.Services.Search.Internals.Constants;
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
     ///  Testing various aspects of SearchController.
@@ -139,6 +140,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
@@ -169,6 +174,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             this._luceneController.Dispose();
             this.DeleteIndexFolder();
             InternalSearchController.ClearInstance();

@@ -5,7 +5,7 @@
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
     using System;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
@@ -14,8 +14,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
     using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     public class SubscriptionTypeControllerTests
@@ -29,6 +32,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             // Setup Mocks and Stub
             this.mockDataService = new Mock<IDataService>();
             this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
@@ -174,6 +181,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             DataService.ClearInstance();
             MockComponentProvider.ResetContainer();
         }

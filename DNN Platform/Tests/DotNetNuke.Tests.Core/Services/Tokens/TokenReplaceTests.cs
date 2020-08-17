@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Services.Tokens
 {
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
@@ -13,8 +14,11 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     public class TokenReplaceTests
@@ -28,6 +32,10 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.RegisterComponentInstance<TokenProvider>(new CoreTokenProvider());
             this._mockCache = MockComponentProvider.CreateDataCacheProvider();
             this._mockHostController = new Mock<IHostController>();
@@ -46,6 +54,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             PortalController.ClearInstance();
             ModuleController.ClearInstance();
             UserController.ClearInstance();

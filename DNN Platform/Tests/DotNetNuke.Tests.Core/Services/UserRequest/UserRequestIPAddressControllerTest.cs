@@ -6,14 +6,17 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
 {
     using System.Collections.Specialized;
     using System.Web;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     [TestFixture]
     internal class UserRequestIPAddressControllerTest
@@ -28,6 +31,10 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [SetUp]
         public void Setup()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             NameValueCollection serverVariables = new NameValueCollection();
 
             // Setup Mock
@@ -45,6 +52,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             MockComponentProvider.ResetContainer();
         }
 

@@ -9,24 +9,24 @@ namespace DotNetNuke.Tests.Content
     using System.Collections.Specialized;
     using System.Linq;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Tests.Content.Mocks;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
-
     using Microsoft.Extensions.DependencyInjection;
-
     using Moq;
-
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
     ///   Summary description for ContentItemTests.
@@ -43,6 +43,10 @@ namespace DotNetNuke.Tests.Content
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this._mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             this._mockDataProvider = MockComponentProvider.CreateDataProvider();
             this._mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();

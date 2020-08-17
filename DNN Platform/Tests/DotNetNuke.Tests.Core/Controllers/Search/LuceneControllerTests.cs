@@ -10,8 +10,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.Linq;
     using System.Threading;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
@@ -28,6 +28,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using NUnit.Framework;
 
     using Directory = System.IO.Directory;
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
     ///  Testing various aspects of LuceneController.
@@ -65,21 +66,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [SetUp]
         public void SetUp()
         {
+            
+
             ComponentFactory.Container = new SimpleContainer();
             this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
-            this._mockHostController = new Mock<IHostController>();
-            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
-            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
-            HostController.RegisterInstance(this._mockHostController.Object);
+            this.MockHostController();
 
             this._mockSearchHelper = new Mock<ISearchHelper>();
             this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(this.GetSynonymsCallBack);
@@ -87,6 +79,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
             this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this._mockHostController.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this._mockSearchQuery = new Mock<SearchQuery>();
 
@@ -97,10 +95,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             this._luceneController.Dispose();
             this.DeleteIndexFolder();
             SearchHelper.ClearInstance();
             Globals.DependencyProvider = null;
+        }
+
+        private void MockHostController()
+        {
+            this._mockHostController = new Mock<IHostController>();
+            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
+            
+            this._mockHostController.As<INewHostController>();
         }
 
         [Test]

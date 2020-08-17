@@ -10,8 +10,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.IO;
     using System.Threading;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
@@ -24,6 +24,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
+
+    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
     ///  Testing various aspects of SearchController.
@@ -120,12 +122,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 .Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
             UserController.SetTestableInstance(this._mockUserController.Object);
 
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)_mockHostController.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             this.CreateNewLuceneControllerInstance();
         }
 
         [TearDown]
         public void TearDown()
         {
+            this._mockHostController = null;
+            Globals.DependencyProvider = null;
             this._luceneController.Dispose();
             this.DeleteIndexFolder();
             InternalSearchController.ClearInstance();
@@ -511,7 +519,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
             this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
             this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
-            HostController.RegisterInstance(this._mockHostController.Object);
+            this._mockHostController.As<INewHostController>();
         }
 
         private void SetupLocaleController()
