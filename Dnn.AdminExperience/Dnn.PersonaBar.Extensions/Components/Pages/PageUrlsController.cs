@@ -107,16 +107,29 @@ namespace Dnn.PersonaBar.Pages.Components
 
             var seqNum = (tab.TabUrls.Count > 0) ? tab.TabUrls.Max(t => t.SeqNum) + 1 : 1;
             var portalLocales = LocaleController.Instance.GetLocales(portalSettings.PortalId);
-            var cultureCode = portalLocales.Where(l => l.Value.KeyID == dto.LocaleKey)
-                                .Select(l => l.Value.Code)
-                                .SingleOrDefault() ?? portalSettings.CultureCode;
+
+            // Get the culture code of selected portal alias
+            var alias = PortalAliasController.Instance
+                .GetPortalAliasesByPortalId(portalSettings.PortalId)
+                .SingleOrDefault(a => a.PortalAliasID == dto.SiteAliasKey);
+            Func<KeyValuePair<string, Locale>, bool> localeFilter = null;
+            if (alias != null &&
+                !string.IsNullOrWhiteSpace(alias.CultureCode))
+            {
+                localeFilter = l => l.Key == alias.CultureCode;
+            }
+            else
+            {
+                localeFilter = l => l.Value.KeyID == dto.LocaleKey;
+            }
+
+            var cultureCode = portalLocales.Where(localeFilter)
+                .Select(l => l.Value.Code)
+                .SingleOrDefault() ?? portalSettings.CultureCode;
 
             var portalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage;
             if (portalAliasUsage == PortalAliasUsageType.Default)
             {
-                var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalSettings.PortalId)
-                                                        .SingleOrDefault(a => a.PortalAliasID == dto.SiteAliasKey);
-
                 if (string.IsNullOrEmpty(cultureCode) || alias == null)
                 {
                     return new PageUrlResult
