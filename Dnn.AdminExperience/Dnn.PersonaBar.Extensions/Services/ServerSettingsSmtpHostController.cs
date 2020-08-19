@@ -17,6 +17,7 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
@@ -59,7 +60,8 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
                         smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey())
                     },
-                    portalName = PortalSettings.Current.PortalName
+                    portalName = PortalSettings.Current.PortalName,
+                    mailProvider = ProviderConfiguration.GetProviderConfiguration("mail").DefaultProvider
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }
@@ -86,17 +88,20 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostController.Instance.Update("SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
                     HostController.Instance.Update("SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
                     HostController.Instance.Update("SMTPUsername", request.SmtpUsername, false);
-                    HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
+                    HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword,
+                        Config.GetDecryptionkey());
                     HostController.Instance.Update("HostEmail", request.SmtpHostEmail);
                     HostController.Instance.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
-                    HostController.Instance.Update("MessageSchedulerBatchSize", request.MessageSchedulerBatchSize.ToString(), false);
+                    HostController.Instance.Update("MessageSchedulerBatchSize",
+                        request.MessageSchedulerBatchSize.ToString(), false);
                 }
                 else
                 {
                     PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPConnectionLimit", request.SmtpConnectionLimit, false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
-                    PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
+                    PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication",
+                        request.SmtpAuthentication.ToString(), false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPUsername", request.SmtpUsername, false);
                     PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
                     PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
