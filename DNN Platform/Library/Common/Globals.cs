@@ -364,7 +364,7 @@ namespace DotNetNuke.Common
         /// <value>
         /// The application map path.
         /// </value>
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static string ApplicationMapPath => applicationStatusInfo.ApplicationMapPath;
 
         /// <summary>
@@ -404,7 +404,7 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Gets the database version.
         /// </summary>
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static Version DataBaseVersion { get => applicationStatusInfo.DatabaseVersion; }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace DotNetNuke.Common
         /// Gets the status of application.
         /// </summary>
         /// <seealso cref="GetStatus"/>
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static UpgradeStatus Status { get => (UpgradeStatus)applicationStatusInfo.Status; }
 
         /// <summary>
@@ -595,7 +595,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
 
         /// <summary>
@@ -973,7 +973,7 @@ namespace DotNetNuke.Common
         /// Updates the database version.
         /// </summary>
         /// <param name="version">The version.</param>
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static void UpdateDataBaseVersion(Version version) => applicationStatusInfo.UpdateDatabaseVersion(version);
 
         /// <summary>
@@ -981,11 +981,11 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static void UpdateDataBaseVersionIncrement(Version version, int increment) =>
             applicationStatusInfo.UpdateDatabaseVersionIncrement(version, increment);
 
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static int GetLastAppliedIteration(Version version) =>
             applicationStatusInfo.GetLastAppliedIteration(version);
 
@@ -1331,7 +1331,7 @@ namespace DotNetNuke.Common
         /// Sets the status.
         /// </summary>
         /// <param name="status">The status.</param>
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static void SetStatus(UpgradeStatus status) =>
             applicationStatusInfo.SetStatus((DotNetNuke.Abstractions.Application.UpgradeStatus)status);
 
@@ -3724,7 +3724,7 @@ namespace DotNetNuke.Common
         /// since the connection string may not have been configured yet, which can occur during the installation
         /// wizard.
         /// </remarks>
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IApplicationStatusInfo instead.")]
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         internal static bool IsInstalled() => applicationStatusInfo.IsInstalled();
 
         /// <summary>
