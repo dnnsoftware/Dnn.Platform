@@ -34,6 +34,11 @@ namespace DotNetNuke.Application
             : this(Globals.DependencyProvider.GetRequiredService<IApplicationInfo>())
         { }
 
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. This constructor has been replaced by the overload taking an IApplicationInfo, which should be resolved via Dependency Injection. Scheduled removal in v11.0.0.")]
+    protected DotNetNukeContext(Application application)
+        : this((IApplicationInfo)application)
+    { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetNukeContext" /> class using the provided application as base.
         /// </summary>
