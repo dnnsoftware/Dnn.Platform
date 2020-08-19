@@ -86,7 +86,7 @@ class TestUrlPanelBody extends Component {
             isMultiLanguage: false,
             excludeAdminTabs: false,
             disabledNotSelectable: false,
-            roles: props.adminRoleId ? props.adminRoleId : "0",
+            roles: props.adminRoleId ? props.adminRoleId.toString() : "0",
             sortOrder: 0
         };
 
