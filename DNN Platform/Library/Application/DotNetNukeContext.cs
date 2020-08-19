@@ -24,6 +24,17 @@ namespace DotNetNuke.Application
         private readonly IApplicationInfo applicationInfo;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DotNetNukeContext"/> class.
+        /// </summary>
+        /// <remarks>
+        /// Initialize using the public constructor for Dependency Injection, this method will be removed.
+        /// </remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. This constructor has been replaced by parameterized public constructor which is designed to be used with Dependency Injection. Resolve the new interface 'DotNetNuke.Abstractions.IDnnContext' instead. Scheduled removal in v11.0.0.")]
+        protected DotNetNukeContext()
+            : this(Globals.DependencyProvider.GetRequiredService<IApplicationInfo>())
+        { }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DotNetNukeContext" /> class using the provided application as base.
         /// </summary>
         /// <param name="applicationInfo">The application.</param>
