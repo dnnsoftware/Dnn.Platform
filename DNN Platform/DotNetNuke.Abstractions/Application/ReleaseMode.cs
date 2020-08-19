@@ -1,10 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Application
-{
-    using System;
 
+namespace DotNetNuke.Abstractions.Application
+{
     /// <summary>
     /// The enumeration of release mode.
     /// </summary>
@@ -47,37 +46,5 @@ namespace DotNetNuke.Application
         /// Stable release version
         /// </summary>
         Stable = 4,
-    }
-
-    /// <summary>
-    /// The status of current assembly.
-    /// </summary>
-    /// <example>
-    /// [assembly: AssemblyStatus(ReleaseMode.Stable)].
-    /// </example>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    public class AssemblyStatusAttribute : Attribute
-    {
-        private readonly ReleaseMode _releaseMode;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyStatusAttribute" /> class.
-        /// </summary>
-        /// <param name="releaseMode">The release mode.</param>
-        public AssemblyStatusAttribute(ReleaseMode releaseMode)
-        {
-            this._releaseMode = releaseMode;
-        }
-
-        /// <summary>
-        /// Gets status of current assembly.
-        /// </summary>
-        public ReleaseMode Status
-        {
-            get
-            {
-                return this._releaseMode;
-            }
-        }
     }
 }
