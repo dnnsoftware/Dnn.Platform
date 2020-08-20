@@ -30,7 +30,7 @@ namespace DotNetNuke
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
 
             services.AddTransient(x => PortalController.Instance);
-            services.AddTransient<INewHostController, HostController>();
+            services.AddScoped<INewHostController, HostController>();
             services.AddScoped<INavigationManager, NavigationManager>();
 
             services.AddScoped<IApplicationInfo, Application.Application>();
