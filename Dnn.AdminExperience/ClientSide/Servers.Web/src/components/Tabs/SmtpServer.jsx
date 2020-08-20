@@ -155,10 +155,10 @@ class SmtpServer extends Component {
     const credentialVisible = selectedSmtpSettings.smtpAuthentication === "1";
     const smtpSettingsVisible = utils.isHostUser() || !areGlobalSettings;
 
-    if (props.smtpServerInfo.mailProvider !== "CoreMailProvider") {
+    if (props.smtpServerInfo.hideCoreSettings) {
       return (
         <div className="dnn-servers-info-panel-big smtpServerSettingsTab">
-          <div class="warningBox">
+          <div className="warningBox">
             <div className="warningText">{localization.get("NonCoreMailProvider")}</div>
           </div>
         </div>
