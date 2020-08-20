@@ -16,8 +16,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using Moq;
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class FileContentTypeManagerTests
     {
@@ -29,7 +27,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             var _mockData = MockComponentProvider.CreateDataProvider();

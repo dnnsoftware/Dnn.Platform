@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Controllers
 {
     using System;
@@ -8,7 +9,8 @@ namespace DotNetNuke.Entities.Controllers
     using System.Data;
     using System.Globalization;
     using System.Linq;
-    using DotNetNuke.Abstractions.Entities;
+
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -19,10 +21,8 @@ namespace DotNetNuke.Entities.Controllers
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Client;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     /// <inheritdoc/>
-    public partial class HostController : INewHostController
+    public partial class HostController : IHostSettingsService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
 
@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <inheritdoc/>
-        Dictionary<string, IConfigurationSetting> INewHostController.GetSettings()
+        Dictionary<string, IConfigurationSetting> IHostSettingsService.GetSettings()
         {
             return CBO.GetCachedObject<Dictionary<string, IConfigurationSetting>>(
                                             new CacheItemArgs(

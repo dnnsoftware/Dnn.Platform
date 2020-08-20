@@ -41,7 +41,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using NUnit.Framework;
 
     using Constants = DotNetNuke.Services.Search.Internals.Constants;
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
     ///  Testing grouping logic of GetGroupedBasicView and GetGroupedDetailView (SearchServiceController methods).
@@ -107,7 +106,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();

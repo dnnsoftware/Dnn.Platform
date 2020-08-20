@@ -36,8 +36,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using NUnit.Framework;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class FileManagerTests
     {
@@ -73,7 +71,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.folderPermissionController = new Mock<IFolderPermissionController>();
             this.portalController = new Mock<IPortalController>();
             this.hostController = new Mock<IHostController>();
-            this.hostController.As<INewHostController>();
+            this.hostController.As<IHostSettingsService>();
             this.folderMappingController = new Mock<IFolderMappingController>();
             this.fileVersionController = new Mock<IFileVersionController>();
             this.workflowManager = new Mock<IWorkflowManager>();
@@ -108,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.hostController.Object);
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.hostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

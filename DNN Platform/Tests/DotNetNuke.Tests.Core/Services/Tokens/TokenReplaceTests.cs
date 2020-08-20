@@ -22,8 +22,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class TokenReplaceTests
     {
@@ -39,7 +37,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             ComponentFactory.RegisterComponentInstance<TokenProvider>(new CoreTokenProvider());

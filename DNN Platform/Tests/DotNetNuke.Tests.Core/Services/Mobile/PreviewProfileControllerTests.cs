@@ -23,8 +23,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     /// <summary>
     ///   Summary description for PreviewProfileControllerTests.
     /// </summary>
@@ -41,7 +39,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             ComponentFactory.Container = new SimpleContainer();

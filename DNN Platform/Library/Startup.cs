@@ -16,8 +16,6 @@ namespace DotNetNuke
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     /// <inheritdoc />
     public class Startup : IDnnStartup
     {
@@ -30,7 +28,7 @@ namespace DotNetNuke
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
 
             services.AddTransient(x => PortalController.Instance);
-            services.AddScoped<INewHostController, HostController>();
+            services.AddScoped<IHostSettingsService, HostController>();
             services.AddScoped<INavigationManager, NavigationManager>();
 
             services.AddScoped<IApplicationInfo, Application.Application>();

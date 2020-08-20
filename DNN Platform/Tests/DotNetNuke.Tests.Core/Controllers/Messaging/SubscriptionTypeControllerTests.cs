@@ -24,8 +24,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class SubscriptionTypeControllerTests
     {
@@ -43,14 +41,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.mockDataService = new Mock<IDataService>();
             this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
             this.mockHostController = new Mock<IHostController>();
-            this.mockHostController.As<INewHostController>();
+            this.mockHostController.As<IHostSettingsService>();
 
             DataService.SetTestableInstance(this.mockDataService.Object);
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             // Setup SUT

@@ -22,8 +22,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class NullableSettingsTests : BaseSettingsTests
     {
@@ -40,7 +38,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

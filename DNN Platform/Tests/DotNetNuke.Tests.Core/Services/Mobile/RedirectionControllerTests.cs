@@ -27,11 +27,12 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using DotNetNuke.Tests.Core.Services.ClientCapability;
     using DotNetNuke.Tests.Instance.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using Microsoft.Extensions.DependencyInjection;
-    using Moq;
-    using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
+    using NUnit.Framework;
 
     /// <summary>
     ///   Summary description for RedirectionControllerTests.
@@ -491,7 +492,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             serviceCollection.AddTransient<INavigationManager>(container => mockNavigationManager.Object);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
 
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }

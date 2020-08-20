@@ -24,8 +24,6 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     /// <summary>
     ///   Summary description for VocabularyTests.
     /// </summary>
@@ -40,7 +38,7 @@ namespace DotNetNuke.Tests.Content
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             // Register MockCachingProvider

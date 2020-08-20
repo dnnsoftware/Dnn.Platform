@@ -22,8 +22,6 @@ namespace DotNetNuke.Tests.Core.Common
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class NavigationManagerTests
     {
@@ -102,7 +100,7 @@ namespace DotNetNuke.Tests.Core.Common
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => this.navigationManager);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

@@ -33,8 +33,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using Constants = DotNetNuke.Services.Search.Internals.Constants;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     /// <summary>
     ///  Testing various aspects of SearchController.
     /// </summary>
@@ -166,7 +164,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this.CreateNewLuceneControllerInstance();
@@ -2489,7 +2487,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
-            this.mockHostController.As<INewHostController>();
+            this.mockHostController.As<IHostSettingsService>();
         }
 
         private void SetupLocaleController()

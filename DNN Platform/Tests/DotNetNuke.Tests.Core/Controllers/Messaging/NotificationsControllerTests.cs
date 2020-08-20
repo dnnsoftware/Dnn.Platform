@@ -10,9 +10,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Data;
     using System.Globalization;
     using System.Text;
+
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -22,17 +23,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Social.Messaging;
-    using DotNetNuke.Services.Social.Messaging.Exceptions;
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Social.Notifications.Data;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using Microsoft.Extensions.DependencyInjection;
-    using Moq;
-    using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
+    using NUnit.Framework;
 
     [TestFixture]
     public class NotificationsControllerTests
@@ -59,7 +60,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             ComponentFactory.Container = new SimpleContainer();

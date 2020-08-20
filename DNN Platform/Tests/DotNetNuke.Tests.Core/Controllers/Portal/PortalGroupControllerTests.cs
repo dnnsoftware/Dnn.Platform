@@ -27,8 +27,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     // ReSharper disable InconsistentNaming
     [TestFixture]
     public class PortalGroupControllerTests
@@ -44,7 +42,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this.mockData = MockComponentProvider.CreateDataProvider();

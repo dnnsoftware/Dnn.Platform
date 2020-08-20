@@ -2,29 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Abstractions.Entities.Controllers
+namespace DotNetNuke.Abstractions
 {
     using System.Collections.Generic;
 
     /// <summary>
-    /// HostController provides business layer of host settings.
+    /// The <see cref="IHostSettingsService"/> provides business layer of the HostSettings
+    /// Entity.
     /// </summary>
     /// <example>
     /// 
     /// <code lang="C#">
     /// public class MySampleClass
     /// {
-    ///     IHostController controller;
-    ///     public MySampleClass(IHostController controller)
+    ///     IHostSettingsService service;
+    ///     public MySampleClass(IHostSettingsService service)
     ///     {
-    ///         this.controller = controller;
+    ///         this.service = service;
     ///     }
     ///
-    ///     public bool CheckUpgrade { get => this.controller.GetBoolean("CheckUpgrade", true);
+    ///     public bool CheckUpgrade { get => this.service.GetBoolean("CheckUpgrade", true);
     /// }
     /// </code>
     /// </example>
-    public interface IHostController
+    public interface IHostSettingsService
     {
         /// <summary>
         /// Gets the setting value by the specific key.

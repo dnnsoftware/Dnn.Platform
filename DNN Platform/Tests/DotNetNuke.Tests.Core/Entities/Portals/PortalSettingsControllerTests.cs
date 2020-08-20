@@ -24,8 +24,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class PortalSettingsControllerTests
     {
@@ -58,11 +56,11 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockApplicationInfo.Setup(info => info.ApplicationMapPath).Returns("path/to/application");
 
             this.mockHostController = new Mock<IHostController>();
-            this.mockHostController.As<INewHostController>();
+            this.mockHostController.As<IHostSettingsService>();
 
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationInfo.Object);
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

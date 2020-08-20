@@ -24,8 +24,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     public class TabVersionControllerTests
     {
@@ -47,7 +45,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
@@ -143,7 +141,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             this.mockHostController = new Mock<IHostController>();
             this.mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
-            this.mockHostController.As<INewHostController>();
+            this.mockHostController.As<IHostSettingsService>();
         }
 
         private class TabVersionControllerTestable : TabVersionController

@@ -22,8 +22,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
 
     using NUnit.Framework;
 
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
-
     [TestFixture]
     internal class UserRequestIPAddressControllerTest
     {
@@ -44,7 +42,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             this.mockRequest = Mock.Get(this.mockhttpContext.Object.Request);
             this.mockRequest.Setup(x => x.ServerVariables).Returns(serverVariables);
             this.mockHostController = new Mock<IHostController>();
-            this.mockHostController.As<INewHostController>();
+            this.mockHostController.As<IHostSettingsService>();
             this.mockPortalController = MockComponentProvider.CreateNew<IPortalController>();
             PortalController.SetTestableInstance(this.mockPortalController.Object);
 
@@ -54,7 +52,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

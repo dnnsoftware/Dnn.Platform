@@ -10,8 +10,8 @@ namespace DotNetNuke.Tests.Content
     using System.Linq;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -29,8 +29,6 @@ namespace DotNetNuke.Tests.Content
     using Moq;
 
     using NUnit.Framework;
-
-    using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
     ///   Summary description for ContentItemTests.
@@ -62,7 +60,7 @@ namespace DotNetNuke.Tests.Content
 
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<INewHostController, HostController>();
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
 
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
