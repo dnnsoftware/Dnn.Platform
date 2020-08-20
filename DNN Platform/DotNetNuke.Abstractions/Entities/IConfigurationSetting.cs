@@ -20,7 +20,7 @@ namespace DotNetNuke.Abstractions.Entities
         string Key { get; set; }
 
         /// <summary>
-        /// gets or sets configuraiton value.
+        /// gets or sets the configuraiton value.
         /// </summary>
         string Value { get; set; }
     }
