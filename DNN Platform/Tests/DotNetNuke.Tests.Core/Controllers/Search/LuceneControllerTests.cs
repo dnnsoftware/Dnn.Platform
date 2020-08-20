@@ -9,9 +9,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.IO;
     using System.Linq;
     using System.Threading;
+
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
@@ -19,14 +20,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Lucene.Net.Documents;
     using Lucene.Net.Index;
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
-    using Microsoft.Extensions.DependencyInjection;
-    using Moq;
-    using NUnit.Framework;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
+    using NUnit.Framework;
     using Directory = System.IO.Directory;
     using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
@@ -55,38 +59,36 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         // Arrange
         private const int TotalTestDocs2Create = 5;
         private const string ContentFieldName = "content";
-        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
+        private readonly double readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
 
-        private Mock<IHostController> _mockHostController;
-        private LuceneControllerImpl _luceneController;
-        private Mock<CachingProvider> _cachingProvider;
-        private Mock<ISearchHelper> _mockSearchHelper;
-        private Mock<SearchQuery> _mockSearchQuery;
+        private Mock<IHostController> mockHostController;
+        private LuceneControllerImpl luceneController;
+        private Mock<CachingProvider> cachingProvider;
+        private Mock<ISearchHelper> mockSearchHelper;
+        private Mock<SearchQuery> mockSearchQuery;
 
         [SetUp]
         public void SetUp()
         {
-            
-
             ComponentFactory.Container = new SimpleContainer();
-            this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
+            this.cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
             this.MockHostController();
 
-            this._mockSearchHelper = new Mock<ISearchHelper>();
-            this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(this.GetSynonymsCallBack);
-            this._mockSearchHelper.Setup(c => c.GetSearchStopWords(It.IsAny<int>(), It.IsAny<string>())).Returns(new SearchStopWords());
-            this._mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
-            this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
-            SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
+            this.mockSearchHelper = new Mock<ISearchHelper>();
+            this.mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(this.GetSynonymsCallBack);
+            this.mockSearchHelper.Setup(c => c.GetSearchStopWords(It.IsAny<int>(), It.IsAny<string>())).Returns(new SearchStopWords());
+            this.mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
+            this.mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
+            SearchHelper.SetTestableInstance(this.mockSearchHelper.Object);
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this._mockHostController.Object);
+            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
-            this._mockSearchQuery = new Mock<SearchQuery>();
+            this.mockSearchQuery = new Mock<SearchQuery>();
 
             this.DeleteIndexFolder();
             this.CreateNewLuceneControllerInstance();
@@ -95,30 +97,36 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
-            this._luceneController.Dispose();
+            LuceneController.ClearInstance();
+            this.luceneController.Dispose();
             this.DeleteIndexFolder();
             SearchHelper.ClearInstance();
             Globals.DependencyProvider = null;
+
+            this.mockHostController = null;
+            this.luceneController = null;
+            this.cachingProvider = null;
+            this.mockSearchHelper = null;
+            this.mockSearchQuery = null;
         }
 
         private void MockHostController()
         {
-            this._mockHostController = new Mock<IHostController>();
-            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
-            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
-            
-            this._mockHostController.As<INewHostController>();
+            this.mockHostController = new Mock<IHostController>();
+
+            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this.mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this.readerStaleTimeSpan);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
+            this.mockHostController.As<INewHostController>();
         }
 
         [Test]
         public void LuceneController_SearchFolderIsAsExpected()
         {
             var inf1 = new DirectoryInfo(SearchIndexFolder);
-            var inf2 = new DirectoryInfo(this._luceneController.IndexFolder);
+            var inf2 = new DirectoryInfo(this.luceneController.IndexFolder);
             Assert.AreEqual(inf1.FullName, inf2.FullName);
         }
 
@@ -128,7 +136,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => this._luceneController.Add(null));
+            Assert.Throws<ArgumentNullException>(() => this.luceneController.Add(null));
         }
 
         public void LuceneController_Add_Throws_On_Null_Query()
@@ -136,7 +144,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => this._luceneController.Delete(null));
+            Assert.Throws<ArgumentNullException>(() => this.luceneController.Delete(null));
         }
 
         [Test]
@@ -145,8 +153,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
 
             // Act
-            this._luceneController.Add(new Document());
-            this._luceneController.Commit();
+            this.luceneController.Add(new Document());
+            this.luceneController.Commit();
 
             var numFiles = 0;
             this.DeleteIndexFolder();
@@ -166,10 +174,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc = new Document();
             doc.Add(field);
 
-            this._luceneController.Add(doc);
-            this._luceneController.Commit();
+            this.luceneController.Add(doc);
+            this.luceneController.Commit();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
@@ -191,10 +199,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc = new Document();
             doc.Add(field);
 
-            this._luceneController.Add(doc);
-            this._luceneController.Commit();
+            this.luceneController.Add(doc);
+            this.luceneController.Commit();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
@@ -212,11 +220,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
             var doc = new Document();
             doc.Add(field);
-            this._luceneController.Add(doc);
+            this.luceneController.Add(doc);
 
             // DONOT commit here to enable testing near-realtime of search writer
             // _luceneController.Commit();
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
@@ -228,7 +236,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             this.AddStandardDocs();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")) }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")) }));
 
             // Assert
             Assert.AreEqual(4, hits.TotalHits);
@@ -241,7 +249,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             this.AddStandardDocs();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 1 }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 1 }));
 
             // Assert
             Assert.AreEqual(4, hits.TotalHits);
@@ -254,7 +262,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             this.AddStandardDocs();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
 
             // Assert
             Assert.AreEqual(4, hits.TotalHits);
@@ -267,7 +275,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             this.AddStandardDocs();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
 
             // Assert
             Assert.AreEqual(4, hits.TotalHits);
@@ -280,7 +288,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             this.AddStandardDocs();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(
+            var hits = this.luceneController.Search(this.CreateSearchContext(
                 new LuceneQuery
                 {
                     Query = new TermQuery(new Term(Constants.ContentTag, "fox")),
@@ -306,7 +314,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageSize = 1,
             };
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(query));
+            var hits = this.luceneController.Search(this.CreateSearchContext(query));
 
             // Assert
             Assert.AreEqual(3, hits.TotalHits);
@@ -328,27 +336,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Add first numeric field
             var doc1 = new Document();
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
-            this._luceneController.Add(doc1);
+            this.luceneController.Add(doc1);
 
             // Add second numeric field
             var doc2 = new Document();
             doc2.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(2));
-            this._luceneController.Add(doc2);
+            this.luceneController.Add(doc2);
 
             // Add third numeric field
             var doc3 = new Document();
             doc3.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(3));
-            this._luceneController.Add(doc3);
+            this.luceneController.Add(doc3);
 
             // Add fourth numeric field
             var doc4 = new Document();
             doc4.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(4));
-            this._luceneController.Add(doc4);
+            this.luceneController.Add(doc4);
 
-            this._luceneController.Commit();
+            this.luceneController.Commit();
 
             var query = NumericRangeQuery.NewIntRange(fieldName, 2, 3, true, true);
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(2, hits.Results.Count());
         }
 
@@ -364,48 +372,48 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 var doc = new Document();
                 doc.Add(new NumericField(fieldName, Field.Store.YES, true).SetLongValue(long.Parse(date.ToString(Constants.DateTimeFormat))));
-                this._luceneController.Add(doc);
+                this.luceneController.Add(doc);
             }
 
-            this._luceneController.Commit();
+            this.luceneController.Commit();
 
             var futureTime = DateTime.Now.AddMinutes(1).ToString(Constants.DateTimeFormat);
             var query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(futureTime), long.Parse(futureTime), true, true);
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(0, hits.Results.Count());
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-1).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
-            hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
+            hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(1, hits.Results.Count());
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-368).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
-            hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
+            hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(2, hits.Results.Count());
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Null_LuceneQuery()
         {
-            Assert.Throws<ArgumentNullException>(() => this._luceneController.Search(this.CreateSearchContext(null)));
+            Assert.Throws<ArgumentNullException>(() => this.luceneController.Search(this.CreateSearchContext(null)));
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Null_Query()
         {
-            Assert.Throws<ArgumentNullException>(() => this._luceneController.Search(this.CreateSearchContext(new LuceneQuery())));
+            Assert.Throws<ArgumentNullException>(() => this.luceneController.Search(this.CreateSearchContext(new LuceneQuery())));
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Zero_PageSize()
         {
-            Assert.Throws<ArgumentException>(() => this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new BooleanQuery(), PageSize = 0 })));
+            Assert.Throws<ArgumentException>(() => this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new BooleanQuery(), PageSize = 0 })));
         }
 
         [Test]
         public void LuceneController_Search_Throws_On_Zero_PageIndex()
         {
-            Assert.Throws<ArgumentException>(() => this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new BooleanQuery(), PageIndex = 0 })));
+            Assert.Throws<ArgumentException>(() => this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new BooleanQuery(), PageIndex = 0 })));
         }
 
         [Test]
@@ -414,7 +422,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TestCase(ValidCustomAnalyzer)]
         public void LuceneController_Search_With_Chinese_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
-            this._mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
+            this.mockHostController.Setup(controller => controller.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
 
             // Arrange
             const string fieldName = "content";
@@ -425,16 +433,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc = new Document();
             doc.Add(field);
 
-            this._luceneController.Add(doc);
-            this._luceneController.Commit();
+            this.luceneController.Add(doc);
+            this.luceneController.Commit();
 
-            var analyzer = this._luceneController.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
+            var analyzer = this.luceneController.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
             var keywordQuery = new BooleanQuery();
             var parserContent = new QueryParser(Constants.LuceneVersion, fieldName, analyzer);
             var parsedQueryContent = parserContent.Parse(SearchKeyword_Chinese);
             keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
 
             // Assert
             if (customAlalyzer == ValidCustomAnalyzer)
@@ -454,7 +462,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TestCase(ValidCustomAnalyzer)]
         public void LuceneController_Search_With_English_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
-            this._mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
+            this.mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
 
             // Arrange
             const string fieldName = "content";
@@ -465,16 +473,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc = new Document();
             doc.Add(field);
 
-            this._luceneController.Add(doc);
-            this._luceneController.Commit();
+            this.luceneController.Add(doc);
+            this.luceneController.Commit();
 
-            var analyzer = this._luceneController.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
+            var analyzer = this.luceneController.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
             var keywordQuery = new BooleanQuery();
             var parserContent = new QueryParser(Constants.LuceneVersion, fieldName, analyzer);
             var parsedQueryContent = parserContent.Parse(SearchKeyword_Line1);
             keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
+            var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
@@ -496,7 +504,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var luceneQuery = new LuceneQuery { Query = new FuzzyQuery(new Term(Constants.ContentTag, keyword)) };
-            var previews = this._luceneController.Search(this.CreateSearchContext(luceneQuery));
+            var previews = this.luceneController.Search(this.CreateSearchContext(luceneQuery));
 
             // Assert
             Assert.AreEqual(2, previews.Results.Count());
@@ -530,7 +538,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
 
             var luceneQuery = new LuceneQuery { Query = finalQuery };
-            var previews = this._luceneController.Search(this.CreateSearchContext(luceneQuery));
+            var previews = this.luceneController.Search(this.CreateSearchContext(luceneQuery));
 
             // Assert
             Assert.AreEqual(3, previews.Results.Count());
@@ -539,7 +547,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void LuceneController_Throws_SearchIndexEmptyException_WhenNoDataInSearch()
         {
-            Assert.Throws<SearchIndexEmptyException>(() => { var r = this._luceneController.GetSearcher(); });
+            Assert.Throws<SearchIndexEmptyException>(() => { var r = this.luceneController.GetSearcher(); });
         }
 
         [Test]
@@ -553,13 +561,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Add first numeric field
             var doc1 = new Document();
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
-            this._luceneController.Add(doc1);
-            this._luceneController.Commit();
+            this.luceneController.Add(doc1);
+            this.luceneController.Commit();
 
-            var reader = this._luceneController.GetSearcher();
-            Thread.Sleep(TimeSpan.FromSeconds(this._readerStaleTimeSpan / 2));
+            var reader = this.luceneController.GetSearcher();
+            Thread.Sleep(TimeSpan.FromSeconds(this.readerStaleTimeSpan / 2));
 
-            Assert.AreSame(reader, this._luceneController.GetSearcher());
+            Assert.AreSame(reader, this.luceneController.GetSearcher());
         }
 
         [Test]
@@ -573,13 +581,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Add first numeric field
             var doc1 = new Document();
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
-            this._luceneController.Add(doc1);
-            this._luceneController.Commit();
+            this.luceneController.Add(doc1);
+            this.luceneController.Commit();
 
-            var reader = this._luceneController.GetSearcher();
-            Thread.Sleep(TimeSpan.FromSeconds(this._readerStaleTimeSpan * 1.1));
+            var reader = this.luceneController.GetSearcher();
+            Thread.Sleep(TimeSpan.FromSeconds(this.readerStaleTimeSpan * 1.1));
 
-            Assert.AreSame(reader, this._luceneController.GetSearcher());
+            Assert.AreSame(reader, this.luceneController.GetSearcher());
         }
 
         [Test]
@@ -593,20 +601,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Add first numeric field
             var doc1 = new Document();
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
-            this._luceneController.Add(doc1);
-            this._luceneController.Commit();
+            this.luceneController.Add(doc1);
+            this.luceneController.Commit();
 
-            var reader = this._luceneController.GetSearcher();
-            Thread.Sleep(TimeSpan.FromSeconds(this._readerStaleTimeSpan * 1.1));
+            var reader = this.luceneController.GetSearcher();
+            Thread.Sleep(TimeSpan.FromSeconds(this.readerStaleTimeSpan * 1.1));
 
             // Add second numeric field
             var doc2 = new Document();
             doc2.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(2));
-            this._luceneController.Add(doc2);
+            this.luceneController.Add(doc2);
 
             // var lastAcccess = Directory.GetLastWriteTime(_luceneController.IndexFolder);
             // Directory.SetLastWriteTime(_luceneController.IndexFolder, lastAcccess + TimeSpan.FromSeconds(1));
-            Assert.AreNotSame(reader, this._luceneController.GetSearcher());
+            Assert.AreNotSame(reader, this.luceneController.GetSearcher());
         }
 
         [Test]
@@ -631,7 +639,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.True(File.Exists(lockFile));
-            Assert.DoesNotThrow(() => this._luceneController.Add(doc1));
+            Assert.DoesNotThrow(() => this.luceneController.Add(doc1));
         }
 
         [Test]
@@ -644,7 +652,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var doc1 = new Document();
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
-            this._luceneController.Add(doc1);
+            this.luceneController.Add(doc1);
 
             // create another controller then try to access the already locked index by the first one
             var secondController = new LuceneControllerImpl();
@@ -659,8 +667,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this.AddTestDocs();
 
-            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.SearchbleDocsCount());
+            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.MaxDocsCount());
+            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.SearchbleDocsCount());
         }
 
         [Test]
@@ -670,9 +678,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddTestDocs();
             var delCount = this.DeleteTestDocs();
 
-            Assert.IsTrue(this._luceneController.HasDeletions());
-            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create - delCount, this._luceneController.SearchbleDocsCount());
+            Assert.IsTrue(this.luceneController.HasDeletions());
+            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.MaxDocsCount());
+            Assert.AreEqual(TotalTestDocs2Create - delCount, this.luceneController.SearchbleDocsCount());
         }
 
         [Test]
@@ -682,10 +690,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddTestDocs();
             var delCount = this.DeleteTestDocs();
 
-            this._luceneController.OptimizeSearchIndex(true);
+            this.luceneController.OptimizeSearchIndex(true);
 
-            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create - delCount, this._luceneController.SearchbleDocsCount());
+            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.MaxDocsCount());
+            Assert.AreEqual(TotalTestDocs2Create - delCount, this.luceneController.SearchbleDocsCount());
         }
 
         [Test]
@@ -694,7 +702,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             var addedCount = this.AddTestDocs();
             var delCount = this.DeleteTestDocs();
-            var statistics = this._luceneController.GetSearchStatistics();
+            var statistics = this.luceneController.GetSearchStatistics();
 
             Assert.IsNotNull(statistics);
             Assert.AreEqual(statistics.TotalDeletedDocuments, delCount);
@@ -709,19 +717,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.CreateNewLuceneControllerInstance(); // to force a new reader for the next assertion
 
             // Assert
-            Assert.IsNotNull(this._luceneController.GetSearcher());
+            Assert.IsNotNull(this.luceneController.GetSearcher());
         }
 
         private void CreateNewLuceneControllerInstance()
         {
-            if (this._luceneController != null)
+            if (this.luceneController != null)
             {
                 LuceneController.ClearInstance();
-                this._luceneController.Dispose();
+                this.luceneController.Dispose();
             }
 
-            this._luceneController = new LuceneControllerImpl();
-            LuceneController.SetTestableInstance(this._luceneController);
+            this.luceneController = new LuceneControllerImpl();
+            LuceneController.SetTestableInstance(this.luceneController);
         }
 
         private IList<string> GetSynonymsCallBack(int portalId, string cultureCode, string term)
@@ -770,10 +778,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 var field = new Field(Constants.ContentTag, line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 var doc = new Document();
                 doc.Add(field);
-                this._luceneController.Add(doc);
+                this.luceneController.Add(doc);
             }
 
-            this._luceneController.Commit();
+            this.luceneController.Commit();
         }
 
         private int AddTestDocs()
@@ -785,10 +793,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
                 // format to "D#" because LengthFilter will not consider words of length < 3 or > 255 characters in length (defaults)
                 doc.Add(new Field(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen), Field.Store.YES, Field.Index.ANALYZED));
-                this._luceneController.Add(doc);
+                this.luceneController.Add(doc);
             }
 
-            this._luceneController.Commit();
+            this.luceneController.Commit();
             return TotalTestDocs2Create;
         }
 
@@ -800,17 +808,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             for (var i = 1; i < TotalTestDocs2Create; i += 2)
             {
                 // format to "D#" because LengthFilter will not consider the defaults for these values
-                this._luceneController.Delete(new TermQuery(new Term(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen))));
+                this.luceneController.Delete(new TermQuery(new Term(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen))));
                 delCount++;
             }
 
-            this._luceneController.Commit();
+            this.luceneController.Commit();
             return delCount;
         }
 
         private LuceneSearchContext CreateSearchContext(LuceneQuery luceneQuery)
         {
-            return new LuceneSearchContext { LuceneQuery = luceneQuery, SearchQuery = this._mockSearchQuery.Object };
+            return new LuceneSearchContext { LuceneQuery = luceneQuery, SearchQuery = this.mockSearchQuery.Object };
         }
     }
 }

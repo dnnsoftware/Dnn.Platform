@@ -3,19 +3,23 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Services.Tokens
 {
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
@@ -23,29 +27,31 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
     [TestFixture]
     public class TokenReplaceTests
     {
-        private Mock<CachingProvider> _mockCache;
-        private Mock<IPortalController> _portalController;
-        private Mock<IModuleController> _moduleController;
-        private Mock<IUserController> _userController;
-        private Mock<IHostController> _mockHostController;
+        private Mock<CachingProvider> mockCache;
+        private Mock<IPortalController> portalController;
+        private Mock<IModuleController> moduleController;
+        private Mock<IUserController> userController;
+        private Mock<IHostController> mockHostController;
 
         [SetUp]
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<INewHostController, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             ComponentFactory.RegisterComponentInstance<TokenProvider>(new CoreTokenProvider());
-            this._mockCache = MockComponentProvider.CreateDataCacheProvider();
-            this._mockHostController = new Mock<IHostController>();
-            this._portalController = new Mock<IPortalController>();
-            this._moduleController = new Mock<IModuleController>();
-            this._userController = new Mock<IUserController>();
-            PortalController.SetTestableInstance(this._portalController.Object);
-            ModuleController.SetTestableInstance(this._moduleController.Object);
-            UserController.SetTestableInstance(this._userController.Object);
-            HostController.RegisterInstance(this._mockHostController.Object);
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
+            this.mockHostController = new Mock<IHostController>();
+            this.portalController = new Mock<IPortalController>();
+            this.moduleController = new Mock<IModuleController>();
+            this.userController = new Mock<IUserController>();
+            PortalController.SetTestableInstance(this.portalController.Object);
+            ModuleController.SetTestableInstance(this.moduleController.Object);
+            UserController.SetTestableInstance(this.userController.Object);
+            HostController.RegisterInstance(this.mockHostController.Object);
             this.SetupPortalSettings();
             this.SetupModuleInfo();
             this.SetupUserInfo();
@@ -101,7 +107,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                 ActiveTab = new TabInfo { ModuleID = 1, TabID = 1 },
             };
 
-            this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
+            this.portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
         }
 
         private void SetupModuleInfo()
@@ -109,10 +115,10 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var moduleInfo = new ModuleInfo
             {
                 ModuleID = 1,
-                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId,
+                PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
             };
 
-            this._moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
+            this.moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(moduleInfo);
         }
 
@@ -122,9 +128,9 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             {
                 UserID = 1,
                 Username = "admin",
-                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId,
+                PortalID = this.portalController.Object.GetCurrentPortalSettings().PortalId,
             };
-            this._userController.Setup(uc => uc.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(userInfo);
+            this.userController.Setup(uc => uc.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(userInfo);
         }
     }
 }

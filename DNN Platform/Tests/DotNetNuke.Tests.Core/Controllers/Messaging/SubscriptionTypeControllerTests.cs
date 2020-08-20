@@ -5,6 +5,9 @@
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
     using System;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -14,8 +17,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
     using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
@@ -28,19 +34,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private SubscriptionTypeController subscriptionTypeController;
         private Mock<IDataService> mockDataService;
         private Mock<CachingProvider> mockCacheProvider;
+        private Mock<IHostController> mockHostController;
 
         [SetUp]
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INewHostController, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             // Setup Mocks and Stub
             this.mockDataService = new Mock<IDataService>();
             this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
+            this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.As<INewHostController>();
 
             DataService.SetTestableInstance(this.mockDataService.Object);
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             // Setup SUT
             this.subscriptionTypeController = new SubscriptionTypeController();
@@ -50,11 +61,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void GetSubscriptionTypes_ShouldCallDataService_WhenNoError()
         {
             // Arrange
-            var mockHostController = new Mock<IHostController>();
-            mockHostController
+            this.mockHostController
                 .Setup(c => c.GetString("PerformanceSetting"))
                 .Returns("0");
-            HostController.RegisterInstance(mockHostController.Object);
 
             this.mockDataService
                 .Setup(ds => ds.GetSubscriptionTypes())

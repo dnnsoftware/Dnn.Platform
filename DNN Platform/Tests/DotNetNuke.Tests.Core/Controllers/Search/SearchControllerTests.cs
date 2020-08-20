@@ -10,9 +10,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.IO;
     using System.Linq;
     using System.Threading;
+
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
@@ -23,12 +24,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using Lucene.Net.Documents;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     using Constants = DotNetNuke.Services.Search.Internals.Constants;
+
     using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
 
     /// <summary>
@@ -115,17 +119,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private const string SearchIndexFolder = @"App_Data\SearchTests";
         private const int DefaultSearchRetryTimes = 5;
-        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
-        private Mock<IHostController> _mockHostController;
-        private Mock<CachingProvider> _mockCachingProvider;
-        private Mock<DataProvider> _mockDataProvider;
-        private Mock<ILocaleController> _mockLocaleController;
-        private Mock<ISearchHelper> _mockSearchHelper;
-        private Mock<IUserController> _mockUserController;
+        private readonly double readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
+        private Mock<IHostController> mockHostController;
+        private Mock<CachingProvider> mockCachingProvider;
+        private Mock<DataProvider> mockDataProvider;
+        private Mock<ILocaleController> mockLocaleController;
+        private Mock<ISearchHelper> mockSearchHelper;
+        private Mock<IUserController> mockUserController;
 
-        private SearchControllerImpl _searchController;
-        private IInternalSearchController _internalSearchController;
-        private LuceneControllerImpl _luceneController;
+        private SearchControllerImpl searchController;
+        private IInternalSearchController internalSearchController;
+        private LuceneControllerImpl luceneController;
 
         public enum SearchTypeIds
         {
@@ -140,33 +144,30 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [SetUp]
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INewHostController, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.mockDataProvider = MockComponentProvider.CreateDataProvider();
+            this.mockLocaleController = MockComponentProvider.CreateLocaleController();
+            this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
-            this._mockDataProvider = MockComponentProvider.CreateDataProvider();
-            this._mockLocaleController = MockComponentProvider.CreateLocaleController();
-            this._mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
-
-            this._mockUserController = new Mock<IUserController>();
-            this._mockHostController = new Mock<IHostController>();
-            this._mockSearchHelper = new Mock<ISearchHelper>();
+            this.mockUserController = new Mock<IUserController>();
+            this.mockHostController = new Mock<IHostController>();
+            this.mockSearchHelper = new Mock<ISearchHelper>();
 
             this.SetupDataProvider();
             this.SetupHostController();
             this.SetupSearchHelper();
             this.SetupLocaleController();
 
-            this._mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
-            UserController.SetTestableInstance(this._mockUserController.Object);
+            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
+            UserController.SetTestableInstance(this.mockUserController.Object);
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<INewHostController>(container => (INewHostController)this.mockHostController.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this.CreateNewLuceneControllerInstance();
         }
@@ -175,13 +176,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void TearDown()
         {
             Globals.DependencyProvider = null;
-            this._luceneController.Dispose();
+            this.luceneController.Dispose();
             this.DeleteIndexFolder();
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();
             SearchHelper.ClearInstance();
             LuceneController.ClearInstance();
-            this._luceneController = null;
+            this.luceneController = null;
             Globals.DependencyProvider = null;
         }
 
@@ -191,7 +192,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => this._searchController.SiteSearch(null));
+            Assert.Throws<ArgumentNullException>(() => this.searchController.SiteSearch(null));
         }
 
         [Test]
@@ -200,7 +201,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
 
             // Act, Assert
-            Assert.Throws<ArgumentException>(() => this._searchController.SiteSearch(new SearchQuery { KeyWords = "word" }));
+            Assert.Throws<ArgumentException>(() => this.searchController.SiteSearch(new SearchQuery { KeyWords = "word" }));
         }
 
         [Test]
@@ -210,7 +211,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var document = new SearchDocument { UniqueKey = Guid.NewGuid().ToString(), Title = "<<Click here for the complete city listing by a... ", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act, Assert
-            this._internalSearchController.AddSearchDocument(document);
+            this.internalSearchController.AddSearchDocument(document);
         }
 
         [Test]
@@ -223,7 +224,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.DoesNotThrow(() => ExecuteWithTimeout(
                     () =>
                     {
-                        this._internalSearchController.AddSearchDocument(document);
+                        this.internalSearchController.AddSearchDocument(document);
                         return false;
                     }, TimeSpan.FromSeconds(1)));
         }
@@ -235,7 +236,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc = new SearchDocument { UniqueKey = "key01", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc);
+            this.internalSearchController.AddSearchDocument(doc);
 
             var result = this.SearchForKeyword("hello");
 
@@ -259,23 +260,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add first document
             var doc1 = new SearchDocument { Title = docs[0], UniqueKey = Guid.NewGuid().ToString(), SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
             // first luceneQuery
             var query1 = new SearchQuery { KeyWords = "fox", SearchTypeIds = new List<int> { OtherSearchTypeId } };
-            var search1 = this._searchController.SiteSearch(query1);
+            var search1 = this.searchController.SiteSearch(query1);
 
             // Assert
             Assert.AreEqual(1, search1.Results.Count);
 
             // Add second document
             var doc2 = new SearchDocument { Title = docs[1], UniqueKey = Guid.NewGuid().ToString(), SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            this._internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc2);
             this.CreateNewLuceneControllerInstance(); // to force a new reader for the next assertion
 
             // second luceneQuery
             var query2 = new SearchQuery { KeyWords = "fox", SearchTypeIds = new List<int> { OtherSearchTypeId } };
-            var search2 = this._searchController.SiteSearch(query2);
+            var search2 = this.searchController.SiteSearch(query2);
 
             // Assert
             Assert.AreEqual(2, search2.Results.Count);
@@ -339,7 +340,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, PortalIds = new List<int> { PortalId0 } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -353,7 +354,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -376,11 +377,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 ModuleId = 1,
                 ModuleDefId = 1,
             };
-            this._internalSearchController.AddSearchDocument(doc);
+            this.internalSearchController.AddSearchDocument(doc);
 
             // Act
             var query = new SearchQuery { KeyWords = veryLongWord, SearchTypeIds = new List<int> { ModuleSearchTypeId } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -418,7 +419,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -444,7 +445,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -470,7 +471,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -496,7 +497,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -522,7 +523,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).Skip(1).ToArray();
 
             // Assert
@@ -548,7 +549,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -574,7 +575,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -600,7 +601,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -626,7 +627,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -652,7 +653,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(queryPg3);
+            var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -678,7 +679,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(queryPg3);
+            var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -704,7 +705,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(queryPg3);
+            var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -730,7 +731,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new[] { stype },
             };
 
-            var result = this._searchController.SiteSearch(queryPg3);
+            var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
@@ -767,7 +768,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 NumericKeys = numericKeys,
                 Keywords = keywords,
             };
-            this._internalSearchController.AddSearchDocument(doc);
+            this.internalSearchController.AddSearchDocument(doc);
 
             // run luceneQuery on common keyword between both the docs
             var search = this.SearchForKeywordInModule("Title");
@@ -811,7 +812,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = modifiedDateTime,
             };
-            this._internalSearchController.AddSearchDocument(doc);
+            this.internalSearchController.AddSearchDocument(doc);
 
             var search = this.SearchForKeyword("Title");
 
@@ -888,7 +889,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 title = Line3;
             }
 
-            this._internalSearchController.AddSearchDocument(
+            this.internalSearchController.AddSearchDocument(
                 new SearchDocument
                 {
                     Title = title,
@@ -897,7 +898,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     ModifiedTimeUtc = DateTime.UtcNow,
                     CultureCode = cultureCode,
                 });
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
 
             var searches = this.SearchForKeyword(searchWord);
 
@@ -914,7 +915,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, BeginModifiedTimeUtc = DateTime.Now };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -933,7 +934,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 BeginModifiedTimeUtc = DateTime.Now,
                 EndModifiedTimeUtc = DateTime.Now.AddSeconds(-1),
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -950,25 +951,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act and Assert - just a bit later
             var query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddSeconds(1), EndModifiedTimeUtc = utcNow.AddDays(1) };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
             Assert.AreEqual(0, search.Results.Count);
 
             // Act and Assert - 10 day
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-10), EndModifiedTimeUtc = utcNow.AddDays(1) };
-            search = this._searchController.SiteSearch(query);
+            search = this.searchController.SiteSearch(query);
             Assert.AreEqual(1, search.Results.Count);
             Assert.AreEqual(Line5, search.Results[0].Title);
 
             // Act and Assert - 1 year or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-368), EndModifiedTimeUtc = utcNow.AddDays(1) };
-            search = this._searchController.SiteSearch(query);
+            search = this.searchController.SiteSearch(query);
             Assert.AreEqual(2, search.Results.Count);
             Assert.AreEqual(Line5, search.Results[0].Title);
             Assert.AreEqual(Line4, search.Results[1].Title);
 
             // Act and Assert - 2 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-800), EndModifiedTimeUtc = utcNow.AddDays(1) };
-            search = this._searchController.SiteSearch(query);
+            search = this.searchController.SiteSearch(query);
             Assert.AreEqual(3, search.Results.Count);
             Assert.AreEqual(Line5, search.Results[0].Title);
             Assert.AreEqual(Line4, search.Results[1].Title);
@@ -976,7 +977,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act and Assert - 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(1) };
-            search = this._searchController.SiteSearch(query);
+            search = this.searchController.SiteSearch(query);
             Assert.AreEqual(4, search.Results.Count);
             Assert.AreEqual(Line5, search.Results[0].Title);
             Assert.AreEqual(Line4, search.Results[1].Title);
@@ -985,7 +986,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act and Assert - 2 to 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(-800) };
-            search = this._searchController.SiteSearch(query);
+            search = this.searchController.SiteSearch(query);
             Assert.AreEqual(1, search.Results.Count);
             Assert.AreEqual(Line2, search.Results[0].Title);
         }
@@ -998,7 +999,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { Tag0 } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -1012,7 +1013,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { Tag0WithSpace } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -1026,7 +1027,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { TagNeutral.ToLowerInvariant() } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -1040,7 +1041,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { Tag1 } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(2, search.Results.Count);
@@ -1058,7 +1059,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { Tag0, Tag4 } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(0, search.Results.Count);
@@ -1072,7 +1073,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { Tag1, Tag2 } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -1088,9 +1089,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Tags = new List<string> { TagTootsie } };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, Tags = new List<string> { TagTootsie } };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -1107,7 +1108,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.CustomNumericField,
             };
 
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1121,7 +1122,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.CustomStringField,
             };
 
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1135,7 +1136,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.NumericKey,
             };
 
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1149,7 +1150,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Keyword,
             };
 
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1164,7 +1165,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.LastModified,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
@@ -1191,7 +1192,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.LastModified,
                 SortDirection = SortDirections.Ascending,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1218,7 +1219,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Ascending,
                 CustomSortField = NumericKey1,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1240,7 +1241,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Descending,
                 CustomSortField = NumericKey1,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1263,7 +1264,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Title,
                 SortDirection = SortDirections.Ascending,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1290,7 +1291,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Title,
                 SortDirection = SortDirections.Descending,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1318,7 +1319,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Ascending,
                 CustomSortField = KeyWord1Name,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1346,7 +1347,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Descending,
                 CustomSortField = KeyWord1Name,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1372,7 +1373,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Descending,
                 CustomSortField = "unknown",
             };
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1389,7 +1390,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Ascending,
                 CustomSortField = "unknown",
             };
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1406,7 +1407,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Descending,
                 CustomSortField = "unknown",
             };
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1423,7 +1424,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Ascending,
                 CustomSortField = "unknown",
             };
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -1439,7 +1440,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Relevance,
                 KeyWords = "brown OR fox",
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1449,7 +1450,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Sorty_By_RelevanceAndTitleKeyword_Returns_TopHit_Docs_First()
         {
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
 
             // Arrange
             var added = this.AddSearchDocsForCustomBoost();
@@ -1462,7 +1463,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Relevance,
                 KeyWords = "Hello",
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1472,7 +1473,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Sorty_By_RelevanceAndSubjectKeyword_Returns_TopHit_Docs_First()
         {
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
             this.CreateNewLuceneControllerInstance(true);
 
             // Arrange
@@ -1485,7 +1486,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Relevance,
                 KeyWords = "Hello",
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1495,7 +1496,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Sorty_By_RelevanceAndCommentKeyword_Returns_TopHit_Docs_First()
         {
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
             this.CreateNewLuceneControllerInstance(true);
 
             // Arrange
@@ -1508,7 +1509,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Relevance,
                 KeyWords = "Hello",
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1518,7 +1519,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Sorty_By_RelevanceAndAuthorKeyword_Returns_TopHit_Docs_First()
         {
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
             this.CreateNewLuceneControllerInstance(true);
 
             // Arrange
@@ -1531,7 +1532,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Relevance,
                 KeyWords = "Hello",
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1552,7 +1553,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortDirection = SortDirections.Ascending,
                 KeyWords = "brown OR fox",
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(added, search.Results.Count);
@@ -1572,7 +1573,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.LastModified,
                 CultureCode = CultureItIt,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(2, search.Results.Count, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
@@ -1595,11 +1596,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add first document
             var doc1 = new SearchDocument { Title = docs[0], UniqueKey = docKey, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
             // Add second document with same key
             var doc2 = new SearchDocument { Title = docs[1], UniqueKey = docKey, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            this._internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc2);
 
             // run luceneQuery on common keyword between both the docs
             var search = this.SearchForKeyword("fox");
@@ -1621,7 +1622,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 QueryString = "?foo=bar",
             };
 
-            Assert.DoesNotThrow(() => this._internalSearchController.AddSearchDocument(doc));
+            Assert.DoesNotThrow(() => this.internalSearchController.AddSearchDocument(doc));
         }
 
         [Test]
@@ -1634,7 +1635,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 ModifiedTimeUtc = DateTime.UtcNow,
             };
 
-            Assert.DoesNotThrow(() => this._internalSearchController.AddSearchDocument(doc));
+            Assert.DoesNotThrow(() => this.internalSearchController.AddSearchDocument(doc));
         }
 
         [Test]
@@ -1652,11 +1653,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Add first document
             var doc1 = new SearchDocument { Title = docs[0], UniqueKey = docKey, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
             // Add second document with same key
             var doc2 = new SearchDocument { Title = docs[1], UniqueKey = docKey, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, IsActive = false };
-            this._internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc2);
 
             // run luceneQuery on common keyword between both the docs
             var search = this.SearchForKeyword("fox");
@@ -1770,10 +1771,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "random text" };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.Commit();
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeyword("cow");
 
@@ -1792,10 +1793,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.Commit();
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeyword("cow");
 
@@ -1814,10 +1815,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "random text" };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.Commit();
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.Commit();
             var result = this.SearchForKeyword("cow");
 
             // Assert
@@ -1839,13 +1840,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "hello tootsie" };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.AddSearchDocument(doc4);
-            this._internalSearchController.AddSearchDocument(doc5);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.AddSearchDocument(doc4);
+            this.internalSearchController.AddSearchDocument(doc5);
 
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeyword("tootsie");
 
@@ -1869,9 +1870,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "file.ext", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeywordWithWildCard("file");
 
@@ -1887,9 +1888,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "file.ext", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeywordWithWildCard("file.ext");
 
@@ -1905,9 +1906,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "file.ext", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeyword("file.ext");
 
@@ -1943,9 +1944,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query1 = new SearchQuery { KeyWords = "kw-folderName:Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = false };
             var query2 = new SearchQuery { KeyWords = "kw-folderName:my<Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
             var query3 = new SearchQuery { KeyWords = "kw-folderName:my<Images/my<dnn/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
-            var result1 = this._searchController.SiteSearch(query1);
-            var result2 = this._searchController.SiteSearch(query2);
-            var result3 = this._searchController.SiteSearch(query3);
+            var result1 = this.searchController.SiteSearch(query1);
+            var result2 = this.searchController.SiteSearch(query2);
+            var result3 = this.searchController.SiteSearch(query3);
 
             // Assert
             Assert.AreEqual(5, result1.TotalHits);
@@ -1960,9 +1961,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "email@domain.com", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeywordWithWildCard("email@");
 
@@ -1979,7 +1980,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
         }
 
         [Test]
@@ -1990,7 +1991,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
         }
 
         [Test]
@@ -2001,7 +2002,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
         }
 
         [Test]
@@ -2012,7 +2013,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleId = HtmlModuleId };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
         }
 
         [Test]
@@ -2025,7 +2026,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { DocumentSearchTypeId, OtherSearchTypeId }, ModuleId = IdeasModuleId };
 
             // Act
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -2038,7 +2039,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { ModuleSearchTypeId, OtherSearchTypeId }, ModuleId = IdeasModuleId };
 
             // Act
-            this._searchController.SiteSearch(query);
+            this.searchController.SiteSearch(query);
         }
 
         [Test]
@@ -2048,12 +2049,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string keyword = "awesome";
 
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = UnknownSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            this._internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc1);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { UnknownSearchTypeId } };
 
             // Act
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             Assert.AreEqual(0, result.TotalHits); // 0 due to security trimming
             Assert.AreEqual(0, result.Results.Count);
         }
@@ -2066,13 +2067,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId0 };
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = 0 };
 
             // Act
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             Assert.AreEqual(2, result.TotalHits);
         }
 
@@ -2084,13 +2085,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId532 };
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = RoleId731 };
 
             // Act
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             Assert.AreEqual(1, result.TotalHits);
             Assert.AreEqual(RoleId731, result.Results[0].RoleId);
         }
@@ -2105,14 +2106,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId532 };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
 
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId, ModuleSearchTypeId }, RoleId = RoleId731 };
 
             // Act
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
             Assert.AreEqual(1, result.TotalHits);
             Assert.AreEqual(RoleId731, result.Results[0].RoleId);
         }
@@ -2128,13 +2129,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { ModuleSearchTypeId }, ModuleDefIds = new[] { IdeasModuleDefId, AnswersModuleDefId } };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(2, result.TotalHits);
@@ -2154,14 +2155,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.AddSearchDocument(doc4);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.AddSearchDocument(doc4);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { ModuleSearchTypeId }, ModuleDefIds = new[] { IdeasModuleDefId, AnswersModuleDefId }, ModuleId = IdeasModuleId };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(2, result.TotalHits);
@@ -2181,14 +2182,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.AddSearchDocument(doc4);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.AddSearchDocument(doc4);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { ModuleSearchTypeId }, ModuleDefIds = new[] { IdeasModuleDefId, AnswersModuleDefId } };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(3, result.TotalHits);
@@ -2210,15 +2211,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.AddSearchDocument(doc4);
-            this._internalSearchController.AddSearchDocument(doc5);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.AddSearchDocument(doc4);
+            this.internalSearchController.AddSearchDocument(doc5);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { ModuleSearchTypeId, OtherSearchTypeId }, ModuleDefIds = new[] { IdeasModuleDefId, AnswersModuleDefId } };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(4, result.TotalHits);
@@ -2241,15 +2242,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.AddSearchDocument(doc4);
-            this._internalSearchController.AddSearchDocument(doc5);
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.AddSearchDocument(doc4);
+            this.internalSearchController.AddSearchDocument(doc5);
 
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { ModuleSearchTypeId, TabSearchTypeId }, ModuleDefIds = new[] { HtmlModuleDefId } };
 
-            var result = this._searchController.SiteSearch(query);
+            var result = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(3, result.TotalHits);
@@ -2270,7 +2271,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 WildCardSearch = false,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -2289,7 +2290,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 WildCardSearch = false,
             };
-            var search = this._searchController.SiteSearch(query);
+            var search = this.searchController.SiteSearch(query);
 
             // Assert
             Assert.AreEqual(1, search.Results.Count);
@@ -2299,7 +2300,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_EnableLeadingWildcard_Should_Not_Return_Results_When_Property_Is_False()
         {
-            this._mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
+            this.mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
 
             // Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
@@ -2307,10 +2308,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.Commit();
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, false);
 
@@ -2321,7 +2322,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_True()
         {
-            this._mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
+            this.mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
 
             // Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
@@ -2329,10 +2330,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.Commit();
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, true);
 
@@ -2344,7 +2345,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_False_But_Host_Setting_Is_True()
         {
-            this._mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("Y");
+            this.mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("Y");
 
             // Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
@@ -2352,10 +2353,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
 
             // Act
-            this._internalSearchController.AddSearchDocument(doc1);
-            this._internalSearchController.AddSearchDocument(doc2);
-            this._internalSearchController.AddSearchDocument(doc3);
-            this._internalSearchController.Commit();
+            this.internalSearchController.AddSearchDocument(doc1);
+            this.internalSearchController.AddSearchDocument(doc2);
+            this.internalSearchController.AddSearchDocument(doc3);
+            this.internalSearchController.Commit();
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, false);
 
@@ -2369,7 +2370,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             // Arrange
             var added = this.AddStandardSearchDocs();
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
 
             // Act
             var search = this.SearchForKeywordInModule("the");
@@ -2458,65 +2459,65 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private void CreateNewLuceneControllerInstance(bool reCreate = false)
         {
             InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
-            this._internalSearchController = InternalSearchController.Instance;
-            this._searchController = new SearchControllerImpl();
+            this.internalSearchController = InternalSearchController.Instance;
+            this.searchController = new SearchControllerImpl();
 
             if (!reCreate)
             {
                 this.DeleteIndexFolder();
 
-                if (this._luceneController != null)
+                if (this.luceneController != null)
                 {
                     LuceneController.ClearInstance();
-                    this._luceneController.Dispose();
+                    this.luceneController.Dispose();
                 }
 
-                this._luceneController = new LuceneControllerImpl();
-                LuceneController.SetTestableInstance(this._luceneController);
+                this.luceneController = new LuceneControllerImpl();
+                LuceneController.SetTestableInstance(this.luceneController);
             }
         }
 
         private void SetupHostController()
         {
-            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
-            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchKeywordBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchDescriptionBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
-            HostController.RegisterInstance(this._mockHostController.Object);
+            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this.mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this.readerStaleTimeSpan);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchKeywordBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchDescriptionBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
+            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
+            this.mockHostController.As<INewHostController>();
         }
 
         private void SetupLocaleController()
         {
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
+            this.mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
+            this.mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this.mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this.mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this.mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
 
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
+            this.mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this.mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this.mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this.mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this.mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
         }
 
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+            this.mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             DataTableReader searchTypes = null;
-            this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
+            this.mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
                      .Callback(() => searchTypes = this.GetAllSearchTypes().CreateDataReader())
                      .Returns(() => searchTypes);
 
-            this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
+            this.mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
         }
 
         private IDataReader GetPortalsCallBack(string culture)
@@ -2552,27 +2553,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private void SetupSearchHelper()
         {
-            this._mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
-            this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(this.GetSynonymsCallBack);
-            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
-            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(this.GetSearchTypeByNameCallback);
-            this._mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(this.GetSearchTypes());
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(It.IsAny<int>(), It.IsAny<string>())).Returns(new SearchStopWords());
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
+            this.mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
+            this.mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(this.GetSynonymsCallBack);
+            this.mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
+            this.mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(this.GetSearchTypeByNameCallback);
+            this.mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(this.GetSearchTypes());
+            this.mockSearchHelper.Setup(x => x.GetSearchStopWords(It.IsAny<int>(), It.IsAny<string>())).Returns(new SearchStopWords());
+            this.mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
                 new SearchStopWords
                 {
                     PortalId = 0,
                     CultureCode = CultureEsEs,
                     StopWords = "los,de,el",
                 });
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnUs)).Returns(
+            this.mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnUs)).Returns(
                 new SearchStopWords
                 {
                     PortalId = 0,
                     CultureCode = CultureEnUs,
                     StopWords = "the,over",
                 });
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnCa)).Returns(
+            this.mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnCa)).Returns(
                 new SearchStopWords
                 {
                     PortalId = 0,
@@ -2580,9 +2581,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "the,over",
                 });
 
-            this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
-            this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
-            SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
+            this.mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
+            this.mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
+            SearchHelper.SetTestableInstance(this.mockSearchHelper.Object);
         }
 
         private SearchType GetSearchTypeByNameCallback(string searchTypeName)
@@ -2739,14 +2740,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private int AddStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var docs = this.GetStandardSearchDocs(searchTypeId).ToArray();
-            this._internalSearchController.AddSearchDocuments(docs);
+            this.internalSearchController.AddSearchDocuments(docs);
             return docs.Length;
         }
 
         private int AddSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
         {
             var docs = this.GetSearchDocsForCustomBoost(searchTypeId).ToArray();
-            this._internalSearchController.AddSearchDocuments(docs);
+            this.internalSearchController.AddSearchDocuments(docs);
             return docs.Length;
         }
 
@@ -2801,7 +2802,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
-            this._internalSearchController.AddSearchDocuments(docs);
+            this.internalSearchController.AddSearchDocuments(docs);
 
             return docs.Count;
         }
@@ -2857,7 +2858,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
-            this._internalSearchController.AddSearchDocuments(docs);
+            this.internalSearchController.AddSearchDocuments(docs);
 
             return docs.Count;
         }
@@ -2875,7 +2876,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
             }))
             {
-                this._internalSearchController.AddSearchDocument(doc);
+                this.internalSearchController.AddSearchDocument(doc);
                 count++;
             }
 
@@ -2895,7 +2896,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
             }))
             {
-                this._internalSearchController.AddSearchDocument(doc);
+                this.internalSearchController.AddSearchDocument(doc);
                 count++;
             }
 
@@ -2907,7 +2908,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var now = DateTime.UtcNow - TimeSpan.FromSeconds(lines.Count());
             var i = 0;
 
-            this._internalSearchController.AddSearchDocuments(
+            this.internalSearchController.AddSearchDocuments(
                 lines.Select(line =>
                     new SearchDocument
                     {
@@ -2921,19 +2922,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId, bool useWildcard = false, bool allowLeadingWildcard = false)
         {
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
-            return this._searchController.SiteSearch(query);
+            return this.searchController.SiteSearch(query);
         }
 
         private SearchResults SearchForKeywordWithWildCard(string keyword, int searchTypeId = OtherSearchTypeId)
         {
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = true };
-            return this._searchController.SiteSearch(query);
+            return this.searchController.SiteSearch(query);
         }
 
         private SearchResults SearchForKeywordInModule(string keyword, int searchTypeId = ModuleSearchTypeId)
         {
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId } };
-            return this._searchController.SiteSearch(query);
+            return this.searchController.SiteSearch(query);
         }
 
         private string StipEllipses(string text)
@@ -2952,7 +2953,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var docModifyTime = DateTime.UtcNow - TimeSpan.FromSeconds(totalDocs);
             for (var i = 0; i < totalDocs; i++)
             {
-                this._internalSearchController.AddSearchDocument(new SearchDocument
+                this.internalSearchController.AddSearchDocument(new SearchDocument
                 {
                     AuthorUserId = i,
                     Title = "Fox and Dog",
@@ -2991,10 +2992,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     ModifiedTimeUtc = DateTime.UtcNow,
                     Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } },
                 };
-                this._internalSearchController.AddSearchDocument(doc);
+                this.internalSearchController.AddSearchDocument(doc);
             }
 
-            this._internalSearchController.Commit();
+            this.internalSearchController.Commit();
         }
     }
 }

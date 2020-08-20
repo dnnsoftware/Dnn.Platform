@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Content
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Abstractions.Application;
@@ -22,8 +23,11 @@ namespace DotNetNuke.Tests.Content
     using DotNetNuke.Tests.Content.Mocks;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     using INewHostController = DotNetNuke.Abstractions.Entities.Controllers.IHostController;
@@ -36,24 +40,20 @@ namespace DotNetNuke.Tests.Content
     {
         private const int ModuleSearchTypeId = 1;
 
-        private Mock<CachingProvider> _mockCache;
-        private Mock<DataProvider> _mockDataProvider;
-        private Mock<Services.Search.Internals.ISearchHelper> _mockSearchHelper;
+        private Mock<CachingProvider> mockCache;
+        private Mock<DataProvider> mockDataProvider;
+        private Mock<Services.Search.Internals.ISearchHelper> mockSearchHelper;
 
         [SetUp]
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INewHostController, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockDataProvider = MockComponentProvider.CreateDataProvider();
+            this.mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();
 
-            this._mockCache = MockComponentProvider.CreateNew<CachingProvider>();
-            this._mockDataProvider = MockComponentProvider.CreateDataProvider();
-            this._mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();
+            Services.Search.Internals.SearchHelper.SetTestableInstance(this.mockSearchHelper.Object);
 
-            Services.Search.Internals.SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
-
-            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
+            this.mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
                 (string searchTypeName) => new SearchType { SearchTypeName = searchTypeName, SearchTypeId = ModuleSearchTypeId });
 
             var serviceCollection = new ServiceCollection();
@@ -62,6 +62,8 @@ namespace DotNetNuke.Tests.Content
 
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INewHostController, HostController>();
+
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
