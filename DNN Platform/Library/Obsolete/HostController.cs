@@ -19,6 +19,7 @@ namespace DotNetNuke.Entities.Controllers
     // is deprecated and moved to the abstractions project. When
     // it is time to remove APIs we should remove the parent
     // classes listed here
+
     /// <inheritdoc />
     public partial class HostController : ComponentBase<IHostController, HostController>, IHostController
     {
@@ -42,7 +43,7 @@ namespace DotNetNuke.Entities.Controllers
         /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Controllers.IHostController instead.")]
         public Dictionary<string, ConfigurationSetting> GetSettings() =>
-            (this as INewHostController).GetSettings()
+            ((INewHostController)this).GetSettings()
                 .Where(setting => setting.Value is ConfigurationSetting)
                 .Select(setting => new KeyValuePair<string, ConfigurationSetting>(setting.Key, (ConfigurationSetting)setting.Value))
                 .ToDictionary(setting => setting.Key, setting => setting.Value);
@@ -50,11 +51,11 @@ namespace DotNetNuke.Entities.Controllers
         /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Controllers.IHostController instead.")]
         public void Update(ConfigurationSetting config) =>
-            (this as INewHostController).Update(config);
+            ((INewHostController)this).Update(config);
 
         /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Controllers.IHostController instead.")]
         public void Update(ConfigurationSetting config, bool clearCache) =>
-            (this as INewHostController).Update(config, clearCache);
+            ((INewHostController)this).Update(config, clearCache);
     }
 }
