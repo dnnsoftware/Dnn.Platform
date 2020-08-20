@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.Servers.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Servers.Services.Dto;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
@@ -51,7 +52,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey())
                     },
                     portalName = PortalSettings.Current.PortalName,
-                    hideCoreSettings = bool.Parse(ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes["hideCoreSettings"]),
+                    hideCoreSettings = ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes.GetValueOrDefault("hideCoreSettings", false),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }
