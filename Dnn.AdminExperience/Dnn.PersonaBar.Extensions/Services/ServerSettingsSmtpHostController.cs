@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey())
                     },
                     portalName = PortalSettings.Current.PortalName,
-                    mailProvider = ProviderConfiguration.GetProviderConfiguration("mail").DefaultProvider
+                    hideCoreSettings = bool.Parse(ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes["hideCoreSettings"]),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }
