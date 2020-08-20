@@ -23,20 +23,13 @@ namespace DotNetNuke.Entities.Controllers
     /// <inheritdoc />
     public partial class HostController : ComponentBase<IHostController, HostController>, IHostController
     {
-        private static IHostController currentInstance;
-
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Controllers.IHostController instead.")]
         public static new IHostController Instance
         {
             get
             {
-                if (currentInstance != null)
-                {
-                    return currentInstance;
-                }
-
                 var newHostController = Globals.DependencyProvider.GetRequiredService<INewHostController>();
-                return newHostController is IHostController castedController ? currentInstance = castedController : new HostController();
+                return newHostController is IHostController castedController ? castedController : new HostController();
             }
         }
 
