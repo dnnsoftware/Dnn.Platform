@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <None Remove="Entities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
@@ -25,10 +31,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Entities\Controllers\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
