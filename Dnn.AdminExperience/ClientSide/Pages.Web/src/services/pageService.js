@@ -118,7 +118,10 @@ const PageService = function () {
     const toFrontEndPage = function (pageResult) {
         return {
             ...pageResult.page,
-            schedulingEnabled: pageResult.page.startDate || pageResult.page.endDate,
+            schedulingEnabled: pageResult.page.startDate !== null || pageResult.page.endDate !== null,
+            // the API returns strings, but we need dates
+            startDate: pageResult.page.startDate === null ? null : new Date(pageResult.page.startDate),
+            endDate: pageResult.page.endDate === null ? null : new Date(pageResult.page.endDate),
             validationCode: pageResult.ValidationCode,
         };
     };

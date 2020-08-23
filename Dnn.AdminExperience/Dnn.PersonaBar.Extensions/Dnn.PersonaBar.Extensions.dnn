@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="09.06.02">
+        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="09.07.00">
             <friendlyName>Dnn.PersonaBar.Extensions</friendlyName>
             <description></description>
             <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
@@ -92,7 +92,7 @@
                   <menu>
                     <identifier>Dnn.AdminLogs</identifier>
                     <moduleName>AdminLogs</moduleName>
-                    <controller>Dnn.PersonaBar.AdminLogs.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.AdminLogs.MenuControllers.AdminLogsMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_AdminLogs</resourceKey>
                     <path>AdminLogs</path>
                     <parent>Manage</parent>
@@ -120,7 +120,7 @@
                   <menu>
                     <identifier>Dnn.ConfigConsole</identifier>
                     <moduleName>ConfigConsole</moduleName>
-                    <controller>Dnn.PersonaBar.ConfigConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.ConfigConsole.MenuControllers.ConfigConsoleMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_ConfigConsole</resourceKey>
                     <path>ConfigConsole</path>
                     <parent>Settings</parent>
@@ -142,7 +142,7 @@
                   <menu>
                     <identifier>Dnn.CssEditor</identifier>
                     <moduleName>CssEditor</moduleName>
-                    <controller>Dnn.PersonaBar.CssEditor.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.CssEditor.MenuControllers.CssEditorMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_CssEditor</resourceKey>
                     <path>CssEditor</path>
                     <parent>Settings</parent>
@@ -154,7 +154,7 @@
                   <menu>
                     <identifier>Dnn.Licensing</identifier>
                     <moduleName>Licensing</moduleName>
-                    <controller>Dnn.PersonaBar.Licensing.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.Licensing.MenuControllers.LicensingMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_Licensing</resourceKey>
                     <path>Licensing</path>
                     <parent>Settings</parent>
@@ -193,6 +193,7 @@
                   <menu>
                     <identifier>Dnn.Prompt</identifier>
                     <moduleName>Prompt</moduleName>
+                    <controller>Dnn.PersonaBar.Prompt.MenuControllers.PromptMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_Prompt</resourceKey>
                     <path>Prompt</path>
                     <parent>Settings</parent>
@@ -277,7 +278,7 @@
                   <menu>
                     <identifier>Dnn.Sites</identifier>
                     <moduleName>Sites</moduleName>
-                    <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.Sites.MenuControllers.SitesMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_Sites</resourceKey>
                     <path>Sites</path>
                     <parent>Manage</parent>
@@ -288,7 +289,7 @@
                 <menu>
                   <identifier>Dnn.SiteGroups</identifier>
                   <moduleName>SiteGroups</moduleName>
-                  <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                  <controller>Dnn.PersonaBar.Sites.MenuControllers.SitesMenuController, Dnn.PersonaBar.Extensions</controller>
                   <resourceKey>nav_SiteGroups</resourceKey>
                   <path>SiteGroups</path>
                   <parent>Manage</parent>
@@ -323,7 +324,7 @@
                   <menu>
                     <identifier>Dnn.SiteImportExport</identifier>
                     <moduleName>SiteImportExport</moduleName>
-                    <controller>Dnn.PersonaBar.SiteImportExport.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.SiteImportExport.MenuControllers.SiteImportExportMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_SiteImportExport</resourceKey>
                     <path>SiteImportExport</path>
                     <parent>Settings</parent>
@@ -355,7 +356,7 @@
                   <menu>
                     <identifier>Dnn.SqlConsole</identifier>
                     <moduleName>SqlConsole</moduleName>
-                    <controller>Dnn.PersonaBar.SqlConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.SqlConsole.MenuControllers.SqlConsoleMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_SqlConsole</resourceKey>
                     <path>SqlConsole</path>
                     <parent>Settings</parent>
@@ -366,7 +367,7 @@
                   <menu>
                     <identifier>Dnn.TaskScheduler</identifier>
                     <moduleName>TaskScheduler</moduleName>
-                    <controller>Dnn.PersonaBar.TaskScheduler.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <controller>Dnn.PersonaBar.TaskScheduler.MenuControllers.TaskSchedulerMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_TaskScheduler</resourceKey>
                     <path>TaskScheduler</path>
                     <parent>Settings</parent>

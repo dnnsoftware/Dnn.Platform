@@ -54,6 +54,17 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                         return;
                     }
 
+                    if (xhr != null &&
+                        xhr.responseJSON != null &&
+                        xhr.responseJSON.message != null) {
+                        $.dnnAlert({
+                            title: 'Error',
+                            text: xhr.responseJSON.message
+                        });
+
+                        return;
+                    }
+
                     $.dnnAlert({
                         title: 'Error',
                         text: 'Error occurred when request service \'' + method + '\'.'

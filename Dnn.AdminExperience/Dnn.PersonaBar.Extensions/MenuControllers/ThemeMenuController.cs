@@ -4,35 +4,36 @@
 
 namespace Dnn.PersonaBar.Themes.MenuControllers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
 
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Controls the themes menu.
+    /// </summary>
     public class ThemeMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return new Dictionary<string, object>
             {
-                {"previewUrl", Globals.DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL()},
+                { "previewUrl", Globals.DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL() },
             };
         }
     }

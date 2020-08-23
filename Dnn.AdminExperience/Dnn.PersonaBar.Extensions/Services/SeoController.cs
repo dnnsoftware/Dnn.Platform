@@ -84,7 +84,8 @@ namespace Dnn.PersonaBar.Seo.Services
                         urlSettings.RedirectWrongCase
                     },
                     ReplacementCharacterList = replacementCharacterList,
-                    DeletedPageHandlingTypes = deletedPageHandlingTypes
+                    DeletedPageHandlingTypes = deletedPageHandlingTypes,
+                    AdminRoleId = PortalSettings.AdministratorRoleId
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

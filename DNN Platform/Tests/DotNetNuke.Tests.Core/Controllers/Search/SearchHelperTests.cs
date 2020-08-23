@@ -7,14 +7,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System;
     using System.Data;
     using System.Linq;
-
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -40,12 +46,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.Container = new SimpleContainer();
             this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
             this._dataProvider = MockComponentProvider.CreateDataProvider();
             this.SetupDataProvider();
             this._searchHelper = new SearchHelperImpl();
             DataCache.ClearCache();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Globals.DependencyProvider = null;
         }
 
         [Test]

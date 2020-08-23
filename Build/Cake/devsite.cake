@@ -1,13 +1,19 @@
 // Tasks to help you create and maintain a local DNN development site.
 // Note these tasks depend on the correct settings in your settings file.
 
-Task("ResetDevSite")
+Task("BuildToTempFolder")
     .IsDependentOn("SetVersion")
     .IsDependentOn("UpdateDnnManifests")
     .IsDependentOn("ResetDatabase")
     .IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
 	.IsDependentOn("ExternalExtensions")
+    .Does(() => 
+    {
+    });
+
+Task("ResetDevSite")
+	.IsDependentOn("BuildToTempFolder")
 	.IsDependentOn("CopyToDevSite")
 	.IsDependentOn("CopyWebConfigToDevSite")
     .Does(() => 
