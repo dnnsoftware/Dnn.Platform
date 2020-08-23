@@ -1,0 +1,80 @@
+﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}SaveTabUrl') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}SaveTabUrl
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SaveTabUrl
+	@TabID				int,
+	@SeqNum				int,
+	@PortalAliasID		int,
+	@PortalAliasUsage	int,
+	@Url				nvarchar(200),
+	@QueryString		nvarchar(200),
+	@CultureCode		nvarchar(50),
+	@HttpStatus			nvarchar(50),
+	@IsSystem			bit,
+	@ModifiedByUserID	int
+AS
+	IF @HttpStatus = '200'
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}TabUrls
+				SET HttpStatus = '301',
+				[LastModifiedByUserID]= @ModifiedByUserID,
+				[LastModifiedOnDate]= getdate()
+				WHERE TabID = @TabID
+					AND CultureCode = @CultureCode
+					AND (@PortalAliasID = @PortalAliasID OR (PortalAliasId IS NULL AND @PortalAliasID IS NULL))
+					AND HttpStatus = '200'
+		END  
+	IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}TabUrls WHERE TabId = @TabID AND SeqNum = @SeqNum)
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}TabUrls
+				SET 
+					PortalAliasId = @PortalAliasID,
+					PortalAliasUsage = @PortalAliasUsage,
+					Url = @Url,
+					QueryString = @QueryString,
+					CultureCode = @CultureCode,
+					HttpStatus = @HttpStatus,
+					IsSystem = @IsSystem,
+					[LastModifiedByUserID]= @ModifiedByUserID,
+					[LastModifiedOnDate]= getdate()
+			WHERE TabId = @TabID AND SeqNum = @SeqNum 
+		END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}{objectQualifier}TabUrls
+					( TabId ,
+					  SeqNum ,
+					  Url ,
+					  QueryString ,
+					  HttpStatus ,
+					  CultureCode ,
+					  IsSystem,
+					  PortalAliasId ,
+					  PortalAliasUsage,
+					  [CreatedByUserID],
+					  [CreatedOnDate],
+				  	  [LastModifiedByUserID],
+					  [LastModifiedOnDate]
+					)
+			VALUES  ( @TabID ,
+					  @SeqNum ,
+					  @Url ,
+					  @QueryString ,
+					  @HttpStatus ,
+					  @CultureCode ,
+					  @IsSystem,
+					  @PortalAliasID ,
+					  @PortalAliasUsage,
+					  @ModifiedByUserID,
+					  getdate(),
+					  @ModifiedByUserID,
+					  getdate()
+					)
+		END
+GO

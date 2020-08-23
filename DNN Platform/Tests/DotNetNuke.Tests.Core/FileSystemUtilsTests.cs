@@ -8,13 +8,16 @@ namespace DotNetNuke.Tests.Core
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Tests.Utilities.Mocks;
     using ICSharpCode.SharpZipLib.Zip;
+    using Microsoft.Extensions.DependencyInjection;
+    using Moq;
     using NUnit.Framework;
 
     /// <summary>
@@ -26,13 +29,22 @@ namespace DotNetNuke.Tests.Core
         [SetUp]
         public void SetUp()
         {
-            var field = typeof(Globals).GetField("_applicationMapPath", BindingFlags.Static | BindingFlags.NonPublic);
-            field.SetValue(null, null);
+            var applicationStatusInfo = new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>());
+            var rootPath = Path.Combine(applicationStatusInfo.ApplicationMapPath, "FileSystemUtilsTest");
+            this.PrepareRootPath(rootPath, applicationStatusInfo.ApplicationMapPath);
 
-            var rootPath = Path.Combine(Globals.ApplicationMapPath, "FileSystemUtilsTest");
-            this.PrepareRootPath(rootPath);
+            var serviceCollection = new ServiceCollection();
+            var mock = new Mock<IApplicationStatusInfo>();
+            mock.Setup(info => info.ApplicationMapPath).Returns(rootPath);
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mock.Object);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        }
 
-            field.SetValue(null, rootPath);
+        [TearDown]
+        public void TearDown()
+        {
+            Globals.DependencyProvider = null;
         }
 
         [TestCase("/")]
@@ -147,14 +159,14 @@ namespace DotNetNuke.Tests.Core
             }
         }
 
-        private void PrepareRootPath(string rootPath)
+        private void PrepareRootPath(string rootPath, string applicationMapPath)
         {
             if (!Directory.Exists(rootPath))
             {
                 Directory.CreateDirectory(rootPath);
             }
 
-            foreach (var file in Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly))
+            foreach (var file in Directory.GetFiles(applicationMapPath, "*.*", SearchOption.TopDirectoryOnly))
             {
                 File.Copy(file, Path.Combine(rootPath, Path.GetFileName(file)), true);
             }

@@ -12,6 +12,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.ComponentModel;
@@ -26,6 +27,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using DotNetNuke.Tests.Core.Services.ClientCapability;
     using DotNetNuke.Tests.Instance.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -109,11 +111,14 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 dataProviderField.SetValue(tabController, this._dataProvider.Object);
             }
+
+            
         }
 
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             TestableGlobals.ClearInstance();
             PortalController.ClearInstance();
             CachingProvider.Instance().PurgeCache();
@@ -476,11 +481,18 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private void SetupContianer()
         {
-            var navigationManagerMock = new Mock<INavigationManager>();
-            navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => this.NavigateUrl(x));
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
+            var serviceCollection = new ServiceCollection();
+
+            var mockNavigationManager = new Mock<INavigationManager>();
+            mockNavigationManager.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => this.NavigateUrl(x));
+
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+
+            serviceCollection.AddTransient<INavigationManager>(container => mockNavigationManager.Object);
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
         private void SetupDataProvider()

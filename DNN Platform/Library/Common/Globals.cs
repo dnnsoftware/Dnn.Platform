@@ -5,7 +5,6 @@ namespace DotNetNuke.Common
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics;
@@ -25,15 +24,13 @@ namespace DotNetNuke.Common
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -46,13 +43,10 @@ namespace DotNetNuke.Common
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Upgrade;
     using DotNetNuke.Services.Url.FriendlyUrl;
-    using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualBasic.CompilerServices;
@@ -215,18 +209,19 @@ namespace DotNetNuke.Common
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
         private static string _applicationPath;
-        private static string _applicationMapPath;
         private static string _desktopModulePath;
         private static string _imagePath;
         private static string _hostMapPath;
         private static string _hostPath;
         private static string _installMapPath;
         private static string _installPath;
-        private static Version _dataBaseVersion;
-        private static UpgradeStatus _status = UpgradeStatus.Unknown;
         private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
+
+        private static IServiceProvider dependencyProvider;
+        private static IApplicationStatusInfo applicationStatusInfo;
+        private static INavigationManager navigationManager;
 
         // global constants for the life of the application ( set in Application_Start )
 
@@ -316,28 +311,28 @@ namespace DotNetNuke.Common
             /// <summary>
             /// The application need update to a higher version.
             /// </summary>
-            Upgrade,
+            Upgrade = 0,
 
             /// <summary>
             /// The application need to install itself.
             /// </summary>
-            Install,
+            Install = 1,
 
             /// <summary>
             /// The application is normal running.
             /// </summary>
-            None,
+            None = 2,
 
             /// <summary>
             /// The application occur error when running.
             /// </summary>
-            Error,
+            Error = 3,
 
             /// <summary>
             /// The application status is unknown,
             /// </summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown,
+            Unknown = 4,
         }
 
         /// <summary>
@@ -369,13 +364,8 @@ namespace DotNetNuke.Common
         /// <value>
         /// The application map path.
         /// </value>
-        public static string ApplicationMapPath
-        {
-            get
-            {
-                return _applicationMapPath ?? (_applicationMapPath = GetCurrentDomainDirectory());
-            }
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static string ApplicationMapPath => applicationStatusInfo.ApplicationMapPath;
 
         /// <summary>
         /// Gets the desktop module path.
@@ -414,13 +404,8 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Gets the database version.
         /// </summary>
-        public static Version DataBaseVersion
-        {
-            get
-            {
-                return _dataBaseVersion;
-            }
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static Version DataBaseVersion { get => applicationStatusInfo.DatabaseVersion; }
 
         /// <summary>
         /// Gets the host map path.
@@ -494,89 +479,8 @@ namespace DotNetNuke.Common
         /// Gets the status of application.
         /// </summary>
         /// <seealso cref="GetStatus"/>
-        public static UpgradeStatus Status
-        {
-            get
-            {
-                if (_status == UpgradeStatus.Unknown)
-                {
-                    var tempStatus = UpgradeStatus.Unknown;
-
-                    Logger.Trace("Getting application status");
-                    tempStatus = UpgradeStatus.None;
-
-                    // first call GetProviderPath - this insures that the Database is Initialised correctly
-                    // and also generates the appropriate error message if it cannot be initialised correctly
-                    string strMessage = DataProvider.Instance().GetProviderPath();
-
-                    // get current database version from DB
-                    if (!strMessage.StartsWith("ERROR:"))
-                    {
-                        try
-                        {
-                            _dataBaseVersion = DataProvider.Instance().GetVersion();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                            strMessage = "ERROR:" + ex.Message;
-                        }
-                    }
-
-                    if (strMessage.StartsWith("ERROR"))
-                    {
-                        if (IsInstalled())
-                        {
-                            // Errors connecting to the database after an initial installation should be treated as errors.
-                            tempStatus = UpgradeStatus.Error;
-                        }
-                        else
-                        {
-                            // An error that occurs before the database has been installed should be treated as a new install
-                            tempStatus = UpgradeStatus.Install;
-                        }
-                    }
-                    else if (DataBaseVersion == null)
-                    {
-                        // No Db Version so Install
-                        tempStatus = UpgradeStatus.Install;
-                    }
-                    else
-                    {
-                        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                        if (version.Major > DataBaseVersion.Major)
-                        {
-                            // Upgrade Required (Major Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
-                        {
-                            // Upgrade Required (Minor Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build > DataBaseVersion.Build)
-                        {
-                            // Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
-                        {
-                            // Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                    }
-
-                    _status = tempStatus;
-
-                    Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
-                    Logger.Trace("Application status is " + _status);
-                }
-
-                return _status;
-            }
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static UpgradeStatus Status { get => (UpgradeStatus)applicationStatusInfo.Status; }
 
         /// <summary>
         /// Gets image file types.
@@ -637,6 +541,7 @@ namespace DotNetNuke.Common
         /// </value>
         public static Version NETFrameworkVersion { get; set; }
 
+
         /// <summary>
         /// Gets or sets the database engine version.
         /// </summary>
@@ -651,7 +556,22 @@ namespace DotNetNuke.Common
         /// <value>
         /// The Dependency Service.
         /// </value>
-        internal static IServiceProvider DependencyProvider { get; set; }
+        internal static IServiceProvider DependencyProvider
+        {
+            get => dependencyProvider;
+            set
+            {
+                dependencyProvider = value;
+                if (dependencyProvider is INotifyPropertyChanged hasPropertyChanged)
+                {
+                    hasPropertyChanged.PropertyChanged += OnDependencyProviderChanged;
+                }
+                else
+                {
+                    OnDependencyProviderChanged(null, null);
+                }
+            }
+        }
 
         /// <summary>
         /// Redirects the specified URL.
@@ -675,28 +595,8 @@ namespace DotNetNuke.Common
             }
         }
 
-        public static bool IncrementalVersionExists(Version version)
-        {
-            Provider currentdataprovider = Config.GetDefaultProvider("data");
-            string providerpath = currentdataprovider.Attributes["providerPath"];
-
-            // If the provider path does not exist, then there can't be any log files
-            if (!string.IsNullOrEmpty(providerpath))
-            {
-                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", string.Empty);
-                if (Directory.Exists(providerpath))
-                {
-                    var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
-
-                    if (incrementalcount > Globals.GetLastAppliedIteration(version))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
 
         /// <summary>
         /// Builds the cross tab dataset.
@@ -1073,36 +973,21 @@ namespace DotNetNuke.Common
         /// Updates the database version.
         /// </summary>
         /// <param name="version">The version.</param>
-        public static void UpdateDataBaseVersion(Version version)
-        {
-            // update the version
-            DataProvider.Instance().UpdateDatabaseVersion(version.Major, version.Minor, version.Build, DotNetNukeContext.Current.Application.Name);
-            _dataBaseVersion = version;
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static void UpdateDataBaseVersion(Version version) => applicationStatusInfo.UpdateDatabaseVersion(version);
 
         /// <summary>
         /// Updates the database version.
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
-        public static void UpdateDataBaseVersionIncrement(Version version, int increment)
-        {
-            // update the version and increment
-            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
-            _dataBaseVersion = version;
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static void UpdateDataBaseVersionIncrement(Version version, int increment) =>
+            applicationStatusInfo.UpdateDatabaseVersionIncrement(version, increment);
 
-        public static int GetLastAppliedIteration(Version version)
-        {
-            try
-            {
-                return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static int GetLastAppliedIteration(Version version) =>
+            applicationStatusInfo.GetLastAppliedIteration(version);
 
         /// <summary>
         /// Adds the port.
@@ -1446,10 +1331,9 @@ namespace DotNetNuke.Common
         /// Sets the status.
         /// </summary>
         /// <param name="status">The status.</param>
-        public static void SetStatus(UpgradeStatus status)
-        {
-            _status = status;
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        public static void SetStatus(UpgradeStatus status) =>
+            applicationStatusInfo.SetStatus((DotNetNuke.Abstractions.Application.UpgradeStatus)status);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -2425,7 +2309,6 @@ namespace DotNetNuke.Common
         /// <returns>URL to access denied view.</returns>
         public static string AccessDeniedURL(string Message)
         {
-            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL = string.Empty;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
@@ -2802,7 +2685,6 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
-            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string loginUrl;
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -2854,7 +2736,7 @@ namespace DotNetNuke.Common
             string strURL = string.Empty;
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            strURL = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", userId));
+            strURL = navigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", userId));
 
             return strURL;
         }
@@ -2868,7 +2750,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL()
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL();
+            return navigationManager.NavigateURL();
         }
 
         /// <summary>
@@ -2881,7 +2763,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID);
+            return navigationManager.NavigateURL(tabID);
         }
 
         /// <summary>
@@ -2895,7 +2777,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab);
+            return navigationManager.NavigateURL(tabID, isSuperTab);
         }
 
         /// <summary>
@@ -2908,7 +2790,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(controlKey);
+            return navigationManager.NavigateURL(controlKey);
         }
 
         /// <summary>
@@ -2922,7 +2804,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(controlKey, additionalParameters);
+            return navigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2936,7 +2818,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, controlKey);
+            return navigationManager.NavigateURL(tabID, controlKey);
         }
 
         /// <summary>
@@ -2951,7 +2833,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, controlKey, additionalParameters);
+            return navigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2967,7 +2849,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return navigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2984,7 +2866,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -3000,7 +2882,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         /// <summary>
@@ -3017,7 +2899,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
         /// <summary>
@@ -3066,7 +2948,6 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string RegisterURL(string returnURL, string originalURL)
         {
-            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string extraParams = string.Empty;
@@ -3345,7 +3226,7 @@ namespace DotNetNuke.Common
                 switch (UrlType)
                 {
                     case TabType.Tab:
-                        strLink = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(int.Parse(Link));
+                        strLink = navigationManager.NavigateURL(int.Parse(Link));
                         break;
                     default:
                         strLink = Link;
@@ -3836,31 +3717,15 @@ namespace DotNetNuke.Common
         /// <summary>
         /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true if installed else false.</returns>
         /// <remarks>
         /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
         /// If DotNetNuke has not been installed, then we should expect to have database connection problems
         /// since the connection string may not have been configured yet, which can occur during the installation
         /// wizard.
         /// </remarks>
-        internal static bool IsInstalled()
-        {
-            const int c_PassingScore = 4;
-            int installationdatefactor = Convert.ToInt32(HasInstallationDate() ? 1 : 0);
-            int dataproviderfactor = Convert.ToInt32(HasDataProviderLogFiles() ? 3 : 0);
-            int htmlmodulefactor = Convert.ToInt32(ModuleDirectoryExists("html") ? 2 : 0);
-            int portaldirectoryfactor = Convert.ToInt32(HasNonDefaultPortalDirectory() ? 2 : 0);
-            int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
-
-            // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
-            // While it is possible that you might not have an installation date or that you have deleted log files
-            // it is unlikely that you have removed every trace of an installation and yet still have a working install
-            bool isInstalled = (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
-
-            // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
-            // this value exists, then DNN was previously installed, and we should never try to re-install it
-            return isInstalled || HasInstallVersion();
-        }
+        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        internal static bool IsInstalled() => applicationStatusInfo.IsInstalled();
 
         /// <summary>
         /// Gets the culture code of the tab.
@@ -3892,105 +3757,6 @@ namespace DotNetNuke.Common
         internal static void ResetAppStartElapseTime()
         {
             AppStopwatch.Restart();
-        }
-
-        private static string GetCurrentDomainDirectory()
-        {
-            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
-            if (dir.Length > 3 && dir.EndsWith("\\"))
-            {
-                dir = dir.Substring(0, dir.Length - 1);
-            }
-
-            return dir;
-        }
-
-        /// <summary>
-        /// Determines whether has data provider log files.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has data provider log files; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasDataProviderLogFiles()
-        {
-            Provider currentdataprovider = Config.GetDefaultProvider("data");
-            string providerpath = currentdataprovider.Attributes["providerPath"];
-
-            // If the provider path does not exist, then there can't be any log files
-            if (!string.IsNullOrEmpty(providerpath))
-            {
-                providerpath = HttpContext.Current.Server.MapPath(providerpath);
-                if (Directory.Exists(providerpath))
-                {
-                    return Directory.GetFiles(providerpath, "*.log.resources").Length > 0;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether has installation date.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasInstallationDate()
-        {
-            return Config.GetSetting("InstallationDate") != null;
-        }
-
-        /// <summary>
-        /// Determines whether has InstallVersion set.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasInstallVersion()
-        {
-            return Config.GetSetting("InstallVersion") != null;
-        }
-
-        /// <summary>
-        /// Check whether the modules directory is exists.
-        /// </summary>
-        /// <param name="moduleName">Name of the module.</param>
-        /// <returns>
-        /// <c>true</c> if the module directory exist, otherwise, <c>false</c>.
-        /// </returns>
-        private static bool ModuleDirectoryExists(string moduleName)
-        {
-            string dir = ApplicationMapPath + "\\desktopmodules\\" + moduleName;
-            return Directory.Exists(dir);
-        }
-
-        /// <summary>
-        /// Determines whether has portal directory except default portal directory in portal path.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has portal directory except default portal directory in portal path; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasNonDefaultPortalDirectory()
-        {
-            string dir = ApplicationMapPath + "\\portals";
-            if (Directory.Exists(dir))
-            {
-                return Directory.GetDirectories(dir).Length > 1;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether current request is for install.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if current request is for install; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsInstallationURL()
-        {
-            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
-            return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
         }
 
         private static void DeleteFile(string filePath)
@@ -4060,6 +3826,17 @@ namespace DotNetNuke.Common
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Resolves dependencies after the <see cref="Globals.DependencyProvider"/>
+        /// has been initialized. This should only be called once to resolve all
+        /// dependencies used by the <see cref="Globals"/> object.
+        /// </summary>
+        private static void OnDependencyProviderChanged(object sender, PropertyChangedEventArgs eventArguments)
+        {
+            applicationStatusInfo = DependencyProvider?.GetRequiredService<IApplicationStatusInfo>();
+            navigationManager = DependencyProvider?.GetRequiredService<INavigationManager>();
         }
     }
 }

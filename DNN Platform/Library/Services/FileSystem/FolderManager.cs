@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
@@ -18,7 +17,6 @@ namespace DotNetNuke.Services.FileSystem
     using System.Web;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -33,17 +31,16 @@ namespace DotNetNuke.Services.FileSystem
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Exposes methods to manage folders.
-    /// </summary>
+    /// <summary>Exposes methods to manage folders.</summary>
     public class FolderManager : ComponentBase<IFolderManager, FolderManager>, IFolderManager
     {
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderManager));
         private static readonly Dictionary<int, SyncFolderData> SyncFoldersData = new Dictionary<int, SyncFolderData>();
-        private static readonly object _threadLocker = new object();
+        private static readonly object ThreadLocker = new object();
 
+        /// <summary>Gets the localization key for MyFolderName.</summary>
         public virtual string MyFolderName
         {
             get
@@ -174,6 +171,10 @@ namespace DotNetNuke.Services.FileSystem
             this.DeleteFolderInternal(folder, false);
         }
 
+        /// <summary>
+        /// Removes the database reference to a folder on disk.
+        /// </summary>
+        /// <param name="folder">The folder to unlink.</param>
         public virtual void UnlinkFolder(IFolderInfo folder)
         {
             this.DeleteFolderRecursive(folder, new Collection<IFolderInfo>(), true, true);
@@ -276,8 +277,9 @@ namespace DotNetNuke.Services.FileSystem
                         folder.DisplayPath = this.MyFolderName + "/";
                         folder.DisplayName = this.MyFolderName;
                     }
-                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase)) // Allow UserFolder children
+                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase))
                     {
+                        // Allow UserFolder children
                         continue;
                     }
                 }
@@ -297,7 +299,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             // Try and get the folder from the portal cache
             IFolderInfo folder = null;
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             if (portalSettings != null)
             {
                 var folders = this.GetFolders(portalSettings.PortalId);
@@ -426,8 +428,9 @@ namespace DotNetNuke.Services.FileSystem
                         folder.DisplayPath = Localization.GetString("MyFolderName") + "/";
                         folder.DisplayName = Localization.GetString("MyFolderName");
                     }
-                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase)) // Allow UserFolder children
+                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase))
                     {
+                        // Allow UserFolder children
                         continue;
                     }
                 }
@@ -438,6 +441,11 @@ namespace DotNetNuke.Services.FileSystem
             return userFolders;
         }
 
+        /// <summary>
+        /// Gets the folder that belongs to a specific user.
+        /// </summary>
+        /// <param name="userInfo">The user to get the folder for.</param>
+        /// <returns>The information about the the user folder, <see cref="IFolderInfo"></see>.</returns>
         public virtual IFolderInfo GetUserFolder(UserInfo userInfo)
         {
             // always use _default portal for a super user
@@ -447,6 +455,12 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFolder(portalId, userFolderPath) ?? this.AddUserFolder(userInfo);
         }
 
+        /// <summary>
+        /// Moves a folder to a new location.
+        /// </summary>
+        /// <param name="folder">The folder to move.</param>
+        /// <param name="destinationFolder">Where to move the new folder.</param>
+        /// <returns>The information about the moved folder, <see cref="IFolderInfo"></see>.</returns>
         public virtual IFolderInfo MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder)
         {
             Requires.NotNull("folder", folder);
@@ -464,7 +478,9 @@ namespace DotNetNuke.Services.FileSystem
                 throw new InvalidOperationException(string.Format(
                     Localization.GetExceptionMessage(
                         "CannotMoveFolderAlreadyExists",
-                        "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.", folder.FolderName, destinationFolder.FolderName)));
+                        "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.",
+                        folder.FolderName,
+                        destinationFolder.FolderName)));
             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
@@ -475,7 +491,8 @@ namespace DotNetNuke.Services.FileSystem
                 throw new InvalidOperationException(string.Format(
                     Localization.GetExceptionMessage(
                         "CannotMoveFolderBetweenFolderType",
-                        "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed", folder.FolderName)));
+                        "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed",
+                        folder.FolderName)));
             }
 
             if (!this.IsMoveOperationValid(folder, destinationFolder, newFolderPath))
@@ -563,6 +580,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
         /// <param name="pattern">The patter to search for.</param>
+        /// <param name="recursive">Shoud the search be recursive.</param>
         /// <returns>The list of files contained in the specified folder.</returns>
         public virtual IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, string pattern, bool recursive)
         {
@@ -621,7 +639,7 @@ namespace DotNetNuke.Services.FileSystem
 
             int? scriptTimeOut = null;
 
-            Monitor.Enter(_threadLocker);
+            Monitor.Enter(ThreadLocker);
             try
             {
                 if (HttpContext.Current != null)
@@ -659,7 +677,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             finally
             {
-                Monitor.Exit(_threadLocker);
+                Monitor.Exit(ThreadLocker);
 
                 // Restore original time-out
                 if (HttpContext.Current != null && scriptTimeOut != null)
@@ -676,7 +694,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder to update.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folder is null.</exception>
-        /// <returns></returns>
+        /// <returns>The information about the updated folder, <see cref="IFolderInfo"></see>.</returns>
         public virtual IFolderInfo UpdateFolder(IFolderInfo folder)
         {
             var updatedFolder = this.UpdateFolderInternal(folder, true);
@@ -838,23 +856,41 @@ namespace DotNetNuke.Services.FileSystem
             return this.MoveFolder(folder, parentFolder);
         }
 
+        /// <summary>
+        /// Checks if a given folder path is valid.
+        /// </summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <returns>A value indicating whether the folder path is valid.</returns>
         internal virtual bool IsValidFolderPath(string folderPath)
         {
             var illegalInFolderPath = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidPathChars()))), RegexOptions.Compiled);
             return !illegalInFolderPath.IsMatch(folderPath) && !folderPath.TrimEnd('/', '\\').EndsWith(".");
         }
 
+        /// <summary>
+        /// Adds a log entry.
+        /// </summary>
+        /// <param name="folder">The folder to log about.</param>
+        /// <param name="eventLogType">The type of the log entry.</param>
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentPortalSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
+            EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
         }
 
+        /// <summary>
+        /// Adds a log entry.
+        /// </summary>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <param name="propertyValue">The value of the property.</param>
+        /// <param name="eventLogType">The type of log entry.</param>
         internal virtual void AddLogEntry(string propertyName, string propertyValue, EventLogController.EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), this.GetCurrentUserId(), eventLogType);
+            EventLogController.Instance.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), eventLogType);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="newFolderPath">The new folder path.</param>
         internal void DeleteFilesFromCache(int portalId, string newFolderPath)
         {
             var folders = this.GetFolders(portalId).Where(f => f.FolderPath.StartsWith(newFolderPath));
@@ -869,7 +905,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <returns>The added folder information, <see cref="IFolderInfo" />.</returns>
+        /// <param name="user">the user to add a folder for.</param>
         internal virtual IFolderInfo AddUserFolder(UserInfo user)
         {
             // user _default portal for all super users
@@ -882,6 +919,7 @@ namespace DotNetNuke.Services.FileSystem
                 this.AddFolder(folderMapping, DefaultUsersFoldersPath);
             }
 
+            // GetUserFolderPathElement is deprecated without a replacement, it should have been internal only and will be removed in DNN v10, hence the warning disable here
 #pragma warning disable 612,618
             var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
 #pragma warning restore 612,618
@@ -893,6 +931,7 @@ namespace DotNetNuke.Services.FileSystem
                 this.AddFolder(folderMapping, folderPath);
             }
 
+            // GetUserFolderPathElement is deprecated without a replacement, it should have been internal only and will be removed in DNN v10, hence the warning disable here
 #pragma warning disable 612,618
             folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
 #pragma warning restore 612,618
@@ -938,7 +977,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <returns>A value indicating whether there are any folder mappings that required network connectivity.</returns>
+        /// <param name="portalId">The site (Portal) ID.</param>
+        /// <param name="relativePath">The relative path.</param>
+        /// <param name="isRecursive">A value indicating whether the check should be recursive or not.</param>
         internal virtual bool AreThereFolderMappingsRequiringNetworkConnectivity(int portalId, string relativePath, bool isRecursive)
         {
             var folder = this.GetFolder(portalId, relativePath);
@@ -969,6 +1011,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="portalId">The site (portal) ID.</param>
         internal void ClearFolderProviderCachedLists(int portalId)
         {
             foreach (var folderMapping in FolderMappingController.Instance.GetFolderMappings(portalId))
@@ -988,18 +1031,30 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="portalId">The site (portal) ID.</param>
         internal virtual void ClearFolderCache(int portalId)
         {
             DataCache.ClearFolderCache(portalId);
         }
 
+        /// <summary>
+        /// Creates a folder in the database.
+        /// </summary>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="folderPath">The folder path to create.</param>
+        /// <param name="folderMappingId">The folder mapping id, <see cref="FolderMappings"/>.</param>
+        /// <returns>The created folder ID.</returns>
         internal virtual int CreateFolderInDatabase(int portalId, string folderPath, int folderMappingId)
         {
             return this.CreateFolderInDatabase(portalId, folderPath, folderMappingId, folderPath);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="folderPath">The folder path to create.</param>
+        /// <param name="folderMappingId">The id for the folder mapping.</param>
+        /// <param name="mappedPath">The mapped path.</param>
+        /// <returns>The created folder ID.</returns>
         internal virtual int CreateFolderInDatabase(int portalId, string folderPath, int folderMappingId, string mappedPath)
         {
             var isProtected = PathUtils.Instance.IsDefaultProtectedPath(folderPath);
@@ -1045,6 +1100,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="physicalPath">The physical path to create the folder in.</param>
         internal virtual void CreateFolderInFileSystem(string physicalPath)
         {
             var di = new DirectoryInfo(physicalPath);
@@ -1056,6 +1112,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="folderPath">The folder path.</param>
         internal virtual void DeleteFolder(int portalId, string folderPath)
         {
             DataProvider.Instance().DeleteFolder(portalId, PathUtils.Instance.FormatFolderPath(folderPath));
@@ -1065,6 +1123,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="folderMappings">The folder mapping affected.</param>
+        /// <param name="foldersToDelete">A list of folders to delete.</param>
         internal virtual void DeleteFoldersFromExternalStorageLocations(Dictionary<int, FolderMappingInfo> folderMappings, IEnumerable<IFolderInfo> foldersToDelete)
         {
             foreach (var folderToDelete in foldersToDelete)
@@ -1091,21 +1151,24 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <returns>A value representing the current script timeout.</returns>
         internal virtual int GetCurrentScriptTimeout()
         {
             return HttpContext.Current.Server.ScriptTimeout;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <returns>The id of the current user.</returns>
         internal virtual int GetCurrentUserId()
         {
             return UserController.Instance.GetCurrentUserInfo().UserID;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="relativePath">The relative path.</param>
+        /// <param name="isRecursive">A value indicating whether to return folders recursively.</param>
+        /// <returns>A sorted list of folders.</returns>
         internal virtual SortedList<string, MergedTreeItem> GetDatabaseFolders(int portalId, string relativePath, bool isRecursive)
         {
             var databaseFolders = new SortedList<string, MergedTreeItem>(new IgnoreCaseStringComparer());
@@ -1137,7 +1200,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="folder">The folder to get.</param>
+        /// <returns>A sorted list of folders.</returns>
         internal virtual SortedList<string, MergedTreeItem> GetDatabaseFoldersRecursive(IFolderInfo folder)
         {
             var result = new SortedList<string, MergedTreeItem>(new IgnoreCaseStringComparer());
@@ -1173,7 +1237,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="relativePath">The relative path.</param>
+        /// <param name="isRecursive">A value indicating whether to return the folders recursively.</param>
+        /// <returns>A sorted list of folders.</returns>
         internal virtual SortedList<string, MergedTreeItem> GetFileSystemFolders(int portalId, string relativePath, bool isRecursive)
         {
             var fileSystemFolders = new SortedList<string, MergedTreeItem>(new IgnoreCaseStringComparer());
@@ -1211,7 +1278,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="physicalPath">The physical path of the folder.</param>
+        /// <returns>A sorted list of folders.</returns>
         internal virtual SortedList<string, MergedTreeItem> GetFileSystemFoldersRecursive(int portalId, string physicalPath)
         {
             var result = new SortedList<string, MergedTreeItem>(new IgnoreCaseStringComparer());
@@ -1258,7 +1327,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="folderMappings">The folder mapping to search in.</param>
+        /// <param name="folderMappingId">The folder mapping id to return.</param>
+        /// <returns>A single folder mapping, <see cref="FolderMappingInfo"/>.</returns>
         internal virtual FolderMappingInfo GetFolderMapping(Dictionary<int, FolderMappingInfo> folderMappings, int folderMappingId)
         {
             if (!folderMappings.ContainsKey(folderMappingId))
@@ -1270,7 +1341,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="folderMapping">The folder mapping to use.</param>
+        /// <param name="folder">The folder base path.</param>
+        /// <returns>A sorted list of folder mappings.</returns>
         internal virtual SortedList<string, MergedTreeItem> GetFolderMappingFoldersRecursive(FolderMappingInfo folderMapping, IFolderInfo folder)
         {
             var result = new SortedList<string, MergedTreeItem>(new IgnoreCaseStringComparer());
@@ -1323,7 +1396,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="cacheItemArgs">The cached items arguments, <see cref="CacheItemArgs"/>.</param>
+        /// <returns>A list of folders.</returns>
         internal virtual object GetFoldersByPermissionSortedCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
@@ -1333,7 +1407,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="cacheItemArgs">The cache item arguments, <see cref="CacheItemArgs"/>.</param>
+        /// <returns>A list of folders.</returns>
         internal virtual object GetFoldersSortedCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
@@ -1341,7 +1416,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="relativePath">The relative path.</param>
+        /// <param name="isRecursive">A vavlue indicating whether the search should be recursive.</param>
+        /// <returns>A sorted list of <see cref="MergedTreeItem"/>.</returns>
         internal virtual SortedList<string, MergedTreeItem> GetMergedTree(int portalId, string relativePath, bool isRecursive)
         {
             var fileSystemFolders = this.GetFileSystemFolders(portalId, relativePath, isRecursive);
@@ -1395,14 +1473,18 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="folderMapping">The folder mapping.</param>
+        /// <returns>A value indicating whether the folder mapping is editable.</returns>
         internal virtual bool IsFolderMappingEditable(FolderMappingInfo folderMapping)
         {
             return folderMapping.IsEditable;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="folderToMove">The folder to move.</param>
+        /// <param name="destinationFolder">The destination folder to move the folder to.</param>
+        /// <param name="newFolderPath">The new folder path.</param>
+        /// <returns>A value indicating whether the move operation would be valid.</returns>
         internal virtual bool IsMoveOperationValid(IFolderInfo folderToMove, IFolderInfo destinationFolder, string newFolderPath)
         {
             // FolderMapping cases
@@ -1426,7 +1508,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="folderToMove">The folder to move.</param>
+        /// <param name="newFolderPath">The distination folder to move the folder into.</param>
+        /// <returns>A value indicating if the move operation would be valid.</returns>
         internal virtual bool IsMoveOperationValid(IFolderInfo folderToMove, string newFolderPath)
         {
             // Root folder cannot be moved
@@ -1445,14 +1529,16 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <returns>A value indicating whether the network is available.</returns>
         internal virtual bool IsNetworkAvailable()
         {
             return NetworkInterface.GetIsNetworkAvailable();
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="list1">The first list for the merge.</param>
+        /// <param name="list2">The second list for the merge.</param>
+        /// <returns>A merged sorted list of MergedTreeItems, <see cref="MergedTreeItem" />.</returns>
         internal virtual SortedList<string, MergedTreeItem> MergeFolderLists(SortedList<string, MergedTreeItem> list1, SortedList<string, MergedTreeItem> list2)
         {
             foreach (var item in list2.Values)
@@ -1489,6 +1575,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="source">The source directory.</param>
+        /// <param name="target">The target directory.</param>
         internal virtual void MoveDirectory(string source, string target)
         {
             var stack = new Stack<MoveFoldersInfo>();
@@ -1521,6 +1609,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="folder">The folder to move.</param>
+        /// <param name="destinationFolder">The destination folder.</param>
         internal virtual void MoveFolderWithinProvider(IFolderInfo folder, IFolderInfo destinationFolder)
         {
             var newFolderPath = destinationFolder.FolderPath + folder.FolderName + "/";
@@ -1537,6 +1627,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="folder">The folder to move.</param>
+        /// <param name="newFolderPath">The target folder for the move.</param>
         internal virtual void MoveFolderBetweenProviders(IFolderInfo folder, string newFolderPath)
         {
             this.RenameFolderInFileSystem(folder, newFolderPath);
@@ -1556,6 +1648,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="sourceFolder">The source folder.</param>
+        /// <param name="destinationFolder">The destination folder.</param>
+        /// <param name="folderMappings">The folder mappings.</param>
+        /// <param name="foldersToDelete">The folders to delete.</param>
         internal virtual void OverwriteFolder(IFolderInfo sourceFolder, IFolderInfo destinationFolder, Dictionary<int, FolderMappingInfo> folderMappings, SortedList<string, IFolderInfo> foldersToDelete)
         {
             var fileManager = FileManager.Instance;
@@ -1578,6 +1674,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="item">The item to process.</param>
+        /// <param name="portalId">The site (portal) ID.</param>
         internal virtual void ProcessMergedTreeItemInAddMode(MergedTreeItem item, int portalId)
         {
             try
@@ -1599,8 +1697,9 @@ namespace DotNetNuke.Services.FileSystem
                             this.CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
                         }
                     }
-                    else // by exclusion it exists in the Folder Mapping
+                    else
                     {
+                        // by exclusion it exists in the Folder Mapping
                         this.CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
                         this.CreateFolderInDatabase(portalId, item.FolderPath, item.FolderMappingID, item.MappedPath);
                     }
@@ -1613,6 +1712,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="item"><see cref="MergedTreeItem"></see>.</param>
+        /// <param name="portalId">The site (portal) ID.</param>
         internal virtual void ProcessMergedTreeItemInDeleteMode(MergedTreeItem item, int portalId)
         {
             if (item.ExistsInFileSystem)
@@ -1646,6 +1747,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="folder">The folder to cleanup.</param>
         internal virtual void RemoveOrphanedFiles(IFolderInfo folder)
         {
             var files = this.GetFiles(folder, false, true);
@@ -1674,6 +1776,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="folder">The folder to rename.</param>
+        /// <param name="newFolderPath">The new folder path.</param>
         internal virtual void RenameFolderInFileSystem(IFolderInfo folder, string newFolderPath)
         {
             var source = folder.PhysicalPath;
@@ -1689,18 +1793,22 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="folder">The folder to save the permissions for.</param>
         internal virtual void SaveFolderPermissions(IFolderInfo folder)
         {
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="timeout">The timeout in seconds.</param>
         internal virtual void SetScriptTimeout(int timeout)
         {
             HttpContext.Current.Server.ScriptTimeout = timeout;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="item">The item to synchronize.</param>
+        /// <param name="portalId">The site (portal) ID.</param>
         internal virtual void SynchronizeFiles(MergedTreeItem item, int portalId)
         {
             var folder = this.GetFolder(portalId, item.FolderPath);
@@ -1763,6 +1871,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="portalId">The site (portal) ID.</param>
+        /// <param name="folderPath">The folder path to update.</param>
         internal virtual void UpdateParentFolder(int portalId, string folderPath)
         {
             if (!string.IsNullOrEmpty(folderPath))
@@ -1778,6 +1888,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="folder">The folder to update.</param>
+        /// <param name="newFolderPath">The new folder path.</param>
         internal virtual void UpdateChildFolders(IFolderInfo folder, string newFolderPath)
         {
             var originalFolderPath = folder.FolderPath;
@@ -1829,7 +1941,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns></returns>
+        /// <param name="sourceFolderMapping">The source folder mapping.</param>
+        /// <param name="destinationFolderMapping">The destination folder mapping.</param>
+        /// <returns>A value indicating whether a folder mapping can be moved to another one.</returns>
         internal virtual bool CanMoveBetweenFolderMappings(FolderMappingInfo sourceFolderMapping, FolderMappingInfo destinationFolderMapping)
         {
             // If Folder Mappings are exactly the same
@@ -2254,18 +2368,39 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         internal class MergedTreeItem
         {
+            /// <summary>
+            /// Gets or sets a value indicating whether the item exists in the file system.
+            /// </summary>
             public bool ExistsInFileSystem { get; set; }
 
+            /// <summary>
+            /// Gets or sets a value indicating whether the item exists in the database.
+            /// </summary>
             public bool ExistsInDatabase { get; set; }
 
+            /// <summary>
+            /// Gets or sets a value indicating whether the item exists in the folder mappings.
+            /// </summary>
             public bool ExistsInFolderMapping { get; set; }
 
+            /// <summary>
+            /// Gets or sets the folder id.
+            /// </summary>
             public int FolderID { get; set; }
 
+            /// <summary>
+            /// Gets or sets the folder path.
+            /// </summary>
             public int FolderMappingID { get; set; }
 
+            /// <summary>
+            /// Gets or sets the folder path.
+            /// </summary>
             public string FolderPath { get; set; }
 
+            /// <summary>
+            /// Gets or sets the mapped path.
+            /// </summary>
             public string MappedPath { get; set; }
         }
 
@@ -2274,6 +2409,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         internal class IgnoreCaseStringComparer : IComparer<string>
         {
+            /// <inheritdoc/>
             public int Compare(string x, string y)
             {
                 return string.Compare(x.ToLowerInvariant(), y.ToLowerInvariant(), StringComparison.Ordinal);
@@ -2285,24 +2421,27 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         internal class MoveFoldersInfo
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MoveFoldersInfo"/> class.
+            /// </summary>
+            /// <param name="source">The source folder.</param>
+            /// <param name="target">The destination folder.</param>
             public MoveFoldersInfo(string source, string target)
             {
                 this.Source = source;
                 this.Target = target;
             }
 
+            /// <summary>
+            /// Gets the Source folder.
+
+            /// </summary>
             public string Source { get; private set; }
 
+            /// <summary>
+            /// Gets the target folder.
+            /// </summary>
             public string Target { get; private set; }
         }
-    }
-
-    internal class SyncFolderData
-    {
-        public int PortalId { get; set; }
-
-        public string FolderPath { get; set; }
-
-        public FolderPermissionCollection Permissions { get; set; }
     }
 }

@@ -11,19 +11,24 @@ namespace Dnn.PersonaBar.SiteImportExport.MenuControllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    public class AdminMenuController : IMenuItemController
+    /// <summary>
+    /// Controls the site import/export menu.
+    /// </summary>
+    public class SiteImportExportMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
-
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();
