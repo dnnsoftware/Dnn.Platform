@@ -4,7 +4,7 @@
 
 namespace DotNetNuke.Entities
 {
-    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Settings;
 
     /// <inheritdoc />
     public class ConfigurationSetting : IConfigurationSetting

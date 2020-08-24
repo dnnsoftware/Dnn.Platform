@@ -6,6 +6,8 @@ namespace DotNetNuke.Abstractions
 {
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Settings;
+
     /// <summary>
     /// The <see cref="IHostSettingsService"/> provides business layer of the HostSettings
     /// Entity.

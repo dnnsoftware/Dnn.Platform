@@ -11,6 +11,7 @@ namespace DotNetNuke.Entities.Controllers
     using System.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
