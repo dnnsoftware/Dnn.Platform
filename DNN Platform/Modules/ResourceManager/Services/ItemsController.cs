@@ -267,7 +267,8 @@ namespace Dnn.Modules.ResourceManager.Services
                 lastModifiedOnDate = folder.LastModifiedOnDate.ToShortDateString(),
                 lastModifiedBy = lastModifiedBy != null ? lastModifiedBy.Username : "",
                 type = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).MappingName,
-                isVersioned = folder.IsVersioned
+                isVersioned = folder.IsVersioned,
+                permissions = new FolderPermissions(true, folder.FolderPermissions)
             });
         }
 
@@ -363,7 +364,6 @@ namespace Dnn.Modules.ResourceManager.Services
                 thumbnailUrl = thumbnailsManager.ThumbnailUrl(ActiveModule.ModuleID, file.FileId, 110, 110)
             };
         }
-
         #endregion
     }
 }

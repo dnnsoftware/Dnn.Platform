@@ -133,7 +133,7 @@ class PermissionGrid extends Component {
 }
 
 PermissionGrid.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func,
     permissions: PropTypes.object.isRequired,
     localization: PropTypes.object,
     className: PropTypes.string,
