@@ -10,7 +10,7 @@ namespace DotNetNuke.Entities.Controllers
     using System.Globalization;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;

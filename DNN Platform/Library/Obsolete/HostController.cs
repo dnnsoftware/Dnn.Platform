@@ -8,7 +8,7 @@ namespace DotNetNuke.Entities.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
 
