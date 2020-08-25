@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { PermissionGrid } from "@dnnsoftware/dnn-react-common";
+import DnnSf from "../globals/dnnSf";
 
 class Permissions extends React.Component {
   constructor(props) {
@@ -24,13 +25,12 @@ class Permissions extends React.Component {
 
   render() {
     const { props, state } = this;
-    
-    console.log($.dnnSF());
+    const dnnSf = new DnnSf();
     const grid = (
       <PermissionGrid
         dispatch={(e) => {}}
         permissions={state.permissions}
-        service={$.dnnSF()}
+        service={dnnSf}
         onPermissionsChanged={this.onPermissionsChanged.bind(this)}
       />
     );
