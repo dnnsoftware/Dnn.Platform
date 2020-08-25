@@ -23,6 +23,8 @@ namespace Dnn.PersonaBar.Security.Components
     {
         private const long MaxFileSize = 1024 * 1024 * 10; //10M
 
+        private const int ModifiedFilesCount = 50;
+
         private static readonly IList<Regex> ExcludedFilePathRegexList = new List<Regex>()
         {
             new Regex(Regex.Escape("\\App_Data\\ClientDependency"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
@@ -35,8 +37,6 @@ namespace Dnn.PersonaBar.Security.Components
             new Regex(Regex.Escape(AppDomain.CurrentDomain.BaseDirectory + "Default.aspx.cs"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
             new Regex(Regex.Escape(AppDomain.CurrentDomain.BaseDirectory + "web.config"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
-
-        private const int ModifiedFilesCount = 50;
 
         /// <summary>
         ///     delete unnedded installwizard files.

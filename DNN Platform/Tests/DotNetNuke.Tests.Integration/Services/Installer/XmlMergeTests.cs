@@ -44,99 +44,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             Assert.AreEqual(2, nodes.Count);
         }
 
-        /// <summary>
-        /// Merges the Merge and Target files based on the name of the calling method.
-        /// </summary>
-        /// <remarks>xml files must be embedded resources in the MergeFiles folder named {method}Merge.xml and {method}Target.xml.</remarks>
-        /// <returns>XmlDocument with the result of the merge operation.</returns>
-        private XmlDocument ExecuteMerge()
-        {
-            return this.ExecuteMerge(null);
-        }
-
-        /// <summary>
-        /// As ExecuteMerge but allows the merge file prefix to be specified.
-        /// </summary>
-        private XmlDocument ExecuteMerge(string mergeName)
-        {
-            string testMethodName = this.GetTestMethodName();
-
-            XmlMerge merge = this.GetXmlMerge(mergeName ?? testMethodName);
-            XmlDocument targetDoc = this.LoadTargetDoc(testMethodName);
-
-            merge.UpdateConfig(targetDoc);
-
-            this.WriteToDebug(targetDoc);
-
-            return targetDoc;
-        }
-
-        private string GetTestMethodName()
-        {
-            var st = new StackTrace(2);
-
-            string name;
-            int i = 0;
-            do
-            {
-                name = st.GetFrame(i).GetMethod().Name;
-                i++;
-            }
-            while (name == "ExecuteMerge");
-
-            return name;
-        }
-
-        private XmlDocument LoadTargetDoc(string testMethodName)
-        {
-            using (Stream targetStream =
-                this._assembly.GetManifestResourceStream(string.Format(
-                    "DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Target.xml",
-                    testMethodName)))
-            {
-                Debug.Assert(
-                    targetStream != null,
-                    string.Format("Unable to location embedded resource for {0}Target.xml", testMethodName));
-                var targetDoc = new XmlDocument { XmlResolver = null };
-                targetDoc.Load(targetStream);
-                return targetDoc;
-            }
-        }
-
-        private XmlMerge GetXmlMerge(string fileName)
-        {
-            using (Stream mergeStream =
-                this._assembly.GetManifestResourceStream(string.Format(
-                    "DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Merge.xml",
-                    fileName)))
-            {
-                Debug.Assert(
-                    mergeStream != null,
-                    string.Format("Unable to location embedded resource for {0}Merge.xml", fileName));
-                var merge = new XmlMerge(mergeStream, "version", "sender");
-                return merge;
-            }
-        }
-
-        private void WriteToDebug(XmlDocument targetDoc)
-        {
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            if (OutputXml)
-
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
-            {
-                using (var writer = new StreamWriter(new MemoryStream()))
-                {
-                    targetDoc.Save(writer);
-                    writer.BaseStream.Seek(0, SeekOrigin.Begin);
-                    using (var sr = new StreamReader(writer.BaseStream))
-                    {
-                        Debug.WriteLine("{0}", sr.ReadToEnd());
-                    }
-                }
-            }
-        }
-
         [Test]
         public void SimpleUpdateInLocation()
         {
@@ -493,20 +400,100 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             Assert.AreEqual("4.1.0.0", bindingRedirect.Attributes["newVersion"].Value);
         }
 
+        /// <summary>
+        /// Merges the Merge and Target files based on the name of the calling method.
+        /// </summary>
+        /// <remarks>xml files must be embedded resources in the MergeFiles folder named {method}Merge.xml and {method}Target.xml.</remarks>
+        /// <returns>XmlDocument with the result of the merge operation.</returns>
+        private XmlDocument ExecuteMerge()
+        {
+            return this.ExecuteMerge(null);
+        }
+
+        /// <summary>
+        /// As ExecuteMerge but allows the merge file prefix to be specified.
+        /// </summary>
+        private XmlDocument ExecuteMerge(string mergeName)
+        {
+            string testMethodName = this.GetTestMethodName();
+
+            XmlMerge merge = this.GetXmlMerge(mergeName ?? testMethodName);
+            XmlDocument targetDoc = this.LoadTargetDoc(testMethodName);
+
+            merge.UpdateConfig(targetDoc);
+
+            this.WriteToDebug(targetDoc);
+
+            return targetDoc;
+        }
+
+        private string GetTestMethodName()
+        {
+            var st = new StackTrace(2);
+
+            string name;
+            int i = 0;
+            do
+            {
+                name = st.GetFrame(i).GetMethod().Name;
+                i++;
+            }
+            while (name == "ExecuteMerge");
+
+            return name;
+        }
+
+        private XmlDocument LoadTargetDoc(string testMethodName)
+        {
+            using (Stream targetStream =
+                this._assembly.GetManifestResourceStream(string.Format(
+                    "DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Target.xml",
+                    testMethodName)))
+            {
+                Debug.Assert(
+                    targetStream != null,
+                    string.Format("Unable to location embedded resource for {0}Target.xml", testMethodName));
+                var targetDoc = new XmlDocument { XmlResolver = null };
+                targetDoc.Load(targetStream);
+                return targetDoc;
+            }
+        }
+
+        private XmlMerge GetXmlMerge(string fileName)
+        {
+            using (Stream mergeStream =
+                this._assembly.GetManifestResourceStream(string.Format(
+                    "DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Merge.xml",
+                    fileName)))
+            {
+                Debug.Assert(
+                    mergeStream != null,
+                    string.Format("Unable to location embedded resource for {0}Merge.xml", fileName));
+                var merge = new XmlMerge(mergeStream, "version", "sender");
+                return merge;
+            }
+        }
+
+        private void WriteToDebug(XmlDocument targetDoc)
+        {
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            if (OutputXml)
+
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            {
+                using (var writer = new StreamWriter(new MemoryStream()))
+                {
+                    targetDoc.Save(writer);
+                    writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                    using (var sr = new StreamReader(writer.BaseStream))
+                    {
+                        Debug.WriteLine("{0}", sr.ReadToEnd());
+                    }
+                }
+            }
+        }
+
         // ReSharper restore PossibleNullReferenceException
-    }
-
-    internal class TestLogSource : ILoggerSource
-    {
-        public ILog GetLogger(string name)
-        {
-            return new TestLogger();
-        }
-
-        public ILog GetLogger(Type type)
-        {
-            return new TestLogger();
-        }
     }
 
     internal class TestLogger : ILog
@@ -522,6 +509,21 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         public bool IsFatalEnabled
+        {
+            get { return false; }
+        }
+
+        public bool IsInfoEnabled
+        {
+            get { return false; }
+        }
+
+        public bool IsTraceEnabled
+        {
+            get { return false; }
+        }
+
+        public bool IsWarnEnabled
         {
             get { return false; }
         }
@@ -588,21 +590,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
         public void InfoFormat(string format, params object[] args)
         {
-        }
-
-        public bool IsInfoEnabled
-        {
-            get { return false; }
-        }
-
-        public bool IsTraceEnabled
-        {
-            get { return false; }
-        }
-
-        public bool IsWarnEnabled
-        {
-            get { return false; }
         }
 
         public void Trace(object message, Exception exception)

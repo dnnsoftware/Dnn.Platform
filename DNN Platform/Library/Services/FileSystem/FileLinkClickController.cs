@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
@@ -31,6 +30,11 @@ namespace DotNetNuke.Services.FileSystem
             var strFileId = UrlUtils.DecryptParameter(queryParams["fileticket"], linkClickPortalSettings.PortalGUID);
             int fileId;
             return int.TryParse(strFileId, out fileId) ? fileId : -1;
+        }
+
+        protected override Func<IFileLinkClickController> GetFactory()
+        {
+            return () => new FileLinkClickController();
         }
 
         private LinkClickPortalSettings GetPortalSettingsForLinkClick(int portalId)
@@ -70,16 +74,5 @@ namespace DotNetNuke.Services.FileSystem
 
             return PortalSettings.Current.PortalId;
         }
-
-        protected override Func<IFileLinkClickController> GetFactory()
-        {
-            return () => new FileLinkClickController();
-        }
-    }
-
-    internal class LinkClickPortalSettings
-    {
-        public string PortalGUID;
-        public bool EnableUrlLanguage;
     }
 }

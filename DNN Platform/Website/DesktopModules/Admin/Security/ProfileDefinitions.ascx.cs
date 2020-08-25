@@ -35,16 +35,16 @@ namespace DotNetNuke.Modules.Admin.Users
         private const int COLUMN_REQUIRED = 11;
         private const int COLUMN_VISIBLE = 12;
         private const int COLUMN_MOVE_DOWN = 2;
+        private const int COLUMN_MOVE_UP = 3;
 
         private readonly INavigationManager _navigationManager;
+        private ProfilePropertyDefinitionCollection _profileProperties;
+        private bool _requiredColumnHidden = false;
 
         public ProfileDefinitions()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-        private const int COLUMN_MOVE_UP = 3;
-        private ProfilePropertyDefinitionCollection _profileProperties;
-        private bool _requiredColumnHidden = false;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -181,6 +181,21 @@ namespace DotNetNuke.Modules.Admin.Users
             return retValue;
         }
 
+        public void Update()
+        {
+            try
+            {
+                this.UpdateProperties();
+
+                // Redirect to upadte page
+                this.Response.Redirect(this.Request.RawUrl, true);
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -211,6 +226,123 @@ namespace DotNetNuke.Modules.Admin.Users
             allStates[1] = this.ProfileProperties;
 
             return allStates;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Init runs when the control is initialised.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            foreach (DataGridColumn column in this.grdProfileProperties.Columns)
+            {
+                if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
+                {
+                    var checkBoxColumn = (CheckBoxColumn)column;
+                    if (checkBoxColumn.DataField == "Required" && this.UsersPortalId == Null.NullInteger)
+                    {
+                        checkBoxColumn.Visible = false;
+                        this._requiredColumnHidden = true;
+                    }
+
+                    if (this.SupportsRichClient() == false)
+                    {
+                        checkBoxColumn.CheckedChanged += this.grdProfileProperties_ItemCheckedChanged;
+                    }
+                }
+                else if (ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
+                {
+                    // Manage Delete Confirm JS
+                    var imageColumn = (ImageCommandColumn)column;
+                    switch (imageColumn.CommandName)
+                    {
+                        case "Delete":
+                            imageColumn.OnClickJS = Localization.GetString("DeleteItem");
+                            imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
+                            break;
+                        case "Edit":
+                            // The Friendly URL parser does not like non-alphanumeric characters
+                            // so first create the format string with a dummy value and then
+                            // replace the dummy value with the FormatString place holder
+                            string formatString = this.EditUrl("PropertyDefinitionID", "KEYFIELD", "EditProfileProperty");
+                            formatString = formatString.Replace("KEYFIELD", "{0}");
+                            imageColumn.NavigateURLFormatString = formatString;
+                            imageColumn.Text = Localization.GetString("Edit", this.LocalResourceFile);
+                            break;
+                        case "MoveUp":
+                            imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
+                            break;
+                        case "MoveDown":
+                            imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
+                            break;
+                    }
+                }
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cmdRefresh.Click += this.cmdRefresh_Click;
+            this.grdProfileProperties.ItemCommand += this.grdProfileProperties_ItemCommand;
+            this.grdProfileProperties.ItemCreated += this.grdProfileProperties_ItemCreated;
+            this.grdProfileProperties.ItemDataBound += this.grdProfileProperties_ItemDataBound;
+
+            this.cmdAdd.NavigateUrl = this.EditUrl("EditProfileProperty");
+
+            try
+            {
+                if (!this.Page.IsPostBack)
+                {
+                    Localization.LocalizeDataGrid(ref this.grdProfileProperties, this.LocalResourceFile);
+                    this.BindGrid();
+                }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
+        /// Grid.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected void grdProfileProperties_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            DataGridItem item = e.Item;
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                Control imgColumnControl = item.Controls[1].Controls[0];
+                if (imgColumnControl is ImageButton)
+                {
+                    var delImage = (ImageButton)imgColumnControl;
+                    var profProperty = (ProfilePropertyDefinition)item.DataItem;
+
+                    switch (profProperty.PropertyName.ToLowerInvariant())
+                    {
+                        case "lastname":
+                        case "firstname":
+                        case "preferredtimezone":
+                        case "preferredlocale":
+                            delImage.Visible = false;
+                            break;
+                        default:
+                            delImage.Visible = true;
+                            break;
+                    }
+                }
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -392,138 +524,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             this.ProfileProperties.Sort();
-        }
-
-        public void Update()
-        {
-            try
-            {
-                this.UpdateProperties();
-
-                // Redirect to upadte page
-                this.Response.Redirect(this.Request.RawUrl, true);
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            foreach (DataGridColumn column in this.grdProfileProperties.Columns)
-            {
-                if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
-                {
-                    var checkBoxColumn = (CheckBoxColumn)column;
-                    if (checkBoxColumn.DataField == "Required" && this.UsersPortalId == Null.NullInteger)
-                    {
-                        checkBoxColumn.Visible = false;
-                        this._requiredColumnHidden = true;
-                    }
-
-                    if (this.SupportsRichClient() == false)
-                    {
-                        checkBoxColumn.CheckedChanged += this.grdProfileProperties_ItemCheckedChanged;
-                    }
-                }
-                else if (ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
-                {
-                    // Manage Delete Confirm JS
-                    var imageColumn = (ImageCommandColumn)column;
-                    switch (imageColumn.CommandName)
-                    {
-                        case "Delete":
-                            imageColumn.OnClickJS = Localization.GetString("DeleteItem");
-                            imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
-                            break;
-                        case "Edit":
-                            // The Friendly URL parser does not like non-alphanumeric characters
-                            // so first create the format string with a dummy value and then
-                            // replace the dummy value with the FormatString place holder
-                            string formatString = this.EditUrl("PropertyDefinitionID", "KEYFIELD", "EditProfileProperty");
-                            formatString = formatString.Replace("KEYFIELD", "{0}");
-                            imageColumn.NavigateURLFormatString = formatString;
-                            imageColumn.Text = Localization.GetString("Edit", this.LocalResourceFile);
-                            break;
-                        case "MoveUp":
-                            imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
-                            break;
-                        case "MoveDown":
-                            imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
-                            break;
-                    }
-                }
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cmdRefresh.Click += this.cmdRefresh_Click;
-            this.grdProfileProperties.ItemCommand += this.grdProfileProperties_ItemCommand;
-            this.grdProfileProperties.ItemCreated += this.grdProfileProperties_ItemCreated;
-            this.grdProfileProperties.ItemDataBound += this.grdProfileProperties_ItemDataBound;
-
-            this.cmdAdd.NavigateUrl = this.EditUrl("EditProfileProperty");
-
-            try
-            {
-                if (!this.Page.IsPostBack)
-                {
-                    Localization.LocalizeDataGrid(ref this.grdProfileProperties, this.LocalResourceFile);
-                    this.BindGrid();
-                }
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
-        /// Grid.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected void grdProfileProperties_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            DataGridItem item = e.Item;
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                Control imgColumnControl = item.Controls[1].Controls[0];
-                if (imgColumnControl is ImageButton)
-                {
-                    var delImage = (ImageButton)imgColumnControl;
-                    var profProperty = (ProfilePropertyDefinition)item.DataItem;
-
-                    switch (profProperty.PropertyName.ToLowerInvariant())
-                    {
-                        case "lastname":
-                        case "firstname":
-                        case "preferredtimezone":
-                        case "preferredlocale":
-                            delImage.Visible = false;
-                            break;
-                        default:
-                            delImage.Visible = true;
-                            break;
-                    }
-                }
-            }
         }
 
         /// -----------------------------------------------------------------------------

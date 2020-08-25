@@ -16,6 +16,7 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
             this.SortColumn = "Joined";
             this.SortAscending = false;
         }
+
         public int PortalId { get; set; }
         public string SearchText { get; set; }
         public int PageIndex { get; set; }

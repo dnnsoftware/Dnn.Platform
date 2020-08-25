@@ -42,29 +42,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the current Page No.
-        /// </summary>
-        public int PageNo
-        {
-            get
-            {
-                int _PageNo = 0;
-                if (this.ViewState["PageNo"] != null && !this.IsPostBack)
-                {
-                    _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
-                }
-
-                return _PageNo;
-            }
-
-            set
-            {
-                this.ViewState["PageNo"] = value;
-            }
-        }
-
         public ModuleActionCollection ModuleActions
         {
             get
@@ -115,6 +92,29 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
 
                 return Actions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the current Page No.
+        /// </summary>
+        public int PageNo
+        {
+            get
+            {
+                int _PageNo = 0;
+                if (this.ViewState["PageNo"] != null && !this.IsPostBack)
+                {
+                    _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
+                }
+
+                return _PageNo;
+            }
+
+            set
+            {
+                this.ViewState["PageNo"] = value;
             }
         }
 
@@ -332,6 +332,62 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.loginLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.loginLink.NavigateUrl, this, this.PortalSettings, true, false, 300, 650));
                 }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void cmdCancel_Click(object sender, EventArgs e)
+        {
+            this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// cmdRegister_Click runs when the Register button is clicked.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void cmdAdd_Click(object sender, EventArgs e)
+        {
+            if (this.IsAdmin == false && this.HasManageUsersModulePermission() == false)
+            {
+                return;
+            }
+
+            if (this.ctlUser.IsValid && this.ctlProfile.IsValid)
+            {
+                this.ctlUser.CreateUser();
+            }
+            else
+            {
+                if (this.ctlUser.CreateStatus != UserCreateStatus.AddUser)
+                {
+                    this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.ctlUser.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
+        {
+            if (this.IsAdmin == false)
+            {
+                return;
+            }
+
+            try
+            {
+                this.AddModuleMessage("UserPasswordUpdateChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+
+                this.BindMembership();
             }
             catch (Exception exc) // Module failed to load
             {
@@ -568,62 +624,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.dnnRoleDetails.Visible =
                     this.dnnPasswordDetails.Visible =
                     this.actionsRow.Visible = false;
-            }
-        }
-
-        protected void cmdCancel_Click(object sender, EventArgs e)
-        {
-            this.Response.Redirect(this._navigationManager.NavigateURL(), true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdRegister_Click runs when the Register button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void cmdAdd_Click(object sender, EventArgs e)
-        {
-            if (this.IsAdmin == false && this.HasManageUsersModulePermission() == false)
-            {
-                return;
-            }
-
-            if (this.ctlUser.IsValid && this.ctlProfile.IsValid)
-            {
-                this.ctlUser.CreateUser();
-            }
-            else
-            {
-                if (this.ctlUser.CreateStatus != UserCreateStatus.AddUser)
-                {
-                    this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.ctlUser.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
-        {
-            if (this.IsAdmin == false)
-            {
-                return;
-            }
-
-            try
-            {
-                this.AddModuleMessage("UserPasswordUpdateChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
-
-                this.BindMembership();
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 

@@ -24,8 +24,6 @@ namespace DotNetNuke.Services.Localization
             this.IsPublished = Null.NullBoolean;
         }
 
-        public string Code { get; set; }
-
         public CultureInfo Culture
         {
             get
@@ -48,8 +46,6 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        public string Fallback { get; set; }
-
         public Locale FallBackLocale
         {
             get
@@ -64,10 +60,6 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        public bool IsPublished { get; set; }
-
-        public int LanguageId { get; set; }
-
         public string NativeName
         {
             get
@@ -81,6 +73,14 @@ namespace DotNetNuke.Services.Localization
                 return _Name;
             }
         }
+
+        public string Code { get; set; }
+
+        public string Fallback { get; set; }
+
+        public bool IsPublished { get; set; }
+
+        public int LanguageId { get; set; }
 
         public int PortalId { get; set; }
 

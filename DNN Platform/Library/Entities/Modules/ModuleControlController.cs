@@ -52,35 +52,6 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleControls gets a Dictionary of Module Controls from
-        /// the Cache.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private static Dictionary<int, ModuleControlInfo> GetModuleControls()
-        {
-            return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(
-                new CacheItemArgs(
-                DataCache.ModuleControlsCacheKey,
-                DataCache.ModuleControlsCacheTimeOut,
-                DataCache.ModuleControlsCachePriority),
-                GetModuleControlsCallBack);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetModuleControlsCallBack gets a Dictionary of Module Controls from
-        /// the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
-        private static object GetModuleControlsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillDictionary(key, dataProvider.GetModuleControls(), new Dictionary<int, ModuleControlInfo>());
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// GetModuleControl gets a single Module Control from the database.
         /// </summary>
         /// <param name="moduleControlID">The ID of the Module Control to fetch.</param>
@@ -186,6 +157,35 @@ namespace DotNetNuke.Entities.Modules
         public static void UpdateModuleControl(ModuleControlInfo objModuleControl)
         {
             SaveModuleControl(objModuleControl, true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModuleControls gets a Dictionary of Module Controls from
+        /// the Cache.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static Dictionary<int, ModuleControlInfo> GetModuleControls()
+        {
+            return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(
+                new CacheItemArgs(
+                DataCache.ModuleControlsCacheKey,
+                DataCache.ModuleControlsCacheTimeOut,
+                DataCache.ModuleControlsCachePriority),
+                GetModuleControlsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModuleControlsCallBack gets a Dictionary of Module Controls from
+        /// the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private static object GetModuleControlsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillDictionary(key, dataProvider.GetModuleControls(), new Dictionary<int, ModuleControlInfo>());
         }
     }
 }

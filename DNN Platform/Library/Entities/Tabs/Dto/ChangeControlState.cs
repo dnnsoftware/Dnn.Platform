@@ -15,6 +15,17 @@ namespace DotNetNuke.Entities.Tabs.Dto
     public class ChangeControlState
     {
         /// <summary>
+        /// Gets a value indicating whether gets if change control is enabled for the tab.
+        /// </summary>
+        /// <value>
+        /// True if versioning or workflow are enabled, false otherwise.
+        /// </value>
+        public bool IsChangeControlEnabledForTab
+        {
+            get { return this.IsVersioningEnabledForTab || this.IsWorkflowEnabledForTab; }
+        }
+
+        /// <summary>
         /// Gets or sets the portal id.
         /// </summary>
         /// <value>
@@ -29,17 +40,6 @@ namespace DotNetNuke.Entities.Tabs.Dto
         /// The tab id.
         /// </value>
         public int TabId { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether gets if change control is enabled for the tab.
-        /// </summary>
-        /// <value>
-        /// True if versioning or workflow are enabled, false otherwise.
-        /// </value>
-        public bool IsChangeControlEnabledForTab
-        {
-            get { return this.IsVersioningEnabledForTab || this.IsWorkflowEnabledForTab; }
-        }
 
         /// <summary>
         /// Gets or sets a value indicating whether gets if versioning is enabled for the tab.

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DNN.Integration.Test.Framework.Helpers
 {
     using System;
@@ -15,11 +14,10 @@ namespace DNN.Integration.Test.Framework.Helpers
 
     public static class WebApiTestHelper
     {
-        private static IWebApiConnector _anonymousConnector;
         private static readonly Dictionary<string, IWebApiConnector> CachedConnections = new Dictionary<string, IWebApiConnector>();
         private static readonly Random Rnd = new Random();
-
         private static readonly string HostGuid = HostSettingsHelper.GetHostSettingValue("GUID");
+        private static IWebApiConnector _anonymousConnector;
 
         /// <summary>
         /// Returns a coonector to access the default site annonymously.
@@ -47,12 +45,6 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
                 { "TabId", tabId.ToString() },
                 { "ModuleId", moduleId.ToString() },
             };
-        }
-
-        internal static void ClearCachedConnections()
-        {
-            _anonymousConnector = null;
-            CachedConnections.Clear();
         }
 
         public static IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId, int portalId = 0)
@@ -120,31 +112,6 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return str.GenerateHash("MD5");
         }
 
-        private static string CodifyInputName(string originalId, string sufix, bool encriptName)
-        {
-            var transformedId = encriptName ? CodifyString(originalId) : originalId;
-            return "$" + transformedId + "$" + transformedId + "_" + sufix;
-        }
-
-        private static string CodifyString(string originalString)
-        {
-            return GenerateHash(HostGuid.Substring(0, 7) + originalString + DateTime.Now.Day);
-        }
-
-        private static string GenerateHash(string str)
-        {
-            try
-            {
-                return CryptoConfig.AllowOnlyFipsAlgorithms
-                    ? str.GenerateSha256Hash()
-                    : str.GenerateMd5();
-            }
-            catch (Exception)
-            {
-                return str.GenerateMd5();
-            }
-        }
-
         /// <summary>
         /// Creates a Registered User and performs Login for that user in as well.
         /// Password used is same as that for Host. Existing user is used if it's already present.
@@ -200,37 +167,6 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             }
 
             return connector;
-        }
-
-        private static string GenerateHash(this string str, string hashType)
-        {
-            var hasher = HashAlgorithm.Create(hashType);
-            if (hasher == null)
-            {
-                throw new InvalidOperationException("No hashing type found by name " + hashType);
-            }
-
-            using (hasher)
-            {
-                // convert our string into byte array
-                var byteArray = Encoding.UTF8.GetBytes(str);
-
-                // get the hashed values created by our SHA1CryptoServiceProvider
-                var hashedByteArray = hasher.ComputeHash(byteArray);
-
-                // create a StringBuilder object
-                var stringBuilder = new StringBuilder();
-
-                // loop to each each byte
-                foreach (var b in hashedByteArray)
-                {
-                    // append it to our StringBuilder
-                    stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
-                }
-
-                // return the hashed value
-                return stringBuilder.ToString();
-            }
         }
 
         /// <summary>
@@ -326,6 +262,68 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
                 { "TabID", tabId.ToString("D") },
                 { "ModuleID", moduleId.ToString("D") },
             };
+        }
+
+        internal static void ClearCachedConnections()
+        {
+            _anonymousConnector = null;
+            CachedConnections.Clear();
+        }
+
+        private static string CodifyInputName(string originalId, string sufix, bool encriptName)
+        {
+            var transformedId = encriptName ? CodifyString(originalId) : originalId;
+            return "$" + transformedId + "$" + transformedId + "_" + sufix;
+        }
+
+        private static string CodifyString(string originalString)
+        {
+            return GenerateHash(HostGuid.Substring(0, 7) + originalString + DateTime.Now.Day);
+        }
+
+        private static string GenerateHash(string str)
+        {
+            try
+            {
+                return CryptoConfig.AllowOnlyFipsAlgorithms
+                    ? str.GenerateSha256Hash()
+                    : str.GenerateMd5();
+            }
+            catch (Exception)
+            {
+                return str.GenerateMd5();
+            }
+        }
+
+        private static string GenerateHash(this string str, string hashType)
+        {
+            var hasher = HashAlgorithm.Create(hashType);
+            if (hasher == null)
+            {
+                throw new InvalidOperationException("No hashing type found by name " + hashType);
+            }
+
+            using (hasher)
+            {
+                // convert our string into byte array
+                var byteArray = Encoding.UTF8.GetBytes(str);
+
+                // get the hashed values created by our SHA1CryptoServiceProvider
+                var hashedByteArray = hasher.ComputeHash(byteArray);
+
+                // create a StringBuilder object
+                var stringBuilder = new StringBuilder();
+
+                // loop to each each byte
+                foreach (var b in hashedByteArray)
+                {
+                    // append it to our StringBuilder
+                    stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
+                }
+
+                // return the hashed value
+                return stringBuilder.ToString();
+            }
         }
     }
 }

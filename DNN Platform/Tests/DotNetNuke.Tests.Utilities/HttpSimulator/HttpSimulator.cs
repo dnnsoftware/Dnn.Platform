@@ -33,10 +33,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
     public class HttpSimulator : IDisposable
     {
         private static readonly string WebsitePhysicalAppPath = ConfigurationManager.AppSettings["DefaultPhysicalAppPath"];
-        private StringBuilder _builder;
-        private Uri _referer;
         private readonly NameValueCollection _formVars = new NameValueCollection();
         private readonly NameValueCollection _headers = new NameValueCollection();
+        private StringBuilder _builder;
+        private Uri _referer;
 
         private string _applicationPath = "/";
 
@@ -60,11 +60,70 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this.PhysicalApplicationPath = physicalApplicationPath;
         }
 
+        /// <summary>
+        /// Gets physical path to the requested file (used for simulation purposes).
+        /// </summary>
+        public string PhysicalPath
+        {
+            get { return this._physicalPath; }
+        }
+
+        /// <summary>
+        /// Gets the text from the response to the simulated request.
+        /// </summary>
+        public string ResponseText
+        {
+            get
+            {
+                return (this._builder ?? new StringBuilder()).ToString();
+            }
+        }
+
         public string Host { get; private set; }
 
         public string LocalPath { get; private set; }
 
         public int Port { get; private set; }
+
+        /// <summary>
+        /// Gets portion of the URL after the application.
+        /// </summary>
+        public string Page { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the same thing as the IIS Virtual directory. It's
+        /// what gets returned by Request.ApplicationPath.
+        /// </summary>
+        public string ApplicationPath
+        {
+            get { return this._applicationPath; }
+
+            set
+            {
+                this._applicationPath = value ?? "/";
+                this._applicationPath = NormalizeSlashes(this._applicationPath);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets physical path to the application (used for simulation purposes).
+        /// </summary>
+        public string PhysicalApplicationPath
+        {
+            get { return this._physicalApplicationPath; }
+
+            set
+            {
+                this._physicalApplicationPath = value ?? WebsitePhysicalAppPath;
+
+                // strip trailing backslashes.
+                this._physicalApplicationPath = StripTrailingBackSlashes(this._physicalApplicationPath) + @"\";
+            }
+        }
+
+        public TextWriter ResponseWriter { get; set; }
+
+        public SimulatedHttpRequest WorkerRequest { get; private set; }
 
         /// <summary>
         /// Sets up the HttpContext objects to simulate a GET request.
@@ -187,6 +246,66 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2.</filterpriority>
+        public void Dispose()
+        {
+            HttpContext.Current = null;
+        }
+
+        protected static HostingEnvironment GetHostingEnvironment()
+        {
+            HostingEnvironment environment;
+            try
+            {
+                environment = new HostingEnvironment();
+            }
+            catch (InvalidOperationException)
+            {
+                // Shoot, we need to grab it via reflection.
+                environment = ReflectionHelper.GetStaticFieldValue<HostingEnvironment>("_theHostingEnvironment", typeof(HostingEnvironment));
+            }
+
+            return environment;
+        }
+
+        protected static string NormalizeSlashes(string s)
+        {
+            if (string.IsNullOrEmpty(s) || s == "/")
+            {
+                return "/";
+            }
+
+            s = s.Replace(@"\", "/");
+
+            // Reduce multiple slashes in row to single.
+            var normalized = Regex.Replace(s, "(/)/+", "$1");
+
+            // Strip left.
+            normalized = StripPrecedingSlashes(normalized);
+
+            // Strip right.
+            normalized = StripTrailingSlashes(normalized);
+            return "/" + normalized;
+        }
+
+        protected static string StripPrecedingSlashes(string s)
+        {
+            return Regex.Replace(s, "^/*(.*)", "$1");
+        }
+
+        protected static string StripTrailingSlashes(string s)
+        {
+            return Regex.Replace(s, "(.*)/*$", "$1", RegexOptions.RightToLeft);
+        }
+
+        protected static string StripTrailingBackSlashes(string s)
+        {
+            return string.IsNullOrEmpty(s) ? string.Empty : Regex.Replace(s, @"(.*)\\*$", "$1", RegexOptions.RightToLeft);
+        }
+
+        /// <summary>
         /// Sets up the HttpContext objects to simulate a request.
         /// </summary>
         /// <param name="url"></param>
@@ -270,6 +389,39 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             ReflectionHelper.SetPrivateInstanceFieldValue("_state", appFactory, HttpContext.Current.Application);
         }
 
+        private static string RightAfter(string original, string search)
+        {
+            if (search.Length > original.Length || search.Length == 0)
+            {
+                return original;
+            }
+
+            original = original.Trim();
+            search = search.Trim();
+            var searchIndex = original.IndexOf(search, 0, StringComparison.InvariantCultureIgnoreCase);
+
+            if (searchIndex < 0)
+            {
+                return original;
+            }
+
+            // mod to add one onto the search length - otherwise strange results??
+            // return original.Substring(original.IndexOf(search) + search.Length + 1);
+            // return original.Substring(original.IndexOf(search) + search.Length);
+            // original = original.Substring(searchIndex, original.Length - searchIndex);
+            // return original.Replace(search,"");
+            var regexMatch = @"(" + search + ")(?<keep>.+)";
+            const string regexReplace = @"${keep}";
+            var result = Regex.Replace(original, regexMatch, regexReplace, RegexOptions.IgnoreCase);
+            return result;
+        }
+
+        private static string ExtractQueryStringPart(Uri url)
+        {
+            var query = url.Query;
+            return query.StartsWith("?") ? query.Substring(1) : query;
+        }
+
         private void InitializeSession()
         {
             HttpContext.Current = new HttpContext(this.WorkerRequest);
@@ -279,13 +431,51 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             HttpContext.Current.Items.Add("AspSession", session);
         }
 
+        private void ParseRequestUrl(Uri url)
+        {
+            if (url == null)
+            {
+                return;
+            }
+
+            this.Host = url.Host;
+            this.Port = url.Port;
+            this.LocalPath = url.LocalPath;
+            this.Page = StripPrecedingSlashes(RightAfter(url.LocalPath, this.ApplicationPath));
+            this._physicalPath = Path.Combine(this._physicalApplicationPath, this.Page.Replace("/", @"\"));
+        }
+
+        private void SetHttpRuntimeInternals()
+        {
+            // We cheat by using reflection.
+
+            // get singleton property value
+            var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof(HttpRuntime));
+
+            // set app path property value
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);
+
+            // set app virtual path property value
+            const string vpathTypeName = "System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
+            var virtualPath = ReflectionHelper.Instantiate(vpathTypeName, new[] { typeof(string) }, new object[] { this.ApplicationPath });
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppVPath", runtime, virtualPath);
+
+            // set codegen dir property value
+            ReflectionHelper.SetPrivateInstanceFieldValue("_codegenDir", runtime, this.PhysicalApplicationPath);
+
+            var environment = GetHostingEnvironment();
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appPhysicalPath", environment, this.PhysicalApplicationPath);
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appVirtualPath", environment, virtualPath);
+            ReflectionHelper.SetPrivateInstanceFieldValue("_configMapPath", environment, new ConfigMapPath(this));
+        }
+
         public class FakeHttpSessionState : NameObjectCollectionBase, IHttpSessionState
         {
             private const bool _isNewSession = true;
             private readonly string _sessionId = Guid.NewGuid().ToString();
-            private int _timeout = 30; // minutes
             private readonly HttpStaticObjectsCollection _staticObjects = new HttpStaticObjectsCollection();
             private readonly object _syncRoot = new object();
+            private int _timeout = 30; // minutes
 
             /// <summary>
             /// Gets the unique session identifier for the session.
@@ -298,6 +488,96 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             public string SessionID
             {
                 get { return this._sessionId; }
+            }
+
+            /// <summary>
+            /// Gets a value indicating whether the session was created with the current request.
+            /// </summary>
+            ///
+            /// <returns>
+            /// true if the session was created with the current request; otherwise, false.
+            /// </returns>
+            ///
+            public bool IsNewSession
+            {
+                get { return _isNewSession; }
+            }
+
+            /// <summary>
+            /// Gets the current session-state mode.
+            /// </summary>
+            ///
+            /// <returns>
+            /// One of the <see cref="T:System.Web.SessionState.SessionStateMode"></see> values.
+            /// </returns>
+            ///
+            public SessionStateMode Mode
+            {
+                get { return SessionStateMode.InProc; }
+            }
+
+            /// <summary>
+            /// Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.
+            /// </summary>
+            ///
+            /// <returns>
+            /// true if the session is embedded in the URL; otherwise, false.
+            /// </returns>
+            ///
+            public bool IsCookieless
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// Gets a value that indicates whether the application is configured for cookieless sessions.
+            /// </summary>
+            ///
+            /// <returns>
+            /// One of the <see cref="T:System.Web.HttpCookieMode"></see> values that indicate whether the application is configured for cookieless sessions. The default is <see cref="F:System.Web.HttpCookieMode.UseCookies"></see>.
+            /// </returns>
+            ///
+            public HttpCookieMode CookieMode
+            {
+                get { return HttpCookieMode.UseCookies; }
+            }
+
+            /// <summary>
+            /// Gets a collection of objects declared by &lt;object Runat="Server" Scope="Session"/&gt; tags within the ASP.NET application file Global.asax.
+            /// </summary>
+            ///
+            /// <returns>
+            /// An <see cref="T:System.Web.HttpStaticObjectsCollection"></see> containing objects declared in the Global.asax file.
+            /// </returns>
+            ///
+            public HttpStaticObjectsCollection StaticObjects
+            {
+                get { return this._staticObjects; }
+            }
+
+            /// <summary>
+            /// Gets an object that can be used to synchronize access to the collection of session-state values.
+            /// </summary>
+            ///
+            /// <returns>
+            /// An object that can be used to synchronize access to the collection.
+            /// </returns>
+            ///
+            public object SyncRoot
+            {
+                get { return this._syncRoot; }
+            }
+
+            /// <summary>
+            /// Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).
+            /// </summary>
+            /// <returns>
+            /// true if access to the collection is synchronized (thread safe); otherwise, false.
+            /// </returns>
+            ///
+            public bool IsSynchronized
+            {
+                get { return true; }
             }
 
             /// <summary>
@@ -315,16 +595,69 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
 
             /// <summary>
-            /// Gets a value indicating whether the session was created with the current request.
+            /// Gets or sets the locale identifier (LCID) of the current session.
             /// </summary>
             ///
             /// <returns>
-            /// true if the session was created with the current request; otherwise, false.
+            /// A <see cref="T:System.Globalization.CultureInfo"></see> instance that specifies the culture of the current session.
             /// </returns>
             ///
-            public bool IsNewSession
+            public int LCID { get; set; }
+
+            /// <summary>
+            /// Gets or sets the code-page identifier for the current session.
+            /// </summary>
+            ///
+            /// <returns>
+            /// The code-page identifier for the current session.
+            /// </returns>
+            ///
+            public int CodePage { get; set; }
+
+            /// <summary>
+            /// Gets a value indicating whether the session is read-only.
+            /// </summary>
+            ///
+            /// <returns>
+            /// true if the session is read-only; otherwise, false.
+            /// </returns>
+            ///
+            bool IHttpSessionState.IsReadOnly
             {
-                get { return _isNewSession; }
+                get
+                {
+                    return true;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets a session-state item value by name.
+            /// </summary>
+            ///
+            /// <returns>
+            /// The session-state item value specified in the name parameter.
+            /// </returns>
+            ///
+            /// <param name="name">The key name of the session-state item value. </param>
+            public object this[string name]
+            {
+                get { return this.BaseGet(name); }
+                set { this.BaseSet(name, value); }
+            }
+
+            /// <summary>
+            /// Gets or sets a session-state item value by numerical index.
+            /// </summary>
+            ///
+            /// <returns>
+            /// The session-state item value specified in the index parameter.
+            /// </returns>
+            ///
+            /// <param name="index">The numerical index of the session-state item value. </param>
+            public object this[int index]
+            {
+                get { return this.BaseGet(index); }
+                set { this.BaseSet(index, value); }
             }
 
             /// <summary>
@@ -395,339 +728,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 throw new NotImplementedException();
             }
-
-            /// <summary>
-            /// Gets the current session-state mode.
-            /// </summary>
-            ///
-            /// <returns>
-            /// One of the <see cref="T:System.Web.SessionState.SessionStateMode"></see> values.
-            /// </returns>
-            ///
-            public SessionStateMode Mode
-            {
-                get { return SessionStateMode.InProc; }
-            }
-
-            /// <summary>
-            /// Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.
-            /// </summary>
-            ///
-            /// <returns>
-            /// true if the session is embedded in the URL; otherwise, false.
-            /// </returns>
-            ///
-            public bool IsCookieless
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// Gets a value that indicates whether the application is configured for cookieless sessions.
-            /// </summary>
-            ///
-            /// <returns>
-            /// One of the <see cref="T:System.Web.HttpCookieMode"></see> values that indicate whether the application is configured for cookieless sessions. The default is <see cref="F:System.Web.HttpCookieMode.UseCookies"></see>.
-            /// </returns>
-            ///
-            public HttpCookieMode CookieMode
-            {
-                get { return HttpCookieMode.UseCookies; }
-            }
-
-            /// <summary>
-            /// Gets or sets the locale identifier (LCID) of the current session.
-            /// </summary>
-            ///
-            /// <returns>
-            /// A <see cref="T:System.Globalization.CultureInfo"></see> instance that specifies the culture of the current session.
-            /// </returns>
-            ///
-            public int LCID { get; set; }
-
-            /// <summary>
-            /// Gets or sets the code-page identifier for the current session.
-            /// </summary>
-            ///
-            /// <returns>
-            /// The code-page identifier for the current session.
-            /// </returns>
-            ///
-            public int CodePage { get; set; }
-
-            /// <summary>
-            /// Gets a collection of objects declared by &lt;object Runat="Server" Scope="Session"/&gt; tags within the ASP.NET application file Global.asax.
-            /// </summary>
-            ///
-            /// <returns>
-            /// An <see cref="T:System.Web.HttpStaticObjectsCollection"></see> containing objects declared in the Global.asax file.
-            /// </returns>
-            ///
-            public HttpStaticObjectsCollection StaticObjects
-            {
-                get { return this._staticObjects; }
-            }
-
-            /// <summary>
-            /// Gets an object that can be used to synchronize access to the collection of session-state values.
-            /// </summary>
-            ///
-            /// <returns>
-            /// An object that can be used to synchronize access to the collection.
-            /// </returns>
-            ///
-            public object SyncRoot
-            {
-                get { return this._syncRoot; }
-            }
-
-            /// <summary>
-            /// Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).
-            /// </summary>
-            /// <returns>
-            /// true if access to the collection is synchronized (thread safe); otherwise, false.
-            /// </returns>
-            ///
-            public bool IsSynchronized
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// Gets a value indicating whether the session is read-only.
-            /// </summary>
-            ///
-            /// <returns>
-            /// true if the session is read-only; otherwise, false.
-            /// </returns>
-            ///
-            bool IHttpSessionState.IsReadOnly
-            {
-                get
-                {
-                    return true;
-                }
-            }
-
-            /// <summary>
-            /// Gets or sets a session-state item value by name.
-            /// </summary>
-            ///
-            /// <returns>
-            /// The session-state item value specified in the name parameter.
-            /// </returns>
-            ///
-            /// <param name="name">The key name of the session-state item value. </param>
-            public object this[string name]
-            {
-                get { return this.BaseGet(name); }
-                set { this.BaseSet(name, value); }
-            }
-
-            /// <summary>
-            /// Gets or sets a session-state item value by numerical index.
-            /// </summary>
-            ///
-            /// <returns>
-            /// The session-state item value specified in the index parameter.
-            /// </returns>
-            ///
-            /// <param name="index">The numerical index of the session-state item value. </param>
-            public object this[int index]
-            {
-                get { return this.BaseGet(index); }
-                set { this.BaseSet(index, value); }
-            }
-        }
-
-        private static string RightAfter(string original, string search)
-        {
-            if (search.Length > original.Length || search.Length == 0)
-            {
-                return original;
-            }
-
-            original = original.Trim();
-            search = search.Trim();
-            var searchIndex = original.IndexOf(search, 0, StringComparison.InvariantCultureIgnoreCase);
-
-            if (searchIndex < 0)
-            {
-                return original;
-            }
-
-            // mod to add one onto the search length - otherwise strange results??
-            // return original.Substring(original.IndexOf(search) + search.Length + 1);
-            // return original.Substring(original.IndexOf(search) + search.Length);
-            // original = original.Substring(searchIndex, original.Length - searchIndex);
-            // return original.Replace(search,"");
-            var regexMatch = @"(" + search + ")(?<keep>.+)";
-            const string regexReplace = @"${keep}";
-            var result = Regex.Replace(original, regexMatch, regexReplace, RegexOptions.IgnoreCase);
-            return result;
-        }
-
-        private void ParseRequestUrl(Uri url)
-        {
-            if (url == null)
-            {
-                return;
-            }
-
-            this.Host = url.Host;
-            this.Port = url.Port;
-            this.LocalPath = url.LocalPath;
-            this.Page = StripPrecedingSlashes(RightAfter(url.LocalPath, this.ApplicationPath));
-            this._physicalPath = Path.Combine(this._physicalApplicationPath, this.Page.Replace("/", @"\"));
-        }
-
-        /// <summary>
-        /// Gets portion of the URL after the application.
-        /// </summary>
-        public string Page { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the same thing as the IIS Virtual directory. It's
-        /// what gets returned by Request.ApplicationPath.
-        /// </summary>
-        public string ApplicationPath
-        {
-            get { return this._applicationPath; }
-
-            set
-            {
-                this._applicationPath = value ?? "/";
-                this._applicationPath = NormalizeSlashes(this._applicationPath);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets physical path to the application (used for simulation purposes).
-        /// </summary>
-        public string PhysicalApplicationPath
-        {
-            get { return this._physicalApplicationPath; }
-
-            set
-            {
-                this._physicalApplicationPath = value ?? WebsitePhysicalAppPath;
-
-                // strip trailing backslashes.
-                this._physicalApplicationPath = StripTrailingBackSlashes(this._physicalApplicationPath) + @"\";
-            }
-        }
-
-        /// <summary>
-        /// Gets physical path to the requested file (used for simulation purposes).
-        /// </summary>
-        public string PhysicalPath
-        {
-            get { return this._physicalPath; }
-        }
-
-        public TextWriter ResponseWriter { get; set; }
-
-        /// <summary>
-        /// Gets the text from the response to the simulated request.
-        /// </summary>
-        public string ResponseText
-        {
-            get
-            {
-                return (this._builder ?? new StringBuilder()).ToString();
-            }
-        }
-
-        public SimulatedHttpRequest WorkerRequest { get; private set; }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2.</filterpriority>
-        public void Dispose()
-        {
-            HttpContext.Current = null;
-        }
-
-        protected static HostingEnvironment GetHostingEnvironment()
-        {
-            HostingEnvironment environment;
-            try
-            {
-                environment = new HostingEnvironment();
-            }
-            catch (InvalidOperationException)
-            {
-                // Shoot, we need to grab it via reflection.
-                environment = ReflectionHelper.GetStaticFieldValue<HostingEnvironment>("_theHostingEnvironment", typeof(HostingEnvironment));
-            }
-
-            return environment;
-        }
-
-        protected static string NormalizeSlashes(string s)
-        {
-            if (string.IsNullOrEmpty(s) || s == "/")
-            {
-                return "/";
-            }
-
-            s = s.Replace(@"\", "/");
-
-            // Reduce multiple slashes in row to single.
-            var normalized = Regex.Replace(s, "(/)/+", "$1");
-
-            // Strip left.
-            normalized = StripPrecedingSlashes(normalized);
-
-            // Strip right.
-            normalized = StripTrailingSlashes(normalized);
-            return "/" + normalized;
-        }
-
-        private static string ExtractQueryStringPart(Uri url)
-        {
-            var query = url.Query;
-            return query.StartsWith("?") ? query.Substring(1) : query;
-        }
-
-        private void SetHttpRuntimeInternals()
-        {
-            // We cheat by using reflection.
-
-            // get singleton property value
-            var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof(HttpRuntime));
-
-            // set app path property value
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);
-
-            // set app virtual path property value
-            const string vpathTypeName = "System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
-            var virtualPath = ReflectionHelper.Instantiate(vpathTypeName, new[] { typeof(string) }, new object[] { this.ApplicationPath });
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppVPath", runtime, virtualPath);
-
-            // set codegen dir property value
-            ReflectionHelper.SetPrivateInstanceFieldValue("_codegenDir", runtime, this.PhysicalApplicationPath);
-
-            var environment = GetHostingEnvironment();
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appPhysicalPath", environment, this.PhysicalApplicationPath);
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appVirtualPath", environment, virtualPath);
-            ReflectionHelper.SetPrivateInstanceFieldValue("_configMapPath", environment, new ConfigMapPath(this));
-        }
-
-        protected static string StripPrecedingSlashes(string s)
-        {
-            return Regex.Replace(s, "^/*(.*)", "$1");
-        }
-
-        protected static string StripTrailingSlashes(string s)
-        {
-            return Regex.Replace(s, "(.*)/*$", "$1", RegexOptions.RightToLeft);
-        }
-
-        protected static string StripTrailingBackSlashes(string s)
-        {
-            return string.IsNullOrEmpty(s) ? string.Empty : Regex.Replace(s, @"(.*)\\*$", "$1", RegexOptions.RightToLeft);
         }
 
         internal class ConfigMapPath : IConfigMapPath

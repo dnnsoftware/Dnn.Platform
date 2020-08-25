@@ -54,12 +54,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     [MenuPermission(MenuName = Components.Constants.Constants.MenuName)]
     public class SiteSettingsController : PersonaBarApiController
     {
-        private const string AuthFailureMessage = "Authorization has been denied for this request.";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
-        private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
         private const int DefaultSearchTagBoost = 40;
         private const int DefaultSearchContentBoost = 35;
         private const int DefaultSearchDescriptionBoost = 20;
@@ -73,20 +71,25 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
         private const double DefaultMessagingThrottlingInterval = 0.5; // set default MessagingThrottlingInterval value to 30 seconds.
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
+        private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
+
+        protected INavigationManager NavigationManager { get; }
+
         public SiteSettingsController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
 
-        protected INavigationManager NavigationManager { get; }
+        #region Site Info API
 
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
-        /// Gets site settings.
+        /// Gets site settings
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
-        /// <returns>site settings.</returns>
+        /// <returns>site settings</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView)]
         public HttpResponseMessage GetPortalSettings(int? portalId, string cultureCode)
@@ -132,16 +135,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         folderPath = logoFile.Folder,
                         fileId = logoFile.FileId,
                         folderId = logoFile.FolderId
-                    }
-                    : null,
+                    } : null,
                     FavIcon = favIcon != null ? new FileDto()
                     {
                         fileName = favIcon.FileName,
                         folderPath = favIcon.Folder,
                         fileId = favIcon.FileId,
                         folderId = favIcon.FolderId
-                    }
-                    : null,
+                    } : null,
                     new DnnFileUploadOptions().ValidationCode,
                     IconSet = PortalController.GetPortalSetting("DefaultIconLocation", pid, "Sigma", cultureCode).Replace("icons/", "")
                 };
@@ -165,10 +166,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetCultureList
         /// <summary>
-        /// Gets culture list.
+        /// Gets culture list
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>Culture List.</returns>
+        /// <returns>Culture List</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView)]
         public HttpResponseMessage GetCultureList(int? portalId)
@@ -210,9 +211,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+
         /// POST: api/SiteSettings/UpdatePortalSettings
         /// <summary>
-        /// Updates site settings.
+        /// Updates site settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -273,13 +275,17 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        #endregion
+
+        #region Site Behavior API
+
         /// GET: api/SiteSettings/GetDefaultPagesSettings
         /// <summary>
-        /// Gets default pages settings.
+        /// Gets default pages settings
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
-        /// <returns>default pages settings.</returns>
+        /// <returns>default pages settings</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetDefaultPagesSettings(int? portalId, string cultureCode)
@@ -332,8 +338,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         TermsTabName = this.TabSanitizer(portal.TermsTabId, pid)?.TabName,
                         PrivacyTabId = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabID,
                         PrivacyTabName = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabName,
-                        portalSettings.PageHeadText
-                    }
+                        RedirectAfterLoginTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogin, pid)?.TabID,
+                        RedirectAfterLoginTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogin, pid)?.TabName,
+                        RedirectAfterLogoutTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogout, pid)?.TabID,
+                        RedirectAfterLogoutTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogout, pid)?.TabName,
+                        RedirectAfterRegistrationTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterRegistration, pid)?.TabID,
+                        RedirectAfterRegistrationTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterRegistration, pid)?.TabName,
+                        portalSettings.PageHeadText,
+                    },
                 });
             }
             catch (Exception exc)
@@ -345,7 +357,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateDefaultPagesSettings
         /// <summary>
-        /// Updates default pages settings.
+        /// Updates default pages settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -381,8 +393,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.Custom500TabId = this.ValidateTabId(request.Custom500TabId, pid);
                 portalInfo.TermsTabId = this.ValidateTabId(request.TermsTabId, pid);
                 portalInfo.PrivacyTabId = this.ValidateTabId(request.PrivacyTabId, pid);
-
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
+
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterRegistration", request.RedirectAfterRegistrationTabId.ToString(), false, cultureCode);
                 PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -396,10 +411,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetMessagingSettings
         /// <summary>
-        /// Gets messaging settings.
+        /// Gets messaging settings
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>messaging settings.</returns>
+        /// <returns>messaging settings</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetMessagingSettings(int? portalId)
@@ -440,7 +455,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateMessagingSettings
         /// <summary>
-        /// Updates messaging settings.
+        /// Updates messaging settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -479,10 +494,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetProfileSettings
         /// <summary>
-        /// Gets profile settings.
+        /// Gets profile settings
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>profile settings.</returns>
+        /// <returns>profile settings</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetProfileSettings(int? portalId)
@@ -525,7 +540,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateProfileSettings
         /// <summary>
-        /// Updates profile settings.
+        /// Updates profile settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -563,10 +578,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetProfileProperties
         /// <summary>
-        /// Gets profile properties.
+        /// Gets profile properties
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>profile properties.</returns>
+        /// <returns>profile properties</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetProfileProperties(int? portalId)
@@ -606,11 +621,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetProfileProperty
         /// <summary>
-        /// Gets profile property by id.
+        /// Gets profile property by id
         /// </summary>
         /// <param name="propertyId"></param>
         /// <param name="portalId"></param>
-        /// <returns>profile property.</returns>
+        /// <returns>profile property</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetProfileProperty(int? propertyId, int? portalId)
@@ -646,8 +661,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         profileProperty.Visible,
                         profileProperty.ViewOrder,
                         DefaultVisibility = (int)profileProperty.DefaultVisibility
-                    }
-                    : null,
+                    } : null,
                     UserVisibilityOptions = Enum.GetValues(typeof(UserVisibilityMode)).Cast<UserVisibilityMode>().Select(
                         v => new
                         {
@@ -680,13 +694,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetProfilePropertyLocalization
         /// <summary>
-        /// Gets profile property localization.
+        /// Gets profile property localization
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
         /// <param name="propertyName"></param>
         /// <param name="propertyCategory"></param>
-        /// <returns>profile property.</returns>
+        /// <param name="cultureCode"></param>
+        /// <returns>profile property</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetProfilePropertyLocalization(int? portalId, string cultureCode, string propertyName, string propertyCategory)
@@ -733,7 +747,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateProfilePropertyLocalization
         /// <summary>
-        /// Updates profile property localization.
+        /// Updates profile property localization
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -772,7 +786,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/AddProfileProperty
         /// <summary>
-        /// Creates profile property.
+        /// Creates profile property
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -834,7 +848,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateProfileProperty
         /// <summary>
-        /// Updates profile property.
+        /// Updates profile property
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -898,7 +912,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/SwapProfilePropertyOrders
         /// <summary>
-        /// Moves profile property.
+        /// Moves profile property
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -937,7 +951,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/DeleteProfileProperty
         /// <summary>
-        /// Deletes profile property.
+        /// Deletes profile property
         /// </summary>
         /// <param name="propertyId"></param>
         /// <param name="portalId"></param>
@@ -975,10 +989,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetUrlMappingSettings
         /// <summary>
-        /// Gets Url mapping settings.
+        /// Gets Url mapping settings
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>Url mapping settings.</returns>
+        /// <returns>Url mapping settings</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetUrlMappingSettings(int? portalId)
@@ -1036,7 +1050,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateUrlMappingSettings
         /// <summary>
-        /// Updates Url mapping settings.
+        /// Updates Url mapping settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1069,10 +1083,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/getSiteAliases
         /// <summary>
-        /// Gets site aliases.
+        /// Gets site aliases
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>site aliases.</returns>
+        /// <returns>site aliases</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetSiteAliases(int? portalId)
@@ -1122,10 +1136,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetSiteAlias
         /// <summary>
-        /// Gets site alias by id.
+        /// Gets site alias by id
         /// </summary>
         /// <param name="portalAliasId"></param>
-        /// <returns>site alias.</returns>
+        /// <returns>site alias</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetSiteAlias(int portalAliasId)
@@ -1163,7 +1177,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/AddSiteAlias
         /// <summary>
-        /// Adds site alias.
+        /// Adds site alias
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1226,7 +1240,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateSiteAlias
         /// <summary>
-        /// Updates site alias.
+        /// Updates site alias
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1291,7 +1305,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/DeleteSiteAlias
         /// <summary>
-        /// Deletes site alias.
+        /// Deletes site alias
         /// </summary>
         /// <param name="portalAliasId"></param>
         /// <returns></returns>
@@ -1321,7 +1335,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/SetPrimarySiteAlias
         /// <summary>
-        /// Sets primary site alias.
+        /// Sets primary site alias
         /// </summary>
         /// <param name="portalAliasId"></param>
         /// <returns></returns>
@@ -1358,11 +1372,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetListInfo
         /// <summary>
-        /// Gets list info.
+        /// Gets list info
         /// </summary>
         /// <param name="listName"></param>
         /// <param name="portalId"></param>
-        /// <returns>list entries.</returns>
+        /// <returns>list entries</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetListInfo(string listName, int? portalId)
@@ -1400,7 +1414,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateListEntry
         /// <summary>
-        /// Adds/Updates list entry.
+        /// Adds/Updates list entry
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1449,7 +1463,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/DeleteListEntry
         /// <summary>
-        /// Deletes list entry.
+        /// Deletes list entry
         /// </summary>
         /// <param name="entryId"></param>
         /// <param name="portalId"></param>
@@ -1457,7 +1471,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-        public HttpResponseMessage DeleteListEntry([FromUri] int entryId, [FromUri] int? portalId)
+        public HttpResponseMessage DeleteListEntry([FromUri]int entryId, [FromUri] int? portalId)
         {
             try
             {
@@ -1481,7 +1495,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateListEntryOrders
         /// <summary>
-        /// Updates list entry sort order.
+        /// Updates list entry sort order
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1542,10 +1556,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetPrivacySettings
         /// <summary>
-        /// Gets messaging settings.
+        /// Gets messaging settings
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>privacy settings.</returns>
+        /// <returns>privacy settings</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetPrivacySettings(int? portalId)
@@ -1590,7 +1604,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdatePrivacySettings
         /// <summary>
-        /// Updates privacy settings.
+        /// Updates privacy settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1632,7 +1646,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/ResetTermsAgreement
         /// <summary>
-        /// Resets terms and conditions agreements.
+        /// Resets terms and conditions agreements
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1659,11 +1673,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        #endregion
+
+        #region Search Settings API
+
         /// GET: api/SiteSettings/GetBasicSearchSettings
         /// <summary>
-        /// Gets basic search settings.
+        /// Gets basic search settings
         /// </summary>
-        /// <returns>basic search settings.</returns>
+        /// <returns>basic search settings</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetBasicSearchSettings()
@@ -1708,7 +1726,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateBasicSearchSettings
         /// <summary>
-        /// Updates basic search settings.
+        /// Updates basic search settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1774,7 +1792,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/CompactSearchIndex
         /// <summary>
-        /// Compacts search index.
+        /// Compacts search index
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -1796,7 +1814,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/HostSearchReindex
         /// <summary>
-        /// Re-index host search.
+        /// Re-index host search
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -1818,7 +1836,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/PortalSearchReindex
         /// <summary>
-        /// Re-index portal search.
+        /// Re-index portal search
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>
@@ -1847,10 +1865,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetPortals
         /// <summary>
-        /// Gets portals.
+        /// Gets portals
         /// </summary>
         /// <param></param>
-        /// <returns>List of portals.</returns>
+        /// <returns>List of portals</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetPortals()
@@ -1883,11 +1901,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetSynonymsGroups
         /// <summary>
-        /// Gets Synonyms Groups.
+        /// Gets Synonyms Groups
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
-        /// <returns>Synonyms Groups.</returns>
+        /// <returns>Synonyms Groups</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetSynonymsGroups(int? portalId, string cultureCode)
@@ -1929,7 +1947,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/AddSynonymsGroup
         /// <summary>
-        /// Adds Synonyms Group.
+        /// Adds Synonyms Group
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -1979,7 +1997,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateSynonymsGroup
         /// <summary>
-        /// Updates Synonyms Group.
+        /// Updates Synonyms Group
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2039,7 +2057,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/DeleteSynonymsGroup
         /// <summary>
-        /// Deletes Synonyms Group.
+        /// Deletes Synonyms Group
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2075,11 +2093,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetIgnoreWords
         /// <summary>
-        /// Gets ignore words.
+        /// Gets ignore words
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
-        /// <returns>ignore words.</returns>
+        /// <returns>ignore words</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetIgnoreWords(int? portalId, string cultureCode)
@@ -2118,7 +2136,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/AddIgnoreWords
         /// <summary>
-        /// Adds ignore words.
+        /// Adds ignore words
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2158,7 +2176,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateIgnoreWords
         /// <summary>
-        /// Updates ignore words.
+        /// Updates ignore words
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2198,7 +2216,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/DeleteSynonymsGroup
         /// <summary>
-        /// Deletes Synonyms Group.
+        /// Deletes Synonyms Group
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2228,12 +2246,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        #endregion
+
+        #region Language Settings API
+
         /// GET: api/SiteSettings/GetLanguageSettings
         /// <summary>
-        /// Gets language settings.
+        /// Gets language settings
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>language settings.</returns>
+        /// <returns>language settings</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetLanguageSettings(int? portalId)
@@ -2296,7 +2318,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateLanguageSettings
         /// <summary>
-        /// Updates language settings.
+        /// Updates language settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2372,10 +2394,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetLanguages
         /// <summary>
-        /// Gets languages.
+        /// Gets languages
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>languages.</returns>
+        /// <returns>languages</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetLanguages(int? portalId)
@@ -2446,11 +2468,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetLanguage
         /// <summary>
-        /// Gets language.
+        /// Gets language
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="languageId"></param>
-        /// <returns>language.</returns>
+        /// <returns>language</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetLanguage(int? portalId, int? languageId)
@@ -2512,8 +2534,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         CanEnableDisable = this.CanEnableDisable(portalSettings, language.Code),
                         IsDefault = language.Code == portalSettings.DefaultLanguage,
                         Roles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{language.Code}", pid, "Administrators")
-                    }
-                    : new
+                    } : new
                     {
                         PortalId = pid,
                         LanguageId = Null.NullInteger,
@@ -2538,9 +2559,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetAllLanguages
         /// <summary>
-        /// Gets language.
+        /// Gets language
         /// </summary>
-        /// <returns>all languages.</returns>
+        /// <returns>all languages</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetAllLanguages()
@@ -2583,7 +2604,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/AddLanguage
         /// <summary>
-        /// Adds language.
+        /// Adds language
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2625,7 +2646,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateLanguageRoles
         /// <summary>
-        /// Updates language security.
+        /// Updates language security
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2655,7 +2676,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateLanguage
         /// <summary>
-        /// Updates language.
+        /// Updates language
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -2753,9 +2774,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/VerifyLanguageResourceFiles
         /// <summary>
-        /// Verifies language resource files.
+        /// Verifies language resource files
         /// </summary>
-        /// <returns>verification results.</returns>
+        /// <returns>verification results</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage VerifyLanguageResourceFiles()
@@ -2903,9 +2924,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetModuleList
         /// <summary>
-        /// Gets module list by type.
+        /// Gets module list by type
         /// </summary>
-        /// <returns>list of modules.</returns>
+        /// <returns>list of modules</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetModuleList(string type)
@@ -2957,7 +2978,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/CreateLanguagePack
         /// <summary>
-        /// Creates language.
+        /// Creates language
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -3026,9 +3047,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetTranslatorRoles
         /// <summary>
-        /// Gets roles.
+        /// Gets roles
         /// </summary>
-        /// <returns>list of translator roles.</returns>
+        /// <returns>list of translator roles</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetTranslatorRoles(int? portalId, int groupId, string cultureCode)
@@ -3075,9 +3096,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetTranslatorRoleGroups
         /// <summary>
-        /// Gets role groups.
+        /// Gets role groups
         /// </summary>
-        /// <returns>list of translator role groups.</returns>
+        /// <returns>list of translator role groups</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetTranslatorRoleGroups(int? portalId)
@@ -3110,11 +3131,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        #endregion
+
+        #region Other Settings API
+
         /// GET: api/SiteSettings/GetOtherSettings
         /// <summary>
-        /// Gets other settings.
+        /// Gets other settings
         /// </summary>
-        /// <returns>other settings.</returns>
+        /// <returns>other settings</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetOtherSettings(int? portalId)
@@ -3149,7 +3174,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateOtherSettings
         /// <summary>
-        /// Updates other settings.
+        /// Updates other settings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -3181,10 +3206,43 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        private static string ResourceFile(string filename, string language)
+        private static void GetResourceFiles(SortedList fileList, string path)
         {
-            return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
+            var folders = Directory.GetDirectories(path);
+
+            foreach (var folder in folders)
+            {
+                var objFolder = new DirectoryInfo(folder);
+
+                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
+                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", "").ToLowerInvariant()) ||
+                                          (folder.ToLowerInvariant().EndsWith("\\portals\\_default"));
+
+                if (resxFilesDirectory)
+                {
+                    var sysLocale = Localization.SystemLocale.ToLowerInvariant();
+                    foreach (var file in Directory.GetFiles(objFolder.FullName, "*.resx"))
+                    {
+                        var fileInfo = new FileInfo(file);
+                        var match = LanguagesController.FileInfoRegex.Match(fileInfo.Name);
+
+                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != sysLocale)
+                        {
+                            continue;
+                        }
+                        fileList.Add(fileInfo.FullName, fileInfo);
+                    }
+                }
+                else
+                {
+                    GetResourceFiles(fileList, folder);
+                }
+            }
         }
+
+        #endregion
+
+        #region Private Methods
 
         private bool IsLanguagePublished(int portalId, string code)
         {
@@ -3362,38 +3420,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return isValid;
         }
 
-        private static void GetResourceFiles(SortedList fileList, string path)
+        private static string ResourceFile(string filename, string language)
         {
-            var folders = Directory.GetDirectories(path);
-
-            foreach (var folder in folders)
-            {
-                var objFolder = new DirectoryInfo(folder);
-
-                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
-                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", "").ToLowerInvariant()) ||
-                                          (folder.ToLowerInvariant().EndsWith("\\portals\\_default"));
-
-                if (resxFilesDirectory)
-                {
-                    var sysLocale = Localization.SystemLocale.ToLowerInvariant();
-                    foreach (var file in Directory.GetFiles(objFolder.FullName, "*.resx"))
-                    {
-                        var fileInfo = new FileInfo(file);
-                        var match = LanguagesController.FileInfoRegex.Match(fileInfo.Name);
-
-                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != sysLocale)
-                        {
-                            continue;
-                        }
-                        fileList.Add(fileInfo.FullName, fileInfo);
-                    }
-                }
-                else
-                {
-                    GetResourceFiles(fileList, folder);
-                }
-            }
+            return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
         }
 
         private bool IsLanguageEnabled(int portalId, string code)
@@ -3481,5 +3510,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             var tab = TabController.Instance.GetTab(tabId, portalId);
             return tab != null && !tab.IsDeleted ? tab.TabID : Null.NullInteger;
         }
+
+        #endregion
     }
 }

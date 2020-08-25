@@ -58,11 +58,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             return dictionary;
         }
 
-        protected override Func<ILocalizationController> GetFactory()
-        {
-            return () => new LocalizationController();
-        }
-
         public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
         {
             Requires.NotNullOrEmpty("resourceFile", resourceFile);
@@ -77,6 +72,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             return dictionary;
         }
 
+        protected override Func<ILocalizationController> GetFactory()
+        {
+            return () => new LocalizationController();
+        }
+
         private static string GetNameAttribute(XmlNode node)
         {
             if (node.Attributes != null)
@@ -89,46 +89,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
 
             return null;
-        }
-
-        private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
-        {
-            Requires.NotNullOrEmpty("culture", culture);
-
-            var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
-            var cachedData = DataCache.GetCache(cacheKey);
-            if (cachedData is DateTime)
-            {
-                return (DateTime)DataCache.GetCache(cacheKey);
-            }
-
-            var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
-
-            DataCache.SetCache(cacheKey, lastModifiedDate, (DNNCacheDependency)null,
-                               Cache.NoAbsoluteExpiration, OneHour, CacheItemPriority.Normal, null);
-
-            return lastModifiedDate;
-        }
-
-        private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
-        {
-            var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
-            var lastModifiedDate = DateTime.MinValue;
-
-            if (File.Exists(cultureSpecificFile))
-            {
-                lastModifiedDate = File.GetLastWriteTime(cultureSpecificFile);
-            }
-            else
-            {
-                var cultureNeutralFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile);
-                if (File.Exists(cultureNeutralFile))
-                {
-                    lastModifiedDate = File.GetLastWriteTime(cultureNeutralFile);
-                }
-            }
-
-            return lastModifiedDate;
         }
 
         private static string GetNameAttribute(XPathNavigator navigator)
@@ -195,6 +155,46 @@ namespace Dnn.PersonaBar.Library.Controllers
                     }
                 }
             }
+        }
+
+        private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
+        {
+            Requires.NotNullOrEmpty("culture", culture);
+
+            var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
+            var cachedData = DataCache.GetCache(cacheKey);
+            if (cachedData is DateTime)
+            {
+                return (DateTime)DataCache.GetCache(cacheKey);
+            }
+
+            var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
+
+            DataCache.SetCache(cacheKey, lastModifiedDate, (DNNCacheDependency)null,
+                               Cache.NoAbsoluteExpiration, OneHour, CacheItemPriority.Normal, null);
+
+            return lastModifiedDate;
+        }
+
+        private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
+        {
+            var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
+            var lastModifiedDate = DateTime.MinValue;
+
+            if (File.Exists(cultureSpecificFile))
+            {
+                lastModifiedDate = File.GetLastWriteTime(cultureSpecificFile);
+            }
+            else
+            {
+                var cultureNeutralFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile);
+                if (File.Exists(cultureNeutralFile))
+                {
+                    lastModifiedDate = File.GetLastWriteTime(cultureNeutralFile);
+                }
+            }
+
+            return lastModifiedDate;
         }
     }
 }

@@ -61,8 +61,6 @@ namespace DotNetNuke.Services.Scheduling
                                     : Null.NullDate;
         }
 
-        public override DateTime NextStart { get; set; }
-
         public double ElapsedTime
         {
             get
@@ -86,21 +84,6 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     return 0;
                 }
-            }
-        }
-
-        public DateTime EndDate { get; set; }
-
-        public string LogNotes
-        {
-            get
-            {
-                return this._LogNotes.ToString();
-            }
-
-            set
-            {
-                this._LogNotes = new StringBuilder(value);
             }
         }
 
@@ -160,6 +143,23 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     return 0;
                 }
+            }
+        }
+
+        public override DateTime NextStart { get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public string LogNotes
+        {
+            get
+            {
+                return this._LogNotes.ToString();
+            }
+
+            set
+            {
+                this._LogNotes = new StringBuilder(value);
             }
         }
 

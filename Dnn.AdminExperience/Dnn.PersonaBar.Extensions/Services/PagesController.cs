@@ -37,6 +37,7 @@ namespace Dnn.PersonaBar.Pages.Services
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.UI.WebControls;
+
     using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
     /// <summary>
@@ -494,7 +495,7 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage GetDefaultSettings(int pageId = 0)
         {
             var settings = this.pagesController.GetDefaultSettings(pageId);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { page= settings, new DnnFileUploadOptions().ValidationCode });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { page = settings, new DnnFileUploadOptions().ValidationCode });
         }
 
         /// <summary>

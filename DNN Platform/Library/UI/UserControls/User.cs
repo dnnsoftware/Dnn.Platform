@@ -24,20 +24,6 @@ namespace DotNetNuke.UI.UserControls
         protected HtmlTableRow PasswordRow;
         protected Label lblUsername;
         protected Label lblUsernameAsterisk;
-        private string MyFileName = "User.ascx";
-        private string _Confirm;
-        private string _ControlColumnWidth = string.Empty;
-        private string _Email;
-        private string _FirstName;
-        private string _IM;
-        private string _LabelColumnWidth = string.Empty;
-        private string _LastName;
-        private int _ModuleId;
-        private string _Password;
-        private bool _ShowPassword;
-        private int _StartTabIndex = 1;
-        private string _UserName;
-        private string _Website;
         protected LabelControl plConfirm;
         protected LabelControl plEmail;
         protected LabelControl plFirstName;
@@ -62,6 +48,28 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valLastName;
         protected RequiredFieldValidator valPassword;
         protected RequiredFieldValidator valUsername;
+        private string MyFileName = "User.ascx";
+        private string _Confirm;
+        private string _ControlColumnWidth = string.Empty;
+        private string _Email;
+        private string _FirstName;
+        private string _IM;
+        private string _LabelColumnWidth = string.Empty;
+        private string _LastName;
+        private int _ModuleId;
+        private string _Password;
+        private bool _ShowPassword;
+        private int _StartTabIndex = 1;
+        private string _UserName;
+        private string _Website;
+
+        public string LocalResourceFile
+        {
+            get
+            {
+                return Localization.GetResourceFile(this, this.MyFileName);
+            }
+        }
 
         public int ModuleId
         {
@@ -219,14 +227,6 @@ namespace DotNetNuke.UI.UserControls
             set
             {
                 this._ShowPassword = value;
-            }
-        }
-
-        public string LocalResourceFile
-        {
-            get
-            {
-                return Localization.GetResourceFile(this, this.MyFileName);
             }
         }
 

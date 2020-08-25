@@ -84,129 +84,6 @@ namespace DotNetNuke.Common
         /// <value>-3.</value>
         public const string glbRoleUnauthUser = "-3";
 
-        public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
-        public static readonly Regex NonAlphanumericCharacters = new Regex("[^A-Za-z0-9]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
-        public static readonly Regex InvalidCharacters = new Regex("[^A-Za-z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-        public static readonly Regex InvalidInitialCharacters = new Regex("^[^A-Za-z]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-        public static readonly Regex NumberMatchRegex = new Regex(@"^\d+$", RegexOptions.Compiled);
-        public static readonly Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        public static readonly Regex FileEscapingRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
-        public static readonly Regex FileExtensionRegex = new Regex(@"\..+;", RegexOptions.Compiled);
-        public static readonly Regex FileValidNameRegex = new Regex(@"^(?!(?:PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d)(?:\..+)?$)[^\x00-\x1F\xA5\\?*:\"";|\/<>]+(?<![\s.])$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
-
-        /// <summary>
-        /// Enumeration of site performance setting, say by another way that means how to set the cache.
-        /// </summary>
-        /// <remarks>
-        /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
-        /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
-        /// such as if a data has already been deleted but the cache arn't clear, it will cause un expected errors.
-        /// so you should choose a correct performance setting type when you trying to cache some stuff, and always remember
-        /// update cache immediately after the data changed.</para>
-        /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
-        /// <list type="bullet">
-        ///     <item>HostSettingsCacheTimeOut: 20</item>
-        /// <item>PortalAliasCacheTimeOut: 200</item>
-        /// <item>PortalSettingsCacheTimeOut: 20</item>
-        /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
-        /// </list>
-        /// </remarks>
-        public enum PerformanceSettings
-        {
-            /// <summary>
-            /// No Caching
-            /// </summary>
-            NoCaching = 0,
-
-            /// <summary>
-            /// Caching for a short time
-            /// </summary>
-            LightCaching = 1,
-
-            /// <summary>
-            /// Caching for moderate
-            /// </summary>
-            ModerateCaching = 3,
-
-            /// <summary>
-            /// Caching for a long time
-            /// </summary>
-            HeavyCaching = 6,
-        }
-
-        /// <summary>
-        /// Enumeration Of Registration Type for portal.
-        /// </summary>
-        /// <remarks>
-        /// <para>NoRegistration: Disabled registration in portal.</para>
-        /// <para>PrivateRegistration: Once user's account information has been submitted,
-        /// the portal Administrator will be notified and user's application will be subjected to a screening procedure.
-        /// If user's application is authorized, the user will receive notification of access to the portal environment.</para>
-        /// <para>PublicRegistration: Once user's account information has been submitted,
-        /// user will be immediately granted access to the portal environment.</para>
-        /// <para>VerifiedRegistration: Once user's account information has been submitted,
-        /// user will receive an email containing unique Verification Code.
-        /// The Verification Code will be required the first time when user attempt to sign in to the portal environment.</para>
-        /// </remarks>
-        public enum PortalRegistrationType
-        {
-            /// <summary>
-            /// Disabled Registration
-            /// </summary>
-            NoRegistration = 0,
-
-            /// <summary>
-            /// Account need be approved by portal's administrator.
-            /// </summary>
-            PrivateRegistration = 1,
-
-            /// <summary>
-            /// Account will be available after post registration data successful.
-            /// </summary>
-            PublicRegistration = 2,
-
-            /// <summary>
-            /// Account will be available by verify code.
-            /// </summary>
-            VerifiedRegistration = 3,
-        }
-
-        /// <summary>
-        /// Enumeration Of Application upgrade status.
-        /// </summary>
-        public enum UpgradeStatus
-        {
-            /// <summary>
-            /// The application need update to a higher version.
-            /// </summary>
-            Upgrade,
-
-            /// <summary>
-            /// The application need to install itself.
-            /// </summary>
-            Install,
-
-            /// <summary>
-            /// The application is normal running.
-            /// </summary>
-            None,
-
-            /// <summary>
-            /// The application occur error when running.
-            /// </summary>
-            Error,
-
-            /// <summary>
-            /// The application status is unknown,
-            /// </summary>
-            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown,
-        }
-
         /// <summary>
         /// Global role id by default.
         /// </summary>
@@ -321,9 +198,22 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <value><![CDATA[<script type=\"text/javascript\" src=\"{0}\" ></script>]]></value>
         public const string glbScriptFormat = "<script type=\"text/javascript\" src=\"{0}\" ></script>";
+
         private const string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; // this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
 
-        // global constants for the life of the application ( set in Application_Start )
+        public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
+        public static readonly Regex NonAlphanumericCharacters = new Regex("[^A-Za-z0-9]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        public static readonly Regex InvalidCharacters = new Regex("[^A-Za-z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        public static readonly Regex InvalidInitialCharacters = new Regex("^[^A-Za-z]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        public static readonly Regex NumberMatchRegex = new Regex(@"^\d+$", RegexOptions.Compiled);
+        public static readonly Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        public static readonly Regex FileEscapingRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
+        public static readonly Regex FileExtensionRegex = new Regex(@"\..+;", RegexOptions.Compiled);
+        public static readonly Regex FileValidNameRegex = new Regex(@"^(?!(?:PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d)(?:\..+)?$)[^\x00-\x1F\xA5\\?*:\"";|\/<>]+(?<![\s.])$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
         private static string _applicationPath;
         private static string _applicationMapPath;
         private static string _desktopModulePath;
@@ -337,6 +227,118 @@ namespace DotNetNuke.Common
         private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
+
+        // global constants for the life of the application ( set in Application_Start )
+
+
+        /// <summary>
+        /// Enumeration of site performance setting, say by another way that means how to set the cache.
+        /// </summary>
+        /// <remarks>
+        /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
+        /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
+        /// such as if a data has already been deleted but the cache arn't clear, it will cause un expected errors.
+        /// so you should choose a correct performance setting type when you trying to cache some stuff, and always remember
+        /// update cache immediately after the data changed.</para>
+        /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
+        /// <list type="bullet">
+        ///     <item>HostSettingsCacheTimeOut: 20</item>
+        /// <item>PortalAliasCacheTimeOut: 200</item>
+        /// <item>PortalSettingsCacheTimeOut: 20</item>
+        /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
+        /// </list>
+        /// </remarks>
+        public enum PerformanceSettings
+        {
+            /// <summary>
+            /// No Caching
+            /// </summary>
+            NoCaching = 0,
+
+            /// <summary>
+            /// Caching for a short time
+            /// </summary>
+            LightCaching = 1,
+
+            /// <summary>
+            /// Caching for moderate
+            /// </summary>
+            ModerateCaching = 3,
+
+            /// <summary>
+            /// Caching for a long time
+            /// </summary>
+            HeavyCaching = 6,
+        }
+
+        /// <summary>
+        /// Enumeration Of Registration Type for portal.
+        /// </summary>
+        /// <remarks>
+        /// <para>NoRegistration: Disabled registration in portal.</para>
+        /// <para>PrivateRegistration: Once user's account information has been submitted,
+        /// the portal Administrator will be notified and user's application will be subjected to a screening procedure.
+        /// If user's application is authorized, the user will receive notification of access to the portal environment.</para>
+        /// <para>PublicRegistration: Once user's account information has been submitted,
+        /// user will be immediately granted access to the portal environment.</para>
+        /// <para>VerifiedRegistration: Once user's account information has been submitted,
+        /// user will receive an email containing unique Verification Code.
+        /// The Verification Code will be required the first time when user attempt to sign in to the portal environment.</para>
+        /// </remarks>
+        public enum PortalRegistrationType
+        {
+            /// <summary>
+            /// Disabled Registration
+            /// </summary>
+            NoRegistration = 0,
+
+            /// <summary>
+            /// Account need be approved by portal's administrator.
+            /// </summary>
+            PrivateRegistration = 1,
+
+            /// <summary>
+            /// Account will be available after post registration data successful.
+            /// </summary>
+            PublicRegistration = 2,
+
+            /// <summary>
+            /// Account will be available by verify code.
+            /// </summary>
+            VerifiedRegistration = 3,
+        }
+
+        /// <summary>
+        /// Enumeration Of Application upgrade status.
+        /// </summary>
+        public enum UpgradeStatus
+        {
+            /// <summary>
+            /// The application need update to a higher version.
+            /// </summary>
+            Upgrade,
+
+            /// <summary>
+            /// The application need to install itself.
+            /// </summary>
+            Install,
+
+            /// <summary>
+            /// The application is normal running.
+            /// </summary>
+            None,
+
+            /// <summary>
+            /// The application occur error when running.
+            /// </summary>
+            Error,
+
+            /// <summary>
+            /// The application status is unknown,
+            /// </summary>
+            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
+            Unknown,
+        }
 
         /// <summary>
         /// Gets the application path.
@@ -420,17 +422,6 @@ namespace DotNetNuke.Common
             }
         }
 
-        private static string GetCurrentDomainDirectory()
-        {
-            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
-            if (dir.Length > 3 && dir.EndsWith("\\"))
-            {
-                dir = dir.Substring(0, dir.Length - 1);
-            }
-
-            return dir;
-        }
-
         /// <summary>
         /// Gets the host map path.
         /// </summary>
@@ -500,6 +491,121 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
+        /// Gets the status of application.
+        /// </summary>
+        /// <seealso cref="GetStatus"/>
+        public static UpgradeStatus Status
+        {
+            get
+            {
+                if (_status != UpgradeStatus.Unknown && _status != UpgradeStatus.Error)
+                {
+                    return _status;
+                }
+
+                Logger.Trace("Getting application status");
+                var tempStatus = UpgradeStatus.None;
+
+                // first call GetProviderPath - this insures that the Database is Initialised correctly
+                // and also generates the appropriate error message if it cannot be initialised correctly
+                string strMessage = DataProvider.Instance().GetProviderPath();
+
+                // get current database version from DB
+                if (!strMessage.StartsWith("ERROR:"))
+                {
+                    try
+                    {
+                        _dataBaseVersion = DataProvider.Instance().GetVersion();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                        strMessage = "ERROR:" + ex.Message;
+                    }
+                }
+
+                if (strMessage.StartsWith("ERROR"))
+                {
+                    if (IsInstalled())
+                    {
+                        // Errors connecting to the database after an initial installation should be treated as errors.
+                        tempStatus = UpgradeStatus.Error;
+                    }
+                    else
+                    {
+                        // An error that occurs before the database has been installed should be treated as a new install
+                        tempStatus = UpgradeStatus.Install;
+                    }
+                }
+                else if (DataBaseVersion == null)
+                {
+                    // No Db Version so Install
+                    tempStatus = UpgradeStatus.Install;
+                }
+                else
+                {
+                    var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                    if (version.Major > DataBaseVersion.Major)
+                    {
+                        // Upgrade Required (Major Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                    else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
+                    {
+                        // Upgrade Required (Minor Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                    else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                             version.Build > DataBaseVersion.Build)
+                    {
+                        // Upgrade Required (Build Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                    else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                             version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
+                    {
+                        // Upgrade Required (Build Version Upgrade)
+                        tempStatus = UpgradeStatus.Upgrade;
+                    }
+                }
+
+                _status = tempStatus;
+
+                Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
+                Logger.Trace("Application status is " + _status);
+
+                return _status;
+            }
+        }
+
+        /// <summary>
+        /// Gets image file types.
+        /// </summary>
+        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
+        public static string glbImageFileTypes
+        {
+            get
+            {
+                var listController = new ListController();
+                var listEntries = listController.GetListEntryInfoItems("ImageTypes");
+                if (listEntries == null || listEntries.Count() == 0)
+                {
+                    return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
+                }
+
+                return string.Join(",", listEntries.Select(l => l.Value));
+            }
+        }
+
+        public static TimeSpan ElapsedSinceAppStart
+        {
+            get
+            {
+                return AppStopwatch.Elapsed;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the name of the IIS app.
         /// </summary>
         /// <value>
@@ -538,121 +644,6 @@ namespace DotNetNuke.Common
         /// The database engine version.
         /// </value>
         public static Version DatabaseEngineVersion { get; set; }
-
-        /// <summary>
-        /// Gets the status of application.
-        /// </summary>
-        /// <seealso cref="GetStatus"/>
-        public static UpgradeStatus Status
-        {
-            get
-            {
-                if (_status == UpgradeStatus.Unknown)
-                {
-                    var tempStatus = UpgradeStatus.Unknown;
-
-                    Logger.Trace("Getting application status");
-                    tempStatus = UpgradeStatus.None;
-
-                    // first call GetProviderPath - this insures that the Database is Initialised correctly
-                    // and also generates the appropriate error message if it cannot be initialised correctly
-                    string strMessage = DataProvider.Instance().GetProviderPath();
-
-                    // get current database version from DB
-                    if (!strMessage.StartsWith("ERROR:"))
-                    {
-                        try
-                        {
-                            _dataBaseVersion = DataProvider.Instance().GetVersion();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                            strMessage = "ERROR:" + ex.Message;
-                        }
-                    }
-
-                    if (strMessage.StartsWith("ERROR"))
-                    {
-                        if (IsInstalled())
-                        {
-                            // Errors connecting to the database after an initial installation should be treated as errors.
-                            tempStatus = UpgradeStatus.Error;
-                        }
-                        else
-                        {
-                            // An error that occurs before the database has been installed should be treated as a new install
-                            tempStatus = UpgradeStatus.Install;
-                        }
-                    }
-                    else if (DataBaseVersion == null)
-                    {
-                        // No Db Version so Install
-                        tempStatus = UpgradeStatus.Install;
-                    }
-                    else
-                    {
-                        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                        if (version.Major > DataBaseVersion.Major)
-                        {
-                            // Upgrade Required (Major Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
-                        {
-                            // Upgrade Required (Minor Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build > DataBaseVersion.Build)
-                        {
-                            // Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
-                                 version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
-                        {
-                            // Upgrade Required (Build Version Upgrade)
-                            tempStatus = UpgradeStatus.Upgrade;
-                        }
-                    }
-
-                    _status = tempStatus;
-
-                    Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
-                    Logger.Trace("Application status is " + _status);
-                }
-
-                return _status;
-            }
-        }
-
-        /// <summary>
-        /// Gets image file types.
-        /// </summary>
-        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
-        public static string glbImageFileTypes
-        {
-            get
-            {
-                var listController = new ListController();
-                var listEntries = listController.GetListEntryInfoItems("ImageTypes");
-                if (listEntries == null || listEntries.Count() == 0)
-                {
-                    return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
-                }
-
-                return string.Join(",", listEntries.Select(l => l.Value));
-            }
-        }
-
-        public static TimeSpan ElapsedSinceAppStart
-        {
-            get
-            {
-                return AppStopwatch.Elapsed;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the Dependency Service.
@@ -887,150 +878,6 @@ namespace DotNetNuke.Common
 
             // return the dataset
             return crosstab;
-        }
-
-        /// <summary>
-        /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
-        /// If DotNetNuke has not been installed, then we should expect to have database connection problems
-        /// since the connection string may not have been configured yet, which can occur during the installation
-        /// wizard.
-        /// </remarks>
-        internal static bool IsInstalled()
-        {
-            const int c_PassingScore = 4;
-            int installationdatefactor = Convert.ToInt32(HasInstallationDate() ? 1 : 0);
-            int dataproviderfactor = Convert.ToInt32(HasDataProviderLogFiles() ? 3 : 0);
-            int htmlmodulefactor = Convert.ToInt32(ModuleDirectoryExists("html") ? 2 : 0);
-            int portaldirectoryfactor = Convert.ToInt32(HasNonDefaultPortalDirectory() ? 2 : 0);
-            int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
-
-            // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
-            // While it is possible that you might not have an installation date or that you have deleted log files
-            // it is unlikely that you have removed every trace of an installation and yet still have a working install
-            bool isInstalled = (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
-
-            // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
-            // this value exists, then DNN was previously installed, and we should never try to re-install it
-            return isInstalled || HasInstallVersion();
-        }
-
-        /// <summary>
-        /// Gets the culture code of the tab.
-        /// </summary>
-        /// <param name="TabID">The tab ID.</param>
-        /// <param name="IsSuperTab">if set to <c>true</c> [is super tab].</param>
-        /// <param name="settings">The settings.</param>
-        /// <returns>return the tab's culture code, if ths tab doesn't exist, it will return current culture name.</returns>
-        internal static string GetCultureCode(int TabID, bool IsSuperTab, IPortalSettings settings)
-        {
-            string cultureCode = Null.NullString;
-            if (settings != null)
-            {
-                TabInfo linkTab = TabController.Instance.GetTab(TabID, IsSuperTab ? Null.NullInteger : settings.PortalId, false);
-                if (linkTab != null)
-                {
-                    cultureCode = linkTab.CultureCode;
-                }
-
-                if (string.IsNullOrEmpty(cultureCode))
-                {
-                    cultureCode = Thread.CurrentThread.CurrentCulture.Name;
-                }
-            }
-
-            return cultureCode;
-        }
-
-        /// <summary>
-        /// Determines whether has data provider log files.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has data provider log files; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasDataProviderLogFiles()
-        {
-            Provider currentdataprovider = Config.GetDefaultProvider("data");
-            string providerpath = currentdataprovider.Attributes["providerPath"];
-
-            // If the provider path does not exist, then there can't be any log files
-            if (!string.IsNullOrEmpty(providerpath))
-            {
-                providerpath = HttpContext.Current.Server.MapPath(providerpath);
-                if (Directory.Exists(providerpath))
-                {
-                    return Directory.GetFiles(providerpath, "*.log.resources").Length > 0;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether has installation date.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasInstallationDate()
-        {
-            return Config.GetSetting("InstallationDate") != null;
-        }
-
-        /// <summary>
-        /// Determines whether has InstallVersion set.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasInstallVersion()
-        {
-            return Config.GetSetting("InstallVersion") != null;
-        }
-
-        /// <summary>
-        /// Check whether the modules directory is exists.
-        /// </summary>
-        /// <param name="moduleName">Name of the module.</param>
-        /// <returns>
-        /// <c>true</c> if the module directory exist, otherwise, <c>false</c>.
-        /// </returns>
-        private static bool ModuleDirectoryExists(string moduleName)
-        {
-            string dir = ApplicationMapPath + "\\desktopmodules\\" + moduleName;
-            return Directory.Exists(dir);
-        }
-
-        /// <summary>
-        /// Determines whether has portal directory except default portal directory in portal path.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if has portal directory except default portal directory in portal path; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool HasNonDefaultPortalDirectory()
-        {
-            string dir = ApplicationMapPath + "\\portals";
-            if (Directory.Exists(dir))
-            {
-                return Directory.GetDirectories(dir).Length > 1;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether current request is for install.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if current request is for install; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsInstallationURL()
-        {
-            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
-            return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
         }
 
         /// <summary>
@@ -2394,43 +2241,6 @@ namespace DotNetNuke.Common
             return CleanFileName(FileName, BadChars, string.Empty);
         }
 
-        private static void DeleteFile(string filePath)
-        {
-            try
-            {
-                FileSystemUtils.DeleteFile(filePath);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
-        private static void DeleteFolder(string strRoot)
-        {
-            try
-            {
-                Directory.Delete(strRoot);
-            }
-            catch (IOException)
-            {
-                // Force Deletion. Directory should be empty
-                try
-                {
-                    Thread.Sleep(50);
-                    Directory.Delete(strRoot, true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
         /// <summary>
         /// Cleans the name of the file.
         /// </summary>
@@ -3782,38 +3592,6 @@ namespace DotNetNuke.Common
             return XmlUtils.DeSerializeHashtable(Source, "profile");
         }
 
-        /// <summary>
-        /// Check whether the Filename matches extensions.
-        /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <param name="strExtensions">The valid extensions.</param>
-        /// <returns><c>true</c> if the Filename matches extensions, otherwise, <c>false</c>.</returns>
-        private static bool FilenameMatchesExtensions(string filename, string strExtensions)
-        {
-            bool result = string.IsNullOrEmpty(strExtensions);
-            if (!result)
-            {
-                filename = filename.ToUpper();
-                strExtensions = strExtensions.ToUpper();
-                foreach (string extension in strExtensions.Split(','))
-                {
-                    string ext = extension.Trim();
-                    if (!ext.StartsWith("."))
-                    {
-                        ext = "." + extension;
-                    }
-
-                    result = filename.EndsWith(extension);
-                    if (result)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            return result;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// SerializeHashTableBase64 serializes a Hashtable using Binary Formatting.
@@ -4055,9 +3833,233 @@ namespace DotNetNuke.Common
             return PortalSecurity.Instance.InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
 
+        /// <summary>
+        /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
+        /// If DotNetNuke has not been installed, then we should expect to have database connection problems
+        /// since the connection string may not have been configured yet, which can occur during the installation
+        /// wizard.
+        /// </remarks>
+        internal static bool IsInstalled()
+        {
+            const int c_PassingScore = 4;
+            int installationdatefactor = Convert.ToInt32(HasInstallationDate() ? 1 : 0);
+            int dataproviderfactor = Convert.ToInt32(HasDataProviderLogFiles() ? 3 : 0);
+            int htmlmodulefactor = Convert.ToInt32(ModuleDirectoryExists("html") ? 2 : 0);
+            int portaldirectoryfactor = Convert.ToInt32(HasNonDefaultPortalDirectory() ? 2 : 0);
+            int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
+
+            // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
+            // While it is possible that you might not have an installation date or that you have deleted log files
+            // it is unlikely that you have removed every trace of an installation and yet still have a working install
+            bool isInstalled = (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
+
+            // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
+            // this value exists, then DNN was previously installed, and we should never try to re-install it
+            return isInstalled || HasInstallVersion();
+        }
+
+        /// <summary>
+        /// Gets the culture code of the tab.
+        /// </summary>
+        /// <param name="TabID">The tab ID.</param>
+        /// <param name="IsSuperTab">if set to <c>true</c> [is super tab].</param>
+        /// <param name="settings">The settings.</param>
+        /// <returns>return the tab's culture code, if ths tab doesn't exist, it will return current culture name.</returns>
+        internal static string GetCultureCode(int TabID, bool IsSuperTab, IPortalSettings settings)
+        {
+            string cultureCode = Null.NullString;
+            if (settings != null)
+            {
+                TabInfo linkTab = TabController.Instance.GetTab(TabID, IsSuperTab ? Null.NullInteger : settings.PortalId, false);
+                if (linkTab != null)
+                {
+                    cultureCode = linkTab.CultureCode;
+                }
+
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    cultureCode = Thread.CurrentThread.CurrentCulture.Name;
+                }
+            }
+
+            return cultureCode;
+        }
+
         internal static void ResetAppStartElapseTime()
         {
             AppStopwatch.Restart();
+        }
+
+        private static string GetCurrentDomainDirectory()
+        {
+            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
+            if (dir.Length > 3 && dir.EndsWith("\\"))
+            {
+                dir = dir.Substring(0, dir.Length - 1);
+            }
+
+            return dir;
+        }
+
+        /// <summary>
+        /// Determines whether has data provider log files.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has data provider log files; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasDataProviderLogFiles()
+        {
+            Provider currentdataprovider = Config.GetDefaultProvider("data");
+            string providerpath = currentdataprovider.Attributes["providerPath"];
+
+            // If the provider path does not exist, then there can't be any log files
+            if (!string.IsNullOrEmpty(providerpath))
+            {
+                providerpath = HttpContext.Current.Server.MapPath(providerpath);
+                if (Directory.Exists(providerpath))
+                {
+                    return Directory.GetFiles(providerpath, "*.log.resources").Length > 0;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether has installation date.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasInstallationDate()
+        {
+            return Config.GetSetting("InstallationDate") != null;
+        }
+
+        /// <summary>
+        /// Determines whether has InstallVersion set.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasInstallVersion()
+        {
+            return Config.GetSetting("InstallVersion") != null;
+        }
+
+        /// <summary>
+        /// Check whether the modules directory is exists.
+        /// </summary>
+        /// <param name="moduleName">Name of the module.</param>
+        /// <returns>
+        /// <c>true</c> if the module directory exist, otherwise, <c>false</c>.
+        /// </returns>
+        private static bool ModuleDirectoryExists(string moduleName)
+        {
+            string dir = ApplicationMapPath + "\\desktopmodules\\" + moduleName;
+            return Directory.Exists(dir);
+        }
+
+        /// <summary>
+        /// Determines whether has portal directory except default portal directory in portal path.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if has portal directory except default portal directory in portal path; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasNonDefaultPortalDirectory()
+        {
+            string dir = ApplicationMapPath + "\\portals";
+            if (Directory.Exists(dir))
+            {
+                return Directory.GetDirectories(dir).Length > 1;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether current request is for install.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if current request is for install; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsInstallationURL()
+        {
+            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
+            return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
+        }
+
+        private static void DeleteFile(string filePath)
+        {
+            try
+            {
+                FileSystemUtils.DeleteFile(filePath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        private static void DeleteFolder(string strRoot)
+        {
+            try
+            {
+                Directory.Delete(strRoot);
+            }
+            catch (IOException)
+            {
+                // Force Deletion. Directory should be empty
+                try
+                {
+                    Thread.Sleep(50);
+                    Directory.Delete(strRoot, true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Check whether the Filename matches extensions.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <param name="strExtensions">The valid extensions.</param>
+        /// <returns><c>true</c> if the Filename matches extensions, otherwise, <c>false</c>.</returns>
+        private static bool FilenameMatchesExtensions(string filename, string strExtensions)
+        {
+            bool result = string.IsNullOrEmpty(strExtensions);
+            if (!result)
+            {
+                filename = filename.ToUpper();
+                strExtensions = strExtensions.ToUpper();
+                foreach (string extension in strExtensions.Split(','))
+                {
+                    string ext = extension.Trim();
+                    if (!ext.StartsWith("."))
+                    {
+                        ext = "." + extension;
+                    }
+
+                    result = filename.EndsWith(extension);
+                    if (result)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

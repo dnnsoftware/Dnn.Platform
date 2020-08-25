@@ -42,8 +42,6 @@ namespace DotNetNuke.Modules.Admin.Users
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
 
-        public UserCreateStatus CreateStatus { get; set; }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the User is valid.
@@ -55,6 +53,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 return this.Validate();
             }
         }
+
+        public UserCreateStatus CreateStatus { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -284,6 +284,80 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the control is loaded.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.cmdDelete.Click += this.cmdDelete_Click;
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
+            this.cmdRemove.Click += this.cmdRemove_Click;
+            this.cmdRestore.Click += this.cmdRestore_Click;
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
+            base.OnPreRender(e);
+
+            if (Host.EnableStrengthMeter)
+            {
+                this.passwordContainer.CssClass = "password-strength-container";
+                this.txtPassword.CssClass = "password-strength";
+                this.txtConfirm.CssClass = string.Format("{0} checkStength", this.txtConfirm.CssClass);
+
+                var options = new DnnPaswordStrengthOptions();
+                var optionsAsJsonString = Json.Serialize(options);
+                var passwordScript = string.Format(
+                    "dnn.initializePasswordStrength('.{0}', {1});{2}",
+                    "password-strength", optionsAsJsonString, Environment.NewLine);
+
+                if (ScriptManager.GetCurrent(this.Page) != null)
+                {
+                    // respect MS AJAX
+                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", passwordScript, true);
+                }
+                else
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", passwordScript, true);
+                }
+            }
+
+            var confirmPasswordOptions = new DnnConfirmPasswordOptions()
+            {
+                FirstElementSelector = "#" + this.passwordContainer.ClientID + " input[type=password]",
+                SecondElementSelector = ".password-confirm",
+                ContainerSelector = ".dnnFormPassword",
+                UnmatchedCssClass = "unmatched",
+                MatchedCssClass = "matched",
+            };
+
+            var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
+
+            if (ScriptManager.GetCurrent(this.Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", confirmScript, true);
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
+            }
+        }
+
         /// <summary>
         /// method checks to see if its allowed to change the username
         /// valid if a host, or an admin where the username is in only 1 portal.
@@ -400,80 +474,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             return _IsValid;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            this.cmdDelete.Click += this.cmdDelete_Click;
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            this.cmdRemove.Click += this.cmdRemove_Click;
-            this.cmdRestore.Click += this.cmdRestore_Click;
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
-
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
-
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-            base.OnPreRender(e);
-
-            if (Host.EnableStrengthMeter)
-            {
-                this.passwordContainer.CssClass = "password-strength-container";
-                this.txtPassword.CssClass = "password-strength";
-                this.txtConfirm.CssClass = string.Format("{0} checkStength", this.txtConfirm.CssClass);
-
-                var options = new DnnPaswordStrengthOptions();
-                var optionsAsJsonString = Json.Serialize(options);
-                var passwordScript = string.Format(
-                    "dnn.initializePasswordStrength('.{0}', {1});{2}",
-                    "password-strength", optionsAsJsonString, Environment.NewLine);
-
-                if (ScriptManager.GetCurrent(this.Page) != null)
-                {
-                    // respect MS AJAX
-                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", passwordScript, true);
-                }
-                else
-                {
-                    this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", passwordScript, true);
-                }
-            }
-
-            var confirmPasswordOptions = new DnnConfirmPasswordOptions()
-            {
-                FirstElementSelector = "#" + this.passwordContainer.ClientID + " input[type=password]",
-                SecondElementSelector = ".password-confirm",
-                ContainerSelector = ".dnnFormPassword",
-                UnmatchedCssClass = "unmatched",
-                MatchedCssClass = "matched",
-            };
-
-            var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
-
-            if (ScriptManager.GetCurrent(this.Page) != null)
-            {
-                // respect MS AJAX
-                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", confirmScript, true);
-            }
-            else
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
-            }
         }
 
         /// -----------------------------------------------------------------------------

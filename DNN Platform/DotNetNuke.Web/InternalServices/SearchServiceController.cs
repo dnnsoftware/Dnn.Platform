@@ -34,6 +34,9 @@ namespace DotNetNuke.Web.InternalServices
         private const string ModuleInfosCacheKey = "ModuleInfos{0}";
         private const CacheItemPriority ModuleInfosCachePriority = CacheItemPriority.AboveNormal;
         private const int ModuleInfosCacheTimeOut = 20;
+        private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
+        private const CacheItemPriority ModuleTitleCachePriority = CacheItemPriority.Normal;
+        private const int ModuleTitleCacheTimeOut = 20;
 
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -54,43 +57,167 @@ namespace DotNetNuke.Web.InternalServices
             // _moduleController = newmoduleController;
         }
 
-        private bool IsWildCardEnabledForModule()
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage Preview(string keywords, string culture, int forceWild = 1, int portal = -1)
         {
-            var searchModuleSettings = this.GetSearchModuleSettings();
-            var enableWildSearch = true;
-            if (!string.IsNullOrEmpty(Convert.ToString(searchModuleSettings["EnableWildSearch"])))
+            string cleanedKeywords;
+            keywords = (keywords ?? string.Empty).Trim();
+            var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
+            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
+            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
+
+            var contentSources = this.GetSearchContentSources(searchTypes);
+            var settings = this.GetSearchModuleSettings();
+            var searchTypeIds = GetSearchTypeIds(settings, contentSources);
+            var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
+            var portalIds = this.GetSearchPortalIds(settings, portal);
+
+            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+            var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
+
+            var results = new List<GroupedBasicView>();
+            if (portalIds.Any() && searchTypeIds.Any() &&
+                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
-                enableWildSearch = Convert.ToBoolean(searchModuleSettings["EnableWildSearch"]);
+                var query = new SearchQuery
+                {
+                    KeyWords = cleanedKeywords,
+                    Tags = tags,
+                    PortalIds = portalIds,
+                    SearchTypeIds = searchTypeIds,
+                    ModuleDefIds = moduleDefids,
+                    BeginModifiedTimeUtc = beginModifiedTimeUtc,
+                    PageIndex = 1,
+                    PageSize = 5,
+                    TitleSnippetLength = 40,
+                    BodySnippetLength = 100,
+                    CultureCode = culture,
+                    WildCardSearch = forceWild > 0,
+                };
+
+                try
+                {
+                    results = this.GetGroupedBasicViews(query, userSearchSource, this.PortalSettings.PortalId);
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
             }
 
-            return enableWildSearch;
+            return this.Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
-        public class SynonymsGroupDto
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage Search(string search, string culture, int pageIndex, int pageSize, int sortOption)
         {
-            public int Id { get; set; }
+            string cleanedKeywords;
+            search = (search ?? string.Empty).Trim();
+            var tags = SearchQueryStringParser.Instance.GetTags(search, out cleanedKeywords);
+            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
+            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(cleanedKeywords, out cleanedKeywords);
 
-            public string Tags { get; set; }
+            var contentSources = this.GetSearchContentSources(searchTypes);
+            var settings = this.GetSearchModuleSettings();
+            var searchTypeIds = GetSearchTypeIds(settings, contentSources);
+            var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
+            var portalIds = this.GetSearchPortalIds(settings, -1);
+            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
-            public int PortalId { get; set; }
+            var more = false;
+            var totalHits = 0;
+            var results = new List<GroupedDetailView>();
+            if (portalIds.Any() && searchTypeIds.Any() &&
+                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
+            {
+                var query = new SearchQuery
+                {
+                    KeyWords = cleanedKeywords,
+                    Tags = tags,
+                    PortalIds = portalIds,
+                    SearchTypeIds = searchTypeIds,
+                    ModuleDefIds = moduleDefids,
+                    BeginModifiedTimeUtc = beginModifiedTimeUtc,
+                    EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                    SortField = (SortFields)sortOption,
+                    TitleSnippetLength = 120,
+                    BodySnippetLength = 300,
+                    CultureCode = culture,
+                    WildCardSearch = this.IsWildCardEnabledForModule(),
+                };
 
-            public string Culture { get; set; }
+                try
+                {
+                    results = this.GetGroupedDetailViews(query, userSearchTypeId, out totalHits, out more).ToList();
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { results, totalHits, more });
         }
 
-        public class StopWordsDto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [SupportedModules("SearchAdmin")]
+        public HttpResponseMessage AddSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
-            public int Id { get; set; }
-
-            public string Words { get; set; }
-
-            public int PortalId { get; set; }
-
-            public string Culture { get; set; }
+            string duplicateWord;
+            var synonymsGroupId = SearchHelper.Instance.AddSynonymsGroup(synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out duplicateWord);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
         }
 
-        private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
-        private const CacheItemPriority ModuleTitleCachePriority = CacheItemPriority.Normal;
-        private const int ModuleTitleCacheTimeOut = 20;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [SupportedModules("SearchAdmin")]
+        public HttpResponseMessage UpdateSynonymsGroup(SynonymsGroupDto synonymsGroup)
+        {
+            string duplicateWord;
+            var synonymsGroupId = SearchHelper.Instance.UpdateSynonymsGroup(synonymsGroup.Id, synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out duplicateWord);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [SupportedModules("SearchAdmin")]
+        public HttpResponseMessage DeleteSynonymsGroup(SynonymsGroupDto synonymsGroup)
+        {
+            SearchHelper.Instance.DeleteSynonymsGroup(synonymsGroup.Id, synonymsGroup.PortalId, synonymsGroup.Culture);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [SupportedModules("SearchAdmin")]
+        public HttpResponseMessage AddStopWords(StopWordsDto stopWords)
+        {
+            var stopWordsId = SearchHelper.Instance.AddSearchStopWords(stopWords.Words, stopWords.PortalId, stopWords.Culture);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [SupportedModules("SearchAdmin")]
+        public HttpResponseMessage UpdateStopWords(StopWordsDto stopWords)
+        {
+            var stopWordsId = SearchHelper.Instance.UpdateSearchStopWords(stopWords.Id, stopWords.Words, stopWords.PortalId, stopWords.Culture);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [SupportedModules("SearchAdmin")]
+        public HttpResponseMessage DeleteStopWords(StopWordsDto stopWords)
+        {
+            SearchHelper.Instance.DeleteSearchStopWords(stopWords.Id, stopWords.PortalId, stopWords.Culture);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
+        }
 
         internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId, out int totalHits, out bool more)
         {
@@ -134,8 +261,8 @@ namespace DotNetNuke.Web.InternalServices
 
                 // first entry
                 var first = results[0];
-                group.Title = showFriendlyTitle ? this.GetFriendlyTitle(first) : first.Title;
-                group.DocumentUrl = first.Url;
+                @group.Title = showFriendlyTitle ? this.GetFriendlyTitle(first) : first.Title;
+                @group.DocumentUrl = first.Url;
 
                 // Find a different title for multiple entries with same url
                 if (results.Count > 1)
@@ -145,7 +272,7 @@ namespace DotNetNuke.Web.InternalServices
                         var tab = TabController.Instance.GetTab(first.TabId, first.PortalId, false);
                         if (tab != null)
                         {
-                            group.Title = showFriendlyTitle && !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
+                            @group.Title = showFriendlyTitle && !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
                         }
                     }
                     else if (first.ModuleId > 0)
@@ -153,7 +280,7 @@ namespace DotNetNuke.Web.InternalServices
                         var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
                         if (!string.IsNullOrEmpty(tabTitle))
                         {
-                            group.Title = tabTitle;
+                            @group.Title = tabTitle;
                         }
                     }
                 }
@@ -162,13 +289,13 @@ namespace DotNetNuke.Web.InternalServices
                     var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
                     if (!string.IsNullOrEmpty(tabTitle))
                     {
-                        group.Title = tabTitle;
+                        @group.Title = tabTitle;
                         if (first.Title != "Enter Title" && first.Title != "Text/HTML")
                         {
-                            group.Title += " > " + first.Title;
+                            @group.Title += " > " + first.Title;
                         }
 
-                        first.Title = group.Title;
+                        first.Title = @group.Title;
                     }
                 }
 
@@ -187,10 +314,10 @@ namespace DotNetNuke.Web.InternalServices
                         AuthorProfileUrl = result.AuthorUserId > 0 ? Globals.UserProfileURL(result.AuthorUserId) : string.Empty,
                         AuthorName = result.AuthorName,
                     };
-                    group.Results.Add(detail);
+                    @group.Results.Add(detail);
                 }
 
-                groups.Add(group);
+                groups.Add(@group);
             }
 
             return groups;
@@ -348,6 +475,18 @@ namespace DotNetNuke.Web.InternalServices
             return list;
         }
 
+        private bool IsWildCardEnabledForModule()
+        {
+            var searchModuleSettings = this.GetSearchModuleSettings();
+            var enableWildSearch = true;
+            if (!string.IsNullOrEmpty(Convert.ToString(searchModuleSettings["EnableWildSearch"])))
+            {
+                enableWildSearch = Convert.ToBoolean(searchModuleSettings["EnableWildSearch"]);
+            }
+
+            return enableWildSearch;
+        }
+
         private ModuleInfo GetSearchModule()
         {
             var arrModules = GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
@@ -487,112 +626,6 @@ namespace DotNetNuke.Web.InternalServices
             return showFriendlyTitle ? this.GetFriendlyTitle(result) : result.Title;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public HttpResponseMessage Preview(string keywords, string culture, int forceWild = 1, int portal = -1)
-        {
-            string cleanedKeywords;
-            keywords = (keywords ?? string.Empty).Trim();
-            var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
-            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
-            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
-
-            var contentSources = this.GetSearchContentSources(searchTypes);
-            var settings = this.GetSearchModuleSettings();
-            var searchTypeIds = GetSearchTypeIds(settings, contentSources);
-            var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
-            var portalIds = this.GetSearchPortalIds(settings, portal);
-
-            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
-            var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
-
-            var results = new List<GroupedBasicView>();
-            if (portalIds.Any() && searchTypeIds.Any() &&
-                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
-            {
-                var query = new SearchQuery
-                {
-                    KeyWords = cleanedKeywords,
-                    Tags = tags,
-                    PortalIds = portalIds,
-                    SearchTypeIds = searchTypeIds,
-                    ModuleDefIds = moduleDefids,
-                    BeginModifiedTimeUtc = beginModifiedTimeUtc,
-                    PageIndex = 1,
-                    PageSize = 5,
-                    TitleSnippetLength = 40,
-                    BodySnippetLength = 100,
-                    CultureCode = culture,
-                    WildCardSearch = forceWild > 0,
-                };
-
-                try
-                {
-                    results = this.GetGroupedBasicViews(query, userSearchSource, this.PortalSettings.PortalId);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, results);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public HttpResponseMessage Search(string search, string culture, int pageIndex, int pageSize, int sortOption)
-        {
-            string cleanedKeywords;
-            search = (search ?? string.Empty).Trim();
-            var tags = SearchQueryStringParser.Instance.GetTags(search, out cleanedKeywords);
-            var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
-            var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(cleanedKeywords, out cleanedKeywords);
-
-            var contentSources = this.GetSearchContentSources(searchTypes);
-            var settings = this.GetSearchModuleSettings();
-            var searchTypeIds = GetSearchTypeIds(settings, contentSources);
-            var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
-            var portalIds = this.GetSearchPortalIds(settings, -1);
-            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
-
-            var more = false;
-            var totalHits = 0;
-            var results = new List<GroupedDetailView>();
-            if (portalIds.Any() && searchTypeIds.Any() &&
-                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
-            {
-                var query = new SearchQuery
-                {
-                    KeyWords = cleanedKeywords,
-                    Tags = tags,
-                    PortalIds = portalIds,
-                    SearchTypeIds = searchTypeIds,
-                    ModuleDefIds = moduleDefids,
-                    BeginModifiedTimeUtc = beginModifiedTimeUtc,
-                    EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
-                    PageIndex = pageIndex,
-                    PageSize = pageSize,
-                    SortField = (SortFields)sortOption,
-                    TitleSnippetLength = 120,
-                    BodySnippetLength = 300,
-                    CultureCode = culture,
-                    WildCardSearch = this.IsWildCardEnabledForModule(),
-                };
-
-                try
-                {
-                    results = this.GetGroupedDetailViews(query, userSearchTypeId, out totalHits, out more).ToList();
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { results, totalHits, more });
-        }
-
         private string GetTabTitleFromModuleId(int moduleId)
         {
             // no manual clearing of the cache exists; let is just expire
@@ -615,60 +648,26 @@ namespace DotNetNuke.Web.InternalServices
             return string.Empty;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [SupportedModules("SearchAdmin")]
-        public HttpResponseMessage AddSynonymsGroup(SynonymsGroupDto synonymsGroup)
+        public class SynonymsGroupDto
         {
-            string duplicateWord;
-            var synonymsGroupId = SearchHelper.Instance.AddSynonymsGroup(synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out duplicateWord);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
+            public int Id { get; set; }
+
+            public string Tags { get; set; }
+
+            public int PortalId { get; set; }
+
+            public string Culture { get; set; }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [SupportedModules("SearchAdmin")]
-        public HttpResponseMessage UpdateSynonymsGroup(SynonymsGroupDto synonymsGroup)
+        public class StopWordsDto
         {
-            string duplicateWord;
-            var synonymsGroupId = SearchHelper.Instance.UpdateSynonymsGroup(synonymsGroup.Id, synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out duplicateWord);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
-        }
+            public int Id { get; set; }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [SupportedModules("SearchAdmin")]
-        public HttpResponseMessage DeleteSynonymsGroup(SynonymsGroupDto synonymsGroup)
-        {
-            SearchHelper.Instance.DeleteSynonymsGroup(synonymsGroup.Id, synonymsGroup.PortalId, synonymsGroup.Culture);
-            return this.Request.CreateResponse(HttpStatusCode.OK);
-        }
+            public string Words { get; set; }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [SupportedModules("SearchAdmin")]
-        public HttpResponseMessage AddStopWords(StopWordsDto stopWords)
-        {
-            var stopWordsId = SearchHelper.Instance.AddSearchStopWords(stopWords.Words, stopWords.PortalId, stopWords.Culture);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId });
-        }
+            public int PortalId { get; set; }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [SupportedModules("SearchAdmin")]
-        public HttpResponseMessage UpdateStopWords(StopWordsDto stopWords)
-        {
-            var stopWordsId = SearchHelper.Instance.UpdateSearchStopWords(stopWords.Id, stopWords.Words, stopWords.PortalId, stopWords.Culture);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [SupportedModules("SearchAdmin")]
-        public HttpResponseMessage DeleteStopWords(StopWordsDto stopWords)
-        {
-            SearchHelper.Instance.DeleteSearchStopWords(stopWords.Id, stopWords.PortalId, stopWords.Culture);
-            return this.Request.CreateResponse(HttpStatusCode.OK);
+            public string Culture { get; set; }
         }
     }
 }

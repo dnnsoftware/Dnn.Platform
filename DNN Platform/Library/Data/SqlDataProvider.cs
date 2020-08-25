@@ -49,6 +49,135 @@ namespace DotNetNuke.Data
             _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
+        {
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
+        {
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
+        {
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
+        {
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+        }
+
+        public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
+        {
+            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
+        {
+            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override string ExecuteScript(string script)
+        {
+            return this.ExecuteScript(script, 0);
+        }
+
+        public override string ExecuteScript(string script, int timeoutSec)
+        {
+            string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
+
+            // if the upgrade connection string is specified or or db_owner setting is not set to dbo
+            if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
+            {
+                try
+                {
+                    // grant execute rights to the public role or userid for all stored procedures. This is
+                    // necesary because the UpgradeConnectionString will create stored procedures
+                    // which restrict execute permissions for the ConnectionString user account. This is also
+                    // necessary when db_owner is not set to "dbo"
+                    exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
+                }
+                catch (SqlException objException)
+                {
+                    Logger.Error(objException);
+
+                    exceptions += objException + Environment.NewLine + Environment.NewLine + script + Environment.NewLine + Environment.NewLine;
+                }
+
+                try
+                {
+                    // grant execute or select rights to the public role or userid for all user defined functions based
+                    // on what type of function it is (scalar function or table function). This is
+                    // necesary because the UpgradeConnectionString will create user defined functions
+                    // which restrict execute permissions for the ConnectionString user account.  This is also
+                    // necessary when db_owner is not set to "dbo"
+                    exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
+                }
+                catch (SqlException objException)
+                {
+                    Logger.Error(objException);
+
+                    exceptions += objException + Environment.NewLine + Environment.NewLine + script + Environment.NewLine + Environment.NewLine;
+                }
+            }
+
+            return exceptions;
+        }
+
+        public override string ExecuteScript(string connectionString, string script)
+        {
+            return this.ExecuteScriptInternal(connectionString, script);
+        }
+
+        public override string ExecuteScript(string connectionString, string script, int timeoutSec)
+        {
+            return this.ExecuteScriptInternal(connectionString, script, timeoutSec);
+        }
+
+        public override IDataReader ExecuteSQL(string sql)
+        {
+            return this.ExecuteSQLInternal(this.ConnectionString, sql);
+        }
+
+        public override IDataReader ExecuteSQL(string sql, int timeoutSec)
+        {
+            return this.ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
+        }
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
+        {
+            string errorMessage;
+            return this.ExecuteSQLTemp(connectionString, sql, out errorMessage);
+        }
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
+        {
+            string errorMessage;
+            return this.ExecuteSQLTemp(connectionString, sql, timeoutSec, out errorMessage);
+        }
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+        {
+            return this.ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
+        }
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
+        {
+            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+        }
+
         private static bool CanConnect(string connectionString, string owner, string qualifier)
         {
             bool connectionValid = true;
@@ -243,135 +372,6 @@ namespace DotNetNuke.Data
             }
 
             return exceptions;
-        }
-
-        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
-        {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
-        }
-
-        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
-        {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
-        }
-
-        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
-        {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
-        }
-
-        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
-        {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
-        }
-
-        public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
-        {
-            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
-        }
-
-        public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
-        {
-            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
-        }
-
-        public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
-        {
-            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
-        }
-
-        public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
-        {
-            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
-        }
-
-        public override string ExecuteScript(string script)
-        {
-            return this.ExecuteScript(script, 0);
-        }
-
-        public override string ExecuteScript(string script, int timeoutSec)
-        {
-            string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
-
-            // if the upgrade connection string is specified or or db_owner setting is not set to dbo
-            if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
-            {
-                try
-                {
-                    // grant execute rights to the public role or userid for all stored procedures. This is
-                    // necesary because the UpgradeConnectionString will create stored procedures
-                    // which restrict execute permissions for the ConnectionString user account. This is also
-                    // necessary when db_owner is not set to "dbo"
-                    exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
-                }
-                catch (SqlException objException)
-                {
-                    Logger.Error(objException);
-
-                    exceptions += objException + Environment.NewLine + Environment.NewLine + script + Environment.NewLine + Environment.NewLine;
-                }
-
-                try
-                {
-                    // grant execute or select rights to the public role or userid for all user defined functions based
-                    // on what type of function it is (scalar function or table function). This is
-                    // necesary because the UpgradeConnectionString will create user defined functions
-                    // which restrict execute permissions for the ConnectionString user account.  This is also
-                    // necessary when db_owner is not set to "dbo"
-                    exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
-                }
-                catch (SqlException objException)
-                {
-                    Logger.Error(objException);
-
-                    exceptions += objException + Environment.NewLine + Environment.NewLine + script + Environment.NewLine + Environment.NewLine;
-                }
-            }
-
-            return exceptions;
-        }
-
-        public override string ExecuteScript(string connectionString, string script)
-        {
-            return this.ExecuteScriptInternal(connectionString, script);
-        }
-
-        public override string ExecuteScript(string connectionString, string script, int timeoutSec)
-        {
-            return this.ExecuteScriptInternal(connectionString, script, timeoutSec);
-        }
-
-        public override IDataReader ExecuteSQL(string sql)
-        {
-            return this.ExecuteSQLInternal(this.ConnectionString, sql);
-        }
-
-        public override IDataReader ExecuteSQL(string sql, int timeoutSec)
-        {
-            return this.ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
-        }
-
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
-        {
-            string errorMessage;
-            return this.ExecuteSQLTemp(connectionString, sql, out errorMessage);
-        }
-
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
-        {
-            string errorMessage;
-            return this.ExecuteSQLTemp(connectionString, sql, timeoutSec, out errorMessage);
-        }
-
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
-        {
-            return this.ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
-        }
-
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
-        {
-            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
     }
 }

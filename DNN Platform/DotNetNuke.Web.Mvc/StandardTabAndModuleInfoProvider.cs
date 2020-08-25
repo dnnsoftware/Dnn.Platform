@@ -18,11 +18,10 @@ namespace DotNetNuke.Web.Mvc
     {
         private const string ModuleIdKey = "ModuleId";
         private const string TabIdKey = "TabId";
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
         private const string MonikerQueryKey = "Moniker";
         private const string MonikerHeaderKey = "X-DNN-MONIKER";
         private const string MonikerSettingsKey = "Moniker";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
 
         public bool TryFindTabId(HttpRequestBase request, out int tabId)
         {

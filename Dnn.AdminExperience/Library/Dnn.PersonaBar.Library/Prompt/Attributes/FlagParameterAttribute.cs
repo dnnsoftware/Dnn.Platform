@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
     /// Attribute to define the help for the flag parameter.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
+    [Obsolete("Moved to DotNetNuke.Prompt in the core library project and is now a Property Attribute called CommandParameter. Will be removed in DNN 11.", false)]
     public class FlagParameterAttribute : Attribute
     {
         public FlagParameterAttribute(string flag, string description, string type, string defaultValue, bool required)
@@ -28,6 +29,11 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 
         public FlagParameterAttribute(string flag, string description, string type)
             : this(flag, description, type, string.Empty, false)
+        {
+        }
+
+        public FlagParameterAttribute(string flag, string description, string type, bool required)
+            : this(flag, description, type, string.Empty, required)
         {
         }
 
@@ -55,10 +61,5 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
         /// Gets or sets description of flag.
         /// </summary>
         public string Description { get; set; }
-
-        public FlagParameterAttribute(string flag, string description, string type, bool required)
-            : this(flag, description, type, string.Empty, required)
-        {
-        }
     }
 }

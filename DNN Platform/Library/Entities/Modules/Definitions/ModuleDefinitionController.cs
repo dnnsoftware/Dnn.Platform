@@ -64,57 +64,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleDefinitionByID gets a Module Definition by its ID.
-        /// </summary>
-        /// <param name="objModuleDefinition">The object of the Module Definition.</param>
-        /// -----------------------------------------------------------------------------
-        public void DeleteModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
-        {
-            this.DeleteModuleDefinition(objModuleDefinition.ModuleDefID);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteModuleDefinition deletes a Module Definition By ID.
-        /// </summary>
-        /// <param name="moduleDefinitionId">The ID of the Module Definition to delete.</param>
-        /// -----------------------------------------------------------------------------
-        public void DeleteModuleDefinition(int moduleDefinitionId)
-        {
-            // Delete associated permissions
-            var permissionController = new PermissionController();
-            foreach (PermissionInfo permission in permissionController.GetPermissionsByModuleDefID(moduleDefinitionId))
-            {
-                permissionController.DeletePermission(permission.PermissionID);
-            }
-
-            dataProvider.DeleteModuleDefinition(moduleDefinitionId);
-            DataCache.ClearHostCache(true);
-
-            // queue remove module definition from search index
-            var document = new SearchDocumentToDelete
-            {
-                ModuleDefId = moduleDefinitionId,
-            };
-
-            DataProvider.Instance().AddSearchDeletedItems(document);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetModuleDefinitionsCallBack gets a Dictionary of Module Definitions from
-        /// the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
-        private static object GetModuleDefinitionsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillDictionary(key, dataProvider.GetModuleDefinitions(), new Dictionary<int, ModuleDefinitionInfo>());
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// GetModuleDefinitionByFriendlyName gets a Module Definition by its Friendly
         /// Name (and DesktopModuleID).
         /// </summary>
@@ -250,6 +199,57 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
 
             return moduleDefinitionID;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModuleDefinitionByID gets a Module Definition by its ID.
+        /// </summary>
+        /// <param name="objModuleDefinition">The object of the Module Definition.</param>
+        /// -----------------------------------------------------------------------------
+        public void DeleteModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
+        {
+            this.DeleteModuleDefinition(objModuleDefinition.ModuleDefID);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeleteModuleDefinition deletes a Module Definition By ID.
+        /// </summary>
+        /// <param name="moduleDefinitionId">The ID of the Module Definition to delete.</param>
+        /// -----------------------------------------------------------------------------
+        public void DeleteModuleDefinition(int moduleDefinitionId)
+        {
+            // Delete associated permissions
+            var permissionController = new PermissionController();
+            foreach (PermissionInfo permission in permissionController.GetPermissionsByModuleDefID(moduleDefinitionId))
+            {
+                permissionController.DeletePermission(permission.PermissionID);
+            }
+
+            dataProvider.DeleteModuleDefinition(moduleDefinitionId);
+            DataCache.ClearHostCache(true);
+
+            // queue remove module definition from search index
+            var document = new SearchDocumentToDelete
+            {
+                ModuleDefId = moduleDefinitionId,
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModuleDefinitionsCallBack gets a Dictionary of Module Definitions from
+        /// the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private static object GetModuleDefinitionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillDictionary(key, dataProvider.GetModuleDefinitions(), new Dictionary<int, ModuleDefinitionInfo>());
         }
     }
 }

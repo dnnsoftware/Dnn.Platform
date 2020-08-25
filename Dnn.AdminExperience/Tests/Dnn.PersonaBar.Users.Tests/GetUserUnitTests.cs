@@ -81,20 +81,6 @@ namespace Dnn.PersonaBar.Users.Tests
             Assert.IsFalse(result.IsError);
         }
 
-        protected override void ChildSetup()
-        {
-            this._userId = 3;
-            this._userInfo = this.GetUser(this._userId, false);
-
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
-        }
-
-        protected override GetUser CreateCommand()
-        {
-            return new GetUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
-        }
-
         [Test]
         public void Run_GetUserWithValidCommand_ShouldSuccessResponse()
         {
@@ -125,6 +111,20 @@ namespace Dnn.PersonaBar.Users.Tests
 
             // Assert
             Assert.IsTrue(result.IsError);
+        }
+
+        protected override void ChildSetup()
+        {
+            this._userId = 3;
+            this._userInfo = this.GetUser(this._userId, false);
+
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+        }
+
+        protected override GetUser CreateCommand()
+        {
+            return new GetUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
         }
     }
 }

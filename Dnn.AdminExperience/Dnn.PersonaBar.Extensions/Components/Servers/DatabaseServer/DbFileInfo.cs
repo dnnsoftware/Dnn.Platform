@@ -8,15 +8,7 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
 
     public class DbFileInfo
     {
-        public string FileType { get; set; }
-
-        public string Name { get; set; }
-
-        public long Size { get; set; }
-
         public decimal Megabytes => Convert.ToDecimal(this.Size / 1024);
-
-        public string FileName { get; set; }
 
         public string ShortFileName
         {
@@ -30,5 +22,13 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
                 return string.Format("{0}...{1}", this.FileName.Substring(0, this.FileName.IndexOf('\\') + 1), this.FileName.Substring(this.FileName.LastIndexOf('\\', this.FileName.LastIndexOf('\\') - 1)));
             }
         }
+
+        public string FileType { get; set; }
+
+        public string Name { get; set; }
+
+        public long Size { get; set; }
+
+        public string FileName { get; set; }
     }
 }

@@ -40,10 +40,10 @@ namespace DotNetNuke.Services.Search
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
         internal const string ValueSplitFlag = "$$$";
-
-        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
         private const int BatchSize = 250;
         private const int ClauseMaxCount = 1024;
+
+        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
 
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
@@ -304,13 +304,6 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
-        {
-            indexer.Invoke(searchDocuments);
-            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
-            return total;
-        }
-
         private static UserSearch GetUserSearch(IDataRecord reader)
         {
             try
@@ -403,6 +396,13 @@ namespace DotNetNuke.Services.Search
         {
             var schema = reader.GetSchemaTable();
             return schema != null && schema.Select("ColumnName = '" + col + "'").Length > 0;
+        }
+
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
+            return total;
         }
     }
 

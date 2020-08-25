@@ -14,6 +14,9 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
     [JsonObject]
     public class JobItem : IDateTimeConverter
     {
+        public string CreatedOnString => Util.GetDateTimeString(this.CreatedOn);
+
+        public string CompletedOnString => Util.GetDateTimeString(this.CompletedOn);
         public int JobId { get; set; }
 
         public int PortalId { get; set; }
@@ -34,11 +37,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
 
         public DateTime CreatedOn { get; set; }
 
-        public string CreatedOnString => Util.GetDateTimeString(this.CreatedOn);
-
         public DateTime? CompletedOn { get; set; }
-
-        public string CompletedOnString => Util.GetDateTimeString(this.CompletedOn);
 
         public string ExportFile { get; set; }
 

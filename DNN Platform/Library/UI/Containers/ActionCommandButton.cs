@@ -31,6 +31,25 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ActionManager instance for this Action control.
+        /// </summary>
+        /// <returns>An ActionManager object.</returns>
+        /// -----------------------------------------------------------------------------
+        public ActionManager ActionManager
+        {
+            get
+            {
+                if (this._ActionManager == null)
+                {
+                    this._ActionManager = new ActionManager(this);
+                }
+
+                return this._ActionManager;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the ModuleAction for this Action control.
         /// </summary>
         /// <returns>A ModuleAction object.</returns>
@@ -50,25 +69,6 @@ namespace DotNetNuke.UI.Containers
             set
             {
                 this._ModuleAction = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionManager instance for this Action control.
-        /// </summary>
-        /// <returns>An ActionManager object.</returns>
-        /// -----------------------------------------------------------------------------
-        public ActionManager ActionManager
-        {
-            get
-            {
-                if (this._ActionManager == null)
-                {
-                    this._ActionManager = new ActionManager(this);
-                }
-
-                return this._ActionManager;
             }
         }
 

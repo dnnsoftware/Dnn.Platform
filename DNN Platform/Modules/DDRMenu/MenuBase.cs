@@ -43,9 +43,19 @@ namespace DotNetNuke.Web.DDRMenu
 
         public TemplateDefinition TemplateDef { get; set; }
 
+        internal PortalSettings HostPortalSettings
+        {
+            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
+        }
+
         internal MenuNode RootNode { get; set; }
 
         internal bool SkipLocalisation { get; set; }
+
+        private HttpContext CurrentContext
+        {
+            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
+        }
 
         public static MenuBase Instantiate(string menuStyle)
         {
@@ -58,16 +68,6 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 throw new ApplicationException(string.Format("Couldn't load menu style '{0}': {1}", menuStyle, exc));
             }
-        }
-
-        internal PortalSettings HostPortalSettings
-        {
-            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
-        }
-
-        private HttpContext CurrentContext
-        {
-            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
         }
 
         internal void ApplySettings(Settings settings)

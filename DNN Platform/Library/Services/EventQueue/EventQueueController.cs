@@ -64,94 +64,6 @@ namespace DotNetNuke.Services.EventQueue
             return FillMessageCollection(DataProvider.Instance().GetEventMessagesBySubscriber(eventName, subscriberId));
         }
 
-        private static EventMessage FillMessage(IDataReader dr, bool CheckForOpenDataReader)
-        {
-            EventMessage message;
-
-            // read datareader
-            bool canContinue = true;
-            if (CheckForOpenDataReader)
-            {
-                canContinue = false;
-                if (dr.Read())
-                {
-                    canContinue = true;
-                }
-            }
-
-            if (canContinue)
-            {
-                message = new EventMessage();
-                message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID));
-                message.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
-                message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType));
-                message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand));
-                message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body));
-                message.Sender = Convert.ToString(Null.SetNull(dr["Sender"], message.Sender));
-                message.Subscribers = Convert.ToString(Null.SetNull(dr["Subscriber"], message.Subscribers));
-                message.AuthorizedRoles = Convert.ToString(Null.SetNull(dr["AuthorizedRoles"], message.AuthorizedRoles));
-                message.ExceptionMessage = Convert.ToString(Null.SetNull(dr["ExceptionMessage"], message.ExceptionMessage));
-                message.SentDate = Convert.ToDateTime(Null.SetNull(dr["SentDate"], message.SentDate));
-                message.ExpirationDate = Convert.ToDateTime(Null.SetNull(dr["ExpirationDate"], message.ExpirationDate));
-
-                // Deserialize Attributes
-                string xmlAttributes = Null.NullString;
-                xmlAttributes = Convert.ToString(Null.SetNull(dr["Attributes"], xmlAttributes));
-                message.DeserializeAttributes(xmlAttributes);
-            }
-            else
-            {
-                message = null;
-            }
-
-            return message;
-        }
-
-        private static EventMessageCollection FillMessageCollection(IDataReader dr)
-        {
-            var arr = new EventMessageCollection();
-            try
-            {
-                EventMessage obj;
-                while (dr.Read())
-                {
-                    // fill business object
-                    obj = FillMessage(dr, false);
-
-                    // add to collection
-                    arr.Add(obj);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return arr;
-        }
-
-        private static string[] GetSubscribers(string eventName)
-        {
-            // Get the subscribers to this event
-            string[] subscribers = null;
-            PublishedEvent publishedEvent = null;
-            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out publishedEvent))
-            {
-                subscribers = publishedEvent.Subscribers.Split(";".ToCharArray());
-            }
-            else
-            {
-                subscribers = new string[] { };
-            }
-
-            return subscribers;
-        }
-
         /// <summary>
         /// Processes the messages.
         /// </summary>
@@ -280,6 +192,94 @@ namespace DotNetNuke.Services.EventQueue
         public bool SendMessage(EventMessage message, string eventName, bool encryptMessage)
         {
             return SendMessage(message, eventName);
+        }
+
+        private static EventMessage FillMessage(IDataReader dr, bool CheckForOpenDataReader)
+        {
+            EventMessage message;
+
+            // read datareader
+            bool canContinue = true;
+            if (CheckForOpenDataReader)
+            {
+                canContinue = false;
+                if (dr.Read())
+                {
+                    canContinue = true;
+                }
+            }
+
+            if (canContinue)
+            {
+                message = new EventMessage();
+                message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID));
+                message.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
+                message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType));
+                message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand));
+                message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body));
+                message.Sender = Convert.ToString(Null.SetNull(dr["Sender"], message.Sender));
+                message.Subscribers = Convert.ToString(Null.SetNull(dr["Subscriber"], message.Subscribers));
+                message.AuthorizedRoles = Convert.ToString(Null.SetNull(dr["AuthorizedRoles"], message.AuthorizedRoles));
+                message.ExceptionMessage = Convert.ToString(Null.SetNull(dr["ExceptionMessage"], message.ExceptionMessage));
+                message.SentDate = Convert.ToDateTime(Null.SetNull(dr["SentDate"], message.SentDate));
+                message.ExpirationDate = Convert.ToDateTime(Null.SetNull(dr["ExpirationDate"], message.ExpirationDate));
+
+                // Deserialize Attributes
+                string xmlAttributes = Null.NullString;
+                xmlAttributes = Convert.ToString(Null.SetNull(dr["Attributes"], xmlAttributes));
+                message.DeserializeAttributes(xmlAttributes);
+            }
+            else
+            {
+                message = null;
+            }
+
+            return message;
+        }
+
+        private static EventMessageCollection FillMessageCollection(IDataReader dr)
+        {
+            var arr = new EventMessageCollection();
+            try
+            {
+                EventMessage obj;
+                while (dr.Read())
+                {
+                    // fill business object
+                    obj = FillMessage(dr, false);
+
+                    // add to collection
+                    arr.Add(obj);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return arr;
+        }
+
+        private static string[] GetSubscribers(string eventName)
+        {
+            // Get the subscribers to this event
+            string[] subscribers = null;
+            PublishedEvent publishedEvent = null;
+            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out publishedEvent))
+            {
+                subscribers = publishedEvent.Subscribers.Split(";".ToCharArray());
+            }
+            else
+            {
+                subscribers = new string[] { };
+            }
+
+            return subscribers;
         }
     }
 }

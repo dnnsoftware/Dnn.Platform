@@ -13,7 +13,6 @@ namespace Dnn.PersonaBar.Prompt.Common
 
     public abstract class ControllerBase : PersonaBarApiController
     {
-
         protected HttpResponseMessage OkResponse(string msg, object data = null)
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, new ResponseModel(false, msg, data?.ToString() ?? ""));
@@ -58,6 +57,5 @@ namespace Dnn.PersonaBar.Prompt.Common
             }
             return this.Request.CreateResponse(HttpStatusCode.NotImplemented, new ResponseModel(true, msg, data?.ToString() ?? ""));
         }
-
     }
 }

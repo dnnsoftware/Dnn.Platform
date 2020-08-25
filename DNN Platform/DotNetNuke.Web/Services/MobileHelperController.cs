@@ -128,6 +128,22 @@ namespace DotNetNuke.Web.Services
             return tabModules;
         }
 
+        private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs,
+            IDictionary<int, TabInfo> tabsWithModule, IDictionary<int, TabInfo> tabsInOrder)
+        {
+            if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
+            {
+                // add current tab
+                tabsInOrder.Add(currentTab.TabID, currentTab);
+
+                // add children of current tab
+                foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
+                {
+                    AddChildTabsToList(tab, allPortalTabs, tabsWithModule, tabsInOrder);
+                }
+            }
+        }
+
         private SiteDetail GetSiteDetails(string moduleList)
         {
             var siteDetails = new SiteDetail
@@ -163,22 +179,6 @@ namespace DotNetNuke.Web.Services
             }
 
             return siteDetails;
-        }
-
-        private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs,
-            IDictionary<int, TabInfo> tabsWithModule, IDictionary<int, TabInfo> tabsInOrder)
-        {
-            if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
-            {
-                // add current tab
-                tabsInOrder.Add(currentTab.TabID, currentTab);
-
-                // add children of current tab
-                foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
-                {
-                    AddChildTabsToList(tab, allPortalTabs, tabsWithModule, tabsInOrder);
-                }
-            }
         }
     }
 }

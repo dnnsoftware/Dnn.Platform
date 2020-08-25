@@ -14,33 +14,15 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
-    /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke.Search.Index
-    /// Class:      TabIndexer
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The TabIndexer is an implementation of the abstract IndexingProvider
-    /// class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>An implementation of <see cref="IndexingProviderBase"/> for pages.</summary>
     public class TabIndexer : IndexingProviderBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabIndexer));
         private static readonly int TabSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("tab").SearchTypeId;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Returns the number of SearchDocuments indexed with Tab MetaData for the given portal.
-        /// </summary>
-        /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(
-            int portalId,
-            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        /// <summary>Converts applicable pages into <see cref="SearchDocument"/> instances before passing them to the <paramref name="indexer"/>.</summary>
+        /// <inheritdoc />
+        public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024;
@@ -49,10 +31,7 @@ namespace DotNetNuke.Services.Search
             var searchDocuments = new List<SearchDocument>();
             var tabs = (
                 from t in TabController.Instance.GetTabsByPortal(portalId).AsList()
-                where t.LastModifiedOnDate > startDateLocal && (t.TabSettings["AllowIndex"] == null ||
-                                                                "true".Equals(
-                                                                    t.TabSettings["AllowIndex"].ToString(),
-                                                                    StringComparison.CurrentCultureIgnoreCase))
+                where t.LastModifiedOnDate > startDateLocal && t.AllowIndex
                 select t).OrderBy(t => t.LastModifiedOnDate).ThenBy(t => t.TabID).ToArray();
 
             if (tabs.Any())
@@ -117,9 +96,7 @@ namespace DotNetNuke.Services.Search
             return searchDoc;
         }
 
-        private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer,
-            ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId)
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;

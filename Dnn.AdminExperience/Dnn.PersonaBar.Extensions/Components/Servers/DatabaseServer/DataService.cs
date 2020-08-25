@@ -20,11 +20,6 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
             return Provider.ExecuteReader(GetFullyQualifiedName("GetDbInfo"));
         }
 
-        private static string GetFullyQualifiedName(string name)
-        {
-            return String.Concat(moduleQualifier, name);
-        }
-
         public static IDataReader GetDbFileInfo()
         {
             return Provider.ExecuteReader(GetFullyQualifiedName("GetDbFileInfo"));
@@ -33,6 +28,11 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
         public static IDataReader GetDbBackups()
         {
             return Provider.ExecuteReader(GetFullyQualifiedName("GetDbBackups"));
+        }
+
+        private static string GetFullyQualifiedName(string name)
+        {
+            return String.Concat(moduleQualifier, name);
         }
     }
 }

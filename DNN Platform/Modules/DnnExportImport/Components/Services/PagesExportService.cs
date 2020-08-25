@@ -50,6 +50,15 @@ namespace Dnn.ExportImport.Components.Services
         private ProgressTotals _totals;
         private DataProvider _dataProvider;
         private ITabController _tabController;
+        private IModuleController _moduleController;
+        private ExportImportJob _exportImportJob;
+        private ImportDto _importDto;
+        private ExportDto _exportDto;
+
+        private IList<int> _exportedModuleDefinitions = new List<int>();
+        private Dictionary<int, int> _partialImportedTabs = new Dictionary<int, int>();
+        private Dictionary<int, bool> _searchedParentTabs = new Dictionary<int, bool>();
+        private IList<ImportModuleMapping> _importContentList = new List<ImportModuleMapping>(); // map the exported module and local module.
 
         public override string Category => Constants.Category_Pages;
 
@@ -62,15 +71,6 @@ namespace Dnn.ExportImport.Components.Services
         public virtual bool IgnoreParentMatch { get; set; } = false;
 
         protected ImportDto ImportDto => this._importDto;
-        private IModuleController _moduleController;
-        private ExportImportJob _exportImportJob;
-        private ImportDto _importDto;
-        private ExportDto _exportDto;
-
-        private IList<int> _exportedModuleDefinitions = new List<int>();
-        private Dictionary<int, int> _partialImportedTabs = new Dictionary<int, int>();
-        private Dictionary<int, bool> _searchedParentTabs = new Dictionary<int, bool>();
-        private IList<ImportModuleMapping> _importContentList = new List<ImportModuleMapping>(); // map the exported module and local module.
 
         public static void ResetContentsFlag(ExportImportRepository repository)
         {
@@ -387,6 +387,78 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             return -1;
+        }
+
+        private static bool IsSameCulture(string sourceCultureCode, string targetCultureCode)
+        {
+            sourceCultureCode = !string.IsNullOrWhiteSpace(sourceCultureCode) ? sourceCultureCode : Localization.SystemLocale;
+            targetCultureCode = !string.IsNullOrWhiteSpace(targetCultureCode) ? targetCultureCode : Localization.SystemLocale;
+
+            return sourceCultureCode == targetCultureCode;
+        }
+
+        private static void SetTabData(TabInfo localTab, ExportTab otherTab)
+        {
+            localTab.TabOrder = otherTab.TabOrder;
+            localTab.TabName = otherTab.TabName;
+            localTab.IsVisible = otherTab.IsVisible;
+            localTab.IconFile = otherTab.IconFile;
+            localTab.DisableLink = otherTab.DisableLink;
+            localTab.Title = otherTab.Title;
+            localTab.Description = otherTab.Description;
+            localTab.KeyWords = otherTab.KeyWords;
+
+            // localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
+            localTab.Url = otherTab.Url;
+            localTab.SkinSrc = otherTab.SkinSrc;
+            localTab.ContainerSrc = otherTab.ContainerSrc;
+            localTab.StartDate = otherTab.StartDate ?? DateTime.MinValue;
+            localTab.EndDate = otherTab.EndDate ?? DateTime.MinValue;
+            localTab.RefreshInterval = otherTab.RefreshInterval ?? -1;
+            localTab.PageHeadText = otherTab.PageHeadText;
+            localTab.IsSecure = otherTab.IsSecure;
+            localTab.PermanentRedirect = otherTab.PermanentRedirect;
+            localTab.SiteMapPriority = otherTab.SiteMapPriority;
+            localTab.IconFileLarge = otherTab.IconFileLarge;
+            localTab.CultureCode = otherTab.CultureCode;
+
+            // localTab.UniqueId = otherTab.UniqueId;
+            localTab.VersionGuid = otherTab.VersionGuid;
+            localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
+            localTab.Level = otherTab.Level;
+            localTab.TabPath = otherTab.TabPath;
+            localTab.HasBeenPublished = otherTab.HasBeenPublished;
+            localTab.IsSystem = otherTab.IsSystem;
+            localTab.Terms.Clear();
+            localTab.Terms.AddRange(TermHelper.ToTabTerms(otherTab.Tags, localTab.PortalID));
+        }
+
+        private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
+        {
+            var first = true;
+            while (tab != null)
+            {
+                var pg = selectedPages.FirstOrDefault(p => p.TabId == tab.TabID);
+                if (pg != null)
+                {
+                    if (first)
+                    {
+                        // this is the current page we are checking for.
+                        return pg.CheckedState == TriCheckedState.Checked || pg.CheckedState == TriCheckedState.CheckedWithAllChildren;
+                    }
+
+                    // this is a [grand] parent of the page we are checking for.
+                    if (pg.CheckedState == TriCheckedState.CheckedWithAllChildren)
+                    {
+                        return true;
+                    }
+                }
+
+                first = false;
+                tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
+            }
+
+            return false;
         }
 
         private void ProcessImportPages()
@@ -1466,78 +1538,6 @@ namespace Dnn.ExportImport.Components.Services
             return count;
         }
 
-        private static bool IsSameCulture(string sourceCultureCode, string targetCultureCode)
-        {
-            sourceCultureCode = !string.IsNullOrWhiteSpace(sourceCultureCode) ? sourceCultureCode : Localization.SystemLocale;
-            targetCultureCode = !string.IsNullOrWhiteSpace(targetCultureCode) ? targetCultureCode : Localization.SystemLocale;
-
-            return sourceCultureCode == targetCultureCode;
-        }
-
-        private static void SetTabData(TabInfo localTab, ExportTab otherTab)
-        {
-            localTab.TabOrder = otherTab.TabOrder;
-            localTab.TabName = otherTab.TabName;
-            localTab.IsVisible = otherTab.IsVisible;
-            localTab.IconFile = otherTab.IconFile;
-            localTab.DisableLink = otherTab.DisableLink;
-            localTab.Title = otherTab.Title;
-            localTab.Description = otherTab.Description;
-            localTab.KeyWords = otherTab.KeyWords;
-
-            // localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
-            localTab.Url = otherTab.Url;
-            localTab.SkinSrc = otherTab.SkinSrc;
-            localTab.ContainerSrc = otherTab.ContainerSrc;
-            localTab.StartDate = otherTab.StartDate ?? DateTime.MinValue;
-            localTab.EndDate = otherTab.EndDate ?? DateTime.MinValue;
-            localTab.RefreshInterval = otherTab.RefreshInterval ?? -1;
-            localTab.PageHeadText = otherTab.PageHeadText;
-            localTab.IsSecure = otherTab.IsSecure;
-            localTab.PermanentRedirect = otherTab.PermanentRedirect;
-            localTab.SiteMapPriority = otherTab.SiteMapPriority;
-            localTab.IconFileLarge = otherTab.IconFileLarge;
-            localTab.CultureCode = otherTab.CultureCode;
-
-            // localTab.UniqueId = otherTab.UniqueId;
-            localTab.VersionGuid = otherTab.VersionGuid;
-            localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
-            localTab.Level = otherTab.Level;
-            localTab.TabPath = otherTab.TabPath;
-            localTab.HasBeenPublished = otherTab.HasBeenPublished;
-            localTab.IsSystem = otherTab.IsSystem;
-            localTab.Terms.Clear();
-            localTab.Terms.AddRange(TermHelper.ToTabTerms(otherTab.Tags, localTab.PortalID));
-        }
-
-        private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
-        {
-            var first = true;
-            while (tab != null)
-            {
-                var pg = selectedPages.FirstOrDefault(p => p.TabId == tab.TabID);
-                if (pg != null)
-                {
-                    if (first)
-                    {
-                        // this is the current page we are checking for.
-                        return pg.CheckedState == TriCheckedState.Checked || pg.CheckedState == TriCheckedState.CheckedWithAllChildren;
-                    }
-
-                    // this is a [grand] parent of the page we are checking for.
-                    if (pg.CheckedState == TriCheckedState.CheckedWithAllChildren)
-                    {
-                        return true;
-                    }
-                }
-
-                first = false;
-                tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
-            }
-
-            return false;
-        }
-
         private void RepairReferenceTabs(IList<int> referenceTabs, IList<TabInfo> localTabs, IList<ExportTab> exportTabs)
         {
             foreach (var tabId in referenceTabs)
@@ -1558,9 +1558,7 @@ namespace Dnn.ExportImport.Components.Services
         private void UpdateTabChangers(int tabId, int createdBy, int modifiedBy)
         {
             this._dataProvider.UpdateRecordChangers("Tabs", "TabID", tabId, createdBy, modifiedBy);
-        }
-
-        // ReSharper disable UnusedMember.Local
+        } // ReSharper disable UnusedMember.Local
         private void UpdateTabPermissionChangers(int tabPermissionId, int createdBy, int modifiedBy)
         {
             this._dataProvider.UpdateRecordChangers("TabPermission", "TabPermissionID", tabPermissionId, createdBy, modifiedBy);

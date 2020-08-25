@@ -35,26 +35,26 @@ namespace DotNetNuke.Admin.Containers
     {
         private readonly List<int> validIDs = new List<int>();
 
-        protected string AdminActionsJSON { get; set; }
-
         protected string AdminText
         {
             get { return Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile); }
         }
-
-        protected string CustomActionsJSON { get; set; }
 
         protected string CustomText
         {
             get { return Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile); }
         }
 
-        protected bool DisplayQuickSettings { get; set; }
-
         protected string MoveText
         {
             get { return Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile); }
         }
+
+        protected string AdminActionsJSON { get; set; }
+
+        protected string CustomActionsJSON { get; set; }
+
+        protected bool DisplayQuickSettings { get; set; }
 
         protected string Panes { get; set; }
 

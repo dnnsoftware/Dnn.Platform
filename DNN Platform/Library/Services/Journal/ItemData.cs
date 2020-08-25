@@ -15,14 +15,6 @@ namespace DotNetNuke.Services.Journal
 
     public class ItemData : IPropertyAccess
     {
-        public string Url { get; set; }
-
-        public string Title { get; set; }
-
-        public string Description { get; set; }
-
-        public string ImageUrl { get; set; }
-
         public CacheLevel Cacheability
         {
             get
@@ -30,6 +22,14 @@ namespace DotNetNuke.Services.Journal
                 return CacheLevel.fullyCacheable;
             }
         }
+
+        public string Url { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public string ImageUrl { get; set; }
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {

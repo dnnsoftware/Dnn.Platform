@@ -17,11 +17,6 @@ namespace DotNetNuke.Common.Utilities.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
 
-        static RetryableAction()
-        {
-            SleepAction = GoToSleep;
-        }
-
         public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay)
             : this(action, description, maxRetries, delay, 1)
         {
@@ -39,6 +34,11 @@ namespace DotNetNuke.Common.Utilities.Internal
             this.MaxRetries = maxRetries;
             this.Delay = delay;
             this.DelayMultiplier = delayMultiplier;
+        }
+
+        static RetryableAction()
+        {
+            SleepAction = GoToSleep;
         }
 
         /// <summary>

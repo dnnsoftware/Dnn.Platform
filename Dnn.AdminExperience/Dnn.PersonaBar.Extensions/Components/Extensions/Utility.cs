@@ -14,7 +14,6 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     public static class Utility
     {
-
         public static IEnumerable<ListItemDto> GetAllLanguagesList()
         {
             var locales = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
@@ -33,6 +32,5 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             return packages.OrderBy(p => p.Name);
         }
-
     }
 }

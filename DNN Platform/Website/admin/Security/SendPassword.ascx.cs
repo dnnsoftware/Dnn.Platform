@@ -191,23 +191,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        private void GetUser()
-        {
-            ArrayList arrUsers;
-            if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
-            {
-                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
-                if (arrUsers != null && arrUsers.Count == 1)
-                {
-                    this._user = (UserInfo)arrUsers[0];
-                }
-            }
-            else
-            {
-                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
-            }
-        }
-
         /// <summary>
         /// cmdSendPassword_Click runs when the Password Reminder button is clicked.
         /// </summary>
@@ -317,6 +300,23 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
                 }
+            }
+        }
+
+        private void GetUser()
+        {
+            ArrayList arrUsers;
+            if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
+            {
+                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
+                if (arrUsers != null && arrUsers.Count == 1)
+                {
+                    this._user = (UserInfo)arrUsers[0];
+                }
+            }
+            else
+            {
+                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
             }
         }
 

@@ -44,6 +44,30 @@ namespace DotNetNuke.Tests.Integration.Executers
             this.UserLastName = Constants.RuLastName;
         }
 
+        public string UserName
+        {
+            get
+            {
+                return this.Connector.UserName;
+            }
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                return string.Join(" ", this.UserFirstName, this.UserLastName);
+            }
+        }
+
+        public int UserId
+        {
+            get
+            {
+                return DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE UserName = '{this.UserName}'");
+            }
+        }
+
         public LoginAsUser LoginAs
         {
             get
@@ -97,30 +121,6 @@ namespace DotNetNuke.Tests.Integration.Executers
                     this.UserFirstName = userName[0];
                     this.UserLastName = userName[1];
                 }
-            }
-        }
-
-        public string UserName
-        {
-            get
-            {
-                return this.Connector.UserName;
-            }
-        }
-
-        public string DisplayName
-        {
-            get
-            {
-                return string.Join(" ", this.UserFirstName, this.UserLastName);
-            }
-        }
-
-        public int UserId
-        {
-            get
-            {
-                return DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE UserName = '{this.UserName}'");
             }
         }
 

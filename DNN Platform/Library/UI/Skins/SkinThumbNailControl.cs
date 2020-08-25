@@ -172,6 +172,95 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// LoadHostSkins loads all the available Host skins to the radio button list.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
+        /// -----------------------------------------------------------------------------
+        public void LoadHostSkins(bool includeNotSpecified)
+        {
+            // default value
+            if (includeNotSpecified)
+            {
+                this.AddDefaultSkin();
+            }
+
+            // load host skins
+            var strRoot = Globals.HostMapPath + this.SkinRoot;
+            if (Directory.Exists(strRoot))
+            {
+                var arrFolders = Directory.GetDirectories(strRoot);
+                foreach (var strFolder in arrFolders)
+                {
+                    if (!strFolder.EndsWith(Globals.glbHostSkinFolder))
+                    {
+                        this.LoadSkins(strFolder, "[G]", false);
+                    }
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LoadHostSkins loads all the available Site/Portal skins to the radio button list.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
+        /// -----------------------------------------------------------------------------
+        public void LoadPortalSkins(bool includeNotSpecified)
+        {
+            // default value
+            if (includeNotSpecified)
+            {
+                this.AddDefaultSkin();
+            }
+
+            // load portal skins
+            var strRoot = this.PortalSettings.HomeDirectoryMapPath + this.SkinRoot;
+            if (Directory.Exists(strRoot))
+            {
+                var arrFolders = Directory.GetDirectories(strRoot);
+                foreach (var strFolder in arrFolders)
+                {
+                    this.LoadSkins(strFolder, "[L]", false);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LoadSkins loads all the available skins in a specific folder to the radio button list.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="strFolder">The folder to search for skins.</param>
+        /// <param name="skinType">A string that identifies whether the skin is Host "[G]" or Site "[L]".</param>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
+        /// -----------------------------------------------------------------------------
+        public void LoadSkins(string strFolder, string skinType, bool includeNotSpecified)
+        {
+            // default value
+            if (includeNotSpecified)
+            {
+                this.AddDefaultSkin();
+            }
+
+            if (Directory.Exists(strFolder))
+            {
+                var arrFiles = Directory.GetFiles(strFolder, "*.ascx");
+                strFolder = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
+
+                foreach (var strFile in arrFiles)
+                {
+                    this.AddSkin(skinType + this.SkinRoot, strFolder, strFile);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// format skin name.
         /// </summary>
         /// <remarks>
@@ -317,95 +406,6 @@ namespace DotNetNuke.UI.Skins
             }
 
             this.OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadHostSkins loads all the available Host skins to the radio button list.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
-        /// -----------------------------------------------------------------------------
-        public void LoadHostSkins(bool includeNotSpecified)
-        {
-            // default value
-            if (includeNotSpecified)
-            {
-                this.AddDefaultSkin();
-            }
-
-            // load host skins
-            var strRoot = Globals.HostMapPath + this.SkinRoot;
-            if (Directory.Exists(strRoot))
-            {
-                var arrFolders = Directory.GetDirectories(strRoot);
-                foreach (var strFolder in arrFolders)
-                {
-                    if (!strFolder.EndsWith(Globals.glbHostSkinFolder))
-                    {
-                        this.LoadSkins(strFolder, "[G]", false);
-                    }
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadHostSkins loads all the available Site/Portal skins to the radio button list.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
-        /// -----------------------------------------------------------------------------
-        public void LoadPortalSkins(bool includeNotSpecified)
-        {
-            // default value
-            if (includeNotSpecified)
-            {
-                this.AddDefaultSkin();
-            }
-
-            // load portal skins
-            var strRoot = this.PortalSettings.HomeDirectoryMapPath + this.SkinRoot;
-            if (Directory.Exists(strRoot))
-            {
-                var arrFolders = Directory.GetDirectories(strRoot);
-                foreach (var strFolder in arrFolders)
-                {
-                    this.LoadSkins(strFolder, "[L]", false);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadSkins loads all the available skins in a specific folder to the radio button list.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="strFolder">The folder to search for skins.</param>
-        /// <param name="skinType">A string that identifies whether the skin is Host "[G]" or Site "[L]".</param>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
-        /// -----------------------------------------------------------------------------
-        public void LoadSkins(string strFolder, string skinType, bool includeNotSpecified)
-        {
-            // default value
-            if (includeNotSpecified)
-            {
-                this.AddDefaultSkin();
-            }
-
-            if (Directory.Exists(strFolder))
-            {
-                var arrFiles = Directory.GetFiles(strFolder, "*.ascx");
-                strFolder = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
-
-                foreach (var strFile in arrFiles)
-                {
-                    this.AddSkin(skinType + this.SkinRoot, strFolder, strFile);
-                }
-            }
         }
     }
 }

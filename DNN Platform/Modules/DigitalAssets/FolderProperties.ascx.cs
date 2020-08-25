@@ -32,8 +32,6 @@ namespace DotNetNuke.Modules.DigitalAssets
         private bool isRootFolder;
         private Control folderFieldsControl;
 
-        protected IFolderInfo Folder { get; private set; }
-
         protected bool CanManageFolder
         {
             get
@@ -41,8 +39,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                 return this.UserInfo.IsSuperUser || FolderPermissionController.CanManageFolder((FolderInfo)this.Folder);
             }
         }
-
-        protected bool HasFullControl { get; private set; }
 
         protected string DialogTitle
         {
@@ -59,6 +55,10 @@ namespace DotNetNuke.Modules.DigitalAssets
                 return this.IsHostMenu || this.controller.GetCurrentPortalId(this.ModuleId) == Null.NullInteger;
             }
         }
+
+        protected IFolderInfo Folder { get; private set; }
+
+        protected bool HasFullControl { get; private set; }
 
         protected override void OnInit(EventArgs e)
         {

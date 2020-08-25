@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public const string LogTypeCacheKey = "LogTypes";
         public const string LogTypeInfoCacheKey = "GetLogTypeConfigInfo";
+        public const string LogTypeInfoByKeyCacheKey = "GetLogTypeConfigInfoByKey";
 
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
@@ -31,7 +32,6 @@ namespace DotNetNuke.Services.Log.EventLog
         private static readonly IList<LogQueueItem> LogQueue = new List<LogQueueItem>();
         private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
-        public const string LogTypeInfoByKeyCacheKey = "GetLogTypeConfigInfoByKey";
 
         public override void AddLog(LogInfo logInfo)
         {
@@ -63,209 +63,6 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             DataProvider.Instance().AddLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
             DataCache.RemoveCache(LogTypeCacheKey);
-        }
-
-        private static Hashtable FillLogTypeConfigInfoByKey(ArrayList arr)
-        {
-            var ht = new Hashtable();
-            int i;
-            for (i = 0; i <= arr.Count - 1; i++)
-            {
-                var logTypeConfigInfo = (LogTypeConfigInfo)arr[i];
-                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
-                {
-                    logTypeConfigInfo.LogTypeKey = "*";
-                }
-
-                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
-                {
-                    logTypeConfigInfo.LogTypePortalID = "*";
-                }
-
-                ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalID, logTypeConfigInfo);
-            }
-
-            DataCache.SetCache(LogTypeInfoByKeyCacheKey, ht);
-            return ht;
-        }
-
-        private static LogInfo FillLogInfo(IDataReader dr)
-        {
-            var obj = new LogInfo();
-            try
-            {
-                obj.LogCreateDate = Convert.ToDateTime(dr["LogCreateDate"]);
-                obj.LogGUID = Convert.ToString(dr["LogGUID"]);
-                obj.LogPortalID = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalID));
-                obj.LogPortalName = Convert.ToString(Null.SetNull(dr["LogPortalName"], obj.LogPortalName));
-                obj.LogServerName = Convert.ToString(Null.SetNull(dr["LogServerName"], obj.LogServerName));
-                obj.LogUserID = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserID));
-                obj.LogEventID = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventID));
-                obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"]);
-                obj.LogUserName = Convert.ToString(dr["LogUserName"]);
-                obj.LogConfigID = Convert.ToString(dr["LogConfigID"]);
-                obj.LogProperties.Deserialize(Convert.ToString(dr["LogProperties"]));
-                obj.Exception.AssemblyVersion = Convert.ToString(Null.SetNull(dr["AssemblyVersion"], obj.Exception.AssemblyVersion));
-                obj.Exception.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], obj.Exception.PortalId));
-                obj.Exception.UserId = Convert.ToInt32(Null.SetNull(dr["UserId"], obj.Exception.UserId));
-                obj.Exception.TabId = Convert.ToInt32(Null.SetNull(dr["TabId"], obj.Exception.TabId));
-                obj.Exception.RawUrl = Convert.ToString(Null.SetNull(dr["RawUrl"], obj.Exception.RawUrl));
-                obj.Exception.Referrer = Convert.ToString(Null.SetNull(dr["Referrer"], obj.Exception.Referrer));
-                obj.Exception.UserAgent = Convert.ToString(Null.SetNull(dr["UserAgent"], obj.Exception.UserAgent));
-                obj.Exception.ExceptionHash = Convert.ToString(Null.SetNull(dr["ExceptionHash"], obj.Exception.ExceptionHash));
-                obj.Exception.Message = Convert.ToString(Null.SetNull(dr["Message"], obj.Exception.Message));
-                obj.Exception.StackTrace = Convert.ToString(Null.SetNull(dr["StackTrace"], obj.Exception.StackTrace));
-                obj.Exception.InnerMessage = Convert.ToString(Null.SetNull(dr["InnerMessage"], obj.Exception.InnerMessage));
-                obj.Exception.InnerStackTrace = Convert.ToString(Null.SetNull(dr["InnerStackTrace"], obj.Exception.InnerStackTrace));
-                obj.Exception.Source = Convert.ToString(Null.SetNull(dr["Source"], obj.Exception.Source));
-                /* DNN-6218 + DNN-6242: DB logging provider throws errors
-                // the view "vw_EventLog" doesn't have these fields or any table in the database
-                obj.Exception.FileName = Convert.ToString(Null.SetNull(dr["FileName"], obj.Exception.FileName));
-                obj.Exception.FileLineNumber = Convert.ToInt32(Null.SetNull(dr["FileLineNumber"], obj.Exception.FileLineNumber));
-                obj.Exception.FileColumnNumber = Convert.ToInt32(Null.SetNull(dr["FileColumnNumber"], obj.Exception.FileColumnNumber));
-                obj.Exception.Method = Convert.ToString(Null.SetNull(dr["Method"], obj.Exception.Method));
-                 */
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return obj;
-        }
-
-        private static void FillLogs(IDataReader dr, IList logs, ref int totalRecords)
-        {
-            try
-            {
-                while (dr.Read())
-                {
-                    LogInfo logInfo = FillLogInfo(dr);
-                    logs.Add(logInfo);
-                }
-
-                dr.NextResult();
-                while (dr.Read())
-                {
-                    totalRecords = Convert.ToInt32(dr["TotalRecords"]);
-                }
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-        }
-
-        private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
-        {
-            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(this.GetLogTypeConfigInfo());
-            var logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|" + logTypePortalID];
-            if (logTypeConfigInfo == null)
-            {
-                logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|" + logTypePortalID];
-                if (logTypeConfigInfo == null)
-                {
-                    logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|*"];
-                    if (logTypeConfigInfo == null)
-                    {
-                        logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|*"];
-                    }
-                    else
-                    {
-                        return logTypeConfigInfo;
-                    }
-                }
-                else
-                {
-                    return logTypeConfigInfo;
-                }
-            }
-            else
-            {
-                return logTypeConfigInfo;
-            }
-
-            return logTypeConfigInfo;
-        }
-
-        private static void WriteError(LogTypeConfigInfo logTypeConfigInfo, Exception exc, string header, string message)
-        {
-            if (HttpContext.Current != null)
-            {
-                if (HttpContext.Current.IsCustomErrorEnabled)
-                {
-                    HttpContext.Current.AddError(exc);
-                }
-                else
-                {
-                    HttpResponse response = HttpContext.Current.Response;
-                    response.StatusCode = 500;
-                    HtmlUtils.WriteHeader(response, header);
-
-                    if (logTypeConfigInfo != null)
-                    {
-                        HtmlUtils.WriteError(response, logTypeConfigInfo.LogFileNameWithPath, message);
-                    }
-
-                    HtmlUtils.WriteFooter(response);
-                    response.End();
-                }
-            }
-        }
-
-        private static void WriteLog(LogQueueItem logQueueItem)
-        {
-            LogTypeConfigInfo logTypeConfigInfo = null;
-            try
-            {
-                logTypeConfigInfo = logQueueItem.LogTypeConfigInfo;
-                if (logTypeConfigInfo != null)
-                {
-                    LogInfo objLogInfo = logQueueItem.LogInfo;
-                    string logProperties = objLogInfo.LogProperties.Serialize();
-                    DataProvider.Instance().AddLog(
-                        objLogInfo.LogGUID,
-                        objLogInfo.LogTypeKey,
-                        objLogInfo.LogUserID,
-                        objLogInfo.LogUserName,
-                        objLogInfo.LogPortalID,
-                        objLogInfo.LogPortalName,
-                        objLogInfo.LogCreateDate,
-                        objLogInfo.LogServerName,
-                        logProperties,
-                        Convert.ToInt32(objLogInfo.LogConfigID),
-                        objLogInfo.Exception,
-                        logTypeConfigInfo.EmailNotificationIsActive);
-                    if (logTypeConfigInfo.EmailNotificationIsActive)
-                    {
-                        if (LockNotif.TryEnterWriteLock(ReaderLockTimeout))
-                        {
-                            try
-                            {
-                                if (logTypeConfigInfo.NotificationThreshold == 0)
-                                {
-                                    string str = logQueueItem.LogInfo.Serialize();
-                                    Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(str)));
-                                }
-                            }
-                            finally
-                            {
-                                LockNotif.ExitWriteLock();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException exc)
-            {
-                Logger.Error(exc);
-                WriteError(logTypeConfigInfo, exc, "SQL Exception", SqlUtils.TranslateSQLException(exc));
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                WriteError(logTypeConfigInfo, exc, "Unhandled Error", exc.Message);
-            }
         }
 
         public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive,
@@ -551,6 +348,209 @@ namespace DotNetNuke.Services.Log.EventLog
                 mailToAddress);
             DataCache.RemoveCache(LogTypeInfoCacheKey);
             DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
+        }
+
+        private static Hashtable FillLogTypeConfigInfoByKey(ArrayList arr)
+        {
+            var ht = new Hashtable();
+            int i;
+            for (i = 0; i <= arr.Count - 1; i++)
+            {
+                var logTypeConfigInfo = (LogTypeConfigInfo)arr[i];
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
+                {
+                    logTypeConfigInfo.LogTypeKey = "*";
+                }
+
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
+                {
+                    logTypeConfigInfo.LogTypePortalID = "*";
+                }
+
+                ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalID, logTypeConfigInfo);
+            }
+
+            DataCache.SetCache(LogTypeInfoByKeyCacheKey, ht);
+            return ht;
+        }
+
+        private static LogInfo FillLogInfo(IDataReader dr)
+        {
+            var obj = new LogInfo();
+            try
+            {
+                obj.LogCreateDate = Convert.ToDateTime(dr["LogCreateDate"]);
+                obj.LogGUID = Convert.ToString(dr["LogGUID"]);
+                obj.LogPortalID = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalID));
+                obj.LogPortalName = Convert.ToString(Null.SetNull(dr["LogPortalName"], obj.LogPortalName));
+                obj.LogServerName = Convert.ToString(Null.SetNull(dr["LogServerName"], obj.LogServerName));
+                obj.LogUserID = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserID));
+                obj.LogEventID = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventID));
+                obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"]);
+                obj.LogUserName = Convert.ToString(dr["LogUserName"]);
+                obj.LogConfigID = Convert.ToString(dr["LogConfigID"]);
+                obj.LogProperties.Deserialize(Convert.ToString(dr["LogProperties"]));
+                obj.Exception.AssemblyVersion = Convert.ToString(Null.SetNull(dr["AssemblyVersion"], obj.Exception.AssemblyVersion));
+                obj.Exception.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], obj.Exception.PortalId));
+                obj.Exception.UserId = Convert.ToInt32(Null.SetNull(dr["UserId"], obj.Exception.UserId));
+                obj.Exception.TabId = Convert.ToInt32(Null.SetNull(dr["TabId"], obj.Exception.TabId));
+                obj.Exception.RawUrl = Convert.ToString(Null.SetNull(dr["RawUrl"], obj.Exception.RawUrl));
+                obj.Exception.Referrer = Convert.ToString(Null.SetNull(dr["Referrer"], obj.Exception.Referrer));
+                obj.Exception.UserAgent = Convert.ToString(Null.SetNull(dr["UserAgent"], obj.Exception.UserAgent));
+                obj.Exception.ExceptionHash = Convert.ToString(Null.SetNull(dr["ExceptionHash"], obj.Exception.ExceptionHash));
+                obj.Exception.Message = Convert.ToString(Null.SetNull(dr["Message"], obj.Exception.Message));
+                obj.Exception.StackTrace = Convert.ToString(Null.SetNull(dr["StackTrace"], obj.Exception.StackTrace));
+                obj.Exception.InnerMessage = Convert.ToString(Null.SetNull(dr["InnerMessage"], obj.Exception.InnerMessage));
+                obj.Exception.InnerStackTrace = Convert.ToString(Null.SetNull(dr["InnerStackTrace"], obj.Exception.InnerStackTrace));
+                obj.Exception.Source = Convert.ToString(Null.SetNull(dr["Source"], obj.Exception.Source));
+                /* DNN-6218 + DNN-6242: DB logging provider throws errors
+                // the view "vw_EventLog" doesn't have these fields or any table in the database
+                obj.Exception.FileName = Convert.ToString(Null.SetNull(dr["FileName"], obj.Exception.FileName));
+                obj.Exception.FileLineNumber = Convert.ToInt32(Null.SetNull(dr["FileLineNumber"], obj.Exception.FileLineNumber));
+                obj.Exception.FileColumnNumber = Convert.ToInt32(Null.SetNull(dr["FileColumnNumber"], obj.Exception.FileColumnNumber));
+                obj.Exception.Method = Convert.ToString(Null.SetNull(dr["Method"], obj.Exception.Method));
+                 */
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+
+            return obj;
+        }
+
+        private static void FillLogs(IDataReader dr, IList logs, ref int totalRecords)
+        {
+            try
+            {
+                while (dr.Read())
+                {
+                    LogInfo logInfo = FillLogInfo(dr);
+                    logs.Add(logInfo);
+                }
+
+                dr.NextResult();
+                while (dr.Read())
+                {
+                    totalRecords = Convert.ToInt32(dr["TotalRecords"]);
+                }
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+        }
+
+        private static void WriteError(LogTypeConfigInfo logTypeConfigInfo, Exception exc, string header, string message)
+        {
+            if (HttpContext.Current != null)
+            {
+                if (HttpContext.Current.IsCustomErrorEnabled)
+                {
+                    HttpContext.Current.AddError(exc);
+                }
+                else
+                {
+                    HttpResponse response = HttpContext.Current.Response;
+                    response.StatusCode = 500;
+                    HtmlUtils.WriteHeader(response, header);
+
+                    if (logTypeConfigInfo != null)
+                    {
+                        HtmlUtils.WriteError(response, logTypeConfigInfo.LogFileNameWithPath, message);
+                    }
+
+                    HtmlUtils.WriteFooter(response);
+                    response.End();
+                }
+            }
+        }
+
+        private static void WriteLog(LogQueueItem logQueueItem)
+        {
+            LogTypeConfigInfo logTypeConfigInfo = null;
+            try
+            {
+                logTypeConfigInfo = logQueueItem.LogTypeConfigInfo;
+                if (logTypeConfigInfo != null)
+                {
+                    LogInfo objLogInfo = logQueueItem.LogInfo;
+                    string logProperties = objLogInfo.LogProperties.Serialize();
+                    DataProvider.Instance().AddLog(
+                        objLogInfo.LogGUID,
+                        objLogInfo.LogTypeKey,
+                        objLogInfo.LogUserID,
+                        objLogInfo.LogUserName,
+                        objLogInfo.LogPortalID,
+                        objLogInfo.LogPortalName,
+                        objLogInfo.LogCreateDate,
+                        objLogInfo.LogServerName,
+                        logProperties,
+                        Convert.ToInt32(objLogInfo.LogConfigID),
+                        objLogInfo.Exception,
+                        logTypeConfigInfo.EmailNotificationIsActive);
+                    if (logTypeConfigInfo.EmailNotificationIsActive)
+                    {
+                        if (LockNotif.TryEnterWriteLock(ReaderLockTimeout))
+                        {
+                            try
+                            {
+                                if (logTypeConfigInfo.NotificationThreshold == 0)
+                                {
+                                    string str = logQueueItem.LogInfo.Serialize();
+                                    Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(str)));
+                                }
+                            }
+                            finally
+                            {
+                                LockNotif.ExitWriteLock();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException exc)
+            {
+                Logger.Error(exc);
+                WriteError(logTypeConfigInfo, exc, "SQL Exception", SqlUtils.TranslateSQLException(exc));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                WriteError(logTypeConfigInfo, exc, "Unhandled Error", exc.Message);
+            }
+        }
+
+        private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
+        {
+            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(this.GetLogTypeConfigInfo());
+            var logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|" + logTypePortalID];
+            if (logTypeConfigInfo == null)
+            {
+                logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|" + logTypePortalID];
+                if (logTypeConfigInfo == null)
+                {
+                    logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|*"];
+                    if (logTypeConfigInfo == null)
+                    {
+                        logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|*"];
+                    }
+                    else
+                    {
+                        return logTypeConfigInfo;
+                    }
+                }
+                else
+                {
+                    return logTypeConfigInfo;
+                }
+            }
+            else
+            {
+                return logTypeConfigInfo;
+            }
+
+            return logTypeConfigInfo;
         }
     }
 }

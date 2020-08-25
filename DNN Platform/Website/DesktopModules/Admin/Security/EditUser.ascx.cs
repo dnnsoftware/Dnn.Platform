@@ -242,6 +242,118 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        protected void cmdDelete_Click(object sender, EventArgs e)
+        {
+            UserInfo user = this.User;
+            var success = false;
+            if (this.PortalSettings.DataConsentActive && user.UserID == this.UserInfo.UserID)
+            {
+                switch (this.PortalSettings.DataConsentUserDeleteAction)
+                {
+                    case PortalSettings.UserDeleteAction.Manual:
+                        user.Membership.Approved = false;
+                        UserController.UpdateUser(this.PortalSettings.PortalId, user);
+                        UserController.UserRequestsRemoval(user, true);
+                        success = true;
+                        break;
+                    case PortalSettings.UserDeleteAction.DelayedHardDelete:
+                        success = UserController.DeleteUser(ref user, true, false);
+                        UserController.UserRequestsRemoval(user, true);
+                        break;
+                    case PortalSettings.UserDeleteAction.HardDelete:
+                        success = UserController.RemoveUser(user);
+                        break;
+                    default: // if user delete is switched off under Data Consent then we revert to the old behavior
+                        success = UserController.DeleteUser(ref user, true, false);
+                        break;
+                }
+            }
+            else
+            {
+                success = UserController.DeleteUser(ref user, true, false);
+            }
+
+            if (!success)
+            {
+                this.AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
+            }
+
+            // DNN-26777
+            PortalSecurity.Instance.SignOut();
+            this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId));
+        }
+
+        protected void cmdUpdate_Click(object sender, EventArgs e)
+        {
+            if (this.userForm.IsValid && (this.User != null))
+            {
+                if (this.User.UserID == this.PortalSettings.AdministratorId)
+                {
+                    // Clear the Portal Cache
+                    DataCache.ClearPortalCache(this.UserPortalID, true);
+                }
+                else
+                {
+                    DataCache.ClearUserCache(this.PortalId, this.User.Username);
+                }
+
+                try
+                {
+                    // Update DisplayName to conform to Format
+                    this.UpdateDisplayName();
+
+                    // DNN-5874 Check if unique display name is required
+                    if (this.PortalSettings.Registration.RequireUniqueDisplayName)
+                    {
+                        var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
+                        if (usersWithSameDisplayName.Any(user => user.UserID != this.User.UserID))
+                        {
+                            throw new Exception("Display Name must be unique");
+                        }
+                    }
+
+                    var prevUserEmail = UserController.Instance.GetUserById(this.PortalId, this.UserId)?.Email;
+
+                    if (!string.IsNullOrWhiteSpace(prevUserEmail) && !prevUserEmail.Equals(this.User.Email, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // on email address change need to invalidate existing 'reset password' link
+                        this.User.PasswordResetExpiration = Null.NullDate;
+                    }
+
+                    UserController.UpdateUser(this.UserPortalID, this.User);
+
+                    // make sure username matches possibly changed email address
+                    if (this.PortalSettings.Registration.UseEmailAsUserName)
+                    {
+                        if (this.User.Username.ToLower() != this.User.Email.ToLower())
+                        {
+                            UserController.ChangeUsername(this.User.UserID, this.User.Email);
+
+                            // after username changed, should redirect to login page to let user authenticate again.
+                            var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(this.Request.RawUrl), false);
+                            var spliter = loginUrl.Contains("?") ? "&" : "?";
+                            loginUrl = $"{loginUrl}{spliter}username={this.User.Email}&usernameChanged=true";
+                            this.Response.Redirect(loginUrl, true);
+                        }
+                    }
+
+                    this.Response.Redirect(this.Request.RawUrl);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+                    if (exc.Message == "Display Name must be unique")
+                    {
+                        this.AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
+                    }
+                    else
+                    {
+                        this.AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
+                    }
+                }
+            }
+        }
+
         private void BindData()
         {
             if (this.User != null)
@@ -417,106 +529,6 @@ namespace DotNetNuke.Modules.Admin.Users
             if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
             {
                 this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
-            }
-        }
-
-        protected void cmdDelete_Click(object sender, EventArgs e)
-        {
-            UserInfo user = this.User;
-            var success = false;
-            if (this.PortalSettings.DataConsentActive && user.UserID == this.UserInfo.UserID)
-            {
-                switch (this.PortalSettings.DataConsentUserDeleteAction)
-                {
-                    case PortalSettings.UserDeleteAction.Manual:
-                        user.Membership.Approved = false;
-                        UserController.UpdateUser(this.PortalSettings.PortalId, user);
-                        UserController.UserRequestsRemoval(user, true);
-                        success = true;
-                        break;
-                    case PortalSettings.UserDeleteAction.DelayedHardDelete:
-                        success = UserController.DeleteUser(ref user, true, false);
-                        UserController.UserRequestsRemoval(user, true);
-                        break;
-                    case PortalSettings.UserDeleteAction.HardDelete:
-                        success = UserController.RemoveUser(user);
-                        break;
-                    default: // if user delete is switched off under Data Consent then we revert to the old behavior
-                        success = UserController.DeleteUser(ref user, true, false);
-                        break;
-                }
-            }
-            else
-            {
-                success = UserController.DeleteUser(ref user, true, false);
-            }
-
-            if (!success)
-            {
-                this.AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
-            }
-
-            // DNN-26777
-            PortalSecurity.Instance.SignOut();
-            this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId));
-        }
-
-        protected void cmdUpdate_Click(object sender, EventArgs e)
-        {
-            if (this.userForm.IsValid && (this.User != null))
-            {
-                if (this.User.UserID == this.PortalSettings.AdministratorId)
-                {
-                    // Clear the Portal Cache
-                    DataCache.ClearPortalCache(this.UserPortalID, true);
-                }
-
-                try
-                {
-                    // Update DisplayName to conform to Format
-                    this.UpdateDisplayName();
-
-                    // DNN-5874 Check if unique display name is required
-                    if (this.PortalSettings.Registration.RequireUniqueDisplayName)
-                    {
-                        var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
-                        if (usersWithSameDisplayName.Any(user => user.UserID != this.User.UserID))
-                        {
-                            throw new Exception("Display Name must be unique");
-                        }
-                    }
-
-                    UserController.UpdateUser(this.UserPortalID, this.User);
-
-                    // make sure username matches possibly changed email address
-                    if (this.PortalSettings.Registration.UseEmailAsUserName)
-                    {
-                        if (this.User.Username.ToLower() != this.User.Email.ToLower())
-                        {
-                            UserController.ChangeUsername(this.User.UserID, this.User.Email);
-
-                            // after username changed, should redirect to login page to let user authenticate again.
-                            var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(this.Request.RawUrl), false);
-                            var spliter = loginUrl.Contains("?") ? "&" : "?";
-                            loginUrl = $"{loginUrl}{spliter}username={this.User.Email}&usernameChanged=true";
-                            this.Response.Redirect(loginUrl, true);
-                        }
-                    }
-
-                    this.Response.Redirect(this.Request.RawUrl);
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                    if (exc.Message == "Display Name must be unique")
-                    {
-                        this.AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
-                    }
-                    else
-                    {
-                        this.AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
-                    }
-                }
             }
         }
 

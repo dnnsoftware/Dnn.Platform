@@ -25,14 +25,6 @@ namespace DotNetNuke.Modules.Html
         // local property declarations
         private ModuleInfo _Module;
 
-        public int ItemID { get; set; }
-
-        public int StateID { get; set; }
-
-        public string StateName { get; set; }
-
-        public int ModuleID { get; set; }
-
         public string ModuleTitle
         {
             get
@@ -59,6 +51,14 @@ namespace DotNetNuke.Modules.Html
                 return this._Module;
             }
         }
+
+        public int ItemID { get; set; }
+
+        public int StateID { get; set; }
+
+        public string StateName { get; set; }
+
+        public int ModuleID { get; set; }
 
         public int TabID { get; set; }
 

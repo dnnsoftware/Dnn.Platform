@@ -18,6 +18,7 @@ namespace DotNetNuke.UI.Skins.Controls
         protected Panel dnnSkinMessage;
         protected Label lblHeading;
         protected Label lblMessage;
+        protected Control scrollScript;
 
         public enum ModuleMessageType
         {
@@ -26,15 +27,6 @@ namespace DotNetNuke.UI.Skins.Controls
             RedError,
             BlueInfo,
         }
-        protected Control scrollScript;
-
-        public string Text { get; set; }
-
-        public string Heading { get; set; }
-
-        public ModuleMessageType IconType { get; set; }
-
-        public string IconImage { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether check this message is shown as page message or module message.
@@ -46,6 +38,14 @@ namespace DotNetNuke.UI.Skins.Controls
                 return this.Parent.ID == "MessagePlaceHolder";
             }
         }
+
+        public string Text { get; set; }
+
+        public string Heading { get; set; }
+
+        public ModuleMessageType IconType { get; set; }
+
+        public string IconImage { get; set; }
 
         /// <summary>
         /// The Page_Load server event handler on this page is used

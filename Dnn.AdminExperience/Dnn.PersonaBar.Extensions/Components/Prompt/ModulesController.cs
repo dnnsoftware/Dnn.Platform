@@ -19,8 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
-
-    [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency", false)]
+    [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency. Will be removed in DNN 11.", false)]
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
@@ -95,11 +94,6 @@ namespace Dnn.PersonaBar.Prompt.Components
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
             return moduleList;
-        }
-
-        protected override Func<IModulesController> GetFactory()
-        {
-            return () => new ModulesController();
         }
 
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
@@ -237,6 +231,11 @@ namespace Dnn.PersonaBar.Prompt.Components
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
+        protected override Func<IModulesController> GetFactory()
+        {
+            return () => new ModulesController();
         }
     }
 }

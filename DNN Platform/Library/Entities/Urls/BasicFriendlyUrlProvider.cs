@@ -60,6 +60,16 @@ namespace DotNetNuke.Entities.Urls
             return this.FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
+        {
+            return this.FriendlyUrl(tab, path, pageName, ((PortalSettings)settings)?.PortalAlias.HTTPAlias, settings);
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
+        {
+            return this.FriendlyUrl(tab, path, pageName, portalAlias, null);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddPage adds the page to the friendly url.
@@ -302,16 +312,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return results;
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
-        {
-            return this.FriendlyUrl(tab, path, pageName, ((PortalSettings)settings)?.PortalAlias.HTTPAlias, settings);
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
-        {
-            return this.FriendlyUrl(tab, path, pageName, portalAlias, null);
         }
 
         private string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias, IPortalSettings portalSettings)

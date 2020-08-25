@@ -17,6 +17,16 @@ namespace Dnn.ExportImport.Components.Dto
     public class SummaryItem : IDateTimeConverter
     {
         /// <summary>
+        /// Gets formatted total items.
+        /// </summary>
+        public string TotalItemsString => Util.FormatNumber(this.TotalItems);
+
+        /// <summary>
+        /// Gets formatted processed items.
+        /// </summary>
+        public string ProcessedItemsString => Util.FormatNumber(this.ProcessedItems);
+
+        /// <summary>
         /// Gets or sets category of the import/export. Also identifier for localization.
         /// </summary>
         public string Category { get; set; }
@@ -27,11 +37,6 @@ namespace Dnn.ExportImport.Components.Dto
         public int TotalItems { get; set; }
 
         /// <summary>
-        /// Gets formatted total items.
-        /// </summary>
-        public string TotalItemsString => Util.FormatNumber(this.TotalItems);
-
-        /// <summary>
         /// Gets or sets items processed.
         /// </summary>
         public int ProcessedItems { get; set; }
@@ -40,11 +45,6 @@ namespace Dnn.ExportImport.Components.Dto
         /// Gets or sets a value indicating whether is job finished or not yet.
         /// </summary>
         public bool Completed { get; set; }
-
-        /// <summary>
-        /// Gets formatted processed items.
-        /// </summary>
-        public string ProcessedItemsString => Util.FormatNumber(this.ProcessedItems);
 
         /// <summary>
         /// Gets or sets progress in percentage.

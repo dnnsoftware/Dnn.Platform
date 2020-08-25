@@ -50,21 +50,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        protected string AuthenticationType
-        {
-            get
-            {
-                return this.ViewState.GetValue("AuthenticationType", Null.NullString);
-            }
-
-            set
-            {
-                this.ViewState.SetValue("AuthenticationType", value, Null.NullString);
-            }
-        }
-
-        protected UserCreateStatus CreateStatus { get; set; }
-
         protected string ExcludeTerms
         {
             get
@@ -87,6 +72,23 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        protected override bool AddUser { get; } = true;
+
+        protected string AuthenticationType
+        {
+            get
+            {
+                return this.ViewState.GetValue("AuthenticationType", Null.NullString);
+            }
+
+            set
+            {
+                this.ViewState.SetValue("AuthenticationType", value, Null.NullString);
+            }
+        }
+
+        protected UserCreateStatus CreateStatus { get; set; }
+
         protected string UserToken
         {
             get
@@ -99,8 +101,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.ViewState.SetValue("UserToken", value, string.Empty);
             }
         }
-
-        protected override bool AddUser { get; } = true;
 
         protected override void OnInit(EventArgs e)
         {

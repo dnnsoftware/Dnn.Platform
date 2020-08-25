@@ -18,6 +18,9 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
     [DataContract]
     public class ThemeInfo
     {
+        [DataMember(Name = "level")]
+        public ThemeLevel Level => ThemesController.GetThemeLevel(this.Path);
+
         [DataMember(Name = "packageName")]
         public string PackageName { get; set; }
 
@@ -35,8 +38,5 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
 
         [DataMember(Name = "canDelete")]
         public bool CanDelete { get; set; } = true;
-
-        [DataMember(Name = "level")]
-        public ThemeLevel Level => ThemesController.GetThemeLevel(this.Path);
     }
 }

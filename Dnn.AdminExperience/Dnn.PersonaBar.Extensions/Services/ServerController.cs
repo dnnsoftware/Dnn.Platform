@@ -25,6 +25,7 @@ namespace Dnn.PersonaBar.Servers.Services
     public class ServerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
+
         public ServerController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;

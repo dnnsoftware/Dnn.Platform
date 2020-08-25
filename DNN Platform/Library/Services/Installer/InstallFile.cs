@@ -102,14 +102,6 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Action for this file.
-        /// </summary>
-        /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
-        public string Action { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets the location of the backup file.
         /// </summary>
         /// <value>A string.</value>
@@ -135,8 +127,6 @@ namespace DotNetNuke.Services.Installer
                 return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", this.Path));
             }
         }
-
-        public TextEncoding Encoding { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -174,6 +164,36 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the location of the temporary file.
+        /// </summary>
+        /// <value>A string.</value>
+        /// -----------------------------------------------------------------------------
+        public string TempFileName
+        {
+            get
+            {
+                string fileName = this.SourceFileName;
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = this.FullName;
+                }
+
+                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, fileName);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Action for this file.
+        /// </summary>
+        /// <value>A string.</value>
+        /// -----------------------------------------------------------------------------
+        public string Action { get; set; }
+
+        public TextEncoding Encoding { get; private set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the associated InstallerInfo.
         /// </summary>
         /// <value>An InstallerInfo object.</value>
@@ -204,26 +224,6 @@ namespace DotNetNuke.Services.Installer
         /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string SourceFileName { get; private set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the location of the temporary file.
-        /// </summary>
-        /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
-        public string TempFileName
-        {
-            get
-            {
-                string fileName = this.SourceFileName;
-                if (string.IsNullOrEmpty(fileName))
-                {
-                    fileName = this.FullName;
-                }
-
-                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, fileName);
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

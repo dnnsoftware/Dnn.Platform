@@ -18,12 +18,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     {
         private const string HostMapPath = @"C:\path";
         private const string DefaultName = "Default";
-
-        private Mock<IPortalTemplateIO> _mockPortalTemplateIO;
         private const string DefaultDeName = "Rückstellungs-Web site";
         private const string DefaultDeDescription = "A new german description";
-        private static readonly string DefaultPath = MakePath(DefaultName);
-        private static readonly string DefaultDePath = MakePath(DefaultName, "de-DE");
         private const string StaticName = "Static";
 
         private const string StaticDescription = "An description from a template file";
@@ -31,6 +27,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
         private const string AlternateDeName = "Alternate in German";
         private const string ResourceName = "Resource";
+        private static readonly string DefaultPath = MakePath(DefaultName);
+        private static readonly string DefaultDePath = MakePath(DefaultName, "de-DE");
 
         private static readonly Dictionary<string, string> DefaultExpectationsDe = new Dictionary<string, string>
                                                                                     {
@@ -42,6 +40,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                     };
 
         private static readonly string DefaultUsPath = MakePath(DefaultName, "en-US");
+
         private static readonly Dictionary<string, string> DefaultExpectationsUs = new Dictionary<string, string>
                                                                                     {
                                                                                         { "Name", DefaultName },
@@ -49,8 +48,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "LanguageFilePath", DefaultUsPath },
                                                                                         { "CultureCode", "en-US" },
                                                                                     };
+
         private static readonly string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
         private static readonly string StaticPath = MakePath(StaticName);
+
         private static readonly Dictionary<string, string> StaticExpectations = new Dictionary<string, string>
                                                                                     {
                                                                                         { "Name", StaticName },
@@ -58,8 +59,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "Description", StaticDescription },
                                                                                         { "CultureCode", CultureCode },
                                                                                     };
+
         private static readonly string AlternatePath = MakePath(AlternateName);
         private static readonly string AlternateDePath = MakePath(AlternateName, "de-DE");
+
         private static readonly Dictionary<string, string> AlternateExpectationsDe = new Dictionary<string, string>
                                                                                     {
                                                                                         { "Name", AlternateDeName },
@@ -67,8 +70,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "LanguageFilePath", AlternateDePath },
                                                                                         { "CultureCode", "de-DE" },
                                                                                     };
+
         private static readonly string ResourcePath = MakePath(ResourceName);
         private static readonly string ResourceFilePath = ResourcePath + ".resources";
+
         private static readonly Dictionary<string, string> ResourceExpectations = new Dictionary<string, string>
                                                                                     {
                                                                                         { "Name", ResourceName },
@@ -76,6 +81,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "ResourceFilePath", ResourceFilePath },
                                                                                         { "CultureCode", CultureCode },
                                                                                     };
+
+        private Mock<IPortalTemplateIO> _mockPortalTemplateIO;
 
         [SetUp]
         public void SetUp()
@@ -275,6 +282,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             }
         }
 
+        private static string MakePath(string name)
+        {
+            var fileName = name + ".template";
+            return Path.Combine(HostMapPath, fileName);
+        }
+
+        private static string MakePath(string name, string culture)
+        {
+            return string.Format(@"{0}.{1}.resx", MakePath(name), culture);
+        }
+
         private TextReader CreateLanguageFileReader(string name)
         {
             return this.CreateLanguageFileReader(name, null);
@@ -295,17 +313,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         {
             var xml = string.Format("<portal><description>{0}</description></portal>", description);
             return new StringReader(xml);
-        }
-
-        private static string MakePath(string name)
-        {
-            var fileName = name + ".template";
-            return Path.Combine(HostMapPath, fileName);
-        }
-
-        private static string MakePath(string name, string culture)
-        {
-            return string.Format(@"{0}.{1}.resx", MakePath(name), culture);
         }
 
         private IEnumerable<T> ToEnumerable<T>(params T[] input)

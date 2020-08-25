@@ -41,8 +41,6 @@ namespace DotNetNuke.Common.Utilities
         // Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
         public const string UnSecureHostSettingsCacheKey = "UnsecureHostSettings";
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
         public const string HostSettingsCacheKey = "HostSettings";
         public const CacheItemPriority HostSettingsCachePriority = CacheItemPriority.NotRemovable;
         public const int HostSettingsCacheTimeOut = 20;
@@ -303,11 +301,11 @@ namespace DotNetNuke.Common.Utilities
 
         public const string ScopeTypesCacheKey = "ScopeTypes";
         public const string VocabularyCacheKey = "Vocabularies";
-
-        private static string _CachePersistenceEnabled = string.Empty;
         public const string TermCacheKey = "Terms_{0}";
 
         internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_{0}";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
 
         private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();
         private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
@@ -315,6 +313,8 @@ namespace DotNetNuke.Common.Utilities
         private static readonly SharedDictionary<string, object> dictionaryCache = new SharedDictionary<string, object>();
 
         private static readonly TimeSpan _5seconds = new TimeSpan(0, 0, 5);
+
+        private static string _CachePersistenceEnabled = string.Empty;
 
         public static bool CachePersistenceEnabled
         {
@@ -346,51 +346,6 @@ namespace DotNetNuke.Common.Utilities
         public static void ClearCache(string cachePrefix)
         {
             CachingProvider.Instance().Clear("Prefix", GetDnnCacheKey(cachePrefix));
-        }
-
-        internal static void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
-        {
-            // if the item was removed from the cache, log the key and reason to the event log
-            try
-            {
-                if (Globals.Status == Globals.UpgradeStatus.None)
-                {
-                    var log = new LogInfo();
-                    switch (removedReason)
-                    {
-                        case CacheItemRemovedReason.Removed:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
-                            break;
-                        case CacheItemRemovedReason.Expired:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
-                            break;
-                        case CacheItemRemovedReason.Underused:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
-                            break;
-                        case CacheItemRemovedReason.DependencyChanged:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
-                            break;
-                    }
-
-                    log.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
-                    LogController.Instance.AddLog(log);
-                }
-            }
-            catch (Exception exc)
-            {
-                // Swallow exception
-                Logger.Error(exc);
-            }
-        }
-
-        private static string GetDnnCacheKey(string CacheKey)
-        {
-            return CachingProvider.GetCacheKey(CacheKey);
-        }
-
-        private static string CleanCacheKey(string cacheKey)
-        {
-            return CachingProvider.CleanCacheKey(cacheKey);
         }
 
         public static void ClearFolderCache(int PortalId)
@@ -522,6 +477,94 @@ namespace DotNetNuke.Common.Utilities
             return CachingProvider.Instance().GetItem(GetDnnCacheKey(CacheKey));
         }
 
+        public static void RemoveCache(string CacheKey)
+        {
+            CachingProvider.Instance().Remove(GetDnnCacheKey(CacheKey));
+        }
+
+        public static void RemoveFromPrivateDictionary(string DnnCacheKey)
+        {
+            using (dictionaryCache.GetWriteLock())
+            {
+                dictionaryCache.Remove(CleanCacheKey(DnnCacheKey));
+            }
+        }
+
+        public static void SetCache(string CacheKey, object objObject)
+        {
+            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+        }
+
+        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency)
+        {
+            SetCache(CacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+        }
+
+        public static void SetCache(string CacheKey, object objObject, DateTime AbsoluteExpiration)
+        {
+            SetCache(CacheKey, objObject, (DNNCacheDependency)null, AbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+        }
+
+        public static void SetCache(string CacheKey, object objObject, TimeSpan SlidingExpiration)
+        {
+            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+        }
+
+        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration)
+        {
+            SetCache(CacheKey, objObject, objDependency, AbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+        }
+
+        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, CacheItemPriority Priority,
+                                    CacheItemRemovedCallback OnRemoveCallback)
+        {
+            if (objObject != null)
+            {
+                // if no OnRemoveCallback value is specified, use the default method
+                if (OnRemoveCallback == null)
+                {
+                    OnRemoveCallback = ItemRemovedCallback;
+                }
+
+                CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
+            }
+        }
+
+        internal static void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
+        {
+            // if the item was removed from the cache, log the key and reason to the event log
+            try
+            {
+                if (Globals.Status == Globals.UpgradeStatus.None)
+                {
+                    var log = new LogInfo();
+                    switch (removedReason)
+                    {
+                        case CacheItemRemovedReason.Removed:
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
+                            break;
+                        case CacheItemRemovedReason.Expired:
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
+                            break;
+                        case CacheItemRemovedReason.Underused:
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
+                            break;
+                        case CacheItemRemovedReason.DependencyChanged:
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
+                            break;
+                    }
+
+                    log.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
+                    LogController.Instance.AddLog(log);
+                }
+            }
+            catch (Exception exc)
+            {
+                // Swallow exception
+                Logger.Error(exc);
+            }
+        }
+
         internal static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
         {
             object objObject = storeInDictionary
@@ -535,6 +578,16 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return (TObject)objObject;
+        }
+
+        private static string GetDnnCacheKey(string CacheKey)
+        {
+            return CachingProvider.GetCacheKey(CacheKey);
+        }
+
+        private static string CleanCacheKey(string cacheKey)
+        {
+            return CachingProvider.CleanCacheKey(cacheKey);
         }
 
         private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
@@ -704,59 +757,6 @@ namespace DotNetNuke.Common.Utilities
             finally
             {
                 dictionaryLock.ExitWriteLock();
-            }
-        }
-
-        public static void RemoveCache(string CacheKey)
-        {
-            CachingProvider.Instance().Remove(GetDnnCacheKey(CacheKey));
-        }
-
-        public static void RemoveFromPrivateDictionary(string DnnCacheKey)
-        {
-            using (dictionaryCache.GetWriteLock())
-            {
-                dictionaryCache.Remove(CleanCacheKey(DnnCacheKey));
-            }
-        }
-
-        public static void SetCache(string CacheKey, object objObject)
-        {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency)
-        {
-            SetCache(CacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        public static void SetCache(string CacheKey, object objObject, DateTime AbsoluteExpiration)
-        {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, AbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        public static void SetCache(string CacheKey, object objObject, TimeSpan SlidingExpiration)
-        {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration)
-        {
-            SetCache(CacheKey, objObject, objDependency, AbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, CacheItemPriority Priority,
-                                    CacheItemRemovedCallback OnRemoveCallback)
-        {
-            if (objObject != null)
-            {
-                // if no OnRemoveCallback value is specified, use the default method
-                if (OnRemoveCallback == null)
-                {
-                    OnRemoveCallback = ItemRemovedCallback;
-                }
-
-                CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
             }
         }
     }

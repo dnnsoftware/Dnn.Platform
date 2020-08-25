@@ -33,6 +33,25 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
+        public bool IsValid
+        {
+            get
+            {
+                bool isValid = true;
+                foreach (var item in this.GetAllItems())
+                {
+                    item.CheckIsValid();
+                    if (!item.IsValid)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                return isValid;
+            }
+        }
+
         public object DataSource
         {
             get
@@ -55,42 +74,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnFormMode FormMode { get; set; }
 
-        protected string LocalResourceFile
-        {
-            get
-            {
-                return Utilities.GetLocalResourceFile(this);
-            }
-        }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
-
         public bool EncryptIds { get; set; }
-
-        public bool IsValid
-        {
-            get
-            {
-                bool isValid = true;
-                foreach (var item in this.GetAllItems())
-                {
-                    item.CheckIsValid();
-                    if (!item.IsValid)
-                    {
-                        isValid = false;
-                        break;
-                    }
-                }
-
-                return isValid;
-            }
-        }
 
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
@@ -106,6 +90,22 @@ namespace DotNetNuke.Web.UI.WebControls
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormTab> Tabs { get; private set; }
+
+        protected string LocalResourceFile
+        {
+            get
+            {
+                return Utilities.GetLocalResourceFile(this);
+            }
+        }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
 
         public override void DataBind()
         {
@@ -134,33 +134,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 parentControl.Controls.Add(item);
             }
-        }
-
-        private List<DnnFormItemBase> GetAllItems()
-        {
-            var items = new List<DnnFormItemBase>();
-
-            // iterate over pages
-            foreach (DnnFormTab page in this.Tabs)
-            {
-                foreach (DnnFormSection section in page.Sections)
-                {
-                    items.AddRange(section.Items);
-                }
-
-                items.AddRange(page.Items);
-            }
-
-            // iterate over section
-            foreach (DnnFormSection section in this.Sections)
-            {
-                items.AddRange(section.Items);
-            }
-
-            // Add base items
-            items.AddRange(this.Items);
-
-            return items;
         }
 
         protected override void CreateChildControls()
@@ -197,6 +170,87 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this._itemCount = (int)state;
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.Page.RegisterRequiresControlState(this);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            base.OnInit(e);
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (this.Tabs.Count > 0)
+            {
+                const string scriptName = "FormEditorjQuery";
+                ClientScriptManager cs = this.Page.ClientScript;
+
+                if (!cs.IsClientScriptBlockRegistered(this.GetType(), scriptName))
+                {
+                    // Render Script
+                    var scriptBuilder = new StringBuilder();
+                    scriptBuilder.Append("<script language=\"javascript\" type=\"text/javascript\">\r\n");
+                    scriptBuilder.Append("\t(function ($, Sys) {\r\n");
+                    scriptBuilder.Append("\t\tfunction setupFormEditor() {\r\n");
+                    scriptBuilder.Append("\t\t\t$('#" + this.ClientID + "').dnnTabs().dnnPanels();\r\n");
+                    foreach (DnnFormTab formTab in this.Tabs)
+                    {
+                        if (formTab.IncludeExpandAll)
+                        {
+                            scriptBuilder.Append(formTab.ExpandAllScript);
+                        }
+                    }
+
+                    scriptBuilder.Append("\t\t}\r\n");
+                    scriptBuilder.Append("\t\t$(document).ready(function () {\r\n");
+                    scriptBuilder.Append("\t\t\tsetupFormEditor();\r\n");
+                    scriptBuilder.Append("\t\t\tif (typeof Sys != 'undefined') {\r\n");
+                    scriptBuilder.Append("\t\t\t\tSys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {\r\n");
+                    scriptBuilder.Append("\t\t\t\t\tsetupFormEditor();\r\n");
+                    scriptBuilder.Append("\t\t\t\t});\r\n");
+                    scriptBuilder.Append("\t\t\t}\r\n");
+                    scriptBuilder.Append("\t\t});\r\n");
+                    scriptBuilder.Append("\t} (jQuery, window.Sys));\r\n");
+
+                    scriptBuilder.Append("</script>\r\n");
+                    cs.RegisterClientScriptBlock(this.GetType(), scriptName, scriptBuilder.ToString());
+                }
+            }
+        }
+
+        protected override object SaveControlState()
+        {
+            return this._itemCount > 0 ? (object)this._itemCount : null;
+        }
+
+        private List<DnnFormItemBase> GetAllItems()
+        {
+            var items = new List<DnnFormItemBase>();
+
+            // iterate over pages
+            foreach (DnnFormTab page in this.Tabs)
+            {
+                foreach (DnnFormSection section in page.Sections)
+                {
+                    items.AddRange(section.Items);
+                }
+
+                items.AddRange(page.Items);
+            }
+
+            // iterate over section
+            foreach (DnnFormSection section in this.Sections)
+            {
+                items.AddRange(section.Items);
+            }
+
+            // Add base items
+            items.AddRange(this.Items);
+
+            return items;
         }
 
         private void SetUpSections(List<DnnFormSection> sections, WebControl parentControl)
@@ -294,60 +348,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             this._itemCount = this.GetAllItems().Count;
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            this.Page.RegisterRequiresControlState(this);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            base.OnInit(e);
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (this.Tabs.Count > 0)
-            {
-                const string scriptName = "FormEditorjQuery";
-                ClientScriptManager cs = this.Page.ClientScript;
-
-                if (!cs.IsClientScriptBlockRegistered(this.GetType(), scriptName))
-                {
-                    // Render Script
-                    var scriptBuilder = new StringBuilder();
-                    scriptBuilder.Append("<script language=\"javascript\" type=\"text/javascript\">\r\n");
-                    scriptBuilder.Append("\t(function ($, Sys) {\r\n");
-                    scriptBuilder.Append("\t\tfunction setupFormEditor() {\r\n");
-                    scriptBuilder.Append("\t\t\t$('#" + this.ClientID + "').dnnTabs().dnnPanels();\r\n");
-                    foreach (DnnFormTab formTab in this.Tabs)
-                    {
-                        if (formTab.IncludeExpandAll)
-                        {
-                            scriptBuilder.Append(formTab.ExpandAllScript);
-                        }
-                    }
-
-                    scriptBuilder.Append("\t\t}\r\n");
-                    scriptBuilder.Append("\t\t$(document).ready(function () {\r\n");
-                    scriptBuilder.Append("\t\t\tsetupFormEditor();\r\n");
-                    scriptBuilder.Append("\t\t\tif (typeof Sys != 'undefined') {\r\n");
-                    scriptBuilder.Append("\t\t\t\tSys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {\r\n");
-                    scriptBuilder.Append("\t\t\t\t\tsetupFormEditor();\r\n");
-                    scriptBuilder.Append("\t\t\t\t});\r\n");
-                    scriptBuilder.Append("\t\t\t}\r\n");
-                    scriptBuilder.Append("\t\t});\r\n");
-                    scriptBuilder.Append("\t} (jQuery, window.Sys));\r\n");
-
-                    scriptBuilder.Append("</script>\r\n");
-                    cs.RegisterClientScriptBlock(this.GetType(), scriptName, scriptBuilder.ToString());
-                }
-            }
-        }
-
-        protected override object SaveControlState()
-        {
-            return this._itemCount > 0 ? (object)this._itemCount : null;
         }
     }
 }

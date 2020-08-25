@@ -11,6 +11,32 @@ namespace DotNetNuke.Services.FileSystem
 
     public interface IFileInfo
     {
+        string PhysicalPath { get; }
+
+        string RelativePath { get; }
+
+        FileAttributes? FileAttributes { get; }
+
+        bool SupportsFileAttributes { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the file is enabled,
+        /// considering if the publish period is active and if the current date is within the publish period.
+        /// </summary>
+        bool IsEnabled { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether gets a flag which says whether the file has ever been published.
+        /// </summary>
+        bool HasBeenPublished { get; }
+
+        int CreatedByUserID { get; }
+
+        DateTime CreatedOnDate { get; }
+
+        int LastModifiedByUserID { get; }
+
+        DateTime LastModifiedOnDate { get; }
         string ContentType { get; set; }
 
         string Extension { get; set; }
@@ -27,11 +53,7 @@ namespace DotNetNuke.Services.FileSystem
 
         bool IsCached { get; set; }
 
-        string PhysicalPath { get; }
-
         int PortalId { get; set; }
-
-        string RelativePath { get; }
 
         string SHA1Hash { get; set; }
 
@@ -44,10 +66,6 @@ namespace DotNetNuke.Services.FileSystem
         Guid VersionGuid { get; set; }
 
         int Width { get; set; }
-
-        FileAttributes? FileAttributes { get; }
-
-        bool SupportsFileAttributes { get; }
 
         DateTime LastModificationTime { get; set; }
 
@@ -76,12 +94,6 @@ namespace DotNetNuke.Services.FileSystem
         DateTime EndDate { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the file is enabled,
-        /// considering if the publish period is active and if the current date is within the publish period.
-        /// </summary>
-        bool IsEnabled { get; }
-
-        /// <summary>
         /// Gets or sets a reference to ContentItem, to use in Workflows.
         /// </summary>
         int ContentItemID { get; set; }
@@ -90,19 +102,6 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets or sets the published version number of the file.
         /// </summary>
         int PublishedVersion { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether gets a flag which says whether the file has ever been published.
-        /// </summary>
-        bool HasBeenPublished { get; }
-
-        int CreatedByUserID { get; }
-
-        DateTime CreatedOnDate { get; }
-
-        int LastModifiedByUserID { get; }
-
-        DateTime LastModifiedOnDate { get; }
 
         UserInfo CreatedByUser(int portalId);
 

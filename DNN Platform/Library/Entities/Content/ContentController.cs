@@ -54,11 +54,6 @@ namespace DotNetNuke.Entities.Content
             return contentItem.ContentItemId;
         }
 
-        protected override Func<IContentController> GetFactory()
-        {
-            return () => new ContentController();
-        }
-
         public void DeleteContentItem(ContentItem contentItem)
         {
             // Argument Contract
@@ -234,6 +229,11 @@ namespace DotNetNuke.Entities.Content
             return metadata;
         }
 
+        protected override Func<IContentController> GetFactory()
+        {
+            return () => new ContentController();
+        }
+
         private static bool MetaDataChanged(
             IEnumerable<KeyValuePair<string, string>> lh,
             IEnumerable<KeyValuePair<string, string>> rh)
@@ -251,6 +251,11 @@ namespace DotNetNuke.Entities.Content
                     GetContentItemCacheKey(contentItem.ContentItemId),
                     DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
             }
+        }
+
+        private static string GetContentItemCacheKey(int contetnItemId)
+        {
+            return string.Format(DataCache.ContentItemsCacheKey, contetnItemId);
         }
 
         private void SaveMetadataDelta(ContentItem contentItem)
@@ -275,11 +280,6 @@ namespace DotNetNuke.Entities.Content
             this._dataService.SynchronizeMetaData(contentItem, added, deleted);
 
             UpdateContentItemsCache(contentItem, false);
-        }
-
-        private static string GetContentItemCacheKey(int contetnItemId)
-        {
-            return string.Format(DataCache.ContentItemsCacheKey, contetnItemId);
         }
     }
 }

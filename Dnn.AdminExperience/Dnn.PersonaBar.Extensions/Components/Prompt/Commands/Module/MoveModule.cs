@@ -22,8 +22,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("id", "Prompt_MoveModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("pageid", "Prompt_MoveModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
@@ -32,6 +30,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         [FlagParameter("pane", "Prompt_MoveModule_FlagPane", "String", "ContentPane")]
         private const string FlagPane = "pane";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int ModuleId { get; set; }
         private int PageId { get; set; }

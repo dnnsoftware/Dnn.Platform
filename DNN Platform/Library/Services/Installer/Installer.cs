@@ -128,14 +128,6 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated InstallerInfo object.
-        /// </summary>
-        /// <value>An InstallerInfo.</value>
-        /// -----------------------------------------------------------------------------
-        public InstallerInfo InstallerInfo { get; private set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets a value indicating whether gets whether the associated InstallerInfo is valid.
         /// </summary>
         /// <value>True - if valid, False if not.</value>
@@ -150,14 +142,6 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a SortedList of Packages that are included in the Package Zip.
-        /// </summary>
-        /// <value>A SortedList(Of Integer, PackageInstaller).</value>
-        /// -----------------------------------------------------------------------------
-        public SortedList<int, PackageInstaller> Packages { get; private set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets.
         /// </summary>
         /// <value>A Dictionary(Of String, PackageInstaller).</value>
@@ -169,6 +153,22 @@ namespace DotNetNuke.Services.Installer
                 return this.InstallerInfo.TempInstallFolder;
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the associated InstallerInfo object.
+        /// </summary>
+        /// <value>An InstallerInfo.</value>
+        /// -----------------------------------------------------------------------------
+        public InstallerInfo InstallerInfo { get; private set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a SortedList of Packages that are included in the Package Zip.
+        /// </summary>
+        /// <value>A SortedList(Of Integer, PackageInstaller).</value>
+        /// -----------------------------------------------------------------------------
+        public SortedList<int, PackageInstaller> Packages { get; private set; }
 
         public static XPathNavigator ConvertLegacyNavigator(XPathNavigator rootNav, InstallerInfo info)
         {
@@ -327,6 +327,65 @@ namespace DotNetNuke.Services.Installer
             }
 
             return bStatus;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ReadManifest method reads the manifest file and parses it into packages.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void ReadManifest(bool deleteTemp)
+        {
+            this.InstallerInfo.Log.StartJob(Util.DNN_Reading);
+            if (this.InstallerInfo.ManifestFile != null)
+            {
+                this.ReadManifest(new FileStream(this.InstallerInfo.ManifestFile.TempFileName, FileMode.Open, FileAccess.Read));
+            }
+
+            if (this.InstallerInfo.Log.Valid)
+            {
+                this.InstallerInfo.Log.EndJob(Util.DNN_Success);
+            }
+            else if (deleteTemp)
+            {
+                // Delete Temp Folder
+                this.DeleteTempFolder();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstall method uninstalls the feature.
+        /// </summary>
+        /// <param name="deleteFiles">A flag that indicates whether the files should be
+        /// deleted.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public bool UnInstall(bool deleteFiles)
+        {
+            this.InstallerInfo.Log.StartJob(Util.UNINSTALL_Start);
+            try
+            {
+                this.UnInstallPackages(deleteFiles);
+            }
+            catch (Exception ex)
+            {
+                this.InstallerInfo.Log.AddFailure(ex);
+                return false;
+            }
+
+            if (this.InstallerInfo.Log.HasWarnings)
+            {
+                this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Warnings);
+            }
+            else
+            {
+                this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Success);
+            }
+
+            // log installation event
+            this.LogInstallEvent("Package", "UnInstall");
+            return true;
         }
 
         /// -----------------------------------------------------------------------------
@@ -504,65 +563,6 @@ namespace DotNetNuke.Services.Installer
             {
                 Logger.Error(ex);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file and parses it into packages.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public void ReadManifest(bool deleteTemp)
-        {
-            this.InstallerInfo.Log.StartJob(Util.DNN_Reading);
-            if (this.InstallerInfo.ManifestFile != null)
-            {
-                this.ReadManifest(new FileStream(this.InstallerInfo.ManifestFile.TempFileName, FileMode.Open, FileAccess.Read));
-            }
-
-            if (this.InstallerInfo.Log.Valid)
-            {
-                this.InstallerInfo.Log.EndJob(Util.DNN_Success);
-            }
-            else if (deleteTemp)
-            {
-                // Delete Temp Folder
-                this.DeleteTempFolder();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the feature.
-        /// </summary>
-        /// <param name="deleteFiles">A flag that indicates whether the files should be
-        /// deleted.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public bool UnInstall(bool deleteFiles)
-        {
-            this.InstallerInfo.Log.StartJob(Util.UNINSTALL_Start);
-            try
-            {
-                this.UnInstallPackages(deleteFiles);
-            }
-            catch (Exception ex)
-            {
-                this.InstallerInfo.Log.AddFailure(ex);
-                return false;
-            }
-
-            if (this.InstallerInfo.Log.HasWarnings)
-            {
-                this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Warnings);
-            }
-            else
-            {
-                this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Success);
-            }
-
-            // log installation event
-            this.LogInstallEvent("Package", "UnInstall");
-            return true;
         }
     }
 }

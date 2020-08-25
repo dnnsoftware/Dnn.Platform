@@ -28,6 +28,8 @@ namespace DotNetNuke.Data
 
         protected bool IsCacheable { get; private set; }
 
+        protected bool IsScoped { get; private set; }
+
         public void Delete(T item)
         {
             this.DeleteInternal(item);
@@ -105,61 +107,6 @@ namespace DotNetNuke.Data
 
         public abstract void Update(string sqlCondition, params object[] args);
 
-        private void CheckIfScoped()
-        {
-            if (!this.IsScoped)
-            {
-                throw new NotSupportedException("This method requires the model to be cacheable and have a cache scope defined");
-            }
-        }
-
-        private void ClearCache(T item)
-        {
-            if (this.IsCacheable)
-            {
-                DataCache.RemoveCache(this.IsScoped
-                                          ? string.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
-                                          : this.CacheArgs.CacheKey);
-            }
-        }
-
-        private void InitializeInternal()
-        {
-            var type = typeof(T);
-            this.Scope = string.Empty;
-            this.IsCacheable = false;
-            this.IsScoped = false;
-            this.CacheArgs = null;
-
-            var scopeAttribute = DataUtil.GetAttribute<ScopeAttribute>(type);
-            if (scopeAttribute != null)
-            {
-                this.Scope = scopeAttribute.Scope;
-            }
-
-            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
-
-            var cacheableAttribute = DataUtil.GetAttribute<CacheableAttribute>(type);
-            if (cacheableAttribute != null)
-            {
-                this.IsCacheable = true;
-                var cacheKey = !string.IsNullOrEmpty(cacheableAttribute.CacheKey)
-                                ? cacheableAttribute.CacheKey
-                                : string.Format("OR_{0}", type.Name);
-                var cachePriority = cacheableAttribute.CachePriority;
-                var cacheTimeOut = cacheableAttribute.CacheTimeOut;
-
-                if (this.IsScoped)
-                {
-                    cacheKey += "_" + this.Scope + "_{0}";
-                }
-
-                this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
-            }
-        }
-
-        protected bool IsScoped { get; private set; }
-
         public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
         {
             this.Scope = scope;
@@ -224,5 +171,58 @@ namespace DotNetNuke.Data
         protected abstract void InsertInternal(T item);
 
         protected abstract void UpdateInternal(T item);
+
+        private void CheckIfScoped()
+        {
+            if (!this.IsScoped)
+            {
+                throw new NotSupportedException("This method requires the model to be cacheable and have a cache scope defined");
+            }
+        }
+
+        private void ClearCache(T item)
+        {
+            if (this.IsCacheable)
+            {
+                DataCache.RemoveCache(this.IsScoped
+                                          ? string.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
+                                          : this.CacheArgs.CacheKey);
+            }
+        }
+
+        private void InitializeInternal()
+        {
+            var type = typeof(T);
+            this.Scope = string.Empty;
+            this.IsCacheable = false;
+            this.IsScoped = false;
+            this.CacheArgs = null;
+
+            var scopeAttribute = DataUtil.GetAttribute<ScopeAttribute>(type);
+            if (scopeAttribute != null)
+            {
+                this.Scope = scopeAttribute.Scope;
+            }
+
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
+
+            var cacheableAttribute = DataUtil.GetAttribute<CacheableAttribute>(type);
+            if (cacheableAttribute != null)
+            {
+                this.IsCacheable = true;
+                var cacheKey = !string.IsNullOrEmpty(cacheableAttribute.CacheKey)
+                                ? cacheableAttribute.CacheKey
+                                : string.Format("OR_{0}", type.Name);
+                var cachePriority = cacheableAttribute.CachePriority;
+                var cacheTimeOut = cacheableAttribute.CacheTimeOut;
+
+                if (this.IsScoped)
+                {
+                    cacheKey += "_" + this.Scope + "_{0}";
+                }
+
+                this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
+            }
+        }
     }
 }

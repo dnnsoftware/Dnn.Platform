@@ -288,6 +288,172 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
+        protected void OnEditClick(object sender, EventArgs e)
+        {
+            try
+            {
+                this.DisplayEdit(this.hfEditor.Value);
+
+                if (this.phMasterContent.Visible)
+                {
+                    this.DisplayMasterLanguageContent();
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnPreviewClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.phEdit.Visible)
+                {
+                    this.hfEditor.Value = this.txtContent.Text;
+                }
+
+                this.DisplayPreview(this.phEdit.Visible ? this.txtContent.Text : this.hfEditor.Value);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnHistoryGridItemDataBound(object sender, GridViewRowEventArgs e)
+        {
+            var item = e.Row;
+
+            if (item.RowType == DataControlRowType.DataRow)
+            {
+                // Localize columns
+                item.Cells[2].Text = Localization.GetString(item.Cells[2].Text, this.LocalResourceFile);
+                item.Cells[3].Text = Localization.GetString(item.Cells[3].Text, this.LocalResourceFile);
+            }
+        }
+
+        protected void OnVersionsGridItemCommand(object source, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                HtmlTextInfo htmlContent;
+
+                // disable delete button if user doesn't have delete rights???
+                switch (e.CommandName.ToLowerInvariant())
+                {
+                    case "remove":
+                        htmlContent = this.GetHTMLContent(e);
+                        this._htmlTextController.DeleteHtmlText(this.ModuleId, htmlContent.ItemID);
+                        break;
+                    case "rollback":
+                        htmlContent = this.GetHTMLContent(e);
+                        htmlContent.ItemID = -1;
+                        htmlContent.ModuleID = this.ModuleId;
+                        htmlContent.WorkflowID = this.WorkflowID;
+                        htmlContent.StateID = this._workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
+                        this._htmlTextController.UpdateHtmlText(htmlContent, this._htmlTextController.GetMaximumVersionHistory(this.PortalId));
+                        break;
+                    case "preview":
+                        htmlContent = this.GetHTMLContent(e);
+                        this.DisplayPreview(htmlContent);
+                        break;
+                }
+
+                if (e.CommandName.ToLowerInvariant() != "preview")
+                {
+                    var latestContent = this._htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
+                    if (latestContent == null)
+                    {
+                        this.DisplayInitialContent(this._workflowStateController.GetWorkflowStates(this.WorkflowID)[0] as WorkflowStateInfo);
+                    }
+                    else
+                    {
+                        this.DisplayContent(latestContent);
+
+                        // DisplayPreview(latestContent);
+                        // DisplayVersions();
+                    }
+                }
+
+                // Module failed to load
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnVersionsGridItemDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var htmlContent = e.Row.DataItem as HtmlTextInfo;
+                var createdBy = "Default";
+
+                if (htmlContent.CreatedByUserID != -1)
+                {
+                    var createdByByUser = UserController.GetUserById(this.PortalId, htmlContent.CreatedByUserID);
+                    if (createdByByUser != null)
+                    {
+                        createdBy = createdByByUser.DisplayName;
+                    }
+                }
+
+                foreach (TableCell cell in e.Row.Cells)
+                {
+                    foreach (Control cellControl in cell.Controls)
+                    {
+                        if (cellControl is ImageButton)
+                        {
+                            var imageButton = cellControl as ImageButton;
+                            imageButton.CommandArgument = htmlContent.ItemID.ToString();
+                            switch (imageButton.CommandName.ToLowerInvariant())
+                            {
+                                case "rollback":
+                                    // hide rollback for the first item
+                                    if (this.dgVersions.CurrentPageIndex == 0)
+                                    {
+                                        if (e.Row.RowIndex == 0)
+                                        {
+                                            imageButton.Visible = false;
+                                            break;
+                                        }
+                                    }
+
+                                    imageButton.Visible = true;
+
+                                    break;
+                                case "remove":
+                                    var msg = this.GetLocalizedString("DeleteVersion.Confirm");
+                                    msg =
+                                        msg.Replace("[VERSION]", htmlContent.Version.ToString()).Replace("[STATE]", htmlContent.StateName).Replace("[DATECREATED]", htmlContent.CreatedOnDate.ToString())
+                                            .Replace("[USERNAME]", createdBy);
+                                    imageButton.OnClientClick = "return confirm(\"" + msg + "\");";
+
+                                    // hide the delete button
+                                    var showDelete = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
+
+                                    if (!showDelete)
+                                    {
+                                        showDelete = htmlContent.IsPublished == false;
+                                    }
+
+                                    imageButton.Visible = showDelete;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        protected void OnVersionsGridPageIndexChanged(object source, EventArgs e)
+        {
+            this.DisplayVersions();
+        }
+
         /// <summary>
         ///   Displays the history of an html content item in a grid in the preview section.
         /// </summary>
@@ -573,103 +739,6 @@ namespace DotNetNuke.Modules.Html
             this.txtContent.ChangeMode(this.ddlRender.SelectedValue);
         }
 
-        protected void OnEditClick(object sender, EventArgs e)
-        {
-            try
-            {
-                this.DisplayEdit(this.hfEditor.Value);
-
-                if (this.phMasterContent.Visible)
-                {
-                    this.DisplayMasterLanguageContent();
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnPreviewClick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.phEdit.Visible)
-                {
-                    this.hfEditor.Value = this.txtContent.Text;
-                }
-
-                this.DisplayPreview(this.phEdit.Visible ? this.txtContent.Text : this.hfEditor.Value);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnHistoryGridItemDataBound(object sender, GridViewRowEventArgs e)
-        {
-            var item = e.Row;
-
-            if (item.RowType == DataControlRowType.DataRow)
-            {
-                // Localize columns
-                item.Cells[2].Text = Localization.GetString(item.Cells[2].Text, this.LocalResourceFile);
-                item.Cells[3].Text = Localization.GetString(item.Cells[3].Text, this.LocalResourceFile);
-            }
-        }
-
-        protected void OnVersionsGridItemCommand(object source, GridViewCommandEventArgs e)
-        {
-            try
-            {
-                HtmlTextInfo htmlContent;
-
-                // disable delete button if user doesn't have delete rights???
-                switch (e.CommandName.ToLowerInvariant())
-                {
-                    case "remove":
-                        htmlContent = this.GetHTMLContent(e);
-                        this._htmlTextController.DeleteHtmlText(this.ModuleId, htmlContent.ItemID);
-                        break;
-                    case "rollback":
-                        htmlContent = this.GetHTMLContent(e);
-                        htmlContent.ItemID = -1;
-                        htmlContent.ModuleID = this.ModuleId;
-                        htmlContent.WorkflowID = this.WorkflowID;
-                        htmlContent.StateID = this._workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
-                        this._htmlTextController.UpdateHtmlText(htmlContent, this._htmlTextController.GetMaximumVersionHistory(this.PortalId));
-                        break;
-                    case "preview":
-                        htmlContent = this.GetHTMLContent(e);
-                        this.DisplayPreview(htmlContent);
-                        break;
-                }
-
-                if (e.CommandName.ToLowerInvariant() != "preview")
-                {
-                    var latestContent = this._htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
-                    if (latestContent == null)
-                    {
-                        this.DisplayInitialContent(this._workflowStateController.GetWorkflowStates(this.WorkflowID)[0] as WorkflowStateInfo);
-                    }
-                    else
-                    {
-                        this.DisplayContent(latestContent);
-
-                        // DisplayPreview(latestContent);
-                        // DisplayVersions();
-                    }
-                }
-
-                // Module failed to load
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
         private void OnHistoryClick(object sender, EventArgs e)
         {
             try
@@ -705,75 +774,6 @@ namespace DotNetNuke.Modules.Html
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-        }
-
-        protected void OnVersionsGridItemDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                var htmlContent = e.Row.DataItem as HtmlTextInfo;
-                var createdBy = "Default";
-
-                if (htmlContent.CreatedByUserID != -1)
-                {
-                    var createdByByUser = UserController.GetUserById(this.PortalId, htmlContent.CreatedByUserID);
-                    if (createdByByUser != null)
-                    {
-                        createdBy = createdByByUser.DisplayName;
-                    }
-                }
-
-                foreach (TableCell cell in e.Row.Cells)
-                {
-                    foreach (Control cellControl in cell.Controls)
-                    {
-                        if (cellControl is ImageButton)
-                        {
-                            var imageButton = cellControl as ImageButton;
-                            imageButton.CommandArgument = htmlContent.ItemID.ToString();
-                            switch (imageButton.CommandName.ToLowerInvariant())
-                            {
-                                case "rollback":
-                                    // hide rollback for the first item
-                                    if (this.dgVersions.CurrentPageIndex == 0)
-                                    {
-                                        if (e.Row.RowIndex == 0)
-                                        {
-                                            imageButton.Visible = false;
-                                            break;
-                                        }
-                                    }
-
-                                    imageButton.Visible = true;
-
-                                    break;
-                                case "remove":
-                                    var msg = this.GetLocalizedString("DeleteVersion.Confirm");
-                                    msg =
-                                        msg.Replace("[VERSION]", htmlContent.Version.ToString()).Replace("[STATE]", htmlContent.StateName).Replace("[DATECREATED]", htmlContent.CreatedOnDate.ToString())
-                                            .Replace("[USERNAME]", createdBy);
-                                    imageButton.OnClientClick = "return confirm(\"" + msg + "\");";
-
-                                    // hide the delete button
-                                    var showDelete = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
-
-                                    if (!showDelete)
-                                    {
-                                        showDelete = htmlContent.IsPublished == false;
-                                    }
-
-                                    imageButton.Visible = showDelete;
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        protected void OnVersionsGridPageIndexChanged(object source, EventArgs e)
-        {
-            this.DisplayVersions();
         }
 
         private HtmlTextInfo GetHTMLContent(GridViewCommandEventArgs e)

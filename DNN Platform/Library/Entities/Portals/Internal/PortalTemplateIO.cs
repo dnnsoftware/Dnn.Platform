@@ -37,11 +37,6 @@ namespace DotNetNuke.Entities.Portals.Internal
             return new string[0];
         }
 
-        protected override Func<IPortalTemplateIO> GetFactory()
-        {
-            return () => new PortalTemplateIO();
-        }
-
         public string GetResourceFilePath(string templateFilePath)
         {
             return CheckFilePath(templateFilePath + ".resources");
@@ -62,6 +57,11 @@ namespace DotNetNuke.Entities.Portals.Internal
 
             retryable.TryIt();
             return reader;
+        }
+
+        protected override Func<IPortalTemplateIO> GetFactory()
+        {
+            return () => new PortalTemplateIO();
         }
 
         private static string CheckFilePath(string path)

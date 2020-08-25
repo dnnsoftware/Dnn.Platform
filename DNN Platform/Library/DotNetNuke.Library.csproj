@@ -161,25 +161,25 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -205,15 +205,19 @@
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
     <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
+    <Compile Include="Entities\Modules\Prompt\AddModule.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
+    <Compile Include="Entities\Modules\Prompt\ListModules.cs" />
+    <Compile Include="Entities\Modules\Prompt\PromptModuleInfo.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
     <Compile Include="Entities\Modules\Settings\ParameterAttributeBase.cs" />
     <Compile Include="Entities\Modules\Settings\ParameterMapping.cs" />
     <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\SerializationController.cs" />
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Entities\Portals\IPortalSettingHandlers.cs" />
@@ -247,6 +251,17 @@
     </Compile>
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
+    <Compile Include="Prompt\Command.cs" />
+    <Compile Include="Prompt\Output\CommandHelp.cs" />
+    <Compile Include="Prompt\Output\CommandOption.cs" />
+    <Compile Include="Prompt\CommandRepository.cs" />
+    <Compile Include="Prompt\Common\Constants.cs" />
+    <Compile Include="Prompt\Attributes\ConsoleCommandParameterAttribute.cs" />
+    <Compile Include="Prompt\Attributes\ConsoleCommandAttribute.cs" />
+    <Compile Include="Prompt\ConsoleCommand.cs" />
+    <Compile Include="Prompt\Output\ConsoleErrorResultModel.cs" />
+    <Compile Include="Prompt\Output\ConsoleResultModel.cs" />
+    <Compile Include="Prompt\Output\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IIndexable.cs" />
@@ -754,6 +769,8 @@
     <Compile Include="Services\FileSystem\Internal\FileSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\SecurityCheckers\SvgFileChecker.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Services\FileSystem\LinkClickPortalSettings.cs" />
+    <Compile Include="Services\FileSystem\SyncFolderData.cs" />
     <Compile Include="Services\GeneratedImage\IPCount.cs" />
     <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
     <Compile Include="Services\GeneratedImage\DnnImageHandler.cs" />
@@ -792,6 +809,7 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Localization\CultureDropDownTypes.cs" />
     <Compile Include="Services\Localization\LocalizationExtensions.cs" />
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
@@ -870,6 +888,9 @@
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
     <Compile Include="Services\Tokens\Scope.cs" />
+    <Compile Include="Services\Tokens\CoreTokenProvider.cs" />
+    <Compile Include="Services\Tokens\TokenContext.cs" />
+    <Compile Include="Services\Tokens\TokenProvider.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />

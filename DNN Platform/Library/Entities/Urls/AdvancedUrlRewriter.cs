@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Urls
 {
     using System;
@@ -31,13 +30,151 @@ namespace DotNetNuke.Entities.Urls
 
     public class AdvancedUrlRewriter : UrlRewriterBase
     {
+        private const string _productName = "AdvancedUrlRewriter";
         private static readonly Regex DefaultPageRegex = new Regex(@"(?<!(\?.+))/" + Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex AumDebugRegex = new Regex(@"(&|\?)_aumdebug=[A-Z]+(?:&|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-        private const string _productName = "AdvancedUrlRewriter";
         private FriendlyUrlSettings _settings;
+
+        public void ProcessTestRequestWithContext(
+            HttpContext context,
+            Uri requestUri,
+            bool useFriendlyUrls,
+            UrlAction result,
+            FriendlyUrlSettings settings)
+        {
+            Guid parentTraceId = Guid.Empty;
+            this._settings = settings;
+            this.ProcessRequest(
+                context,
+                requestUri,
+                useFriendlyUrls,
+                result,
+                settings,
+                false,
+                parentTraceId);
+        }
+
+        internal static void RewriteAsChildAliasRoot(
+            HttpContext context,
+            UrlAction result,
+            string aliasQueryString,
+            FriendlyUrlSettings settings)
+        {
+            string culture = null;
+
+            // look for specific alias to rewrite language parameter
+            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+            if (result.PortalId > -1 && result.HttpAlias != null)
+            {
+                culture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
+            }
+
+            if (string.IsNullOrEmpty(culture))
+
+                // 732 : when no culture returned can be "" as well as null : no culture causes no rewrite, which results in redirect to parent alias
+            {
+                // set the default culture code here
+                // 735 : switch to custom method for getting portal
+                PortalInfo pi = CacheController.GetPortal(result.PortalId, false);
+                if (pi != null)
+                {
+                    culture = pi.DefaultLanguage;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(culture)) // a culture was identified for the alias root
+            {
+                if (RewriteController.AddLanguageCodeToRewritePath(ref aliasQueryString, culture))
+                {
+                    result.CultureCode = culture;
+                }
+
+                result.DoRewrite = true;
+                result.RewritePath = "~/" + Globals.glbDefaultPage + aliasQueryString;
+
+                // the expected /default.aspx path (defaultPageUrl) matches the requested Url (/default.aspx)
+                if (context != null)
+                {
+                    // only do if not testing
+                    RewriterUtils.RewriteUrl(context, result.RewritePath);
+                }
+            }
+        }
+
+        internal static bool CheckForChildPortalRootUrl(string requestUrl, UrlAction result, out string aliasQueryString)
+        {
+            bool isChildPortalRootUrl = false;
+
+            // what we are going to test for here is that if this is a child portal request, for the /default.aspx of the child portal
+            // then we are going to avoid the core 302 redirect to ?alias=portalALias by rewriting to the /default.aspx of the site root
+            // 684 : don't convert querystring items to lower case
+            // do the check by constructing what a child alias url would look like and compare it with the requested urls
+            // 912 : when requested without a valid portal alias, portalALias is null.  Refuse and return false.
+            aliasQueryString = null;
+            if (result.PortalAlias != null && result.PortalAlias.HTTPAlias != null)
+            {
+                string defaultPageUrl = result.Scheme + result.PortalAlias.HTTPAlias + "/" +
+                                        Globals.glbDefaultPage.ToLowerInvariant(); // child alias Url with /default.aspx
+
+                // 660 : look for a querystring on the site root for a child portal, and handle it if so
+                if (string.CompareOrdinal(requestUrl.ToLowerInvariant(), defaultPageUrl) == 0)
+                {
+                    // exact match : that's the alias root
+                    isChildPortalRootUrl = true;
+                    aliasQueryString = string.Empty;
+                }
+
+                if (!isChildPortalRootUrl && requestUrl.Contains("?"))
+                {
+                    // is we didn't get an exact match but there is a querystring, then investigate
+                    string[] requestUrlParts = requestUrl.Split('?');
+                    if (requestUrlParts.GetUpperBound(0) > 0)
+                    {
+                        string rootPart = requestUrlParts[0];
+                        string queryString = requestUrlParts[1];
+                        if (string.Compare(rootPart, defaultPageUrl, StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            // rewrite, but put in the querystring on the rewrite path
+                            isChildPortalRootUrl = true;
+                            aliasQueryString = "?" + queryString;
+
+                            // 674: check for 301 if this value is a tabid/xx - otherwise the url will just evaluate as is
+                            if (queryString.ToLowerInvariant().StartsWith("tabid="))
+                            {
+                                result.Action = ActionType.CheckFor301;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return isChildPortalRootUrl;
+        }
+
+        /// <summary>
+        /// Make sure any redirect to the site root doesn't append the nasty /default.aspx on the end.
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="destUrl"></param>
+        /// <returns></returns>
+        internal static string CheckForSiteRootRedirect(string alias, string destUrl)
+        {
+            // 540 - don't append /default.aspx onto the end of a site root redirect.
+            if (destUrl.EndsWith(alias + "/" + Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
+            {
+                // this is just the portal alias root + /defualt.aspx.
+                // we don't want that, just the portalAliasRoot + "/"
+                string aliasPlusSlash = alias + "/";
+
+                // get everything up to the end of the portal alias
+                destUrl = destUrl.Substring(0, destUrl.IndexOf(aliasPlusSlash, StringComparison.Ordinal) + aliasPlusSlash.Length);
+            }
+
+            return destUrl;
+        }
 
         internal override void RewriteUrl(object sender, EventArgs e)
         {
@@ -98,717 +235,123 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        public void ProcessTestRequestWithContext(
+        protected bool IsPortalAliasIncorrect(
             HttpContext context,
+            HttpRequest request,
             Uri requestUri,
-            bool useFriendlyUrls,
             UrlAction result,
-            FriendlyUrlSettings settings)
-        {
-            Guid parentTraceId = Guid.Empty;
-            this._settings = settings;
-            this.ProcessRequest(
-                context,
-                requestUri,
-                useFriendlyUrls,
-                result,
-                settings,
-                false,
-                parentTraceId);
-        }
-
-        private PortalAliasInfo GetPortalAlias(FriendlyUrlSettings settings, string requestUrl, out bool redirectAlias, out bool isPrimaryAlias, out string wrongAlias)
-        {
-            PortalAliasInfo aliasInfo = null;
-            redirectAlias = false;
-            wrongAlias = null;
-            isPrimaryAlias = false;
-            OrderedDictionary portalAliases = TabIndexController.GetPortalAliases(settings);
-            foreach (string alias in portalAliases.Keys)
-            {
-                var urlToMatch = requestUrl;
-
-                // in fact, requested url should contain alias
-                // for better performance, need to check whether we want to proceed with a whole url matching or not
-                // if alias is not a part of url -> let's proceed to the next iteration
-                var aliasIndex = urlToMatch.IndexOf(alias, StringComparison.InvariantCultureIgnoreCase);
-                if (aliasIndex < 0)
-                {
-                    continue;
-                }
-                else
-                {
-                    // we do not accept URL if the first occurence of alias is presented somewhere in the query string
-                    var queryIndex = urlToMatch.IndexOf("?", StringComparison.InvariantCultureIgnoreCase);
-                    if (queryIndex >= 0 && queryIndex < aliasIndex)
-                    {
-                        // alias is in the query string, go to the next alias
-                        continue;
-                    }
-
-                    // we are fine here, lets prepare URL to be validated in regex
-                    urlToMatch = urlToMatch.ReplaceIgnoreCase(alias, "_ALIAS_");
-                }
-
-                // check whether requested URL has the right URL format containing existing alias
-                // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
-                // in the below expression we will validate following value http://_ALIAS_/query?string=test
-                var aliasMatch = AliasUrlRegex.Match(urlToMatch);
-                if (aliasMatch.Success)
-                {
-                    // check for mobile browser and matching
-                    var aliasEx = (PortalAliasInfo)portalAliases[alias];
-                    redirectAlias = aliasEx.Redirect;
-                    if (redirectAlias)
-                    {
-                        wrongAlias = alias;
-                    }
-
-                    isPrimaryAlias = aliasEx.IsPrimary;
-                    aliasInfo = aliasEx;
-                    break;
-                }
-            }
-
-            return aliasInfo;
-        }
-
-        private void ProcessRequest(
-            HttpContext context,
-            Uri requestUri,
-            bool useFriendlyUrls,
-            UrlAction result,
+            NameValueCollection queryStringCol,
             FriendlyUrlSettings settings,
-            bool allowSettingsChange,
-            Guid parentTraceId)
+            Guid parentTraceId,
+            out string httpAlias)
         {
-            bool finished = false;
-            bool showDebug = false;
-            bool postRequest = false;
+            // now check to make sure it's the primary portal alias for this portal/language/browser
+            bool incorrectAlias = false;
+            httpAlias = null;
 
-            HttpRequest request = context.Request;
-            HttpResponse response = context.Response;
-            string requestType = request.RequestType;
-            NameValueCollection queryStringCol = request.QueryString;
-
-            try
+            // if (result.RedirectAllowed && result.PortalId > -1)
+            if (result.PortalId > -1) // portal has been identified
             {
-                string fullUrl, querystring;
+                var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
-                // 699: get the full url based on the request and the quersytring, rather than the requestUri.ToString()
-                // there is a difference in encoding, which can corrupt results when an encoded value is in the querystring
-                RewriteController.GetUrlWithQuerystring(request, requestUri, out fullUrl, out querystring);
-
-                showDebug = CheckForDebug(request, queryStringCol, settings.AllowDebugCode);
-                string ignoreRegex = settings.IgnoreRegex;
-                bool ignoreRequest = IgnoreRequest(result, fullUrl, ignoreRegex, request);
-                bool redirectAlias = false;
-                if (!ignoreRequest)
+                if (queryStringCol != null && queryStringCol["forceAlias"] != "true")
                 {
-                    // set original path
-                    context.Items["UrlRewrite:OriginalUrl"] = requestUri.AbsoluteUri;
-
-                    // set the path of the result object, and determine if a redirect is allowed on this request
-                    result.SetOriginalPath(requestUri.ToString(), settings);
-
-                    // 737 : set the mobile browser
-                    result.SetBrowserType(request, response, settings);
-
-                    // add to context
-                    context.Items["UrlRewrite:BrowserType"] = result.BrowserType.ToString();
-
-                    // 839 : split out this check
-                    result.SetRedirectAllowed(result.OriginalPath, settings);
-
-                    // find the portal alias first
-                    string wrongAlias;
-                    bool isPrimaryAlias;
-                    var requestedAlias = this.GetPortalAlias(settings, fullUrl, out redirectAlias, out isPrimaryAlias, out wrongAlias);
-
-                    if (requestedAlias != null)
+                    if (portalAliases.Count > 0)
                     {
-                        // 827 : now get the correct settings for this portal (if not a test request)
-                        // 839 : separate out redirect check as well and move above first redirect test (ConfigurePortalAliasRedirect)
-                        if (allowSettingsChange)
+                        string checkAlias = result.HttpAlias;
+                        bool continueLoop = true;
+                        bool triedWWW = false;
+                        while (httpAlias == null && continueLoop)
                         {
-                            settings = new FriendlyUrlSettings(requestedAlias.PortalID);
-                            result.SetRedirectAllowed(result.OriginalPath, settings);
-                        }
-
-                        result.PortalAlias = requestedAlias;
-                        result.PrimaryAlias = requestedAlias; // this is the primary alias
-                        result.PortalId = requestedAlias.PortalID;
-                        result.CultureCode = requestedAlias.CultureCode;
-
-                        // get the portal alias mapping for this portal
-                        result.PortalAliasMapping = PortalSettingsController.Instance().GetPortalAliasMappingMode(requestedAlias.PortalID);
-
-                        // if requested alias wasn't the primary, we have a replacement, redirects are allowed and the portal alias mapping mode is redirect
-                        // then do a redirect based on the wrong portal
-                        if ((redirectAlias && wrongAlias != null) && result.RedirectAllowed && result.PortalAliasMapping != PortalSettings.PortalAliasMapping.Redirect)
-                        {
-                            // this is the alias, we are going to enforce it as the primary alias
-                            result.PortalAlias = requestedAlias;
-                            result.PrimaryAlias = requestedAlias;
-
-                            // going to redirect this alias because it is incorrect
-                            // or do we just want to mark as 'check for 301??'
-                            redirectAlias = ConfigurePortalAliasRedirect(
-                                ref result,
-                                wrongAlias,
-                                requestedAlias.HTTPAlias,
-                                false,
-                                settings.InternalAliasList,
-                                settings);
-                        }
-                        else
-                        {
-                            // do not redirect the wrong alias, but set the primary alias value
-                            if (wrongAlias != null)
+                            if (portalAliases.ContainsAlias(result.PortalId, checkAlias))
                             {
-                                // get the portal alias info for the requested alias (which is the wrong one)
-                                // and set that as the alias, but also set the found alias as the primary
-                                PortalAliasInfo wrongAliasInfo = PortalAliasController.Instance.GetPortalAlias(wrongAlias);
-                                if (wrongAliasInfo != null)
+                                if (portalAliases.Count > 0)
                                 {
-                                    result.PortalAlias = wrongAliasInfo;
-                                    result.PrimaryAlias = requestedAlias;
-                                }
-                            }
-                        }
-                    }
-                }
+                                    // var cpa = portalAliases.GetAliasByPortalIdAndSettings(result);
+                                    string url = requestUri.ToString();
+                                    RewriteController.CheckLanguageMatch(ref url, result);
+                                    var cpa = portalAliases
+                                        .Where(a => a.IsPrimary || result.PortalAliasMapping != PortalSettings.PortalAliasMapping.Redirect)
+                                        .GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, result.BrowserType);
 
-                ignoreRegex = settings.IgnoreRegex;
-                ignoreRequest = IgnoreRequest(result, fullUrl, ignoreRegex, request);
-                if (!ignoreRequest)
-                {
-                    // check to see if a post request
-                    if (request.RequestType == "POST")
-                    {
-                        postRequest = true;
-                    }
-
-                    // check the portal alias again.  This time, in more depth now that the portal Id is known
-                    // this check handles browser types/language specific aliases & mobile aliases
-                    string primaryHttpAlias;
-                    if (!redirectAlias && this.IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryHttpAlias))
-                    {
-                        // it was an incorrect alias
-                        PortalAliasInfo primaryAlias = PortalAliasController.Instance.GetPortalAlias(primaryHttpAlias);
-                        if (primaryAlias != null)
-                        {
-                            result.PrimaryAlias = primaryAlias;
-                        }
-
-                        // try and redirect the alias if the settings allow it
-                        redirectAlias = RedirectPortalAlias(primaryHttpAlias, ref result, settings);
-                    }
-
-                    if (redirectAlias)
-                    {
-                        // not correct alias for portal : will be redirected
-                        // perform a 301 redirect if one has already been found
-                        response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                        response.RedirectPermanent(result.FinalUrl, false);
-                        finished = true;
-                    }
-
-                    if (!finished)
-                    {
-                        // Check to see if this to be rewritten into default.aspx?tabId=nn format
-                        // this call is the main rewriting matching call.  It makes the decision on whether it is a
-                        // physical file, whether it is toe be rewritten or redirected by way of a stored rule
-
-                        // Check if we have a standard url
-                        var uri = new Uri(fullUrl);
-                        if (uri.PathAndQuery.StartsWith("/" + Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            result.DoRewrite = true;
-                            result.Action = ActionType.CheckFor301;
-                            result.RewritePath = Globals.glbDefaultPage + uri.Query;
-                        }
-                        else
-                        {
-                            bool isPhysicalResource;
-                            CheckForRewrite(fullUrl, querystring, result, useFriendlyUrls, queryStringCol, settings, out isPhysicalResource, parentTraceId);
-                        }
-
-                        // return 404 if there is no portal alias for a rewritten request
-                        if (result.DoRewrite && result.PortalAlias == null)
-                        {
-                            // 882 : move this logic in from where it was before to here
-                            // so that non-rewritten requests don't trip over it
-                            // no portal alias found for the request : that's a 404 error
-                            result.Action = ActionType.Output404;
-                            result.Reason = RedirectReason.No_Portal_Alias;
-
-                            Handle404OrException(settings, context, null, result, false, showDebug);
-                            finished = true; // cannot fulfil request unless correct portal alias specified
-                        }
-                    }
-
-                    // now we may know the TabId. If the current alias is not the same as the primary alias,
-                    // we should check if the current alias is indeed a valid custom alias for the current tab.
-                    if (result.TabId > 0 && result.HttpAlias != result.PrimaryAlias.HTTPAlias && !CheckIfAliasIsCurrentTabCustomTabAlias(ref result, settings))
-                    {
-                        //it was an incorrect alias
-                        //try and redirect the alias if the settings allow it
-                        if( RedirectPortalAlias(result.PrimaryAlias.HTTPAlias, ref result, settings))
-                        {
-                            //not correct alias for tab : will be redirected
-                            //perform a 301 redirect if one has already been found
-                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                            response.RedirectPermanent(result.FinalUrl, false);
-                            finished = true;
-                        }
-                    }
-
-                    if (!finished && result.DoRewrite)
-                    {
-                        // check the identified portal alias details for any extra rewrite information required
-                        // this includes the culture and the skin, which can be placed into the rewrite path
-                        // This logic is here because it will catch any Urls which are excluded from rewriting
-                        var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
-
-                        if (result.PortalId > -1 && result.HttpAlias != null)
-                        {
-                            string culture;
-                            string skin;
-                            BrowserTypes browserType;
-                            primaryAliases.GetSettingsByPortalIdAndAlias(result.PortalId, result.HttpAlias,
-                                                                                            out culture,
-                                                                                            out browserType,
-                                                                                            out skin);
-
-                            // add language code to path if it exists (not null) and if it's not already there
-                            string rewritePath = result.RewritePath;
-                            if (RewriteController.AddLanguageCodeToRewritePath(ref rewritePath, culture))
-                            {
-                                result.CultureCode = culture;
-                            }
-
-                            // 852: add skinSrc to path if it exists and if it's not already there
-                            string debugMessage;
-                            RewriteController.AddSkinToRewritePath(result.TabId, result.PortalId, ref rewritePath, skin, out debugMessage);
-                            result.RewritePath = rewritePath; // reset back from ref temp var
-                            if (debugMessage != null)
-                            {
-                                result.DebugMessages.Add(debugMessage);
-                            }
-                        }
-                    }
-
-                    if (!finished && result.DoRewrite)
-                    {
-                        // if so, do the rewrite
-                        if (result.RewritePath.StartsWith(result.Scheme) || result.RewritePath.StartsWith(Globals.glbDefaultPage) == false)
-                        {
-                            if (result.RewritePath.Contains(Globals.glbDefaultPage) == false)
-                            {
-                                RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
-                            }
-                            else
-                            {
-                                // if there is no TabId and we have the domain
-                                if (!result.RewritePath.ToLowerInvariant().Contains("tabId="))
-                                {
-                                    RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
-                                }
-                                else
-                                {
-                                    RewriterUtils.RewriteUrl(context, result.RewritePath);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
-                        }
-                    }
-
-                    // confirm which portal the request is for
-                    if (!finished)
-                    {
-                        this.IdentifyPortalAlias(context, request, requestUri, result, queryStringCol, settings, parentTraceId);
-                        if (result.Action == ActionType.Redirect302Now)
-                        {
-                            // performs a 302 redirect if requested
-                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                            response.Redirect(result.FinalUrl, false);
-                            finished = true;
-                        }
-                        else
-                        {
-                            if (result.Action == ActionType.Redirect301 && !string.IsNullOrEmpty(result.FinalUrl))
-                            {
-                                finished = true;
-
-                                // perform a 301 redirect if one has already been found
-                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                response.RedirectPermanent(result.FinalUrl, false);
-                            }
-                        }
-                    }
-
-                    if (!finished)
-                    {
-                        // check to see if this tab has an external url that should be forwared or not
-                        finished = CheckForTabExternalForwardOrRedirect(context, ref result, response, settings, parentTraceId);
-                    }
-
-                    // check for a parameter redirect (we had to do all the previous processing to know we are on the right portal and identify the tabid)
-                    // if the CustomParmRewrite flag is set, it means we already rewrote these parameters, so they have to be correct, and aren't subject to
-                    // redirection.  The only reason to do a custom parm rewrite is to interpret already-friendly parameters
-                    if (!finished
-                        && !postRequest /* either request is null, or it's not a post - 551 */
-                        && result.HttpAlias != null /* must have a http alias */
-                        && !result.CustomParmRewrite && /* not custom rewritten parms */
-                        ((settings.EnableCustomProviders &&
-                          RedirectController.CheckForModuleProviderRedirect(requestUri, ref result, queryStringCol, settings, parentTraceId))
-
-                        // 894 : allow disable of all custom providers
-                         ||
-                         RedirectController.CheckForParameterRedirect(requestUri, ref result, queryStringCol, settings)))
-                    {
-                        // 301 redirect to new location based on parameter match
-                        if (response != null)
-                        {
-                            switch (result.Action)
-                            {
-                                case ActionType.Redirect301:
-                                    response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                    response.RedirectPermanent(result.FinalUrl);
-                                    break;
-                                case ActionType.Redirect302:
-                                    response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                    response.Redirect(result.FinalUrl);
-                                    break;
-                                case ActionType.Output404:
-                                    response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
-                                    Handle404OrException(settings, context, null, result, true, showDebug);
-                                    break;
-                            }
-                        }
-
-                        finished = true;
-                    }
-
-                    // shifted until after the 301 redirect code to allow redirects to be checked for pages which have no rewrite value
-                    // look for a 404 result from the rewrite, because of a deleted page or rule
-                    if (!finished && result.Action == ActionType.Output404)
-                    {
-                        if (result.OriginalPath.Equals(result.HttpAlias, StringComparison.InvariantCultureIgnoreCase)
-                                && result.PortalAlias != null
-                                && result.Reason != RedirectReason.Deleted_Page
-                                && result.Reason != RedirectReason.Disabled_Page)
-                        {
-                            // Request for domain with no page identified (and no home page set in Site Settings)
-                            result.Action = ActionType.Continue;
-                        }
-                        else
-                        {
-                            finished = true;
-                            response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
-
-                            if (showDebug)
-                            {
-                                ShowDebugData(context, requestUri.AbsoluteUri, result, null);
-                            }
-
-                            // show the 404 page if configured
-                            result.Reason = RedirectReason.Requested_404;
-                            Handle404OrException(settings, context, null, result, true, showDebug);
-                        }
-                    }
-
-                    if (!finished)
-                    {
-                        // add the portal settings to the app context if the portal alias has been found and is correct
-                        if (result.PortalId != -1 && result.PortalAlias != null)
-                        {
-                            // for invalid tab id other than -1, show the 404 page
-                            TabInfo tabInfo = TabController.Instance.GetTab(result.TabId, result.PortalId, false);
-                            if (tabInfo == null && result.TabId > -1)
-                            {
-                                finished = true;
-
-                                if (showDebug)
-                                {
-                                    ShowDebugData(context, requestUri.AbsoluteUri, result, null);
-                                }
-
-                                // show the 404 page if configured
-                                result.Action = ActionType.Output404;
-                                result.Reason = RedirectReason.Requested_404;
-                                response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
-                                Handle404OrException(settings, context, null, result, true, showDebug);
-                            }
-                            else
-                            {
-                                Globals.SetApplicationName(result.PortalId);
-
-                                // load the PortalSettings into current context
-                                var portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
-
-                                // set the primary alias if one was specified
-                                if (result.PrimaryAlias != null)
-                                {
-                                    portalSettings.PrimaryAlias = result.PrimaryAlias;
-                                }
-
-                                if (result.CultureCode != null && fullUrl.Contains(result.CultureCode) &&
-                                    portalSettings.DefaultLanguage == result.CultureCode)
-                                {
-                                    // when the request culture code is the same as the portal default, check for a 301 redirect, because we try and remove the language from the url where possible
-                                    result.Action = ActionType.CheckFor301;
-                                }
-
-                                int portalHomeTabId = portalSettings.HomeTabId;
-                                if (context != null && portalSettings != null && !context.Items.Contains("PortalSettings"))
-                                {
-                                    context.Items.Add("PortalSettings", portalSettings);
-
-                                    // load PortalSettings and HostSettings dictionaries into current context
-                                    // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
-                                    context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
-                                    context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
-                                }
-
-                                // check if a secure redirection is needed
-                                // this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
-                                bool redirectSecure = this.CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
-                                if (redirectSecure)
-                                {
-                                    if (response != null)
+                                    if (cpa != null)
                                     {
-                                        // 702 : don't check final url until checked for null reference first
-                                        if (result.FinalUrl != null)
+                                        httpAlias = cpa.HTTPAlias;
+                                        continueLoop = false;
+                                    }
+
+                                    if (string.IsNullOrEmpty(result.CultureCode) && cpa == null)
+                                    {
+                                        // if there is a specific culture for this portal alias, then check that
+                                        string culture = portalAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
+
+                                        // if this matches the alias of the request, then we know we have the correct alias because it is a specific culture
+                                        if (!string.IsNullOrEmpty(culture))
                                         {
-                                            if (result.FinalUrl.StartsWith("https://"))
-                                            {
-                                                if (showDebug)
-                                                {
-                                                    /*
-                                                    string debugMsg = "{0}, {1}, {2}, {3}, {4}";
-                                                    string productVer = System.Reflection.Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
-                                                    response.AppendHeader("X-" + prodName + "-Debug", string.Format(debugMsg, requestUri.AbsoluteUri, result.FinalUrl, result.RewritePath, result.Action, productVer));
-                                                     */
-                                                    ShowDebugData(context, fullUrl, result, null);
-                                                }
-
-                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                response.RedirectPermanent(result.FinalUrl);
-                                                finished = true;
-                                            }
-                                            else
-                                            {
-                                                if (settings.SSLClientRedirect)
-                                                {
-                                                    // redirect back to http version, use client redirect
-                                                    response.Clear();
-
-                                                    // add a refresh header to the response
-                                                    response.AddHeader("Refresh", "0;URL=" + result.FinalUrl);
-
-                                                    // add the clientside javascript redirection script
-                                                    var finalUrl = HttpUtility.HtmlEncode(result.FinalUrl);
-                                                    response.Write("<html><head><title></title>");
-                                                    response.Write(@"<!-- <script language=""javascript"">window.location.replace(""" + finalUrl + @""")</script> -->");
-                                                    response.Write("</head><body><div><a href='" + finalUrl + "'>" + finalUrl + "</a></div></body></html>");
-                                                    if (showDebug)
-                                                    {
-                                                        /*
-                                                        string debugMsg = "{0}, {1}, {2}, {3}, {4}";
-                                                        string productVer = System.Reflection.Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
-                                                        response.AppendHeader("X-" + prodName + "-Debug", string.Format(debugMsg, requestUri.AbsoluteUri, result.FinalUrl, result.RewritePath, result.Action, productVer));
-                                                         */
-                                                        ShowDebugData(context, fullUrl, result, null);
-                                                    }
-
-                                                    // send the response
-                                                    // 891 : reinstate the response.end to stop the entire page loading
-                                                    response.End();
-                                                    finished = true;
-                                                }
-                                                else
-                                                {
-                                                    response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                    response.RedirectPermanent(result.FinalUrl);
-                                                    finished = true;
-                                                }
-                                            }
+                                            continueLoop = false;
                                         }
                                     }
                                 }
-                                else
+                            }
+
+                            // check whether to still go on or not
+                            if (continueLoop)
+                            {
+                                // this alias doesn't exist in the list
+                                // check if it has a www on it - if not, try adding, if it does, try removing
+                                if (!triedWWW)
                                 {
-                                    // check for, and do a 301 redirect if required
-                                    if (CheckForRedirects(requestUri, fullUrl, queryStringCol, result, requestType, settings, portalHomeTabId))
+                                    triedWWW = true; // now tried adding/removing www
+                                    if (checkAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        if (response != null)
-                                        {
-                                            if (result.Action == ActionType.Redirect301)
-                                            {
-                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                response.RedirectPermanent(result.FinalUrl, false);
-                                                finished = true;
-                                            }
-                                            else if (result.Action == ActionType.Redirect302)
-                                            {
-                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                response.Redirect(result.FinalUrl, false);
-                                                finished = true;
-                                            }
-                                        }
+                                        checkAlias = checkAlias.Substring(4);
                                     }
                                     else
                                     {
-                                        // 612 : Don't clear out a 302 redirect if set
-                                        if (result.Action != ActionType.Redirect302 &&
-                                            result.Action != ActionType.Redirect302Now)
+                                        checkAlias = "www." + checkAlias;
+                                    }
+                                }
+                                else
+                                {
+                                    // last thing to try, get the default language and see if there is a portal alias for that
+                                    // thus, any aliases not identified as belonging to a language are redirected back to the
+                                    // alias named for the default language
+                                    continueLoop = false;
+
+                                    // 735 : switch to custom method for getting portal
+                                    PortalInfo pi = CacheController.GetPortal(result.PortalId, false);
+                                    if (pi != null)
+                                    {
+                                        string cultureCode = pi.DefaultLanguage;
+                                        if (!string.IsNullOrEmpty(cultureCode))
                                         {
-                                            result.Reason = RedirectReason.Not_Redirected;
-                                            result.FinalUrl = null;
+                                            var primaryPortalAlias = portalAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, cultureCode, settings);
+                                            if (primaryPortalAlias != null)
+                                            {
+                                                httpAlias = primaryPortalAlias.HTTPAlias;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        else
-                        {
-                            // alias does not exist in database
-                            // and all attempts to find another have failed
-                            // this should only happen if the HostPortal does not have any aliases
-                            result.Action = ActionType.Output404;
-                            if (response != null)
-                            {
-                                if (showDebug)
-                                {
-                                    ShowDebugData(context, fullUrl, result, null);
-                                }
-
-                                result.Reason = RedirectReason.Requested_404;
-
-                                // 912 : change 404 type to transfer to allow transfer to main portal in single-portal installs
-                                Handle404OrException(settings, context, null, result, true, showDebug);
-                                finished = true;
-                            }
-                        }
                     }
 
-                    // 404 page ??
-                    if (settings.TabId404 > 0 && settings.TabId404 == result.TabId)
+                    // check to see if it is a custom tab alais - in that case, it is allowed to be requested for the tab
+                    if (CheckIfAliasIsCustomTabAlias(ref result, httpAlias, settings))
                     {
-                        string status = queryStringCol["status"];
-                        if (status == "404")
-                        {
-                            // respond with a 404 error
-                            result.Action = ActionType.Output404;
-                            result.Reason = RedirectReason.Requested_404_In_Url;
-                            Handle404OrException(settings, context, null, result, true, showDebug);
-                        }
+                        // change the primary alias to the custom tab alias that has been requested.
+                        result.PrimaryAlias = result.PortalAlias;
                     }
                     else
-                    {
-                        if (result.DoRewrite == false && result.CanRewrite != StateBoolean.False && !finished &&
-                            result.Action == ActionType.Continue)
+                        if (httpAlias != null && string.Compare(httpAlias, result.HttpAlias, StringComparison.OrdinalIgnoreCase) != 0)
                         {
-                            // 739 : catch no-extension 404 errors
-                            string pathWithNoQs = result.OriginalPath;
-                            if (pathWithNoQs.Contains("?"))
-                            {
-                                pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
-                            }
-
-                            if (!pathWithNoQs.Substring(pathWithNoQs.Length - 5, 5).Contains("."))
-                            {
-                                // no page extension, output a 404 if the Url is not found
-                                // 766 : check for physical path before passing off as a 404 error
-                                // 829 : change to use action physical path
-                                // 893 : filter by regex pattern to exclude urls which are valid, but show up as extensionless
-                                if ((request != null && Directory.Exists(result.PhysicalPath))
-                                    ||
-                                    Regex.IsMatch(pathWithNoQs, settings.ValidExtensionlessUrlsRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-                                {
-                                    // do nothing : it's a request for a valid physical path, maybe including a default document
-                                    result.VirtualPath = StateBoolean.False;
-                                }
-                                else
-                                {
-                                    if (!Globals.ServicesFrameworkRegex.IsMatch(context.Request.RawUrl))
-                                    {
-                                        // no physical path, intercept the request and hand out a 404 error
-                                        result.Action = ActionType.Output404;
-                                        result.Reason = RedirectReason.Page_404;
-                                        result.VirtualPath = StateBoolean.True;
-
-                                        // add in a message to explain this 404, becaue it can be cryptic
-                                        result.DebugMessages.Add("404 Reason : Not found and no extension");
-                                        Handle404OrException(settings, context, null, result, true, showDebug);
-                                    }
-                                }
-                            }
+                            incorrectAlias = true;
                         }
-                    }
-
-                    // show debug messages after extensionless-url special 404 handling
-                    if (showDebug)
-                    {
-                        ShowDebugData(context, fullUrl, result, null);
-                    }
                 }
             }
-            catch (ThreadAbortException)
-            {
-                // do nothing, a threadAbortException will have occured from using a server.transfer or response.redirect within the code block.  This is the highest
-                // level try/catch block, so we handle it here.
-                Thread.ResetAbort();
-            }
-            catch (Exception ex)
-            {
-                if (showDebug)
-                {
-                    Services.Exceptions.Exceptions.LogException(ex);
-                }
 
-                if (response != null)
-                {
-                    if (showDebug)
-                    {
-                        ShowDebugData(context, requestUri.AbsoluteUri, result, ex);
-                    }
-
-                    if (result != null)
-                    {
-                        result.Ex = ex;
-                        result.Reason = RedirectReason.Exception;
-                    }
-
-                    Handle404OrException(settings, context, ex, result, false, showDebug);
-                }
-                else
-                {
-                    if (result != null && result.DebugMessages != null)
-                    {
-                        result.DebugMessages.Add("Exception: " + ex.Message);
-                        result.DebugMessages.Add("Stack Trace: " + ex.StackTrace);
-                    }
-
-                    throw;
-                }
-            }
-            finally
-            {
-                // 809 : add in new code copied from urlRewrite class in standard Url Rewrite module
-                if (context != null && context.Items["FirstRequest"] != null)
-                {
-                    context.Items.Remove("FirstRequest");
-
-                    // process any messages in the eventQueue for the Application_Start_FIrstRequest event
-                    EventQueueController.ProcessMessages("Application_Start_FirstRequest");
-                }
-            }
+            return incorrectAlias;
         }
 
         private static void ShowDebugData(HttpContext context, string requestUri, UrlAction result, Exception ex)
@@ -1620,248 +1163,6 @@ namespace DotNetNuke.Entities.Urls
             return finished;
         }
 
-        private bool CheckForSecureRedirect(
-            PortalSettings portalSettings,
-            Uri requestUri,
-            UrlAction result,
-            NameValueCollection queryStringCol,
-            FriendlyUrlSettings settings)
-        {
-            bool redirectSecure = false;
-            string url = requestUri.ToString();
-
-            // 889 : don't run secure redirect code for physical resources or requests that aren't a rewritten Url
-            if (result.IsPhysicalResource == false && result.TabId >= 0)
-
-                // no secure redirection for physical resources, only tab-specific requests can be redirected for ssl connections
-            {
-                if (portalSettings.ActiveTab != null)
-                {
-                    result.DebugMessages.Add("ActiveTab: " + portalSettings.ActiveTab.TabID.ToString() + "/" +
-                                             portalSettings.ActiveTab.TabName + " IsSecure: " +
-                                             portalSettings.ActiveTab.IsSecure.ToString());
-
-                    // check ssl enabled
-                    if (portalSettings.SSLEnabled)
-                    {
-                        // 717 : check page is secure, connection is not secure
-                        // 952 : support SSl Offloading in DNN 6.2+
-                        if (portalSettings.ActiveTab.IsSecure && !result.IsSecureConnection && !result.IsSSLOffloaded)
-                        {
-                            redirectSecure = true;
-                            string stdUrl = portalSettings.STDURL;
-                            string sslUrl = portalSettings.SSLURL;
-                            if (string.IsNullOrEmpty(result.HttpAlias) == false)
-                            {
-                                stdUrl = result.HttpAlias;
-                            }
-
-                            url = url.Replace("http://", "https://");
-                            url = this.ReplaceDomainName(url, stdUrl, sslUrl);
-                        }
-                    }
-
-                    // check ssl enforced
-                    if (portalSettings.SSLEnforced)
-                    {
-                        // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe
-                        // from an unsecure page
-                        if (!portalSettings.ActiveTab.IsSecure &&
-                            result.IsSecureConnection &&
-                            !UrlUtils.IsPopUp(url))
-                        {
-                            // has connection already been forced to secure?
-                            if (queryStringCol["ssl"] == null)
-                            {
-                                // no? well this page shouldn't be secure
-                                string stdUrl = portalSettings.STDURL;
-                                string sslUrl = portalSettings.SSLURL;
-                                url = url.Replace("https://", "http://");
-                                url = this.ReplaceDomainName(url, sslUrl, stdUrl);
-                                redirectSecure = true;
-                            }
-                        }
-                    }
-                }
-
-                if (redirectSecure)
-                {
-                    // now check to see if excluded.  Why now? because less requests are made to redirect secure,
-                    // so we don't have to check the exclusion as often.
-                    bool exclude = false;
-                    string doNotRedirectSecureRegex = settings.DoNotRedirectSecureRegex;
-                    if (!string.IsNullOrEmpty(doNotRedirectSecureRegex))
-                    {
-                        // match the raw url
-                        exclude = Regex.IsMatch(result.RawUrl, doNotRedirectSecureRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                    }
-
-                    if (!exclude)
-                    {
-                        result.Action = ActionType.Redirect302Now;
-                        result.Reason = RedirectReason.Secure_Page_Requested;
-
-                        // 760 : get the culture specific home page tabid for a redirect comparison
-                        int homePageTabId = portalSettings.HomeTabId;
-                        homePageTabId = TabPathHelper.GetHomePageTabIdForCulture(
-                            portalSettings.DefaultLanguage,
-                            portalSettings.PortalId,
-                            result.CultureCode, homePageTabId);
-                        if (result.TabId == homePageTabId)
-                        {
-                            // replace the /default.aspx in the Url if it was found
-                            url = DefaultPageRegex.Replace(url, "/");
-                        }
-
-                        result.FinalUrl = url;
-                    }
-                    else
-                    {
-                        // 702 : change return value if exclusion has occured
-                        redirectSecure = false;
-                    }
-                }
-            }
-
-            return redirectSecure;
-        }
-
-        private string ReplaceDomainName(string url, string replaceDomain, string withDomain)
-        {
-            if (replaceDomain != string.Empty && withDomain != string.Empty)
-            {
-                // 951 : change find/replace routine to regex for more accurate replacement
-                // (previous method gives false positives if the SSL Url is contained within the STD url)
-                string find = @"(?<=https?://)" + Regex.Escape(withDomain);
-                if (Regex.IsMatch(url, find, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) == false)
-                {
-                    string replaceFind = @"(?<=https?://)" + Regex.Escape(replaceDomain);
-                    url = Regex.Replace(url, replaceFind, withDomain, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                }
-            }
-
-            return url;
-        }
-
-        protected bool IsPortalAliasIncorrect(
-            HttpContext context,
-            HttpRequest request,
-            Uri requestUri,
-            UrlAction result,
-            NameValueCollection queryStringCol,
-            FriendlyUrlSettings settings,
-            Guid parentTraceId,
-            out string httpAlias)
-        {
-            // now check to make sure it's the primary portal alias for this portal/language/browser
-            bool incorrectAlias = false;
-            httpAlias = null;
-
-            // if (result.RedirectAllowed && result.PortalId > -1)
-            if (result.PortalId > -1) // portal has been identified
-            {
-                var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
-
-                if (queryStringCol != null && queryStringCol["forceAlias"] != "true")
-                {
-                    if (portalAliases.Count > 0)
-                    {
-                        string checkAlias = result.HttpAlias;
-                        bool continueLoop = true;
-                        bool triedWWW = false;
-                        while (httpAlias == null && continueLoop)
-                        {
-                            if (portalAliases.ContainsAlias(result.PortalId, checkAlias))
-                            {
-                                if (portalAliases.Count > 0)
-                                {
-                                    // var cpa = portalAliases.GetAliasByPortalIdAndSettings(result);
-                                    string url = requestUri.ToString();
-                                    RewriteController.CheckLanguageMatch(ref url, result);
-                                    var cpa = portalAliases
-                                        .Where(a => a.IsPrimary || result.PortalAliasMapping != PortalSettings.PortalAliasMapping.Redirect)
-                                        .GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, result.BrowserType);
-
-                                    if (cpa != null)
-                                    {
-                                        httpAlias = cpa.HTTPAlias;
-                                        continueLoop = false;
-                                    }
-
-                                    if (string.IsNullOrEmpty(result.CultureCode) && cpa == null)
-                                    {
-                                        // if there is a specific culture for this portal alias, then check that
-                                        string culture = portalAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
-
-                                        // if this matches the alias of the request, then we know we have the correct alias because it is a specific culture
-                                        if (!string.IsNullOrEmpty(culture))
-                                        {
-                                            continueLoop = false;
-                                        }
-                                    }
-                                }
-                            }
-
-                            // check whether to still go on or not
-                            if (continueLoop)
-                            {
-                                // this alias doesn't exist in the list
-                                // check if it has a www on it - if not, try adding, if it does, try removing
-                                if (!triedWWW)
-                                {
-                                    triedWWW = true; // now tried adding/removing www
-                                    if (checkAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        checkAlias = checkAlias.Substring(4);
-                                    }
-                                    else
-                                    {
-                                        checkAlias = "www." + checkAlias;
-                                    }
-                                }
-                                else
-                                {
-                                    // last thing to try, get the default language and see if there is a portal alias for that
-                                    // thus, any aliases not identified as belonging to a language are redirected back to the
-                                    // alias named for the default language
-                                    continueLoop = false;
-
-                                    // 735 : switch to custom method for getting portal
-                                    PortalInfo pi = CacheController.GetPortal(result.PortalId, false);
-                                    if (pi != null)
-                                    {
-                                        string cultureCode = pi.DefaultLanguage;
-                                        if (!string.IsNullOrEmpty(cultureCode))
-                                        {
-                                            var primaryPortalAlias = portalAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, cultureCode, settings);
-                                            if (primaryPortalAlias != null)
-                                            {
-                                                httpAlias = primaryPortalAlias.HTTPAlias;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // check to see if it is a custom tab alais - in that case, it is allowed to be requested for the tab
-                    if (CheckIfAliasIsCustomTabAlias(ref result, httpAlias, settings))
-                    {
-                        // change the primary alias to the custom tab alias that has been requested.
-                        result.PrimaryAlias = result.PortalAlias;
-                    }
-                    else
-                        if (httpAlias != null && string.Compare(httpAlias, result.HttpAlias, StringComparison.OrdinalIgnoreCase) != 0)
-                        {
-                            incorrectAlias = true;
-                        }
-                }
-            }
-
-            return incorrectAlias;
-        }
-
         /// <summary>
         /// Redirects an alias if that is allowed by the settings.
         /// </summary>
@@ -1969,6 +1270,7 @@ namespace DotNetNuke.Entities.Urls
             }
             return isCurrentTabCustomTabAlias;
         }
+
         /// <summary>
         /// Configures the result object to set the correct Alias redirect
         /// parameters and destination URL.
@@ -2065,417 +1367,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return doRedirect;
-        }
-
-        private void IdentifyPortalAlias(
-            HttpContext context,
-            HttpRequest request,
-            Uri requestUri, UrlAction result,
-            NameValueCollection queryStringCol,
-            FriendlyUrlSettings settings,
-            Guid parentTraceId)
-        {
-            // get the domain name of the request, if it isn't already supplied
-            if (request != null && string.IsNullOrEmpty(result.DomainName))
-            {
-                result.DomainName = Globals.GetDomainName(request); // parse the domain name out of the request
-            }
-
-            // get tabId from querystring ( this is mandatory for maintaining portal context for child portals )
-            if (queryStringCol["tabid"] != null)
-            {
-                string raw = queryStringCol["tabid"];
-                int tabId;
-                if (int.TryParse(raw, out tabId))
-                {
-                    result.TabId = tabId;
-                }
-                else
-                {
-                    // couldn't parse tab id
-                    // split in two?
-                    string[] tabids = raw.Split(',');
-                    if (tabids.GetUpperBound(0) > 0)
-                    {
-                        // hmm more than one tabid
-                        if (int.TryParse(tabids[0], out tabId))
-                        {
-                            result.TabId = tabId;
-
-                            // but we want to warn against this!
-                            var ex =
-                                new Exception(
-                                    "Illegal request exception : Two TabId parameters provided in a single request: " +
-                                    requestUri);
-                            UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", result);
-
-                            result.Ex = ex;
-                        }
-                        else
-                        {
-                            // yeah, nothing, divert to 404
-                            result.Action = ActionType.Output404;
-                            var ex =
-                                new Exception(
-                                    "Illegal request exception : TabId parameters in query string, but invalid TabId requested : " +
-                                    requestUri);
-                            UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", result);
-                            result.Ex = ex;
-                        }
-                    }
-                }
-            }
-
-            // get PortalId from querystring ( this is used for host menu options as well as child portal navigation )
-            if (queryStringCol["portalid"] != null)
-            {
-                string raw = queryStringCol["portalid"];
-                int portalId;
-                if (int.TryParse(raw, out portalId))
-                {
-                    // 848 : if portal already found is different to portal id in querystring, then load up different alias
-                    // this is so the portal settings will be loaded correctly.
-                    if (result.PortalId != portalId)
-                    {
-                        // portal id different to what we expected
-                        result.PortalId = portalId;
-
-                        // check the loaded portal alias, because it might be wrong
-                        if (result.PortalAlias != null && result.PortalAlias.PortalID != portalId)
-                        {
-                            // yes, the identified portal alias is wrong.  Find the correct alias for this portal
-                            PortalAliasInfo pa = TabIndexController.GetPortalAliasByPortal(portalId, result.DomainName);
-                            if (pa != null)
-                            {
-                                // note: sets portal id and portal alias
-                                result.PortalAlias = pa;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // check for a portal alias if there's no portal Id in the query string
-                // check for absence of captcha value, because the captcha string re-uses the alias querystring value
-                if (queryStringCol["alias"] != null && queryStringCol["captcha"] == null)
-                {
-                    string alias = queryStringCol["alias"];
-                    PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(alias);
-                    if (portalAlias != null)
-                    {
-                        // ok the portal alias was found by the alias name
-                        // check if the alias contains the domain name
-                        if (alias.Contains(result.DomainName) == false)
-                        {
-                            // replaced to the domain defined in the alias
-                            if (request != null)
-                            {
-                                string redirectDomain = Globals.GetPortalDomainName(alias, request, true);
-
-                                // retVal.Url = redirectDomain;
-                                result.FinalUrl = redirectDomain;
-                                result.Action = ActionType.Redirect302Now;
-                                result.Reason = RedirectReason.Alias_In_Url;
-                            }
-                        }
-                        else
-                        {
-                            // the alias is the same as the current domain
-                            result.HttpAlias = portalAlias.HTTPAlias;
-                            result.PortalAlias = portalAlias;
-                            result.PortalId = portalAlias.PortalID;
-
-                            // don't use this crap though - we don't want ?alias=portalAlias in our Url
-                            if (result.RedirectAllowed)
-                            {
-                                string redirect = requestUri.Scheme + Uri.SchemeDelimiter + result.PortalAlias.HTTPAlias +
-                                                  "/";
-                                result.Action = ActionType.Redirect301;
-                                result.FinalUrl = redirect;
-                                result.Reason = RedirectReason.Unfriendly_Url_Child_Portal;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // first try and identify the portal using the tabId, but only if we identified this tab by looking up the tabid
-            // from the original url
-            // 668 : error in child portal redirects to child portal home page because of mismatch in tab/domain name
-            if (result.TabId != -1 && result.FriendlyRewrite == false)
-            {
-                // get the alias from the tabid, but only if it is for a tab in that domain
-                // 2.0 : change to compare retrieved alias to the already-set httpAlias
-                string httpAliasFromTab = PortalAliasController.GetPortalAliasByTab(result.TabId, result.DomainName);
-                if (httpAliasFromTab != null)
-                {
-                    // 882 : account for situation when portalAlias is null.
-                    if ((result.PortalAlias != null && string.Compare(result.PortalAlias.HTTPAlias, httpAliasFromTab, StringComparison.OrdinalIgnoreCase) != 0)
-                        || result.PortalAlias == null)
-                    {
-                        // 691 : change logic to force change in portal alias context rather than force back.
-                        // This is because the tabid in the query string should take precedence over the portal alias
-                        // to handle parent.com/default.aspx?tabid=xx where xx lives in parent.com/child/
-                        var tab = TabController.Instance.GetTab(result.TabId, Null.NullInteger, false);
-
-                        // when result alias is null or result alias is different from tab-identified portalAlias
-                        if (tab != null && (result.PortalAlias == null || tab.PortalID != result.PortalAlias.PortalID))
-                        {
-                            // the tabid is different to the identified portalid from the original alias identified
-                            // so get a new alias
-                            PortalAliasInfo tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(httpAliasFromTab, tab.PortalID);
-                            if (tabPortalAlias != null)
-                            {
-                                result.PortalId = tabPortalAlias.PortalID;
-                                result.PortalAlias = tabPortalAlias;
-                                result.Action = ActionType.CheckFor301;
-                                result.Reason = RedirectReason.Wrong_Portal;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // if no alias, try and set by using the identified http alias or domain name
-            if (result.PortalAlias == null)
-            {
-                if (!string.IsNullOrEmpty(result.HttpAlias))
-                {
-                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.HttpAlias);
-                }
-                else
-                {
-                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
-                    if (result.PortalAlias == null && result.DomainName.EndsWith("/"))
-                    {
-                        result.DomainName = result.DomainName.TrimEnd('/');
-                        result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
-                    }
-                }
-            }
-
-            if (result.PortalId == -1)
-            {
-                if (!requestUri.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    // allows requests for aspx pages in custom folder locations to be processed
-                    return;
-                }
-
-                // the domain name was not found so try using the host portal's first alias
-                if (Host.HostPortalID != -1)
-                {
-                    result.PortalId = Host.HostPortalID;
-
-                    // use the host portal, but replaced to the host portal home page
-                    var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
-                    if (aliases.Count > 0)
-                    {
-                        string alias = null;
-
-                        // get the alias as the chosen portal alias for the host portal based on the result culture code
-                        var cpa = aliases.GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, settings);
-                        if (cpa != null)
-                        {
-                            alias = cpa.HTTPAlias;
-                        }
-
-                        if (alias != null)
-                        {
-                            result.Action = ActionType.Redirect301;
-                            result.Reason = RedirectReason.Host_Portal_Used;
-                            string destUrl = MakeUrlWithAlias(requestUri, alias);
-                            destUrl = CheckForSiteRootRedirect(alias, destUrl);
-                            result.FinalUrl = destUrl;
-                        }
-                        else
-                        {
-                            // Get the first Alias for the host portal
-                            result.PortalAlias = aliases[result.PortalId];
-                            string url = MakeUrlWithAlias(requestUri, result.PortalAlias);
-                            if (result.TabId != -1)
-                            {
-                                url += requestUri.Query;
-                            }
-
-                            result.FinalUrl = url;
-                            result.Reason = RedirectReason.Host_Portal_Used;
-                            result.Action = ActionType.Redirect302Now;
-                        }
-                    }
-                }
-            }
-
-            // double check to make sure we still have the correct alias now that all other information is known (ie tab, portal, culture)
-            // 770 : redirect alias based on tab id when custom alias used
-            if (result.TabId == -1 && result.Action == ActionType.CheckFor301 &&
-                result.Reason == RedirectReason.Custom_Tab_Alias)
-            {
-                // here because the portal alias matched, but no tab was found, and because there are custom tab aliases used for this portal
-                // need to redirect back to the chosen portal alias and keep the current path.
-                string wrongAlias = result.HttpAlias; // it's a valid alias, but only for certain tabs
-                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
-                if (primaryAliases != null && result.PortalId > -1)
-                {
-                    // going to look for the correct alias based on the culture of the request
-                    string requestCultureCode = result.CultureCode;
-
-                    // if that didn't work use the default language of the portal
-                    if (requestCultureCode == null)
-                    {
-                        // this might end up in a double redirect if the path of the Url is for a specific language as opposed
-                        // to a path belonging to the default language domain
-                        PortalInfo portal = PortalController.Instance.GetPortal(result.PortalId);
-                        if (portal != null)
-                        {
-                            requestCultureCode = portal.DefaultLanguage;
-                        }
-                    }
-
-                    // now that the culture code is known, look up the correct portal alias for this portalid/culture code
-                    var cpa = primaryAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, requestCultureCode, settings);
-                    if (cpa != null)
-                    {
-                        // if an alias was found that matches the request and the culture code, then run with that
-                        string rightAlias = cpa.HTTPAlias;
-
-                        // will cause a redirect to the primary portal alias - we know now that there was no custom alias tab
-                        // found, so it's just a plain wrong alias
-                        ConfigurePortalAliasRedirect(ref result, wrongAlias, rightAlias, true,
-                                                     settings.InternalAliasList, settings);
-                    }
-                }
-            }
-            else
-            {
-                // then check to make sure it's the chosen portal alias for this portal
-                // 627 : don't do it if we're redirecting to the host portal
-                if (result.RedirectAllowed && result.Reason != RedirectReason.Host_Portal_Used)
-                {
-                    string primaryAlias;
-
-                    // checking again in case the rewriting operation changed the values for the valid portal alias
-                    bool incorrectAlias = this.IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryAlias);
-                    if (incorrectAlias)
-                    {
-                        RedirectPortalAlias(primaryAlias, ref result, settings);
-                    }
-                }
-            }
-
-            // check to see if we have to avoid the core 302 redirect for the portal alias that is in the /defualt.aspx
-            // for child portals
-            // exception to that is when a custom alias is used but no rewrite has taken place
-            if (result.DoRewrite == false && (result.Action == ActionType.Continue
-                                              ||
-                                              (result.Action == ActionType.CheckFor301 &&
-                                               result.Reason == RedirectReason.Custom_Tab_Alias)))
-            {
-                string aliasQuerystring;
-                bool isChildAliasRootUrl = CheckForChildPortalRootUrl(requestUri.AbsoluteUri, result, out aliasQuerystring);
-                if (isChildAliasRootUrl)
-                {
-                    RewriteAsChildAliasRoot(context, result, aliasQuerystring, settings);
-                }
-            }
-        }
-
-        internal static void RewriteAsChildAliasRoot(
-            HttpContext context,
-            UrlAction result,
-            string aliasQueryString,
-            FriendlyUrlSettings settings)
-        {
-            string culture = null;
-
-            // look for specific alias to rewrite language parameter
-            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
-            if (result.PortalId > -1 && result.HttpAlias != null)
-            {
-                culture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
-            }
-
-            if (string.IsNullOrEmpty(culture))
-
-                // 732 : when no culture returned can be "" as well as null : no culture causes no rewrite, which results in redirect to parent alias
-            {
-                // set the default culture code here
-                // 735 : switch to custom method for getting portal
-                PortalInfo pi = CacheController.GetPortal(result.PortalId, false);
-                if (pi != null)
-                {
-                    culture = pi.DefaultLanguage;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(culture)) // a culture was identified for the alias root
-            {
-                if (RewriteController.AddLanguageCodeToRewritePath(ref aliasQueryString, culture))
-                {
-                    result.CultureCode = culture;
-                }
-
-                result.DoRewrite = true;
-                result.RewritePath = "~/" + Globals.glbDefaultPage + aliasQueryString;
-
-                // the expected /default.aspx path (defaultPageUrl) matches the requested Url (/default.aspx)
-                if (context != null)
-                {
-                    // only do if not testing
-                    RewriterUtils.RewriteUrl(context, result.RewritePath);
-                }
-            }
-        }
-
-        internal static bool CheckForChildPortalRootUrl(string requestUrl, UrlAction result, out string aliasQueryString)
-        {
-            bool isChildPortalRootUrl = false;
-
-            // what we are going to test for here is that if this is a child portal request, for the /default.aspx of the child portal
-            // then we are going to avoid the core 302 redirect to ?alias=portalALias by rewriting to the /default.aspx of the site root
-            // 684 : don't convert querystring items to lower case
-            // do the check by constructing what a child alias url would look like and compare it with the requested urls
-            // 912 : when requested without a valid portal alias, portalALias is null.  Refuse and return false.
-            aliasQueryString = null;
-            if (result.PortalAlias != null && result.PortalAlias.HTTPAlias != null)
-            {
-                string defaultPageUrl = result.Scheme + result.PortalAlias.HTTPAlias + "/" +
-                                        Globals.glbDefaultPage.ToLowerInvariant(); // child alias Url with /default.aspx
-
-                // 660 : look for a querystring on the site root for a child portal, and handle it if so
-                if (string.CompareOrdinal(requestUrl.ToLowerInvariant(), defaultPageUrl) == 0)
-                {
-                    // exact match : that's the alias root
-                    isChildPortalRootUrl = true;
-                    aliasQueryString = string.Empty;
-                }
-
-                if (!isChildPortalRootUrl && requestUrl.Contains("?"))
-                {
-                    // is we didn't get an exact match but there is a querystring, then investigate
-                    string[] requestUrlParts = requestUrl.Split('?');
-                    if (requestUrlParts.GetUpperBound(0) > 0)
-                    {
-                        string rootPart = requestUrlParts[0];
-                        string queryString = requestUrlParts[1];
-                        if (string.Compare(rootPart, defaultPageUrl, StringComparison.OrdinalIgnoreCase) == 0)
-                        {
-                            // rewrite, but put in the querystring on the rewrite path
-                            isChildPortalRootUrl = true;
-                            aliasQueryString = "?" + queryString;
-
-                            // 674: check for 301 if this value is a tabid/xx - otherwise the url will just evaluate as is
-                            if (queryString.ToLowerInvariant().StartsWith("tabid="))
-                            {
-                                result.Action = ActionType.CheckFor301;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return isChildPortalRootUrl;
         }
 
         private static string MakeUrlWithAlias(Uri requestUri, string httpAlias)
@@ -2678,23 +1569,6 @@ namespace DotNetNuke.Entities.Urls
                     // the standard DNN way of rewriting, using expressions found in the siteurls.config file
                     RewriteController.IdentifyByRegEx(fullUrl, querystring, result.ApplicationPath, ref result, settings, parentTraceId);
                 }
-            }
-        }
-
-        private void SecurityCheck(HttpApplication app)
-        {
-            HttpRequest request = app.Request;
-            HttpServerUtility server = app.Server;
-
-            // 675 : unnecessarily strict url validation
-            // URL validation
-            // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
-            // the application should always use the exact relative location of the resource it is requesting
-            var strURL = request.Url.AbsolutePath;
-            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? string.Empty;
-            if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
-            {
-                throw new HttpException(404, "Not Found");
             }
         }
 
@@ -3085,26 +1959,1153 @@ namespace DotNetNuke.Entities.Urls
             return doRedirect;
         }
 
-        /// <summary>
-        /// Make sure any redirect to the site root doesn't append the nasty /default.aspx on the end.
-        /// </summary>
-        /// <param name="alias"></param>
-        /// <param name="destUrl"></param>
-        /// <returns></returns>
-        internal static string CheckForSiteRootRedirect(string alias, string destUrl)
+        private PortalAliasInfo GetPortalAlias(FriendlyUrlSettings settings, string requestUrl, out bool redirectAlias, out bool isPrimaryAlias, out string wrongAlias)
         {
-            // 540 - don't append /default.aspx onto the end of a site root redirect.
-            if (destUrl.EndsWith(alias + "/" + Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
+            PortalAliasInfo aliasInfo = null;
+            redirectAlias = false;
+            wrongAlias = null;
+            isPrimaryAlias = false;
+            OrderedDictionary portalAliases = TabIndexController.GetPortalAliases(settings);
+            foreach (string alias in portalAliases.Keys)
             {
-                // this is just the portal alias root + /defualt.aspx.
-                // we don't want that, just the portalAliasRoot + "/"
-                string aliasPlusSlash = alias + "/";
+                var urlToMatch = requestUrl;
 
-                // get everything up to the end of the portal alias
-                destUrl = destUrl.Substring(0, destUrl.IndexOf(aliasPlusSlash, StringComparison.Ordinal) + aliasPlusSlash.Length);
+                // in fact, requested url should contain alias
+                // for better performance, need to check whether we want to proceed with a whole url matching or not
+                // if alias is not a part of url -> let's proceed to the next iteration
+                var aliasIndex = urlToMatch.IndexOf(alias, StringComparison.InvariantCultureIgnoreCase);
+                if (aliasIndex < 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    // we do not accept URL if the first occurence of alias is presented somewhere in the query string
+                    var queryIndex = urlToMatch.IndexOf("?", StringComparison.InvariantCultureIgnoreCase);
+                    if (queryIndex >= 0 && queryIndex < aliasIndex)
+                    {
+                        // alias is in the query string, go to the next alias
+                        continue;
+                    }
+
+                    // we are fine here, lets prepare URL to be validated in regex
+                    urlToMatch = urlToMatch.ReplaceIgnoreCase(alias, "_ALIAS_");
+                }
+
+                // check whether requested URL has the right URL format containing existing alias
+                // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
+                // in the below expression we will validate following value http://_ALIAS_/query?string=test
+                var aliasMatch = AliasUrlRegex.Match(urlToMatch);
+                if (aliasMatch.Success)
+                {
+                    // check for mobile browser and matching
+                    var aliasEx = (PortalAliasInfo)portalAliases[alias];
+                    redirectAlias = aliasEx.Redirect;
+                    if (redirectAlias)
+                    {
+                        wrongAlias = alias;
+                    }
+
+                    isPrimaryAlias = aliasEx.IsPrimary;
+                    aliasInfo = aliasEx;
+                    break;
+                }
             }
 
-            return destUrl;
+            return aliasInfo;
+        }
+
+        private void ProcessRequest(
+            HttpContext context,
+            Uri requestUri,
+            bool useFriendlyUrls,
+            UrlAction result,
+            FriendlyUrlSettings settings,
+            bool allowSettingsChange,
+            Guid parentTraceId)
+        {
+            bool finished = false;
+            bool showDebug = false;
+            bool postRequest = false;
+
+            HttpRequest request = context.Request;
+            HttpResponse response = context.Response;
+            string requestType = request.RequestType;
+            NameValueCollection queryStringCol = request.QueryString;
+
+            try
+            {
+                string fullUrl, querystring;
+
+                // 699: get the full url based on the request and the quersytring, rather than the requestUri.ToString()
+                // there is a difference in encoding, which can corrupt results when an encoded value is in the querystring
+                RewriteController.GetUrlWithQuerystring(request, requestUri, out fullUrl, out querystring);
+
+                showDebug = CheckForDebug(request, queryStringCol, settings.AllowDebugCode);
+                string ignoreRegex = settings.IgnoreRegex;
+                bool ignoreRequest = IgnoreRequest(result, fullUrl, ignoreRegex, request);
+                bool redirectAlias = false;
+                if (!ignoreRequest)
+                {
+                    // set original path
+                    context.Items["UrlRewrite:OriginalUrl"] = requestUri.AbsoluteUri;
+
+                    // set the path of the result object, and determine if a redirect is allowed on this request
+                    result.SetOriginalPath(requestUri.ToString(), settings);
+
+                    // 737 : set the mobile browser
+                    result.SetBrowserType(request, response, settings);
+
+                    // add to context
+                    context.Items["UrlRewrite:BrowserType"] = result.BrowserType.ToString();
+
+                    // 839 : split out this check
+                    result.SetRedirectAllowed(result.OriginalPath, settings);
+
+                    // find the portal alias first
+                    string wrongAlias;
+                    bool isPrimaryAlias;
+                    var requestedAlias = this.GetPortalAlias(settings, fullUrl, out redirectAlias, out isPrimaryAlias, out wrongAlias);
+
+                    if (requestedAlias != null)
+                    {
+                        // 827 : now get the correct settings for this portal (if not a test request)
+                        // 839 : separate out redirect check as well and move above first redirect test (ConfigurePortalAliasRedirect)
+                        if (allowSettingsChange)
+                        {
+                            settings = new FriendlyUrlSettings(requestedAlias.PortalID);
+                            result.SetRedirectAllowed(result.OriginalPath, settings);
+                        }
+
+                        result.PortalAlias = requestedAlias;
+                        result.PrimaryAlias = requestedAlias; // this is the primary alias
+                        result.PortalId = requestedAlias.PortalID;
+                        result.CultureCode = requestedAlias.CultureCode;
+
+                        // get the portal alias mapping for this portal
+                        result.PortalAliasMapping = PortalSettingsController.Instance().GetPortalAliasMappingMode(requestedAlias.PortalID);
+
+                        // if requested alias wasn't the primary, we have a replacement, redirects are allowed and the portal alias mapping mode is redirect
+                        // then do a redirect based on the wrong portal
+                        if ((redirectAlias && wrongAlias != null) && result.RedirectAllowed && result.PortalAliasMapping != PortalSettings.PortalAliasMapping.Redirect)
+                        {
+                            // this is the alias, we are going to enforce it as the primary alias
+                            result.PortalAlias = requestedAlias;
+                            result.PrimaryAlias = requestedAlias;
+
+                            // going to redirect this alias because it is incorrect
+                            // or do we just want to mark as 'check for 301??'
+                            redirectAlias = ConfigurePortalAliasRedirect(
+                                ref result,
+                                wrongAlias,
+                                requestedAlias.HTTPAlias,
+                                false,
+                                settings.InternalAliasList,
+                                settings);
+                        }
+                        else
+                        {
+                            // do not redirect the wrong alias, but set the primary alias value
+                            if (wrongAlias != null)
+                            {
+                                // get the portal alias info for the requested alias (which is the wrong one)
+                                // and set that as the alias, but also set the found alias as the primary
+                                PortalAliasInfo wrongAliasInfo = PortalAliasController.Instance.GetPortalAlias(wrongAlias);
+                                if (wrongAliasInfo != null)
+                                {
+                                    result.PortalAlias = wrongAliasInfo;
+                                    result.PrimaryAlias = requestedAlias;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ignoreRegex = settings.IgnoreRegex;
+                ignoreRequest = IgnoreRequest(result, fullUrl, ignoreRegex, request);
+                if (!ignoreRequest)
+                {
+                    // check to see if a post request
+                    if (request.RequestType == "POST")
+                    {
+                        postRequest = true;
+                    }
+
+                    // check the portal alias again.  This time, in more depth now that the portal Id is known
+                    // this check handles browser types/language specific aliases & mobile aliases
+                    string primaryHttpAlias;
+                    if (!redirectAlias && this.IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryHttpAlias))
+                    {
+                        // it was an incorrect alias
+                        PortalAliasInfo primaryAlias = PortalAliasController.Instance.GetPortalAlias(primaryHttpAlias);
+                        if (primaryAlias != null)
+                        {
+                            result.PrimaryAlias = primaryAlias;
+                        }
+
+                        // try and redirect the alias if the settings allow it
+                        redirectAlias = RedirectPortalAlias(primaryHttpAlias, ref result, settings);
+                    }
+
+                    if (redirectAlias)
+                    {
+                        // not correct alias for portal : will be redirected
+                        // perform a 301 redirect if one has already been found
+                        response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                        response.RedirectPermanent(result.FinalUrl, false);
+                        finished = true;
+                    }
+
+                    if (!finished)
+                    {
+                        // Check to see if this to be rewritten into default.aspx?tabId=nn format
+                        // this call is the main rewriting matching call.  It makes the decision on whether it is a
+                        // physical file, whether it is toe be rewritten or redirected by way of a stored rule
+
+                        // Check if we have a standard url
+                        var uri = new Uri(fullUrl);
+                        if (uri.PathAndQuery.StartsWith("/" + Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            result.DoRewrite = true;
+                            result.Action = ActionType.CheckFor301;
+                            result.RewritePath = Globals.glbDefaultPage + uri.Query;
+                        }
+                        else
+                        {
+                            bool isPhysicalResource;
+                            CheckForRewrite(fullUrl, querystring, result, useFriendlyUrls, queryStringCol, settings, out isPhysicalResource, parentTraceId);
+                        }
+
+                        // return 404 if there is no portal alias for a rewritten request
+                        if (result.DoRewrite && result.PortalAlias == null)
+                        {
+                            // 882 : move this logic in from where it was before to here
+                            // so that non-rewritten requests don't trip over it
+                            // no portal alias found for the request : that's a 404 error
+                            result.Action = ActionType.Output404;
+                            result.Reason = RedirectReason.No_Portal_Alias;
+
+                            Handle404OrException(settings, context, null, result, false, showDebug);
+                            finished = true; // cannot fulfil request unless correct portal alias specified
+                        }
+                    }
+
+                    // now we may know the TabId. If the current alias is not the same as the primary alias,
+                    // we should check if the current alias is indeed a valid custom alias for the current tab.
+                    if (result.TabId > 0 && result.HttpAlias != result.PrimaryAlias.HTTPAlias && !CheckIfAliasIsCurrentTabCustomTabAlias(ref result, settings))
+                    {
+                        //it was an incorrect alias
+                        //try and redirect the alias if the settings allow it
+                        if( RedirectPortalAlias(result.PrimaryAlias.HTTPAlias, ref result, settings))
+                        {
+                            //not correct alias for tab : will be redirected
+                            //perform a 301 redirect if one has already been found
+                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                            response.RedirectPermanent(result.FinalUrl, false);
+                            finished = true;
+                        }
+                    }
+
+                    if (!finished && result.DoRewrite)
+                    {
+                        // check the identified portal alias details for any extra rewrite information required
+                        // this includes the culture and the skin, which can be placed into the rewrite path
+                        // This logic is here because it will catch any Urls which are excluded from rewriting
+                        var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+
+                        if (result.PortalId > -1 && result.HttpAlias != null)
+                        {
+                            string culture;
+                            string skin;
+                            BrowserTypes browserType;
+                            primaryAliases.GetSettingsByPortalIdAndAlias(result.PortalId, result.HttpAlias,
+                                                                                            out culture,
+                                                                                            out browserType,
+                                                                                            out skin);
+
+                            // add language code to path if it exists (not null) and if it's not already there
+                            string rewritePath = result.RewritePath;
+                            if (RewriteController.AddLanguageCodeToRewritePath(ref rewritePath, culture))
+                            {
+                                result.CultureCode = culture;
+                            }
+
+                            // 852: add skinSrc to path if it exists and if it's not already there
+                            string debugMessage;
+                            RewriteController.AddSkinToRewritePath(result.TabId, result.PortalId, ref rewritePath, skin, out debugMessage);
+                            result.RewritePath = rewritePath; // reset back from ref temp var
+                            if (debugMessage != null)
+                            {
+                                result.DebugMessages.Add(debugMessage);
+                            }
+                        }
+                    }
+
+                    if (!finished && result.DoRewrite)
+                    {
+                        // if so, do the rewrite
+                        if (result.RewritePath.StartsWith(result.Scheme) || result.RewritePath.StartsWith(Globals.glbDefaultPage) == false)
+                        {
+                            if (result.RewritePath.Contains(Globals.glbDefaultPage) == false)
+                            {
+                                RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                            }
+                            else
+                            {
+                                // if there is no TabId and we have the domain
+                                if (!result.RewritePath.ToLowerInvariant().Contains("tabId="))
+                                {
+                                    RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                                }
+                                else
+                                {
+                                    RewriterUtils.RewriteUrl(context, result.RewritePath);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                        }
+                    }
+
+                    // confirm which portal the request is for
+                    if (!finished)
+                    {
+                        this.IdentifyPortalAlias(context, request, requestUri, result, queryStringCol, settings, parentTraceId);
+                        if (result.Action == ActionType.Redirect302Now)
+                        {
+                            // performs a 302 redirect if requested
+                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                            response.Redirect(result.FinalUrl, false);
+                            finished = true;
+                        }
+                        else
+                        {
+                            if (result.Action == ActionType.Redirect301 && !string.IsNullOrEmpty(result.FinalUrl))
+                            {
+                                finished = true;
+
+                                // perform a 301 redirect if one has already been found
+                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                response.RedirectPermanent(result.FinalUrl, false);
+                            }
+                        }
+                    }
+
+                    if (!finished)
+                    {
+                        // check to see if this tab has an external url that should be forwared or not
+                        finished = CheckForTabExternalForwardOrRedirect(context, ref result, response, settings, parentTraceId);
+                    }
+
+                    // check for a parameter redirect (we had to do all the previous processing to know we are on the right portal and identify the tabid)
+                    // if the CustomParmRewrite flag is set, it means we already rewrote these parameters, so they have to be correct, and aren't subject to
+                    // redirection.  The only reason to do a custom parm rewrite is to interpret already-friendly parameters
+                    if (!finished
+                        && !postRequest /* either request is null, or it's not a post - 551 */
+                        && result.HttpAlias != null /* must have a http alias */
+                        && !result.CustomParmRewrite && /* not custom rewritten parms */
+                        ((settings.EnableCustomProviders &&
+                          RedirectController.CheckForModuleProviderRedirect(requestUri, ref result, queryStringCol, settings, parentTraceId))
+
+                        // 894 : allow disable of all custom providers
+                         ||
+                         RedirectController.CheckForParameterRedirect(requestUri, ref result, queryStringCol, settings)))
+                    {
+                        // 301 redirect to new location based on parameter match
+                        if (response != null)
+                        {
+                            switch (result.Action)
+                            {
+                                case ActionType.Redirect301:
+                                    response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                    response.RedirectPermanent(result.FinalUrl);
+                                    break;
+                                case ActionType.Redirect302:
+                                    response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                    response.Redirect(result.FinalUrl);
+                                    break;
+                                case ActionType.Output404:
+                                    response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
+                                    Handle404OrException(settings, context, null, result, true, showDebug);
+                                    break;
+                            }
+                        }
+
+                        finished = true;
+                    }
+
+                    // shifted until after the 301 redirect code to allow redirects to be checked for pages which have no rewrite value
+                    // look for a 404 result from the rewrite, because of a deleted page or rule
+                    if (!finished && result.Action == ActionType.Output404)
+                    {
+                        if (result.OriginalPath.Equals(result.HttpAlias, StringComparison.InvariantCultureIgnoreCase)
+                                && result.PortalAlias != null
+                                && result.Reason != RedirectReason.Deleted_Page
+                                && result.Reason != RedirectReason.Disabled_Page)
+                        {
+                            // Request for domain with no page identified (and no home page set in Site Settings)
+                            result.Action = ActionType.Continue;
+                        }
+                        else
+                        {
+                            finished = true;
+                            response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
+
+                            if (showDebug)
+                            {
+                                ShowDebugData(context, requestUri.AbsoluteUri, result, null);
+                            }
+
+                            // show the 404 page if configured
+                            result.Reason = RedirectReason.Requested_404;
+                            Handle404OrException(settings, context, null, result, true, showDebug);
+                        }
+                    }
+
+                    if (!finished)
+                    {
+                        // add the portal settings to the app context if the portal alias has been found and is correct
+                        if (result.PortalId != -1 && result.PortalAlias != null)
+                        {
+                            // for invalid tab id other than -1, show the 404 page
+                            TabInfo tabInfo = TabController.Instance.GetTab(result.TabId, result.PortalId, false);
+                            if (tabInfo == null && result.TabId > -1)
+                            {
+                                finished = true;
+
+                                if (showDebug)
+                                {
+                                    ShowDebugData(context, requestUri.AbsoluteUri, result, null);
+                                }
+
+                                // show the 404 page if configured
+                                result.Action = ActionType.Output404;
+                                result.Reason = RedirectReason.Requested_404;
+                                response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
+                                Handle404OrException(settings, context, null, result, true, showDebug);
+                            }
+                            else
+                            {
+                                Globals.SetApplicationName(result.PortalId);
+
+                                // load the PortalSettings into current context
+                                var portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
+
+                                // set the primary alias if one was specified
+                                if (result.PrimaryAlias != null)
+                                {
+                                    portalSettings.PrimaryAlias = result.PrimaryAlias;
+                                }
+
+                                if (result.CultureCode != null && fullUrl.Contains(result.CultureCode) &&
+                                    portalSettings.DefaultLanguage == result.CultureCode)
+                                {
+                                    // when the request culture code is the same as the portal default, check for a 301 redirect, because we try and remove the language from the url where possible
+                                    result.Action = ActionType.CheckFor301;
+                                }
+
+                                int portalHomeTabId = portalSettings.HomeTabId;
+                                if (context != null && portalSettings != null && !context.Items.Contains("PortalSettings"))
+                                {
+                                    context.Items.Add("PortalSettings", portalSettings);
+
+                                    // load PortalSettings and HostSettings dictionaries into current context
+                                    // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
+                                    context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
+                                    context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
+                                }
+
+                                // check if a secure redirection is needed
+                                // this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
+                                bool redirectSecure = this.CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
+                                if (redirectSecure)
+                                {
+                                    if (response != null)
+                                    {
+                                        // 702 : don't check final url until checked for null reference first
+                                        if (result.FinalUrl != null)
+                                        {
+                                            if (result.FinalUrl.StartsWith("https://"))
+                                            {
+                                                if (showDebug)
+                                                {
+                                                    /*
+                                                    string debugMsg = "{0}, {1}, {2}, {3}, {4}";
+                                                    string productVer = System.Reflection.Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
+                                                    response.AppendHeader("X-" + prodName + "-Debug", string.Format(debugMsg, requestUri.AbsoluteUri, result.FinalUrl, result.RewritePath, result.Action, productVer));
+                                                     */
+                                                    ShowDebugData(context, fullUrl, result, null);
+                                                }
+
+                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                                response.RedirectPermanent(result.FinalUrl);
+                                                finished = true;
+                                            }
+                                            else
+                                            {
+                                                if (settings.SSLClientRedirect)
+                                                {
+                                                    // redirect back to http version, use client redirect
+                                                    response.Clear();
+
+                                                    // add a refresh header to the response
+                                                    response.AddHeader("Refresh", "0;URL=" + result.FinalUrl);
+
+                                                    // add the clientside javascript redirection script
+                                                    var finalUrl = HttpUtility.HtmlEncode(result.FinalUrl);
+                                                    response.Write("<html><head><title></title>");
+                                                    response.Write(@"<!-- <script language=""javascript"">window.location.replace(""" + finalUrl + @""")</script> -->");
+                                                    response.Write("</head><body><div><a href='" + finalUrl + "'>" + finalUrl + "</a></div></body></html>");
+                                                    if (showDebug)
+                                                    {
+                                                        /*
+                                                        string debugMsg = "{0}, {1}, {2}, {3}, {4}";
+                                                        string productVer = System.Reflection.Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
+                                                        response.AppendHeader("X-" + prodName + "-Debug", string.Format(debugMsg, requestUri.AbsoluteUri, result.FinalUrl, result.RewritePath, result.Action, productVer));
+                                                         */
+                                                        ShowDebugData(context, fullUrl, result, null);
+                                                    }
+
+                                                    // send the response
+                                                    // 891 : reinstate the response.end to stop the entire page loading
+                                                    response.End();
+                                                    finished = true;
+                                                }
+                                                else
+                                                {
+                                                    response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                                    response.RedirectPermanent(result.FinalUrl);
+                                                    finished = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // check for, and do a 301 redirect if required
+                                    if (CheckForRedirects(requestUri, fullUrl, queryStringCol, result, requestType, settings, portalHomeTabId))
+                                    {
+                                        if (response != null)
+                                        {
+                                            if (result.Action == ActionType.Redirect301)
+                                            {
+                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                                response.RedirectPermanent(result.FinalUrl, false);
+                                                finished = true;
+                                            }
+                                            else if (result.Action == ActionType.Redirect302)
+                                            {
+                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                                response.Redirect(result.FinalUrl, false);
+                                                finished = true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // 612 : Don't clear out a 302 redirect if set
+                                        if (result.Action != ActionType.Redirect302 &&
+                                            result.Action != ActionType.Redirect302Now)
+                                        {
+                                            result.Reason = RedirectReason.Not_Redirected;
+                                            result.FinalUrl = null;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // alias does not exist in database
+                            // and all attempts to find another have failed
+                            // this should only happen if the HostPortal does not have any aliases
+                            result.Action = ActionType.Output404;
+                            if (response != null)
+                            {
+                                if (showDebug)
+                                {
+                                    ShowDebugData(context, fullUrl, result, null);
+                                }
+
+                                result.Reason = RedirectReason.Requested_404;
+
+                                // 912 : change 404 type to transfer to allow transfer to main portal in single-portal installs
+                                Handle404OrException(settings, context, null, result, true, showDebug);
+                                finished = true;
+                            }
+                        }
+                    }
+
+                    // 404 page ??
+                    if (settings.TabId404 > 0 && settings.TabId404 == result.TabId)
+                    {
+                        string status = queryStringCol["status"];
+                        if (status == "404")
+                        {
+                            // respond with a 404 error
+                            result.Action = ActionType.Output404;
+                            result.Reason = RedirectReason.Requested_404_In_Url;
+                            Handle404OrException(settings, context, null, result, true, showDebug);
+                        }
+                    }
+                    else
+                    {
+                        if (result.DoRewrite == false && result.CanRewrite != StateBoolean.False && !finished &&
+                            result.Action == ActionType.Continue)
+                        {
+                            // 739 : catch no-extension 404 errors
+                            string pathWithNoQs = result.OriginalPath;
+                            if (pathWithNoQs.Contains("?"))
+                            {
+                                pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
+                            }
+
+                            if (!pathWithNoQs.Substring(pathWithNoQs.Length - 5, 5).Contains("."))
+                            {
+                                // no page extension, output a 404 if the Url is not found
+                                // 766 : check for physical path before passing off as a 404 error
+                                // 829 : change to use action physical path
+                                // 893 : filter by regex pattern to exclude urls which are valid, but show up as extensionless
+                                if ((request != null && Directory.Exists(result.PhysicalPath))
+                                    ||
+                                    Regex.IsMatch(pathWithNoQs, settings.ValidExtensionlessUrlsRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                                {
+                                    // do nothing : it's a request for a valid physical path, maybe including a default document
+                                    result.VirtualPath = StateBoolean.False;
+                                }
+                                else
+                                {
+                                    if (!Globals.ServicesFrameworkRegex.IsMatch(context.Request.RawUrl))
+                                    {
+                                        // no physical path, intercept the request and hand out a 404 error
+                                        result.Action = ActionType.Output404;
+                                        result.Reason = RedirectReason.Page_404;
+                                        result.VirtualPath = StateBoolean.True;
+
+                                        // add in a message to explain this 404, becaue it can be cryptic
+                                        result.DebugMessages.Add("404 Reason : Not found and no extension");
+                                        Handle404OrException(settings, context, null, result, true, showDebug);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // show debug messages after extensionless-url special 404 handling
+                    if (showDebug)
+                    {
+                        ShowDebugData(context, fullUrl, result, null);
+                    }
+                }
+            }
+            catch (ThreadAbortException)
+            {
+                // do nothing, a threadAbortException will have occured from using a server.transfer or response.redirect within the code block.  This is the highest
+                // level try/catch block, so we handle it here.
+                Thread.ResetAbort();
+            }
+            catch (Exception ex)
+            {
+                if (showDebug)
+                {
+                    Services.Exceptions.Exceptions.LogException(ex);
+                }
+
+                if (response != null)
+                {
+                    if (showDebug)
+                    {
+                        ShowDebugData(context, requestUri.AbsoluteUri, result, ex);
+                    }
+
+                    if (result != null)
+                    {
+                        result.Ex = ex;
+                        result.Reason = RedirectReason.Exception;
+                    }
+
+                    Handle404OrException(settings, context, ex, result, false, showDebug);
+                }
+                else
+                {
+                    if (result != null && result.DebugMessages != null)
+                    {
+                        result.DebugMessages.Add("Exception: " + ex.Message);
+                        result.DebugMessages.Add("Stack Trace: " + ex.StackTrace);
+                    }
+
+                    throw;
+                }
+            }
+            finally
+            {
+                // 809 : add in new code copied from urlRewrite class in standard Url Rewrite module
+                if (context != null && context.Items["FirstRequest"] != null)
+                {
+                    context.Items.Remove("FirstRequest");
+
+                    // process any messages in the eventQueue for the Application_Start_FIrstRequest event
+                    EventQueueController.ProcessMessages("Application_Start_FirstRequest");
+                }
+            }
+        }
+
+        private bool CheckForSecureRedirect(
+            PortalSettings portalSettings,
+            Uri requestUri,
+            UrlAction result,
+            NameValueCollection queryStringCol,
+            FriendlyUrlSettings settings)
+        {
+            bool redirectSecure = false;
+            string url = requestUri.ToString();
+
+            // 889 : don't run secure redirect code for physical resources or requests that aren't a rewritten Url
+            if (result.IsPhysicalResource == false && result.TabId >= 0)
+
+                // no secure redirection for physical resources, only tab-specific requests can be redirected for ssl connections
+            {
+                if (portalSettings.ActiveTab != null)
+                {
+                    result.DebugMessages.Add("ActiveTab: " + portalSettings.ActiveTab.TabID.ToString() + "/" +
+                                             portalSettings.ActiveTab.TabName + " IsSecure: " +
+                                             portalSettings.ActiveTab.IsSecure.ToString());
+
+                    // check ssl enabled
+                    if (portalSettings.SSLEnabled)
+                    {
+                        // 717 : check page is secure, connection is not secure
+                        // 952 : support SSl Offloading in DNN 6.2+
+                        if (portalSettings.ActiveTab.IsSecure && !result.IsSecureConnection && !result.IsSSLOffloaded)
+                        {
+                            redirectSecure = true;
+                            string stdUrl = portalSettings.STDURL;
+                            string sslUrl = portalSettings.SSLURL;
+                            if (string.IsNullOrEmpty(result.HttpAlias) == false)
+                            {
+                                stdUrl = result.HttpAlias;
+                            }
+
+                            url = url.Replace("http://", "https://");
+                            url = this.ReplaceDomainName(url, stdUrl, sslUrl);
+                        }
+                    }
+
+                    // check ssl enforced
+                    if (portalSettings.SSLEnforced)
+                    {
+                        // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe
+                        // from an unsecure page
+                        if (!portalSettings.ActiveTab.IsSecure &&
+                            result.IsSecureConnection &&
+                            !UrlUtils.IsPopUp(url))
+                        {
+                            // has connection already been forced to secure?
+                            if (queryStringCol["ssl"] == null)
+                            {
+                                // no? well this page shouldn't be secure
+                                string stdUrl = portalSettings.STDURL;
+                                string sslUrl = portalSettings.SSLURL;
+                                url = url.Replace("https://", "http://");
+                                url = this.ReplaceDomainName(url, sslUrl, stdUrl);
+                                redirectSecure = true;
+                            }
+                        }
+                    }
+                }
+
+                if (redirectSecure)
+                {
+                    // now check to see if excluded.  Why now? because less requests are made to redirect secure,
+                    // so we don't have to check the exclusion as often.
+                    bool exclude = false;
+                    string doNotRedirectSecureRegex = settings.DoNotRedirectSecureRegex;
+                    if (!string.IsNullOrEmpty(doNotRedirectSecureRegex))
+                    {
+                        // match the raw url
+                        exclude = Regex.IsMatch(result.RawUrl, doNotRedirectSecureRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    }
+
+                    if (!exclude)
+                    {
+                        result.Action = ActionType.Redirect302Now;
+                        result.Reason = RedirectReason.Secure_Page_Requested;
+
+                        // 760 : get the culture specific home page tabid for a redirect comparison
+                        int homePageTabId = portalSettings.HomeTabId;
+                        homePageTabId = TabPathHelper.GetHomePageTabIdForCulture(
+                            portalSettings.DefaultLanguage,
+                            portalSettings.PortalId,
+                            result.CultureCode, homePageTabId);
+                        if (result.TabId == homePageTabId)
+                        {
+                            // replace the /default.aspx in the Url if it was found
+                            url = DefaultPageRegex.Replace(url, "/");
+                        }
+
+                        result.FinalUrl = url;
+                    }
+                    else
+                    {
+                        // 702 : change return value if exclusion has occured
+                        redirectSecure = false;
+                    }
+                }
+            }
+
+            return redirectSecure;
+        }
+
+        private string ReplaceDomainName(string url, string replaceDomain, string withDomain)
+        {
+            if (replaceDomain != string.Empty && withDomain != string.Empty)
+            {
+                // 951 : change find/replace routine to regex for more accurate replacement
+                // (previous method gives false positives if the SSL Url is contained within the STD url)
+                string find = @"(?<=https?://)" + Regex.Escape(withDomain);
+                if (Regex.IsMatch(url, find, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) == false)
+                {
+                    string replaceFind = @"(?<=https?://)" + Regex.Escape(replaceDomain);
+                    url = Regex.Replace(url, replaceFind, withDomain, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                }
+            }
+
+            return url;
+        }
+
+        private void IdentifyPortalAlias(
+            HttpContext context,
+            HttpRequest request,
+            Uri requestUri, 
+            UrlAction result,
+            NameValueCollection queryStringCol,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
+        {
+            // get the domain name of the request, if it isn't already supplied
+            if (request != null && string.IsNullOrEmpty(result.DomainName))
+            {
+                result.DomainName = Globals.GetDomainName(request); // parse the domain name out of the request
+            }
+
+            // get tabId from querystring ( this is mandatory for maintaining portal context for child portals )
+            if (queryStringCol["tabid"] != null)
+            {
+                string raw = queryStringCol["tabid"];
+                int tabId;
+                if (int.TryParse(raw, out tabId))
+                {
+                    result.TabId = tabId;
+                }
+                else
+                {
+                    // couldn't parse tab id
+                    // split in two?
+                    string[] tabids = raw.Split(',');
+                    if (tabids.GetUpperBound(0) > 0)
+                    {
+                        // hmm more than one tabid
+                        if (int.TryParse(tabids[0], out tabId))
+                        {
+                            result.TabId = tabId;
+
+                            // but we want to warn against this!
+                            var ex =
+                                new Exception(
+                                    "Illegal request exception : Two TabId parameters provided in a single request: " +
+                                    requestUri);
+                            UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", result);
+
+                            result.Ex = ex;
+                        }
+                        else
+                        {
+                            // yeah, nothing, divert to 404
+                            result.Action = ActionType.Output404;
+                            var ex =
+                                new Exception(
+                                    "Illegal request exception : TabId parameters in query string, but invalid TabId requested : " +
+                                    requestUri);
+                            UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", result);
+                            result.Ex = ex;
+                        }
+                    }
+                }
+            }
+
+            // get PortalId from querystring ( this is used for host menu options as well as child portal navigation )
+            if (queryStringCol["portalid"] != null)
+            {
+                string raw = queryStringCol["portalid"];
+                int portalId;
+                if (int.TryParse(raw, out portalId))
+                {
+                    // 848 : if portal already found is different to portal id in querystring, then load up different alias
+                    // this is so the portal settings will be loaded correctly.
+                    if (result.PortalId != portalId)
+                    {
+                        // portal id different to what we expected
+                        result.PortalId = portalId;
+
+                        // check the loaded portal alias, because it might be wrong
+                        if (result.PortalAlias != null && result.PortalAlias.PortalID != portalId)
+                        {
+                            // yes, the identified portal alias is wrong.  Find the correct alias for this portal
+                            PortalAliasInfo pa = TabIndexController.GetPortalAliasByPortal(portalId, result.DomainName);
+                            if (pa != null)
+                            {
+                                // note: sets portal id and portal alias
+                                result.PortalAlias = pa;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // check for a portal alias if there's no portal Id in the query string
+                // check for absence of captcha value, because the captcha string re-uses the alias querystring value
+                if (queryStringCol["alias"] != null && queryStringCol["captcha"] == null)
+                {
+                    string alias = queryStringCol["alias"];
+                    PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(alias);
+                    if (portalAlias != null)
+                    {
+                        // ok the portal alias was found by the alias name
+                        // check if the alias contains the domain name
+                        if (alias.Contains(result.DomainName) == false)
+                        {
+                            // replaced to the domain defined in the alias
+                            if (request != null)
+                            {
+                                string redirectDomain = Globals.GetPortalDomainName(alias, request, true);
+
+                                // retVal.Url = redirectDomain;
+                                result.FinalUrl = redirectDomain;
+                                result.Action = ActionType.Redirect302Now;
+                                result.Reason = RedirectReason.Alias_In_Url;
+                            }
+                        }
+                        else
+                        {
+                            // the alias is the same as the current domain
+                            result.HttpAlias = portalAlias.HTTPAlias;
+                            result.PortalAlias = portalAlias;
+                            result.PortalId = portalAlias.PortalID;
+
+                            // don't use this crap though - we don't want ?alias=portalAlias in our Url
+                            if (result.RedirectAllowed)
+                            {
+                                string redirect = requestUri.Scheme + Uri.SchemeDelimiter + result.PortalAlias.HTTPAlias +
+                                                  "/";
+                                result.Action = ActionType.Redirect301;
+                                result.FinalUrl = redirect;
+                                result.Reason = RedirectReason.Unfriendly_Url_Child_Portal;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // first try and identify the portal using the tabId, but only if we identified this tab by looking up the tabid
+            // from the original url
+            // 668 : error in child portal redirects to child portal home page because of mismatch in tab/domain name
+            if (result.TabId != -1 && result.FriendlyRewrite == false)
+            {
+                // get the alias from the tabid, but only if it is for a tab in that domain
+                // 2.0 : change to compare retrieved alias to the already-set httpAlias
+                string httpAliasFromTab = PortalAliasController.GetPortalAliasByTab(result.TabId, result.DomainName);
+                if (httpAliasFromTab != null)
+                {
+                    // 882 : account for situation when portalAlias is null.
+                    if ((result.PortalAlias != null && string.Compare(result.PortalAlias.HTTPAlias, httpAliasFromTab, StringComparison.OrdinalIgnoreCase) != 0)
+                        || result.PortalAlias == null)
+                    {
+                        // 691 : change logic to force change in portal alias context rather than force back.
+                        // This is because the tabid in the query string should take precedence over the portal alias
+                        // to handle parent.com/default.aspx?tabid=xx where xx lives in parent.com/child/
+                        var tab = TabController.Instance.GetTab(result.TabId, Null.NullInteger, false);
+
+                        // when result alias is null or result alias is different from tab-identified portalAlias
+                        if (tab != null && (result.PortalAlias == null || tab.PortalID != result.PortalAlias.PortalID))
+                        {
+                            // the tabid is different to the identified portalid from the original alias identified
+                            // so get a new alias
+                            PortalAliasInfo tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(httpAliasFromTab, tab.PortalID);
+                            if (tabPortalAlias != null)
+                            {
+                                result.PortalId = tabPortalAlias.PortalID;
+                                result.PortalAlias = tabPortalAlias;
+                                result.Action = ActionType.CheckFor301;
+                                result.Reason = RedirectReason.Wrong_Portal;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // if no alias, try and set by using the identified http alias or domain name
+            if (result.PortalAlias == null)
+            {
+                if (!string.IsNullOrEmpty(result.HttpAlias))
+                {
+                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.HttpAlias);
+                }
+                else
+                {
+                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
+                    if (result.PortalAlias == null && result.DomainName.EndsWith("/"))
+                    {
+                        result.DomainName = result.DomainName.TrimEnd('/');
+                        result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
+                    }
+                }
+            }
+
+            if (result.PortalId == -1)
+            {
+                if (!requestUri.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // allows requests for aspx pages in custom folder locations to be processed
+                    return;
+                }
+
+                // the domain name was not found so try using the host portal's first alias
+                if (Host.HostPortalID != -1)
+                {
+                    result.PortalId = Host.HostPortalID;
+
+                    // use the host portal, but replaced to the host portal home page
+                    var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                    if (aliases.Count > 0)
+                    {
+                        string alias = null;
+
+                        // get the alias as the chosen portal alias for the host portal based on the result culture code
+                        var cpa = aliases.GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, settings);
+                        if (cpa != null)
+                        {
+                            alias = cpa.HTTPAlias;
+                        }
+
+                        if (alias != null)
+                        {
+                            result.Action = ActionType.Redirect301;
+                            result.Reason = RedirectReason.Host_Portal_Used;
+                            string destUrl = MakeUrlWithAlias(requestUri, alias);
+                            destUrl = CheckForSiteRootRedirect(alias, destUrl);
+                            result.FinalUrl = destUrl;
+                        }
+                        else
+                        {
+                            // Get the first Alias for the host portal
+                            result.PortalAlias = aliases[result.PortalId];
+                            string url = MakeUrlWithAlias(requestUri, result.PortalAlias);
+                            if (result.TabId != -1)
+                            {
+                                url += requestUri.Query;
+                            }
+
+                            result.FinalUrl = url;
+                            result.Reason = RedirectReason.Host_Portal_Used;
+                            result.Action = ActionType.Redirect302Now;
+                        }
+                    }
+                }
+            }
+
+            // double check to make sure we still have the correct alias now that all other information is known (ie tab, portal, culture)
+            // 770 : redirect alias based on tab id when custom alias used
+            if (result.TabId == -1 && result.Action == ActionType.CheckFor301 &&
+                result.Reason == RedirectReason.Custom_Tab_Alias)
+            {
+                // here because the portal alias matched, but no tab was found, and because there are custom tab aliases used for this portal
+                // need to redirect back to the chosen portal alias and keep the current path.
+                string wrongAlias = result.HttpAlias; // it's a valid alias, but only for certain tabs
+                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                if (primaryAliases != null && result.PortalId > -1)
+                {
+                    // going to look for the correct alias based on the culture of the request
+                    string requestCultureCode = result.CultureCode;
+
+                    // if that didn't work use the default language of the portal
+                    if (requestCultureCode == null)
+                    {
+                        // this might end up in a double redirect if the path of the Url is for a specific language as opposed
+                        // to a path belonging to the default language domain
+                        PortalInfo portal = PortalController.Instance.GetPortal(result.PortalId);
+                        if (portal != null)
+                        {
+                            requestCultureCode = portal.DefaultLanguage;
+                        }
+                    }
+
+                    // now that the culture code is known, look up the correct portal alias for this portalid/culture code
+                    var cpa = primaryAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, requestCultureCode, settings);
+                    if (cpa != null)
+                    {
+                        // if an alias was found that matches the request and the culture code, then run with that
+                        string rightAlias = cpa.HTTPAlias;
+
+                        // will cause a redirect to the primary portal alias - we know now that there was no custom alias tab
+                        // found, so it's just a plain wrong alias
+                        ConfigurePortalAliasRedirect(ref result, wrongAlias, rightAlias, true,
+                                                     settings.InternalAliasList, settings);
+                    }
+                }
+            }
+            else
+            {
+                // then check to make sure it's the chosen portal alias for this portal
+                // 627 : don't do it if we're redirecting to the host portal
+                if (result.RedirectAllowed && result.Reason != RedirectReason.Host_Portal_Used)
+                {
+                    string primaryAlias;
+
+                    // checking again in case the rewriting operation changed the values for the valid portal alias
+                    bool incorrectAlias = this.IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryAlias);
+                    if (incorrectAlias)
+                    {
+                        RedirectPortalAlias(primaryAlias, ref result, settings);
+                    }
+                }
+            }
+
+            // check to see if we have to avoid the core 302 redirect for the portal alias that is in the /defualt.aspx
+            // for child portals
+            // exception to that is when a custom alias is used but no rewrite has taken place
+            if (result.DoRewrite == false && (result.Action == ActionType.Continue
+                                              ||
+                                              (result.Action == ActionType.CheckFor301 &&
+                                               result.Reason == RedirectReason.Custom_Tab_Alias)))
+            {
+                string aliasQuerystring;
+                bool isChildAliasRootUrl = CheckForChildPortalRootUrl(requestUri.AbsoluteUri, result, out aliasQuerystring);
+                if (isChildAliasRootUrl)
+                {
+                    RewriteAsChildAliasRoot(context, result, aliasQuerystring, settings);
+                }
+            }
+        }
+
+        private void SecurityCheck(HttpApplication app)
+        {
+            HttpRequest request = app.Request;
+            HttpServerUtility server = app.Server;
+
+            // 675 : unnecessarily strict url validation
+            // URL validation
+            // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
+            // the application should always use the exact relative location of the resource it is requesting
+            var strURL = request.Url.AbsolutePath;
+            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? string.Empty;
+            if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
+            {
+                throw new HttpException(404, "Not Found");
+            }
         }
     }
 }

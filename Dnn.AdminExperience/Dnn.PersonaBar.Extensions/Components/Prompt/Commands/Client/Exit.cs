@@ -42,6 +42,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
         {
             throw new NotImplementedException();
         }
-
     }
 }

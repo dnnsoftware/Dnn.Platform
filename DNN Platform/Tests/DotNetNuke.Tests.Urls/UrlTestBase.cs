@@ -21,12 +21,12 @@ namespace DotNetNuke.Tests.Urls
         {
         }
 
-        protected virtual string DefaultAlias { get; private set; }
-
         protected virtual string TestType
         {
             get { return string.Empty; }
         }
+
+        protected virtual string DefaultAlias { get; private set; }
 
         public virtual void SetUp()
         {
@@ -72,6 +72,19 @@ namespace DotNetNuke.Tests.Urls
             this.SetDefaultAlias(testFields["Alias"]);
         }
 
+        protected void SetDefaultAlias(string defaultAlias)
+        {
+            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId))
+            {
+                if (string.Equals(alias.HTTPAlias, defaultAlias, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    alias.IsPrimary = true;
+                    PortalAliasController.Instance.UpdatePortalAlias(alias);
+                    break;
+                }
+            }
+        }
+
         private void ExecuteScriptFile(string fileName)
         {
             var sql = TestUtil.ReadStream(fileName);
@@ -86,19 +99,6 @@ namespace DotNetNuke.Tests.Urls
         {
             var testName = TestContext.CurrentContext.Test.Name;
             return testName.Substring(0, testName.IndexOf("_", StringComparison.Ordinal));
-        }
-
-        protected void SetDefaultAlias(string defaultAlias)
-        {
-            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId))
-            {
-                if (string.Equals(alias.HTTPAlias, defaultAlias, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    alias.IsPrimary = true;
-                    PortalAliasController.Instance.UpdatePortalAlias(alias);
-                    break;
-                }
-            }
         }
     }
 }

@@ -23,36 +23,11 @@ namespace DotNetNuke.Tests.Web.InternalServices
     {
         private const int UserID = 1;
         private const int TabID = 99;
+        private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
 
         private Mock<ICBO> _mockCBO;
         private Mock<IUserController> _mockUserController;
         private Mock<IHostController> _mockHostController;
-
-        private class TabVersionControllerTestable : TabVersionController
-        {
-        }
-
-        private class DateUtilsTestable : DateUtils
-        {
-            public static new TimeZoneInfo GetDatabaseDateTimeOffset()
-            {
-                var timeZoneId = "UTC";
-                return TimeZoneInfo.CreateCustomTimeZone(timeZoneId, new TimeSpan(0, 0, 0), timeZoneId, timeZoneId);
-            }
-        }
-
-        private class TestCaseFactory
-        {
-            public static IEnumerable TestCases()
-            {
-                yield return new TestCaseData("Central European Standard Time", new DateTime(2018, 08, 15, 14, 0, 0));
-                yield return new TestCaseData("Russian Standard Time", new DateTime(2018, 08, 15, 15, 0, 0));
-                yield return new TestCaseData("SE Asia Standard Time", new DateTime(2018, 08, 15, 19, 0, 0));
-            }
-        }
-
-        // Assuming 12:00 Aug 15, 2018 server local time
-        private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
 
         [SetUp]
         public void Setup()
@@ -156,5 +131,29 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this._mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
             HostController.RegisterInstance(this._mockHostController.Object);
         }
+
+        private class TabVersionControllerTestable : TabVersionController
+        {}
+
+        private class DateUtilsTestable : DateUtils
+        {
+            public static new TimeZoneInfo GetDatabaseDateTimeOffset()
+            {
+                var timeZoneId = "UTC";
+                return TimeZoneInfo.CreateCustomTimeZone(timeZoneId, new TimeSpan(0, 0, 0), timeZoneId, timeZoneId);
+            }
+        }
+
+        private class TestCaseFactory
+        {
+            public static IEnumerable TestCases()
+            {
+                yield return new TestCaseData("Central European Standard Time", new DateTime(2018, 08, 15, 14, 0, 0));
+                yield return new TestCaseData("Russian Standard Time", new DateTime(2018, 08, 15, 15, 0, 0));
+                yield return new TestCaseData("SE Asia Standard Time", new DateTime(2018, 08, 15, 19, 0, 0));
+            }
+        }
+
+        // Assuming 12:00 Aug 15, 2018 server local time
     }
 }

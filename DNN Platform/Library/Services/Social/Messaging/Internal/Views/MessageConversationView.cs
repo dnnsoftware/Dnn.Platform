@@ -27,6 +27,33 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         private DateTime _createdOnDate;
 
         /// <summary>
+        /// Gets a pretty printed string with the time since the message was created.
+        /// </summary>
+        public string DisplayDate
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this._displayDate))
+                {
+                    this._displayDate = DateUtils.CalculateDateForDisplay(this._createdOnDate);
+                }
+
+                return this._displayDate;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Sender User Profile URL.
+        /// </summary>
+        public string SenderProfileUrl
+        {
+            get
+            {
+                return Globals.UserProfileURL(this.SenderUserID);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets messageID - The primary key.
         /// </summary>
         public int MessageID
@@ -83,22 +110,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         public int SenderUserID { get; set; }
 
         /// <summary>
-        /// Gets a pretty printed string with the time since the message was created.
-        /// </summary>
-        public string DisplayDate
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this._displayDate))
-                {
-                    this._displayDate = DateUtils.CalculateDateForDisplay(this._createdOnDate);
-                }
-
-                return this._displayDate;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets iHydratable.KeyID.
         /// </summary>
         public int KeyID
@@ -133,17 +144,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         /// Gets or sets count of Total Threads in a Conversation.
         /// </summary>
         public int ThreadCount { get; set; }
-
-        /// <summary>
-        /// Gets the Sender User Profile URL.
-        /// </summary>
-        public string SenderProfileUrl
-        {
-            get
-            {
-                return Globals.UserProfileURL(this.SenderUserID);
-            }
-        }
 
         /// <summary>
         /// Fill the object with data from database.

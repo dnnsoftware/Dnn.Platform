@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Services.Localization;
-
+    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
         public SortedDictionary<string, Command> GetCommands()
@@ -30,12 +30,11 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                     c => GetCommandsInternal());
         }
 
-        public CommandHelp GetCommandHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        public CommandHelp GetCommandHelp(string[] args, IConsoleCommand consoleCommand)
         {
-            var cacheKey = (string.Join("_", command.Args) + "_" + PortalController.Instance.GetCurrentPortalSettings()?.DefaultLanguage).Replace("-", "_");
-            cacheKey = $"{cacheKey}_{(showSyntax ? "1" : "0")}_{(showLearn ? "1" : "0")}}}";
+            var cacheKey = (string.Join("_", args) + "_" + PortalController.Instance.GetCurrentSettings()?.DefaultLanguage).Replace("-", "_");
             return DataCache.GetCachedData<CommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => this.GetCommandHelpInternal(consoleCommand, showSyntax, showLearn));
+                c => this.GetCommandHelpInternal(consoleCommand));
         }
 
         protected override Func<ICommandRepository> GetFactory()
@@ -80,7 +79,18 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
 
-        private CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        private static string CreateCommandFromClass(string className)
+        {
+            var camelCasedParts = SplitCamelCase(className);
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+        }
+
+        private static string[] SplitCamelCase(string source)
+        {
+            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
+        }
+
+        private CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
         {
             var commandHelp = new CommandHelp();
             if (consoleCommand != null)
@@ -107,29 +117,11 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 }
                 commandHelp.ResultHtml = consoleCommand.ResultHtml;
             }
-            else if (showLearn)
-            {
-                commandHelp.ResultHtml = LocalizeString("Prompt_CommandHelpLearn");
-            }
-            else if (showSyntax)
-            {
-                commandHelp.ResultHtml = LocalizeString("Prompt_CommandHelpSyntax");
-            }
             else
             {
                 commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
             }
             return commandHelp;
-        }
-
-        private static string CreateCommandFromClass(string className)
-        {
-            var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
-        }
-        private static string[] SplitCamelCase(string source)
-        {
-            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
     }
 }

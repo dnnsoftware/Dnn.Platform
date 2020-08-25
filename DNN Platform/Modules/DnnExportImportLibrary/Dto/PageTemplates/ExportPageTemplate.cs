@@ -7,6 +7,5 @@ namespace Dnn.ExportImport.Dto.PageTemplates
     using Dnn.ExportImport.Dto.Assets;
 
     public class ExportPageTemplate : ExportFile
-    {
-    }
+    {}
 }

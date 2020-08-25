@@ -15,18 +15,6 @@ namespace DotNetNuke.Entities.Urls
             this.PageSize = pageSize;
         }
 
-        public int PageNumber { get; private set; }
-
-        public int PageSize { get; private set; }
-
-        public int FirstRow { get; private set; }
-
-        public int LastRow { get; private set; }
-
-        public int TotalRows { get; private set; }
-
-        public int TotalPages { get; private set; }
-
         public bool IsLastPage
         {
             get
@@ -41,6 +29,18 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
         }
+
+        public int PageNumber { get; private set; }
+
+        public int PageSize { get; private set; }
+
+        public int FirstRow { get; private set; }
+
+        public int LastRow { get; private set; }
+
+        public int TotalRows { get; private set; }
+
+        public int TotalPages { get; private set; }
 
         public void UpdatePageResults(int firstRow, int lastRow, int totalRows, int totalPages)
         {

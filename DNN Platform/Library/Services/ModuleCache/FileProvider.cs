@@ -43,135 +43,6 @@ namespace DotNetNuke.Services.ModuleCache
             return GetCachedItemCount(tabModuleId);
         }
 
-        private static string GetAttribFileName(int tabModuleId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
-        }
-
-        private static int GetCachedItemCount(int tabModuleId)
-        {
-            return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
-        }
-
-        private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
-        {
-            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            using (var sha256 = new SHA256CryptoServiceProvider())
-            {
-                hash = sha256.ComputeHash(hash);
-                return tabModuleId + "_" + this.ByteArrayToString(hash);
-            }
-        }
-
-        private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
-        }
-
-        /// <summary>
-        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
-        private static string GetCacheFolder(int portalId)
-        {
-            string cacheFolder;
-
-            using (var readerLock = CacheFolderPath.GetReadLock())
-            {
-                if (CacheFolderPath.TryGetValue(portalId, out cacheFolder))
-                {
-                    return cacheFolder;
-                }
-            }
-
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-
-            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
-
-            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
-            {
-                cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (!Directory.Exists(cacheFolder))
-                {
-                    Directory.CreateDirectory(cacheFolder);
-                }
-            }
-
-            using (var writerLock = CacheFolderPath.GetWriteLock())
-            {
-                if (!CacheFolderPath.ContainsKey(portalId))
-                {
-                    CacheFolderPath.Add(portalId, cacheFolder);
-                }
-            }
-
-            return cacheFolder;
-        }
-
-        private static string GetCacheFolder()
-        {
-            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
-            return GetCacheFolder(portalId);
-        }
-
-        private static bool IsPathInApplication(string cacheFolder)
-        {
-            return cacheFolder.Contains(Globals.ApplicationMapPath);
-        }
-
-        private bool IsFileExpired(string file)
-        {
-            StreamReader oRead = null;
-            try
-            {
-                oRead = File.OpenText(file);
-                DateTime expires = DateTime.Parse(oRead.ReadLine(), CultureInfo.InvariantCulture);
-                if (expires < DateTime.UtcNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                // if check expire time failed, then force to expire the cache.
-                return true;
-            }
-            finally
-            {
-                if (oRead != null)
-                {
-                    oRead.Close();
-                }
-            }
-        }
-
-        private void PurgeCache(string folder)
-        {
-            var filesNotDeleted = new StringBuilder();
-            int i = 0;
-            foreach (string File in Directory.GetFiles(folder, "*.resources"))
-            {
-                if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
-                {
-                    filesNotDeleted.Append(string.Format("{0};", File));
-                }
-                else
-                {
-                    i += 1;
-                }
-            }
-
-            if (filesNotDeleted.Length > 0)
-            {
-                throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
-            }
-        }
-
         public override byte[] GetModule(int tabModuleId, string cacheKey)
         {
             string cachedModule = GetCachedOutputFileName(tabModuleId, cacheKey);
@@ -288,6 +159,135 @@ namespace DotNetNuke.Services.ModuleCache
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        private static string GetAttribFileName(int tabModuleId, string cacheKey)
+        {
+            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
+        }
+
+        private static int GetCachedItemCount(int tabModuleId)
+        {
+            return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
+        }
+
+        private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
+        {
+            return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
+        }
+
+        /// <summary>
+        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns></returns>
+        private static string GetCacheFolder(int portalId)
+        {
+            string cacheFolder;
+
+            using (var readerLock = CacheFolderPath.GetReadLock())
+            {
+                if (CacheFolderPath.TryGetValue(portalId, out cacheFolder))
+                {
+                    return cacheFolder;
+                }
+            }
+
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+
+            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
+
+            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
+            {
+                cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
+                if (!Directory.Exists(cacheFolder))
+                {
+                    Directory.CreateDirectory(cacheFolder);
+                }
+            }
+
+            using (var writerLock = CacheFolderPath.GetWriteLock())
+            {
+                if (!CacheFolderPath.ContainsKey(portalId))
+                {
+                    CacheFolderPath.Add(portalId, cacheFolder);
+                }
+            }
+
+            return cacheFolder;
+        }
+
+        private static string GetCacheFolder()
+        {
+            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+            return GetCacheFolder(portalId);
+        }
+
+        private static bool IsPathInApplication(string cacheFolder)
+        {
+            return cacheFolder.Contains(Globals.ApplicationMapPath);
+        }
+
+        private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
+        {
+            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                hash = sha256.ComputeHash(hash);
+                return tabModuleId + "_" + this.ByteArrayToString(hash);
+            }
+        }
+
+        private bool IsFileExpired(string file)
+        {
+            StreamReader oRead = null;
+            try
+            {
+                oRead = File.OpenText(file);
+                DateTime expires = DateTime.Parse(oRead.ReadLine(), CultureInfo.InvariantCulture);
+                if (expires < DateTime.UtcNow)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                // if check expire time failed, then force to expire the cache.
+                return true;
+            }
+            finally
+            {
+                if (oRead != null)
+                {
+                    oRead.Close();
+                }
+            }
+        }
+
+        private void PurgeCache(string folder)
+        {
+            var filesNotDeleted = new StringBuilder();
+            int i = 0;
+            foreach (string File in Directory.GetFiles(folder, "*.resources"))
+            {
+                if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
+                {
+                    filesNotDeleted.Append(string.Format("{0};", File));
+                }
+                else
+                {
+                    i += 1;
+                }
+            }
+
+            if (filesNotDeleted.Length > 0)
+            {
+                throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
             }
         }
     }

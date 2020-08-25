@@ -67,6 +67,32 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets columnNames gets a dictionary of Database Column Names for the Object.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public Dictionary<string, string> ColumnNames
+        {
+            get
+            {
+                return this._ColumnNames;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets properties gets a dictionary of Properties for the Object.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public Dictionary<string, PropertyInfo> Properties
+        {
+            get
+            {
+                return this._Properties;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets cacheByProperty gets and sets the property that is used to cache collections
         /// of the object.  For example: Modules are cached by the "TabId" proeprty.  Tabs
         /// are cached by the PortalId property.
@@ -109,19 +135,6 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets columnNames gets a dictionary of Database Column Names for the Object.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public Dictionary<string, string> ColumnNames
-        {
-            get
-            {
-                return this._ColumnNames;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets objectType gets and sets the type of the object.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -154,19 +167,6 @@ namespace DotNetNuke.Common.Utilities
             set
             {
                 this._PrimaryKey = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets properties gets a dictionary of Properties for the Object.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public Dictionary<string, PropertyInfo> Properties
-        {
-            get
-            {
-                return this._Properties;
             }
         }
 

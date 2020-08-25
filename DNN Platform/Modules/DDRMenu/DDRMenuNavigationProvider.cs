@@ -19,6 +19,16 @@ namespace DotNetNuke.Web.DDRMenu
     {
         private DDRMenuControl menuControl;
 
+        public override Control NavigationControl
+        {
+            get { return this.menuControl; }
+        }
+
+        public override bool SupportsPopulateOnDemand
+        {
+            get { return false; }
+        }
+
         public override Alignment ControlAlignment { get; set; }
 
         public override bool IndicateChildren { get; set; }
@@ -173,17 +183,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         public override List<CustomAttribute> CustomAttributes { get; set; }
 
-        public override Control NavigationControl
-        {
-            get { return this.menuControl; }
-        }
-
         public override string ControlID { get; set; }
-
-        public override bool SupportsPopulateOnDemand
-        {
-            get { return false; }
-        }
 
         public override string CSSControl { get; set; }
 

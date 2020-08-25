@@ -37,6 +37,8 @@ namespace DotNetNuke.Web.Mvc
 
         public static bool DisableMvcResponseHeader { get; set; }
 
+        public RequestContext RequestContext { get; private set; }
+
         bool IHttpHandler.IsReusable
         {
             get { return this.IsReusable; }
@@ -61,8 +63,6 @@ namespace DotNetNuke.Web.Mvc
         {
             get { return false; }
         }
-
-        public RequestContext RequestContext { get; private set; }
 
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {

@@ -66,6 +66,16 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
+        public ICollection<TValue> Values
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._dict.Values;
+            }
+        }
+
         internal IDictionary<TKey, TValue> BackingDictionary
         {
             get
@@ -74,9 +84,21 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+        public TValue this[TKey key]
         {
-            return this.IEnumerable_GetEnumerator();
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._dict[key];
+            }
+
+            set
+            {
+                this.EnsureNotDisposed();
+                this.EnsureWriteAccess();
+                this._dict[key] = value;
+            }
         }
 
         public IEnumerator GetEnumerator()
@@ -117,33 +139,6 @@ namespace DotNetNuke.Collections.Internal
             this.EnsureNotDisposed();
             this.EnsureWriteAccess();
             return this._dict.Remove(item);
-        }
-
-        public ICollection<TValue> Values
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return this._dict.Values;
-            }
-        }
-
-        public TValue this[TKey key]
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return this._dict[key];
-            }
-
-            set
-            {
-                this.EnsureNotDisposed();
-                this.EnsureWriteAccess();
-                this._dict[key] = value;
-            }
         }
 
         public bool ContainsKey(TKey key)
@@ -237,6 +232,11 @@ namespace DotNetNuke.Collections.Internal
                 this._lockController = null;
                 this._isDisposed = true;
             }
+        }
+
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+        {
+            return this.IEnumerable_GetEnumerator();
         }
 
         private void EnsureReadAccess()

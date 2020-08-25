@@ -92,64 +92,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
         }
 
-        private void BindBeforeAfterTabControls()
-        {
-            var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
-            this.cboParentTab.UndefinedItem = new ListItem(noneSpecified, string.Empty);
-            var parentTab = this.cboParentTab.SelectedPage;
-
-            List<TabInfo> listTabs = parentTab != null ? TabController.Instance.GetTabsByPortal(parentTab.PortalID).WithParentId(parentTab.TabID) : TabController.Instance.GetTabsByPortal(this.PortalId).WithParentId(Null.NullInteger);
-            listTabs = TabController.GetPortalTabs(listTabs, Null.NullInteger, true, noneSpecified, false, false, false, false, true);
-            this.cboPositionTab.DataSource = listTabs;
-            this.cboPositionTab.DataBind();
-            this.rbInsertPosition.Items.Clear();
-            this.rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertBefore", this.LocalResourceFile), "Before"));
-            this.rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertAfter", this.LocalResourceFile), "After"));
-            this.rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertAtEnd", this.LocalResourceFile), "AtEnd"));
-            this.rbInsertPosition.SelectedValue = "After";
-        }
-
-        private void BindFiles()
-        {
-            this.cboTemplate.Items.Clear();
-            if (this.cboFolders.SelectedItem != null)
-            {
-                var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-                if (folder != null)
-                {
-                    // var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
-                    var files = Globals.GetFileList(this.PortalId, "page.template", false, folder.FolderPath);
-                    foreach (FileItem file in files)
-                    {
-                        this.cboTemplate.AddItem(file.Text.Replace(".page.template", string.Empty), file.Value);
-                    }
-
-                    this.cboTemplate.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "None_Specified");
-                    this.cboTemplate.SelectedIndex = 0;
-                }
-            }
-        }
-
-        private void BindTabControls()
-        {
-            this.BindBeforeAfterTabControls();
-            this.divInsertPositionRow.Visible = this.cboPositionTab.Items.Count > 0;
-            this.cboParentTab.AutoPostBack = true;
-            if (this.cboPositionTab.FindItemByValue(this.TabId.ToString(CultureInfo.InvariantCulture)) != null)
-            {
-                this.cboPositionTab.ClearSelection();
-                this.cboPositionTab.FindItemByValue(this.TabId.ToString(CultureInfo.InvariantCulture)).Selected = true;
-            }
-        }
-
-        private void DisplayNewRows()
-        {
-            this.divTabName.Visible = this.optMode.SelectedIndex == 0;
-            this.divParentTab.Visible = this.optMode.SelectedIndex == 0;
-            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
-            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
-        }
-
         protected void OnFolderIndexChanged(object sender, EventArgs e)
         {
             this.BindFiles();
@@ -347,6 +289,64 @@ namespace DotNetNuke.Modules.Admin.Tabs
         protected void OptModeSelectedIndexChanged(object sender, EventArgs e)
         {
             this.DisplayNewRows();
+        }
+
+        private void BindBeforeAfterTabControls()
+        {
+            var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
+            this.cboParentTab.UndefinedItem = new ListItem(noneSpecified, string.Empty);
+            var parentTab = this.cboParentTab.SelectedPage;
+
+            List<TabInfo> listTabs = parentTab != null ? TabController.Instance.GetTabsByPortal(parentTab.PortalID).WithParentId(parentTab.TabID) : TabController.Instance.GetTabsByPortal(this.PortalId).WithParentId(Null.NullInteger);
+            listTabs = TabController.GetPortalTabs(listTabs, Null.NullInteger, true, noneSpecified, false, false, false, false, true);
+            this.cboPositionTab.DataSource = listTabs;
+            this.cboPositionTab.DataBind();
+            this.rbInsertPosition.Items.Clear();
+            this.rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertBefore", this.LocalResourceFile), "Before"));
+            this.rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertAfter", this.LocalResourceFile), "After"));
+            this.rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertAtEnd", this.LocalResourceFile), "AtEnd"));
+            this.rbInsertPosition.SelectedValue = "After";
+        }
+
+        private void BindFiles()
+        {
+            this.cboTemplate.Items.Clear();
+            if (this.cboFolders.SelectedItem != null)
+            {
+                var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
+                if (folder != null)
+                {
+                    // var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
+                    var files = Globals.GetFileList(this.PortalId, "page.template", false, folder.FolderPath);
+                    foreach (FileItem file in files)
+                    {
+                        this.cboTemplate.AddItem(file.Text.Replace(".page.template", string.Empty), file.Value);
+                    }
+
+                    this.cboTemplate.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "None_Specified");
+                    this.cboTemplate.SelectedIndex = 0;
+                }
+            }
+        }
+
+        private void BindTabControls()
+        {
+            this.BindBeforeAfterTabControls();
+            this.divInsertPositionRow.Visible = this.cboPositionTab.Items.Count > 0;
+            this.cboParentTab.AutoPostBack = true;
+            if (this.cboPositionTab.FindItemByValue(this.TabId.ToString(CultureInfo.InvariantCulture)) != null)
+            {
+                this.cboPositionTab.ClearSelection();
+                this.cboPositionTab.FindItemByValue(this.TabId.ToString(CultureInfo.InvariantCulture)).Selected = true;
+            }
+        }
+
+        private void DisplayNewRows()
+        {
+            this.divTabName.Visible = this.optMode.SelectedIndex == 0;
+            this.divParentTab.Visible = this.optMode.SelectedIndex == 0;
+            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
+            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
         }
     }
 }

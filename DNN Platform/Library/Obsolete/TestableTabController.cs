@@ -25,11 +25,6 @@ namespace DotNetNuke.Entities.Tabs.Internal
             return TabController.Instance.GetTab(tabId, portalId);
         }
 
-        protected override Func<DotNetNuke.Entities.Tabs.Internal.ITabController> GetFactory()
-        {
-            return () => new TestableTabController();
-        }
-
         public Dictionary<string, string> GetCustomAliases(int tabId, int portalId)
         {
             return TabController.Instance.GetCustomAliases(tabId, portalId);
@@ -48,6 +43,11 @@ namespace DotNetNuke.Entities.Tabs.Internal
         public void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
             TabController.Instance.SaveTabUrl(tabUrl, portalId, clearCache);
+        }
+
+        protected override Func<DotNetNuke.Entities.Tabs.Internal.ITabController> GetFactory()
+        {
+            return () => new TestableTabController();
         }
     }
 }

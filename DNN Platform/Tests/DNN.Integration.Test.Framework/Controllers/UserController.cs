@@ -17,7 +17,6 @@ namespace DNN.Integration.Test.Framework.Controllers
         private const string PortalIdMarker = @"'$[portal_id]'";
         private const string UserToCopyMarker = @"$[users_to_copy]";
 
-        private static readonly string UserToCopy = AppConfigHelper.HostUserName;
         private const string FirstNameMarker = @"$[first_name]";
         private const string LastNameMarker = @"$[last_name]";
         private const string IsSuperUserMarker = @"'$[isSuperUser]'";
@@ -25,6 +24,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         private const string UserIdMarker = @"'$[user_id]'";
         private const string CreateFriendsMarker = @"'$[CreateFriends]'";
         private const string CreateFollowersMarker = @"'$[CreateFollowers]'";
+        private static readonly string UserToCopy = AppConfigHelper.HostUserName;
 
         /// <summary>
         /// Creates a new user with Registered User Role and with the same password as the host user.

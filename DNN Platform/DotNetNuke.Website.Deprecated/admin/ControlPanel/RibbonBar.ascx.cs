@@ -30,8 +30,6 @@ namespace DotNetNuke.UI.ControlPanels
 
     public partial class RibbonBar : ControlPanelBase
     {
-        public override bool IsDockable { get; set; }
-
         public override bool IncludeInControlHierarchy
         {
             get
@@ -39,6 +37,8 @@ namespace DotNetNuke.UI.ControlPanels
                 return base.IncludeInControlHierarchy && (this.IsPageAdmin() || this.IsModuleAdmin());
             }
         }
+
+        public override bool IsDockable { get; set; }
 
         protected string GetButtonConfirmMessage(string toolName)
         {
@@ -77,65 +77,6 @@ namespace DotNetNuke.UI.ControlPanels
             string host = this.StripLocalizationPrefix(Localization.GetString("//Host.String", Localization.GlobalResourceFile)).Trim();
 
             skinObject.IncludeNodes = admin + ", " + host;
-        }
-
-        private void Localize()
-        {
-            Control ctrl = this.AdminPanel.FindControl("SiteNewPage");
-            if ((ctrl != null) && ctrl is DnnRibbonBarTool)
-            {
-                var toolCtrl = (DnnRibbonBarTool)ctrl;
-                toolCtrl.Text = Localization.GetString("SiteNewPage", this.LocalResourceFile);
-                toolCtrl.ToolTip = Localization.GetString("SiteNewPage.ToolTip", this.LocalResourceFile);
-            }
-        }
-
-        private void SetMode(bool update)
-        {
-            if (update)
-            {
-                this.SetUserMode(this.ddlMode.SelectedValue);
-            }
-
-            if (!TabPermissionController.CanAddContentToPage())
-            {
-                this.RemoveModeDropDownItem("LAYOUT");
-            }
-
-            if (!(new PreviewProfileController().GetProfilesByPortal(this.PortalSettings.PortalId).Count > 0))
-            {
-                this.RemoveModeDropDownItem("PREVIEW");
-            }
-
-            switch (this.UserMode)
-            {
-                case PortalSettings.Mode.View:
-                    this.ddlMode.FindItemByValue("VIEW").Selected = true;
-                    break;
-                case PortalSettings.Mode.Edit:
-                    this.ddlMode.FindItemByValue("EDIT").Selected = true;
-                    break;
-                case PortalSettings.Mode.Layout:
-                    this.ddlMode.FindItemByValue("LAYOUT").Selected = true;
-                    break;
-            }
-        }
-
-        private void RemoveModeDropDownItem(string value)
-        {
-            var item = this.ddlMode.FindItemByValue(value);
-            if (item != null)
-            {
-                this.ddlMode.Items.Remove(item);
-            }
-        }
-
-        private void SetLanguage(bool update)
-        {
-            if (update)
-            {
-                DotNetNuke.Services.Personalization.Personalization.SetProfile("Usability", "UICulture", this.ddlUICulture.SelectedValue);
-            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -297,18 +238,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        private string StripLocalizationPrefix(string s)
-        {
-            const string prefix = "[L]";
-
-            if (s.StartsWith(prefix))
-            {
-                return s.Substring(prefix.Length);
-            }
-
-            return s;
-        }
-
         protected void ddlMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.Page.IsCallback)
@@ -336,6 +265,77 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 return string.Format("location.href = \"{0}\"", previewUrl);
             }
+        }
+
+        private void Localize()
+        {
+            Control ctrl = this.AdminPanel.FindControl("SiteNewPage");
+            if ((ctrl != null) && ctrl is DnnRibbonBarTool)
+            {
+                var toolCtrl = (DnnRibbonBarTool)ctrl;
+                toolCtrl.Text = Localization.GetString("SiteNewPage", this.LocalResourceFile);
+                toolCtrl.ToolTip = Localization.GetString("SiteNewPage.ToolTip", this.LocalResourceFile);
+            }
+        }
+
+        private void SetMode(bool update)
+        {
+            if (update)
+            {
+                this.SetUserMode(this.ddlMode.SelectedValue);
+            }
+
+            if (!TabPermissionController.CanAddContentToPage())
+            {
+                this.RemoveModeDropDownItem("LAYOUT");
+            }
+
+            if (!(new PreviewProfileController().GetProfilesByPortal(this.PortalSettings.PortalId).Count > 0))
+            {
+                this.RemoveModeDropDownItem("PREVIEW");
+            }
+
+            switch (this.UserMode)
+            {
+                case PortalSettings.Mode.View:
+                    this.ddlMode.FindItemByValue("VIEW").Selected = true;
+                    break;
+                case PortalSettings.Mode.Edit:
+                    this.ddlMode.FindItemByValue("EDIT").Selected = true;
+                    break;
+                case PortalSettings.Mode.Layout:
+                    this.ddlMode.FindItemByValue("LAYOUT").Selected = true;
+                    break;
+            }
+        }
+
+        private void RemoveModeDropDownItem(string value)
+        {
+            var item = this.ddlMode.FindItemByValue(value);
+            if (item != null)
+            {
+                this.ddlMode.Items.Remove(item);
+            }
+        }
+
+        private void SetLanguage(bool update)
+        {
+            if (update)
+            {
+                DotNetNuke.Services.Personalization.Personalization.SetProfile("Usability", "UICulture", this.ddlUICulture.SelectedValue);
+            }
+        }
+
+        private string StripLocalizationPrefix(string s)
+        {
+            const string prefix = "[L]";
+
+            if (s.StartsWith(prefix))
+            {
+                return s.Substring(prefix.Length);
+            }
+
+            return s;
         }
 
         private void ddlUICulture_SelectedIndexChanged(object sender, EventArgs e)

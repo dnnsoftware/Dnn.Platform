@@ -25,8 +25,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_AddRoles_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("roles", "Prompt_AddRoles_FlagRoles", "String", true)]
         private const string FlagRoles = "roles";
 
@@ -44,17 +42,19 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
         }
 
-        private int UserId { get; set; }
-        private string Roles { get; set; }
-        private DateTime? StartDate { get; set; }
-        private DateTime? EndDate { get; set; }
-
         public AddRoles(IUserValidator userValidator, IUsersController userController, IRolesController rolesController)
         {
             this._userValidator = userValidator;
             this._usersController = userController;
             this._rolesController = rolesController;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        private int UserId { get; set; }
+        private string Roles { get; set; }
+        private DateTime? StartDate { get; set; }
+        private DateTime? EndDate { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -68,29 +68,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 if (this.EndDate < this.StartDate)
                 {
                     this.AddMessage(this.LocalizeString("Prompt_StartDateGreaterThanEnd") + " ");
-                }
-            }
-        }
-
-        private void checkRoles()
-        {
-            IList<string> rolesFilter = new List<string>();
-            if (!string.IsNullOrWhiteSpace(this.Roles))
-            {
-                this.Roles.Split(',').ToList().ForEach((role) => rolesFilter.Add(role.Trim()));
-            }
-            if (rolesFilter.Count() > 0)
-            {
-                IList<RoleInfo> foundRoles = this._rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
-                HashSet<string> foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
-                HashSet<string> roleFiltersSet = new HashSet<string>(rolesFilter);
-                roleFiltersSet.ExceptWith(foundRolesNames);
-
-                int notFoundCount = roleFiltersSet.Count();
-
-                if (notFoundCount > 0)
-                {
-                    throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : "", string.Join(",", roleFiltersSet)));
                 }
             }
         }
@@ -117,6 +94,29 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             catch (Exception ex)
             {
                 return new ConsoleErrorResultModel(ex.Message);
+            }
+        }
+
+        private void checkRoles()
+        {
+            IList<string> rolesFilter = new List<string>();
+            if (!string.IsNullOrWhiteSpace(this.Roles))
+            {
+                this.Roles.Split(',').ToList().ForEach((role) => rolesFilter.Add(role.Trim()));
+            }
+            if (rolesFilter.Count() > 0)
+            {
+                IList<RoleInfo> foundRoles = this._rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
+                HashSet<string> foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
+                HashSet<string> roleFiltersSet = new HashSet<string>(rolesFilter);
+                roleFiltersSet.ExceptWith(foundRolesNames);
+
+                int notFoundCount = roleFiltersSet.Count();
+
+                if (notFoundCount > 0)
+                {
+                    throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : "", string.Join(",", roleFiltersSet)));
+                }
             }
         }
     }

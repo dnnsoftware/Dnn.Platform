@@ -102,8 +102,8 @@ namespace DotNetNuke.Tests.Core
 
     internal class ActionMonitor
     {
-        private int _failuresRemaining;
         private readonly List<DateTime> _callTimes = new List<DateTime>();
+        private int _failuresRemaining;
 
         public ActionMonitor()
             : this(0)
@@ -115,8 +115,6 @@ namespace DotNetNuke.Tests.Core
             this._failuresRemaining = failureCount;
         }
 
-        public int TimesCalled { get; private set; }
-
         public IList<DateTime> CallTime
         {
             get
@@ -124,6 +122,8 @@ namespace DotNetNuke.Tests.Core
                 return this._callTimes.AsReadOnly();
             }
         }
+
+        public int TimesCalled { get; private set; }
 
         public void Action()
         {

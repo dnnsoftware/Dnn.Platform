@@ -23,32 +23,9 @@ namespace DotNetNuke.UI.UserControls
     /// </remarks>
     public abstract class Address : UserControlBase
     {
+        private const string MyFileName = "Address.ascx";
         protected CountryListBox cboCountry;
         protected DropDownList cboRegion;
-        private const string MyFileName = "Address.ascx";
-        private string _cell;
-        private string _city;
-        private string _controlColumnWidth = string.Empty;
-        private string _country;
-        private string _countryData = "Text";
-        private string _fax;
-        private string _labelColumnWidth = string.Empty;
-        private int _moduleId;
-        private string _postal;
-        private string _region;
-        private string _regionData = "Text";
-        private bool _showCell = true;
-        private bool _showCity = true;
-        private bool _showCountry = true;
-        private bool _showFax = true;
-        private bool _showPostal = true;
-        private bool _showRegion = true;
-        private bool _showStreet = true;
-        private bool _showTelephone = true;
-        private bool _showUnit = true;
-        private string _street;
-        private string _telephone;
-        private string _unit;
         protected CheckBox chkCell;
         protected CheckBox chkCity;
         protected CheckBox chkCountry;
@@ -92,10 +69,41 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valRegion2;
         protected RequiredFieldValidator valStreet;
         protected RequiredFieldValidator valTelephone;
+        private string _cell;
+        private string _city;
+        private string _controlColumnWidth = string.Empty;
+        private string _country;
+        private string _countryData = "Text";
+        private string _fax;
+        private string _labelColumnWidth = string.Empty;
+        private int _moduleId;
+        private string _postal;
+        private string _region;
+        private string _regionData = "Text";
+        private bool _showCell = true;
+        private bool _showCity = true;
+        private bool _showCountry = true;
+        private bool _showFax = true;
+        private bool _showPostal = true;
+        private bool _showRegion = true;
+        private bool _showStreet = true;
+        private bool _showTelephone = true;
+        private bool _showUnit = true;
+        private string _street;
+        private string _telephone;
+        private string _unit;
 
         protected Address()
         {
             this.StartTabIndex = 1;
+        }
+
+        public string LocalResourceFile
+        {
+            get
+            {
+                return Localization.GetResourceFile(this, MyFileName);
+            }
         }
 
         public int ModuleId
@@ -383,14 +391,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        public string LocalResourceFile
-        {
-            get
-            {
-                return Localization.GetResourceFile(this, MyFileName);
-            }
-        }
-
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
@@ -553,6 +553,102 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 this.Localize();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnCityCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnCountryCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnPostalCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnRegionCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnStreetCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnTelephoneCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnCellCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void OnFaxCheckChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.UpdateRequiredFields();
             }
             catch (Exception exc)
             {
@@ -780,102 +876,6 @@ namespace DotNetNuke.UI.UserControls
             PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressfax", this.chkFax.Checked ? string.Empty : "N");
 
             this.ShowRequiredFields();
-        }
-
-        protected void OnCityCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnCountryCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnPostalCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnRegionCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnStreetCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnTelephoneCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnCellCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void OnFaxCheckChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.UpdateRequiredFields();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
     }
 }

@@ -56,6 +56,7 @@ namespace DotNetNuke.Services.Mail
             Send_BCC = 2,
             Send_Relay = 3,
         }
+
         private UserInfo _replyToUser;
         private bool _smtpEnableSSL;
         private TokenReplace _tokenReplace;

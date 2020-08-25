@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
         protected INavigationManager NavigationManager { get; }
 
         /// <summary>

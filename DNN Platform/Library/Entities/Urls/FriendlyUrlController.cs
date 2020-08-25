@@ -828,6 +828,92 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             return path;
         }
 
+        public static string EnsureNotLeadingChar(string leading, string path)
+        {
+            if (leading != null && path != null
+                && leading.Length <= path.Length && leading != string.Empty)
+            {
+                string start = path.Substring(0, leading.Length);
+                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    // matches start, take leading off
+                    path = path.Substring(leading.Length);
+                }
+            }
+
+            return path;
+        }
+
+        // 737 : detect mobile and other types of browsers
+        public static BrowserTypes GetBrowserType(HttpRequest request, HttpResponse response, FriendlyUrlSettings settings)
+        {
+            var browserType = BrowserTypes.Normal;
+            if (request != null && settings != null)
+            {
+                bool isCookieSet = false;
+                bool isMobile = false;
+                if (CanUseMobileDevice(request, response))
+                {
+                    HttpCookie viewMobileCookie = response.Cookies[MobileViewSiteCookieName];
+                    if (viewMobileCookie != null && bool.TryParse(viewMobileCookie.Value, out isMobile))
+                    {
+                        isCookieSet = true;
+                    }
+
+                    if (isMobile == false)
+                    {
+                        if (!isCookieSet)
+                        {
+                            isMobile = IsMobileClient();
+                            if (isMobile)
+                            {
+                                browserType = BrowserTypes.Mobile;
+                            }
+
+                            // Store the result as a cookie.
+                            if (viewMobileCookie == null)
+                            {
+                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
+                                { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
+                            }
+                            else
+                            {
+                                viewMobileCookie.Value = isMobile.ToString();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        browserType = BrowserTypes.Mobile;
+                    }
+                }
+            }
+
+            return browserType;
+        }
+
+        public static string ValidateUrl(string cleanUrl, int validateUrlForTabId, PortalSettings settings, out bool modified)
+        {
+            modified = false;
+            bool isUnique;
+            var uniqueUrl = cleanUrl;
+            int counter = 0;
+            do
+            {
+                if (counter > 0)
+                {
+                    uniqueUrl = uniqueUrl + counter.ToString(CultureInfo.InvariantCulture);
+                    modified = true;
+                }
+
+                isUnique = ValidateUrl(uniqueUrl, validateUrlForTabId, settings);
+                counter++;
+            }
+            while (!isUnique);
+
+            return uniqueUrl;
+        }
+
         internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
         {
             var canUseMobileDevice = true;
@@ -917,8 +1003,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             ch = resultingCh.ToString();
         }
 
-        private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch,
-            ref bool replacedUnwantedChars)
+        private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch, ref bool replacedUnwantedChars)
         {
             if (!options.ReplaceChars.ToUpperInvariant().Contains(ch.ToUpperInvariant()))
             {
@@ -937,92 +1022,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 ch = options.SpaceEncoding;
             }
-        }
-
-        public static string EnsureNotLeadingChar(string leading, string path)
-        {
-            if (leading != null && path != null
-                && leading.Length <= path.Length && leading != string.Empty)
-            {
-                string start = path.Substring(0, leading.Length);
-                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    // matches start, take leading off
-                    path = path.Substring(leading.Length);
-                }
-            }
-
-            return path;
-        }
-
-        // 737 : detect mobile and other types of browsers
-        public static BrowserTypes GetBrowserType(HttpRequest request, HttpResponse response, FriendlyUrlSettings settings)
-        {
-            var browserType = BrowserTypes.Normal;
-            if (request != null && settings != null)
-            {
-                bool isCookieSet = false;
-                bool isMobile = false;
-                if (CanUseMobileDevice(request, response))
-                {
-                    HttpCookie viewMobileCookie = response.Cookies[MobileViewSiteCookieName];
-                    if (viewMobileCookie != null && bool.TryParse(viewMobileCookie.Value, out isMobile))
-                    {
-                        isCookieSet = true;
-                    }
-
-                    if (isMobile == false)
-                    {
-                        if (!isCookieSet)
-                        {
-                            isMobile = IsMobileClient();
-                            if (isMobile)
-                            {
-                                browserType = BrowserTypes.Mobile;
-                            }
-
-                            // Store the result as a cookie.
-                            if (viewMobileCookie == null)
-                            {
-                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
-                                { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
-                            }
-                            else
-                            {
-                                viewMobileCookie.Value = isMobile.ToString();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        browserType = BrowserTypes.Mobile;
-                    }
-                }
-            }
-
-            return browserType;
-        }
-
-        public static string ValidateUrl(string cleanUrl, int validateUrlForTabId, PortalSettings settings, out bool modified)
-        {
-            modified = false;
-            bool isUnique;
-            var uniqueUrl = cleanUrl;
-            int counter = 0;
-            do
-            {
-                if (counter > 0)
-                {
-                    uniqueUrl = uniqueUrl + counter.ToString(CultureInfo.InvariantCulture);
-                    modified = true;
-                }
-
-                isUnique = ValidateUrl(uniqueUrl, validateUrlForTabId, settings);
-                counter++;
-            }
-            while (!isUnique);
-
-            return uniqueUrl;
         }
 
         private static bool ValidateUrl(string url, int validateUrlForTabId, PortalSettings settings)

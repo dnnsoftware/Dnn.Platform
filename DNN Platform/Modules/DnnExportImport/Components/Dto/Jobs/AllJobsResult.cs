@@ -15,21 +15,20 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
     [JsonObject]
     public class AllJobsResult : IDateTimeConverter
     {
+        public string TotalJobsString => Util.FormatNumber(this.TotalJobs);
+
+        public string LastExportTimeString => Util.GetDateTimeString(this.LastExportTime);
+
+        public string LastImportTimeString => Util.GetDateTimeString(this.LastImportTime);
         public int PortalId { get; set; }
 
         public string PortalName { get; set; }
 
         public int TotalJobs { get; set; }
 
-        public string TotalJobsString => Util.FormatNumber(this.TotalJobs);
-
         public DateTime? LastExportTime { get; set; }
 
         public DateTime? LastImportTime { get; set; }
-
-        public string LastExportTimeString => Util.GetDateTimeString(this.LastExportTime);
-
-        public string LastImportTimeString => Util.GetDateTimeString(this.LastImportTime);
 
         public IEnumerable<JobItem> Jobs { get; set; }
 

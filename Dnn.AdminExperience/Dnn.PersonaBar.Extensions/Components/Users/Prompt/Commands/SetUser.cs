@@ -23,19 +23,24 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_SetUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("email", "Prompt_SetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
+
         [FlagParameter("username", "Prompt_SetUser_FlagUsername", "String")]
         private const string FlagUsername = "username";
+
         [FlagParameter("displayname", "Prompt_SetUser_FlagDisplayname", "String")]
         private const string FlagDisplayname = "displayname";
+
         [FlagParameter("firstname", "Prompt_SetUser_FlagFirstname", "String")]
         private const string FlagFirstname = "firstname";
+
         [FlagParameter("lastname", "Prompt_SetUser_FlagLastname", "String")]
         private const string FlagLastname = "lastname";
+
         [FlagParameter("approved", "Prompt_SetUser_FlagApproved", "Boolean")]
         private const string FlagApproved = "approved";
+
         [FlagParameter("password", "Prompt_SetUser_FlagPassword", "String")]
         private const string FlagPassword = "password";
 
@@ -47,6 +52,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
         }
 
+        public SetUser(IUserValidator userValidator, IUsersController usersController, IUserControllerWrapper userControllerWrapper)
+        {
+            this._userValidator = userValidator;
+            this._usersController = usersController;
+            this._userControllerWrapper = userControllerWrapper;
+        }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private int? UserId { get; set; }
         private string Email { get; set; }
         private string Username { get; set; }
@@ -55,13 +69,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private string LastName { get; set; }
         private bool? Approved { get; set; }
         private string Password { get; set; }
-
-        public SetUser(IUserValidator userValidator, IUsersController usersController, IUserControllerWrapper userControllerWrapper)
-        {
-            this._userValidator = userValidator;
-            this._usersController = usersController;
-            this._userControllerWrapper = userControllerWrapper;
-        }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

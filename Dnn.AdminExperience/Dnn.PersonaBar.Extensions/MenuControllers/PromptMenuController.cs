@@ -10,19 +10,24 @@ namespace Dnn.PersonaBar.Prompt.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Entities.Users;
 
+    /// <summary>
+    /// Controls the prompt menu.
+    /// </summary>
     public class PromptMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
-
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

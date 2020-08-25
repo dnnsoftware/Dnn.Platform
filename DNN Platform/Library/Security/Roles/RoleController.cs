@@ -103,145 +103,186 @@ namespace DotNetNuke.Security.Roles
             DataCache.ClearUserCache(portalSettings.PortalId, user.Username);
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Determines if the specified user can be removed from a role.
+        /// </summary>
+        /// <remarks>
+        /// Roles such as "Registered Users" and "Administrators" can only
+        /// be removed in certain circumstances.
+        /// </remarks>
+        /// <param name="PortalSettings">A <see cref="PortalSettings">PortalSettings</see> structure representing the current portal settings.</param>
+        /// <param name="UserId">The Id of the User that should be checked for role removability.</param>
+        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static bool CanRemoveUserFromRole(PortalSettings PortalSettings, int UserId, int RoleId)
+        {
+            // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
+            // HACK: Duplicated in CanRemoveUserFromRole(PortalInfo, Integer, Integer) method below
+            // changes to this method should be reflected in the other method as well
+            return !((PortalSettings.AdministratorId == UserId && PortalSettings.AdministratorRoleId == RoleId) || PortalSettings.RegisteredRoleId == RoleId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Determines if the specified user can be removed from a role.
+        /// </summary>
+        /// <remarks>
+        /// Roles such as "Registered Users" and "Administrators" can only
+        /// be removed in certain circumstances.
+        /// </remarks>
+        /// <param name="PortalInfo">A <see cref="PortalInfo">PortalInfo</see> structure representing the current portal.</param>
+        /// <param name="UserId">The Id of the User.</param>
+        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static bool CanRemoveUserFromRole(PortalInfo PortalInfo, int UserId, int RoleId)
+        {
+            // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
+            // HACK: Duplicated in CanRemoveUserFromRole(PortalSettings, Integer, Integer) method above
+            // changes to this method should be reflected in the other method as well
+            return !((PortalInfo.AdministratorId == UserId && PortalInfo.AdministratorRoleId == RoleId) || PortalInfo.RegisteredRoleId == RoleId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Deletes a Role Group.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void DeleteRoleGroup(int PortalID, int RoleGroupId)
+        {
+            DeleteRoleGroup(GetRoleGroup(PortalID, RoleGroupId));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Deletes a Role Group.
+        /// </summary>
+        /// <param name="objRoleGroupInfo">The RoleGroup to Delete.</param>
+        /// -----------------------------------------------------------------------------
+        public static void DeleteRoleGroup(RoleGroupInfo objRoleGroupInfo)
+        {
+            provider.DeleteRoleGroup(objRoleGroupInfo);
+            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_DELETED);
+        }
+
+        /// <summary>
+        /// Removes a User from a Role.
+        /// </summary>
+        /// <param name="objUser">The user to remove.</param>
+        /// <param name="role">The role to remove the use from.</param>
+        /// <param name="portalSettings">The PortalSettings of the Portal.</param>
+        /// <param name="notifyUser">A flag that indicates whether the user should be notified.</param>
+        /// <returns></returns>
+        public static bool DeleteUserRole(UserInfo objUser, RoleInfo role, PortalSettings portalSettings, bool notifyUser)
+        {
+            bool canDelete = DeleteUserRoleInternal(portalSettings.PortalId, objUser.UserID, role.RoleID);
+            if (canDelete)
+            {
+                if (notifyUser)
+                {
+                    SendNotification(objUser, role, portalSettings, UserRoleActions.delete);
+                }
+            }
+
+            return canDelete;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fetch a single RoleGroup.
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="roleGroupId">Role Group ID.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        /// -----------------------------------------------------------------------------
+        public static RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
+        {
+            return provider.GetRoleGroup(portalId, roleGroupId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fetch a single RoleGroup by Name.
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="roleGroupName">Role Group Name.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        /// -----------------------------------------------------------------------------
+        public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
+        {
+            return provider.GetRoleGroupByName(portalId, roleGroupName);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets an ArrayList of RoleGroups.
+        /// </summary>
+        /// <param name="PortalID">The Id of the Portal.</param>
+        /// <returns>An ArrayList of RoleGroups.</returns>
+        /// -----------------------------------------------------------------------------
+        public static ArrayList GetRoleGroups(int PortalID)
+        {
+            return provider.GetRoleGroups(PortalID);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Serializes the role groups.
+        /// </summary>
+        /// <param name="writer">An XmlWriter.</param>
+        /// <param name="portalID">The Id of the Portal.</param>
+        /// -----------------------------------------------------------------------------
+        public static void SerializeRoleGroups(XmlWriter writer, int portalID)
+        {
+            // Serialize Role Groups
+            writer.WriteStartElement("rolegroups");
+            foreach (RoleGroupInfo objRoleGroup in GetRoleGroups(portalID))
+            {
+                CBO.SerializeObject(objRoleGroup, writer);
+            }
+
+            // Serialize Global Roles
+            var globalRoleGroup = new RoleGroupInfo(Null.NullInteger, portalID, true)
+            {
+                RoleGroupName = "GlobalRoles",
+                Description = "A dummy role group that represents the Global roles",
+            };
+            CBO.SerializeObject(globalRoleGroup, writer);
+            writer.WriteEndElement();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Updates a Role Group.
+        /// </summary>
+        /// <param name="roleGroup">The RoleGroup to Update.</param>
+        /// -----------------------------------------------------------------------------
+        public static void UpdateRoleGroup(RoleGroupInfo roleGroup)
+        {
+            UpdateRoleGroup(roleGroup, false);
+        }
+
+        public static void UpdateRoleGroup(RoleGroupInfo roleGroup, bool includeRoles)
+        {
+            provider.UpdateRoleGroup(roleGroup);
+            EventLogController.Instance.AddLog(roleGroup, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
+            if (includeRoles)
+            {
+                foreach (RoleInfo role in roleGroup.Roles.Values)
+                {
+                    Instance.UpdateRole(role);
+                    EventLogController.Instance.AddLog(role, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.ROLE_UPDATED);
+                }
+            }
+        }
+
         public int AddRole(RoleInfo role)
         {
             return Instance.AddRole(role, true);
-        }
-
-        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
-        {
-            Requires.NotNull("role", role);
-
-            var roleId = -1;
-            if (provider.CreateRole(role))
-            {
-                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
-                if (addToExistUsers)
-                {
-                    this.AutoAssignUsers(role);
-                }
-
-                roleId = role.RoleID;
-
-                this.ClearRoleCache(role.PortalID);
-
-                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
-            }
-
-            return roleId;
-        }
-
-        protected override Func<IRoleController> GetFactory()
-        {
-            return () => new RoleController();
-        }
-
-        private static bool DeleteUserRoleInternal(int portalId, int userId, int roleId)
-        {
-            var user = UserController.GetUserById(portalId, userId);
-            var userRole = RoleController.Instance.GetUserRole(portalId, userId, roleId);
-            bool delete = true;
-            var portal = PortalController.Instance.GetPortal(portalId);
-            if (portal != null && userRole != null)
-            {
-                if (CanRemoveUserFromRole(portal, userId, roleId))
-                {
-                    provider.RemoveUserFromRole(portalId, user, userRole);
-                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.ROLE_UPDATED);
-
-                    // Remove the UserInfo from the Cache, as it has been modified
-                    DataCache.ClearUserCache(portalId, user.Username);
-                    Instance.ClearRoleCache(portalId);
-
-                    EventManager.Instance.OnRoleLeft(new RoleEventArgs() { Role = Instance.GetRoleById(portalId, roleId), User = user });
-                }
-                else
-                {
-                    delete = false;
-                }
-            }
-
-            return delete;
-        }
-
-        private static void SendNotification(UserInfo objUser, RoleInfo objRole, PortalSettings PortalSettings, UserRoleActions Action)
-        {
-            var Custom = new ArrayList { objRole.RoleName, objRole.Description };
-            switch (Action)
-            {
-                case UserRoleActions.add:
-                case UserRoleActions.update:
-                    string preferredLocale = objUser.Profile.PreferredLocale;
-                    if (string.IsNullOrEmpty(preferredLocale))
-                    {
-                        preferredLocale = PortalSettings.DefaultLanguage;
-                    }
-
-                    var ci = new CultureInfo(preferredLocale);
-                    UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalSettings.PortalId, objUser.UserID, objRole.RoleID);
-                    Custom.Add(Null.IsNull(objUserRole.EffectiveDate)
-                                   ? DateTime.Today.ToString("g", ci)
-                                   : objUserRole.EffectiveDate.ToString("g", ci));
-                    Custom.Add(Null.IsNull(objUserRole.ExpiryDate) ? "-" : objUserRole.ExpiryDate.ToString("g", ci));
-                    break;
-                case UserRoleActions.delete:
-                    Custom.Add(string.Empty);
-                    break;
-            }
-
-            var _message = new Message
-            {
-                FromUserID = PortalSettings.AdministratorId,
-                ToUserID = objUser.UserID,
-                Subject =
-                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, PortalSettings,
-                                                  "EMAIL_ROLE_" +
-                                                  UserRoleActionsCaption[(int)Action] +
-                                                  "_SUBJECT", objUser),
-                Body = Localization.GetSystemMessage(
-                    objUser.Profile.PreferredLocale,
-                    PortalSettings,
-                    "EMAIL_ROLE_" +
-                                                     UserRoleActionsCaption[(int)Action] + "_BODY",
-                    objUser,
-                    Localization.GlobalResourceFile,
-                    Custom),
-                Status = MessageStatusType.Unread,
-            };
-
-            // _messagingController.SaveMessage(_message);
-            Mail.SendEmail(PortalSettings.Email, objUser.Email, _message.Subject, _message.Body);
-        }
-
-        private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
-        {
-            EventLogController.Instance.AddLog(
-                roleInfo,
-                PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID,
-                string.Empty,
-                logType);
-        }
-
-        private void AutoAssignUsers(RoleInfo role)
-        {
-            if (role.AutoAssignment)
-            {
-                // loop through users for portal and add to role
-                var arrUsers = UserController.GetUsers(role.PortalID);
-                foreach (UserInfo objUser in arrUsers)
-                {
-                    try
-                    {
-                        this.AddUserRole(role.PortalID, objUser.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-                    }
-                    catch (Exception exc)
-                    {
-                        // user already belongs to role
-                        Logger.Error(exc);
-                    }
-                }
-            }
         }
 
         public void AddUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, DateTime effectiveDate, DateTime expiryDate)
@@ -411,11 +452,6 @@ namespace DotNetNuke.Security.Roles
             return provider.GetUsersByRoleName(portalId, roleName).Cast<UserInfo>().ToList();
         }
 
-        void IRoleController.UpdateRole(RoleInfo role)
-        {
-            this.UpdateRole(role, true);
-        }
-
         public void UpdateRole(RoleInfo role, bool addToExistUsers)
         {
             Requires.NotNull("role", role);
@@ -557,120 +593,6 @@ namespace DotNetNuke.Security.Roles
             Instance.ClearRoleCache(portalId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Determines if the specified user can be removed from a role.
-        /// </summary>
-        /// <remarks>
-        /// Roles such as "Registered Users" and "Administrators" can only
-        /// be removed in certain circumstances.
-        /// </remarks>
-        /// <param name="PortalSettings">A <see cref="PortalSettings">PortalSettings</see> structure representing the current portal settings.</param>
-        /// <param name="UserId">The Id of the User that should be checked for role removability.</param>
-        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static bool CanRemoveUserFromRole(PortalSettings PortalSettings, int UserId, int RoleId)
-        {
-            // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
-            // HACK: Duplicated in CanRemoveUserFromRole(PortalInfo, Integer, Integer) method below
-            // changes to this method should be reflected in the other method as well
-            return !((PortalSettings.AdministratorId == UserId && PortalSettings.AdministratorRoleId == RoleId) || PortalSettings.RegisteredRoleId == RoleId);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Determines if the specified user can be removed from a role.
-        /// </summary>
-        /// <remarks>
-        /// Roles such as "Registered Users" and "Administrators" can only
-        /// be removed in certain circumstances.
-        /// </remarks>
-        /// <param name="PortalInfo">A <see cref="PortalInfo">PortalInfo</see> structure representing the current portal.</param>
-        /// <param name="UserId">The Id of the User.</param>
-        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static bool CanRemoveUserFromRole(PortalInfo PortalInfo, int UserId, int RoleId)
-        {
-            // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
-            // HACK: Duplicated in CanRemoveUserFromRole(PortalSettings, Integer, Integer) method above
-            // changes to this method should be reflected in the other method as well
-            return !((PortalInfo.AdministratorId == UserId && PortalInfo.AdministratorRoleId == RoleId) || PortalInfo.RegisteredRoleId == RoleId);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Deletes a Role Group.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public static void DeleteRoleGroup(int PortalID, int RoleGroupId)
-        {
-            DeleteRoleGroup(GetRoleGroup(PortalID, RoleGroupId));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Deletes a Role Group.
-        /// </summary>
-        /// <param name="objRoleGroupInfo">The RoleGroup to Delete.</param>
-        /// -----------------------------------------------------------------------------
-        public static void DeleteRoleGroup(RoleGroupInfo objRoleGroupInfo)
-        {
-            provider.DeleteRoleGroup(objRoleGroupInfo);
-            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_DELETED);
-        }
-
-        /// <summary>
-        /// Removes a User from a Role.
-        /// </summary>
-        /// <param name="objUser">The user to remove.</param>
-        /// <param name="role">The role to remove the use from.</param>
-        /// <param name="portalSettings">The PortalSettings of the Portal.</param>
-        /// <param name="notifyUser">A flag that indicates whether the user should be notified.</param>
-        /// <returns></returns>
-        public static bool DeleteUserRole(UserInfo objUser, RoleInfo role, PortalSettings portalSettings, bool notifyUser)
-        {
-            bool canDelete = DeleteUserRoleInternal(portalSettings.PortalId, objUser.UserID, role.RoleID);
-            if (canDelete)
-            {
-                if (notifyUser)
-                {
-                    SendNotification(objUser, role, portalSettings, UserRoleActions.delete);
-                }
-            }
-
-            return canDelete;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fetch a single RoleGroup.
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="roleGroupId">Role Group ID.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
-        public static RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
-        {
-            return provider.GetRoleGroup(portalId, roleGroupId);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fetch a single RoleGroup by Name.
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="roleGroupName">Role Group Name.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
-        public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
-        {
-            return provider.GetRoleGroupByName(portalId, roleGroupName);
-        }
-
         /// <summary>
         /// Completely remove all a user's roles for a specific portal. This method is used when
         /// anonymizing a user.
@@ -687,67 +609,145 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets an ArrayList of RoleGroups.
-        /// </summary>
-        /// <param name="PortalID">The Id of the Portal.</param>
-        /// <returns>An ArrayList of RoleGroups.</returns>
-        /// -----------------------------------------------------------------------------
-        public static ArrayList GetRoleGroups(int PortalID)
+        protected override Func<IRoleController> GetFactory()
         {
-            return provider.GetRoleGroups(PortalID);
+            return () => new RoleController();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Serializes the role groups.
-        /// </summary>
-        /// <param name="writer">An XmlWriter.</param>
-        /// <param name="portalID">The Id of the Portal.</param>
-        /// -----------------------------------------------------------------------------
-        public static void SerializeRoleGroups(XmlWriter writer, int portalID)
+        private static bool DeleteUserRoleInternal(int portalId, int userId, int roleId)
         {
-            // Serialize Role Groups
-            writer.WriteStartElement("rolegroups");
-            foreach (RoleGroupInfo objRoleGroup in GetRoleGroups(portalID))
+            var user = UserController.GetUserById(portalId, userId);
+            var userRole = RoleController.Instance.GetUserRole(portalId, userId, roleId);
+            bool delete = true;
+            var portal = PortalController.Instance.GetPortal(portalId);
+            if (portal != null && userRole != null)
             {
-                CBO.SerializeObject(objRoleGroup, writer);
-            }
-
-            // Serialize Global Roles
-            var globalRoleGroup = new RoleGroupInfo(Null.NullInteger, portalID, true)
-            {
-                RoleGroupName = "GlobalRoles",
-                Description = "A dummy role group that represents the Global roles",
-            };
-            CBO.SerializeObject(globalRoleGroup, writer);
-            writer.WriteEndElement();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates a Role Group.
-        /// </summary>
-        /// <param name="roleGroup">The RoleGroup to Update.</param>
-        /// -----------------------------------------------------------------------------
-        public static void UpdateRoleGroup(RoleGroupInfo roleGroup)
-        {
-            UpdateRoleGroup(roleGroup, false);
-        }
-
-        public static void UpdateRoleGroup(RoleGroupInfo roleGroup, bool includeRoles)
-        {
-            provider.UpdateRoleGroup(roleGroup);
-            EventLogController.Instance.AddLog(roleGroup, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
-            if (includeRoles)
-            {
-                foreach (RoleInfo role in roleGroup.Roles.Values)
+                if (CanRemoveUserFromRole(portal, userId, roleId))
                 {
-                    Instance.UpdateRole(role);
-                    EventLogController.Instance.AddLog(role, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.ROLE_UPDATED);
+                    provider.RemoveUserFromRole(portalId, user, userRole);
+                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.ROLE_UPDATED);
+
+                    // Remove the UserInfo from the Cache, as it has been modified
+                    DataCache.ClearUserCache(portalId, user.Username);
+                    Instance.ClearRoleCache(portalId);
+
+                    EventManager.Instance.OnRoleLeft(new RoleEventArgs() { Role = Instance.GetRoleById(portalId, roleId), User = user });
+                }
+                else
+                {
+                    delete = false;
                 }
             }
+
+            return delete;
+        }
+
+        private static void SendNotification(UserInfo objUser, RoleInfo objRole, PortalSettings PortalSettings, UserRoleActions Action)
+        {
+            var Custom = new ArrayList { objRole.RoleName, objRole.Description };
+            switch (Action)
+            {
+                case UserRoleActions.add:
+                case UserRoleActions.update:
+                    string preferredLocale = objUser.Profile.PreferredLocale;
+                    if (string.IsNullOrEmpty(preferredLocale))
+                    {
+                        preferredLocale = PortalSettings.DefaultLanguage;
+                    }
+
+                    var ci = new CultureInfo(preferredLocale);
+                    UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalSettings.PortalId, objUser.UserID, objRole.RoleID);
+                    Custom.Add(Null.IsNull(objUserRole.EffectiveDate)
+                                   ? DateTime.Today.ToString("g", ci)
+                                   : objUserRole.EffectiveDate.ToString("g", ci));
+                    Custom.Add(Null.IsNull(objUserRole.ExpiryDate) ? "-" : objUserRole.ExpiryDate.ToString("g", ci));
+                    break;
+                case UserRoleActions.delete:
+                    Custom.Add(string.Empty);
+                    break;
+            }
+
+            var _message = new Message
+            {
+                FromUserID = PortalSettings.AdministratorId,
+                ToUserID = objUser.UserID,
+                Subject =
+                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, PortalSettings,
+                                                  "EMAIL_ROLE_" +
+                                                  UserRoleActionsCaption[(int)Action] +
+                                                  "_SUBJECT", objUser),
+                Body = Localization.GetSystemMessage(
+                    objUser.Profile.PreferredLocale,
+                    PortalSettings,
+                    "EMAIL_ROLE_" +
+                                                     UserRoleActionsCaption[(int)Action] + "_BODY",
+                    objUser,
+                    Localization.GlobalResourceFile,
+                    Custom),
+                Status = MessageStatusType.Unread,
+            };
+
+            // _messagingController.SaveMessage(_message);
+            Mail.SendEmail(PortalSettings.Email, objUser.Email, _message.Subject, _message.Body);
+        }
+
+        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
+        {
+            Requires.NotNull("role", role);
+
+            var roleId = -1;
+            if (provider.CreateRole(role))
+            {
+                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
+                if (addToExistUsers)
+                {
+                    this.AutoAssignUsers(role);
+                }
+
+                roleId = role.RoleID;
+
+                this.ClearRoleCache(role.PortalID);
+
+                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
+            }
+
+            return roleId;
+        }
+
+        private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
+        {
+            EventLogController.Instance.AddLog(
+                roleInfo,
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+                logType);
+        }
+
+        private void AutoAssignUsers(RoleInfo role)
+        {
+            if (role.AutoAssignment)
+            {
+                // loop through users for portal and add to role
+                var arrUsers = UserController.GetUsers(role.PortalID);
+                foreach (UserInfo objUser in arrUsers)
+                {
+                    try
+                    {
+                        this.AddUserRole(role.PortalID, objUser.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+                    }
+                    catch (Exception exc)
+                    {
+                        // user already belongs to role
+                        Logger.Error(exc);
+                    }
+                }
+            }
+        }
+
+        void IRoleController.UpdateRole(RoleInfo role)
+        {
+            this.UpdateRole(role, true);
         }
     }
 }

@@ -35,8 +35,8 @@ namespace DotNetNuke.Common
     public class Initialize
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Initialize));
-        private static bool InitializedAlready;
         private static readonly object InitializeLock = new object();
+        private static bool InitializedAlready;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -85,6 +85,211 @@ namespace DotNetNuke.Common
                 LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString(),
             };
             LogController.Instance.AddLog(log);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LogEnd logs the Application Start Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void LogEnd()
+        {
+            try
+            {
+                ApplicationShutdownReason shutdownReason = HostingEnvironment.ShutdownReason;
+                string shutdownDetail;
+                switch (shutdownReason)
+                {
+                    case ApplicationShutdownReason.BinDirChangeOrDirectoryRename:
+                        shutdownDetail = "The AppDomain shut down because of a change to the Bin folder or files contained in it.";
+                        break;
+                    case ApplicationShutdownReason.BrowsersDirChangeOrDirectoryRename:
+                        shutdownDetail = "The AppDomain shut down because of a change to the App_Browsers folder or files contained in it.";
+                        break;
+                    case ApplicationShutdownReason.ChangeInGlobalAsax:
+                        shutdownDetail = "The AppDomain shut down because of a change to Global.asax.";
+                        break;
+                    case ApplicationShutdownReason.ChangeInSecurityPolicyFile:
+                        shutdownDetail = "The AppDomain shut down because of a change in the code access security policy file.";
+                        break;
+                    case ApplicationShutdownReason.CodeDirChangeOrDirectoryRename:
+                        shutdownDetail = "The AppDomain shut down because of a change to the App_Code folder or files contained in it.";
+                        break;
+                    case ApplicationShutdownReason.ConfigurationChange:
+                        shutdownDetail = "The AppDomain shut down because of a change to the application level configuration.";
+                        break;
+                    case ApplicationShutdownReason.HostingEnvironment:
+                        shutdownDetail = "The AppDomain shut down because of the hosting environment.";
+                        break;
+                    case ApplicationShutdownReason.HttpRuntimeClose:
+                        shutdownDetail = "The AppDomain shut down because of a call to Close.";
+                        break;
+                    case ApplicationShutdownReason.IdleTimeout:
+                        shutdownDetail = "The AppDomain shut down because of the maximum allowed idle time limit.";
+                        break;
+                    case ApplicationShutdownReason.InitializationError:
+                        shutdownDetail = "The AppDomain shut down because of an AppDomain initialization error.";
+                        break;
+                    case ApplicationShutdownReason.MaxRecompilationsReached:
+                        shutdownDetail = "The AppDomain shut down because of the maximum number of dynamic recompiles of resources limit.";
+                        break;
+                    case ApplicationShutdownReason.PhysicalApplicationPathChanged:
+                        shutdownDetail = "The AppDomain shut down because of a change to the physical path for the application.";
+                        break;
+                    case ApplicationShutdownReason.ResourcesDirChangeOrDirectoryRename:
+                        shutdownDetail = "The AppDomain shut down because of a change to the App_GlobalResources folder or files contained in it.";
+                        break;
+                    case ApplicationShutdownReason.UnloadAppDomainCalled:
+                        shutdownDetail = "The AppDomain shut down because of a call to UnloadAppDomain.";
+                        break;
+                    default:
+                        shutdownDetail = "Shutdown reason: " + shutdownReason;
+                        break;
+                }
+
+                var log = new LogInfo
+                {
+                    BypassBuffering = true,
+                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString(),
+                };
+                log.AddProperty("Shutdown Details", shutdownDetail);
+                LogController.Instance.AddLog(log);
+
+                // enhanced shutdown logging
+                var runtime = typeof(HttpRuntime).InvokeMember(
+                    "_theRuntime",
+                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
+                    null, null, null) as HttpRuntime;
+
+                if (runtime == null)
+                {
+                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                }
+                else
+                {
+                    var shutDownMessage = runtime.GetType().InvokeMember(
+                        "_shutDownMessage",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    var shutDownStack = runtime.GetType().InvokeMember(
+                        "_shutDownStack",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    Logger.Info("Application shutting down. Reason: " + shutdownDetail
+                                + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
+                                + Environment.NewLine + shutDownStack);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            if (Globals.Status != Globals.UpgradeStatus.Install)
+            {
+                // purge log buffer
+                LoggingProvider.Instance().PurgeLogBuffer();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Tests whether this request should be processed in an HttpModule.
+        /// </summary>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
+        {
+            var toLowerLocalPath = request.Url.LocalPath.ToLowerInvariant();
+
+            if (toLowerLocalPath.EndsWith("webresource.axd")
+                    || toLowerLocalPath.EndsWith("scriptresource.axd")
+                    || toLowerLocalPath.EndsWith("captcha.aspx")
+                    || toLowerLocalPath.Contains("upgradewizard.aspx")
+                    || toLowerLocalPath.Contains("installwizard.aspx")
+                    || toLowerLocalPath.EndsWith("install.aspx"))
+            {
+                return false;
+            }
+
+            if (allowUnknownExtensions == false
+                    && toLowerLocalPath.EndsWith(".aspx") == false
+                    && toLowerLocalPath.EndsWith(".asmx") == false
+                    && toLowerLocalPath.EndsWith(".ashx") == false
+                    && toLowerLocalPath.EndsWith(".svc") == false)
+            {
+                return false;
+            }
+
+            return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
+        }
+
+        public static void RunSchedule(HttpRequest request)
+        {
+            if (!IsUpgradeOrInstallRequest(request))
+            {
+                try
+                {
+                    if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD && SchedulingProvider.ReadyForPoll)
+                    {
+                        Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                        var scheduler = SchedulingProvider.Instance();
+                        var requestScheduleThread = new Thread(scheduler.ExecuteTasks) { IsBackground = true };
+                        requestScheduleThread.Start();
+                        SchedulingProvider.ScheduleLastPolled = DateTime.Now;
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// StartScheduler starts the Scheduler.
+        /// </summary>
+        /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static void StartScheduler(bool resetAppStartElapseTime = false)
+        {
+            if (resetAppStartElapseTime)
+            {
+                Globals.ResetAppStartElapseTime();
+            }
+
+            var scheduler = SchedulingProvider.Instance();
+            scheduler.RunEventSchedule(EventName.APPLICATION_START);
+
+            // instantiate APPLICATION_START scheduled jobs
+            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+            {
+                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                var newThread = new Thread(scheduler.Start)
+                {
+                    IsBackground = true,
+                    Name = "Scheduler Thread",
+                };
+                newThread.Start();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// StopScheduler stops the Scheduler.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static void StopScheduler()
+        {
+            // stop scheduled jobs
+            SchedulingProvider.Instance().Halt("Stopped by Application_End");
         }
 
         private static string CheckVersion(HttpApplication app)
@@ -297,211 +502,6 @@ namespace DotNetNuke.Common
             return url.EndsWith("/install.aspx")
                 || url.Contains("/upgradewizard.aspx")
                 || url.Contains("/installwizard.aspx");
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LogEnd logs the Application Start Event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public static void LogEnd()
-        {
-            try
-            {
-                ApplicationShutdownReason shutdownReason = HostingEnvironment.ShutdownReason;
-                string shutdownDetail;
-                switch (shutdownReason)
-                {
-                    case ApplicationShutdownReason.BinDirChangeOrDirectoryRename:
-                        shutdownDetail = "The AppDomain shut down because of a change to the Bin folder or files contained in it.";
-                        break;
-                    case ApplicationShutdownReason.BrowsersDirChangeOrDirectoryRename:
-                        shutdownDetail = "The AppDomain shut down because of a change to the App_Browsers folder or files contained in it.";
-                        break;
-                    case ApplicationShutdownReason.ChangeInGlobalAsax:
-                        shutdownDetail = "The AppDomain shut down because of a change to Global.asax.";
-                        break;
-                    case ApplicationShutdownReason.ChangeInSecurityPolicyFile:
-                        shutdownDetail = "The AppDomain shut down because of a change in the code access security policy file.";
-                        break;
-                    case ApplicationShutdownReason.CodeDirChangeOrDirectoryRename:
-                        shutdownDetail = "The AppDomain shut down because of a change to the App_Code folder or files contained in it.";
-                        break;
-                    case ApplicationShutdownReason.ConfigurationChange:
-                        shutdownDetail = "The AppDomain shut down because of a change to the application level configuration.";
-                        break;
-                    case ApplicationShutdownReason.HostingEnvironment:
-                        shutdownDetail = "The AppDomain shut down because of the hosting environment.";
-                        break;
-                    case ApplicationShutdownReason.HttpRuntimeClose:
-                        shutdownDetail = "The AppDomain shut down because of a call to Close.";
-                        break;
-                    case ApplicationShutdownReason.IdleTimeout:
-                        shutdownDetail = "The AppDomain shut down because of the maximum allowed idle time limit.";
-                        break;
-                    case ApplicationShutdownReason.InitializationError:
-                        shutdownDetail = "The AppDomain shut down because of an AppDomain initialization error.";
-                        break;
-                    case ApplicationShutdownReason.MaxRecompilationsReached:
-                        shutdownDetail = "The AppDomain shut down because of the maximum number of dynamic recompiles of resources limit.";
-                        break;
-                    case ApplicationShutdownReason.PhysicalApplicationPathChanged:
-                        shutdownDetail = "The AppDomain shut down because of a change to the physical path for the application.";
-                        break;
-                    case ApplicationShutdownReason.ResourcesDirChangeOrDirectoryRename:
-                        shutdownDetail = "The AppDomain shut down because of a change to the App_GlobalResources folder or files contained in it.";
-                        break;
-                    case ApplicationShutdownReason.UnloadAppDomainCalled:
-                        shutdownDetail = "The AppDomain shut down because of a call to UnloadAppDomain.";
-                        break;
-                    default:
-                        shutdownDetail = "Shutdown reason: " + shutdownReason;
-                        break;
-                }
-
-                var log = new LogInfo
-                {
-                    BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString(),
-                };
-                log.AddProperty("Shutdown Details", shutdownDetail);
-                LogController.Instance.AddLog(log);
-
-                // enhanced shutdown logging
-                var runtime = typeof(HttpRuntime).InvokeMember(
-                    "_theRuntime",
-                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
-                    null, null, null) as HttpRuntime;
-
-                if (runtime == null)
-                {
-                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
-                }
-                else
-                {
-                    var shutDownMessage = runtime.GetType().InvokeMember(
-                        "_shutDownMessage",
-                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
-                        null, runtime, null) as string;
-
-                    var shutDownStack = runtime.GetType().InvokeMember(
-                        "_shutDownStack",
-                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
-                        null, runtime, null) as string;
-
-                    Logger.Info("Application shutting down. Reason: " + shutdownDetail
-                                + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
-                                + Environment.NewLine + shutDownStack);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-
-            if (Globals.Status != Globals.UpgradeStatus.Install)
-            {
-                // purge log buffer
-                LoggingProvider.Instance().PurgeLogBuffer();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tests whether this request should be processed in an HttpModule.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
-        {
-            var toLowerLocalPath = request.Url.LocalPath.ToLowerInvariant();
-
-            if (toLowerLocalPath.EndsWith("webresource.axd")
-                    || toLowerLocalPath.EndsWith("scriptresource.axd")
-                    || toLowerLocalPath.EndsWith("captcha.aspx")
-                    || toLowerLocalPath.Contains("upgradewizard.aspx")
-                    || toLowerLocalPath.Contains("installwizard.aspx")
-                    || toLowerLocalPath.EndsWith("install.aspx"))
-            {
-                return false;
-            }
-
-            if (allowUnknownExtensions == false
-                    && toLowerLocalPath.EndsWith(".aspx") == false
-                    && toLowerLocalPath.EndsWith(".asmx") == false
-                    && toLowerLocalPath.EndsWith(".ashx") == false
-                    && toLowerLocalPath.EndsWith(".svc") == false)
-            {
-                return false;
-            }
-
-            return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
-        }
-
-        public static void RunSchedule(HttpRequest request)
-        {
-            if (!IsUpgradeOrInstallRequest(request))
-            {
-                try
-                {
-                    if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD && SchedulingProvider.ReadyForPoll)
-                    {
-                        Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
-                        var scheduler = SchedulingProvider.Instance();
-                        var requestScheduleThread = new Thread(scheduler.ExecuteTasks) { IsBackground = true };
-                        requestScheduleThread.Start();
-                        SchedulingProvider.ScheduleLastPolled = DateTime.Now;
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// StartScheduler starts the Scheduler.
-        /// </summary>
-        /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        public static void StartScheduler(bool resetAppStartElapseTime = false)
-        {
-            if (resetAppStartElapseTime)
-            {
-                Globals.ResetAppStartElapseTime();
-            }
-
-            var scheduler = SchedulingProvider.Instance();
-            scheduler.RunEventSchedule(EventName.APPLICATION_START);
-
-            // instantiate APPLICATION_START scheduled jobs
-            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
-            {
-                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
-                var newThread = new Thread(scheduler.Start)
-                {
-                    IsBackground = true,
-                    Name = "Scheduler Thread",
-                };
-                newThread.Start();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// StopScheduler stops the Scheduler.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        public static void StopScheduler()
-        {
-            // stop scheduled jobs
-            SchedulingProvider.Instance().Halt("Stopped by Application_End");
         }
     }
 }

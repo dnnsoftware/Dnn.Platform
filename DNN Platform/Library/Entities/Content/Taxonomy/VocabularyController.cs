@@ -51,11 +51,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
-        private object GetVocabulariesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillQueryable<Vocabulary>(this._DataService.GetVocabularies()).ToList();
-        }
-
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
@@ -84,6 +79,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
 
             this._DataService.UpdateVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
+        }
+
+        private object GetVocabulariesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillQueryable<Vocabulary>(this._DataService.GetVocabularies()).ToList();
         }
     }
 }

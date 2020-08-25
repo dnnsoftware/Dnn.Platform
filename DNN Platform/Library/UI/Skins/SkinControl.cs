@@ -20,14 +20,14 @@ namespace DotNetNuke.UI.Skins
     {
         protected DropDownList cboSkin;
         protected CommandButton cmdPreview;
+        protected RadioButton optHost;
+        protected RadioButton optSite;
         private string _DefaultKey = "System";
         private string _SkinRoot;
         private string _SkinSrc;
         private string _Width = string.Empty;
         private string _localResourceFile;
         private PortalInfo _objPortal;
-        protected RadioButton optHost;
-        protected RadioButton optSite;
 
         public string DefaultKey
         {
@@ -185,6 +185,31 @@ namespace DotNetNuke.UI.Skins
             this.LoadSkins();
         }
 
+        protected void optSite_CheckedChanged(object sender, EventArgs e)
+        {
+            this.LoadSkins();
+        }
+
+        protected void cmdPreview_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(this.SkinSrc))
+            {
+                string strType = this.SkinRoot.Substring(0, this.SkinRoot.Length - 1);
+
+                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(this.SkinSrc.Replace(".ascx", string.Empty));
+
+                if (this.SkinRoot == SkinController.RootContainer)
+                {
+                    if (this.Request.QueryString["ModuleId"] != null)
+                    {
+                        strURL += "&ModuleId=" + this.Request.QueryString["ModuleId"];
+                    }
+                }
+
+                this.Response.Redirect(strURL, true);
+            }
+        }
+
         private void LoadSkins()
         {
             this.cboSkin.Items.Clear();
@@ -217,31 +242,6 @@ namespace DotNetNuke.UI.Skins
                     this.cboSkin.Items[intIndex].Selected = true;
                     break;
                 }
-            }
-        }
-
-        protected void optSite_CheckedChanged(object sender, EventArgs e)
-        {
-            this.LoadSkins();
-        }
-
-        protected void cmdPreview_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(this.SkinSrc))
-            {
-                string strType = this.SkinRoot.Substring(0, this.SkinRoot.Length - 1);
-
-                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(this.SkinSrc.Replace(".ascx", string.Empty));
-
-                if (this.SkinRoot == SkinController.RootContainer)
-                {
-                    if (this.Request.QueryString["ModuleId"] != null)
-                    {
-                        strURL += "&ModuleId=" + this.Request.QueryString["ModuleId"];
-                    }
-                }
-
-                this.Response.Redirect(strURL, true);
             }
         }
     }

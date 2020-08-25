@@ -17,9 +17,10 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -42,28 +43,9 @@ namespace DotNetNuke.Entities.Modules
             RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly Lazy<IServiceScope> _serviceScope = new Lazy<IServiceScope>(Globals.DependencyProvider.CreateScope);
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
-
-        public PortalModuleBase()
-        {
-            this.DependencyProvider = Globals.DependencyProvider;
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ModuleActionCollection Actions
-        {
-            get
-            {
-                return this.ModuleContext.Actions;
-            }
-
-            set
-            {
-                this.ModuleContext.Actions = value;
-            }
-        }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -74,15 +56,6 @@ namespace DotNetNuke.Entities.Modules
                 return Globals.FindControlRecursive(this, "ctr" + this.ModuleId);
             }
         }
-
-        /// <summary>
-        /// Gets the Dependency Provider to resolve registered
-        /// services with the container.
-        /// </summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
-        protected IServiceProvider DependencyProvider { get; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -101,19 +74,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        public string HelpURL
-        {
-            get
-            {
-                return this.ModuleContext.HelpURL;
-            }
-
-            set
-            {
-                this.ModuleContext.HelpURL = value;
-            }
-        }
-
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsEditable
@@ -121,21 +81,6 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 return this.ModuleContext.IsEditable;
-            }
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ModuleInfo ModuleConfiguration
-        {
-            get
-            {
-                return this.ModuleContext.Configuration;
-            }
-
-            set
-            {
-                this.ModuleContext.Configuration = value;
             }
         }
 
@@ -156,36 +101,6 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 return this.ModuleContext.TabId;
-            }
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int TabModuleId
-        {
-            get
-            {
-                return this.ModuleContext.TabModuleId;
-            }
-
-            set
-            {
-                this.ModuleContext.TabModuleId = value;
-            }
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int ModuleId
-        {
-            get
-            {
-                return this.ModuleContext.ModuleId;
-            }
-
-            set
-            {
-                this.ModuleContext.ModuleId = value;
             }
         }
 
@@ -273,35 +188,6 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the local resource file for this control.
-        /// </summary>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
-        public string LocalResourceFile
-        {
-            get
-            {
-                string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
-                {
-                    fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ID);
-                }
-                else
-                {
-                    fileRoot = this._localResourceFile;
-                }
-
-                return fileRoot;
-            }
-
-            set
-            {
-                this._localResourceFile = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets the Module Context for this control.
         /// </summary>
         /// <returns>A ModuleInstanceContext.</returns>
@@ -372,6 +258,117 @@ namespace DotNetNuke.Entities.Modules
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ModuleActionCollection Actions
+        {
+            get
+            {
+                return this.ModuleContext.Actions;
+            }
+
+            set
+            {
+                this.ModuleContext.Actions = value;
+            }
+        }
+
+        public string HelpURL
+        {
+            get
+            {
+                return this.ModuleContext.HelpURL;
+            }
+
+            set
+            {
+                this.ModuleContext.HelpURL = value;
+            }
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ModuleInfo ModuleConfiguration
+        {
+            get
+            {
+                return this.ModuleContext.Configuration;
+            }
+
+            set
+            {
+                this.ModuleContext.Configuration = value;
+            }
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int TabModuleId
+        {
+            get
+            {
+                return this.ModuleContext.TabModuleId;
+            }
+
+            set
+            {
+                this.ModuleContext.TabModuleId = value;
+            }
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int ModuleId
+        {
+            get
+            {
+                return this.ModuleContext.ModuleId;
+            }
+
+            set
+            {
+                this.ModuleContext.ModuleId = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the local resource file for this control.
+        /// </summary>
+        /// <returns>A String.</returns>
+        /// -----------------------------------------------------------------------------
+        public string LocalResourceFile
+        {
+            get
+            {
+                string fileRoot;
+                if (string.IsNullOrEmpty(this._localResourceFile))
+                {
+                    fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ID);
+                }
+                else
+                {
+                    fileRoot = this._localResourceFile;
+                }
+
+                return fileRoot;
+            }
+
+            set
+            {
+                this._localResourceFile = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Dependency Provider to resolve registered
+        /// services with the container.
+        /// </summary>
+        /// <value>
+        /// The Dependency Service.
+        /// </value>
+        protected IServiceProvider DependencyProvider => this._serviceScope.Value.ServiceProvider;
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl()
         {
             return this.ModuleContext.EditUrl();
@@ -382,34 +379,6 @@ namespace DotNetNuke.Entities.Modules
         public string EditUrl(string ControlKey)
         {
             return this.ModuleContext.EditUrl(ControlKey);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-
-            base.OnInit(e);
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-
-            base.OnLoad(e);
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
         }
 
         [Browsable(false)]
@@ -445,6 +414,68 @@ namespace DotNetNuke.Entities.Modules
             return this.ModuleContext.GetNextActionID();
         }
 
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            base.Dispose();
+            if (this._serviceScope.IsValueCreated)
+            {
+                this._serviceScope.Value.Dispose();
+            }
+        }
+
+        [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
+        public string GetCacheFileName(int tabModuleId)
+        {
+            string strCacheKey = "TabModule:";
+            strCacheKey += tabModuleId + ":";
+            strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
+            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+        }
+
+        [Obsolete("This property is deprecated.  Please use ModuleController.CacheKey(TabModuleID). Scheduled removal in v11.0.0.")]
+        public string GetCacheKey(int tabModuleId)
+        {
+            string strCacheKey = "TabModule:";
+            strCacheKey += tabModuleId + ":";
+            strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
+            return strCacheKey;
+        }
+
+        [Obsolete("This method is deprecated.  Plaese use ModuleController.SynchronizeModule(ModuleId). Scheduled removal in v11.0.0.")]
+        public void SynchronizeModule()
+        {
+            ModuleController.SynchronizeModule(this.ModuleId);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
+            base.OnInit(e);
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
+            base.OnLoad(e);
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Helper method that can be used to add an ActionEventHandler to the Skin for this
@@ -470,30 +501,6 @@ namespace DotNetNuke.Entities.Modules
         protected string LocalizeSafeJsString(string key)
         {
             return Localization.GetSafeJSString(key, this.LocalResourceFile);
-        }
-
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
-        public string GetCacheFileName(int tabModuleId)
-        {
-            string strCacheKey = "TabModule:";
-            strCacheKey += tabModuleId + ":";
-            strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
-        }
-
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheKey(TabModuleID). Scheduled removal in v11.0.0.")]
-        public string GetCacheKey(int tabModuleId)
-        {
-            string strCacheKey = "TabModule:";
-            strCacheKey += tabModuleId + ":";
-            strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return strCacheKey;
-        }
-
-        [Obsolete("This method is deprecated.  Plaese use ModuleController.SynchronizeModule(ModuleId). Scheduled removal in v11.0.0.")]
-        public void SynchronizeModule()
-        {
-            ModuleController.SynchronizeModule(this.ModuleId);
         }
     }
 }

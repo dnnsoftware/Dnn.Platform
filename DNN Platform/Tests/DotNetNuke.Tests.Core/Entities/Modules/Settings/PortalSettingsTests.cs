@@ -41,37 +41,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
-        public class MyPortalSettings
-        {
-            [PortalSetting(Prefix = SettingNamePrefix)]
-            public string StringProperty { get; set; } = string.Empty;
-
-            [PortalSetting(Prefix = SettingNamePrefix)]
-            public int IntegerProperty { get; set; }
-
-            [PortalSetting(Prefix = SettingNamePrefix)]
-            public double DoubleProperty { get; set; }
-
-            [PortalSetting(Prefix = SettingNamePrefix)]
-            public bool BooleanProperty { get; set; }
-
-            [PortalSetting(Prefix = SettingNamePrefix)]
-            public DateTime DateTimeProperty { get; set; } = DateTime.Now;
-
-            [PortalSetting(Prefix = SettingNamePrefix)]
-            public TimeSpan TimeSpanProperty { get; set; } = TimeSpan.Zero;
-
-            [PortalSetting(Prefix = SettingNamePrefix)]
-            public TestingEnum EnumProperty { get; set; } = TestingEnum.Value1;
-
-            [PortalSetting(Prefix = SettingNamePrefix, Serializer = "DotNetNuke.Tests.Core.Entities.Modules.Settings.ComplexTypeSerializer,DotNetNuke.Tests.Core")]
-            public ComplexType ComplexProperty { get; set; } = new ComplexType(20, 25);
-        }
-
-        public class MyPortalSettingsRepository : SettingsRepository<MyPortalSettings>
-        {
-        }
-
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("en-US")]
@@ -145,41 +114,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.MockRepository.VerifyAll();
         }
 
-        private void SaveSettings_CallsUpdatePortalSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
-            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            // Arrange
-            var moduleInfo = GetModuleInfo;
-            var settings = new MyPortalSettings
-            {
-                StringProperty = stringValue,
-                IntegerProperty = integerValue,
-                DoubleProperty = doubleValue,
-                BooleanProperty = booleanValue,
-                DateTimeProperty = datetimeValue,
-                TimeSpanProperty = timeSpanValue,
-                EnumProperty = enumValue,
-                ComplexProperty = complexValue,
-            };
-
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "StringProperty", stringValue, true, Null.NullString, false));
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "IntegerProperty", integerValue.ToString(), true, Null.NullString, false));
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), true, Null.NullString, false));
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString, false));
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture), true, Null.NullString, false));
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture), true, Null.NullString, false));
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString, false));
-            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}", true, Null.NullString, false));
-
-            var settingsRepository = new MyPortalSettingsRepository();
-
-            // Act
-            settingsRepository.SaveSettings(moduleInfo, settings);
-
-            // Assert
-            this.MockRepository.VerifyAll();
-        }
-
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ar-JO")]
@@ -244,6 +178,41 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
+        private void SaveSettings_CallsUpdatePortalSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
+            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            // Arrange
+            var moduleInfo = GetModuleInfo;
+            var settings = new MyPortalSettings
+            {
+                StringProperty = stringValue,
+                IntegerProperty = integerValue,
+                DoubleProperty = doubleValue,
+                BooleanProperty = booleanValue,
+                DateTimeProperty = datetimeValue,
+                TimeSpanProperty = timeSpanValue,
+                EnumProperty = enumValue,
+                ComplexProperty = complexValue,
+            };
+
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "StringProperty", stringValue, true, Null.NullString, false));
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "IntegerProperty", integerValue.ToString(), true, Null.NullString, false));
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), true, Null.NullString, false));
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString, false));
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture), true, Null.NullString, false));
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture), true, Null.NullString, false));
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString, false));
+            this.MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}", true, Null.NullString, false));
+
+            var settingsRepository = new MyPortalSettingsRepository();
+
+            // Act
+            settingsRepository.SaveSettings(moduleInfo, settings);
+
+            // Assert
+            this.MockRepository.VerifyAll();
+        }
+
         private void GetSettings_GetsValuesFrom_PortalSettings(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             // Arrange
@@ -278,5 +247,35 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             Assert.AreEqual(complexValue, settings.ComplexProperty, "The retrieved complex property value is not equal to the stored one");
             this.MockRepository.VerifyAll();
         }
+
+        public class MyPortalSettings
+        {
+            [PortalSetting(Prefix = SettingNamePrefix)]
+            public string StringProperty { get; set; } = string.Empty;
+
+            [PortalSetting(Prefix = SettingNamePrefix)]
+            public int IntegerProperty { get; set; }
+
+            [PortalSetting(Prefix = SettingNamePrefix)]
+            public double DoubleProperty { get; set; }
+
+            [PortalSetting(Prefix = SettingNamePrefix)]
+            public bool BooleanProperty { get; set; }
+
+            [PortalSetting(Prefix = SettingNamePrefix)]
+            public DateTime DateTimeProperty { get; set; } = DateTime.Now;
+
+            [PortalSetting(Prefix = SettingNamePrefix)]
+            public TimeSpan TimeSpanProperty { get; set; } = TimeSpan.Zero;
+
+            [PortalSetting(Prefix = SettingNamePrefix)]
+            public TestingEnum EnumProperty { get; set; } = TestingEnum.Value1;
+
+            [PortalSetting(Prefix = SettingNamePrefix, Serializer = "DotNetNuke.Tests.Core.Entities.Modules.Settings.ComplexTypeSerializer,DotNetNuke.Tests.Core")]
+            public ComplexType ComplexProperty { get; set; } = new ComplexType(20, 25);
+        }
+
+        public class MyPortalSettingsRepository : SettingsRepository<MyPortalSettings>
+        {}
     }
 }

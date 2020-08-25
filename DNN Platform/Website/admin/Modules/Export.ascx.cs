@@ -108,6 +108,40 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        protected void OnExportClick(object sender, EventArgs e)
+        {
+            try
+            {
+                IFolderInfo folder = null;
+                if (this.cboFolders.SelectedItem != null && !string.IsNullOrEmpty(this.txtFile.Text))
+                {
+                    folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
+                }
+
+                if (folder != null)
+                {
+                    var strFile = "content." + CleanName(this.Module.DesktopModule.ModuleName) + "." + CleanName(this.txtFile.Text) + ".export";
+                    var strMessage = this.ExportModule(this.ModuleId, strFile, folder);
+                    if (string.IsNullOrEmpty(strMessage))
+                    {
+                        this.Response.Redirect(this.ReturnURL, true);
+                    }
+                    else
+                    {
+                        UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+                    }
+                }
+                else
+                {
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Validation", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
         private static string CleanName(string name)
         {
             var strName = name;
@@ -204,40 +238,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
 
             return strMessage;
-        }
-
-        protected void OnExportClick(object sender, EventArgs e)
-        {
-            try
-            {
-                IFolderInfo folder = null;
-                if (this.cboFolders.SelectedItem != null && !string.IsNullOrEmpty(this.txtFile.Text))
-                {
-                    folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-                }
-
-                if (folder != null)
-                {
-                    var strFile = "content." + CleanName(this.Module.DesktopModule.ModuleName) + "." + CleanName(this.txtFile.Text) + ".export";
-                    var strMessage = this.ExportModule(this.ModuleId, strFile, folder);
-                    if (string.IsNullOrEmpty(strMessage))
-                    {
-                        this.Response.Redirect(this.ReturnURL, true);
-                    }
-                    else
-                    {
-                        UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
-                    }
-                }
-                else
-                {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Validation", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
     }
 }

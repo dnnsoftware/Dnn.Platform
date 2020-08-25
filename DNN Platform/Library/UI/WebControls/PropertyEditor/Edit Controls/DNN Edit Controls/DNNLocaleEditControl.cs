@@ -90,73 +90,6 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        private bool IsSelected(string locale)
-        {
-            return locale == this.StringValue;
-        }
-
-        private void RenderModeButtons(HtmlTextWriter writer)
-        {
-            writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            writer.AddAttribute("aria-label", "Mode");
-            if (this.DisplayMode == "English")
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
-            }
-            else
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "English"));
-            }
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Input);
-            writer.RenderEndTag();
-            writer.Write(Localization.GetString("EnglishName", Localization.GlobalResourceFile));
-
-            // writer.Write("<br />");
-            writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            writer.AddAttribute("aria-label", "Mode");
-            if (this.DisplayMode == "Native")
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
-            }
-            else
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "Native"));
-            }
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Input);
-            writer.RenderEndTag();
-
-            writer.Write(Localization.GetString("NativeName", Localization.GlobalResourceFile));
-        }
-
-        private void RenderOption(HtmlTextWriter writer, CultureInfo culture)
-        {
-            string localeName;
-
-            if (this.DisplayMode == "Native")
-            {
-                localeName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(culture.NativeName);
-            }
-            else
-            {
-                localeName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(culture.EnglishName);
-            }
-
-            // Add the Value Attribute
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, culture.Name);
-
-            if (this.IsSelected(culture.Name))
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
-            }
-
-            // Render Option Tag
-            writer.RenderBeginTag(HtmlTextWriterTag.Option);
-            writer.Write(localeName);
-            writer.RenderEndTag();
-        }
-
         /// <summary>
         /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
@@ -257,6 +190,73 @@ function onLocaleChanged(element){
             writer.RenderEndTag();
 
             // close div
+            writer.RenderEndTag();
+        }
+
+        private bool IsSelected(string locale)
+        {
+            return locale == this.StringValue;
+        }
+
+        private void RenderModeButtons(HtmlTextWriter writer)
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
+            writer.AddAttribute("aria-label", "Mode");
+            if (this.DisplayMode == "English")
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+            }
+            else
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "English"));
+            }
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Input);
+            writer.RenderEndTag();
+            writer.Write(Localization.GetString("EnglishName", Localization.GlobalResourceFile));
+
+            // writer.Write("<br />");
+            writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
+            writer.AddAttribute("aria-label", "Mode");
+            if (this.DisplayMode == "Native")
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+            }
+            else
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "Native"));
+            }
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Input);
+            writer.RenderEndTag();
+
+            writer.Write(Localization.GetString("NativeName", Localization.GlobalResourceFile));
+        }
+
+        private void RenderOption(HtmlTextWriter writer, CultureInfo culture)
+        {
+            string localeName;
+
+            if (this.DisplayMode == "Native")
+            {
+                localeName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(culture.NativeName);
+            }
+            else
+            {
+                localeName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(culture.EnglishName);
+            }
+
+            // Add the Value Attribute
+            writer.AddAttribute(HtmlTextWriterAttribute.Value, culture.Name);
+
+            if (this.IsSelected(culture.Name))
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
+            }
+
+            // Render Option Tag
+            writer.RenderBeginTag(HtmlTextWriterTag.Option);
+            writer.Write(localeName);
             writer.RenderEndTag();
         }
     }

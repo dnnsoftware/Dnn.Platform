@@ -175,6 +175,100 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
+        public void AddLogType(LogTypeInfo logType)
+        {
+            LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
+        }
+
+        public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        {
+            LoggingProvider.Instance().AddLogTypeConfigInfo(
+                logTypeConfig.ID,
+                logTypeConfig.LoggingIsActive,
+                logTypeConfig.LogTypeKey,
+                logTypeConfig.LogTypePortalID,
+                logTypeConfig.KeepMostRecent,
+                logTypeConfig.LogFileName,
+                logTypeConfig.EmailNotificationIsActive,
+                Convert.ToString(logTypeConfig.NotificationThreshold),
+                Convert.ToString(logTypeConfig.NotificationThresholdTime),
+                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
+                logTypeConfig.MailFromAddress,
+                logTypeConfig.MailToAddress);
+        }
+
+        public void ClearLog()
+        {
+            LoggingProvider.Instance().ClearLog();
+        }
+
+        public void DeleteLog(LogInfo logInfo)
+        {
+            LoggingProvider.Instance().DeleteLog(logInfo);
+        }
+
+        public virtual void DeleteLogType(LogTypeInfo logType)
+        {
+            LoggingProvider.Instance().DeleteLogType(logType.LogTypeKey);
+        }
+
+        public virtual void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        {
+            LoggingProvider.Instance().DeleteLogTypeConfigInfo(logTypeConfig.ID);
+        }
+
+        public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
+        {
+            return LoggingProvider.Instance().GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords);
+        }
+
+        public virtual ArrayList GetLogTypeConfigInfo()
+        {
+            return LoggingProvider.Instance().GetLogTypeConfigInfo();
+        }
+
+        public virtual LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
+        {
+            return LoggingProvider.Instance().GetLogTypeConfigInfoByID(id);
+        }
+
+        public virtual Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary()
+        {
+            return LoggingProvider.Instance().GetLogTypeInfo().Cast<LogTypeInfo>().ToDictionary(logTypeInfo => logTypeInfo.LogTypeKey);
+        }
+
+        public virtual object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
+        {
+            return LoggingProvider.Instance().GetSingleLog(log, returnType);
+        }
+
+        public void PurgeLogBuffer()
+        {
+            LoggingProvider.Instance().PurgeLogBuffer();
+        }
+
+        public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        {
+            LoggingProvider.Instance().UpdateLogTypeConfigInfo(
+                logTypeConfig.ID,
+                logTypeConfig.LoggingIsActive,
+                logTypeConfig.LogTypeKey,
+                logTypeConfig.LogTypePortalID,
+                logTypeConfig.KeepMostRecent,
+                logTypeConfig.LogFileName,
+                logTypeConfig.EmailNotificationIsActive,
+                Convert.ToString(logTypeConfig.NotificationThreshold),
+                Convert.ToString(logTypeConfig.NotificationThresholdTime),
+                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
+                logTypeConfig.MailFromAddress,
+                logTypeConfig.MailToAddress);
+        }
+
+        public virtual void UpdateLogType(LogTypeInfo logType)
+        {
+            LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
+        }
+
         protected override Func<ILogController> GetFactory()
         {
             return () => new LogController();
@@ -299,100 +393,6 @@ namespace DotNetNuke.Services.Log.EventLog
 
                 LockLog.ExitWriteLock();
             }
-        }
-
-        public void AddLogType(LogTypeInfo logType)
-        {
-            LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
-        }
-
-        public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
-        {
-            LoggingProvider.Instance().AddLogTypeConfigInfo(
-                logTypeConfig.ID,
-                logTypeConfig.LoggingIsActive,
-                logTypeConfig.LogTypeKey,
-                logTypeConfig.LogTypePortalID,
-                logTypeConfig.KeepMostRecent,
-                logTypeConfig.LogFileName,
-                logTypeConfig.EmailNotificationIsActive,
-                Convert.ToString(logTypeConfig.NotificationThreshold),
-                Convert.ToString(logTypeConfig.NotificationThresholdTime),
-                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
-                logTypeConfig.MailFromAddress,
-                logTypeConfig.MailToAddress);
-        }
-
-        public void ClearLog()
-        {
-            LoggingProvider.Instance().ClearLog();
-        }
-
-        public void DeleteLog(LogInfo logInfo)
-        {
-            LoggingProvider.Instance().DeleteLog(logInfo);
-        }
-
-        public virtual void DeleteLogType(LogTypeInfo logType)
-        {
-            LoggingProvider.Instance().DeleteLogType(logType.LogTypeKey);
-        }
-
-        public virtual void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
-        {
-            LoggingProvider.Instance().DeleteLogTypeConfigInfo(logTypeConfig.ID);
-        }
-
-        public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords);
-        }
-
-        public virtual ArrayList GetLogTypeConfigInfo()
-        {
-            return LoggingProvider.Instance().GetLogTypeConfigInfo();
-        }
-
-        public virtual LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
-        {
-            return LoggingProvider.Instance().GetLogTypeConfigInfoByID(id);
-        }
-
-        public virtual Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary()
-        {
-            return LoggingProvider.Instance().GetLogTypeInfo().Cast<LogTypeInfo>().ToDictionary(logTypeInfo => logTypeInfo.LogTypeKey);
-        }
-
-        public virtual object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
-        {
-            return LoggingProvider.Instance().GetSingleLog(log, returnType);
-        }
-
-        public void PurgeLogBuffer()
-        {
-            LoggingProvider.Instance().PurgeLogBuffer();
-        }
-
-        public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
-        {
-            LoggingProvider.Instance().UpdateLogTypeConfigInfo(
-                logTypeConfig.ID,
-                logTypeConfig.LoggingIsActive,
-                logTypeConfig.LogTypeKey,
-                logTypeConfig.LogTypePortalID,
-                logTypeConfig.KeepMostRecent,
-                logTypeConfig.LogFileName,
-                logTypeConfig.EmailNotificationIsActive,
-                Convert.ToString(logTypeConfig.NotificationThreshold),
-                Convert.ToString(logTypeConfig.NotificationThresholdTime),
-                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
-                logTypeConfig.MailFromAddress,
-                logTypeConfig.MailToAddress);
-        }
-
-        public virtual void UpdateLogType(LogTypeInfo logType)
-        {
-            LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
         }
     }
 }

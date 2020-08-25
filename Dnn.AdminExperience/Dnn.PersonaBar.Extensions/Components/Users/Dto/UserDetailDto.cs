@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
     using System;
@@ -23,6 +22,40 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     public class UserDetailDto : UserBasicDto
     {
         private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+
+        public UserDetailDto()
+        {
+        }
+
+        public UserDetailDto(UserInfo user) : base(user)
+        {
+            this.LastLogin = user.Membership.LastLoginDate;
+            this.LastActivity = user.Membership.LastActivityDate;
+            this.LastPasswordChange = user.Membership.LastPasswordChangeDate;
+            this.LastLockout = user.Membership.LastLockoutDate;
+            this.IsOnline = user.Membership.IsOnLine;
+            this.IsLocked = user.Membership.LockedOut;
+            this.NeedUpdatePassword = user.Membership.UpdatePassword;
+            this.PortalId = user.PortalID;
+            this.UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
+            var userFolder = FolderManager.Instance.GetUserFolder(user);
+            if (userFolder != null)
+            {
+                this.UserFolderId = userFolder.FolderID;
+
+                // check whether user had upload files
+                var files = FolderManager.Instance.GetFiles(userFolder, true);
+                this.HasUserFiles = files.Any();
+            }
+
+            this.HasAgreedToTermsOn = user.HasAgreedToTermsOn;
+        }
+
+        [DataMember(Name = "profileUrl")]
+        public string ProfileUrl => this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
+
+        [DataMember(Name = "editProfileUrl")]
+        public string EditProfileUrl => this.UserId > 0 ? GetSettingUrl(this.PortalId, this.UserId) : null;
 
         [DataMember(Name = "lastLogin")]
         public DateTime LastLogin { get; set; }
@@ -48,12 +81,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [IgnoreDataMember]
         public int PortalId { get; set; }
 
-        [DataMember(Name = "profileUrl")]
-        public string ProfileUrl => this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
-
-        [DataMember(Name = "editProfileUrl")]
-        public string EditProfileUrl => this.UserId > 0 ? GetSettingUrl(this.PortalId, this.UserId) : null;
-
         [DataMember(Name = "userFolder")]
         public string UserFolder { get; set; }
 
@@ -65,33 +92,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "hasAgreedToTermsOn")]
         public DateTime HasAgreedToTermsOn { get; set; }
-
-        public UserDetailDto()
-        {
-        }
-
-        public UserDetailDto(UserInfo user) : base(user)
-        {
-            this.LastLogin = user.Membership.LastLoginDate;
-            this.LastActivity = user.Membership.LastActivityDate;
-            this.LastPasswordChange = user.Membership.LastPasswordChangeDate;
-            this.LastLockout = user.Membership.LastLockoutDate;
-            this.IsOnline = user.Membership.IsOnLine;
-            this.IsLocked = user.Membership.LockedOut;
-            this.NeedUpdatePassword = user.Membership.UpdatePassword;
-            this.PortalId = user.PortalID;
-            this.UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
-            var userFolder = FolderManager.Instance.GetUserFolder(user);
-            if (userFolder != null)
-            {
-                this.UserFolderId = userFolder.FolderID;
-
-                //check whether user had upload files
-                var files = FolderManager.Instance.GetFiles(userFolder, true);
-                this.HasUserFiles = files.Any();
-            }
-            this.HasAgreedToTermsOn = user.HasAgreedToTermsOn;
-        }
 
         private static string GetSettingUrl(int portalId, int userId)
         {
@@ -107,7 +107,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             {
                 return string.Empty;
             }
-            //ctl/Edit/mid/345/packageid/52
+
+            // ctl/Edit/mid/345/packageid/52
             return _navigationManager.NavigateURL(tabId, PortalSettings.Current, "Edit",
                                             "mid=" + module.ModuleID,
                                             "popUp=true",

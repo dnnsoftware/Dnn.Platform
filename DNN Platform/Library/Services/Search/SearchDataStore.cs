@@ -207,42 +207,6 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetCommonWords gets a list of the Common Words for the locale.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="locale">The locale string.</param>
-        /// <returns>A hashtable of common words.</returns>
-        /// -----------------------------------------------------------------------------
-        private Hashtable GetCommonWords(string locale)
-        {
-            string strCacheKey = "CommonWords" + locale;
-            var objWords = (Hashtable)DataCache.GetCache(strCacheKey);
-            if (objWords == null)
-            {
-                objWords = new Hashtable();
-                IDataReader drWords = DataProvider.Instance().GetSearchCommonWordsByLocale(locale);
-                try
-                {
-                    while (drWords.Read())
-                    {
-                        objWords.Add(drWords["CommonWord"].ToString(), drWords["CommonWord"].ToString());
-                    }
-                }
-                finally
-                {
-                    drWords.Close();
-                    drWords.Dispose();
-                }
-
-                DataCache.SetCache(strCacheKey, objWords);
-            }
-
-            return objWords;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// StoreSearchItems adds the Search Item to the Data Store.
         /// </summary>
         /// <remarks>
@@ -277,6 +241,42 @@ namespace DotNetNuke.Services.Search
                 // Index
                 InternalSearchController.Instance.AddSearchDocuments(searchDocuments);
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetCommonWords gets a list of the Common Words for the locale.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="locale">The locale string.</param>
+        /// <returns>A hashtable of common words.</returns>
+        /// -----------------------------------------------------------------------------
+        private Hashtable GetCommonWords(string locale)
+        {
+            string strCacheKey = "CommonWords" + locale;
+            var objWords = (Hashtable)DataCache.GetCache(strCacheKey);
+            if (objWords == null)
+            {
+                objWords = new Hashtable();
+                IDataReader drWords = DataProvider.Instance().GetSearchCommonWordsByLocale(locale);
+                try
+                {
+                    while (drWords.Read())
+                    {
+                        objWords.Add(drWords["CommonWord"].ToString(), drWords["CommonWord"].ToString());
+                    }
+                }
+                finally
+                {
+                    drWords.Close();
+                    drWords.Dispose();
+                }
+
+                DataCache.SetCache(strCacheKey, objWords);
+            }
+
+            return objWords;
         }
     }
 }

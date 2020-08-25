@@ -22,8 +22,8 @@ namespace DotNetNuke.UI.Modules
 
         string ControlName { get; }
 
-        string LocalResourceFile { get; set; }
-
         ModuleInstanceContext ModuleContext { get; }
+
+        string LocalResourceFile { get; set; }
     }
 }

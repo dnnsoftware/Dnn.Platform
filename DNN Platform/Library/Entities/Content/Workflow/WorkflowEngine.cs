@@ -68,417 +68,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.DraftCompleted);
         }
 
-        private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
-        {
-            return (from permission in permissions
-                    where permission.AllowAccess && permission.RoleID > Null.NullInteger
-                    select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
-        }
-
-        private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
-        {
-            return roles.Any(r => r.RoleName == settings.AdministratorRoleName);
-        }
-
-        private StateTransaction CreateInitialTransaction(int contentItemId, int stateId, int userId)
-        {
-            return new StateTransaction
-            {
-                ContentItemId = contentItemId,
-                CurrentStateId = stateId,
-                UserId = userId,
-                Message = new StateTransactionMessage(),
-            };
-        }
-
-        private void PerformWorkflowActionOnStateChanged(StateTransaction stateTransaction, WorkflowActionTypes actionType)
-        {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
-            var workflowAction = this.GetWorkflowActionInstance(contentItem, actionType);
-            if (workflowAction != null)
-            {
-                workflowAction.DoActionOnStateChanged(stateTransaction);
-            }
-        }
-
-        private void PerformWorkflowActionOnStateChanging(StateTransaction stateTransaction, WorkflowActionTypes actionType)
-        {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
-            var workflowAction = this.GetWorkflowActionInstance(contentItem, actionType);
-            if (workflowAction != null)
-            {
-                workflowAction.DoActionOnStateChanging(stateTransaction);
-            }
-        }
-
-        private IWorkflowAction GetWorkflowActionInstance(ContentItem contentItem, WorkflowActionTypes actionType)
-        {
-            return this._workflowActionManager.GetWorkflowActionInstance(contentItem.ContentTypeId, actionType);
-        }
-
-        private void UpdateContentItemWorkflowState(int stateId, ContentItem item)
-        {
-            item.StateID = stateId;
-            this._contentController.UpdateContentItem(item);
-        }
-
-        private UserInfo GetUserThatHaveStartedOrSubmittedDraftState(Entities.Workflow workflow, ContentItem contentItem, StateTransaction stateTransaction)
-        {
-            bool wasDraftSubmitted = this.WasDraftSubmitted(workflow, stateTransaction.CurrentStateId);
-            if (wasDraftSubmitted)
-            {
-                return this.GetSubmittedDraftStateUser(contentItem);
-            }
-
-            return this.GetStartedDraftStateUser(contentItem);
-        }
-
-        private UserInfo GetUserByWorkflowLogType(ContentItem contentItem, WorkflowLogType type)
-        {
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
-            if (workflow == null)
-            {
-                return null;
-            }
-
-            var logs = this._workflowLogRepository.GetWorkflowLogs(contentItem.ContentItemId, workflow.WorkflowID);
-
-            var logDraftCompleted = logs
-                .OrderByDescending(l => l.Date)
-                .FirstOrDefault(l => l.Type == (int)type);
-
-            if (logDraftCompleted != null && logDraftCompleted.User != Null.NullInteger)
-            {
-                return this._userController.GetUserById(workflow.PortalID, logDraftCompleted.User);
-            }
-
-            return null;
-        }
-
-        private bool WasDraftSubmitted(Entities.Workflow workflow, int currentStateId)
-        {
-            var isDirectPublishWorkflow = workflow.IsSystem && workflow.States.Count() == 1;
-            var draftSubmitted = workflow.FirstState.StateID != currentStateId;
-            return !(isDirectPublishWorkflow || !draftSubmitted);
-        }
-
-        private string GetWorkflowNotificationContext(ContentItem contentItem, WorkflowState state)
-        {
-            return string.Format("{0}:{1}:{2}", contentItem.ContentItemId, state.WorkflowID, state.StateID);
-        }
-
-        private void DeleteWorkflowNotifications(ContentItem contentItem, WorkflowState state)
-        {
-            var context = this.GetWorkflowNotificationContext(contentItem, state);
-            var notificationTypeId = this._notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId;
-            this.DeleteNotificationsByType(notificationTypeId, context);
-            notificationTypeId = this._notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId;
-            this.DeleteNotificationsByType(notificationTypeId, context);
-        }
-
-        private void DeleteNotificationsByType(int notificationTypeId, string context)
-        {
-            var notifications = this._notificationsController.GetNotificationByContext(notificationTypeId, context);
-            foreach (var notification in notifications)
-            {
-                this._notificationsController.DeleteAllNotificationRecipients(notification.NotificationID);
-            }
-        }
-
-        private void SendNotificationToAuthor(StateTransaction stateTransaction, WorkflowState state, Entities.Workflow workflow, ContentItem contentItem, WorkflowActionTypes workflowActionType)
-        {
-            try
-            {
-                if (!state.SendNotification)
-                {
-                    return;
-                }
-
-                var user = this.GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem, stateTransaction);
-                if (user == null)
-                {
-                    // Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
-                    return;
-                }
-
-                if (user.UserID == stateTransaction.UserId)
-                {
-                    return;
-                }
-
-                var workflowAction = this.GetWorkflowActionInstance(contentItem, workflowActionType);
-                if (workflowAction == null)
-                {
-                    return;
-                }
-
-                var message = workflowAction.GetActionMessage(stateTransaction, state);
-
-                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationNoActionType);
-
-                this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        private void SendNotificationToWorkflowStarter(StateTransaction stateTransaction, Entities.Workflow workflow, ContentItem contentItem, int starterUserId, WorkflowActionTypes workflowActionType)
-        {
-            try
-            {
-                if (!workflow.FirstState.SendNotification)
-                {
-                    return;
-                }
-
-                var workflowAction = this.GetWorkflowActionInstance(contentItem, workflowActionType);
-                if (workflowAction == null)
-                {
-                    return;
-                }
-
-                var user = this._userController.GetUser(workflow.PortalID, starterUserId);
-
-                var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
-
-                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
-
-                this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        private void SendNotificationsToReviewers(ContentItem contentItem, WorkflowState state, StateTransaction stateTransaction, WorkflowActionTypes workflowActionType, PortalSettings portalSettings)
-        {
-            try
-            {
-                if (!state.SendNotification && !state.SendNotificationToAdministrators)
-                {
-                    return;
-                }
-
-                var reviewers = this.GetUserAndRolesForStateReviewers(portalSettings, state);
-
-                if (!reviewers.Roles.Any() && !reviewers.Users.Any())
-                {
-                    return; // If there are no receivers, the notification is avoided
-                }
-
-                var workflowAction = this.GetWorkflowActionInstance(contentItem, workflowActionType);
-                if (workflowAction == null)
-                {
-                    return;
-                }
-
-                var message = workflowAction.GetActionMessage(stateTransaction, state);
-
-                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationType);
-
-                this._notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction,
-            ActionMessage message, string notificationType)
-        {
-            var notification = new Notification
-            {
-                NotificationTypeID =
-                    this._notificationsController.GetNotificationType(notificationType).NotificationTypeId,
-                Subject = message.Subject,
-                Body = message.Body,
-                IncludeDismissAction = true,
-                SenderUserID = stateTransaction.UserId,
-                Context = workflowContext,
-                SendToast = message.SendToast,
-            };
-            return notification;
-        }
-
-        private ReviewersDto GetUserAndRolesForStateReviewers(PortalSettings portalSettings, WorkflowState state)
-        {
-            var reviewers = new ReviewersDto
-            {
-                Roles = new List<RoleInfo>(),
-                Users = new List<UserInfo>(),
-            };
-            if (state.SendNotification)
-            {
-                var permissions = this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
-                reviewers.Users = GetUsersFromPermissions(portalSettings, permissions);
-                reviewers.Roles = GetRolesFromPermissions(portalSettings, permissions);
-            }
-
-            if (state.SendNotificationToAdministrators)
-            {
-                if (!IsAdministratorRoleAlreadyIncluded(portalSettings, reviewers.Roles))
-                {
-                    var adminRole = RoleController.Instance.GetRoleByName(portalSettings.PortalId, portalSettings.AdministratorRoleName);
-                    reviewers.Roles.Add(adminRole);
-                }
-
-                reviewers.Users = IncludeSuperUsers(reviewers.Users);
-            }
-
-            return reviewers;
-        }
-
-        private class ReviewersDto
-        {
-            public List<RoleInfo> Roles { get; set; }
-
-            public List<UserInfo> Users { get; set; }
-        }
-
-        private static List<UserInfo> GetUsersFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
-        {
-            return (from permission in permissions
-                    where permission.AllowAccess && permission.UserID > Null.NullInteger
-                    select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
-        }
-
-        private static List<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
-        {
-            var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
-            foreach (UserInfo superUser in superUsers)
-            {
-                if (IsSuperUserNotIncluded(users, superUser))
-                {
-                    users.Add(superUser);
-                }
-            }
-
-            return users.ToList();
-        }
-
-        private static bool IsSuperUserNotIncluded(IEnumerable<UserInfo> users, UserInfo superUser)
-        {
-            return users.All(u => u.UserID != superUser.UserID);
-        }
-
-        private static string GetWorkflowActionComment(WorkflowLogType logType)
-        {
-            var logName = Enum.GetName(typeof(WorkflowLogType), logType);
-            return Localization.GetString(logName + ".Comment");
-        }
-
-        private void AddWorkflowCommentLog(ContentItem contentItem, int userId, string userComment)
-        {
-            if (string.IsNullOrEmpty(userComment))
-            {
-                return;
-            }
-
-            var state = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
-            this.AddWorkflowLog(contentItem, state, WorkflowLogType.CommentProvided, userId, userComment);
-        }
-
-        private void AddWorkflowCommentLog(ContentItem contentItem, WorkflowState state, int userId, string userComment)
-        {
-            if (string.IsNullOrEmpty(userComment))
-            {
-                return;
-            }
-
-            this.AddWorkflowLog(contentItem, state, WorkflowLogType.CommentProvided, userId, userComment);
-        }
-
-        private void AddWorkflowLog(ContentItem contentItem, WorkflowLogType logType, int userId, string userComment = null)
-        {
-            var state = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
-            this.AddWorkflowLog(contentItem, state, logType, userId, userComment);
-        }
-
-        private void AddWorkflowLog(ContentItem contentItem, WorkflowState state, WorkflowLogType logType, int userId, string userComment = null)
-        {
-            try
-            {
-                this.TryAddWorkflowLog(contentItem, state, logType, userId, userComment);
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        private void TryAddWorkflowLog(ContentItem contentItem, WorkflowState state, WorkflowLogType logType, int userId, string userComment)
-        {
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
-            var logTypeText = GetWorkflowActionComment(logType);
-            var logComment = this.ReplaceNotificationTokens(logTypeText, workflow, contentItem, state, userId, userComment);
-            this._workflowLogger.AddWorkflowLog(contentItem.ContentItemId, workflow.WorkflowID, logType, logComment, userId);
-        }
-
-        private string ReplaceNotificationTokens(string text, Entities.Workflow workflow, ContentItem item, WorkflowState state, int userId, string comment = "")
-        {
-            var user = this._userController.GetUserById(workflow.PortalID, userId);
-            var datetime = DateTime.UtcNow;
-            var result = text.Replace("[USER]", user != null ? user.DisplayName : string.Empty);
-            result = result.Replace("[DATE]", datetime.ToString("F", CultureInfo.CurrentCulture));
-            result = result.Replace("[STATE]", state != null ? state.StateName : string.Empty);
-            result = result.Replace("[WORKFLOW]", workflow.WorkflowName);
-            result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : string.Empty);
-            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : string.Empty);
-            return result;
-        }
-
-        private WorkflowState GetNextWorkflowState(Entities.Workflow workflow, int stateId)
-        {
-            WorkflowState nextState = null;
-            var states = workflow.States.OrderBy(s => s.Order);
-            int index;
-
-            // locate the current state
-            for (index = 0; index < states.Count(); index++)
-            {
-                if (states.ElementAt(index).StateID == stateId)
-                {
-                    break;
-                }
-            }
-
-            index = index + 1;
-            if (index < states.Count())
-            {
-                nextState = states.ElementAt(index);
-            }
-
-            return nextState ?? workflow.FirstState;
-        }
-
-        private WorkflowState GetPreviousWorkflowState(Entities.Workflow workflow, int stateId)
-        {
-            WorkflowState previousState = null;
-            var states = workflow.States.OrderBy(s => s.Order);
-            int index;
-
-            if (workflow.FirstState.StateID == stateId)
-            {
-                return workflow.LastState;
-            }
-
-            // locate the current state
-            for (index = 0; index < states.Count(); index++)
-            {
-                if (states.ElementAt(index).StateID == stateId)
-                {
-                    previousState = states.ElementAt(index - 1);
-                    break;
-                }
-            }
-
-            return previousState ?? workflow.LastState;
-        }
-
         public void StartWorkflow(int workflowId, int contentItemId, int userId)
         {
             Requires.NotNegative("workflowId", workflowId);
@@ -734,6 +323,417 @@ namespace DotNetNuke.Entities.Content.Workflow
         protected override Func<IWorkflowEngine> GetFactory()
         {
             return () => new WorkflowEngine();
+        }
+
+        private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
+        {
+            return (from permission in permissions
+                    where permission.AllowAccess && permission.RoleID > Null.NullInteger
+                    select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
+        }
+
+        private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
+        {
+            return roles.Any(r => r.RoleName == settings.AdministratorRoleName);
+        }
+
+        private static List<UserInfo> GetUsersFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
+        {
+            return (from permission in permissions
+                    where permission.AllowAccess && permission.UserID > Null.NullInteger
+                    select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
+        }
+
+        private static List<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
+        {
+            var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
+            foreach (UserInfo superUser in superUsers)
+            {
+                if (IsSuperUserNotIncluded(users, superUser))
+                {
+                    users.Add(superUser);
+                }
+            }
+
+            return users.ToList();
+        }
+
+        private static bool IsSuperUserNotIncluded(IEnumerable<UserInfo> users, UserInfo superUser)
+        {
+            return users.All(u => u.UserID != superUser.UserID);
+        }
+
+        private static string GetWorkflowActionComment(WorkflowLogType logType)
+        {
+            var logName = Enum.GetName(typeof(WorkflowLogType), logType);
+            return Localization.GetString(logName + ".Comment");
+        }
+
+        private StateTransaction CreateInitialTransaction(int contentItemId, int stateId, int userId)
+        {
+            return new StateTransaction
+            {
+                ContentItemId = contentItemId,
+                CurrentStateId = stateId,
+                UserId = userId,
+                Message = new StateTransactionMessage(),
+            };
+        }
+
+        private void PerformWorkflowActionOnStateChanged(StateTransaction stateTransaction, WorkflowActionTypes actionType)
+        {
+            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
+            var workflowAction = this.GetWorkflowActionInstance(contentItem, actionType);
+            if (workflowAction != null)
+            {
+                workflowAction.DoActionOnStateChanged(stateTransaction);
+            }
+        }
+
+        private void PerformWorkflowActionOnStateChanging(StateTransaction stateTransaction, WorkflowActionTypes actionType)
+        {
+            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
+            var workflowAction = this.GetWorkflowActionInstance(contentItem, actionType);
+            if (workflowAction != null)
+            {
+                workflowAction.DoActionOnStateChanging(stateTransaction);
+            }
+        }
+
+        private IWorkflowAction GetWorkflowActionInstance(ContentItem contentItem, WorkflowActionTypes actionType)
+        {
+            return this._workflowActionManager.GetWorkflowActionInstance(contentItem.ContentTypeId, actionType);
+        }
+
+        private void UpdateContentItemWorkflowState(int stateId, ContentItem item)
+        {
+            item.StateID = stateId;
+            this._contentController.UpdateContentItem(item);
+        }
+
+        private UserInfo GetUserThatHaveStartedOrSubmittedDraftState(Entities.Workflow workflow, ContentItem contentItem, StateTransaction stateTransaction)
+        {
+            bool wasDraftSubmitted = this.WasDraftSubmitted(workflow, stateTransaction.CurrentStateId);
+            if (wasDraftSubmitted)
+            {
+                return this.GetSubmittedDraftStateUser(contentItem);
+            }
+
+            return this.GetStartedDraftStateUser(contentItem);
+        }
+
+        private UserInfo GetUserByWorkflowLogType(ContentItem contentItem, WorkflowLogType type)
+        {
+            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            if (workflow == null)
+            {
+                return null;
+            }
+
+            var logs = this._workflowLogRepository.GetWorkflowLogs(contentItem.ContentItemId, workflow.WorkflowID);
+
+            var logDraftCompleted = logs
+                .OrderByDescending(l => l.Date)
+                .FirstOrDefault(l => l.Type == (int)type);
+
+            if (logDraftCompleted != null && logDraftCompleted.User != Null.NullInteger)
+            {
+                return this._userController.GetUserById(workflow.PortalID, logDraftCompleted.User);
+            }
+
+            return null;
+        }
+
+        private bool WasDraftSubmitted(Entities.Workflow workflow, int currentStateId)
+        {
+            var isDirectPublishWorkflow = workflow.IsSystem && workflow.States.Count() == 1;
+            var draftSubmitted = workflow.FirstState.StateID != currentStateId;
+            return !(isDirectPublishWorkflow || !draftSubmitted);
+        }
+
+        private string GetWorkflowNotificationContext(ContentItem contentItem, WorkflowState state)
+        {
+            return string.Format("{0}:{1}:{2}", contentItem.ContentItemId, state.WorkflowID, state.StateID);
+        }
+
+        private void DeleteWorkflowNotifications(ContentItem contentItem, WorkflowState state)
+        {
+            var context = this.GetWorkflowNotificationContext(contentItem, state);
+            var notificationTypeId = this._notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId;
+            this.DeleteNotificationsByType(notificationTypeId, context);
+            notificationTypeId = this._notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId;
+            this.DeleteNotificationsByType(notificationTypeId, context);
+        }
+
+        private void DeleteNotificationsByType(int notificationTypeId, string context)
+        {
+            var notifications = this._notificationsController.GetNotificationByContext(notificationTypeId, context);
+            foreach (var notification in notifications)
+            {
+                this._notificationsController.DeleteAllNotificationRecipients(notification.NotificationID);
+            }
+        }
+
+        private void SendNotificationToAuthor(StateTransaction stateTransaction, WorkflowState state, Entities.Workflow workflow, ContentItem contentItem, WorkflowActionTypes workflowActionType)
+        {
+            try
+            {
+                if (!state.SendNotification)
+                {
+                    return;
+                }
+
+                var user = this.GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem, stateTransaction);
+                if (user == null)
+                {
+                    // Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
+                    return;
+                }
+
+                if (user.UserID == stateTransaction.UserId)
+                {
+                    return;
+                }
+
+                var workflowAction = this.GetWorkflowActionInstance(contentItem, workflowActionType);
+                if (workflowAction == null)
+                {
+                    return;
+                }
+
+                var message = workflowAction.GetActionMessage(stateTransaction, state);
+
+                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationNoActionType);
+
+                this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        private void SendNotificationToWorkflowStarter(StateTransaction stateTransaction, Entities.Workflow workflow, ContentItem contentItem, int starterUserId, WorkflowActionTypes workflowActionType)
+        {
+            try
+            {
+                if (!workflow.FirstState.SendNotification)
+                {
+                    return;
+                }
+
+                var workflowAction = this.GetWorkflowActionInstance(contentItem, workflowActionType);
+                if (workflowAction == null)
+                {
+                    return;
+                }
+
+                var user = this._userController.GetUser(workflow.PortalID, starterUserId);
+
+                var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
+
+                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
+
+                this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        private void SendNotificationsToReviewers(ContentItem contentItem, WorkflowState state, StateTransaction stateTransaction, WorkflowActionTypes workflowActionType, PortalSettings portalSettings)
+        {
+            try
+            {
+                if (!state.SendNotification && !state.SendNotificationToAdministrators)
+                {
+                    return;
+                }
+
+                var reviewers = this.GetUserAndRolesForStateReviewers(portalSettings, state);
+
+                if (!reviewers.Roles.Any() && !reviewers.Users.Any())
+                {
+                    return; // If there are no receivers, the notification is avoided
+                }
+
+                var workflowAction = this.GetWorkflowActionInstance(contentItem, workflowActionType);
+                if (workflowAction == null)
+                {
+                    return;
+                }
+
+                var message = workflowAction.GetActionMessage(stateTransaction, state);
+
+                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationType);
+
+                this._notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction,
+            ActionMessage message, string notificationType)
+        {
+            var notification = new Notification
+            {
+                NotificationTypeID =
+                    this._notificationsController.GetNotificationType(notificationType).NotificationTypeId,
+                Subject = message.Subject,
+                Body = message.Body,
+                IncludeDismissAction = true,
+                SenderUserID = stateTransaction.UserId,
+                Context = workflowContext,
+                SendToast = message.SendToast,
+            };
+            return notification;
+        }
+
+        private ReviewersDto GetUserAndRolesForStateReviewers(PortalSettings portalSettings, WorkflowState state)
+        {
+            var reviewers = new ReviewersDto
+            {
+                Roles = new List<RoleInfo>(),
+                Users = new List<UserInfo>(),
+            };
+            if (state.SendNotification)
+            {
+                var permissions = this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
+                reviewers.Users = GetUsersFromPermissions(portalSettings, permissions);
+                reviewers.Roles = GetRolesFromPermissions(portalSettings, permissions);
+            }
+
+            if (state.SendNotificationToAdministrators)
+            {
+                if (!IsAdministratorRoleAlreadyIncluded(portalSettings, reviewers.Roles))
+                {
+                    var adminRole = RoleController.Instance.GetRoleByName(portalSettings.PortalId, portalSettings.AdministratorRoleName);
+                    reviewers.Roles.Add(adminRole);
+                }
+
+                reviewers.Users = IncludeSuperUsers(reviewers.Users);
+            }
+
+            return reviewers;
+        }
+
+        private void AddWorkflowCommentLog(ContentItem contentItem, int userId, string userComment)
+        {
+            if (string.IsNullOrEmpty(userComment))
+            {
+                return;
+            }
+
+            var state = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            this.AddWorkflowLog(contentItem, state, WorkflowLogType.CommentProvided, userId, userComment);
+        }
+
+        private void AddWorkflowCommentLog(ContentItem contentItem, WorkflowState state, int userId, string userComment)
+        {
+            if (string.IsNullOrEmpty(userComment))
+            {
+                return;
+            }
+
+            this.AddWorkflowLog(contentItem, state, WorkflowLogType.CommentProvided, userId, userComment);
+        }
+
+        private void AddWorkflowLog(ContentItem contentItem, WorkflowLogType logType, int userId, string userComment = null)
+        {
+            var state = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            this.AddWorkflowLog(contentItem, state, logType, userId, userComment);
+        }
+
+        private void AddWorkflowLog(ContentItem contentItem, WorkflowState state, WorkflowLogType logType, int userId, string userComment = null)
+        {
+            try
+            {
+                this.TryAddWorkflowLog(contentItem, state, logType, userId, userComment);
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        private void TryAddWorkflowLog(ContentItem contentItem, WorkflowState state, WorkflowLogType logType, int userId, string userComment)
+        {
+            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var logTypeText = GetWorkflowActionComment(logType);
+            var logComment = this.ReplaceNotificationTokens(logTypeText, workflow, contentItem, state, userId, userComment);
+            this._workflowLogger.AddWorkflowLog(contentItem.ContentItemId, workflow.WorkflowID, logType, logComment, userId);
+        }
+
+        private string ReplaceNotificationTokens(string text, Entities.Workflow workflow, ContentItem item, WorkflowState state, int userId, string comment = "")
+        {
+            var user = this._userController.GetUserById(workflow.PortalID, userId);
+            var datetime = DateTime.UtcNow;
+            var result = text.Replace("[USER]", user != null ? user.DisplayName : string.Empty);
+            result = result.Replace("[DATE]", datetime.ToString("F", CultureInfo.CurrentCulture));
+            result = result.Replace("[STATE]", state != null ? state.StateName : string.Empty);
+            result = result.Replace("[WORKFLOW]", workflow.WorkflowName);
+            result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : string.Empty);
+            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : string.Empty);
+            return result;
+        }
+
+        private WorkflowState GetNextWorkflowState(Entities.Workflow workflow, int stateId)
+        {
+            WorkflowState nextState = null;
+            var states = workflow.States.OrderBy(s => s.Order);
+            int index;
+
+            // locate the current state
+            for (index = 0; index < states.Count(); index++)
+            {
+                if (states.ElementAt(index).StateID == stateId)
+                {
+                    break;
+                }
+            }
+
+            index = index + 1;
+            if (index < states.Count())
+            {
+                nextState = states.ElementAt(index);
+            }
+
+            return nextState ?? workflow.FirstState;
+        }
+
+        private WorkflowState GetPreviousWorkflowState(Entities.Workflow workflow, int stateId)
+        {
+            WorkflowState previousState = null;
+            var states = workflow.States.OrderBy(s => s.Order);
+            int index;
+
+            if (workflow.FirstState.StateID == stateId)
+            {
+                return workflow.LastState;
+            }
+
+            // locate the current state
+            for (index = 0; index < states.Count(); index++)
+            {
+                if (states.ElementAt(index).StateID == stateId)
+                {
+                    previousState = states.ElementAt(index - 1);
+                    break;
+                }
+            }
+
+            return previousState ?? workflow.LastState;
+        }
+
+        private class ReviewersDto
+        {
+            public List<RoleInfo> Roles { get; set; }
+
+            public List<UserInfo> Users { get; set; }
         }
     }
 }
