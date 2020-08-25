@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import localizeService from "../services/localizeService";
 import itemsService from "../services/itemsService";
+import Permissions from "./Permissions"; 
 
 const FolderDetails = ({folder, handlers, validationErrors}) => (
     <div className="item-details">
@@ -26,6 +27,13 @@ const FolderDetails = ({folder, handlers, validationErrors}) => (
                 <span className="details-label">{localizeService.getString("URL")}:</span>
                 <a target="_blank" rel="noopener noreferrer" href={itemsService.getFolderUrl(folder.folderId)}>{itemsService.getFolderUrl(folder.folderId)}</a>
             </div>
+        </div>
+        <div className="separator"></div>
+        <div>
+            <Permissions
+             folderBeingEdited={folder}
+             updateFolderBeingEdited={(f) => {}}
+            ></Permissions>
         </div>
         <div className="separator"></div>
         <div>

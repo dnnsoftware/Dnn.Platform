@@ -1,4 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="View.ascx.cs" Inherits="Dnn.Modules.ResourceManager.View" %>
+<%
+    DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.servicesframework.js");
+%>
 
 <asp:Panel runat="server" ID="ResourceManagerContainer" CssClass="rm-container" data-init-callback="initResourceLibrary">
 </asp:Panel>

@@ -91,6 +91,7 @@
     <Compile Include="Components\LocalizationController.cs" />
     <Compile Include="Components\Models\Localization.cs" />
     <Compile Include="Components\Models\ThumbnailContent.cs" />
+    <Compile Include="Components\PermissionHelper.cs" />
     <Compile Include="Components\PermissionsManager.cs" />
     <Compile Include="Components\SearchController.cs" />
     <Compile Include="Components\SettingsManager.cs" />
@@ -105,7 +106,12 @@
     <Compile Include="Services\Dto\DeleteFolderRequest.cs" />
     <Compile Include="Services\Dto\FileDetailsRequest.cs" />
     <Compile Include="Services\Dto\FolderDetailsRequest.cs" />
+    <Compile Include="Services\Dto\FolderPermissions.cs" />
+    <Compile Include="Services\Dto\Permission.cs" />
+    <Compile Include="Services\Dto\Permissions.cs" />
+    <Compile Include="Services\Dto\RolePermission.cs" />
     <Compile Include="Services\Dto\ThumbnailDownloadRequest.cs" />
+    <Compile Include="Services\Dto\UserPermission.cs" />
     <Compile Include="Services\LocalizationController.cs" />
     <Compile Include="Services\ItemsController.cs" />
     <Compile Include="Services\RouteMapper.cs" />

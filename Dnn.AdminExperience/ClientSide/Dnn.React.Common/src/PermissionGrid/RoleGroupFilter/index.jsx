@@ -110,7 +110,7 @@ class RoleGroupFilter extends Component {
 }
 
 RoleGroupFilter.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func,
     service: PropTypes.object,
     localization: PropTypes.object,
     onChange: PropTypes.func.isRequired
