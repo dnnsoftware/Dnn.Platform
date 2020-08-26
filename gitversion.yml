@@ -3,7 +3,7 @@ commit-date-format: 'yyyyMMdd'
 assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
 mode: ContinuousDeployment
 ignore:
-  commits-before: 2019-01-01T00:00:00
+  commits-before: 2020-01-01T00:00:00
 branches:
   future:
     regex: future?[/-]
