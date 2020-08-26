@@ -45,6 +45,12 @@ const itemDetailsActions = {
             data: event.target.value
         };
     },
+    changePermissions(permissions) {
+        return {
+            type: actionTypes.CHANGE_PERMISSIONS,
+            data: permissions
+        };
+    },
     setValidationErrors(validationErrors) {
         return {
             type: actionTypes.SET_VALIDATION_ERRORS,

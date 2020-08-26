@@ -36,9 +36,9 @@ class ItemDetailsContainer extends React.Component {
     }
     render() {
         const {itemEditing, cancelEditItem,
-            changeName, changeTitle, changeDescription} = this.props;
+            changeName, changeTitle, changeDescription, changePermissions} = this.props;
         const onSave = this.formSubmit.bind(this);
-        const handlers = {changeName, changeTitle, changeDescription, cancelEditItem, onSave};
+        const handlers = {changeName, changeTitle, changeDescription, changePermissions, cancelEditItem, onSave};
         let fileName, folderName, title, description;
         fileName = folderName = title = description = "";
         let item = {fileName, folderName, title, description};
@@ -64,6 +64,7 @@ ItemDetailsContainer.propTypes = {
     changeName: PropTypes.func,
     changeTitle: PropTypes.func,
     changeDescription: PropTypes.func,
+    changePermissions: PropTypes.func,
     saveItem: PropTypes.func,
     setValidationErrors: PropTypes.func,
     validationErrors: PropTypes.object
@@ -84,6 +85,7 @@ function mapDispatchToProps(dispatch) {
             changeName: itemDetailsActions.changeName,
             changeTitle: itemDetailsActions.changeTitle,
             changeDescription: itemDetailsActions.changeDescription,
+            changePermissions: itemDetailsActions.changePermissions,
             saveItem: itemDetailsActions.saveItem,
             setValidationErrors: itemDetailsActions.setValidationErrors
         }, dispatch)

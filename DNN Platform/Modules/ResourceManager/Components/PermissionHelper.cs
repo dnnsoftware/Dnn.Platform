@@ -4,10 +4,12 @@
 
 namespace Dnn.Modules.ResourceManager.Components
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using Dnn.Modules.ResourceManager.Services.Dto;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
@@ -128,6 +130,46 @@ namespace Dnn.Modules.ResourceManager.Components
             }
 
             return data;
+        }
+
+        public static ArrayList ToPermissionInfos(this IList<RolePermission> permissions, int folderId)
+        {
+            var newPermissions = new ArrayList();
+            foreach (var permission in permissions)
+            {
+                foreach (var p in permission.Permissions)
+                {
+                    newPermissions.Add(new FolderPermissionInfo()
+                    {
+                        AllowAccess = p.AllowAccess,
+                        FolderID = folderId,
+                        PermissionID = p.PermissionId,
+                        RoleID = permission.RoleId,
+                        UserID = Null.NullInteger
+                    });
+                }
+            }
+            return newPermissions;
+        }
+
+        public static ArrayList ToPermissionInfos(this IList<UserPermission> permissions, int folderId)
+        {
+            var newPermissions = new ArrayList();
+            foreach (var permission in permissions)
+            {
+                foreach (var p in permission.Permissions)
+                {
+                    newPermissions.Add(new FolderPermissionInfo()
+                    {
+                        AllowAccess = p.AllowAccess,
+                        FolderID = folderId,
+                        PermissionID = p.PermissionId,
+                        RoleID = Null.NullInteger,
+                        UserID = permission.UserId
+                    });
+                }
+            }
+            return newPermissions;
         }
     }
 }
