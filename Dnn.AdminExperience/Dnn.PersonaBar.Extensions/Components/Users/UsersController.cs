@@ -521,7 +521,9 @@ namespace Dnn.PersonaBar.Users.Components
 
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? "" : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
 
-            usersContract.SearchText = string.Format("{0}*", parsedSearchText);
+            usersContract.SearchText = DateTime.TryParse(parsedSearchText, out var _)
+                ? parsedSearchText
+                : $"{parsedSearchText}*";
 
             List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
                 this.CallGetUsersBySearchTerm(

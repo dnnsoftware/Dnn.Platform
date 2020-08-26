@@ -106,7 +106,13 @@ BEGIN
 						WHERE (LastName    Like @searchTerm)
 						  AND LastName  Is Not Null AND LastName  != N'' 
 						  AND (IsSuperUser = 1)
-						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted)) S 
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted)
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser
+						FROM  dbo.[Users]
+						WHERE (CONVERT(date, CreatedOnDate)  = TRY_CONVERT(date, @searchTerm, 101))
+						  AND CreatedOnDate  Is Not Null AND CreatedOnDate  != N'' 
+						  AND (IsSuperUser = 1)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted)) S
 					 GROUP BY UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser) AS Sel
 		WHERE Sel.RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize)
 		ORDER BY Sel.RowNumber
@@ -196,7 +202,11 @@ BEGIN
 					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
 						FROM  {databaseOwner}[{objectQualifier}Users]
 						WHERE (LastName    Like @searchTerm)
-						  AND LastName  Is Not Null AND LastName  != N'') S
+						  AND LastName  Is Not Null AND LastName  != N''
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
+						FROM  dbo.[Users]
+						WHERE (CONVERT(date, CreatedOnDate)  = TRY_CONVERT(date, @searchTerm, 101))
+						  AND CreatedOnDate  Is Not Null AND CreatedOnDate  != N'') S
                    JOIN	 {databaseOwner}[{objectQualifier}UserPortals] P ON S.UserID = P.UserID		
                    WHERE P.PortalID = @PortalID
 					 AND (@Superusers Is Null OR S.IsSuperuser = 0)
