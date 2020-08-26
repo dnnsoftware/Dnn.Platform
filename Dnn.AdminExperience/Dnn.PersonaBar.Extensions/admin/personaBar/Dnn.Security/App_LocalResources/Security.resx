@@ -1147,4 +1147,7 @@
   <data name="RedirectionMovedToSiteSettings.Text" xml:space="preserve">
     <value>Redirection has been moved to Site Settings</value>
   </data>
+  <data name="IncorrectDisplayNameConfiguration.Text" xml:space="preserve">
+    <value>The Display Name configuration is not correct. Either provide Display Name Format or include Display Name in the list of fields.</value>
+  </data>
 </root>
