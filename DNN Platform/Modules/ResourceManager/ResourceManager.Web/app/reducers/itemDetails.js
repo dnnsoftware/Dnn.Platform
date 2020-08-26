@@ -23,6 +23,10 @@ export default function itemDetailsReducer(state = initialState, action) {
             let itemEditing = { ...state.itemEditing, description: data };
             return { ...state, itemEditing };
         }
+        case itemDetailsActionsTypes.CHANGE_PERMISSIONS: {
+            let itemEditing = { ...state.itemEditing, permissions: data };
+            return { ...state, itemEditing };
+        }
         case itemDetailsActionsTypes.SET_VALIDATION_ERRORS: {
             return { ...state, validationErrors: data };
         }

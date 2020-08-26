@@ -20,6 +20,7 @@ using Dnn.Modules.ResourceManager.Components.Common;
 using Dnn.Modules.ResourceManager.Exceptions;
 using Dnn.Modules.ResourceManager.Helpers;
 using Dnn.Modules.ResourceManager.Services.Dto;
+using DotNetNuke.Security.Permissions;
 
 namespace Dnn.Modules.ResourceManager.Components
 {
@@ -124,6 +125,10 @@ namespace Dnn.Modules.ResourceManager.Components
         public void SaveFolderDetails(IFolderInfo folder, FolderDetailsRequest folderDetails)
         {
             _assetManager.RenameFolder(folderDetails.FolderId, folderDetails.FolderName);
+            folder.FolderPermissions.Clear();
+            folder.FolderPermissions.AddRange(folderDetails.Permissions.RolePermissions.ToPermissionInfos(folderDetails.FolderId));
+            folder.FolderPermissions.AddRange(folderDetails.Permissions.UserPermissions.ToPermissionInfos(folderDetails.FolderId));
+            FolderManager.Instance.UpdateFolder(folder);
         }
 
         public void DeleteFile(int fileId, int moduleMode, int groupId)

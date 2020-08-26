@@ -12,6 +12,9 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
 
     public class FolderPermissions : Permissions
     {
+        public FolderPermissions() : base(false)
+        {
+        }
         public FolderPermissions(bool needDefinitions) : base(needDefinitions)
         {
             foreach (var role in PermissionProvider.Instance().ImplicitRolesForFolders(PortalSettings.Current.PortalId))

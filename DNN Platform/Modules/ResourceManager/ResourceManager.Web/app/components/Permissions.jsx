@@ -20,6 +20,7 @@ class Permissions extends React.Component {
     const { state } = this;
 
     let newPermissions = Object.assign({}, state.permissions, permissions);
+    this.props.updateFolderBeingEdited(newPermissions);
     this.setState({ permissions: newPermissions });
   }
 

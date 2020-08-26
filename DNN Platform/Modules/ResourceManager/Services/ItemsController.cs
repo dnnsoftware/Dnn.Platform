@@ -71,7 +71,7 @@ namespace Dnn.Modules.ResourceManager.Services
             var file = FileManager.Instance.GetFile(item.FileId);
             if (file == null || !PermissionsManager.Instance.HasGetFileContentPermission(file.FolderId))
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, new {Message = "File doesn't exist."});
+                return Request.CreateResponse(HttpStatusCode.NotFound, new { Message = "File doesn't exist." });
             }
 
             var thumbnailsManager = ThumbnailsManager.Instance;
@@ -90,7 +90,7 @@ namespace Dnn.Modules.ResourceManager.Services
             result.Content = new StreamContent(streamContent);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
             result.Content.Headers.ContentDisposition =
-                new ContentDispositionHeaderValue(forceDownload ? "attachment" : "inline") {FileName = fileName};
+                new ContentDispositionHeaderValue(forceDownload ? "attachment" : "inline") { FileName = fileName };
             return result;
         }
 
@@ -103,13 +103,13 @@ namespace Dnn.Modules.ResourceManager.Services
                 isSuperTab && UserInfo.IsSuperUser ? Null.NullInteger : PortalSettings.PortalId);
 
             var r = from m in mappings
-                select new
-                {
-                    m.FolderMappingID,
-                    m.MappingName,
-                    IsDefault =
-                    (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database")
-                };
+                    select new
+                    {
+                        m.FolderMappingID,
+                        m.MappingName,
+                        IsDefault =
+                        (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database")
+                    };
 
             return Request.CreateResponse(HttpStatusCode.OK, r);
         }
@@ -200,8 +200,8 @@ namespace Dnn.Modules.ResourceManager.Services
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             if (!FolderPermissionController.CanViewFolder((FolderInfo)folder))
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, 
-                    new {message = LocalizationHelper.GetString("UserHasNoPermissionToReadFileProperties.Error")});
+                return Request.CreateResponse(HttpStatusCode.InternalServerError,
+                    new { message = LocalizationHelper.GetString("UserHasNoPermissionToReadFileProperties.Error") });
             }
 
             var createdBy = file.CreatedByUser(PortalSettings.PortalId);
@@ -257,7 +257,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var createdBy = folder.CreatedByUser(PortalSettings.PortalId);
             var lastModifiedBy = folder.LastModifiedByUser(PortalSettings.PortalId);
-            
+
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
                 folderId = folder.FolderID,
@@ -296,7 +296,7 @@ namespace Dnn.Modules.ResourceManager.Services
         [HttpGet]
         public HttpResponseMessage GetSortOptions()
         {
-            var sortOptions = new []
+            var sortOptions = new[]
             {
                 new {value = "LastModifiedOnDate", label = LocalizationHelper.GetString("LastModifiedOnDate")},
                 new {value = "CreatedOnDate", label = LocalizationHelper.GetString("CreatedOnDate")},

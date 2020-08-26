@@ -14,5 +14,8 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
         [DataMember(Name = "folderName")]
         public string FolderName { get; set; }
 
+        [DataMember(Name = "permissions")]
+        public FolderPermissions Permissions { get; set; }
+
     }
 }
