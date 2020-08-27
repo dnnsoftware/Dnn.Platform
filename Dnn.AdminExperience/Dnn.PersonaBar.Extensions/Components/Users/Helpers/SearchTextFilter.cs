@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.Users.Components.Helpers
 {
+    using System;
     using System.Text;
     using System.Text.RegularExpressions;
 
@@ -16,6 +17,12 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
             {
                 return null;
             }
+
+            if (DateTime.TryParse(searchText.TrimEnd('*'), out var _))
+            {
+                return searchText;
+            }
+
             var pattern = "";
 
             var prefixWildcard = searchText.StartsWith("%") || searchText.StartsWith("*");
