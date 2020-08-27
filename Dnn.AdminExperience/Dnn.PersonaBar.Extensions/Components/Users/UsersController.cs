@@ -1,6 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
+using System.Globalization;
+using Dnn.PersonaBar.Library.Prompt.Common;
+
 namespace Dnn.PersonaBar.Users.Components
 {
     using System;
@@ -378,7 +382,7 @@ namespace Dnn.PersonaBar.Users.Components
             bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
             bool? hasAgreedToTerms, bool? requestsRemoval)
         {
-            var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? "" : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
+            var parsedSearchText = ParseSearchText(usersContract.SearchText, out var _);
 
             return DataProvider.Instance().ExecuteReader(
                     "Personabar_GetUsersBySearchTerm",
@@ -393,6 +397,24 @@ namespace Dnn.PersonaBar.Users.Components
                     includeSuperUsers,
                     hasAgreedToTerms,
                     requestsRemoval);
+        }
+
+        private static string ParseSearchText(string searchText, out bool isDateFormat)
+        {
+            isDateFormat = false;
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                return string.Empty;
+            }
+
+            if (DateTime.TryParse(searchText, out var dateTime))
+            {
+                isDateFormat = true;
+                return dateTime.ToPromptShortDateString();
+            }
+
+            return SearchTextFilter.CleanWildcards(searchText.Trim());
         }
 
         private static IEnumerable<UserBasicDto> GetSortedUsers(IEnumerable<UserBasicDto> users, string sortColumn,
@@ -518,10 +540,9 @@ namespace Dnn.PersonaBar.Users.Components
             bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
             bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
+            var parsedSearchText = ParseSearchText(usersContract.SearchText, out var isDateFormat);
 
-            var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? "" : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
-
-            usersContract.SearchText = string.Format("{0}*", parsedSearchText);
+            usersContract.SearchText = isDateFormat ? parsedSearchText : $"{parsedSearchText}*";
 
             List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
                 this.CallGetUsersBySearchTerm(
