@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.Security.Components
         public const string ContainsDuplicateAddresses = "ContainsDuplicateAddresses";
         public const string DeletedTab = "DeletedTab";
         public const string DisabledTab = "DisabledTab";
+        public const string IncorrectDisplayNameConfiguration = "IncorrectDisplayNameConfiguration";
         public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
     }
 }
