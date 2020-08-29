@@ -731,6 +731,7 @@
     </AdditionalFiles>
     <None Include="packages.config" />
     <Content Include="web.config" />
+    <Content Include="SqlDataProvider\09.07.01.SqlDataprovider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

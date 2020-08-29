@@ -382,7 +382,7 @@ namespace Dnn.PersonaBar.Users.Components
             bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
             bool? hasAgreedToTerms, bool? requestsRemoval)
         {
-            var parsedSearchText = ParseSearchText(usersContract.SearchText, out var _);
+            var parsedSearchText = ParseSearchText(usersContract.SearchText, false);
 
             return DataProvider.Instance().ExecuteReader(
                     "Personabar_GetUsersBySearchTerm",
@@ -399,22 +399,20 @@ namespace Dnn.PersonaBar.Users.Components
                     requestsRemoval);
         }
 
-        private static string ParseSearchText(string searchText, out bool isDateFormat)
+        private static string ParseSearchText(string searchText, bool includeWildCard)
         {
-            isDateFormat = false;
+            var isDateFormat = DateTime.TryParse(searchText, out var dateTime);
 
             if (string.IsNullOrWhiteSpace(searchText))
             {
                 return string.Empty;
             }
 
-            if (DateTime.TryParse(searchText, out var dateTime))
-            {
-                isDateFormat = true;
-                return dateTime.ToPromptShortDateString();
-            }
+            var parsedText = isDateFormat
+                ? dateTime.ToPromptShortDateString()
+                : SearchTextFilter.CleanWildcards(searchText.Trim());
 
-            return SearchTextFilter.CleanWildcards(searchText.Trim());
+            return includeWildCard && !isDateFormat ? $"{parsedText}*" : parsedText;
         }
 
         private static IEnumerable<UserBasicDto> GetSortedUsers(IEnumerable<UserBasicDto> users, string sortColumn,
@@ -540,9 +538,7 @@ namespace Dnn.PersonaBar.Users.Components
             bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
             bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
-            var parsedSearchText = ParseSearchText(usersContract.SearchText, out var isDateFormat);
-
-            usersContract.SearchText = isDateFormat ? parsedSearchText : $"{parsedSearchText}*";
+            usersContract.SearchText = ParseSearchText(usersContract.SearchText, true);
 
             List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
                 this.CallGetUsersBySearchTerm(
