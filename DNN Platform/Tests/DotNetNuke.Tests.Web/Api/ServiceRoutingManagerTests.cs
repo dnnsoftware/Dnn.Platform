@@ -103,7 +103,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void NameSpaceRequiredOnMapRouteCalls([ValueSource("_emptyStringArrays")] string[] namespaces)
+        public void NameSpaceRequiredOnMapRouteCalls([ValueSource("emptyStringArrays")] string[] namespaces)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
 
