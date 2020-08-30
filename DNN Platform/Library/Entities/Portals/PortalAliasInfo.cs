@@ -1,7 +1,7 @@
-﻿using DotNetNuke.Abstractions.Portals;
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Portals
 {
     using System;
@@ -10,10 +10,14 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml.Schema;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Urls;
 
+    using NewBrowserType = DotNetNuke.Abstractions.Urls.BrowserTypes;
+
+    /// <inheritdoc />
     [Serializable]
     public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPortalAliasInfo
     {
@@ -28,27 +32,46 @@ namespace DotNetNuke.Entities.Portals
             this.PortalID = alias.PortalID;
             this.IsPrimary = alias.IsPrimary;
             this.Redirect = alias.Redirect;
-            this.BrowserType = alias.BrowserType;
+            ((IPortalAliasInfo)this).BrowserType = ((IPortalAliasInfo)alias).BrowserType;
             this.CultureCode = alias.CultureCode;
             this.Skin = alias.Skin;
         }
 
+        /// <inheritdoc />
         public string HTTPAlias { get; set; }
 
+        /// <inheritdoc />
         public int PortalAliasID { get; set; }
 
+        /// <inheritdoc />
         public int PortalID { get; set; }
 
+        /// <inheritdoc />
         public bool IsPrimary { get; set; }
 
+        /// <inheritdoc />
         public bool Redirect { get; set; }
 
-        public BrowserTypes BrowserType { get; set; }
+        /// <summary>
+        /// Gets or sets the Browser Type.
+        /// </summary>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.BrowserType instead.")]
+        public BrowserTypes BrowserType
+        {
+            get => (BrowserTypes)((IPortalAliasInfo)this).BrowserType;
+            set => ((IPortalAliasInfo)this).BrowserType = (NewBrowserType)value;
+        }
 
+        /// <inheritdoc />
+        NewBrowserType IPortalAliasInfo.BrowserType { get; set; }
+
+        /// <inheritdoc />
         public string CultureCode { get; set; }
 
+        /// <inheritdoc />
         public string Skin { get; set; }
 
+        /// <inheritdoc />
         public int KeyID
         {
             get { return this.PortalAliasID; }
