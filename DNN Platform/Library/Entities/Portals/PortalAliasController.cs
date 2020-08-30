@@ -126,10 +126,6 @@ namespace DotNetNuke.Entities.Portals
             return false;
         }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasSettingsService instead.")]
-        public int AddPortalAlias(PortalAliasInfo portalAlias) =>
-            ((IPortalAliasService)this).AddPortalAlias(portalAlias);
-
         /// <inheritdoc />
         int IPortalAliasService.AddPortalAlias(IPortalAliasInfo portalAlias)
         {
@@ -153,10 +149,6 @@ namespace DotNetNuke.Entities.Portals
             return Id;
         }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasSettingsService instead.")]
-        public void DeletePortalAlias(PortalAliasInfo portalAlias) =>
-            DeletePortalAlias(portalAlias);
-
         /// <inheritdoc />
         void IPortalAliasService.DeletePortalAlias(IPortalAliasInfo portalAlias)
         {
@@ -170,53 +162,21 @@ namespace DotNetNuke.Entities.Portals
             ClearCache(false, portalAlias.PortalID);
         }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasSettingsService instead.")]
-        public PortalAliasInfo GetPortalAlias(string alias) =>
-            (PortalAliasInfo)((IPortalAliasService)this).GetPortalAlias(alias);
-
         /// <inheritdoc />
         IPortalAliasInfo IPortalAliasService.GetPortalAlias(string alias) =>
             this.GetPortalAliasInternal(alias);
-
-        /// <summary>
-        /// Gets the portal alias.
-        /// </summary>
-        /// <param name="alias">The portal alias.</param>
-        /// <param name="portalId">The portal ID.</param>
-        /// <returns>Portal Alias Info.</returns>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasSettingsService instead.")]
-        public PortalAliasInfo GetPortalAlias(string alias, int portalId) =>
-            (PortalAliasInfo)((IPortalAliasService)this).GetPortalAlias(alias, portalId);
 
         /// <inheritdoc />
         IPortalAliasInfo IPortalAliasService.GetPortalAlias(string alias, int portalId) =>
             this.GetPortalAliasesInternal()
                 .SingleOrDefault(portalAliasInfo => portalAliasInfo.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && portalAliasInfo.Value.PortalID == portalId).Value;
 
-        /// <summary>
-        /// Gets the portal alias by portal alias ID.
-        /// </summary>
-        /// <param name="portalAliasId">The portal alias ID.</param>
-        /// <returns>Portal alias info.</returns>
-        public PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId) =>
-            (PortalAliasInfo)((IPortalAliasService)this).GetPortalAliasByPortalAliasID(portalAliasId);
-
+        /// <inheritdoc />
         IPortalAliasInfo IPortalAliasService.GetPortalAliasByPortalAliasID(int portalAliasId) =>
             this.GetPortalAliasesInternal()
                 .SingleOrDefault(portalAliasInfo => portalAliasInfo.Value.PortalAliasID == portalAliasId).Value;
 
-        [Obsolete]
-        public PortalAliasCollection GetPortalAliases()
-        {
-            var aliasCollection = new PortalAliasCollection();
-            foreach (var alias in this.GetPortalAliasesInternal().Values)
-            {
-                aliasCollection.Add(alias.HTTPAlias, alias);
-            }
-
-            return aliasCollection;
-        }
-
+        /// <inheritdoc />
         NewPortalAliasCollection IPortalAliasService.GetPortalAliases()
         {
             var aliasCollection = new NewPortalAliasCollection();
@@ -228,27 +188,11 @@ namespace DotNetNuke.Entities.Portals
             return aliasCollection;
         }
 
-        [Obsolete]
-        public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId) =>
-            ((IPortalAliasService)this).GetPortalAliasesByPortalId(portalId)
-                .Cast<PortalAliasInfo>();
-
         IEnumerable<IPortalAliasInfo> IPortalAliasService.GetPortalAliasesByPortalId(int portalId) =>
             this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalID == portalId).ToList();
 
-        /// <summary>
-        /// Gets the portal by portal alias ID.
-        /// </summary>
-        /// <param name="PortalAliasId">The portal alias id.</param>
-        /// <returns>Portal info.</returns>
-        public PortalInfo GetPortalByPortalAliasID(int PortalAliasId) =>
-            (PortalInfo)((IPortalAliasService)this).GetPortalByPortalAliasID(PortalAliasId);
-
         IPortalInfo IPortalAliasService.GetPortalByPortalAliasID(int portalAliasId) =>
             CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(portalAliasId));
-
-        public void UpdatePortalAlias(PortalAliasInfo portalAlias) =>
-            ((IPortalAliasService)this).UpdatePortalAlias(portalAlias);
 
         void IPortalAliasService.UpdatePortalAlias(IPortalAliasInfo portalAlias)
         {
