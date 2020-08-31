@@ -125,7 +125,6 @@ namespace DotNetNuke.Abstractions.Portals
         /// <value>Portal info Object GUID.</value>
         Guid GUID { get; set; }
 
-
         /// <summary>
         /// Gets or sets tabdId of the Home page.
         /// </summary>
