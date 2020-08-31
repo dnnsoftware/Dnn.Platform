@@ -23,7 +23,8 @@ namespace DotNetNuke.Entities.Portals
 
     public partial class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>, IPortalAliasController
     {
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasSettingsService instead.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
+
         public static new IPortalAliasController Instance
         {
             get
