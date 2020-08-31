@@ -36,9 +36,9 @@ namespace DotNetNuke.UI.Skins.Controls
             var user = UserController.Instance.GetCurrentUserInfo();
             //START dnnsoftware.ir
             if (System.Globalization.CultureInfo.CurrentCulture.ToString() == "fa-IR")
-                this.lblDate.Text = !String.IsNullOrEmpty(DateFormat) ? user.LocalTime().ToString(DateFormat, new System.Globalization.CultureInfo("fa-IR")) : user.LocalTime().ToString("dddd، d MMMM yyyy", new System.Globalization.CultureInfo("fa-IR"));
+                this.lblDate.Text = !String.IsNullOrEmpty(this.DateFormat) ? DateTime.Now.ToString(this.DateFormat) : DateTime.Now.ToLongDateString();
             else
-            this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
+                this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
             //END dnnsoftware.ir
         }
 
