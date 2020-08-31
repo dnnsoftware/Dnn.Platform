@@ -109,7 +109,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         bool IPortalAliasService.ValidateAlias(string portalAlias, bool isChild)
         {
-            if (ischild)
+            if (isChild)
             {
                 return ValidateAlias(portalAlias, true, false);
             }
