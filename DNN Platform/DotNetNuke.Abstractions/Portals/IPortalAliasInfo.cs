@@ -32,7 +32,7 @@ namespace DotNetNuke.Abstractions.Portals
         bool IsPrimary { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the poral is a redirect portal.
+        /// Gets or sets a value indicating whether the alias is a redirect alias.
         /// </summary>
         bool Redirect { get; set; }
 
