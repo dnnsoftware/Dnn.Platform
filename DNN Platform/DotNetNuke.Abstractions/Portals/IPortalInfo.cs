@@ -156,7 +156,7 @@ namespace DotNetNuke.Abstractions.Portals
         int LoginTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets the portal has a logo (bitmap) associated with the portal. Teh admin can set the logo in the portal settings.
+        /// Gets or sets the logo associated with the portal. The admin can set the logo in the portal settings.
         /// </summary>
         /// <value>URL of the logo.</value>
         string LogoFile { get; set; }
