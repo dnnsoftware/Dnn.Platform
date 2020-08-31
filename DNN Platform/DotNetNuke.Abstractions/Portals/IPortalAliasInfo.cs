@@ -42,7 +42,7 @@ namespace DotNetNuke.Abstractions.Portals
         BrowserTypes BrowserType { get; set; }
 
         /// <summary>
-        /// Gets or sets the culture code.
+        /// Gets or sets the culture code for this alias, if there is one.
         /// </summary>
         string CultureCode { get; set; }
 
