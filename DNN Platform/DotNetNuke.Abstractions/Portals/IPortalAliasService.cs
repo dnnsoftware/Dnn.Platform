@@ -31,7 +31,7 @@ namespace DotNetNuke.Abstractions.Portals
         /// Validates the alias.
         /// </summary>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="ischild">if set to <c>true</c> [ischild].</param>
+        /// <param name="ischild">if set to <c>true</c>, validate the alias as a child alias (i.e. as a subdirectory of another alias).</param>
         /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
         bool ValidateAlias(string portalAlias, bool ischild);
 
