@@ -306,10 +306,5 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         /// <value>The name of the Registerd Users group.</value>
         string RegisteredRoleName { get; set; }
-
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        int KeyID { get; set; }
     }
 }
