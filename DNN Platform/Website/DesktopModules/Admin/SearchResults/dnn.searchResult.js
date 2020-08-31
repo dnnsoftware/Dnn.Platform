@@ -389,6 +389,7 @@
         var sterm = dnn.searchResult.queryOptions.searchTerm;
         var advancedTerm = dnn.searchResult.queryOptions.advancedTerm;
         if ((!sterm || $.trim(sterm).length <= 1) && (!advancedTerm || $.trim(advancedTerm).length <= 1)) {
+            dnn.searchResult.renderResults(null);
             return;
         }
 
@@ -461,24 +462,51 @@
             var htmlAdvancedTerm = advancedTerm.replace(/\[/g, '[&nbsp;').replace(/\]/g, '&nbsp;]')
                 .replace(/after:/g, '<b>after: </b>').replace(/type:/g, '<b>type: </b>');
             var w = advancedTextCtrl.html(htmlAdvancedTerm).width();
-            $('#dnnSearchResult_dnnSearchBox_input').val(term).css({
-                left: w + 40,
-                width: wrapWidth - w - 165 - 8
-            });
-            advancedTextClear.css({
-                left: w + 20
-            });
+            //START dnnsoftware.ir
+            if ($('body').hasClass('r' + 't' + 'l')) {
+                $('#dnnSearchResult_dnnSearchBox_input').val(term).css({
+                    right: w + 40,
+                    width: wrapWidth - w - 165 - 8
+                });
+                advancedTextClear.css({
+                    right: w + 20
+                });
+            } else {
+                $('#dnnSearchResult_dnnSearchBox_input').val(term).css({
+                    left: w + 40,
+                    width: wrapWidth - w - 165 - 8
+                });
+                advancedTextClear.css({
+                    left: w + 20
+                });
+            }
+            //END dnnsoftware.ir
         } else {
             advancedTextCtrl.html('').hide();
             var w1 = $('#dnnSearchResult_dnnSearchBox_input').next().next().next().width();
-            $('#dnnSearchResult_dnnSearchBox_input').css({
-                left: "",
-                width: wrapWidth - w1 - 50 - 8
-            });
+            
+            //START dnnsoftware.ir
+            if ($('body').hasClass('r' + 't' + 'l')) {
+                $('#dnnSearchResult_dnnSearchBox_input').css({
+                    right: "",
+                    width: wrapWidth - w1 - 50 - 8
+                });
 
-            $('#dnnSearchResult_dnnSearchBox_input').next().css({
-                right: w1 + 35
-            });
+                $('#dnnSearchResult_dnnSearchBox_input').next().css({
+                    left: w1 + 35
+                });
+            } else {
+                $('#dnnSearchResult_dnnSearchBox_input').css({
+                    left: "",
+                    width: wrapWidth - w1 - 50 - 8
+                });
+
+                $('#dnnSearchResult_dnnSearchBox_input').next().css({
+                    right: w1 + 35
+                });
+            }
+            //END dnnsoftware.ir
+
             advancedTextClear.removeClass('dnnShow');
         }
 

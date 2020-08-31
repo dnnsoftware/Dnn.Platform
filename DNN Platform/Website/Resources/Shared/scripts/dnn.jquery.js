@@ -442,7 +442,13 @@
             });
             var helpSelector = $this.find(opts.helpSelector);
             $this.parent().css({ position: 'relative' });
-            $this.css({ position: 'absolute', right: '-29%' });
+            //START dnnsoftware.ir
+            if ($('body').hasClass('r' + 't' + 'l')) {
+                $this.css({ position: 'absolute', left: '-29%' });
+            } else {
+                $this.css({ position: 'absolute', right: '-29%' });
+            }
+            //END dnnsoftware.ir
             var hoverOnToolTip = false, hoverOnPd = false;
 
             dnnFormHelp.hoverIntent({
@@ -484,9 +490,17 @@
             pinHelper.on('click', function (e) {
                 e.preventDefault();
                 if ($this.hasClass(opts.pinnedClass)) {
-                    helpSelector.css({ "left": '0', "top": '0' })
+                    //START dnnsoftware.ir
+                    if ($('body').hasClass('r' + 't' + 'l')) {
+                        helpSelector.css({ "right": '0', "top": '0' })
                         .css('visibility', 'hidden')
                         .draggable('destroy');
+                    } else {
+                        helpSelector.css({ "left": '0', "top": '0' })
+                        .css('visibility', 'hidden')
+                        .draggable('destroy');
+                    }
+                    //END dnnsoftware.ir
                     $this.removeClass(opts.pinnedClass);
                 }
                 else {
@@ -665,7 +679,13 @@
             pd.tooltipWrapperInner = $('.dnnFormHelpContent', pd.tooltipWrapper);
 
             var tooltipHeight = pd.tooltipWrapperInner.height();
-            pd.tooltipWrapperInner.css({ left: '-10px', top: -(tooltipHeight + 30) + 'px' });
+            //START dnnsoftware.ir
+            if ($('body').hasClass('r' + 't' + 'l')) {
+                pd.tooltipWrapperInner.css({ right: '-10px', top: -(tooltipHeight + 30) + 'px' });
+            } else {
+                pd.tooltipWrapperInner.css({ left: '-10px', top: -(tooltipHeight + 30) + 'px' });
+            }
+            //END dnnsoftware.ir
             var hoverOnPd = false;
             $pd.hover(
                 function () {
@@ -2112,7 +2132,10 @@
                     if ((currValLength >= settings.maxChars) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
                         tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
                     }
-                    if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9 || event.type == "blur") {
+                    //START dnnsoftware.ir
+                    //if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9 || event.type == "blur") {
+                    if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9 || event.type == "blur" || event.which == 1548 || event.which == 1563) {
+                        //END dnnsoftware.ir
                         event.preventDefault();
                         if (!clickedOnAutoComplete) {
                             tagItems(data, event);
@@ -4286,38 +4309,9 @@
             }
         });
     };
-
-    var handlerSendVerificationMailLink = function() {
-        $(document.body).on('click', 'a.send-verification-mail', function(e) {
-            e.preventDefault();
-
-            var service = $.dnnSF();
-            var url = service.getServiceRoot('InternalServices') + 'NewUserNotificationService/SendVerificationMail';
-            var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
-            url += '?__RequestVerificationToken=' + antiForgeryToken;
-
-            $.ajax({
-                url: url,
-                beforeSend: service ? service.setModuleHeaders : null,
-                success: function(data) {
-                    $.dnnAlert({ text: data.Result });
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    if (xhr && xhr.responseText) {
-                        $.dnnAlert({ text: eval('(' + xhr.responseText + ')').Message });
-                    }
-                },
-                type: 'POST',
-                dataType: 'json',
-                contentType: "application/json"
-            });
-        });
-    };
-
     window.__rgDataDivScrollTopPersistArray = [];
     $(document).ajaxComplete(dnnInitCustomisedCtrls);
     Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(saveRgDataDivScrollTop);
     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(dnnInitCustomisedCtrls);
     $(dnnInitCustomisedCtrls);
-    handlerSendVerificationMailLink();
 })(jQuery);

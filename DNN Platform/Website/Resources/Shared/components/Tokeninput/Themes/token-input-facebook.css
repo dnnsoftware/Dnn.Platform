@@ -135,3 +135,52 @@ ul.token-input-list-facebook {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+
+
+/* ===========   dnnsoftware.ir   =========== */
+
+.rtl li.token-input-token-facebook {
+    overflow: hidden; 
+    height: auto !important; 
+    height: 15px;
+    margin: 3px;
+    padding: 1px 3px;
+    background-color: #eff2f7;
+    color: #000;
+    cursor: default;
+    border: 1px solid #ccd5e4;
+    font-size: 11px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    float: right;
+    white-space: nowrap;
+}
+.rtl li.token-input-token-facebook span {
+    color: #a6b3cf;
+    margin-left: auto;
+    margin-right: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.rtl li.token-input-input-token-facebook {
+    float: right;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.rtl div.token-input-dropdown-facebook {
+    position: absolute;
+    min-width: 234px;
+    background-color: #fff;
+    overflow: hidden;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    cursor: default;
+    font-size: 11px;
+    font-family: tahoma, Verdana;
+    z-index: 100020;
+}

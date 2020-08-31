@@ -490,3 +490,127 @@ a.fu-fileupload-thumbnail-inactive:hover {
     .fu-container ul.dnnButtonGroup span {
         color: #333;
     }
+
+
+
+
+
+/* ===========   dnnsoftware.ir   =========== */
+
+.rtl .fu-container .dnnDropDownList .dt-container {
+    right: auto;
+    left: 0;
+}
+
+.rtl .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:first-child {
+    border-right: none;
+}
+
+.rtl .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:first-child > a {
+    border-radius: 3px 3px 0 0;
+}
+
+.rtl .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:last-child > a {
+    border-radius: 0 0 3px 3px;    
+}
+
+.rtl .fu-container .fu-dialog-content-header ul.dnnButtonGroup {
+    float: right;
+}
+
+.rtl .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a {
+    padding: 7px 44px 6px 16px;
+}
+
+.rtl .fu-container .dnnDropDownList .selected-item {
+    background: none repeat scroll 0 0 #fff;
+}
+
+.rtl .fu-container .fu-dialog-content-header > .dnnLeft > span {
+    float: right;
+    margin: 0 10px 0 0;
+}
+
+.rtl .fu-container .fu-dialog-content-header > .dnnLeft > span > .fu-decompress-label {
+    margin: 0 6px 0 0;
+}
+
+.rtl .fu-container .fu-dialog-content-header > .dnnRight > label {
+    float: right;
+    margin: 0 0 0 6px;
+}
+
+.rtl .fu-container .fu-dialog-content-header > .dnnRight > span {    
+    float: right;
+}
+
+.rtl .fu-container .fu-dialog-content-header > .dnnRight > .dnnDropDownList {
+    float: right;
+}
+
+.rtl .fu-container ul.fu-fileupload-statuses {
+    margin: 0 2px 0 30px;
+}
+
+.rtl .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-container {
+    float: left;
+}
+
+.rtl .fu-container .fu-fileupload-statuses .fu-fileupload-filename-container {
+    float: right;
+    margin: 0 10px 0 0;
+}
+
+.rtl .fu-file-already-exists-prompt .fu-status-message {
+    float: right;
+}
+
+.rtl a.fu-fileupload-thumbnail,
+.rtl a.fu-fileupload-thumbnail:link,
+.rtl a.fu-fileupload-thumbnail:visited,
+.rtl a.fu-fileupload-thumbnail:hover,
+.rtl a.fu-fileupload-thumbnail:active {
+    float: right;
+    background: none repeat scroll 0 0 #E8F0FB;
+}
+
+.rtl .fu-status-error a.fu-fileupload-thumbnail:hover {
+    background: none repeat scroll 0 0 #E8F0FB;
+}
+
+.rtl .fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-keep,
+.rtl .fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {
+    float: left;
+}
+
+.rtl .fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.rtl .fu-container .fu-fileupload-statuses .fu-fileupload-progressbar {
+    margin: 6px 6px 0 0;
+}
+
+.rtl .fu-fileupload-progressbar-container a {
+    float: left;
+    margin: 4px 0 0 6px;
+}
+
+.rtl .fu-container ul.dnnButtonGroup > li {
+    float: right;
+    border-left: 0;
+    border-right: 1px solid #c9c9c9;
+}
+
+.rtl .fu-container ul.dnnButtonGroup > li.dnnButtonGroup-first + li {
+    border-right: none;
+}
+
+/* dnnsoftware.ir */
+.rtl .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.from-url {
+    background-position: 85% 50%;
+}
+.rtl .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.upload-file {
+    background-position: 85% 50%;
+}

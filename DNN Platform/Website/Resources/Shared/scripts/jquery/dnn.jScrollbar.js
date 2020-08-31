@@ -1,7 +1,9 @@
 ; if (typeof dnn === "undefined") { dnn = {}; }; //var dnn = dnn || {};
 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
+// by DotNetNuke Corporation
+// All Rights Reserved
 
 (function ($, window, document, undefined) {
     "use strict";
@@ -48,7 +50,13 @@
             this._$scrollbarY.on('mousedown.perfect-scroll', $.proxy(this._onMouseDownY, this));
 
             this._scrollbarXBottom = parseInt(this._$scrollbarX.css('bottom'), 10);
-            this._scrollbarYRight = parseInt(this._$scrollbarY.css('right'), 10);
+            //START dnnsoftware.ir
+            if ($('body').hasClass('r' + 't' + 'l')) {
+                this._scrollbarYRight = parseInt(this._$scrollbarY.css('left'), 10);
+            } else {
+                this._scrollbarYRight = parseInt(this._$scrollbarY.css('right'), 10);
+            }
+            //END dnnsoftware.ir
 
             if (this.$element.mousewheel) {
                 this.$element.mousewheel($.proxy(this._onMouseWheel, this));
@@ -59,7 +67,7 @@
         destroy: function () {
             this._$scrollbarX.remove();
             this._$scrollbarY.remove();
-            this.$element.off("mousewheel");
+            this.$element.unbind("mousewheel");
         },
 
         _scrollY: function () {
@@ -149,8 +157,8 @@
             this._currentPageX = e.pageX;
             this._currentLeft = this._$scrollbarX.position().left;
             this._$scrollbarX.addClass('in-scrolling');
-            $(this._getDocument()).on('mousemove.perfect-scroll', this._onMouseMoveXHandler);
-            $(this._getDocument()).on('mouseup.perfect-scroll', this._onMouseUpXHandler);
+            $(this._getDocument()).bind('mousemove.perfect-scroll', this._onMouseMoveXHandler);
+            $(this._getDocument()).bind('mouseup.perfect-scroll', this._onMouseUpXHandler);
             e.stopPropagation();
             e.preventDefault();
         },
@@ -159,8 +167,8 @@
             this._currentPageY = e.pageY;
             this._currentTop = this._$scrollbarY.position().top;
             this._$scrollbarY.addClass('in-scrolling');
-            $(this._getDocument()).on('mousemove.perfect-scroll', this._onMouseMoveYHandler);
-            $(this._getDocument()).on('mouseup.perfect-scroll', this._onMouseUpYHandler);
+            $(this._getDocument()).bind('mousemove.perfect-scroll', this._onMouseMoveYHandler);
+            $(this._getDocument()).bind('mouseup.perfect-scroll', this._onMouseUpYHandler);
             e.stopPropagation();
             e.preventDefault();
         },
@@ -187,16 +195,16 @@
             if (this._$scrollbarX.hasClass('in-scrolling')) {
                 this._$scrollbarX.removeClass('in-scrolling');
             }
-            $(this._getDocument()).off('mousemove.perfect-scroll', this._onMouseMoveXHandler);
-            $(this._getDocument()).off('mouseup.perfect-scroll', this._onMouseUpXHandler);
+            $(this._getDocument()).unbind('mousemove.perfect-scroll', this._onMouseMoveXHandler);
+            $(this._getDocument()).unbind('mouseup.perfect-scroll', this._onMouseUpXHandler);
         },
 
         _onMouseUpY: function (e) {
             if (this._$scrollbarY.hasClass('in-scrolling')) {
                 this._$scrollbarY.removeClass('in-scrolling');
             }
-            $(this._getDocument()).off('mousemove.perfect-scroll', this._onMouseMoveYHandler);
-            $(this._getDocument()).off('mouseup.perfect-scroll', this._onMouseUpYHandler);
+            $(this._getDocument()).unbind('mousemove.perfect-scroll', this._onMouseMoveYHandler);
+            $(this._getDocument()).unbind('mouseup.perfect-scroll', this._onMouseUpYHandler);
         },
 
         _onMouseWheel: function (e, delta, deltaX, deltaY) {

@@ -90,6 +90,7 @@
     <Compile Include="CreateModule.ascx.designer.cs">
       <DependentUpon>CreateModule.ascx</DependentUpon>
     </Compile>
+    <Content Include="Module.rtl.css" />
     <Content Include="Templates\C#\Class File\template.cs" />
     <Content Include="Templates\C#\DAL2\templateController.cs" />
     <Content Include="Templates\C#\DAL2\templateInfo.cs" />

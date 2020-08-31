@@ -3,10 +3,19 @@
     var loaded = false;
     var error = true;
 
-    var defaultOptions = {
-        slowOperationMessage: "We are processing your content, please wait..."
-    };
-
+    /* START persian-dnnsoftware */
+    var defaultOptions;
+    if (window.parent['personaBarSettings']['culture'] == 'fa-IR') {
+        defaultOptions = {
+            slowOperationMessage: "ما در حال پردازش داده‌های شما هستیم، لطفا صبر کنید ..."
+        };
+    }
+    else {
+        defaultOptions = {
+            slowOperationMessage: "We are processing your content, please wait..."
+        };
+    }
+    /* END persian-dnnsoftware */
     function loading(options) {
         if (window.dnn.loading) return;
 
@@ -42,7 +51,14 @@
                     if (!error) {
                         progressbar.stop(true, false).animate({ width: "100%" }, 100, 'linear', hideLoadingBar);
                     } else {
-                        loadingBarMessage.show().html("There was an error retrieving your content. Please check your internet connection.");
+                          /* START persian-dnnsoftware */
+                        if (window.parent['personaBarSettings']['culture'] == 'fa-IR') {
+                            loadingBarMessage.show().html("هنگام بازیابی داده‌ها خطایی روی داد. لطفا اتصال اینترنت خود را بررسی یا بخش لاگ‌ها چک کنید.");
+                        }
+                        else{
+                            loadingBarMessage.show().html("There was an error retrieving your content. Please check your internet connection.");
+                        }
+                         /* END persian-dnnsoftware */
                         progressbar.stop(true, false).addClass("load-error").animate({ width: "100%" }, 100, 'linear').animate({ height: 25 }, 100, 'linear', function () {
                             closeLoadingBar.show().click(hideLoadingBar);
                         });

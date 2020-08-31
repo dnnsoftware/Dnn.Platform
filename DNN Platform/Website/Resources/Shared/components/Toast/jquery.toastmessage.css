@@ -174,3 +174,85 @@ ul > li.toast-message{
     margin-top: -40px;
     top: 50%;
 }
+
+
+
+/* ===========   dnnsoftware.ir   =========== */
+
+.rtl .toast-item {
+	position:absolute;
+	right:auto;left:0; top:10px;
+	width:300px;
+	background:rgba(0,0,0,0.85);
+	border:1px solid #333;
+	
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	
+	-webkit-box-shadow: inset 0px 25px 40px -25px rgba(255, 255, 255, 0.4),0px 1px 3px 0px rgba(0, 0, 0, 0.3), inset 0px -25px 25px -25px rgba(0, 0, 0, 0.9);
+	box-shadow: inset 0px 25px 40px -25px rgba(255, 255, 255, 0.4),  0px 1px 3px 0px rgba(0, 0, 0, 0.3), inset 0px -25px 25px -25px rgba(0, 0, 0, 0.9); 
+}
+.rtl .toast-item p {
+    text-align: right;
+	margin: 0;	
+	color:#aaa;
+}
+.rtl .toast-item-close {
+    background:url(images/close.gif);
+    width:22px;
+    height:22px;
+    position: absolute;
+    top:-10px;
+    right:auto;
+    left:-10px;
+}
+.rtl .toast-position-top-left {
+    position: fixed;
+    left: auto;
+    right: 20px;
+    top: 20px;
+}
+
+.rtl .toast-position-top-center {
+    position: fixed;
+    top: 20px;
+    left: auto;
+    right: 50%;
+    margin-left: auto;
+    margin-right: -140px;
+}
+
+.rtl .toast-position-top-right {
+    position: fixed;
+    top: 20px;
+    right: auto;
+    left: 80px;
+}
+
+.rtl .toast-position-middle-left {
+    position: fixed;
+    left: auto;
+    right: 20px;
+    top: 50%;
+    margin-top: -40px;
+}
+
+.rtl .toast-position-middle-center {
+    position: fixed;
+    left: auto;
+    right: 50%;
+    margin-left: auto;
+    margin-right: -140px;
+    margin-top: -40px;
+    top: 50%;
+}
+
+.rtl .toast-position-middle-right {
+    position: fixed;
+    right: auto;
+    left: 20px;
+    margin-left: auto;
+    margin-right: -140px;
+    margin-top: -40px;
+    top: 50%;
+}

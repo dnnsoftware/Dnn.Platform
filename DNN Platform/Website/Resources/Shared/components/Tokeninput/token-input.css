@@ -111,3 +111,16 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     background-color: #d0efa0;
 }
 
+/* ===========   dnnsoftware.ir   =========== */
+
+.rtl li.token-input-token p {
+    float: right;
+    padding: 0;
+    margin: 0;
+}
+
+.rtl li.token-input-token span {
+    float: left;
+    color: #777;
+    cursor: pointer;
+}

@@ -8,7 +8,6 @@
 .divCurrentVersion{min-height:61px;}
 .ehActions {height:60px;}
 .ehccContent fieldset:last-child {margin-bottom:0;}
-.ehCurrentContent {overflow: scroll;}
 .dnnTextEditor {margin-bottom:0;}
 .dnnTextPanelView-basic {padding-right: 0 !important;border: 0 !important;}
 .ehActions .dnnFormItem select {width:auto;margin:0;}
@@ -26,3 +25,9 @@
     font-weight: normal;
     text-align: center;
 }
+
+
+/* ===========   dnnsoftware.ir   =========== */
+
+.rtl .dnnFormItem .dnnHTMLSRadioButtons label, .rtl .dnnFormItem .dnnPSRadioButtons input, .rtl .dnnFormItem .dnnHTMLSRadioButtons label, .rtl .dnnFormItem .dnnHTMLSRadioButtons input{float:right;padding:0;width:2%;text-align:right;}
+.rtl .dnnFormItem .dnnHTMLSRadioButtons label{width:auto;padding:0 6px 0 15px;font-weight:normal}

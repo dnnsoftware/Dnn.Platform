@@ -107,11 +107,22 @@
     </AdditionalFiles>
     <None Include="app.config" />
     <None Include="Dnn.EditBar.UI.dnn" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Light.eot" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Light.ttf" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Light.woff" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Light.woff2" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Medium.eot" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Medium.ttf" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Medium.woff" />
+    <None Include="editBar\css\fonts\IRANSansWeb_Medium.woff2" />
     <None Include="editBar\css\RobotoSlab-Regular.ttf" />
     <None Include="editBar\css\SourceCodePro-Regular.ttf" />
     <None Include="editBar\css\SourceCodePro-Regular.ttf.woff" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf.woff" />
+    <Content Include="editBar\css\editBarContainer.rtl.css" />
+    <Content Include="editBar\css\main.rtl.css" />
+    <Content Include="editBar\resources\ContentEditorManager\Styles\ContentEditor.rtl.css" />
     <Content Include="Module.build">
       <SubType>Designer</SubType>
     </Content>
@@ -231,11 +242,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="editBar\App_LocalResources\AddExistingModule.fa-IR.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\AddExistingModule.resx" />
+    <EmbeddedResource Include="editBar\App_LocalResources\AddModule.fa-IR.resx" />
+    <EmbeddedResource Include="editBar\App_LocalResources\Common.fa-IR.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\Common.resx" />
+    <EmbeddedResource Include="editBar\App_LocalResources\EditBar.fa-IR.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\EditBar.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\AddModule.resx" />
     <EmbeddedResource Include="editBar\resources\ContentEditorManager\App_LocalResources\SharedResources.resx" />
+    <EmbeddedResource Include="editBar\resources\LocalResources.fa-IR.resources" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

@@ -582,6 +582,11 @@
     <Compile Include="admin\Users\ViewProfile.ascx.designer.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\WebControls.fa-IR.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebControls.fa-IR.resx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -611,8 +616,24 @@
       <DependentUpon>Logoff.ascx</DependentUpon>
     </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
+    <Content Include="admin\Menus\ModuleActions\font-awesome.min.css" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <Content Include="admin\Menus\ModuleActions\ModuleActions.rtl.css" />
+    <Content Include="admin\Modules\module.rtl.css" />
+    <Content Include="admin\Security\module.rtl.css" />
+    <Content Include="admin\Tabs\module.rtl.css" />
+    <Content Include="DesktopModules\Admin\Authentication\module.rtl.css" />
+    <Content Include="DesktopModules\Admin\SearchResults\module.rtl.css" />
+    <Content Include="DesktopModules\Admin\Security\module.rtl.css" />
+    <Content Include="Icons\Sigma\BreadcrumbArrows_16x16_Gray.rtl.png" />
+    <Content Include="Icons\Sigma\Cancel_16X16_Standard_dark.png" />
+    <Content Include="Icons\Sigma\Checked_16x16_Standard_dark.png" />
+    <Content Include="images\installer-feedback-states-sprite.rtl.png" />
+    <Content Include="images\InstallWizardBg.rtl.png" />
+    <Content Include="images\modal-resize-icn.rtl.png" />
     <Content Include="Install\InstallWizard.aspx" />
+    <Content Include="js\PersianCalendar.css" />
+    <Content Include="js\PersianCalendar.js" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
     <Content Include="Licenses\Microsoft Data Access Application Block %28Custom%29.txt.resources" />
@@ -630,6 +651,10 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <Content Include="admin\Menus\ModuleActions\fonts\fontawesome-webfont.eot" />
+    <Content Include="admin\Menus\ModuleActions\fonts\fontawesome-webfont.ttf" />
+    <Content Include="admin\Menus\ModuleActions\fonts\fontawesome-webfont.woff" />
+    <Content Include="admin\Menus\ModuleActions\fonts\fontawesome-webfont.woff2" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -855,9 +880,12 @@
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
+    <Content Include="Resources\Shared\components\DatePicker\persian.datepicker.css" />
+    <Content Include="Resources\Shared\components\DatePicker\persian.datepicker.js" />
     <Content Include="Resources\Shared\components\DatePicker\pikaday.css" />
     <Content Include="Resources\Shared\components\DatePicker\pikaday.jquery.js" />
     <Content Include="Resources\Shared\components\DatePicker\pikaday.js" />
+    <Content Include="Resources\Shared\components\DropDownList\Images\tree-sprite.rtl.png" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
     <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\simplemde.css" />
@@ -1243,6 +1271,8 @@
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
+    <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.rtl.css" />
+    <Content Include="Resources\Shared\stylesheets\dnndefault\8.0.0\default.rtl.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
@@ -3423,6 +3453,12 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\WebControls.fa-IR.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>WebControls.fa-IR.designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

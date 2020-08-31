@@ -209,6 +209,7 @@
     </None>
     <Content Include="Module.build" />
     <None Include="module.css" />
+    <Content Include="module.rtl.css" />
     <Content Include="Providers\DataProviders\SqlDataProvider\07.03.00.SqlDataProvider" />
     <Content Include="packages.config" />
     <None Include="ReleaseNotes.txt" />

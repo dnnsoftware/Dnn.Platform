@@ -166,7 +166,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             var label = labels.eq(i);
             currentTool.is(':visible') ? label.show() : label.hide();
             if (nextTool.length > 0) {
-                label.width(nextTool.position().left - currentTool.position().left);
+                //START dnnsoftware.ir
+                if ($('body').hasClass('r' + 't' + 'l')) {
+                    label.width(currentTool.position().left - nextTool.position().left);
+                } else {
+                    label.width(nextTool.position().left - currentTool.position().left);
+                }
+                //END dnnsoftware.ir
+
+                //START dnnsoftware.ir // Added by M.Kermani to set buttom default image
+                if ($('body').hasClass('r' + 't' + 'l')) {
+                    var toggleButton = $("#DigitalAssetsToggleLeftPaneBtnId span", "#" + controls.scopeWrapperId);
+                    toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
+                }
+                //END dnnsoftware.ir
             }
         }
     }
@@ -341,18 +354,33 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var loadingPanel = $(".dnnModuleDigitalAssetsMainLoading", "#" + controls.scopeWrapperId);
         var left;
 
-        if (!leftPane.is(":visible")) {
-            toggleButton.css("background-image", "url(" + settings.toggleLeftPaneHideImageUrl + ")");
-            leftPane.animate({ width: 'toggle' }, 500, treeViewRefreshScrollbars);
-            left = 220;
+        //START dnnsoftware.ir
+        if ($('body').hasClass('r' + 't' + 'l')) {
+            if (!leftPane.is(":visible")) {
+                toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
+                leftPane.animate({ width: 'toggle' }, 500, treeViewRefreshScrollbars);
+                left = 220;
+            } else {
+                toggleButton.css("background-image", "url(" + settings.toggleLeftPaneHideImageUrl + ")");
+                leftPane.animate({ width: 'toggle' }, 500);
+                left = 0;
+            }
+            contentPane.animate({ 'margin-right': left }, 500, 'swing', moreItemsHint);
+            loadingPanel.css({ 'right': left });
         } else {
-            toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
-            leftPane.animate({ width: 'toggle' }, 500);
-            left = 0;
+            if (!leftPane.is(":visible")) {
+                toggleButton.css("background-image", "url(" + settings.toggleLeftPaneHideImageUrl + ")");
+                leftPane.animate({ width: 'toggle' }, 500, treeViewRefreshScrollbars);
+                left = 220;
+            } else {
+                toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
+                leftPane.animate({ width: 'toggle' }, 500);
+                left = 0;
+            }
+            contentPane.animate({ 'margin-left': left }, 500, 'swing', moreItemsHint);
+            loadingPanel.css({ 'left': left });
         }
-
-        contentPane.animate({ 'margin-left': left }, 500, 'swing', moreItemsHint);
-        loadingPanel.css({ 'left': left });
+        //END dnnsoftware.ir
     }
 
     function moreItemsHint() {
@@ -1813,7 +1841,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var node = treeView.get_nodes().getItem(0);
         node.expand();
         var p = path.split('/');
-        for (var i = 1; i < p.length; i++) {
+        for (var i = 0; i < p.length; i++) {
             var name = p[i];
             if (name != '') {
                 var nodes = node.get_nodes();
@@ -2193,7 +2221,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             if (totalItems == totalSelectedItems) {
                 $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", "#" + controls.scopeWrapperId).attr('checked', true);
                 $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnModuleDigitalAssetsListViewToolbarTitle', "#" + controls.scopeWrapperId).text(resources.unselectAll);
-                $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').addClass('dnnCheckbox-checked');
             }
             updateSelectionToolBar();
         }, 2);
@@ -2221,7 +2248,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         updateSelectionToolBarTimeout = setTimeout(function () {
             $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", "#" + controls.scopeWrapperId).attr('checked', false);
             $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnModuleDigitalAssetsListViewToolbarTitle', "#" + controls.scopeWrapperId).text(resources.selectAll);
-            $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').removeClass('dnnCheckbox-checked');
             updateSelectionToolBar();
         }, 2);
     }

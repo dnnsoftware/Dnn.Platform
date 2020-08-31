@@ -84,3 +84,31 @@
     float: right;
     line-height: 40px;
 }
+
+
+/* ===========   dnnsoftware.ir   =========== */
+
+.rtl #subscription-table thead > tr > th > span.sortable {
+    cursor: pointer;
+    float: right;
+}
+
+.rtl #subscription-table thead > tr > th span.sortArrow {
+    box-shadow: none;
+    display: inline-block;
+    float: left;
+    height: 16px;
+    width: 15px;
+}
+.rtl .subscriptions-page-size,
+.rtl .subscriptions-pager {
+    float: right;
+    line-height: 40px;
+    margin-right: auto;
+    margin-left: 10px;
+}
+.rtl .subscriptions-count {
+    float: left;
+    line-height: 40px;
+}
+
