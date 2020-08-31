@@ -17,8 +17,6 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Log.EventLog;
 
-    using NewPortalAliasCollection = DotNetNuke.Abstractions.Portals.PortalAliasCollection;
-
     /// <summary>
     /// PortalAliasController provides method to manage portal alias.
     /// </summary>
@@ -177,9 +175,9 @@ namespace DotNetNuke.Entities.Portals
                 .SingleOrDefault(portalAliasInfo => portalAliasInfo.Value.PortalAliasID == portalAliasId).Value;
 
         /// <inheritdoc />
-        NewPortalAliasCollection IPortalAliasService.GetPortalAliases()
+        IDictionary<string, IPortalAliasInfo> IPortalAliasService.GetPortalAliases()
         {
-            var aliasCollection = new NewPortalAliasCollection();
+            var aliasCollection = new Dictionary<string, IPortalAliasInfo>();
             foreach (var alias in this.GetPortalAliasesInternal().Values)
             {
                 aliasCollection.Add(alias.HTTPAlias, alias);

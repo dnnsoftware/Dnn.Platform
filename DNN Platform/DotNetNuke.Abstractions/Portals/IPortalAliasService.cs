@@ -74,7 +74,7 @@ namespace DotNetNuke.Abstractions.Portals
         /// Get all portal aliases.
         /// </summary>
         /// <returns>A collection of portal aliases</returns>
-        PortalAliasCollection GetPortalAliases();
+        IDictionary<string, IPortalAliasInfo> GetPortalAliases();
 
         /// <summary>
         /// Get all the portal aliases for a specific portal.
