@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.Localization.Persian
                 if (cultureInfo.Name.StartsWith("ar-"))
                 {
                     //START Persian-DnnSoftware
-                    CultureInfo GregorianCultureInfo = GetGregorianCultureInfo(cultureInfo);
+                    CultureInfo GregorianCultureInfo = GetGregorianCultureInfo(cultureInfo.Name);
                     //END Persian-DnnSoftware
                     return GregorianCultureInfo;
                 }
