@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Localization.Persian
 
         public static CultureInfo GetGregorianCultureInfo(string cultureCode)//Persian-DnnSoftware
         {
-            var GregorianCultureInfo = new CultureInfo(string cultureCode);
+            var GregorianCultureInfo = new CultureInfo(cultureCode);
 
             var cal = new GregorianCalendar();
 
