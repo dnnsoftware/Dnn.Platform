@@ -24,7 +24,7 @@
 .dnnSearchResultPanel {
     width: 100%;
     max-width: 980px;
-    margin: 0 0 0 0;/*dnnsoftware.ir*/
+    margin: 0 0 0 0;/*Persian-DnnSoftware*/
     padding: 10px 0 7px 0;
     background-color: #ddd;
 }
@@ -335,7 +335,7 @@
     }
 }
 
-/* dnnsoftware.ir */
+/* Persian-DnnSoftware */
 dnnSearchResultItem-Link {
    direction:ltr;
    text-align:left;

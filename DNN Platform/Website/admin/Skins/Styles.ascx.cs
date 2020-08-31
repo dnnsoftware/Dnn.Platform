@@ -63,13 +63,13 @@ namespace DotNetNuke.UI.Skins.Controls
                     objLink.ID = Globals.CreateValidID(this.Name);
                     objLink.Attributes["rel"] = "stylesheet";
                     objLink.Attributes["type"] = "text/css";
-                    //START dnnsoftware.ir
+                    //START Persian-DnnSoftware
                     if (System.Globalization.CultureInfo.CurrentCulture.TextInfo.IsRightToLeft)
                     {
                         if (System.IO.File.Exists(this.Server.MapPath(skinpath + this.StyleSheet.Replace(".css", ".rtl.css"))))
                             this.StyleSheet = this.StyleSheet.Replace(".css", ".rtl.css");
                     }
-                    //END dnnsoftware.ir
+                    //END Persian-DnnSoftware
                     objLink.Href = skinpath + this.StyleSheet;
                     if (this.Media != string.Empty)
                     {

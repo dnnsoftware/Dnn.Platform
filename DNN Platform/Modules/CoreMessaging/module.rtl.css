@@ -234,7 +234,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPri
 	
 	.smListings [class^="ListCol-"]{
 		display:block; float:right;
-		padding:2% 3px 2% 2%;/*dnnsoftware.ir*/
+		padding:2% 3px 2% 2%;/*Persian-DnnSoftware*/
 		overflow:hidden;
 		word-wrap: break-word;
 	}

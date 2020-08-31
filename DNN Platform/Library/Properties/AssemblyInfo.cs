@@ -12,11 +12,11 @@ using DotNetNuke.Application;
 // associated with an assembly.
 
 // Review the values of the assembly attributes
-[assembly: AssemblyTitle("DotNetNuke - dnnsoftware.ir")]
+[assembly: AssemblyTitle("DotNetNuke - Persian-DnnSoftware")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 [assembly: CLSCompliant(true)]
 
-[assembly: AssemblyStatus(ReleaseMode.Stable)]//dnnsoftware.ir
+[assembly: AssemblyStatus(ReleaseMode.Stable)]//Persian-DnnSoftware
 
 // Allow internal variables to be visible to testing projects
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Core")]

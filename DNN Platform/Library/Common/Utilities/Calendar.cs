@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Utilities
 
             // Get the short date pattern for the culture
             string FormatString = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             if (System.Globalization.CultureInfo.CurrentCulture.ToString() == "fa-IR")
             {
                 if (!Field.Page.ClientScript.IsClientScriptIncludeRegistered("PersianCalendar.js"))
@@ -65,18 +65,18 @@ namespace DotNetNuke.Common.Utilities
                     ScriptManager.RegisterClientScriptInclude(Field.Page, Field.Page.GetType(), "PopupCalendar.js", ClientAPI.ScriptPath + "PopupCalendar.js");
                 }
             }
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
 
             string strToday = ClientAPI.GetSafeJSString(Localization.GetString("Today"));
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));
 
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             if (System.Globalization.CultureInfo.CurrentCulture.ToString() == "fa-IR")
             {
                 return "javascript:displayDatePicker('" + Field.ClientID + "');";
             }
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
 
             return string.Concat("javascript:popupCal('Cal','", Field.ClientID, "','", FormatString, "','",
                 MonthNameString, "','", DayNameString, "','", strToday, "','", strClose, "','", strCalendar, "',",

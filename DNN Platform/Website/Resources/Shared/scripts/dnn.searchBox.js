@@ -62,7 +62,7 @@
 
             this.realInput.val(originalVal);
 
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             if ($('body').hasClass('r' + 't' + 'l')) {
                 var realInputLeft = 50;
                 var advancedDropdown = $('.dnnSearchBox_advanced_dropdown', this.$wrap);
@@ -94,7 +94,7 @@
                     this.realInput.next().addClass('dnnShow').css({ right: realInputRight - 15 });
                 }
             }
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
         },    
 
         _makeUrl: function (param, service) {
@@ -217,21 +217,21 @@
                 if ($.inArray(k, self._ignoreKeyCodes) > -1) return;
 
                 var val = realInput.val();
-                //START dnnsoftware.ir
+                //START Persian-DnnSoftware
                 var right;
                 if ($('body').hasClass('r' + 't' + 'l')) {
                     right = parseInt(realInput.css('left').replace('px', '')) - 15;
                 } else {
                     right = parseInt(realInput.css('right').replace('px', '')) - 15;
                 }
-                //END dnnsoftware.ir
+                //END Persian-DnnSoftware
                 if (!val) {
                     clearTextBtn.removeClass('dnnShow');
                     // hide preview
                     $('.dnnSearchBox_preview', this.$wrap).remove();
                 }
                 else {
-                    //START dnnsoftware.ir
+                    //START Persian-DnnSoftware
                     if ($('body').hasClass('r' + 't' + 'l')) {
                         clearTextBtn.css({
                             left: right
@@ -241,7 +241,7 @@
                             right: right
                         }).addClass('dnnShow');
                     }
-                    //END dnnsoftware.ir
+                    //END Persian-DnnSoftware
                     if (self.options.enablePreview &&
                         val.length >= self.options.previewMinChars) {
                         // enable preview

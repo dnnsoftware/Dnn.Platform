@@ -182,11 +182,11 @@ namespace DotNetNuke.Framework
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             //Right to Left Layout
             if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
                 Body.Attributes.Add("class", "rtl ");
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
 
             // set global page settings
             this.InitializePage();

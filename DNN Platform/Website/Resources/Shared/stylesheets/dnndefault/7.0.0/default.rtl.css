@@ -111,7 +111,7 @@ sub {
 }
 
 body {
-    direction:rtl;/*dnnsoftware.ir*/
+    direction:rtl;/*Persian-DnnSoftware*/
     color: #444;
     font-size: 12px;
     line-height: 18px;
@@ -2431,7 +2431,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     height: 24px;
     width: 24px;
     background: url(../../../../../images/modal-resize-icn.png) no-repeat bottom;
-    cursor:sw-resize;/*dnnsoftware.ir*/
+    cursor:sw-resize;/*Persian-DnnSoftware*/
 }
 
 .dnnFormPopup .dnnDialog {
@@ -2532,7 +2532,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
         height: 46px;
         margin: 0;
         padding: 0;
-        background: transparent url(../../../../../images/InstallWizardBG.rtl.png) repeat-x;/*dnnsoftware.ir*/
+        background: transparent url(../../../../../images/InstallWizardBG.rtl.png) repeat-x;/*Persian-DnnSoftware*/
     }
 
         .dnnWizardTab.ui-tabs .ui-tabs-nav li {
@@ -2584,7 +2584,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 .dnnWizardStep {
     height: 46px;
     padding: 0 20px 0 0;
-    background: transparent url(../../../../../images/InstallWizardBG.rtl.png) repeat-x;/*dnnsoftware.ir*/
+    background: transparent url(../../../../../images/InstallWizardBG.rtl.png) repeat-x;/*Persian-DnnSoftware*/
     background-position: 0 0;
     cursor: pointer;
 }
@@ -2613,7 +2613,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 .dnnWizardStepArrow {
     width: 25px;
     height: 46px;
-    background: transparent url(../../../../../images/InstallWizardBG.rtl.png) no-repeat;/*dnnsoftware.ir*/
+    background: transparent url(../../../../../images/InstallWizardBG.rtl.png) no-repeat;/*Persian-DnnSoftware*/
     background-position: 100% -401px;
 }
 
@@ -2779,7 +2779,7 @@ table.dnnASPGrid {
     }
 
     .urlControl input[type=text] {
-        direction:ltr;/*dnnsoftware.ir*/
+        direction:ltr;/*Persian-DnnSoftware*/
     }
 
     .urlControl dnnFormItem > a.dnnSecondaryAction {
@@ -3792,7 +3792,7 @@ div.dnnSliderInput {
 	-ms-border-radius: 3px;
 	border-radius: 3px;
 	height: 10px;
-    text-align:left; /*dnnsoftware.ir*/
+    text-align:left; /*Persian-DnnSoftware*/
 }
 
 div.dnnSliderInput .ui-slider-handle {
@@ -3807,15 +3807,15 @@ div.dnnSliderInput .ui-slider-handle {
     color: #555555;
 	outline: none;
 	top: -2px;
-	margin-left: -7px; /*dnnsoftware.ir*/
+	margin-left: -7px; /*Persian-DnnSoftware*/
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 div.dnnSliderInput .dnnTooltip {
 	top: -37px;
-	margin-left: 22px; /*dnnsoftware.ir*/
-    float:left; /*dnnsoftware.ir*/
+	margin-left: 22px; /*Persian-DnnSoftware*/
+    float:left; /*Persian-DnnSoftware*/
 }
 div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
 	visibility: visible;
@@ -3827,7 +3827,7 @@ div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
 /*END DNN Slider Input Style*/
 
 
-/* ===========   dnnsoftware.ir   =========== */
+/* ===========   Persian-DnnSoftware   =========== */
 
 .RadCalendar_Default a.rcPrev {
 	background-position: -70px center !important;

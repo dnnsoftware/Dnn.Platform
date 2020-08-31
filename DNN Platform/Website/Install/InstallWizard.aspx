@@ -8,9 +8,7 @@
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />
-    <link rel="stylesheet" type="text/css" href="Install.css?refresh" />
-    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnn.PasswordStrength.css?refresh" />
+
      <!--[if IE]>
 	<link rel="stylesheet" type="text/css" href="../Portals/_default/ie.css?refresh" />
     <![endif]-->
@@ -25,7 +23,7 @@
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.tooltip.js"></script>
     <asp:placeholder id="SCRIPTS" runat="server"></asp:placeholder>
 </head>
-<body>
+<body id="Body" runat="server">
     <asp:placeholder runat="server" id="ClientResourceIncludes" />
     <form id="form1" runat="server">
         <asp:ScriptManager ID="scManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
@@ -37,6 +35,7 @@
 
     <div id="languageFlags" runat="server" clientidmode="Static" style="float: right;">
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
+        <asp:LinkButton  id="lang_fa_IR" class="flag" runat="server" value="fa-IR" title="فارسی (ایران)" OnClientClick="installWizard.changePageLocale('lang_fa_IR','fa-IR');" CausesValidation="false"><img src="../images/flags/fa-IR.gif" alt="fa-IR" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" title="Deutsch (Deutschland)" OnClientClick="installWizard.changePageLocale('lang_de_DE','de-DE');" CausesValidation="false"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="Français (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>
@@ -285,7 +284,7 @@
         }
         var installWizard = new InstallWizard();
         function InstallWizard() {
-            this.installInfo = { };
+            this.installInfo = {};
             //****************************************************************************************
             // PAGE FUNCTIONS
             //****************************************************************************************
@@ -296,7 +295,7 @@
             };
             this.confirmPasswords = function () {
                 if ($('#<%= txtPassword.ClientID %>')[0].value != $('#<%= txtConfirmPassword.ClientID %>')[0].value) {
-                    $('#<%= lblAdminInfoError.ClientID %>').text('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("PasswordMismatch"))%>');
+                    $('#<%= lblAdminInfoError.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("PasswordMismatch"))%>');
                     $("#continueLink").addClass('dnnDisabledAction');
                 } else {
                     $('#<%= lblAdminInfoError.ClientID %>').text('');
@@ -314,14 +313,14 @@
                     validate = ($('#<%= txtPassword.ClientID %>')[0].value !== '');
                 }
                 if (validate) {
-                    PageMethods.ValidatePassword($('#<%= txtPassword.ClientID %>')[0].value, function(result) {
+                    PageMethods.ValidatePassword($('#<%= txtPassword.ClientID %>')[0].value, function (result) {
                         if (result) {
                             $('#<%= lblAdminInfoError.ClientID %>').text('');
                             if (installWizard.validateInput()) {
                                 $("#continueLink").removeClass('dnnDisabledAction');
                             }
                         } else {
-                            $('#<%= lblAdminInfoError.ClientID %>').text('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("InputErrorInvalidPassword"))%>');
+                            $('#<%= lblAdminInfoError.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("InputErrorInvalidPassword"))%>');
                             $("#continueLink").addClass('dnnDisabledAction');
                         }
                     });
@@ -412,7 +411,7 @@
                     }
                 });
             };
-            this.toggleAdvancedDatabase = function(animation) {
+            this.toggleAdvancedDatabase = function (animation) {
                 var databaseType = $('#<%= databaseSetupType.ClientID %> input:checked').val(); /*standard, advanced*/
                 if (databaseType == "advanced") {
                     animation ? $('#advancedDatabase').slideDown() : $('#advancedDatabase').show();
@@ -420,7 +419,7 @@
                     animation ? $('#advancedDatabase').slideUp('fast') : $('#advancedDatabase').hide();
                 }
             };
-            this.toggleDatabaseType = function() {
+            this.toggleDatabaseType = function () {
                 var databaseType = $('#<%= databaseType.ClientID %> input:checked').val(); /*express, server*/
                 if (databaseType == "express") {
                     $('#databaseFilename').show();
@@ -434,7 +433,7 @@
                     $("#databaseRunAs").attr("disabled", false);
                 }
             };
-            this.toggleDatabaseSecurity = function(animation) {
+            this.toggleDatabaseSecurity = function (animation) {
                 var databaseSecurityType = $('#<%= databaseSecurityType.ClientID %> input:checked').val(); /*integrated, userDefined*/
                 if (databaseSecurityType == "userDefined") {
                     animation ? $('#securityUserDefined').slideDown() : $('#securityUserDefined').show();
@@ -448,7 +447,7 @@
                 $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessageError");
                 $('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessage");
                 var i = 0;
-                $(".databaseCheck").html('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("TestingDatabase"))%>');
+                $(".databaseCheck").html('<%= Localization.GetSafeJSString(LocalizeString("TestingDatabase"))%>');
                 var origtext = $(".databaseCheck").html();
                 var text = origtext;
                 installWizard.loadingIntervalId = setInterval(function () {
@@ -460,7 +459,7 @@
                 clearInterval(installWizard.checkPermissionIntervalId);
                 $('.permissionCheck').removeClass("promptMessageError").addClass("promptMessage").parent().show();
                 var i = 0;
-                $(".permissionCheck").html('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("FileAndFolderPermissionCheckTitle.Text"))%>');
+                $(".permissionCheck").html('<%= Localization.GetSafeJSString(LocalizeString("FileAndFolderPermissionCheckTitle.Text"))%>');
                 var origtext = $(".permissionCheck").html();
                 var text = origtext;
                 installWizard.checkPermissionIntervalId = setInterval(function () {
@@ -475,7 +474,7 @@
                 installWizard.disableValidators();
                 $("#languageFlags").hide();
             };
-            this.showAccountInfoTab = function() {
+            this.showAccountInfoTab = function () {
                 $("#tabs").tabs('enable', 0);
                 $("#tabs").tabs('option', 'active', 0);
                 $("#tabs").tabs('disable', 1);
@@ -553,7 +552,7 @@
                     image.src = "../images/branding/DNN_logo.png";
                 $("#bannerLink").attr("href", "");
                 $("#bannerLink").attr("target", "");
-                $("#bannerLink").click(function(){ return false;});
+                $("#bannerLink").click(function () { return false; });
             };
         }
     </script>
@@ -562,7 +561,7 @@
     <script type="text/javascript">
 
         function LegacyLangaugePack(version) {
-            $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("LegacyLangaugePack"))%>' + version;
+            $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '<%= Localization.GetSafeJSString(LocalizeString("LegacyLangaugePack"))%>' + version;
         }
         function ClearLegacyLangaugePack() {
             $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '';
@@ -604,13 +603,13 @@
                 //Reset Validation
                 $('.dnnRequired').hide();
 
-                if(window.location.href.indexOf("&executeinstall")>-1) {
+                if (window.location.href.indexOf("&executeinstall") > -1) {
                     installWizard.showInstallationTab();
                     installWizard.install();
                 }
                 else {
                     //Go to installation page when installation is already in progress
-                    PageMethods.IsInstallerRunning(function(result) {
+                    PageMethods.IsInstallerRunning(function (result) {
                         if (result == true) {
                             installWizard.showInstallationTab();
                             $.startProgressbar();
@@ -692,14 +691,14 @@
                             installWizard.installInfo.databaseRunAsOwner = $('#<%= databaseRunAs.ClientID %>')[0].value;
                         }
 
-                        PageMethods.ValidateInput(installWizard.installInfo, function(result) {
+                        PageMethods.ValidateInput(installWizard.installInfo, function (result) {
                             if (result.Item1) {
                                 $('#<%= lblAccountInfoError.ClientID %>').text('');
                                 $('#<%= lblDatabaseConnectionError.ClientID %>').html("");
                                 $("#databaseError").hide();
 
                                 installWizard.checkingDatabase();
-                                PageMethods.VerifyDatabaseConnection(installWizard.installInfo, function(valid) {
+                                PageMethods.VerifyDatabaseConnection(installWizard.installInfo, function (valid) {
                                     clearInterval(installWizard.loadingIntervalId);
                                     $('#<%= lblDatabaseInfoMsg.ClientID %>').text('');
                                     if (valid.Item1) {
@@ -710,7 +709,7 @@
                                         $("#databaseError").show();
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessageError");
-                                        $('#<%= lblDatabaseInfoMsg.ClientID %>').text('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("DatabaseError"))%>');
+                                        $('#<%= lblDatabaseInfoMsg.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("DatabaseError"))%>');
                                         $('#<%= lblDatabaseError.ClientID %>').html(valid.Item2);
                                     }
                                     $("#continueLink").removeClass('dnnDisabledAction');
@@ -729,7 +728,7 @@
                 return false;
             });
 
-        } (jQuery, window.Sys));
+        }(jQuery, window.Sys));
     </script>
 
     <!-- Progressbar -->
@@ -746,10 +745,10 @@
                     } catch (err) {
                     } // ignore the error
                 }).fail(function () {
-                installWizard.Status = "";
-            }).always(function () {
-                installWizard.IsQueryingInstallProgress = false;
-            });
+                    installWizard.Status = "";
+                }).always(function () {
+                    installWizard.IsQueryingInstallProgress = false;
+                });
         };
 
         $.updateProgressbar = function (status) {
@@ -775,9 +774,9 @@
                 $.applyCssStyle(result.check4, $('#SuperUserCreation'));
                 $.applyCssStyle(result.check5, $('#LicenseActivation'));
                 //If operation is complete
-                if (result.progress >= 100 || result.details == '<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("InstallationDone"))%>') {
+                if (result.progress >= 100 || result.details == '<%= Localization.GetSafeJSString(LocalizeString("InstallationDone"))%>') {
                     installWizard.finishInstall();
-                    $('#<%= lblInstallationIntroInfo.ClientID %>').text('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("InstallationComplete"))%>');
+                    $('#<%= lblInstallationIntroInfo.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("InstallationComplete"))%>');
                 }
                 //If not
                 else {
@@ -796,18 +795,18 @@
         $.applyCssStyle = function (state, ele) {
             if (!state) state = '';
             switch (state.toLowerCase()) {
-            case 'done':
-                ele.attr('class', 'step-done');
-                break;
-            case 'running':
-                ele.attr('class', 'step-running');
-                break;
-            case 'error':
-                ele.attr('class', 'step-error');
-                break;
-            default:
-                ele.attr('class', 'step-notstarted');
-                break;
+                case 'done':
+                    ele.attr('class', 'step-done');
+                    break;
+                case 'running':
+                    ele.attr('class', 'step-running');
+                    break;
+                case 'error':
+                    ele.attr('class', 'step-error');
+                    break;
+                default:
+                    ele.attr('class', 'step-notstarted');
+                    break;
             }
         };
 
@@ -868,7 +867,7 @@
                         setTimeout(getInstallationLog, 1000);
                     } else {
                         if (installationLogStartLine === 0)
-                            $('#installation-log').html('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');
+                            $('#installation-log').html('<%= Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');
                     }
                     $('#installation-log-container').jScrollPane();
                 }, function (err) {
@@ -889,7 +888,7 @@
                     e.preventDefault();
                 } else {
                     $(this).addClass('dnnDisabledAction');
-                    if(installWizard.bannerTimer) {
+                    if (installWizard.bannerTimer) {
                         clearInterval(installWizard.bannerTimer);
                     }
                 }

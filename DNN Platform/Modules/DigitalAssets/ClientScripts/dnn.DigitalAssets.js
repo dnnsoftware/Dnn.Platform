@@ -166,20 +166,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             var label = labels.eq(i);
             currentTool.is(':visible') ? label.show() : label.hide();
             if (nextTool.length > 0) {
-                //START dnnsoftware.ir
+                //START Persian-DnnSoftware
                 if ($('body').hasClass('r' + 't' + 'l')) {
                     label.width(currentTool.position().left - nextTool.position().left);
                 } else {
                     label.width(nextTool.position().left - currentTool.position().left);
                 }
-                //END dnnsoftware.ir
+                //END Persian-DnnSoftware
 
-                //START dnnsoftware.ir // Added by M.Kermani to set buttom default image
+                //START Persian-DnnSoftware // Added by M.Kermani to set buttom default image
                 if ($('body').hasClass('r' + 't' + 'l')) {
                     var toggleButton = $("#DigitalAssetsToggleLeftPaneBtnId span", "#" + controls.scopeWrapperId);
                     toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
                 }
-                //END dnnsoftware.ir
+                //END Persian-DnnSoftware
             }
         }
     }
@@ -354,7 +354,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var loadingPanel = $(".dnnModuleDigitalAssetsMainLoading", "#" + controls.scopeWrapperId);
         var left;
 
-        //START dnnsoftware.ir
+        //START Persian-DnnSoftware
         if ($('body').hasClass('r' + 't' + 'l')) {
             if (!leftPane.is(":visible")) {
                 toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
@@ -380,7 +380,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             contentPane.animate({ 'margin-left': left }, 500, 'swing', moreItemsHint);
             loadingPanel.css({ 'left': left });
         }
-        //END dnnsoftware.ir
+        //END Persian-DnnSoftware
     }
 
     function moreItemsHint() {

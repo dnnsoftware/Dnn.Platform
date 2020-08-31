@@ -178,406 +178,348 @@
     </Compile>
     <Compile Include="admin\Containers\DropDownActions.ascx.cs">
       <DependentUpon>dropdownactions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Containers\DropDownActions.ascx.designer.cs">
       <DependentUpon>dropdownactions.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Containers\Icon.ascx.cs">
       <DependentUpon>icon.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Containers\Icon.ascx.designer.cs">
       <DependentUpon>icon.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Containers\LinkActions.ascx.cs">
       <DependentUpon>linkactions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Containers\LinkActions.ascx.designer.cs">
       <DependentUpon>linkactions.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Containers\PrintModule.ascx.cs">
       <DependentUpon>printmodule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Containers\PrintModule.ascx.designer.cs">
       <DependentUpon>printmodule.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Containers\Title.ascx.cs">
       <DependentUpon>title.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Containers\Title.ascx.designer.cs">
       <DependentUpon>title.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Containers\Toggle.ascx.cs">
       <DependentUpon>Toggle.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Containers\Toggle.ascx.designer.cs">
       <DependentUpon>Toggle.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Containers\Visibility.ascx.cs">
       <DependentUpon>visibility.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Containers\Visibility.ascx.designer.cs">
       <DependentUpon>visibility.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Menus\ModuleActions\ModuleActions.ascx.cs">
       <DependentUpon>ModuleActions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Menus\ModuleActions\ModuleActions.ascx.designer.cs">
       <DependentUpon>ModuleActions.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Modules\Export.ascx.cs">
       <DependentUpon>export.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Modules\Export.ascx.designer.cs">
       <DependentUpon>export.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Modules\Import.ascx.cs">
       <DependentUpon>import.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Modules\Import.ascx.designer.cs">
       <DependentUpon>import.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Modules\ModulePermissions.ascx.cs">
       <DependentUpon>ModulePermissions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Modules\ModulePermissions.ascx.designer.cs">
       <DependentUpon>ModulePermissions.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Modules\Modulesettings.ascx.cs">
       <DependentUpon>Modulesettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Modules\Modulesettings.ascx.designer.cs">
       <DependentUpon>Modulesettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Modules\viewsource.ascx.cs">
       <DependentUpon>viewsource.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Modules\viewsource.ascx.designer.cs">
       <DependentUpon>viewsource.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Portal\Message.ascx.cs">
       <DependentUpon>message.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Portal\Message.ascx.designer.cs">
       <DependentUpon>message.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Portal\NoContent.ascx.cs">
       <DependentUpon>nocontent.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Portal\NoContent.ascx.designer.cs">
       <DependentUpon>nocontent.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Portal\Privacy.ascx.cs">
       <DependentUpon>privacy.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Portal\Privacy.ascx.designer.cs">
       <DependentUpon>privacy.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Portal\Terms.ascx.cs">
       <DependentUpon>terms.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Portal\Terms.ascx.designer.cs">
       <DependentUpon>terms.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Sales\PayPalIPN.aspx.cs">
       <DependentUpon>paypalipn.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Sales\PayPalIPN.aspx.designer.cs">
       <DependentUpon>paypalipn.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\Sales\PayPalSubscription.aspx.cs">
       <DependentUpon>paypalsubscription.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Sales\PayPalSubscription.aspx.designer.cs">
       <DependentUpon>paypalsubscription.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\Sales\Purchase.ascx.cs">
       <DependentUpon>purchase.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Sales\Purchase.ascx.designer.cs">
       <DependentUpon>purchase.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Security\AccessDenied.ascx.cs">
       <DependentUpon>accessdenied.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Security\AccessDenied.ascx.designer.cs">
       <DependentUpon>accessdenied.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Security\PasswordReset.ascx.cs">
       <DependentUpon>PasswordReset.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Security\PasswordReset.ascx.designer.cs">
       <DependentUpon>PasswordReset.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Security\SendPassword.ascx.cs">
       <DependentUpon>SendPassword.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Security\SendPassword.ascx.designer.cs">
       <DependentUpon>SendPassword.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\BreadCrumb.ascx.cs">
       <DependentUpon>breadcrumb.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\BreadCrumb.ascx.designer.cs">
       <DependentUpon>breadcrumb.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\DnnJsExclude.ascx.cs">
       <DependentUpon>DnnJsExclude.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\DnnJsExclude.ascx.designer.cs">
       <DependentUpon>DnnJsExclude.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\DnnCssExclude.ascx.cs">
       <DependentUpon>DnnCssExclude.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\DnnCssExclude.ascx.designer.cs">
       <DependentUpon>DnnCssExclude.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\DnnJsInclude.ascx.cs">
       <DependentUpon>DnnJsInclude.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\DnnJsInclude.ascx.designer.cs">
       <DependentUpon>DnnJsInclude.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\DnnCssInclude.ascx.cs">
       <DependentUpon>DnnCssInclude.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\DnnCssInclude.ascx.designer.cs">
       <DependentUpon>DnnCssInclude.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Copyright.ascx.cs">
       <DependentUpon>copyright.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Copyright.ascx.designer.cs">
       <DependentUpon>copyright.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\CurrentDate.ascx.cs">
       <DependentUpon>currentdate.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\CurrentDate.ascx.designer.cs">
       <DependentUpon>currentdate.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\DnnLink.ascx.cs">
       <DependentUpon>DnnLink.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\DnnLink.ascx.designer.cs">
       <DependentUpon>DnnLink.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\DotNetNuke.ascx.cs">
       <DependentUpon>dotnetnuke.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\DotNetNuke.ascx.designer.cs">
       <DependentUpon>dotnetnuke.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Help.ascx.cs">
       <DependentUpon>help.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Help.ascx.designer.cs">
       <DependentUpon>help.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\HostName.ascx.cs">
       <DependentUpon>hostname.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\HostName.ascx.designer.cs">
       <DependentUpon>hostname.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\JavaScriptLibraryInclude.ascx.cs">
       <DependentUpon>JavaScriptLibraryInclude.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\JavaScriptLibraryInclude.ascx.designer.cs">
       <DependentUpon>JavaScriptLibraryInclude.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\jQuery.ascx.cs">
       <DependentUpon>jQuery.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\jQuery.ascx.designer.cs">
       <DependentUpon>jQuery.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Language.ascx.cs">
       <DependentUpon>language.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Language.ascx.designer.cs">
       <DependentUpon>language.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Links.ascx.cs">
       <DependentUpon>links.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Links.ascx.designer.cs">
       <DependentUpon>links.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\LinkToFullSite.ascx.cs">
       <DependentUpon>LinkToFullSite.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\LinkToFullSite.ascx.designer.cs">
       <DependentUpon>LinkToFullSite.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\LinkToMobileSite.ascx.cs">
       <DependentUpon>LinkToMobileSite.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\LinkToMobileSite.ascx.designer.cs">
       <DependentUpon>LinkToMobileSite.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Login.ascx.cs">
       <DependentUpon>login.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Login.ascx.designer.cs">
       <DependentUpon>login.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\LeftMenu.ascx.cs">
       <DependentUpon>LeftMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
       <DependentUpon>LeftMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Logo.ascx.cs">
       <DependentUpon>logo.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Logo.ascx.designer.cs">
       <DependentUpon>logo.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Meta.ascx.cs">
       <DependentUpon>Meta.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Meta.ascx.designer.cs">
       <DependentUpon>Meta.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Nav.ascx.cs">
       <DependentUpon>nav.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Nav.ascx.designer.cs">
       <DependentUpon>nav.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Privacy.ascx.cs">
       <DependentUpon>privacy.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Privacy.ascx.designer.cs">
       <DependentUpon>privacy.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Search.ascx.cs">
       <DependentUpon>search.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Search.ascx.designer.cs">
       <DependentUpon>search.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Styles.ascx.cs">
       <DependentUpon>Styles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Styles.ascx.designer.cs">
       <DependentUpon>Styles.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\tags.ascx.cs">
       <DependentUpon>tags.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\tags.ascx.designer.cs">
       <DependentUpon>tags.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Terms.ascx.cs">
       <DependentUpon>terms.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Terms.ascx.designer.cs">
       <DependentUpon>terms.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Text.ascx.cs">
       <DependentUpon>Text.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Text.ascx.designer.cs">
       <DependentUpon>Text.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Toast.ascx.cs">
       <DependentUpon>Toast.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\Toast.ascx.designer.cs">
       <DependentUpon>Toast.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\TreeViewMenu.ascx.cs">
       <DependentUpon>treeviewmenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\TreeViewMenu.ascx.designer.cs">
       <DependentUpon>treeviewmenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\User.ascx.cs">
       <DependentUpon>user.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\User.ascx.designer.cs">
       <DependentUpon>user.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\UserAndLogin.ascx.cs">
       <DependentUpon>UserAndLogin.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Skins\UserAndLogin.ascx.designer.cs">
       <DependentUpon>UserAndLogin.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Tabs\Export.ascx.cs">
       <DependentUpon>export.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Tabs\Export.ascx.designer.cs">
       <DependentUpon>export.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Tabs\Import.ascx.cs">
       <DependentUpon>import.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Tabs\Import.ascx.designer.cs">
       <DependentUpon>import.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Users\ViewProfile.ascx.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\Users\ViewProfile.ascx.designer.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
@@ -589,28 +531,24 @@
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Authentication.ascx.cs">
       <DependentUpon>Authentication.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Authentication.ascx.designer.cs">
       <DependentUpon>Authentication.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Login.ascx.designer.cs">
       <DependentUpon>Login.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
@@ -658,147 +596,126 @@
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.designer.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.cs">
       <DependentUpon>EditExtension.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.designer.cs">
       <DependentUpon>EditExtension.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx.cs">
       <DependentUpon>ResultsSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx.designer.cs">
       <DependentUpon>ResultsSettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\SearchResults.ascx.cs">
       <DependentUpon>SearchResults.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\SearchResults.ascx.designer.cs">
       <DependentUpon>SearchResults.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\DataConsent.ascx.cs">
       <DependentUpon>DataConsent.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\DataConsent.ascx.designer.cs">
       <DependentUpon>DataConsent.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.designer.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.cs">
       <DependentUpon>ManageUsers.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.designer.cs">
       <DependentUpon>ManageUsers.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\MemberServices.ascx.cs">
       <DependentUpon>MemberServices.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\MemberServices.ascx.designer.cs">
       <DependentUpon>MemberServices.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Membership.ascx.cs">
       <DependentUpon>Membership.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Membership.ascx.designer.cs">
       <DependentUpon>Membership.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Password.ascx.cs">
       <DependentUpon>Password.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Password.ascx.designer.cs">
       <DependentUpon>Password.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Profile.ascx.cs">
       <DependentUpon>Profile.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Profile.ascx.designer.cs">
       <DependentUpon>Profile.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx.cs">
       <DependentUpon>ProfileDefinitions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx.designer.cs">
       <DependentUpon>ProfileDefinitions.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Register.ascx.cs">
       <DependentUpon>Register.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.cs">
       <DependentUpon>securityroles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.designer.cs">
       <DependentUpon>securityroles.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Users.ascx.cs">
       <DependentUpon>Users.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Users.ascx.designer.cs">
       <DependentUpon>Users.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\User.ascx.cs">
       <DependentUpon>User.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\User.ascx.designer.cs">
       <DependentUpon>User.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx.cs">
       <DependentUpon>UrlProviderSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx.designer.cs">
       <DependentUpon>UrlProviderSettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\ViewProfile.ascx.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\ViewProfile.ascx.designer.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Login.ascx.designer.cs">
       <DependentUpon>Login.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -819,14 +736,12 @@
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.designer.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Install\UpgradeWizard.aspx.cs">
       <DependentUpon>UpgradeWizard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Install\UpgradeWizard.aspx.designer.cs">
       <DependentUpon>UpgradeWizard.aspx</DependentUpon>
@@ -3459,6 +3374,13 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>WebControls.fa-IR.designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Install\App_LocalResources\Installwizard.aspx.fa-IR.resx" />
+    <Content Include="Install\App_LocalResources\UpgradeWizard.aspx.fa-IR.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Install\Language\installlanguage.resources" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

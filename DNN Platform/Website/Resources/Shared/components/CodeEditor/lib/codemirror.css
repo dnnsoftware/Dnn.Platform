@@ -4,8 +4,8 @@
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
   height: 300px;
-  direction:ltr;/* dnnsoftware.ir */
-  text-align:left;/* dnnsoftware.ir */
+  direction:ltr;/* Persian-DnnSoftware */
+  text-align:left;/* Persian-DnnSoftware */
 }
 .CodeMirror-scroll {
   /* Set scrolling behaviour here */

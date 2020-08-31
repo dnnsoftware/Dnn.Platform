@@ -462,7 +462,7 @@
             var htmlAdvancedTerm = advancedTerm.replace(/\[/g, '[&nbsp;').replace(/\]/g, '&nbsp;]')
                 .replace(/after:/g, '<b>after: </b>').replace(/type:/g, '<b>type: </b>');
             var w = advancedTextCtrl.html(htmlAdvancedTerm).width();
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             if ($('body').hasClass('r' + 't' + 'l')) {
                 $('#dnnSearchResult_dnnSearchBox_input').val(term).css({
                     right: w + 40,
@@ -480,12 +480,12 @@
                     left: w + 20
                 });
             }
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
         } else {
             advancedTextCtrl.html('').hide();
             var w1 = $('#dnnSearchResult_dnnSearchBox_input').next().next().next().width();
             
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             if ($('body').hasClass('r' + 't' + 'l')) {
                 $('#dnnSearchResult_dnnSearchBox_input').css({
                     right: "",
@@ -505,7 +505,7 @@
                     right: w1 + 35
                 });
             }
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
 
             advancedTextClear.removeClass('dnnShow');
         }

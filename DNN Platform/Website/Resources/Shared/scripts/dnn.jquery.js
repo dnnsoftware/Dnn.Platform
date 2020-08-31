@@ -442,13 +442,13 @@
             });
             var helpSelector = $this.find(opts.helpSelector);
             $this.parent().css({ position: 'relative' });
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             if ($('body').hasClass('r' + 't' + 'l')) {
                 $this.css({ position: 'absolute', left: '-29%' });
             } else {
                 $this.css({ position: 'absolute', right: '-29%' });
             }
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
             var hoverOnToolTip = false, hoverOnPd = false;
 
             dnnFormHelp.hoverIntent({
@@ -490,7 +490,7 @@
             pinHelper.on('click', function (e) {
                 e.preventDefault();
                 if ($this.hasClass(opts.pinnedClass)) {
-                    //START dnnsoftware.ir
+                    //START Persian-DnnSoftware
                     if ($('body').hasClass('r' + 't' + 'l')) {
                         helpSelector.css({ "right": '0', "top": '0' })
                         .css('visibility', 'hidden')
@@ -500,7 +500,7 @@
                         .css('visibility', 'hidden')
                         .draggable('destroy');
                     }
-                    //END dnnsoftware.ir
+                    //END Persian-DnnSoftware
                     $this.removeClass(opts.pinnedClass);
                 }
                 else {
@@ -679,13 +679,13 @@
             pd.tooltipWrapperInner = $('.dnnFormHelpContent', pd.tooltipWrapper);
 
             var tooltipHeight = pd.tooltipWrapperInner.height();
-            //START dnnsoftware.ir
+            //START Persian-DnnSoftware
             if ($('body').hasClass('r' + 't' + 'l')) {
                 pd.tooltipWrapperInner.css({ right: '-10px', top: -(tooltipHeight + 30) + 'px' });
             } else {
                 pd.tooltipWrapperInner.css({ left: '-10px', top: -(tooltipHeight + 30) + 'px' });
             }
-            //END dnnsoftware.ir
+            //END Persian-DnnSoftware
             var hoverOnPd = false;
             $pd.hover(
                 function () {
@@ -2132,10 +2132,10 @@
                     if ((currValLength >= settings.maxChars) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
                         tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
                     }
-                    //START dnnsoftware.ir
+                    //START Persian-DnnSoftware
                     //if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9 || event.type == "blur") {
                     if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9 || event.type == "blur" || event.which == 1548 || event.which == 1563) {
-                        //END dnnsoftware.ir
+                        //END Persian-DnnSoftware
                         event.preventDefault();
                         if (!clickedOnAutoComplete) {
                             tagItems(data, event);
