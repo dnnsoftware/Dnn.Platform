@@ -27,7 +27,7 @@ namespace DotNetNuke.Abstractions.Portals
         int PortalID { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether if the portal is the primary portal.
+        /// Gets or sets a value indicating whether this alias is the primary alias for the site/portal.
         /// </summary>
         bool IsPrimary { get; set; }
 
