@@ -47,7 +47,7 @@ namespace DotNetNuke.Abstractions.Portals
         string CultureCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the skin.
+        /// Gets or sets the skin/theme for this alias, if there is one.
         /// </summary>
         string Skin { get; set; }
 
