@@ -49,14 +49,35 @@ namespace DotNetNuke.Common.Utilities
 
             // Get the short date pattern for the culture
             string FormatString = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-            if (!Field.Page.ClientScript.IsClientScriptIncludeRegistered("PopupCalendar.js"))
+            //START dnnsoftware.ir
+            if (System.Globalization.CultureInfo.CurrentCulture.ToString() == "fa-IR")
             {
-                ScriptManager.RegisterClientScriptInclude(Field.Page, Field.Page.GetType(), "PopupCalendar.js", ClientAPI.ScriptPath + "PopupCalendar.js");
+                if (!Field.Page.ClientScript.IsClientScriptIncludeRegistered("PersianCalendar.js"))
+                {
+                    ClientAPI.RegisterClientScriptBlock(Field.Page, "PersianCalendar.js", ("<script src=\"" + ClientAPI.ScriptPath + "PersianCalendar.js\"></script>"));
+                    ClientAPI.RegisterClientScriptBlock(Field.Page, "PersianCalendar.css", ("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + ClientAPI.ScriptPath + "PersianCalendar.css\" />"));
+                }
             }
+            else
+            {
+                if (!Field.Page.ClientScript.IsClientScriptIncludeRegistered("PopupCalendar.js"))
+                {
+                    ScriptManager.RegisterClientScriptInclude(Field.Page, Field.Page.GetType(), "PopupCalendar.js", ClientAPI.ScriptPath + "PopupCalendar.js");
+                }
+            }
+            //END dnnsoftware.ir
 
             string strToday = ClientAPI.GetSafeJSString(Localization.GetString("Today"));
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));
+
+            //START dnnsoftware.ir
+            if (System.Globalization.CultureInfo.CurrentCulture.ToString() == "fa-IR")
+            {
+                return "javascript:displayDatePicker('" + Field.ClientID + "');";
+            }
+            //END dnnsoftware.ir
+
             return string.Concat("javascript:popupCal('Cal','", Field.ClientID, "','", FormatString, "','",
                 MonthNameString, "','", DayNameString, "','", strToday, "','", strClose, "','", strCalendar, "',",
                 (int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek, ");");

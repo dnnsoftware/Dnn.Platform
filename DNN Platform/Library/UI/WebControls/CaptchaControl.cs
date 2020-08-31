@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
         private const int EXPIRATION_DEFAULT = 120;
         private const int LENGTH_DEFAULT = 6;
         private const string RENDERURL_DEFAULT = "ImageChallenge.captcha.aspx";
-        private const string CHARS_DEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        private const string CHARS_DEFAULT = "0123456789";//dnnsoftware.ir  "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
         private static readonly string[] _FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" };
 
