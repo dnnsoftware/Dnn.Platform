@@ -119,7 +119,6 @@ namespace DotNetNuke.Abstractions.Portals
         /// <value>Date of expiration of the portal.</value>
         DateTime ExpiryDate { get; set; }
 
-
         /// <summary>
         /// Gets or sets gUID of the portal info object.
         /// </summary>
