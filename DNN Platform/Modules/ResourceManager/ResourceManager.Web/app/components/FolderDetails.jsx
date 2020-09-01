@@ -31,8 +31,8 @@ const FolderDetails = ({folder, handlers, validationErrors}) => (
         <div className="separator"></div>
         <div>
             <Permissions
-             folderBeingEdited={folder}
-             updateFolderBeingEdited={(permissions) => handlers.changePermissions(permissions)}
+                folderBeingEdited={folder}
+                updateFolderBeingEdited={(permissions) => handlers.changePermissions(permissions)}
             ></Permissions>
         </div>
         <div className="separator"></div>
