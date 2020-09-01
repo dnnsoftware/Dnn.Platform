@@ -25,11 +25,11 @@ class Permissions extends React.Component {
     }
 
     render() {
-        const { props, state } = this;
+        const { state } = this;
         const dnnSf = new DnnSf();
         const grid = (
             <PermissionGrid
-                dispatch={(e) => {}}
+                dispatch={()=>{}}
                 permissions={state.permissions}
                 service={dnnSf}
                 onPermissionsChanged={this.onPermissionsChanged.bind(this)}
@@ -44,7 +44,7 @@ Permissions.propTypes = {
     folderBeingEdited: PropTypes.object,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {};
 }
 
