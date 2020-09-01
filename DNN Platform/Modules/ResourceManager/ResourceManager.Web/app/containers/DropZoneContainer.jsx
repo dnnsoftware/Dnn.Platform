@@ -71,7 +71,7 @@ class DropZoneContainer extends React.Component {
                 className={className}
                 onDrop={this.uploadFilesHandler.bind(this)}
             >
-                {({ getRootProps, getInputProps }) => this.props.children}
+                {() => this.props.children}
             </DropZone>
         ) : (
             <div>{this.props.children}</div>
