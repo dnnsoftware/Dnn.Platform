@@ -22,12 +22,12 @@
     <value>Accountinformatie</value>
   </data>
   <data name="BestPractices.Text" xml:space="preserve">
-    <value>Je staat op het punt om je website te upgraden naar een recentere versie van DNNPlatform. Het toepassen van upgrades op een consistente basis is de beste manier om ervoor te zorgen dat je de integriteit van de website en de veiligheid van de gebruikers garandeert &lt;br /&gt;
+    <value>Je staat op het punt om je website te upgraden naar een recentere versie van DNNPlatform. Het toepassen van upgrades op een consistente basis is de beste manier om ervoor te zorgen dat je de integriteit van de website en de veiligheid van de gebruikers garandeert. &lt;br /&gt;
 Voordat je verder gaat met het geautomatiseerde upgrade-proces moet je ervoor zorgen dat: 
 &lt;ul&gt;
-&lt;li&gt;je de upgrade eerst test in een testogeving,&lt;/li&gt;
+&lt;li&gt;je de upgrade eerst test in een testomgeving,&lt;/li&gt;
 &lt;li&gt;je de huidige installatie hebt gedocumenteerd&lt;/li&gt;
-&lt;li&gt;je modules van derde op compatibilietit hebt gecontroleerd&lt;/li&gt;
+&lt;li&gt;je modules van derden op compatibiliteit hebt gecontroleerd&lt;/li&gt;
 &lt;li&gt;je een backup hebt gemaakt van de productiesite, zodat je altijd terug kan als er iets mis gaat&lt;/li&gt;
 &lt;/ ul&gt;</value>
   </data>

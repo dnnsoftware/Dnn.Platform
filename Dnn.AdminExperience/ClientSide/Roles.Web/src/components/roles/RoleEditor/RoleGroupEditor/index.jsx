@@ -58,7 +58,9 @@ class RoleGroupEditor extends Component {
         });
     }
 
-    onCancel() {
+    onCancel(e) {
+        e.stopPropagation();
+
         this.setState({
             group: {}
         }, () => {
@@ -68,7 +70,9 @@ class RoleGroupEditor extends Component {
         });
     }
 
-    onSave() {
+    onSave(e) {
+        e.stopPropagation();
+
         const {props, state} = this;
         this.submitted = true;
         if (this.validateForm()) {

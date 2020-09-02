@@ -16,14 +16,16 @@ namespace Dnn.PersonaBar.Security.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     class RegistrationFieldsAttribute : ValidationAttribute
     {
-        public RegistrationFieldsAttribute(string registrationFormType, string requireUniqueDisplayName)
+        public RegistrationFieldsAttribute(string registrationFormType, string requireUniqueDisplayName, string displayNameFormat)
         {
             this.RegistrationFormTypePropertyName = registrationFormType;
             this.RequireUniqueDisplayNamePropertyName = requireUniqueDisplayName;
+            this.DisplayNameFormatPropertyName = displayNameFormat;
         }
 
         public string RegistrationFormTypePropertyName { get; private set; }
         public string RequireUniqueDisplayNamePropertyName { get; private set; }
+        public string DisplayNameFormatPropertyName { get; private set; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -96,6 +98,22 @@ namespace Dnn.PersonaBar.Security.Attributes
                 {
                     PortalController.UpdatePortalSetting(portalId, "Registration_RegistrationFormType", "0", false);
                     return new ValidationResult(Localization.GetString(Constants.NoDisplayName, Constants.LocalResourcesFile));
+                }
+
+                var displayNameFormatValue = string.Empty;
+
+                try
+                {
+                    displayNameFormatValue = validationContext.ObjectType.GetProperty(this.DisplayNameFormatPropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
+                }
+                catch
+                {
+                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.DisplayNameFormatPropertyName, displayNameFormatValue));
+                }
+
+                if (!registrationFields.Contains("DisplayName") && string.IsNullOrWhiteSpace(displayNameFormatValue))
+                {
+                    return new ValidationResult(Localization.GetString(Constants.IncorrectDisplayNameConfiguration, Constants.LocalResourcesFile));
                 }
             }
 

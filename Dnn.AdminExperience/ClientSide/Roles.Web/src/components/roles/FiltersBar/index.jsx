@@ -26,7 +26,9 @@ class FiltersBar extends Component {
         };
         canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
     }
-    onDeleteGroup() {
+    onDeleteGroup(e) {
+        e.stopPropagation();
+
         const {props} = this;
         this.closeDropDown();
         util.utilities.confirm(resx.get("DeleteRoleGroup.Confirm"), resx.get("Delete"), resx.get("Cancel"), () => {

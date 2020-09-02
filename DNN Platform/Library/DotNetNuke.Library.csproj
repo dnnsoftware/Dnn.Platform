@@ -192,6 +192,7 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Application\ApplicationStatusInfo.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
@@ -250,6 +251,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
+    <Compile Include="Obsolete\HostController.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
     <Compile Include="Prompt\Command.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />

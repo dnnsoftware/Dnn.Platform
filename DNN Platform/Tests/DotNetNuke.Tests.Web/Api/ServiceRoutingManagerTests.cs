@@ -11,8 +11,8 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Web.Routing;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Internal.Reflection;
     using DotNetNuke.Framework.Reflections;
@@ -42,8 +42,11 @@ namespace DotNetNuke.Tests.Web.Api
             this._portalController = this._mockPortalController.Object;
             PortalController.SetTestableInstance(this._portalController);
 
-            var navigationManagerMock = new Mock<INavigationManager>();
             var services = new ServiceCollection();
+            var navigationManagerMock = new Mock<INavigationManager>();
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
             Globals.DependencyProvider = services.BuildServiceProvider();
         }
