@@ -1211,22 +1211,31 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            // Remove the User
             var retValue = MembershipProvider.Instance().RemoveUser(user);
 
             if (retValue)
             {
-                // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                // Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
-                // Delete userFolder - DNN-3787
-                DeleteUserFolder(user);
-
-                DataCache.ClearPortalCache(portalId, false);
-                DataCache.ClearUserCache(portalId, user.Username);
+                var portal = PortalController.Instance.GetPortal(user.PortalID);
+                var portalGroup = (from p in PortalGroupController.Instance.GetPortalGroups()
+                                   where p.PortalGroupId == portal.PortalGroupID
+                                   select p)
+                                .SingleOrDefault();
+                if (portalGroup != null)
+                {
+                    var portalsInGroup = PortalGroupController.Instance.GetPortalsByGroup(portalGroup.PortalGroupId);
+                    foreach (var portalInGroup in portalsInGroup)
+                    {
+                        ClearPortalAndUserCache(user, portalInGroup.PortalID);
+                    }
+                }
+                else
+                {
+                    ClearPortalAndUserCache(user, portalId);
+                }
 
                 EventManager.Instance.OnUserRemoved(new UserEventArgs { User = user });
             }
@@ -1235,6 +1244,13 @@ namespace DotNetNuke.Entities.Users
             FixMemberPortalId(user, portalId);
 
             return retValue;
+        }
+
+        private static void ClearPortalAndUserCache(UserInfo user, int portalId)
+        {
+            DeleteUserFolder(user, portalId);
+            DataCache.ClearPortalCache(portalId, false);
+            DataCache.ClearUserCache(portalId, user.Username);
         }
 
         /// <summary>
@@ -2383,10 +2399,11 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <param name="user">The user for whom to delete the folder.
         /// Note the PortalID is taken to specify which portal to delete the folder from.</param>
-        private static void DeleteUserFolder(UserInfo user)
+        /// <param name="portalId">The portal id that contains the user folder to delete.</param>
+        private static void DeleteUserFolder(UserInfo user, int portalId)
         {
             var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
-            var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+            var folderPortalId = user.IsSuperUser ? Null.NullInteger : portalId;
             var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
             if (userFolder != null)
             {
