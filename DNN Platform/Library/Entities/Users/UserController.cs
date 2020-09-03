@@ -601,7 +601,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Gets deletes users for a portal.
+        /// Gets deleted users for a portal.
         /// </summary>
         /// <param name="portalId">The portal id for which to get the deleted users.</param>
         /// <returns>An ArrayList of <see cref="UserInfo"/>.</returns>
