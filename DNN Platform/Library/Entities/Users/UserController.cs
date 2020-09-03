@@ -651,7 +651,7 @@ namespace DotNetNuke.Entities.Users
         /// Gets the unauthorized users for a portal.
         /// </summary>
         /// <param name="portalId">The site (portal) id on which to search for Unauthorized users.</param>
-        /// <param name="includeDeleted">A value indiciting whether to include deleted users.</param>
+        /// <param name="includeDeleted">A value indicating whether to include deleted users.</param>
         /// <param name="superUsersOnly">A value indicating whether to include superusers (hosts).</param>
         /// <returns>An ArrayList of <see cref="UserInfo"/>.</returns>
         public static ArrayList GetUnAuthorizedUsers(int portalId, bool includeDeleted, bool superUsersOnly)
