@@ -30,8 +30,8 @@ namespace DotNetNuke.Entities.Urls
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
         // google uses the same name nomo=1 means do not redirect to mobile
-        private const string MobileViewSiteCookieName = "dnn_IsMobile";
-        private const string DisableMobileViewCookieName = "dnn_NoMobile";
+        private const string MobileViewSiteCookieName = "app_IsMobile";
+        private const string DisableMobileViewCookieName = "app_NoMobile";
 
         public static FriendlyUrlSettings GetCurrentSettings(int portalId)
         {
