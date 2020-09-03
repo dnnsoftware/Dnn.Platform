@@ -13,7 +13,6 @@ namespace DotNetNuke.Abstractions.Application
     /// Entity.
     /// </summary>
     /// <example>
-    /// 
     /// <code lang="C#">
     /// public class MySampleClass
     /// {

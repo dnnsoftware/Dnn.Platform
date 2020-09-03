@@ -106,8 +106,6 @@ namespace DotNetNuke.Abstractions.Application
         /// </summary>
         /// <param name = "productNames">list of product names.</param>
         /// <returns>true if product is within list of names.</returns>
-        /// <remarks>
-        /// </remarks>
         bool ApplyToProduct(string productNames);
     }
 }
