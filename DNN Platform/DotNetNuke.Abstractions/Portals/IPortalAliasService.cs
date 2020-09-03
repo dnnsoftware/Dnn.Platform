@@ -73,7 +73,7 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>
         /// Get all portal aliases.
         /// </summary>
-        /// <returns>A collection of portal aliases</returns>
+        /// <returns>A collection of portal aliases.</returns>
         IDictionary<string, IPortalAliasInfo> GetPortalAliases();
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>
         /// Gets the portal by portal alias ID.
         /// </summary>
-        /// <param name="PortalAliasId">The portal alias id.</param>
+        /// <param name="portalAliasId">The portal alias id.</param>
         /// <returns>Portal info.</returns>
         IPortalInfo GetPortalByPortalAliasId(int portalAliasId);
 
