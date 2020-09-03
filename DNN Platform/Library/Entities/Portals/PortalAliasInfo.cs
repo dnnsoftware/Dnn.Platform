@@ -27,9 +27,9 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalAliasInfo(PortalAliasInfo alias)
         {
-            this.HTTPAlias = alias.HTTPAlias;
-            this.PortalAliasID = alias.PortalAliasID;
-            this.PortalID = alias.PortalID;
+            this.HttpAlias = alias.HttpAlias;
+            this.PortalAliasId = alias.PortalAliasId;
+            this.PortalId = alias.PortalId;
             this.IsPrimary = alias.IsPrimary;
             this.Redirect = alias.Redirect;
             ((IPortalAliasInfo)this).BrowserType = ((IPortalAliasInfo)alias).BrowserType;
@@ -38,13 +38,34 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <inheritdoc />
-        public string HTTPAlias { get; set; }
+        public string HttpAlias { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead.")]
+        public string HTTPAlias
+        {
+            get => this.HttpAlias;
+            set => this.HttpAlias = value;
+        }
 
         /// <inheritdoc />
-        public int PortalAliasID { get; set; }
+        public int PortalAliasId { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalAliasId instead.")]
+        public int PortalAliasID
+        {
+            get => this.PortalAliasId;
+            set => this.PortalAliasId = value;
+        }
 
         /// <inheritdoc />
-        public int PortalID { get; set; }
+        public int PortalId { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalId instead.")]
+        public int PortalID
+        {
+            get => this.PortalId;
+            set => this.PortalId = value;
+        }
 
         /// <inheritdoc />
         public bool IsPrimary { get; set; }
@@ -74,17 +95,17 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public int KeyID
         {
-            get { return this.PortalAliasID; }
-            set { this.PortalAliasID = value; }
+            get { return this.PortalAliasId; }
+            set { this.PortalAliasId = value; }
         }
 
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
 
-            this.PortalAliasID = Null.SetNullInteger(dr["PortalAliasID"]);
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-            this.HTTPAlias = Null.SetNullString(dr["HTTPAlias"]);
+            this.PortalAliasId = Null.SetNullInteger(dr["PortalAliasID"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalID"]);
+            this.HttpAlias = Null.SetNullString(dr["HTTPAlias"]);
             this.IsPrimary = Null.SetNullBoolean(dr["IsPrimary"]);
             var browserType = Null.SetNullString(dr["BrowserType"]);
             this.BrowserType = string.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
@@ -118,13 +139,13 @@ namespace DotNetNuke.Entities.Portals
                     case "portalAlias":
                         break;
                     case "portalID":
-                        this.PortalID = reader.ReadElementContentAsInt();
+                        this.PortalId = reader.ReadElementContentAsInt();
                         break;
                     case "portalAliasID":
-                        this.PortalAliasID = reader.ReadElementContentAsInt();
+                        this.PortalAliasId = reader.ReadElementContentAsInt();
                         break;
                     case "HTTPAlias":
-                        this.HTTPAlias = reader.ReadElementContentAsString();
+                        this.HttpAlias = reader.ReadElementContentAsString();
                         break;
                     case "skin":
                         this.Skin = reader.ReadElementContentAsString();
@@ -156,9 +177,9 @@ namespace DotNetNuke.Entities.Portals
             writer.WriteStartElement("portalAlias");
 
             // write out properties
-            writer.WriteElementString("portalID", this.PortalID.ToString());
-            writer.WriteElementString("portalAliasID", this.PortalAliasID.ToString());
-            writer.WriteElementString("HTTPAlias", this.HTTPAlias);
+            writer.WriteElementString("portalID", this.PortalId.ToString());
+            writer.WriteElementString("portalAliasID", this.PortalAliasId.ToString());
+            writer.WriteElementString("HTTPAlias", this.HttpAlias);
             writer.WriteElementString("skin", this.Skin);
             writer.WriteElementString("cultureCode", this.CultureCode);
             writer.WriteElementString("browserType", this.BrowserType.ToString().ToLowerInvariant());

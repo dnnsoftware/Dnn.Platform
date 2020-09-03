@@ -14,17 +14,17 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>
         /// Gets or sets the http alias.
         /// </summary>
-        string HTTPAlias { get; set; }
+        string HttpAlias { get; set; }
 
         /// <summary>
         /// Gets or sets the Portal Alias ID.
         /// </summary>
-        int PortalAliasID { get; set; }
+        int PortalAliasId { get; set; }
 
         /// <summary>
         /// Gets or sets the Portal ID.
         /// </summary>
-        int PortalID { get; set; }
+        int PortalId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this alias is the primary alias for the site/portal.
