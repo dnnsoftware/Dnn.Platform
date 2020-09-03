@@ -735,7 +735,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Gets a user by it's vanity url.
+        /// Gets a user by its vanity url.
         /// </summary>
         /// <param name="portalId">The site (portal) id of the user.</param>
         /// <param name="vanityUrl">The vanity url to search.</param>
