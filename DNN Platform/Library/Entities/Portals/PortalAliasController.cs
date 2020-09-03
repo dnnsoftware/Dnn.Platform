@@ -186,12 +186,15 @@ namespace DotNetNuke.Entities.Portals
             return aliasCollection;
         }
 
+        /// <inheritdoc />
         IEnumerable<IPortalAliasInfo> IPortalAliasService.GetPortalAliasesByPortalId(int portalId) =>
             this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalId == portalId).ToList();
 
+        /// <inheritdoc />
         IPortalInfo IPortalAliasService.GetPortalByPortalAliasId(int portalAliasId) =>
             CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(portalAliasId));
 
+        /// <inheritdoc />
         void IPortalAliasService.UpdatePortalAlias(IPortalAliasInfo portalAlias)
         {
             // Update Alias
