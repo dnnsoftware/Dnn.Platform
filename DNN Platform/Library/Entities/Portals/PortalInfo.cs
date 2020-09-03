@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Data;
     using System.Security.Cryptography;
     using System.Xml.Serialization;
+
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -124,7 +125,11 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("admintabid")]
         public int AdminTabId { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets image (bitmap) file that is used as background for the portal.
+        /// </summary>
+        /// <value>Name of the file that is used as background.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("backgroundfile")]
         public string BackgroundFile { get; set; }
 
@@ -132,7 +137,11 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("crmversion")]
         public string CrmVersion { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets setting for the type of banner advertising in the portal.
+        /// </summary>
+        /// <value>Type of banner advertising.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("banneradvertising")]
         public int BannerAdvertising { get; set; }
 
@@ -140,7 +149,11 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("cultureCode")]
         public string CultureCode { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets curreny format that is used in the portal.
+        /// </summary>
+        /// <value>Currency of the portal.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("currency")]
         public string Currency { get; set; }
 
@@ -168,7 +181,11 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("hometabid")]
         public int HomeTabId { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets amount of currency that is used as a hosting fee of the portal.
+        /// </summary>
+        /// <value>Currency amount hosting fee.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("hostfee")]
         public float HostFee { get; set; }
 
@@ -192,7 +209,11 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("pagequota")]
         public int PageQuota { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets name of the Payment processor that is used for portal payments, e.g. PayPal.
+        /// </summary>
+        /// <value>Name of the portal payment processor.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("paymentprocessor")]
         public string PaymentProcessor { get; set; }
 
@@ -207,11 +228,21 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("portalname")]
         public string PortalName { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets password to use in the payment processor.
+        /// </summary>
+        /// <value>Payment Processor password.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("processorpassword")]
         public string ProcessorPassword { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets payment Processor userId.
+        /// </summary>
+        /// <value>
+        /// <placeholder>Payment Processor userId</placeholder>
+        /// </value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("processoruserid")]
         public string ProcessorUserId { get; set; }
 
@@ -243,7 +274,6 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("privacytabid")]
         public int PrivacyTabId { get; set; }
 
-        /// <inheritdoc />
         [XmlElement("siteloghistory")]
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public int SiteLogHistory { get; set; }
@@ -268,7 +298,11 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("usertabid")]
         public int UserTabId { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets actual number of actual users for this portal.
+        /// </summary>
+        /// <value>Number of users for the portal.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("users")]
         public int Users
         {
@@ -285,7 +319,11 @@ namespace DotNetNuke.Entities.Portals
             set { this._users = value; }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets dNN Version # of the portal installation.
+        /// </summary>
+        /// <value>Version # of the portal installation.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("version")]
         public string Version { get; set; }
 
@@ -314,7 +352,11 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets actual number of pages of the portal.
+        /// </summary>
+        /// <value>Number of pages of the portal.</value>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
         [XmlElement("pages")]
         public int Pages
         {

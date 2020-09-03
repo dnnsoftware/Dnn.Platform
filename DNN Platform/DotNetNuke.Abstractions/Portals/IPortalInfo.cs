@@ -68,32 +68,14 @@ namespace DotNetNuke.Abstractions.Portals
         int AdminTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets image (bitmap) file that is used as background for the portal.
-        /// </summary>
-        /// <value>Name of the file that is used as background.</value>
-        string BackgroundFile { get; set; }
-
-        /// <summary>
         /// Gets or sets current host version.
         /// </summary>
         string CrmVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets setting for the type of banner advertising in the portal.
-        /// </summary>
-        /// <value>Type of banner advertising.</value>
-        int BannerAdvertising { get; set; }
-
-        /// <summary>
         /// Gets or sets the Culture Code of the portal.
         /// </summary>
         string CultureCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets curreny format that is used in the portal.
-        /// </summary>
-        /// <value>Currency of the portal.</value>
-        string Currency { get; set; }
 
         /// <summary>
         /// Gets or sets default language for the portal.
@@ -108,7 +90,7 @@ namespace DotNetNuke.Abstractions.Portals
         string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the default e-mail to be used in the porta.
+        /// Gets or sets the default e-mail to be used in the portal.
         /// </summary>
         /// <value>E-mail of the portal.</value>
         string Email { get; set; }
@@ -120,7 +102,7 @@ namespace DotNetNuke.Abstractions.Portals
         DateTime ExpiryDate { get; set; }
 
         /// <summary>
-        /// Gets or sets gUID of the portal info object.
+        /// Gets or sets GUID of the portal info object.
         /// </summary>
         /// <value>Portal info Object GUID.</value>
         Guid GUID { get; set; }
@@ -130,12 +112,6 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         /// <value>TabId of the Home page.</value>
         int HomeTabId { get; set; }
-
-        /// <summary>
-        /// Gets or sets amount of currency that is used as a hosting fee of the portal.
-        /// </summary>
-        /// <value>Currency amount hosting fee.</value>
-        float HostFee { get; set; }
 
         /// <summary>
         /// Gets or sets total disk space allowed for the portal (Mb). 0 means not limited.
@@ -168,12 +144,6 @@ namespace DotNetNuke.Abstractions.Portals
         int PageQuota { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the Payment processor that is used for portal payments, e.g. PayPal.
-        /// </summary>
-        /// <value>Name of the portal payment processor.</value>
-        string PaymentProcessor { get; set; }
-
-        /// <summary>
         /// Gets or sets unique idenitifier of the Portal within the site.
         /// </summary>
         /// <value>Portal identifier.</value>
@@ -190,18 +160,6 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         /// <value>Name of the portal.</value>
         string PortalName { get; set; }
-
-        /// <summary>
-        /// Gets or sets password to use in the payment processor.
-        /// </summary>
-        /// <value>Payment Processor password.</value>
-        string ProcessorPassword { get; set; }
-
-        /// <summary>
-        /// Gets or sets payment Processor userId.
-        /// </summary>
-        /// <value>
-        string ProcessorUserId { get; set; }
 
         /// <summary>
         /// Gets or sets the RoleId of the Registered users group of the portal.
@@ -276,29 +234,11 @@ namespace DotNetNuke.Abstractions.Portals
         int UserTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets actual number of actual users for this portal.
-        /// </summary>
-        /// <value>Number of users for the portal.</value>
-        int Users { get; set; }
-
-        /// <summary>
-        /// Gets or sets dNN Version # of the portal installation.
-        /// </summary>
-        /// <value>Version # of the portal installation.</value>
-        string Version { get; set; }
-
-        /// <summary>
         /// Gets or sets the actual name of the Administrators group of the portal.
         /// This name is retrieved from the RoleController object.
         /// </summary>
         /// <value>The name of the Administrators group.</value>
         string AdministratorRoleName { get; set; }
-
-        /// <summary>
-        /// Gets or sets actual number of pages of the portal.
-        /// </summary>
-        /// <value>Number of pages of the portal.</value>
-        int Pages { get; set; }
 
         /// <summary>
         /// Gets or sets the actual name of the Registerd Users group of the portal.
