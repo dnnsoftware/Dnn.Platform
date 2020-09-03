@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Users
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -61,16 +62,21 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     public partial class UserController : ServiceLocator<IUserController, UserController>, IUserController
     {
+        /// <summary>
+        /// Gets or sets the display name format with support for replacing some tokens.
+        /// </summary>
+        /// <remarks>Valid tokens are: [USERID], [FIRSTNAME], [LASTNAME] and [USERNAME].</remarks>
         public string DisplayFormat { get; set; }
 
+        /// <summary>
+        /// Gets or sets the site (portal) id.
+        /// </summary>
         public int PortalId { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the number count for all duplicate e-mail adresses in the database.
         /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>An integer representing the amount of duplicate emails.</returns>
         public static int GetDuplicateEmailCount()
         {
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
@@ -130,23 +136,20 @@ namespace DotNetNuke.Entities.Users
         /// so further processing may occur manually by the site admins.
         /// </summary>
         /// <param name="user">The user that desires to be removed.</param>
+        /// <param name="remove">A value indicating whether the user has requested removal.</param>
         public static void UserRequestsRemoval(UserInfo user, bool remove)
         {
             Requires.NotNull("user", user);
             MembershipProvider.Instance().UserRequestsRemoval(user, remove);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ChangePassword attempts to change the users password.
+        /// Attempts to change the users password.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="user">The user to update.</param>
         /// <param name="oldPassword">The old password.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        /// -----------------------------------------------------------------------------
         public static bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
         {
             bool passwordChanged;
@@ -173,12 +176,13 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// overload will validate the token and if valid change the password
-        /// it does not require an old password as it supports hashed passwords.
+        /// Validates the password reset token and if valid changes the password.
         /// </summary>
+        /// <param name="portalid">The site (portal) id on which the user exists.</param>
+        /// <param name="username">The username of the user to change the password for.</param>
         /// <param name="newPassword">The new password.</param>
-        /// /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
-        /// <returns>A Boolean indicating success or failure.</returns>
+        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <returns>A Boolean indicating whether the password change succeeded.</returns>
         public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken)
         {
             bool passwordChanged;
@@ -231,14 +235,22 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// overload will validate the token and if valid change the password
-        /// it does not require an old password as it supports hashed passwords
-        /// errorMessage will define why reset failed.
+        /// Validates the password reset token and changes the password if valid.
         /// </summary>
+        /// <param name="portalid">The site (portal) id where the user exists.</param>
+        /// <param name="username">The username of the user to change the password for.</param>
         /// <param name="newPassword">The new password.</param>
-        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <param name="answer">The password reset question/answer answer.</param>
+        /// <param name="resetToken">The password reset token, typically supplied through a password reset email.</param>
+        /// <param name="errorMessage">If the attempt fails, this parameter will contain the reason.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage)
+        public static bool ChangePasswordByToken(
+            int portalid,
+            string username,
+            string newPassword,
+            string answer,
+            string resetToken,
+            out string errorMessage)
         {
             bool passwordChanged;
             errorMessage = Null.NullString;
@@ -306,22 +318,17 @@ namespace DotNetNuke.Entities.Users
             return passwordChanged;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
-        /// and PasswordAnswer.
+        /// Attempts to change the users password reset question and answer.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="user">The user to update.</param>
         /// <param name="password">The password.</param>
         /// <param name="passwordQuestion">The new password question.</param>
         /// <param name="passwordAnswer">The new password answer.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        /// -----------------------------------------------------------------------------
         public static bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
             return MembershipProvider.Instance().ChangePasswordQuestionAndAnswer(user, password, passwordQuestion, passwordAnswer);
         }
 
@@ -336,6 +343,16 @@ namespace DotNetNuke.Entities.Users
             MembershipProvider.Instance().ChangeUsername(userId, newUsername);
         }
 
+        /// <summary>
+        /// Checks if the user has known default username and password.
+        /// </summary>
+        /// <param name="username">The user username.</param>
+        /// <param name="password">The user password.</param>
+        /// <param name="loginStatus">
+        /// If a known default username and password is used, will return
+        /// <see cref="UserLoginStatus.LOGIN_INSECUREADMINPASSWORD"/> or
+        /// <see cref="UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD"/>.
+        /// </param>
         public static void CheckInsecurePassword(string username, string password, ref UserLoginStatus loginStatus)
         {
             if (username == "admin" && (password == "admin" || password == "dnnadmin"))
@@ -389,24 +406,20 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Creates a new User in the Data Store.
         /// </summary>
-        /// <remarks></remarks>
         /// <param name="user">The userInfo object to persist to the Database.</param>
-        /// <returns>The Created status ot the User.</returns>
+        /// <returns>The <see cref="UserCreateStatus"/> ot the User.</returns>
         /// -----------------------------------------------------------------------------
         public static UserCreateStatus CreateUser(ref UserInfo user)
         {
             return CreateUser(ref user, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a new User in the Data Store.
+        /// Creates a new User in the Data Store optionally sending an email notification.
         /// </summary>
-        /// <remarks></remarks>
-        /// <param name="user">The userInfo object to persist to the Database.</param>
-        /// <param name="sendEmailNotification">The sendEmailNotification flag defines whether registration email will be sent to user.</param>
-        /// <returns>The Created status ot the User.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="user">The <see cref="UserInfo"/> object to persist to the Database.</param>
+        /// <param name="sendEmailNotification">A value indicating whether a registration email will be sent to user.</param>
+        /// <returns>The <see cref="UserCreateStatus"/> of the User.</returns>
         public static UserCreateStatus CreateUser(ref UserInfo user, bool sendEmailNotification)
         {
             int portalId = user.PortalID;
@@ -427,7 +440,7 @@ namespace DotNetNuke.Entities.Users
                 user.PasswordResetExpiration = passwordExpiry;
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
-                EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_CREATED);
+                EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_CREATED);
                 CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalId));
                 if (!user.IsSuperUser)
                 {
@@ -443,16 +456,12 @@ namespace DotNetNuke.Entities.Users
             return createStatus;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Deletes all Unauthorized Users for a Portal.
         /// </summary>
-        /// <remarks></remarks>
         /// <param name="portalId">The Id of the Portal.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteUnauthorizedUsers(int portalId)
         {
-            // DNN-6924 for superusers call GetUsers(includeDeleted, superUsersOnly, portalId)
             var arrUsers = (portalId == -1) ? GetUsers(true, true, portalId) : GetUnAuthorizedUsers(portalId);
             for (int i = 0; i < arrUsers.Count; i++)
             {
@@ -467,16 +476,13 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Deletes an existing User from the Data Store.
         /// </summary>
-        /// <remarks></remarks>
         /// <param name="user">The userInfo object to delete from the Database.</param>
         /// <param name="notify">A flag that indicates whether an email notification should be sent.</param>
         /// <param name="deleteAdmin">A flag that indicates whether the Portal Administrator should be deleted.</param>
         /// <returns>A Boolean value that indicates whether the User was successfully deleted.</returns>
-        /// -----------------------------------------------------------------------------
         public static bool DeleteUser(ref UserInfo user, bool notify, bool deleteAdmin)
         {
             int portalId = user.PortalID;
@@ -533,15 +539,12 @@ namespace DotNetNuke.Entities.Users
             return canDelete;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Deletes all Users for a Portal.
         /// </summary>
-        /// <remarks></remarks>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="notify">A flag that indicates whether an email notification should be sent.</param>
         /// <param name="deleteAdmin">A flag that indicates whether the Portal Administrator should be deleted.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteUsers(int portalId, bool notify, bool deleteAdmin)
         {
             var arrUsers = GetUsers(portalId);
@@ -552,45 +555,36 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates a new random password (Length = Minimum Length + 4).
+        /// Generates a new random password.
         /// </summary>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A string representing the randomly generated password which is the minimum password lenght + 4 characters.</returns>
         public static string GeneratePassword()
         {
             return GeneratePassword(MembershipProviderConfig.MinPasswordLength + 4);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Generates a new random password.
         /// </summary>
         /// <param name="length">The length of password to generate.</param>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A string representing the newly generated random password.</returns>
         public static string GeneratePassword(int length)
         {
             return MembershipProvider.Instance().GeneratePassword(length);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetCachedUser retrieves the User from the Cache, or fetches a fresh copy if
-        /// not in cache or if Cache settings not set to HeavyCaching.
+        /// Retrieves the User from the Cache, or fetches a fresh copy if
+        /// not in cache or if Cache settings are not set to HeavyCaching.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="username">The username of the user being retrieved.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
         public static UserInfo GetCachedUser(int portalId, string username)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
 
-            // user is cached inside the MembershipProvider.Instance().GetUserByUserName method
             var user = MembershipProvider.Instance().GetUserByUserName(masterPortalId, username);
             FixMemberPortalId(user, portalId);
 
@@ -606,34 +600,38 @@ namespace DotNetNuke.Entities.Users
             return user;
         }
 
+        /// <summary>
+        /// Gets deletes users for a portal.
+        /// </summary>
+        /// <param name="portalId">The portal id for which to get the deleted users.</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/>.</returns>
         public static ArrayList GetDeletedUsers(int portalId)
         {
             return MembershipProvider.Instance().GetDeletedUsers(GetEffectivePortalId(portalId));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a collection of Online Users.
         /// </summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public static ArrayList GetOnlineUsers(int portalId)
         {
             return MembershipProvider.Instance().GetOnlineUsers(GetEffectivePortalId(portalId));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Current Password Information for the User.
         /// </summary>
-        /// <remarks>This method will only return the password if the memberProvider supports
-        /// and is using a password encryption method that supports decryption.</remarks>
+        /// <remarks>
+        /// This method will only return the password if the memberProvider supports
+        /// and is using a password encryption method that supports decryption.
+        /// </remarks>
         /// <param name="user">The user whose Password information we are retrieving.</param>
-        /// <param name="passwordAnswer">The answer to the "user's" password Question.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="passwordAnswer">The answer to the user's password Question.</param>
+        /// <returns>A string representing the user password.</returns>
+        /// <exception cref="ConfigurationErrorsException">is thrown if the current configuration does not allow password retrieval.</exception>
         public static string GetPassword(ref UserInfo user, string passwordAnswer)
         {
             if (MembershipProviderConfig.PasswordRetrievalEnabled)
@@ -649,35 +647,34 @@ namespace DotNetNuke.Entities.Users
             return user.Membership.Password;
         }
 
+        /// <summary>
+        /// Gets the unauthorized users for a portal.
+        /// </summary>
+        /// <param name="portalId">The site (portal) id on which to search for Unauthorized users.</param>
+        /// <param name="includeDeleted">A value indiciting whether to include deleted users.</param>
+        /// <param name="superUsersOnly">A value indicating whether to include superusers (hosts).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/>.</returns>
         public static ArrayList GetUnAuthorizedUsers(int portalId, bool includeDeleted, bool superUsersOnly)
         {
             return MembershipProvider.Instance().GetUnAuthorizedUsers(GetEffectivePortalId(portalId), includeDeleted, superUsersOnly);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUnAuthorizedUsers gets all the users of the portal, that are not authorized.
+        /// Gets all the users of the portal, that are not authorized.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The Id of the site (portal).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUnAuthorizedUsers(int portalId)
         {
             return GetUnAuthorizedUsers(portalId, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUser retrieves a User from the DataStore.
+        /// Gets a User from the DataStore.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The id of the site (portal).</param>
+        /// <param name="userId">The id of the user being retrieved from the Data Store.</param>
+        /// <returns>The User as a <see cref="UserInfo"/> object.</returns>
         public static UserInfo GetUserById(int portalId, int userId)
         {
             // stop any sql calls for guest users
@@ -716,56 +713,56 @@ namespace DotNetNuke.Entities.Users
             return user;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByUserName retrieves a User from the DataStore.
+        /// Gets a User from the DataStore.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="username">The username of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The User as a <see cref="UserInfo"/> object.</returns>
         public static UserInfo GetUserByName(string username)
         {
             return MembershipProvider.Instance().GetUserByUserName(-1, username);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByUserName retrieves a User from the DataStore.
+        /// Gets a user from the DataStore.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="username">The username of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The User as a <see cref="UserInfo"/> object.</returns>
         public static UserInfo GetUserByName(int portalId, string username)
         {
             return GetCachedUser(portalId, username);
         }
 
+        /// <summary>
+        /// Gets a user by it's vanity url.
+        /// </summary>
+        /// <param name="portalId">The site (portal) id of the user.</param>
+        /// <param name="vanityUrl">The vanity url to search.</param>
+        /// <returns>A user as a <see cref="UserInfo"/> object.</returns>
         public static UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
             portalId = GetEffectivePortalId(portalId);
             return MembershipProvider.Instance().GetUserByVanityUrl(portalId, vanityUrl);
         }
 
+        /// <summary>
+        /// Gets a single user by it's password reset token.
+        /// </summary>
+        /// <param name="portalId">The site (portal) id for the user.</param>
+        /// <param name="resetToken">the password reset token.</param>
+        /// <returns>A user represented in a <see cref="UserInfo"/> object.</returns>
         public static UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
         {
             portalId = GetEffectivePortalId(portalId);
             return MembershipProvider.Instance().GetUserByPasswordResetToken(portalId, resetToken);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserCountByPortal gets the number of users in the portal.
+        /// Gets the number of users in a site (portal).
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <returns>The no of users.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The id of the portal to search.</param>
+        /// <returns>The no of users the portal contains.</returns>
         public static int GetUserCountByPortal(int portalId)
         {
             portalId = GetEffectivePortalId(portalId);
@@ -773,13 +770,11 @@ namespace DotNetNuke.Entities.Users
             return CBO.GetCachedObject<int>(new CacheItemArgs(cacheKey, DataCache.PortalUserCountCacheTimeOut, DataCache.PortalUserCountCachePriority, portalId), GetUserCountByPortalCallBack);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Retruns a String corresponding to the Registration Status of the User.
+        /// Gets a localized string representing the user creation status.
         /// </summary>
-        /// <param name="userRegistrationStatus">The AUserCreateStatus.</param>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="userRegistrationStatus">The user creation status as a <see cref="UserCreateStatus"/>.</param>
+        /// <returns>A localized string representing the user creation status.</returns>
         public static string GetUserCreateStatus(UserCreateStatus userRegistrationStatus)
         {
             switch (userRegistrationStatus)
@@ -826,13 +821,11 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Membership Information for the User.
+        /// Gets the membership information for a user.
         /// </summary>
-        /// <remarks></remarks>
-        /// <param name="user">The user whose Membership information we are retrieving.</param>
-        /// -----------------------------------------------------------------------------
+        /// <param name="user">The user whose membership information to retrieve.</param>
+        /// <remarks>This method does not return the membership information, it populates it inside the <see cref="UserInfo"/> object.</remarks>
         public static void GetUserMembership(UserInfo user)
         {
             int portalId = user.PortalID;
@@ -841,18 +834,14 @@ namespace DotNetNuke.Entities.Users
             FixMemberPortalId(user, portalId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Default Settings for the Module.
+        /// Gets a set of default portal settings relative to user management.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A <see cref="Hashtable"/> or the user related portal settings.</returns>
         public static Hashtable GetDefaultUserSettings()
         {
             var portalId = -1;
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
 
             if (portalSettings != null)
             {
@@ -862,15 +851,11 @@ namespace DotNetNuke.Entities.Users
             return GetUserSettings(portalId, new Hashtable());
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserSettings retrieves the UserSettings from the User.
+        /// Gets the user related portal settings.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <returns>The Settings Hashtable.</returns>
-        /// -----------------------------------------------------------------------------
         public static Hashtable GetUserSettings(int portalId)
         {
             var settings = GetDefaultUserSettings();
@@ -936,104 +921,78 @@ namespace DotNetNuke.Entities.Users
             return settings;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsers gets all the users of the portal.
+        /// Gets all the users of a given portal.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The id of the site (portal).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsers(int portalId)
         {
             return GetUsers(false, false, portalId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsers gets all the users of the portal.
+        /// Gets the users of a given portal.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="includeDeleted">Include Deleted Users.</param>
-        /// <param name="superUsersOnly">Only get super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="includeDeleted">A value indicating whether to include deleted users.</param>
+        /// <param name="superUsersOnly">A value indicating whether to ONLY include SuperUsers (Hosts).</param>
+        /// <param name="portalId">The id of the site (portal).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsers(bool includeDeleted, bool superUsersOnly, int portalId)
         {
             var totalrecords = -1;
             return GetUsers(portalId, -1, -1, ref totalrecords, includeDeleted, superUsersOnly);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsers gets all the users of the portal, by page.
+        /// Gets all the users of a given portal, excluding deleted users and SuperUsers (Hosts), by page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records.</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsers(portalId, pageIndex, pageSize, ref totalRecords, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsers gets all the users of the portal, by page.
+        /// Gets all the users of a given portal, by page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include Deleted Users.</param>
-        /// <param name="superUsersOnly">Only get super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records.</param>
+        /// <param name="includeDeleted">A value indicating whether to include deleted users.</param>
+        /// <param name="superUsersOnly">A value indicating whether to ONLY include superUsers (Hosts).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             return MembershipProvider.Instance().GetUsers(GetEffectivePortalId(portalId), pageIndex, pageSize, ref totalRecords, includeDeleted, superUsersOnly);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByEmail gets all the users of the portal whose email matches a provided
-        /// filter expression.
+        /// Gets all the users of a given portal whose email matches a provided filter, excluding deleted users and SuperUsers (Hosts).
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByEmail gets one single user matching the email address provided
-        /// This will only be useful in portals without duplicate email addresses
-        /// filter expression.
+        /// Gets one single user matching the email address provided, this will only return the first match found.
+        /// This will only be useful in portals without duplicate email addresses.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
-        /// <returns>A single user object or null if no user found.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A single <see cref="UserInfo"/> object or null if no user found.</returns>
         public static UserInfo GetUserByEmail(int portalId, string emailToMatch)
         {
             int uid = DataProvider.Instance().GetSingleUserByEmail(portalId, emailToMatch);
@@ -1045,136 +1004,108 @@ namespace DotNetNuke.Entities.Users
             return null;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByEmail gets all the users of the portal whose email matches a provided
-        /// filter expression.
+        /// Gets all the users of the portal whose email matches a provided filter expression.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include Deleted Users.</param>
-        /// <param name="superUsersOnly">Only get super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <param name="includeDeleted">A value indicating whether to include deleted users.</param>
+        /// <param name="superUsersOnly">A value indicating if the search should ONLY include SuperUsers (Hosts).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             return MembershipProvider.Instance().GetUsersByEmail(GetEffectivePortalId(portalId), emailToMatch, pageIndex, pageSize, ref totalRecords, includeDeleted, superUsersOnly);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByProfileProperty gets all the users of the portal whose profile matches
+        /// Gets all the users of the portal whose profile matches
         /// the profile property pased as a parameter.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="propertyName">The name of the property being matched.</param>
         /// <param name="propertyValue">The value of the property being matched.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize, ref totalRecords, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByProfileProperty gets all the users of the portal whose profile matches
+        /// Gets all the users of the portal whose profile matches
         /// the profile property pased as a parameter.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="propertyName">The name of the property being matched.</param>
         /// <param name="propertyValue">The value of the property being matched.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include Deleted Users.</param>
-        /// <param name="superUsersOnly">Only get super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <param name="includeDeleted">A value indicating whether to include deleted users.</param>
+        /// <param name="superUsersOnly">A value indicating whether to ONLY include SuperUsers (Hosts).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             return MembershipProvider.Instance().GetUsersByProfileProperty(GetEffectivePortalId(portalId), propertyName, propertyValue, pageIndex, pageSize, ref totalRecords, includeDeleted, superUsersOnly);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByUserName gets all the users of the portal whose username matches a provided
-        /// filter expression.
+        /// Gets all the users of the portal whose username matches a provided filter expression, excluding deleted users and SuperUsers (Hosts), by page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="userNameToMatch">The username to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByUserName gets all the users of the portal whose username matches a provided
-        /// filter expression.
+        /// Gets all the users of the portal whose username matches a provided filter expression, by page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="userNameToMatch">The username to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include Deleted Users.</param>
-        /// <param name="superUsersOnly">Only get super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <param name="includeDeleted">A value indicating whether to include deleted users.</param>
+        /// <param name="superUsersOnly">A value indicating whether to ONLY include SuperUsers (Hosts).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             return MembershipProvider.Instance().GetUsersByUserName(GetEffectivePortalId(portalId), userNameToMatch, pageIndex, pageSize, ref totalRecords, includeDeleted, superUsersOnly);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByDisplayName gets all the users of the portal whose display name matches a provided
-        /// filter expression.
+        /// Gets all the users of the portal whose display name matches a provided filter expression, by page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="nameToMatch">The display name to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include Deleted Users.</param>
-        /// <param name="superUsersOnly">Only get super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <param name="includeDeleted">A value indicating whether to include deleted users.</param>
+        /// <param name="superUsersOnly">A value indicating whether to ONLY inlude SuperUsers (Hosts).</param>
+        /// <returns>An ArrayList of <see cref="UserInfo"/> objects.</returns>
         public static ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             return MembershipProvider.Instance().GetUsersByDisplayName(GetEffectivePortalId(portalId), nameToMatch, pageIndex, pageSize, ref totalRecords, includeDeleted, superUsersOnly);
         }
 
         /// <summary>
-        /// Move a user to a different portal.
+        /// Moves a user to a different site (portal).
         /// </summary>
         /// <param name="user">The user to move.</param>
-        /// <param name="portal">The destination portal.</param>
-        /// <param name="mergeUser">A flag that indicates whether to merge the original user.</param>
+        /// <param name="portal">The destination site (portal).</param>
+        /// <param name="mergeUser">A indicating whether to merge the basic user properties if the user already exists on the target portal.</param>
         public static void MoveUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser)
         {
             CopyUserToPortal(user, portal, mergeUser);
@@ -1182,10 +1113,14 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Permanently deletes all users marked as deleted from a portal. It will delete the membership
-        /// user as well if the user has no other portals.
+        /// Permanently removes all users marked as deleted from a portal. It will delete the membership
+        /// user as well if the user is not part of other portals.
         /// </summary>
-        /// <param name="portalId">Portal ID to get the deleted users for.</param>
+        /// <param name="portalId">The id of the site (portal) on which to get the deleted users.</param>
+        /// <remarks>
+        /// In Dnn, a user can be deleted, in which case the user is just disabled or "soft deleted" but still exists in the database and can be restored.
+        /// Removing a user (hard-deleting) actually removes the user information from the DataStore and cannot be undone.
+        /// </remarks>
         public static void RemoveDeletedUsers(int portalId)
         {
             var arrUsers = GetDeletedUsers(portalId);
@@ -1200,12 +1135,12 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Permanently delete a user and the associated user folder on disk.
+        /// Permanently remove a user and the associated user folder on disk.
         /// This also deletes the membership user if the user is
         /// not a member of any other portal.
         /// </summary>
         /// <param name="user">The user to delete.</param>
-        /// <returns></returns>
+        /// <returns>A value indicating whether the user removal was successfull.</returns>
         public static bool RemoveUser(UserInfo user)
         {
             int portalId = user.PortalID;
@@ -1215,7 +1150,7 @@ namespace DotNetNuke.Entities.Users
 
             if (retValue)
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
 
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
@@ -1246,23 +1181,16 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
-        private static void ClearPortalAndUserCache(UserInfo user, int portalId)
-        {
-            DeleteUserFolder(user, portalId);
-            DataCache.ClearPortalCache(portalId, false);
-            DataCache.ClearUserCache(portalId, user.Username);
-        }
-
         /// <summary>
-        /// reset and change password
-        /// used by admin/host users who do not need to supply an "old" password.
+        /// Resets and changes the password for a user.
         /// </summary>
-        /// <param name="user">user being changed.</param>
-        /// <param name="newPassword">new password.</param>
-        /// <returns></returns>
+        /// <param name="user">The user for which to change the password.</param>
+        /// <param name="newPassword">The new password.</param>
+        /// <returns>A value indicating whether the password change was successfull.</returns>
+        /// <remarks>This method can only be used by admins or superusers (hosts) who do not need to supply an "old" password.</remarks>
         public static bool ResetAndChangePassword(UserInfo user, string newPassword)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             if (GetCurrentUserInternal().IsInRole(portalSettings.AdministratorRoleName))
             {
                 string resetPassword = ResetPassword(user, string.Empty);
@@ -1272,6 +1200,15 @@ namespace DotNetNuke.Entities.Users
             return false;
         }
 
+        /// <summary>
+        /// Attempts to reset and change a user password.
+        /// </summary>
+        /// <param name="user">The user for which to change the password.</param>
+        /// <param name="oldPassword">The user old password.</param>
+        /// <param name="newPassword">The user new password.</param>
+        /// <returns>A value indicating whether the password change succeeded.</returns>
+        /// <exception cref="ConfigurationErrorsException"> is thrown if password reset is not enabled in the configuration.</exception>
+        /// <exception cref="Exception"> with a message of "Invalid Password" is thrown if either the old or new password is not valid.</exception>
         public static bool ResetAndChangePassword(UserInfo user, string oldPassword, string newPassword)
         {
             if (System.Web.Security.Membership.ValidateUser(user.Username, oldPassword))
@@ -1283,15 +1220,14 @@ namespace DotNetNuke.Entities.Users
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Resets the password for the specified user.
+        /// Attempts to reset the password for the specified user.
         /// </summary>
-        /// <remarks>Resets the user's password.</remarks>
         /// <param name="user">The user whose Password information we are resetting.</param>
         /// <param name="passwordAnswer">The answer to the "user's" password Question.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A string representing the new password.</returns>
+        /// <exception cref="System.Web.Security.MembershipPasswordException"> is thrown when the password answer is not valid.</exception>
+        /// <exception cref="ConfigurationErrorsException"> is thrown when password reset is not enabled in the configuration.</exception>
         public static string ResetPassword(UserInfo user, string passwordAnswer)
         {
             if (MembershipProviderConfig.PasswordResetEnabled)
@@ -1307,11 +1243,22 @@ namespace DotNetNuke.Entities.Users
             return user.Membership.Password;
         }
 
+        /// <summary>
+        /// Resets the user password reset token.
+        /// </summary>
+        /// <param name="user">The user to update the password reset token for.</param>
+        /// <remarks>This method does not return the new token, it updates it inside the <see cref="UserInfo"/> object provided.</remarks>
         public static void ResetPasswordToken(UserInfo user)
         {
             ResetPasswordToken(user, false);
         }
 
+        /// <summary>
+        /// Resets the user password reset token.
+        /// </summary>
+        /// <param name="user">The user to reset the password reset token for.</param>
+        /// <param name="sendEmail">A value indicating whether to send a notification email to the user.</param>
+        /// <returns>A value indicating whether the notification email was sent or true if 'sendEmail' was false.</returns>
         public static bool ResetPasswordToken(UserInfo user, bool sendEmail)
         {
             var settings = new MembershipPasswordSettings(user.PortalID);
@@ -1337,6 +1284,12 @@ namespace DotNetNuke.Entities.Users
             return true;
         }
 
+        /// <summary>
+        /// Resets the password reset token with a timeout value.
+        /// </summary>
+        /// <param name="user">The user for which to update the password reset token.</param>
+        /// <param name="minutesValid">A value indication for how many minutes the generated token will be valid for.</param>
+        /// <remarks>This method does not return anything, it updates the reset token and the token expiraiton directly in the provided <see cref="UserInfo"/> object.</remarks>
         public static void ResetPasswordToken(UserInfo user, int minutesValid)
         {
             user.PasswordResetExpiration = DateTime.Now.AddMinutes(minutesValid);
@@ -1344,6 +1297,16 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(user.PortalID, user);
         }
 
+        /// <summary>
+        /// Restores a deleted user.
+        /// </summary>
+        /// <param name="user">The user to restore.</param>
+        /// <returns>A value indicating whether the user restore succeeded.</returns>
+        /// <remarks>
+        /// Dnn supports deleting and restoring them. A deleted using in Dnn means a "soft-delete" or in other words disabling the user.
+        /// This method can only be used for those "soft-deleted" users, if a user was removed (hard-deleted), this method cannot restore the user
+        /// as that action cannot be undone.
+        /// </remarks>
         public static bool RestoreUser(ref UserInfo user)
         {
             int portalId = user.PortalID;
@@ -1358,7 +1321,7 @@ namespace DotNetNuke.Entities.Users
                 RestoreUserPermissions(user);
 
                 // Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
 
                 // Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
@@ -1373,91 +1336,80 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
+        /// <summary>
+        /// Gets the setting key prefix for user related portal settings.
+        /// </summary>
+        /// <param name="portalId">The portal id to scope the key for.</param>
+        /// <returns>A string representing the settings key for the given portal.</returns>
         public static string SettingsKey(int portalId)
         {
             return "UserSettings|" + portalId;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Unlocks the User's Account.
+        /// Attempts to unlock the user's account.
         /// </summary>
-        /// <remarks></remarks>
         /// <param name="user">The user whose account is being Unlocked.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A value indicating whether the user unlock attempt succeeded.</returns>
+        /// <remarks>A user can be locked in some situations as when the user attempted too many invalid passwords.</remarks>
         public static bool UnLockUser(UserInfo user)
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            // Unlock the User
             var retValue = MembershipProvider.Instance().UnLockUser(user);
             DataCache.ClearUserCache(portalId, user.Username);
             UpdateUser(portalId, GetUserById(portalId, user.UserID));
             return retValue;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a User.
+        /// Updates a user and logs the action.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The id of the site (portal) on which to update the user.</param>
         /// <param name="user">The use to update.</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static void UpdateUser(int portalId, UserInfo user)
         {
             UpdateUser(portalId, user, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   updates a user.
+        /// Updates a user.
         /// </summary>
-        /// <param name = "portalId">the portalid of the user.</param>
-        /// <param name = "user">the user object.</param>
-        /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
-        /// <remarks>
-        /// </remarks>
+        /// <param name="portalId">The portalid of the user to update.</param>
+        /// <param name="user">The user to update.</param>
+        /// <param name="loggedAction">A value indicating whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
         public static void UpdateUser(int portalId, UserInfo user, bool loggedAction)
         {
             UpdateUser(portalId, user, loggedAction, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   updates a user.
+        /// Updates a user.
         /// </summary>
-        /// <param name = "portalId">the portalid of the user.</param>
-        /// <param name = "user">the user object.</param>
-        /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
+        /// <param name="user">The user object.</param>
+        /// <param name="loggedAction">Whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
-        /// <remarks>
-        /// </remarks>
         public static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification)
         {
             UpdateUser(portalId, user, loggedAction, sendNotification, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Validates a User's credentials against the Data Store, and sets the Forms Authentication
-        /// Ticket.
+        /// Validates a User's credentials against the Data Store, and sets the Forms Authentication Ticket.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
+        /// <param name="portalId">The id of the site (portal) the user belongs to.</param>
         /// <param name="username">The user name of the User attempting to log in.</param>
         /// <param name="password">The password of the User attempting to log in.</param>
-        /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
-        /// <param name="portalName">The name of the Portal.</param>
+        /// <param name="verificationCode">The verification code of the user attempting to log in.</param>
+        /// <param name="portalName">The name of the site (portal).</param>
         /// <param name="ip">The IP Address of the user attempting to log in.</param>
-        /// <param name="loginStatus">A UserLoginStatus enumeration that indicates the status of the
-        /// Login attempt.  This value is returned by reference.</param>
+        /// <param name="loginStatus">A <see cref="UserLoginStatus"/> enumeration that indicates the status of the
+        /// Login attempt. This value is returned by reference.</param>
         /// <param name="createPersistentCookie">A flag that indicates whether the login credentials
         /// should be persisted.</param>
-        /// <returns>The UserInfo object representing a successful login.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="UserInfo"/> object representing a successful login.</returns>
         public static UserInfo UserLogin(int portalId, string username, string password, string verificationCode, string portalName, string ip, ref UserLoginStatus loginStatus, bool createPersistentCookie)
         {
             portalId = GetEffectivePortalId(portalId);
@@ -1480,16 +1432,14 @@ namespace DotNetNuke.Entities.Users
             return objUser;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Logs a Validated User in.
+        /// Logs a validated user in.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
-        /// <param name="user">The validated User.</param>
-        /// <param name="portalName">The name of the Portal.</param>
+        /// <param name="portalId">The id of the portal the user belongs to.</param>
+        /// <param name="user">The validated user.</param>
+        /// <param name="portalName">The name of the site (portal).</param>
         /// <param name="ip">The IP Address of the user attempting to log in.</param>
-        /// <param name="createPersistentCookie">A flag that indicates whether the login credentials should be persisted.</param>
-        /// -----------------------------------------------------------------------------
+        /// <param name="createPersistentCookie">A value indication whether the login credentials should be persisted.</param>
         public static void UserLogin(int portalId, UserInfo user, string portalName, string ip, bool createPersistentCookie)
         {
             portalId = GetEffectivePortalId(portalId);
@@ -1510,13 +1460,11 @@ namespace DotNetNuke.Entities.Users
             EventManager.Instance.OnUserAuthenticated(new UserEventArgs { User = user });
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Validates a Password.
+        /// Validates a password.
         /// </summary>
-        /// <param name="password">The password to Validate.</param>
-        /// <returns>A boolean.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="password">The password to validate.</param>
+        /// <returns>A value indicating whether the password is valid.</returns>
         public static bool ValidatePassword(string password)
         {
             // Valid Length
@@ -1538,40 +1486,36 @@ namespace DotNetNuke.Entities.Users
             return isValid;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Validates a User's credentials against the Data Store.
+        /// Validates a user's credentials against the Data Store.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
-        /// <param name="username">The user name of the User attempting to log in.</param>
-        /// <param name="password">The password of the User attempting to log in.</param>
-        /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
-        /// <param name="portalName">The name of the Portal.</param>
-        /// <param name="ip">The IP Address of the user attempting to log in.</param>
-        /// <param name="loginStatus">A UserLoginStatus enumeration that indicates the status of the
-        /// Login attempt.  This value is returned by reference.</param>
-        /// <returns>The UserInfo object representing a valid user.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The id of the site (portal) the user belongs to.</param>
+        /// <param name="username">The user name of the user attempting to log in.</param>
+        /// <param name="password">The password of the user attempting to log in.</param>
+        /// <param name="verificationCode">The verification code of the user attempting to log in.</param>
+        /// <param name="portalName">The name of the portal.</param>
+        /// <param name="ip">The IP address of the user attempting to log in.</param>
+        /// <param name="loginStatus">A <see cref="UserLoginStatus"/> enumeration that indicates the status of the
+        /// Login attempt. This value is returned by reference.</param>
+        /// <returns>The <see cref="UserInfo"/> object representing a valid user.</returns>
         public static UserInfo ValidateUser(int portalId, string username, string password, string verificationCode, string portalName, string ip, ref UserLoginStatus loginStatus)
         {
             return ValidateUser(portalId, username, password, "DNN", verificationCode, portalName, ip, ref loginStatus);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Validates a User's credentials against the Data Store.
+        /// Validates a user's credentials against the Data Store.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
-        /// <param name="username">The user name of the User attempting to log in.</param>
+        /// <param name="portalId">The id of the site (portal) the user belongs to.</param>
+        /// <param name="username">The user name of the user attempting to log in.</param>
         /// <param name="password">The password of the User attempting to log in.</param>
-        /// <param name="authType">The type of Authentication Used.</param>
-        /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
-        /// <param name="portalName">The name of the Portal.</param>
+        /// <param name="authType">The type of authentication used.</param>
+        /// <param name="verificationCode">The verification code of the user attempting to log in.</param>
+        /// <param name="portalName">The name of the site (portal).</param>
         /// <param name="ip">The IP Address of the user attempting to log in.</param>
-        /// <param name="loginStatus">A UserLoginStatus enumeration that indicates the status of the
-        /// Login attempt.  This value is returned by reference.</param>
-        /// <returns>The UserInfo object representing a valid user.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="loginStatus">A <see cref="UserLoginStatus"/> enumeration that indicates the status of the
+        /// login attempt.  This value is returned by reference.</param>
+        /// <returns>The <see cref="UserInfo"/> object representing a valid user.</returns>
         public static UserInfo ValidateUser(int portalId, string username, string password, string authType, string verificationCode, string portalName, string ip, ref UserLoginStatus loginStatus)
         {
             loginStatus = UserLoginStatus.LOGIN_FAILURE;
@@ -1597,16 +1541,14 @@ namespace DotNetNuke.Entities.Users
             return user;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Validates a User's Password and Profile.
+        /// Validates a user's password and profile.
         /// </summary>
-        /// <remarks>This overload takes a valid User (Credentials check out) and check whether the Password and Profile need updating.</remarks>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
+        /// <remarks>This overload takes a valid User (credentials check out) and check whether the password and profile need updating.</remarks>
         /// <param name="objUser">The user attempting to log in.</param>
-        /// <param name="ignoreExpiring">Ingore expired user.</param>
-        /// <returns>The UserLoginStatus.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The id of the site (portal) the user belongs to.</param>
+        /// <param name="ignoreExpiring">A value indicating whether to ingore expired user.</param>
+        /// <returns>The <see cref="UserValidStatus"/> that represents the outcome.</returns>
         public static UserValidStatus ValidateUser(UserInfo objUser, int portalId, bool ignoreExpiring)
         {
             portalId = GetEffectivePortalId(portalId);
@@ -1714,63 +1656,132 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Returns a absolute URL for the user profile image while removing that of the deleted and super users.
         /// </summary>
-        /// <param name="portalId">Portal Id.</param>
-        /// <param name="user">user info.</param>
-        /// <param name="width">width in pixel.</param>
-        /// <param name="height">height in pixel.</param>
-        /// <param name="showSuperUsers">true if want show super users user profile picture, false otherwise.</param>
-        /// <returns>absolute user profile picture url.</returns>
-        /// <returns></returns>
-        public static string GetProfileAvatarAbsoluteUrl(int portalId, UserInfo user, int width = 64,
-            int height = 64, bool showSuperUsers = true)
+        /// <param name="portalId">The site (portal) id.</param>
+        /// <param name="user">The user to get the profile image from.</param>
+        /// <param name="width">Width in pixels.</param>
+        /// <param name="height">Height in pixels.</param>
+        /// <param name="showSuperUsers">A value indicating whether to get the profile picture for SuperUsers (Hosts).</param>
+        /// <returns>Absolute user profile picture url.</returns>
+        /// <returns>A string containing the profile picture absolute url.</returns>
+        public static string GetProfileAvatarAbsoluteUrl(
+            int portalId,
+            UserInfo user,
+            int width = 64,
+            int height = 64,
+            bool showSuperUsers = true)
         {
             var userId = user != null && user.UserID > 0 && !user.IsDeleted && (showSuperUsers || !user.IsSuperUser) ? user.UserID : 0;
             var relativePath = Instance.GetUserProfilePictureUrl(portalId, userId, width, height);
             return GetAbsoluteUrl(portalId, relativePath);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUser retrieves a User from the DataStore.
+        /// Gets a user from the DataStore.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The id of the site (portal).</param>
+        /// <param name="userId">The id of the user being retrieved from the Data Store.</param>
+        /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
         public UserInfo GetUser(int portalId, int userId)
         {
             return GetUserById(portalId, userId);
         }
 
+        /// <summary>
+        /// Gets a user by it's display name.
+        /// </summary>
+        /// <param name="portalId">The id of the site (portal).</param>
+        /// <param name="displayName">The display name to search.</param>
+        /// <returns>A user as a <see cref="UserInfo"/> object.</returns>
+        /// <remarks>
+        /// This method will return the first match, unless the settings require unique display names,
+        /// this method may return any user that matches that display name.
+        /// </remarks>
         public UserInfo GetUserByDisplayname(int portalId, string displayName)
         {
             return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
         }
 
-        public IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
-            bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames,
+        /// <summary>
+        /// Provides advanced paged search functionality for users.
+        /// </summary>
+        /// <param name="portalId">The site (portal) id to search in.</param>
+        /// <param name="userId">The requesting user id (for view permissions of the search).</param>
+        /// <param name="filterUserId">The user id for filtering relationships on, use <see cref="Null.NullInteger"/> to not use this filter.</param>
+        /// <param name="filterRoleId">The role id to filter on, use <see cref="Null.NullInteger"/> to not use this filter.</param>
+        /// <param name="relationTypeId">The relationship type id to filter on, use <see cref="Null.NullInteger"/> to not use this filter.</param>
+        /// <param name="isAdmin">A value indicating whether the requesting user is an administrator.</param>
+        /// <param name="pageIndex">The page to return.</param>
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="sortColumn">The name of the column to sort on.</param>
+        /// <param name="sortAscending">A value indicating whether to sort ascending, will sort descending if false.</param>
+        /// <param name="propertyNames">A comma separated list of property names on which to search.</param>
+        /// <param name="propertyValues">A comma separated list of property values to search.</param>
+        /// <returns>An IList of <see cref="UserInfo"/> containing the search results.</returns>
+        public IList<UserInfo> GetUsersAdvancedSearch(
+            int portalId,
+            int userId,
+            int filterUserId,
+            int filterRoleId,
+            int relationTypeId,
+            bool isAdmin,
+            int pageIndex,
+            int pageSize,
+            string sortColumn,
+            bool sortAscending,
+            string propertyNames,
             string propertyValues)
         {
-            return MembershipProvider.Instance().GetUsersAdvancedSearch(PortalController.GetEffectivePortalId(portalId), userId, filterUserId, filterRoleId, relationTypeId,
-                                                      isAdmin, pageIndex, pageSize, sortColumn,
-                                                      sortAscending, propertyNames, propertyValues);
-        }
-
-        public IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending,
-            string propertyName, string propertyValue)
-        {
-            return MembershipProvider.Instance().GetUsersBasicSearch(PortalController.GetEffectivePortalId(portalId), pageIndex, pageSize, sortColumn,
-                                                       sortAscending, propertyName, propertyValue);
+            return MembershipProvider.Instance().GetUsersAdvancedSearch(
+                PortalController.GetEffectivePortalId(portalId),
+                userId,
+                filterUserId,
+                filterRoleId,
+                relationTypeId,
+                isAdmin,
+                pageIndex,
+                pageSize,
+                sortColumn,
+                sortAscending,
+                propertyNames,
+                propertyValues);
         }
 
         /// <summary>
-        /// Return User Profile Picture relative Url.
+        /// Provides basic paged search functionality for users.
         /// </summary>
-        /// <param name="userId">User Id.</param>
-        /// <param name="width">Width in pixel.</param>
-        /// <param name="height">Height in pixel.</param>
+        /// <param name="portalId">The site (portal) id on which to perform the user search.</param>
+        /// <param name="pageIndex">the page to get.</param>
+        /// <param name="pageSize">the size of each page.</param>
+        /// <param name="sortColumn">The name of the column to sort by.</param>
+        /// <param name="sortAscending">A value indicating whether to sort ascending, will sort descending if false.</param>
+        /// <param name="propertyName">The property name on which to filter by.</param>
+        /// <param name="propertyValue">The property value to filter the column by.</param>
+        /// <returns>An IList of <see cref="UserInfo"/> representing the found users.</returns>
+        public IList<UserInfo> GetUsersBasicSearch(
+            int portalId,
+            int pageIndex,
+            int pageSize,
+            string sortColumn,
+            bool sortAscending,
+            string propertyName,
+            string propertyValue)
+        {
+            return MembershipProvider.Instance().GetUsersBasicSearch(
+                PortalController.GetEffectivePortalId(portalId),
+                pageIndex,
+                pageSize,
+                sortColumn,
+                sortAscending,
+                propertyName,
+                propertyValue);
+        }
+
+        /// <summary>
+        /// Gets the user profile picture relative Url.
+        /// </summary>
+        /// <param name="userId">The id of the users to get the profile picture from.</param>
+        /// <param name="width">Width in pixels.</param>
+        /// <param name="height">Height in pixels.</param>
         /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal.</returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32).
@@ -1787,12 +1798,19 @@ namespace DotNetNuke.Entities.Users
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
 
+        /// <summary>
+        /// Checks if a username is valid.
+        /// </summary>
+        /// <param name="userName">The username to check.</param>
+        /// <remarks>
+        /// Validate username against bad characters; it must not start or end with space,
+        /// must not contain control characters, and not contain special punctuations
+        /// Printable ASCII: " !\"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+        /// Fallback to default if there is no host setting configured.
+        /// </remarks>
+        /// <returns>A value indicating whether the username is valid.</returns>
         public bool IsValidUserName(string userName)
         {
-            // Validate username against bad characters; it must not start or end with space,
-            // must not contain control characters, and not contain special punctuations
-            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-            // Fallback to default if there is no host setting configured
             char[] unallowedAscii = HostController.Instance.GetString("UsernameUnallowedCharacters", Globals.USERNAME_UNALLOWED_ASCII).ToCharArray();
             return userName.Length >= 5 &&
                         userName == userName.Trim() &&
@@ -1800,6 +1818,14 @@ namespace DotNetNuke.Entities.Users
                         userName.IndexOfAny(unallowedAscii) < 0;
         }
 
+        /// <summary>
+        /// Gets the user profile picture url.
+        /// </summary>
+        /// <param name="portalId">The portal id the user belongs to.</param>
+        /// <param name="userId">The id if the user to get the profile picture from.</param>
+        /// <param name="width">The width in pixels of the picture.</param>
+        /// <param name="height">The height in pixels of the picture.</param>
+        /// <returns>A url to the profile picture for the user.</returns>
         public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
         {
             var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
@@ -1812,11 +1838,9 @@ namespace DotNetNuke.Entities.Users
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Update all the Users Display Names.
+        /// Update all the users display names.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void UpdateDisplayNames()
         {
             int portalId = GetEffectivePortalId(this.PortalId);
@@ -1829,6 +1853,32 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <summary>
+        /// Gets the current user information.
+        /// </summary>
+        /// <returns>The user information in a <see cref="UserInfo"/> object.</returns>
+        UserInfo IUserController.GetCurrentUserInfo()
+        {
+            return GetCurrentUserInternal();
+        }
+
+        /// <summary>
+        /// Gets a user by it's user id.
+        /// </summary>
+        /// <param name="portalId">The site (portal) id of the user.</param>
+        /// <param name="userId">The user id of the user.</param>
+        /// <returns>The user information in a <see cref="UserInfo"/> object.</returns>
+        UserInfo IUserController.GetUserById(int portalId, int userId)
+        {
+            return GetUserById(portalId, userId);
+        }
+
+        /// <summary>
+        /// Gets a list of user related portal settings.
+        /// </summary>
+        /// <param name="portalId">The site (portal) id from which to get the settings from.</param>
+        /// <param name="settings">The list of settings to filter from.</param>
+        /// <returns>A Hashtable of the user related portal settings.</returns>
         internal static Hashtable GetUserSettings(int portalId, Hashtable settings)
         {
             portalId = GetEffectivePortalId(portalId);
@@ -2049,9 +2099,9 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         ///   updates a user.
         /// </summary>
-        /// <param name = "portalId">the portalid of the user.</param>
-        /// <param name = "user">the user object.</param>
-        /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        /// <param name="portalId">the portalid of the user.</param>
+        /// <param name="user">the user object.</param>
+        /// <param name="loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
         /// <param name="clearCache">Whether clear cache after update user.</param>
         /// <remarks>
@@ -2073,10 +2123,10 @@ namespace DotNetNuke.Entities.Users
             if (loggedAction)
             {
                 // if the httpcontext is null, then get portal settings by portal id.
-                PortalSettings portalSettings = null;
+                IPortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentSettings();
                 }
                 else if (portalId > Null.NullInteger)
                 {
@@ -2106,9 +2156,20 @@ namespace DotNetNuke.Entities.Users
             EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
         }
 
+        /// <summary>
+        /// Gets a new <see cref="UserController"/> instance.
+        /// </summary>
+        /// <returns>A new instance of the <see cref="UserController"/> class.</returns>
         protected override Func<IUserController> GetFactory()
         {
             return () => new UserController();
+        }
+
+        private static void ClearPortalAndUserCache(UserInfo user, int portalId)
+        {
+            DeleteUserFolder(user, portalId);
+            DataCache.ClearPortalCache(portalId, false);
+            DataCache.ClearUserCache(portalId, user.Username);
         }
 
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
@@ -2234,7 +2295,7 @@ namespace DotNetNuke.Entities.Users
                     return new UserInfo();
                 }
 
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 if (portalSettings != null)
                 {
                     user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
@@ -2266,8 +2327,12 @@ namespace DotNetNuke.Entities.Users
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
             return CBO.GetCachedObject<SharedDictionary<int, string>>(
-                new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut,
-                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(), true);
+                new CacheItemArgs(
+                    cacheKey,
+                    DataCache.UserLookupCacheTimeOut,
+                    DataCache.UserLookupCachePriority),
+                (c) => new SharedDictionary<int, string>(),
+                true);
         }
 
         private static bool IsMemberOfPortalGroup(int portalId)
@@ -2347,7 +2412,7 @@ namespace DotNetNuke.Entities.Users
 
         private static string GetProfilePictureCdv(int userId)
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             var userInfo = GetUserById(settings.PortalId, userId);
             if (userInfo?.Profile == null)
             {
@@ -2467,16 +2532,6 @@ namespace DotNetNuke.Entities.Users
             var user = MembershipProvider.Instance().GetUserByProviderUserKey(masterPortalId, membershipUserKey);
             FixMemberPortalId(user, portalId);
             return user;
-        }
-
-        UserInfo IUserController.GetCurrentUserInfo()
-        {
-            return GetCurrentUserInternal();
-        }
-
-        UserInfo IUserController.GetUserById(int portalId, int userId)
-        {
-            return GetUserById(portalId, userId);
         }
     }
 }
