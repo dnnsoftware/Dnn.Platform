@@ -219,10 +219,24 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlElement("portalid")]
-        public int PortalID { get; set; }
+        public int PortalId { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalId instead.")]
+        public int PortalID
+        {
+            get => PortalId;
+            set => PortalId = value;
+        }
 
         /// <inheritdoc />
-        public int PortalGroupID { get; set; }
+        public int PortalGroupId { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead.")]
+        public int PortalGroupID
+        {
+            get => PortalGroupId;
+            set => PortalGroupId = value;
+        }
 
         /// <inheritdoc />
         [XmlElement("portalname")]
@@ -427,11 +441,11 @@ namespace DotNetNuke.Entities.Portals
         /// <seealso cref="KeyID"></seealso></remarks>
         public void Fill(IDataReader dr)
         {
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalID"]);
 
             try
             {
-                this.PortalGroupID = Null.SetNullInteger(dr["PortalGroupID"]);
+                this.PortalGroupId = Null.SetNullInteger(dr["PortalGroupID"]);
             }
             catch (IndexOutOfRangeException)
             {

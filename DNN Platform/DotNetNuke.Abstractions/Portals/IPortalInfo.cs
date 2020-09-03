@@ -147,13 +147,13 @@ namespace DotNetNuke.Abstractions.Portals
         /// Gets or sets unique idenitifier of the Portal within the site.
         /// </summary>
         /// <value>Portal identifier.</value>
-        int PortalID { get; set; }
+        int PortalId { get; set; }
 
         /// <summary>
         /// Gets or sets contains the id of the portal group that the portal belongs to
         /// Will be null or -1 (null.nullinteger) if the portal does not belong to a portal group.
         /// </summary>
-        int PortalGroupID { get; set; }
+        int PortalGroupId { get; set; }
 
         /// <summary>
         /// Gets or sets name of the portal. Can be set at creation time, Admin can change the name in the portal settings.
