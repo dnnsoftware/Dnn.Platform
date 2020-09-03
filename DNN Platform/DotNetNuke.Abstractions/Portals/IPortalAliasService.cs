@@ -88,7 +88,7 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         /// <param name="PortalAliasId">The portal alias id.</param>
         /// <returns>Portal info.</returns>
-        IPortalInfo GetPortalByPortalAliasId(int PortalAliasId);
+        IPortalInfo GetPortalByPortalAliasId(int portalAliasId);
 
         /// <summary>
         /// Update a specified portal alias.
