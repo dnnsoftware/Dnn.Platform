@@ -333,54 +333,207 @@ namespace DotNetNuke.Abstractions.Portals
         /// which update the database should be disabled.
         /// </summary>
         bool IsLocked { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether get a value indicating whether
+        /// the current portal is in maintenance mode (note, the entire
+        /// instance may still be locked, this only indicates whether this
+        /// portal is specifically locked). If locked, any actions which
+        /// update the database should be disabled.
+        /// </summary>
         bool IsThisPortalLocked { get; }
+
+        /// <summary>
+        /// Gets or sets the portal keywords.
+        /// </summary>
         string KeyWords { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portals login tab id.
+        /// </summary>
         int LoginTabId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portals logo file.
+        /// </summary>
         string LogoFile { get; set; }
+
+        /// <summary>
+        /// Gets the portals page head text.
+        /// </summary>
         string PageHeadText { get; }
+
+        /// <summary>
+        /// Gets or sets the portals page quota.
+        /// </summary>
         int PageQuota { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portals pages.
+        /// </summary>
         int Pages { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating whether gets whether enable url language.
+        /// </summary>
+        /// <remarks>Defaults to True.</remarks>
         bool EnableUrlLanguage { get; }
-        //IPortalAliasInfo PortalAlias { get; set; }
-        //PortalSettings.PortalAliasMapping PortalAliasMappingMode { get; }
+
+        /// <summary>
+        /// Gets or sets the portal id.
+        /// </summary>
         int PortalId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portal name.
+        /// </summary>
         string PortalName { get; set; }
-        //IPortalAliasInfo PrimaryAlias { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portals privacy tab id.
+        /// </summary>
         int PrivacyTabId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portals registered role id.
+        /// </summary>
         int RegisteredRoleId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portals registered role name.
+        /// </summary>
         string RegisteredRoleName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portals register tab id.
+        /// </summary>
         int RegisterTabId { get; set; }
-        //RegistrationSettings Registration { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
+        /// </summary>
+        /// <remarks>Defaults to False.</remarks>
         bool SearchIncludeCommon { get; }
+
+        /// <summary>
+        /// Gets the filter used for inclusion of tag info.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to "".
+        /// </remarks>
         string SearchIncludedTagInfoFilter { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to False.
+        /// </remarks>
         bool SearchIncludeNumeric { get; }
+
+        /// <summary>
+        /// Gets the maximum Search Word length to index.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to 3.
+        /// </remarks>
         int SearchMaxWordlLength { get; }
+
+        /// <summary>
+        /// Gets the minum Search Word length to index.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to 3.
+        /// </remarks>
         int SearchMinWordlLength { get; }
+
+        /// <summary>
+        /// Gets or sets the portals search tab id.
+        /// </summary>
         int SearchTabId { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether gets whether a cookie consent popup should be shown.
+        /// </summary>
+        /// <remarks>Defaults to False.</remarks>
         bool ShowCookieConsent { get; }
-        int SiteLogHistory { get; set; }
+
+        /// <summary>
+        /// Gets the portals SMTP connection limit.
+        /// </summary>
         int SMTPConnectionLimit { get; }
+
+        /// <summary>
+        /// Gets the portals SMPT max idle time.
+        /// </summary>
         int SMTPMaxIdleTime { get; }
+
+        /// <summary>
+        /// Gets or sets the portals splash tab id.
+        /// </summary>
         int SplashTabId { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating whether SSL is enabled for the portal.
+        /// </summary>
         bool SSLEnabled { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether SLL is enforced for the portal.
+        /// </summary>
         bool SSLEnforced { get; }
 
+        /// <summary>
+        /// Gets the SSL url for the portal.
+        /// </summary>
         string SSLURL { get; }
-        string STDURL { get; }
-        int SuperTabId { get; set; }
-        int TermsTabId { get; set; }
-        TimeZoneInfo TimeZone { get; set; }
-        int UserId { get; }
-        //IUserInfo UserInfo { get; }
-        //PortalSettings.Mode UserMode { get; }
-        int UserQuota { get; set; }
-        int UserRegistration { get; set; }
-        int Users { get; set; }
-        int UserTabId { get; set; }
 
-        //IPortalSettings Clone();
-        //string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound);
+        /// <summary>
+        /// Gets the standard url for the portal.
+        /// </summary>
+        string STDURL { get; }
+
+        /// <summary>
+        /// Gets or sets the super tab id.
+        /// </summary>
+        int SuperTabId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the terms and conditions tab id.
+        /// </summary>
+        int TermsTabId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timezone for the portal.
+        /// </summary>
+        TimeZoneInfo TimeZone { get; set; }
+
+        /// <summary>
+        /// Gets the currently logged in user identifier.
+        /// </summary>
+        /// <value>
+        /// The user identifier.
+        /// </value>
+        int UserId { get; }
+
+        /// <summary>
+        /// Gets or sets the user quota for the portal.
+        /// </summary>
+        int UserQuota { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user registration for the portal.
+        /// </summary>
+        int UserRegistration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the users for the portal.
+        /// </summary>
+        int Users { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user tab id for the portal.
+        /// </summary>
+        int UserTabId { get; set; }
     }
 }
