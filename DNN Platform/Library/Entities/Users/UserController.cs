@@ -558,7 +558,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Generates a new random password.
         /// </summary>
-        /// <returns>A string representing the randomly generated password which is the minimum password lenght + 4 characters.</returns>
+        /// <returns>A string representing the randomly generated password which is the minimum password length + 4 characters.</returns>
         public static string GeneratePassword()
         {
             return GeneratePassword(MembershipProviderConfig.MinPasswordLength + 4);
