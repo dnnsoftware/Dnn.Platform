@@ -170,7 +170,7 @@ namespace DotNetNuke.Entities.Portals
                 .SingleOrDefault(portalAliasInfo => portalAliasInfo.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && portalAliasInfo.Value.PortalID == portalId).Value;
 
         /// <inheritdoc />
-        IPortalAliasInfo IPortalAliasService.GetPortalAliasByPortalAliasID(int portalAliasId) =>
+        IPortalAliasInfo IPortalAliasService.GetPortalAliasByPortalAliasId(int portalAliasId) =>
             this.GetPortalAliasesInternal()
                 .SingleOrDefault(portalAliasInfo => portalAliasInfo.Value.PortalAliasId == portalAliasId).Value;
 
@@ -189,7 +189,7 @@ namespace DotNetNuke.Entities.Portals
         IEnumerable<IPortalAliasInfo> IPortalAliasService.GetPortalAliasesByPortalId(int portalId) =>
             this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalId == portalId).ToList();
 
-        IPortalInfo IPortalAliasService.GetPortalByPortalAliasID(int portalAliasId) =>
+        IPortalInfo IPortalAliasService.GetPortalByPortalAliasId(int portalAliasId) =>
             CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(portalAliasId));
 
         void IPortalAliasService.UpdatePortalAlias(IPortalAliasInfo portalAlias)
