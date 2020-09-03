@@ -747,7 +747,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Gets a single user by it's password reset token.
+        /// Gets a single user by its password reset token.
         /// </summary>
         /// <param name="portalId">The site (portal) id for the user.</param>
         /// <param name="resetToken">the password reset token.</param>
