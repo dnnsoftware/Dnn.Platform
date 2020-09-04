@@ -6,6 +6,7 @@ namespace DotNetNuke
 {
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.DependencyInjection;
@@ -33,6 +34,8 @@ namespace DotNetNuke
 
             services.AddScoped<IApplicationInfo, Application.Application>();
             services.AddScoped<IApplicationStatusInfo, ApplicationStatusInfo>();
+
+            services.AddScoped<IPortalAliasService, PortalAliasController>();
         }
     }
 }
