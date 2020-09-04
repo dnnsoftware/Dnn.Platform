@@ -32,7 +32,7 @@ namespace DotNetNuke.Common
         /// </summary>
         public static ServiceScopeContainer GetRequestOrCreateScope()
         {
-            var requestScope = HttpContext.Current?.GetScope();
+            var requestScope = HttpContextSource.Current?.GetScope();
 
             if (requestScope != null)
             {

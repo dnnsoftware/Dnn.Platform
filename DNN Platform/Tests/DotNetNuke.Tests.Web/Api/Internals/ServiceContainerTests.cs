@@ -9,7 +9,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
-    using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
+    using DotNetNuke.Tests.Utilities;
     using Moq;
     using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [Test]
         public void CreateScopeWhenRequestDoesNotExists()
         {
-            Assert.Null(HttpContext.Current?.GetScope());
+            Assert.Null(HttpContextSource.Current?.GetScope());
 
             var container = ServiceScopeContainer.GetRequestOrCreateScope();
 
@@ -47,21 +47,17 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [Test]
         public void UseRequestScopeWhenPossible()
         {
-            using (var simulator = new HttpSimulator())
-            {
-                simulator.SimulateRequest();
+            var scope = Globals.DependencyProvider.CreateScope();
 
-                var scope = Globals.DependencyProvider.CreateScope();
+            HttpContextHelper.RegisterMockHttpContext();
+            HttpContextSource.Current.SetScope(scope);
 
-                HttpContext.Current.SetScope(scope);
+            Assert.NotNull(HttpContextSource.Current?.GetScope());
 
-                Assert.NotNull(HttpContext.Current?.GetScope());
+            var container = ServiceScopeContainer.GetRequestOrCreateScope();
 
-                var container = ServiceScopeContainer.GetRequestOrCreateScope();
-
-                Assert.False(container.ShouldDispose);
-                Assert.AreEqual(scope, container.ServiceScope);
-            }
+            Assert.False(container.ShouldDispose);
+            Assert.AreEqual(scope, container.ServiceScope);
         }
     }
 }
