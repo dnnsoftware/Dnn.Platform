@@ -20,7 +20,7 @@ namespace DotNetNuke.Abstractions.Prompt
         string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets thecategory to which this command belongs.
+        /// Gets or sets the category to which this command belongs.
         /// </summary>
         /// <remarks>
         /// This is used to group the list of commands when a user requests this.
