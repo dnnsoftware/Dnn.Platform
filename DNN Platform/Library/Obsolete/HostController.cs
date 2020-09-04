@@ -32,12 +32,16 @@ namespace DotNetNuke.Entities.Controllers
             }
         }
 
-        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
         public Dictionary<string, ConfigurationSetting> GetSettings() =>
             ((IHostSettingsService)this).GetSettings()
                 .Where(setting => setting.Value is ConfigurationSetting)
                 .Select(setting => new KeyValuePair<string, ConfigurationSetting>(setting.Key, (ConfigurationSetting)setting.Value))
+                .ToDictionary(setting => setting.Key, setting => setting.Value);
+
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
+        public Dictionary<string, string> GetSettingsDictionary() =>
+            ((IHostSettingsService)this).GetSettingsDictionary()
                 .ToDictionary(setting => setting.Key, setting => setting.Value);
 
         /// <inheritdoc/>
@@ -49,5 +53,9 @@ namespace DotNetNuke.Entities.Controllers
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
         public void Update(ConfigurationSetting config, bool clearCache) =>
             ((IHostSettingsService)this).Update(config, clearCache);
+
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
+        public void Update(Dictionary<string, string> settings) =>
+            ((IHostSettingsService)this).Update(settings);
     }
 }
