@@ -5,7 +5,7 @@
 namespace DotNetNuke.Abstractions.Urls
 {
     /// <summary>
-    /// Browser Types
+    /// Enumeration values for Browser Types. (Normal or desktop, mobile, etc.)
     /// </summary>
     public enum BrowserTypes
     {

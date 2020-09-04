@@ -21,6 +21,7 @@ namespace DotNetNuke.Abstractions.Prompt
 
         /// <summary>
         /// Gets or sets thecategory to which this command belongs.
+        /// </summary>
         /// <remarks>
         /// This is used to group the list of commands when a user requests this.
         /// </remarks>
