@@ -6,8 +6,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
-    using System.Runtime.Serialization;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -18,8 +17,11 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Tests.Utilities.Mocks;
     using DotNetNuke.UI.Skins;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -42,6 +44,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         private const string TabContainer = "TabContainer";
         private const string GlobalTabContainer = "[g]TabContainer";
 
+        private Mock<IHostController> mockHostController;
+
         [SetUp]
         public void SetUp()
         {
@@ -50,8 +54,13 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var serviceCollection = new ServiceCollection();
             var mockApplicationInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationInfo.Setup(info => info.ApplicationMapPath).Returns("path/to/application");
+
+            this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.As<IHostSettingsService>();
+
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationInfo.Object);
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
@@ -83,18 +92,16 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Returns(new Dictionary<string, string>());
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
+            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
                             .Returns((string s) => hostSettings[s]);
-            mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
+            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns((string s1, string s2) => hostSettings[s1]);
-            mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
+            this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
                             .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
-            mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
+            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                             .Returns((string s, int i) => int.Parse(hostSettings[s]));
-            mockHostController.Setup(c => c.GetInteger(It.IsAny<string>()))
+            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>()))
                             .Returns((string s) => int.Parse(hostSettings[s]));
-            HostController.RegisterInstance(mockHostController.Object);
 
             if (isHostDefault)
             {
@@ -136,16 +143,14 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Returns(new Dictionary<string, string> { { settingName, settingValue } });
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
+            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
                             .Returns((string s) => hostSettings[s]);
-            mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
+            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns((string s1, string s2) => hostSettings[s1]);
-            mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
+            this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
                             .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
-            mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
+            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                             .Returns((string s, int i) => int.Parse(hostSettings[s]));
-            HostController.RegisterInstance(mockHostController.Object);
 
             // Act
             controller.LoadPortalSettings(settings);
@@ -177,16 +182,14 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Returns(new Dictionary<string, string>());
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
+            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
                             .Returns((string s) => hostSettings[s]);
-            mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
+            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns((string s1, string s2) => hostSettings[s1]);
-            mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
+            this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
                             .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
-            mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
+            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                             .Returns((string s, int i) => int.Parse(hostSettings[s]));
-            HostController.RegisterInstance(mockHostController.Object);
 
             // Act
             controller.LoadPortalSettings(settings);
@@ -408,10 +411,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId };
             settings.ActiveTab = validTab;
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString("DefaultPortalSkin")).Returns(DefaultSkin);
-            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
-            HostController.RegisterInstance(mockHostController.Object);
+            this.mockHostController.Setup(c => c.GetString("DefaultPortalSkin")).Returns(DefaultSkin);
+            this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             var mockLocaleController = new Mock<ILocaleController>();
             mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
@@ -447,9 +448,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
-            HostController.RegisterInstance(mockHostController.Object);
+            this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
             controller.ConfigureActiveTab(settings);
@@ -476,9 +475,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
-            HostController.RegisterInstance(mockHostController.Object);
+            this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
             controller.ConfigureActiveTab(settings);
@@ -506,9 +503,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
-            HostController.RegisterInstance(mockHostController.Object);
+            this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
             controller.ConfigureActiveTab(settings);
@@ -587,9 +582,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
-            HostController.RegisterInstance(mockHostController.Object);
+            this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
             controller.ConfigureActiveTab(settings);
@@ -619,9 +612,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
 
-            var mockHostController = new Mock<IHostController>();
-            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
-            HostController.RegisterInstance(mockHostController.Object);
+            this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
             controller.ConfigureActiveTab(settings);

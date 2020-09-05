@@ -91,9 +91,9 @@ class UserTable extends Component {
             headers = [{index: 3, size: columnSizes.find(x=>x.index===3).size, header: ""}];
         }
         headers = headers.concat([
-            {index: 5, size: columnSizes.find(x=>x.index===5).size, header: Localization.get("Name.Header")},
-            {index: 10, size: columnSizes.find(x=>x.index===10).size, header: Localization.get("Email.Header")},
-            {index: 15, size: columnSizes.find(x=>x.index===15).size, header: Localization.get("Created.Header")},
+            {index: 5, size: columnSizes.find(x=>x.index===5).size, header: Localization.get("Name.Header"), isSortable: true, columnName: "DisplayName"},
+            {index: 10, size: columnSizes.find(x=>x.index===10).size, header: Localization.get("Email.Header"), isSortable: true, columnName: "Email"},
+            {index: 15, size: columnSizes.find(x=>x.index===15).size, header: Localization.get("Created.Header"), isSortable: true, columnName: "Joined"},
             {index: 25, size: columnSizes.find(x=>x.index===25).size, header:""}]);
         if (this.props.getUserColumns !== undefined  && typeof this.props.getUserColumns ==="function") {
             let extraColumns = this.props.getUserColumns();
@@ -120,7 +120,7 @@ class UserTable extends Component {
         const createUserBox = () => [<CreateUserBox key={`create-user-box-${i++}`} filter={props.filter} onCancel={this.collapse.bind(this) } appSettings={props.appSettings}/>];
         return (
             <GridCell className={styles.usersList}>
-                <HeaderRow headers={headers}/>
+                <HeaderRow headers={headers} changeSortOrder={props.changeSortOrder} currentSortAscending={props.currentSortAscending} currentSortColumn={props.currentSortColumn} />
                 <DetailRow
                     Collapse={this.toggle.bind(this) }
                     OpenCollapse={this.toggle.bind(this) }
@@ -173,6 +173,9 @@ class UserTable extends Component {
 
 UserTable.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    changeSortOrder: PropTypes.func,
+    currentSortAscending: PropTypes.bool,
+    currentSortColumn: PropTypes.string,
     getUserTabs: PropTypes.func,
     getUserTabsIcons: PropTypes.func,
     getUserColumns: PropTypes.func,

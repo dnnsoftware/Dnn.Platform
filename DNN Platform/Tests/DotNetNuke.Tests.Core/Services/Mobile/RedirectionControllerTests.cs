@@ -27,8 +27,11 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using DotNetNuke.Tests.Core.Services.ClientCapability;
     using DotNetNuke.Tests.Instance.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -111,8 +114,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 dataProviderField.SetValue(tabController, this._dataProvider.Object);
             }
-
-            
         }
 
         [TearDown]
@@ -491,6 +492,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             serviceCollection.AddTransient<INavigationManager>(container => mockNavigationManager.Object);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
 
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }

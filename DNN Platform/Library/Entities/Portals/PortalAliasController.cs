@@ -4,19 +4,17 @@
 namespace DotNetNuke.Entities.Portals
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>
@@ -27,22 +25,17 @@ namespace DotNetNuke.Entities.Portals
     /// When a request is recieved by DotNetNuke from IIS, it extracts the domain name portion and does a comparison against
     /// the list of portal aliases and then redirects to the relevant portal to load the approriate page.
     /// </remarks>
-    public partial class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>, IPortalAliasController
+    public partial class PortalAliasController : IPortalAliasService
     {
-        /// <summary>
-        /// Gets the portal alias by portal.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="portalAlias">The portal alias.</param>
-        /// <returns>Portal alias.</returns>
-        public static string GetPortalAliasByPortal(int portalId, string portalAlias)
+        /// <inheritdoc/>
+        string IPortalAliasService.GetPortalAliasByPortal(int portalId, string portalAlias)
         {
             string retValue = string.Empty;
             bool foundAlias = false;
-            PortalAliasInfo portalAliasInfo = Instance.GetPortalAlias(portalAlias, portalId);
+            PortalAliasInfo portalAliasInfo = this.GetPortalAlias(portalAlias, portalId);
             if (portalAliasInfo != null)
             {
-                retValue = portalAliasInfo.HTTPAlias;
+                retValue = portalAliasInfo.HttpAlias;
                 foundAlias = true;
             }
 
@@ -61,17 +54,17 @@ namespace DotNetNuke.Entities.Portals
                     // StartsWith because child portals are redirected to the parent portal domain name
                     // eg. child = 'www.domain.com/child' and parent is 'www.domain.com'
                     // this allows the parent domain name to resolve to the child alias ( the tabid still identifies the child portalid )
-                    string httpAlias = currentAlias.Value.HTTPAlias.ToLowerInvariant();
-                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAlias.Value.PortalID == portalId)
+                    string httpAlias = currentAlias.Value.HttpAlias.ToLowerInvariant();
+                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAlias.Value.PortalId == portalId)
                     {
-                        retValue = currentAlias.Value.HTTPAlias;
+                        retValue = currentAlias.Value.HttpAlias;
                         break;
                     }
 
                     httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
-                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAlias.Value.PortalID == portalId)
+                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAlias.Value.PortalId == portalId)
                     {
-                        retValue = currentAlias.Value.HTTPAlias;
+                        retValue = currentAlias.Value.HttpAlias;
                         break;
                     }
                 }
@@ -80,13 +73,8 @@ namespace DotNetNuke.Entities.Portals
             return retValue;
         }
 
-        /// <summary>
-        /// Gets the portal alias by tab.
-        /// </summary>
-        /// <param name="tabId">The tab ID.</param>
-        /// <param name="portalAlias">The portal alias.</param>
-        /// <returns>Portal alias.</returns>
-        public static string GetPortalAliasByTab(int tabId, string portalAlias)
+        /// <inheritdoc/>
+        string IPortalAliasService.GetPortalAliasByTab(int tabId, string portalAlias)
         {
             string retValue = Null.NullString;
             int intPortalId = -2;
@@ -118,15 +106,10 @@ namespace DotNetNuke.Entities.Portals
             return retValue;
         }
 
-        /// <summary>
-        /// Validates the alias.
-        /// </summary>
-        /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="ischild">if set to <c>true</c> [ischild].</param>
-        /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
-        public static bool ValidateAlias(string portalAlias, bool ischild)
+        /// <inheritdoc />
+        bool IPortalAliasService.ValidateAlias(string portalAlias, bool isChild)
         {
-            if (ischild)
+            if (isChild)
             {
                 return ValidateAlias(portalAlias, true, false);
             }
@@ -141,13 +124,14 @@ namespace DotNetNuke.Entities.Portals
             return false;
         }
 
-        public int AddPortalAlias(PortalAliasInfo portalAlias)
+        /// <inheritdoc />
+        int IPortalAliasService.AddPortalAlias(IPortalAliasInfo portalAlias)
         {
             // Add Alias
             var dataProvider = DataProvider.Instance();
             int Id = dataProvider.AddPortalAlias(
-                portalAlias.PortalID,
-                portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
+                portalAlias.PortalId,
+                portalAlias.HttpAlias.ToLowerInvariant().Trim('/'),
                 portalAlias.CultureCode,
                 portalAlias.Skin,
                 portalAlias.BrowserType.ToString(),
@@ -163,77 +147,61 @@ namespace DotNetNuke.Entities.Portals
             return Id;
         }
 
-        public void DeletePortalAlias(PortalAliasInfo portalAlias)
+        /// <inheritdoc />
+        void IPortalAliasService.DeletePortalAlias(IPortalAliasInfo portalAlias)
         {
             // Delete Alias
-            DataProvider.Instance().DeletePortalAlias(portalAlias.PortalAliasID);
+            DataProvider.Instance().DeletePortalAlias(portalAlias.PortalAliasId);
 
             // Log Event
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_DELETED);
 
             // clear portal alias cache
-            ClearCache(false, portalAlias.PortalID);
+            ClearCache(false, portalAlias.PortalId);
         }
 
-        public PortalAliasInfo GetPortalAlias(string alias)
-        {
-            return this.GetPortalAliasInternal(alias);
-        }
+        /// <inheritdoc />
+        IPortalAliasInfo IPortalAliasService.GetPortalAlias(string alias) =>
+            this.GetPortalAliasInternal(alias);
 
-        /// <summary>
-        /// Gets the portal alias.
-        /// </summary>
-        /// <param name="alias">The portal alias.</param>
-        /// <param name="portalId">The portal ID.</param>
-        /// <returns>Portal Alias Info.</returns>
-        public PortalAliasInfo GetPortalAlias(string alias, int portalId)
-        {
-            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && pa.Value.PortalID == portalId).Value;
-        }
+        /// <inheritdoc />
+        IPortalAliasInfo IPortalAliasService.GetPortalAlias(string alias, int portalId) =>
+            this.GetPortalAliasesInternal()
+                .SingleOrDefault(portalAliasInfo => portalAliasInfo.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && portalAliasInfo.Value.PortalID == portalId).Value;
 
-        /// <summary>
-        /// Gets the portal alias by portal alias ID.
-        /// </summary>
-        /// <param name="portalAliasId">The portal alias ID.</param>
-        /// <returns>Portal alias info.</returns>
-        public PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId)
-        {
-            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Value.PortalAliasID == portalAliasId).Value;
-        }
+        /// <inheritdoc />
+        IPortalAliasInfo IPortalAliasService.GetPortalAliasByPortalAliasId(int portalAliasId) =>
+            this.GetPortalAliasesInternal()
+                .SingleOrDefault(portalAliasInfo => portalAliasInfo.Value.PortalAliasId == portalAliasId).Value;
 
-        public PortalAliasCollection GetPortalAliases()
+        /// <inheritdoc />
+        IDictionary<string, IPortalAliasInfo> IPortalAliasService.GetPortalAliases()
         {
-            var aliasCollection = new PortalAliasCollection();
+            var aliasCollection = new Dictionary<string, IPortalAliasInfo>();
             foreach (var alias in this.GetPortalAliasesInternal().Values)
             {
-                aliasCollection.Add(alias.HTTPAlias, alias);
+                aliasCollection.Add(alias.HttpAlias, alias);
             }
 
             return aliasCollection;
         }
 
-        public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId)
-        {
-            return this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalID == portalId).ToList();
-        }
+        /// <inheritdoc />
+        IEnumerable<IPortalAliasInfo> IPortalAliasService.GetPortalAliasesByPortalId(int portalId) =>
+            this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalId == portalId).ToList();
 
-        /// <summary>
-        /// Gets the portal by portal alias ID.
-        /// </summary>
-        /// <param name="PortalAliasId">The portal alias id.</param>
-        /// <returns>Portal info.</returns>
-        public PortalInfo GetPortalByPortalAliasID(int PortalAliasId)
-        {
-            return CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(PortalAliasId));
-        }
+        /// <inheritdoc />
+        IPortalInfo IPortalAliasService.GetPortalByPortalAliasId(int portalAliasId) =>
+            CBO.FillObject<PortalInfo>(DataProvider.Instance().GetPortalByPortalAliasID(portalAliasId));
 
-        public void UpdatePortalAlias(PortalAliasInfo portalAlias)
+        /// <inheritdoc />
+        void IPortalAliasService.UpdatePortalAlias(IPortalAliasInfo portalAlias)
         {
             // Update Alias
             DataProvider.Instance().UpdatePortalAliasInfo(
-                portalAlias.PortalAliasID,
-                portalAlias.PortalID,
-                portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
+                portalAlias.PortalAliasId,
+                portalAlias.PortalId,
+                portalAlias.HttpAlias.ToLowerInvariant().Trim('/'),
                 portalAlias.CultureCode,
                 portalAlias.Skin,
                 portalAlias.BrowserType.ToString(),
@@ -255,12 +223,12 @@ namespace DotNetNuke.Entities.Portals
                 DataCache.PortalAliasCacheTimeOut,
                 DataCache.PortalAliasCachePriority),
                 c =>
-                                                                {
-                                                                    var dic = CBO.FillDictionary<string, PortalAliasInfo>(
-                                                                        "HTTPAlias",
-                                                                        DataProvider.Instance().GetPortalAliases());
-                                                                    return dic.Keys.ToDictionary(key => key.ToLowerInvariant(), key => dic[key]);
-                                                                },
+                {
+                    var dic = CBO.FillDictionary<string, PortalAliasInfo>(
+                        "HTTPAlias",
+                        DataProvider.Instance().GetPortalAliases());
+                    return dic.Keys.ToDictionary(key => key.ToLowerInvariant(), key => dic[key]);
+                },
                 true);
         }
 
@@ -285,7 +253,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void LogEvent(PortalAliasInfo portalAlias, EventLogController.EventLogType logType)
+        private static void LogEvent(IPortalAliasInfo portalAlias, EventLogController.EventLogType logType)
         {
             int userId = UserController.Instance.GetCurrentUserInfo().UserID;
             EventLogController.Instance.AddLog(portalAlias, PortalController.Instance.GetCurrentPortalSettings(), userId, string.Empty, logType);
@@ -307,17 +275,17 @@ namespace DotNetNuke.Entities.Portals
             return portalAlias.All(c => validChars.Contains(c.ToString()));
         }
 
-        private PortalAliasInfo GetPortalAliasLookupInternal(string alias)
+        private IPortalAliasInfo GetPortalAliasLookupInternal(string alias)
         {
             return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias).Value;
         }
 
-        private PortalAliasInfo GetPortalAliasInternal(string httpAlias)
+        private IPortalAliasInfo GetPortalAliasInternal(string httpAlias)
         {
             string strPortalAlias;
 
             // try the specified alias first
-            PortalAliasInfo portalAlias = this.GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
+            IPortalAliasInfo portalAlias = this.GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
 
             // domain.com and www.domain.com should be synonymous
             if (portalAlias == null)

@@ -184,16 +184,16 @@
     <value>Controle van machtiging op mappen en bestanden</value>
   </data>
   <data name="FileAndFolderPermissionCheckFailed.Text" xml:space="preserve">
-    <value>&amp;lt;div class="permission"&amp;gt;&amp;lt;img alt=afbeelding geeft de beveiligingsintellingen van de hoofdfolder van de website weer, Dit moet zijn Lezen, Schrijven en Wijzingen voor de ASPNET of NT AUTHORITY/NETWORK SERVICE accounts." src="..\403-3.gif" align="right" hspace="10"/&amp;gt;
+    <value>&amp;lt;div class="permission"&amp;gt;&amp;lt;img alt=afbeelding geeft de beveiligingsintellingen van de hoofdfolder van de website weer, Dit moet zijn Lezen, Schrijven en Wijzigen voor de ASPNET of NT AUTHORITY/NETWORK SERVICE accounts." src="..\403-3.gif" align="right" hspace="10"/&amp;gt;
 &amp;lt;p&amp;gt;&amp;lt;b&amp;gt;&amp;lt;font color='red'&amp;gt;De website voldoet niet aan de beveiligingscheck&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;
-Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ). Rechter muis klik op de  folder en selecteer delen en beveiliging uit het popup menu. selecteer de beveiligings tab. Voeg de vereiste gebruikers toe en stel de juiste rechten in.
+Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ). Rechtermuisklik op de  folder en selecteer Delen en Beveiliging in het popupmenu. Selecteer de beveiligingstab. Voeg de vereiste gebruikers toe en stel de juiste rechten in.
 &amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
 &amp;lt;h3&amp;gt;Bij gebruik van Windows 2000 - IIS5&amp;lt;/h3&amp;gt;
-&amp;lt;p&amp;gt;De ASPNET User Account moet Lees, Schrijf, en wijzing rechten hebben op de hoofdfolder van uw website&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;De ASPNET User Account moet Lees, Schrijf, en Wijzigrechten hebben op de hoofdfolder van uw website&amp;lt;/p&amp;gt;
 &amp;lt;h3&amp;gt;Bij gebruik van Windows 2003, Windows Vista of Windows Server 2008 en  IIS6 of IIS7&amp;lt;/h3&amp;gt;
-&amp;lt;p&amp;gt;De NT AUTHORITY\NETWORK SERVICE User Account moet lees, Schrijf, en Wijzing rechten hebben op de hoofd folder van uw website.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;De NT AUTHORITY\NETWORK SERVICE User Account moet Lees, Schrijf en Wijzigrechten hebben op de hoofdfolder van uw website.&amp;lt;/p&amp;gt;
 &amp;lt;h3&amp;gt;Bij gebruik van Windows 7 of Windows Server 2008 R2 en  IIS7.5&amp;lt;/h3&amp;gt;
-&amp;lt;p&amp;gt;Moet de IIS AppPool\DefaultAppPool User Account Lees, Schrijf, en Wijzig rechten hebben op de hoofd folder van uw website.&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a class="dnnPrimaryAction" href=""&amp;gt;Recheck&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;</value>
+&amp;lt;p&amp;gt;Moet de IIS AppPool\DefaultAppPool User Account Lees, Schrijf en Wijzigrechten hebben op de hoofdfolder van uw website.&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a class="dnnPrimaryAction" href=""&amp;gt;Recheck&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;</value>
   </data>
   <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
     <value>Controleren van machtiging op mappen en bestanden</value>
@@ -319,13 +319,13 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value>Start installatie</value>
   </data>
   <data name="LegacyLangaugePack.Text" xml:space="preserve">
-    <value>Dit taalpakket is ouder dan de huidige applicatie versie: </value>
+    <value>Dit taalpakket is ouder dan de huidige applicatieversie: </value>
   </data>
   <data name="LicenseActivation.Text" xml:space="preserve">
     <value>Activeren van de licentie</value>
   </data>
   <data name="NoErrorsLogged.Text" xml:space="preserve">
-    <value>Er zijn geen installatie errors gelogd</value>
+    <value>Er zijn geen installatiefouten gelogd</value>
   </data>
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Geen installatielog</value>
