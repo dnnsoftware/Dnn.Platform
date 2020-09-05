@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Content
 {
     using System;
     using System.Linq;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -13,6 +14,7 @@ namespace DotNetNuke.Tests.Content
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Tests.Content.Mocks;
@@ -39,6 +41,7 @@ namespace DotNetNuke.Tests.Content
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             Mock<IVocabularyController> vocabularyController = MockHelper.CreateMockVocabularyController();

@@ -220,6 +220,7 @@ namespace Dnn.ExportImport.Components.Services
 
                         // this is not saved when adding the tab; so set it explicitly
                         localTab.IsVisible = otherTab.IsVisible;
+                        localTab.IsDeleted = otherTab.IsDeleted;
                         EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
 
                         // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
