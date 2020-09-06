@@ -279,4 +279,7 @@
   <data name="InvalidExtensionMessage.Text" xml:space="preserve">
     <value> is not of a type that is allowed to be uploaded</value>
   </data>
+  <data name="ManageFolderTypes.Text" xml:space="preserve">
+    <value>Manage Folder Types</value>
+  </data>
 </root>
