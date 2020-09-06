@@ -8,7 +8,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;

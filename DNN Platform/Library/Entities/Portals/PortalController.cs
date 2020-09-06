@@ -16,6 +16,8 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml.Linq;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -41,9 +43,9 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
+
     using ICSharpCode.SharpZipLib.Zip;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;

@@ -36,6 +36,7 @@ namespace DotNetNuke
             services.AddScoped<IApplicationStatusInfo, ApplicationStatusInfo>();
 
             services.AddScoped<IPortalAliasService, PortalAliasController>();
+            services.AddScoped<IPortalSettingsManager, PortalSettingsManager>();
         }
     }
 }

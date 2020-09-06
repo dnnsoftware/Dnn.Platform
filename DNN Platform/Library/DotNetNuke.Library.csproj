@@ -224,6 +224,8 @@
     <Compile Include="Entities\Portals\IPortalSettingHandlers.cs" />
     <Compile Include="Entities\Portals\IPortalTemplateEventHandlers.cs" />
     <Compile Include="Entities\Portals\PortalAliasExtensions.cs" />
+    <Compile Include="Entities\Portals\PortalSettingsManager.cs" />
+    <Compile Include="Entities\Portals\PortalSettingsService.cs" />
     <Compile Include="Entities\Portals\PortalSettingUpdatedEventArgs.cs" />
     <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
     <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
