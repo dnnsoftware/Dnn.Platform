@@ -106,9 +106,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var mappings = FolderMappingController.Instance.GetFolderMappings(
                 isSuperTab && UserInfo.IsSuperUser ? Null.NullInteger : PortalSettings.PortalId);
-
-            var moduleControl = ModuleControlFactory.CreateModuleControl(this.ActiveModule) as IModuleControl;
-            var moduleContext = new ModuleInstanceContext(moduleControl);
+            var moduleContext = GetModuleContext();
 
             var r = from m in mappings
                     select new
@@ -118,16 +116,33 @@ namespace Dnn.Modules.ResourceManager.Services
                         m.FolderProviderType,
                         IsDefault =
                         (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database"),
-                        editUrl = moduleContext.EditUrl("ItemID", m.FolderMappingID.ToString(), "EditFolderMapping", "mid", this.ActiveModule.ModuleID.ToString()),
-                        //editUrl = this._navigationManager.NavigateURL(
-                        //    this.ActiveModule.TabID,
-                        //    "EditFolderMapping",
-                        //    "mid=" + this.ActiveModule.ModuleID,
-                        //    "popUp=true",
-                        //    "ItemID=" + m.FolderMappingID.ToString()),
-        };
+                        editUrl = UserInfo.IsAdmin ?
+                            moduleContext.EditUrl(
+                                "ItemID",
+                                m.FolderMappingID.ToString(),
+                                "EditFolderMapping",
+                                "mid",
+                                this.ActiveModule.ModuleID.ToString())
+                            :
+                            "",
+                    };
 
             return Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+        [HttpGet]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Admin)]
+        public HttpResponseMessage GetAddFolderTypeUrl()
+        {
+            var moduleContext = GetModuleContext();
+            return Request.CreateResponse(
+                HttpStatusCode.OK,
+                moduleContext.EditUrl(
+                    "ItemID",
+                    "-1",
+                    "EditFolderMapping",
+                    "mid",
+                    this.ActiveModule.ModuleID.ToString()));
         }
 
         [HttpPost]
@@ -388,6 +403,12 @@ namespace Dnn.Modules.ResourceManager.Services
                 thumbnailAvailable = thumbnailsManager.ThumbnailAvailable(file.FileName),
                 thumbnailUrl = thumbnailsManager.ThumbnailUrl(ActiveModule.ModuleID, file.FileId, 110, 110)
             };
+        }
+
+        private ModuleInstanceContext GetModuleContext()
+        {
+            var moduleControl = ModuleControlFactory.CreateModuleControl(this.ActiveModule) as IModuleControl;
+            return new ModuleInstanceContext(moduleControl);
         }
         #endregion
     }

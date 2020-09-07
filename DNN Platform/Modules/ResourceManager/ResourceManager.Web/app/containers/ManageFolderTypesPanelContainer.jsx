@@ -12,6 +12,7 @@ class ManageFolderTypesPanelContainer extends React.Component {
     constructor(props) {
         super(props);
         this.props.loadFolderMappings();
+        this.props.getAddFolderTypeUrl();
     }
 
     handleConfirmRemoveFolderType(e, folderTypeMappingId) {
@@ -32,6 +33,7 @@ class ManageFolderTypesPanelContainer extends React.Component {
             hidePanel,
             folderTypes,
             isAdmin,
+            addFolderTypeUrl,
         } = this.props;
         
         return isAdmin && expanded ? (
@@ -81,7 +83,12 @@ class ManageFolderTypesPanelContainer extends React.Component {
                     </div>
 
                     <div className="save">
-                        <a className="rm-button primary">{localizeService.getString("AddFolderType")}</a>
+                        <a
+                            className="rm-button primary"
+                            href={addFolderTypeUrl}
+                        >
+                                {localizeService.getString("AddFolderType")}
+                        </a>
                     </div>
 
                     <div className="rm-clear"></div>
@@ -99,6 +106,8 @@ ManageFolderTypesPanelContainer.propTypes = {
     removeFolderType: PropTypes.func,
     openDialog: PropTypes.func,
     closeDialog: PropTypes.func,
+    getAddFolderTypeUrl: PropTypes.func,
+    addFolderTypeUrl: PropTypes.string,
 };
 
 function mapStateToProps(state) {
@@ -111,6 +120,7 @@ function mapStateToProps(state) {
         expanded: manageFolderTypesPanelState.expanded,
         isAdmin: module.isAdmin,
         folderTypes: addFolderPanelState.folderMappings,
+        addFolderTypeUrl: manageFolderTypesPanelState.addFolderTypeUrl,
         folderPanelState
     };
 }
@@ -122,7 +132,8 @@ function mapDispatchToProps(dispatch) {
             loadFolderMappings: addFolderPanelActions.loadFolderMappings,
             removeFolderType: manageFolderTypesPanelActions.removeFolderType,
             openDialog: dialogModalActions.open,
-            closeDialog: dialogModalActions.close
+            closeDialog: dialogModalActions.close,
+            getAddFolderTypeUrl: manageFolderTypesPanelActions.getAddFolderTypeUrl,
         }, dispatch)
     };
 }

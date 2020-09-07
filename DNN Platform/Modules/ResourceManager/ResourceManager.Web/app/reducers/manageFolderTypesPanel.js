@@ -12,6 +12,8 @@ export default function manageFolderTypesPanelReducer(state = initialState, acti
         case folderPanelActionTypes.CLOSE_TOP_PANELS:
         case manageFolderTypesPanelActionTypes.HIDE_MANAGE_FOLDER_TYPES_PANEL:
             return { ...state, expanded: false };
+        case manageFolderTypesPanelActionTypes.ADD_FOLDER_TYPE_URL_LOADED:
+            return { ...state, addFolderTypeUrl: action.data };
     }
 
     return state;

@@ -32,6 +32,17 @@ const manageFolderTypesPanelActions = {
             );
         }
     },
+    getAddFolderTypeUrl() {
+        return dispatch => {
+            ItemsService.getAddFolderTypeUrl()
+            .then(data => {
+                dispatch({
+                    type: actionTypes.ADD_FOLDER_TYPE_URL_LOADED,
+                    data
+                });
+            });
+        }
+    }
 };
 
 export default manageFolderTypesPanelActions;

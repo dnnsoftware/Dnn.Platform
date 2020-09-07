@@ -14,6 +14,7 @@ const SEARCH_FILES_ENDPOINT = "Items/Search";
 const SAVE_FILE_DETAILS_ENDPOINT = "Items/SaveFileDetails";
 const SAVE_FOLDER_DETAILS_ENDPOINT = "Items/SaveFolderDetails";
 const REMOVE_FOLDER_TYPE_ENDPOINT = "Items/RemoveFolderType";
+const ADD_FOLDER_TYPE_URL_ENDPOINT = "Items/GetAddFolderTypeUrl";
 
 function getUrl(endpoint, ignoreCurrentModuleAPI=false) {
     return api.getServiceRoot(ignoreCurrentModuleAPI) + endpoint;
@@ -110,6 +111,10 @@ function removeFolderType(folderMappingId) {
     return api.postPrimitive(getUrl(REMOVE_FOLDER_TYPE_ENDPOINT), folderMappingId.toString());
 }
 
+function getAddFolderTypeUrl() {
+    return api.get(getUrl(ADD_FOLDER_TYPE_URL_ENDPOINT))
+}
+
 export default {
     getContent,
     getDownloadUrl,
@@ -127,4 +132,5 @@ export default {
     saveFileDetails,
     saveFolderDetails,
     removeFolderType,
+    getAddFolderTypeUrl,
 };
