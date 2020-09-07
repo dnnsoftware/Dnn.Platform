@@ -15,8 +15,6 @@ const SAVE_FILE_DETAILS_ENDPOINT = "Items/SaveFileDetails";
 const SAVE_FOLDER_DETAILS_ENDPOINT = "Items/SaveFolderDetails";
 const REMOVE_FOLDER_TYPE_ENDPOINT = "Items/RemoveFolderType";
 
-let folderMappings;
-
 function getUrl(endpoint, ignoreCurrentModuleAPI=false) {
     return api.getServiceRoot(ignoreCurrentModuleAPI) + endpoint;
 }
@@ -34,13 +32,8 @@ function getDownloadUrl(fileId) {
 }
 
 function loadFolderMappings() {
-    if (folderMappings) {
-        return Promise.resolve(folderMappings);
-    }
-
     return (api.get(getUrl(LOAD_FOLDER_MAPPINGS_ENDPOINT)))
         .then(response => {
-            folderMappings = response;
             return response;
         });
 }

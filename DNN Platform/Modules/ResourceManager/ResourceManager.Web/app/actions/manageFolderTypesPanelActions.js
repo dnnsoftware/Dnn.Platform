@@ -1,6 +1,6 @@
 import actionTypes from "../action types/manageFolderTypesPanelActionsTypes";
 import folderPanelActionTypes from "../action types/folderPanelActionsTypes";
-import addFolderActionTypes from "../action types/addFolderPanelActionsTypes";
+import addFolderPanelActions from "../actions/addFolderPanelActions";
 import ItemsService from "../services/itemsService";
 
 const manageFolderTypesPanelActions = {
@@ -26,19 +26,10 @@ const manageFolderTypesPanelActions = {
         return (dispatch) => {
             ItemsService.removeFolderType(folderMappingId)
             .then(
-                ItemsService.loadFolderMappings()
-                .then(response => {
-                    dispatch({
-                        type: addFolderActionTypes.FOLDER_MAPPINGS_LOADED,
-                        date: response
-                    });
-                })
-                .catch(() => {
-                    dispatch({
-                        type: addFolderActionTypes.LOAD_FOLDER_MAPPINGS_ERROR,
-                    })
-                })
-            )
+                () => {
+                    dispatch(addFolderPanelActions.loadFolderMappings());
+                }
+            );
         }
     },
 };

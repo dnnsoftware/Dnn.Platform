@@ -6,10 +6,23 @@ import localizeService from "../services/localizeService";
 import manageFolderTypesPanelActions from "../actions/manageFolderTypesPanelActions";
 import { SvgIcons }  from "@dnnsoftware/dnn-react-common";
 import addFolderPanelActions from "../actions/addFolderPanelActions";
+import dialogModalActions from "../actions/dialogModalActions";
 
 class ManageFolderTypesPanelContainer extends React.Component {
     constructor(props) {
         super(props);
+        this.props.loadFolderMappings();
+    }
+
+    handleConfirmRemoveFolderType(e, folderTypeMappingId) {
+        e.preventDefault();
+        let dialogHeader = localizeService.getString("RemoveFolderTypeDialogHeader");
+        let dialogBody = localizeService.getString("RemoveFolderTypeDialogBody");
+        this.props.openDialog(dialogHeader, dialogBody, () => this.handleRemoveFolderType(folderTypeMappingId), this.props.closeDialog);
+    }
+    
+    handleRemoveFolderType(folderTypeMappingId) {
+        this.props.removeFolderType(folderTypeMappingId);
         this.props.loadFolderMappings();
     }
 
@@ -19,7 +32,6 @@ class ManageFolderTypesPanelContainer extends React.Component {
             hidePanel,
             folderTypes,
             isAdmin,
-            removeFolderType
         } = this.props;
         
         return isAdmin && expanded ? (
@@ -53,7 +65,7 @@ class ManageFolderTypesPanelContainer extends React.Component {
                                                 <button 
                                                     title={localizeService.getString("RemoveFolderType")}
                                                     dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}
-                                                    onClick={() => removeFolderType(folderType.FolderMappingID)}
+                                                    onClick={e => this.handleConfirmRemoveFolderType(e, folderType.FolderMappingID)}
                                                 />
                                             }
                                         </td>
@@ -84,6 +96,8 @@ ManageFolderTypesPanelContainer.propTypes = {
     isAdmin: PropTypes.bool,
     loadFolderMappings: PropTypes.func,
     removeFolderType: PropTypes.func,
+    openDialog: PropTypes.func,
+    closeDialog: PropTypes.func,
 };
 
 function mapStateToProps(state) {
@@ -106,6 +120,8 @@ function mapDispatchToProps(dispatch) {
             hidePanel: manageFolderTypesPanelActions.hidePanel,
             loadFolderMappings: addFolderPanelActions.loadFolderMappings,
             removeFolderType: manageFolderTypesPanelActions.removeFolderType,
+            openDialog: dialogModalActions.open,
+            closeDialog: dialogModalActions.close
         }, dispatch)
     };
 }
