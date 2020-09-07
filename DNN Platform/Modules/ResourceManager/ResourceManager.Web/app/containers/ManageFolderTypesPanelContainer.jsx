@@ -4,10 +4,13 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import localizeService from "../services/localizeService";
 import manageFolderTypesPanelActions from "../actions/manageFolderTypesPanelActions";
+import { SvgIcons }  from "@dnnsoftware/dnn-react-common";
+import addFolderPanelActions from "../actions/addFolderPanelActions";
 
 class ManageFolderTypesPanelContainer extends React.Component {
     constructor(props) {
         super(props);
+        this.props.loadFolderMappings();
     }
 
     render() {
@@ -15,13 +18,55 @@ class ManageFolderTypesPanelContainer extends React.Component {
             expanded,
             hidePanel,
             folderTypes,
-            manageFolderTypesState,
             isAdmin,
         } = this.props;
-
-        return isAdmin ? (
+        return isAdmin && expanded ? (
                 <div className={"top-panel manage-folder-types" + (expanded ? " rm-expanded" : "")} >
-                    <p>Test</p>
+                    <h3>{localizeService.getString("FolderTypeDefinitions")}</h3>
+                    <table className="folder-types">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>{localizeService.getString("Name")}</th>
+                                <th>{localizeService.getString("FolderProvider")}</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {folderTypes && folderTypes.map(folderType => {
+                                return (
+                                    <tr key={folderType.FolderMappingID}>
+                                        <td>
+                                            {!folderType.IsDefault &&
+                                                <button 
+                                                    dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
+                                                />
+                                            }
+                                        </td>
+                                        <td>{folderType.MappingName}</td>
+                                        <td>{folderType.FolderProviderType}</td>
+                                        <td>
+                                            {!folderType.IsDefault &&
+                                                <button 
+                                                    dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}
+                                                />
+                                            }
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+
+                    <div className="cancel">
+                    <a className="rm-button secondary" onClick={hidePanel}>{localizeService.getString("Cancel")}</a>
+                    </div>
+
+                    <div className="save">
+                        <a className="rm-button primary">{localizeService.getString("AddFolderType")}</a>
+                    </div>
+
+                    <div className="rm-clear"></div>
                 </div>
         ) : null;
     }
@@ -31,18 +76,21 @@ ManageFolderTypesPanelContainer.propTypes = {
     expanded: PropTypes.bool,
     hidePanel: PropTypes.func,
     folderTypes: PropTypes.array,
-    manageFolderTypesState: PropTypes.object,
     isAdmin: PropTypes.bool,
+    loadFolderMappings: PropTypes.func,
 };
 
 function mapStateToProps(state) {
     const folderPanelState = state.folderPanel;
     const manageFolderTypesPanelState = state.manageFolderTypesPanel;
+    const addFolderPanelState = state.addFolderPanel;
     const module = state.module;
 
     return {
         expanded: manageFolderTypesPanelState.expanded,
         isAdmin: module.isAdmin,
+        folderTypes: addFolderPanelState.folderMappings,
+        folderPanelState
     };
 }
 
@@ -50,6 +98,7 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators({
             hidePanel: manageFolderTypesPanelActions.hidePanel,
+            loadFolderMappings: addFolderPanelActions.loadFolderMappings,
         }, dispatch)
     };
 }

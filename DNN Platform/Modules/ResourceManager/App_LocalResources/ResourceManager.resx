@@ -282,4 +282,13 @@
   <data name="ManageFolderTypes.Text" xml:space="preserve">
     <value>Manage Folder Types</value>
   </data>
+  <data name="AddFolderType.Text" xml:space="preserve">
+    <value>Add Folder Type</value>
+  </data>
+  <data name="FolderProvider.Text" xml:space="preserve">
+    <value>Folder Provider</value>
+  </data>
+  <data name="FolderTypeDefinitions.Text" xml:space="preserve">
+    <value>Folder Type Definitions</value>
+  </data>
 </root>

@@ -107,6 +107,7 @@ namespace Dnn.Modules.ResourceManager.Services
                     {
                         m.FolderMappingID,
                         m.MappingName,
+                        m.FolderProviderType,
                         IsDefault =
                         (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database")
                     };
