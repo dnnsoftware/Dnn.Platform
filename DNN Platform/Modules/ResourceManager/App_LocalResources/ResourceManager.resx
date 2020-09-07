@@ -301,6 +301,6 @@
     <value>Are you sure you want to remove this folder type?</value>
   </data>
   <data name="RemoveFolderTypeDialogHeader.Text" xml:space="preserve">
-    <value>Remove folder type</value>
+    <value>Remove Folder Type</value>
   </data>
 </root>
