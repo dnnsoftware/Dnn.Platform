@@ -52,9 +52,10 @@ class ManageFolderTypesPanelContainer extends React.Component {
                                     <tr key={folderType.FolderMappingID}>
                                         <td>
                                             {!folderType.IsDefault &&
-                                                <button 
+                                                <a 
                                                     title={localizeService.getString("EditFolderType")}
                                                     dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
+                                                    href={folderType.editUrl}
                                                 />
                                             }
                                         </td>

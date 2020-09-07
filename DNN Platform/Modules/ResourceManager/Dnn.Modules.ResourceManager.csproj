@@ -44,6 +44,14 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
@@ -97,6 +105,13 @@
     <Compile Include="Components\SearchController.cs" />
     <Compile Include="Components\SettingsManager.cs" />
     <Compile Include="Components\ThumbnailsManager.cs" />
+    <Compile Include="EditFolderMapping.ascx.cs">
+      <DependentUpon>EditFolderMapping.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditFolderMapping.ascx.designer.cs">
+      <DependentUpon>EditFolderMapping.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Exceptions\FolderPermissionNotMetException.cs" />
     <Compile Include="Exceptions\ModeValidationException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
@@ -133,6 +148,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EditFolderMapping.ascx" />
     <Content Include="Images\arrow_forward.svg" />
     <Content Include="Images\checkmark.svg" />
     <Content Include="Images\clipboard.svg" />
@@ -190,9 +206,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.ModulePipeline\DotNetNuke.ModulePipeline.csproj">
+      <Project>{c4823821-cfb3-4394-851f-e39d0974efbd}</Project>
+      <Name>DotNetNuke.ModulePipeline</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
@@ -216,6 +240,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.build" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\EditFolderMapping.ascx.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -2,22 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.DigitalAssets
+using System;
+using System.Linq;
+using System.Web.UI.WebControls;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins.Controls;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Dnn.Modules.ResourceManager
 {
-    using System;
-    using System.Linq;
-
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.FileSystem.Internal;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Skins.Controls;
-    using Microsoft.Extensions.DependencyInjection;
-
     public partial class EditFolderMapping : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
@@ -64,7 +63,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
 
             this.UpdateButton.Text = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("Add") : Localization.GetString("Update", this.LocalResourceFile);
-            this.CancelHyperLink.NavigateUrl = this._navigationManager.NavigateURL(this.TabId);
+            this.CancelHyperLink.NavigateUrl = this._navigationManager.NavigateURL();
 
             var controlTitle = Localization.GetString("ControlTitle", this.LocalResourceFile);
             var controlTitlePrefix = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("New") : Localization.GetString("Edit");
@@ -103,7 +102,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
             catch (Exception exc)
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -188,18 +187,18 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
                 catch
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DuplicateMappingName", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DuplicateMappingName", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     return;
                 }
 
                 if (!this.Response.IsRequestBeingRedirected)
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId));
+                    this.Response.Redirect(this._navigationManager.NavigateURL());
                 }
             }
             catch (Exception exc)
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -209,10 +208,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             foreach (var provider in FolderProvider.GetProviderList().Keys.Where(provider => !defaultProviders.Contains(provider)).OrderBy(provider => provider))
             {
-                this.FolderProvidersComboBox.AddItem(provider, provider);
+                this.FolderProvidersComboBox.Items.Add(new ListItem(provider, provider));
             }
 
-            this.FolderProvidersComboBox.InsertItem(0, string.Empty, string.Empty);
+            this.FolderProvidersComboBox.Items.Insert(0, new ListItem(string.Empty, string.Empty));
         }
 
         private void BindFolderMapping()

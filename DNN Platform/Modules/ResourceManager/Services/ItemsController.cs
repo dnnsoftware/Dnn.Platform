@@ -23,6 +23,9 @@ using Dnn.Modules.ResourceManager.Helpers;
 using Dnn.Modules.ResourceManager.Services.Attributes;
 using Dnn.Modules.ResourceManager.Services.Dto;
 using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
+using DotNetNuke.Abstractions;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.ModulePipeline;
 
 namespace Dnn.Modules.ResourceManager.Services
 {
@@ -104,6 +107,9 @@ namespace Dnn.Modules.ResourceManager.Services
             var mappings = FolderMappingController.Instance.GetFolderMappings(
                 isSuperTab && UserInfo.IsSuperUser ? Null.NullInteger : PortalSettings.PortalId);
 
+            var moduleControl = ModuleControlFactory.CreateModuleControl(this.ActiveModule) as IModuleControl;
+            var moduleContext = new ModuleInstanceContext(moduleControl);
+
             var r = from m in mappings
                     select new
                     {
@@ -111,8 +117,15 @@ namespace Dnn.Modules.ResourceManager.Services
                         m.MappingName,
                         m.FolderProviderType,
                         IsDefault =
-                        (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database")
-                    };
+                        (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database"),
+                        editUrl = moduleContext.EditUrl("ItemID", m.FolderMappingID.ToString(), "EditFolderMapping", "mid", this.ActiveModule.ModuleID.ToString()),
+                        //editUrl = this._navigationManager.NavigateURL(
+                        //    this.ActiveModule.TabID,
+                        //    "EditFolderMapping",
+                        //    "mid=" + this.ActiveModule.ModuleID,
+                        //    "popUp=true",
+                        //    "ItemID=" + m.FolderMappingID.ToString()),
+        };
 
             return Request.CreateResponse(HttpStatusCode.OK, r);
         }

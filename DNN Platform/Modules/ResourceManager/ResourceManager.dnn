@@ -70,6 +70,17 @@
                     <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
+                  <moduleControl>
+                    <controlKey>EditFolderMapping</controlKey>
+                    <controlSrc>DesktopModules/ResourceManager/EditFolderMapping.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle>Edit Folder Mapping</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile/>
+                    <helpUrl/>
+                    <viewOrder>0</viewOrder>
+                    <supportsPopUps>True</supportsPopUps>
+                  </moduleControl>
                 </moduleControls>
               </moduleDefinition>
             </moduleDefinitions>
