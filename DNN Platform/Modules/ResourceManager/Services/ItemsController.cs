@@ -35,6 +35,8 @@ namespace Dnn.Modules.ResourceManager.Services
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     public class ItemsController : DnnApiController
     {
+        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
+
         [HttpGet]
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting)
         {
@@ -113,6 +115,15 @@ namespace Dnn.Modules.ResourceManager.Services
                     };
 
             return Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+        [HttpPost]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Admin)]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RemoveFolderType([FromBody] int folderMappingId)
+        {
+            this._folderMappingController.DeleteFolderMapping(PortalSettings.PortalId, folderMappingId);
+            return Request.CreateResponse(HttpStatusCode.OK, folderMappingId);
         }
 
         [HttpPost]

@@ -19,7 +19,9 @@ class ManageFolderTypesPanelContainer extends React.Component {
             hidePanel,
             folderTypes,
             isAdmin,
+            removeFolderType
         } = this.props;
+        
         return isAdmin && expanded ? (
                 <div className={"top-panel manage-folder-types" + (expanded ? " rm-expanded" : "")} >
                     <h3>{localizeService.getString("FolderTypeDefinitions")}</h3>
@@ -39,6 +41,7 @@ class ManageFolderTypesPanelContainer extends React.Component {
                                         <td>
                                             {!folderType.IsDefault &&
                                                 <button 
+                                                    title={localizeService.getString("EditFolderType")}
                                                     dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
                                                 />
                                             }
@@ -48,7 +51,9 @@ class ManageFolderTypesPanelContainer extends React.Component {
                                         <td>
                                             {!folderType.IsDefault &&
                                                 <button 
+                                                    title={localizeService.getString("RemoveFolderType")}
                                                     dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}
+                                                    onClick={() => removeFolderType(folderType.FolderMappingID)}
                                                 />
                                             }
                                         </td>
@@ -78,6 +83,7 @@ ManageFolderTypesPanelContainer.propTypes = {
     folderTypes: PropTypes.array,
     isAdmin: PropTypes.bool,
     loadFolderMappings: PropTypes.func,
+    removeFolderType: PropTypes.func,
 };
 
 function mapStateToProps(state) {
@@ -99,6 +105,7 @@ function mapDispatchToProps(dispatch) {
         ...bindActionCreators({
             hidePanel: manageFolderTypesPanelActions.hidePanel,
             loadFolderMappings: addFolderPanelActions.loadFolderMappings,
+            removeFolderType: manageFolderTypesPanelActions.removeFolderType,
         }, dispatch)
     };
 }

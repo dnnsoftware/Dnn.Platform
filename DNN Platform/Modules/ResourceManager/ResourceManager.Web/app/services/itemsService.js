@@ -13,6 +13,7 @@ const FILE_UPLOAD = API_PATH + "FileUpload/UploadFromLocal";
 const SEARCH_FILES_ENDPOINT = "Items/Search";
 const SAVE_FILE_DETAILS_ENDPOINT = "Items/SaveFileDetails";
 const SAVE_FOLDER_DETAILS_ENDPOINT = "Items/SaveFolderDetails";
+const REMOVE_FOLDER_TYPE_ENDPOINT = "Items/RemoveFolderType";
 
 let folderMappings;
 
@@ -112,6 +113,10 @@ function saveFolderDetails(item) {
     return api.post(getUrl(SAVE_FOLDER_DETAILS_ENDPOINT), item, { "Content-Type":"application/json" });
 }
 
+function removeFolderType(folderMappingId) {
+    return api.postPrimitive(getUrl(REMOVE_FOLDER_TYPE_ENDPOINT), folderMappingId.toString());
+}
+
 export default {
     getContent,
     getDownloadUrl,
@@ -127,5 +132,6 @@ export default {
     getFolderUrl,
     getIconUrl,
     saveFileDetails,
-    saveFolderDetails
+    saveFolderDetails,
+    removeFolderType,
 };

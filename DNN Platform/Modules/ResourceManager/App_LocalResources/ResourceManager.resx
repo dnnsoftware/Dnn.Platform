@@ -291,4 +291,10 @@
   <data name="FolderTypeDefinitions.Text" xml:space="preserve">
     <value>Folder Type Definitions</value>
   </data>
+  <data name="EditFolderType.Text" xml:space="preserve">
+    <value>Edit folder type</value>
+  </data>
+  <data name="RemoveFolderType.Text" xml:space="preserve">
+    <value>Remove folder type</value>
+  </data>
 </root>

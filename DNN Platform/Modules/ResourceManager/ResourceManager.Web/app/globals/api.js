@@ -198,7 +198,19 @@ const api = {
             body: data || JSON.stringify(body),
             headers: headers
         });
-
+    },
+    /** Posta a primitive value (integer, string, etc.) 
+     * @param {string} url
+     * @param {any} value
+    */
+    postPrimitive(url, value) {
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("", value.toString());
+        return httpRequest(url, {
+            method: "POST",
+            body: urlencoded,
+            headers: [{"Content-Type": "application/x-www-form-urlencoded"}],
+        });
     },
     /** this function performs a post http request 
      * @param {string} url
