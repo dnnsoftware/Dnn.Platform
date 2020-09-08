@@ -24,5 +24,12 @@ namespace DotNetNuke.Abstractions.Application
     /// }
     /// </code>
     /// </example>
-    public interface IHostSettingsService : ISettingsService { }
+    public interface IHostSettingsService : ISettingsService
+    {
+        /// <summary>
+        /// Increments the Client Resource Manager (CRM) version to bust local cache.
+        /// </summary>
+        /// <param name="includeOverridingPortals">If true also forces a CRM version increment on portals that have non-default settings for CRM.</param>
+        void IncrementCrmVersion(bool includeOverridingPortals);
+    }
 }

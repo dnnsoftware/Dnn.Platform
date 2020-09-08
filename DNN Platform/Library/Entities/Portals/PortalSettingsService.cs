@@ -169,12 +169,6 @@ namespace DotNetNuke.Entities.Portals
             return defaultValue;
         }
 
-        // this is specific to host settings and doesn't belong here
-        public void IncrementCrmVersion(bool includeOverridingPortals)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <inheritdoc />
         public void Update(IConfigurationSetting config)
         {

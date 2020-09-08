@@ -5,6 +5,10 @@ namespace DotNetNuke.Abstractions.Settings
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// The settings service defines APIs for
+    /// retrieving or saving standard DNN settings.
+    /// </summary>
     public interface ISettingsService
     {
         /// <summary>
@@ -101,12 +105,6 @@ namespace DotNetNuke.Abstractions.Settings
         /// <returns>host setting's value.</returns>
         /// <exception cref="System.ArgumentException">key is empty.</exception>
         string GetString(string key, string defaultValue);
-
-        /// <summary>
-        /// Increments the Client Resource Manager (CRM) version to bust local cache.
-        /// </summary>
-        /// <param name="includeOverridingPortals">If true also forces a CRM version increment on portals that have non-default settings for CRM.</param>
-        void IncrementCrmVersion(bool includeOverridingPortals);
 
         /// <summary>
         /// Updates the specified config.
