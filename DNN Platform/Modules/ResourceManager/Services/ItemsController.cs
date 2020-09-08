@@ -23,9 +23,7 @@ using Dnn.Modules.ResourceManager.Helpers;
 using Dnn.Modules.ResourceManager.Services.Attributes;
 using Dnn.Modules.ResourceManager.Services.Dto;
 using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
-using DotNetNuke.Abstractions;
 using DotNetNuke.UI.Modules;
-using DotNetNuke.ModulePipeline;
 
 namespace Dnn.Modules.ResourceManager.Services
 {
@@ -39,6 +37,12 @@ namespace Dnn.Modules.ResourceManager.Services
     public class ItemsController : DnnApiController
     {
         private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
+        private readonly IModuleControlPipeline modulePipeline;
+
+        public ItemsController(IModuleControlPipeline modulePipeline)
+        {
+            this.modulePipeline = modulePipeline;
+        }
 
         [HttpGet]
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting)
@@ -407,7 +411,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
         private ModuleInstanceContext GetModuleContext()
         {
-            var moduleControl = ModuleControlFactory.CreateModuleControl(this.ActiveModule) as IModuleControl;
+            IModuleControl moduleControl = modulePipeline.CreateModuleControl(this.ActiveModule) as IModuleControl;
             return new ModuleInstanceContext(moduleControl);
         }
         #endregion
