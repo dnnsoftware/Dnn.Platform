@@ -10,17 +10,19 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
+    /// <inheritdoc />
     public class PortalSettingsManager : IPortalSettingsManager
     {
+        /// <inheritdoc />
         public ISettingsService GetPortalSettings(int portalId)
         {
             return this.GetPortalSettings(portalId, string.Empty);
         }
 
+        /// <inheritdoc />
         public ISettingsService GetPortalSettings(int portalId, string cultureCode)
         {
             if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
