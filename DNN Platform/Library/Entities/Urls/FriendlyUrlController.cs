@@ -945,7 +945,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     if (cookie != null)
                     {
                         // if exists, expire cookie to allow redirect
-                        cookie = new HttpCookie(cn.disableMobileViewCookieName)
+                        cookie = new HttpCookie(DisableMobileViewCookieName)
+
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
                             Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
