@@ -33,8 +33,9 @@ namespace DotNetNuke.Entities.Urls
 
         // google uses the same name nomo=1 means do not redirect to mobile
         // set the web.config AppSettings for the mobile view cookie name
-        private readonly string mobileViewSiteCookieName = ConfigurationManager.AppSettings[name: "MobileViewSiteCookieName"] ?? "dnn_IsMobile";
-        private readonly string disableMobileViewCookieName = ConfigurationManager.AppSettings[name: "DisableMobileViewSiteCookieName"] ?? "dnn_NoMobile";
+        private static readonly string MobileViewSiteCookieName = ConfigurationManager.AppSettings[name: "MobileViewSiteCookieName"] ?? "dnn_IsMobile";
+        private static readonly string DisableMobileViewCookieName = ConfigurationManager.AppSettings[name: "DisableMobileViewSiteCookieName"] ?? "dnn_NoMobile";
+
 
         // <summary>Gets the Friendly URL Settings for the given portal.</summary>
         public static FriendlyUrlSettings GetCurrentSettings(int portalId)
