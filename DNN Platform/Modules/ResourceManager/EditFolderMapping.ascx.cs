@@ -19,14 +19,13 @@ namespace Dnn.Modules.ResourceManager
 {
     public partial class EditFolderMapping : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
-
-        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
-        private int _folderMappingID = Null.NullInteger;
+        private readonly INavigationManager navigationManager;
+        private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
+        private int folderMappingID = Null.NullInteger;
 
         public EditFolderMapping()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public int FolderPortalID
@@ -41,15 +40,15 @@ namespace Dnn.Modules.ResourceManager
         {
             get
             {
-                if (this._folderMappingID == Null.NullInteger)
+                if (this.folderMappingID == Null.NullInteger)
                 {
                     if (!string.IsNullOrEmpty(this.Request.QueryString["ItemID"]))
                     {
-                        int.TryParse(this.Request.QueryString["ItemID"], out this._folderMappingID);
+                        int.TryParse(this.Request.QueryString["ItemID"], out this.folderMappingID);
                     }
                 }
 
-                return this._folderMappingID;
+                return this.folderMappingID;
             }
         }
 
@@ -63,7 +62,7 @@ namespace Dnn.Modules.ResourceManager
             }
 
             this.UpdateButton.Text = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("Add") : Localization.GetString("Update", this.LocalResourceFile);
-            this.CancelHyperLink.NavigateUrl = this._navigationManager.NavigateURL();
+            this.CancelHyperLink.NavigateUrl = this.navigationManager.NavigateURL();
 
             var controlTitle = Localization.GetString("ControlTitle", this.LocalResourceFile);
             var controlTitlePrefix = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("New") : Localization.GetString("Edit");
@@ -93,7 +92,7 @@ namespace Dnn.Modules.ResourceManager
 
                         if (this.ProviderSettingsPlaceHolder.Controls.Count > 0 && this.ProviderSettingsPlaceHolder.Controls[0] is FolderMappingSettingsControlBase)
                         {
-                            var folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID);
+                            var folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID);
                             var settingsControl = (FolderMappingSettingsControlBase)this.ProviderSettingsPlaceHolder.Controls[0];
                             settingsControl.LoadSettings(folderMapping.FolderMappingSettings);
                         }
@@ -126,7 +125,7 @@ namespace Dnn.Modules.ResourceManager
 
                 if (this.FolderMappingID != Null.NullInteger)
                 {
-                    folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID) ?? new FolderMappingInfo();
+                    folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID) ?? new FolderMappingInfo();
                 }
 
                 folderMapping.FolderMappingID = this.FolderMappingID;
@@ -142,11 +141,11 @@ namespace Dnn.Modules.ResourceManager
 
                     if (folderMappingID == Null.NullInteger)
                     {
-                        folderMappingID = this._folderMappingController.AddFolderMapping(folderMapping);
+                        folderMappingID = this.folderMappingController.AddFolderMapping(folderMapping);
                     }
                     else
                     {
-                        this._folderMappingController.UpdateFolderMapping(folderMapping);
+                        this.folderMappingController.UpdateFolderMapping(folderMapping);
                     }
 
                     if (this.ProviderSettingsPlaceHolder.Controls.Count > 0 && this.ProviderSettingsPlaceHolder.Controls[0] is FolderMappingSettingsControlBase)
@@ -161,7 +160,7 @@ namespace Dnn.Modules.ResourceManager
                         {
                             if (this.FolderMappingID == Null.NullInteger)
                             {
-                                this._folderMappingController.DeleteFolderMapping(this.FolderPortalID, folderMappingID);
+                                this.folderMappingController.DeleteFolderMapping(this.FolderPortalID, folderMappingID);
                             }
 
                             return;
@@ -171,7 +170,7 @@ namespace Dnn.Modules.ResourceManager
                     if (this.FolderMappingID != Null.NullInteger)
                     {
                         // Check if some setting has changed
-                        var updatedSettings = this._folderMappingController.GetFolderMappingSettings(this.FolderMappingID);
+                        var updatedSettings = this.folderMappingController.GetFolderMappingSettings(this.FolderMappingID);
 
                         if (originalSettings.Keys.Cast<object>().Any(key => updatedSettings.ContainsKey(key) && !originalSettings[key].ToString().Equals(updatedSettings[key].ToString())))
                         {
@@ -193,7 +192,7 @@ namespace Dnn.Modules.ResourceManager
 
                 if (!this.Response.IsRequestBeingRedirected)
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL());
+                    this.Response.Redirect(this.navigationManager.NavigateURL());
                 }
             }
             catch (Exception exc)
@@ -216,7 +215,7 @@ namespace Dnn.Modules.ResourceManager
 
         private void BindFolderMapping()
         {
-            var folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID);
+            var folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID);
 
             this.NameTextbox.Text = folderMapping.MappingName;
 
@@ -230,7 +229,7 @@ namespace Dnn.Modules.ResourceManager
 
             if (this.FolderMappingID != Null.NullInteger)
             {
-                var folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID);
+                var folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID);
                 folderProviderType = folderMapping.FolderProviderType;
             }
             else
