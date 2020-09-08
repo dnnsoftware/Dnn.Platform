@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Urls
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
         // google uses the same name nomo=1 means do not redirect to mobile
-        // Can use a web.config AppSettings name for the mobile view cookie
+        // set the web.config AppSettings for the mobile view cookie name
         private readonly string mobileViewSiteCookieName = ConfigurationManager.AppSettings[name: "MobileViewSiteCookieName"] ?? "dnn_IsMobile";
         private readonly string disableMobileViewCookieName = ConfigurationManager.AppSettings[name: "DisableMobileViewSiteCookieName"] ?? "dnn_NoMobile";
 
