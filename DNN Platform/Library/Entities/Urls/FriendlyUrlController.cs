@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Urls
         private readonly string mobileViewSiteCookieName = ConfigurationManager.AppSettings[name: "MobileViewSiteCookieName"] ?? "dnn_IsMobile";
         private readonly string disableMobileViewCookieName = ConfigurationManager.AppSettings[name: "DisableMobileViewSiteCookieName"] ?? "dnn_NoMobile";
 
-        // gets a portal friendly url settings
+        // <summary>Gets the Friendly URL Settings for the given portal.</summary>
         public static FriendlyUrlSettings GetCurrentSettings(int portalId)
         {
             return new FriendlyUrlSettings(portalId);
