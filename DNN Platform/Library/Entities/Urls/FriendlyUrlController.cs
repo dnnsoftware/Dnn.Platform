@@ -1,10 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Data;
     using System.Globalization;
     using System.Linq;
@@ -12,6 +13,7 @@ namespace DotNetNuke.Entities.Urls
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI.WebControls;
+
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -30,9 +32,11 @@ namespace DotNetNuke.Entities.Urls
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
         // google uses the same name nomo=1 means do not redirect to mobile
-        private const string MobileViewSiteCookieName = "dnn_IsMobile";
-        private const string DisableMobileViewCookieName = "dnn_NoMobile";
+        // Can use a web.config AppSettings name for the mobile view cookie
+        private readonly string mobileViewSiteCookieName = ConfigurationManager.AppSettings[name: "MobileViewSiteCookieName"] ?? "dnn_IsMobile";
+        private readonly string disableMobileViewCookieName = ConfigurationManager.AppSettings[name: "DisableMobileViewSiteCookieName"] ?? "dnn_NoMobile";
 
+        // gets a portal friendly url settings
         public static FriendlyUrlSettings GetCurrentSettings(int portalId)
         {
             return new FriendlyUrlSettings(portalId);
@@ -848,13 +852,14 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         public static BrowserTypes GetBrowserType(HttpRequest request, HttpResponse response, FriendlyUrlSettings settings)
         {
             var browserType = BrowserTypes.Normal;
+            var cn = new FriendlyUrlController();
             if (request != null && settings != null)
             {
                 bool isCookieSet = false;
                 bool isMobile = false;
                 if (CanUseMobileDevice(request, response))
                 {
-                    HttpCookie viewMobileCookie = response.Cookies[MobileViewSiteCookieName];
+                    HttpCookie viewMobileCookie = response.Cookies[cn.mobileViewSiteCookieName];
                     if (viewMobileCookie != null && bool.TryParse(viewMobileCookie.Value, out isMobile))
                     {
                         isCookieSet = true;
@@ -873,7 +878,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                             // Store the result as a cookie.
                             if (viewMobileCookie == null)
                             {
-                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
+                                response.Cookies.Add(new HttpCookie(cn.mobileViewSiteCookieName, isMobile.ToString())
                                 { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
                             else
@@ -917,6 +922,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
         {
             var canUseMobileDevice = true;
+            var cn = new FriendlyUrlController();
             int val;
             if (int.TryParse(request.QueryString[DisableMobileRedirectQueryStringName], out val))
             {
@@ -925,7 +931,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 {
                     // no, can't do it
                     canUseMobileDevice = false;
-                    var cookie = new HttpCookie(DisableMobileViewCookieName)
+                    var cookie = new HttpCookie(cn.disableMobileViewCookieName)
                     {
                         Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                     };
@@ -934,11 +940,11 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 else
                 {
                     // check for disable mobile view cookie name
-                    var cookie = request.Cookies[DisableMobileViewCookieName];
+                    var cookie = request.Cookies[cn.disableMobileViewCookieName];
                     if (cookie != null)
                     {
                         // if exists, expire cookie to allow redirect
-                        cookie = new HttpCookie(DisableMobileViewCookieName)
+                        cookie = new HttpCookie(cn.disableMobileViewCookieName)
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
                             Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
@@ -958,7 +964,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             else
             {
                 // look for disable mobile view cookie
-                var cookie = request.Cookies[DisableMobileViewCookieName];
+                var cookie = request.Cookies[cn.disableMobileViewCookieName];
                 if (cookie != null)
                 {
                     canUseMobileDevice = false;
@@ -1010,7 +1016,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 return;
             }
 
-            if (ch != " ") // if not replacing spaces, which are implied
+            // if not replacing spaces, which are implied
+            if (ch != " ")
             {
                 replacedUnwantedChars = true;
             }
@@ -1037,7 +1044,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 isUnique = tabId == -1 || tabId == validateUrlForTabId;
             }
 
-            if (isUnique) // check whether have a tab which use the url.
+            // check whether have a tab which use the url.
+            if (isUnique)
             {
                 var friendlyUrlSettings = GetCurrentSettings(settings.PortalId);
                 var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();
