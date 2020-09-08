@@ -859,7 +859,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 bool isMobile = false;
                 if (CanUseMobileDevice(request, response))
                 {
-                    HttpCookie viewMobileCookie = response.Cookies[cn.mobileViewSiteCookieName];
+                    HttpCookie viewMobileCookie = response.Cookies[MobileViewSiteCookieName];
                     if (viewMobileCookie != null && bool.TryParse(viewMobileCookie.Value, out isMobile))
                     {
                         isCookieSet = true;
