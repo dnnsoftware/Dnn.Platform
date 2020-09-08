@@ -153,7 +153,7 @@
         display: inline-block;
         width: 22px;
         height: 20px;
-        right: 24px;
+        right: 15px;
         position: absolute;
         top: 8px;
         cursor: pointer;
@@ -186,6 +186,7 @@
             }
 
             .dnn-folder-selector {
+                border: none;
                 .selected-item {
                     padding: 7px 15px;
                 }
@@ -194,6 +195,14 @@
         .sort-container {
             .dnn-dropdown {
                 width: 100%;
+                background: none;
+            }
+        }
+        .refresh-sync-container {
+            display: flex;
+            justify-content: right;
+            .dnn-dropdown {
+                width: 33%;
                 background: none;
             }
         }
@@ -362,8 +371,33 @@
         .search-box-container, .sort-container {
             position: relative;
             display: block;
-            width: 33%;
             float: left;
+        }
+        .folder-picker-container {
+            width: 40%;
+        }
+        .sort-container {
+            width: 20%;
+        }
+        .search-box-container {
+            width: 40%;
+        }
+        .rm-folder-picker-refresh-sync-container {
+            display: flex;
+            .rm-refresh-sync-dropdown {
+                border-right: 1px solid #C8C8C8;
+                .collapsible-label {
+                    height: 30px;
+                    span {
+                        margin: 0;
+                    }
+                    svg {
+                        fill: #777;
+                        width: 22px;
+                        height: auto;
+                    }
+                }
+            }
         }
     }
     .breadcrumbs-container {
