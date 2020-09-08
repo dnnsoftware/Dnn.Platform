@@ -9,6 +9,8 @@ import DropDown from "../../../../../../Dnn.AdminExperience/ClientSide/Dnn.React
 import FolderPicker from "../components/FolderSelector/FolderPicker";
 import debounce from "lodash/debounce";
 
+const refreshSyncIcon = require("!raw-loader!../../../Images/redeploy.svg").default;
+
 class TopBarContainer extends React.Component {
     componentWillMount() {
         this.debouncedSearch = debounce(this.searchHandler.bind(this, true), 500);
@@ -55,6 +57,10 @@ class TopBarContainer extends React.Component {
         loadContent(newFolderPanelState, currentFolderId);
     }
 
+    onRefreshSyncChange() {
+
+    }
+
     render() {
         const {folderPanelState, loadContent, search, userLogged, homeFolderId} = this.props;
         const {currentFolderId, currentFolderName, sortOptions, sorting} = folderPanelState;
@@ -63,11 +69,26 @@ class TopBarContainer extends React.Component {
             <div className="header-container">
                 <div className="folder-picker-container three-columns">
                     {userLogged ?
-                        <FolderPicker selectedFolder={{key: currentFolderId, value: currentFolderName}}
-                            changeFolder={this.onChangeFolder.bind(this)} 
-                            homeFolderId={homeFolderId}
-                            noFolderSelectedValue={localizeService.getString("NoFolderSelected")} 
-                            searchFolderPlaceHolder={localizeService.getString("SearchFolder")}/>
+                        <div className="rm-folder-picker-refresh-sync-container">
+                            <DropDown 
+                                className="rm-refresh-sync-dropdown" 
+                                options={[
+                                    { value: "Refresh", label: localizeService.getString("Refresh") },
+                                    { value: "SyncThisFolder", label: localizeService.getString("SyncThisFolder") },
+                                    { value: "SyncThisFolderAndSubfolders", label: localizeService.getString("SyncThisFolderAndSubfolders") }
+                                ]} 
+                                onSelect={this.onRefreshSyncChange.bind(this)} 
+                                withBorder={false} 
+                                fixedHeight={200}
+                                label=""
+                                prependWith={<span dangerouslySetInnerHTML={{__html: refreshSyncIcon}}></span>}
+                                withIcon={false} />
+                            <FolderPicker selectedFolder={{key: currentFolderId, value: currentFolderName}}
+                                    changeFolder={this.onChangeFolder.bind(this)} 
+                                    homeFolderId={homeFolderId}
+                                    noFolderSelectedValue={localizeService.getString("NoFolderSelected")} 
+                                    searchFolderPlaceHolder={localizeService.getString("SearchFolder")}/>
+                        </div> 
                         : <span>{localizeService.getString("DisabledForAnonymousUsersMessage")}</span>
                     }
                 </div>
@@ -80,7 +101,7 @@ class TopBarContainer extends React.Component {
                         onChange={this.onSearchChanged.bind(this)} value={search} >
                     </input>
                     <a className="icon-button search-button" onClick={this.searchHandler.bind(this, false)}></a>
-                    <a className="icon-button sync-button" onClick={loadContent.bind(this, folderPanelState, currentFolderId)}></a>
+                    {/* <a className="icon-button sync-button" onClick={loadContent.bind(this, folderPanelState, currentFolderId)}></a> */}
                 </div>
             </div>
         );

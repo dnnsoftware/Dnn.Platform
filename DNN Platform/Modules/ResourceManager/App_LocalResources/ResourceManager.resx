@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -278,6 +278,15 @@
   </data>
   <data name="InvalidExtensionMessage.Text" xml:space="preserve">
     <value> is not of a type that is allowed to be uploaded</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="SyncThisFolder.Text" xml:space="preserve">
+    <value>Sync This Folder</value>
+  </data>
+  <data name="SyncThisFolderAndSubfolders.Text" xml:space="preserve">
+    <value>Sync This Folder &amp; Subfolders</value>
   </data>
   <data name="ManageFolderTypes.Text" xml:space="preserve">
     <value>Manage Folder Types</value>
