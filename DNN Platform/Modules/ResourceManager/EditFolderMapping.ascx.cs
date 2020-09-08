@@ -2,32 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.DigitalAssets
+
+namespace Dnn.Modules.ResourceManager
 {
     using System;
     using System.Linq;
-
+    using System.Web.UI.WebControls;
+    
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
+    
     using Microsoft.Extensions.DependencyInjection;
 
     public partial class EditFolderMapping : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
-
-        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
-        private int _folderMappingID = Null.NullInteger;
+        private readonly INavigationManager navigationManager;
+        private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
+        private int folderMappingID = Null.NullInteger;
 
         public EditFolderMapping()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public int FolderPortalID
@@ -42,15 +43,15 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                if (this._folderMappingID == Null.NullInteger)
+                if (this.folderMappingID == Null.NullInteger)
                 {
                     if (!string.IsNullOrEmpty(this.Request.QueryString["ItemID"]))
                     {
-                        int.TryParse(this.Request.QueryString["ItemID"], out this._folderMappingID);
+                        int.TryParse(this.Request.QueryString["ItemID"], out this.folderMappingID);
                     }
                 }
 
-                return this._folderMappingID;
+                return this.folderMappingID;
             }
         }
 
@@ -64,7 +65,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
 
             this.UpdateButton.Text = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("Add") : Localization.GetString("Update", this.LocalResourceFile);
-            this.CancelHyperLink.NavigateUrl = this._navigationManager.NavigateURL(this.TabId);
+            this.CancelHyperLink.NavigateUrl = this.navigationManager.NavigateURL();
 
             var controlTitle = Localization.GetString("ControlTitle", this.LocalResourceFile);
             var controlTitlePrefix = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("New") : Localization.GetString("Edit");
@@ -94,7 +95,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                         if (this.ProviderSettingsPlaceHolder.Controls.Count > 0 && this.ProviderSettingsPlaceHolder.Controls[0] is FolderMappingSettingsControlBase)
                         {
-                            var folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID);
+                            var folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID);
                             var settingsControl = (FolderMappingSettingsControlBase)this.ProviderSettingsPlaceHolder.Controls[0];
                             settingsControl.LoadSettings(folderMapping.FolderMappingSettings);
                         }
@@ -103,11 +104,11 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
             catch (Exception exc)
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        protected void cboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)
+        protected void CboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.BindFolderMappingSettings();
         }
@@ -127,7 +128,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 if (this.FolderMappingID != Null.NullInteger)
                 {
-                    folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID) ?? new FolderMappingInfo();
+                    folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID) ?? new FolderMappingInfo();
                 }
 
                 folderMapping.FolderMappingID = this.FolderMappingID;
@@ -143,11 +144,11 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                     if (folderMappingID == Null.NullInteger)
                     {
-                        folderMappingID = this._folderMappingController.AddFolderMapping(folderMapping);
+                        folderMappingID = this.folderMappingController.AddFolderMapping(folderMapping);
                     }
                     else
                     {
-                        this._folderMappingController.UpdateFolderMapping(folderMapping);
+                        this.folderMappingController.UpdateFolderMapping(folderMapping);
                     }
 
                     if (this.ProviderSettingsPlaceHolder.Controls.Count > 0 && this.ProviderSettingsPlaceHolder.Controls[0] is FolderMappingSettingsControlBase)
@@ -162,7 +163,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         {
                             if (this.FolderMappingID == Null.NullInteger)
                             {
-                                this._folderMappingController.DeleteFolderMapping(this.FolderPortalID, folderMappingID);
+                                this.folderMappingController.DeleteFolderMapping(this.FolderPortalID, folderMappingID);
                             }
 
                             return;
@@ -172,7 +173,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     if (this.FolderMappingID != Null.NullInteger)
                     {
                         // Check if some setting has changed
-                        var updatedSettings = this._folderMappingController.GetFolderMappingSettings(this.FolderMappingID);
+                        var updatedSettings = this.folderMappingController.GetFolderMappingSettings(this.FolderMappingID);
 
                         if (originalSettings.Keys.Cast<object>().Any(key => updatedSettings.ContainsKey(key) && !originalSettings[key].ToString().Equals(updatedSettings[key].ToString())))
                         {
@@ -188,18 +189,18 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
                 catch
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DuplicateMappingName", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DuplicateMappingName", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     return;
                 }
 
                 if (!this.Response.IsRequestBeingRedirected)
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId));
+                    this.Response.Redirect(this.navigationManager.NavigateURL());
                 }
             }
             catch (Exception exc)
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -209,15 +210,15 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             foreach (var provider in FolderProvider.GetProviderList().Keys.Where(provider => !defaultProviders.Contains(provider)).OrderBy(provider => provider))
             {
-                this.FolderProvidersComboBox.AddItem(provider, provider);
+                this.FolderProvidersComboBox.Items.Add(new ListItem(provider, provider));
             }
 
-            this.FolderProvidersComboBox.InsertItem(0, string.Empty, string.Empty);
+            this.FolderProvidersComboBox.Items.Insert(0, new ListItem(string.Empty, string.Empty));
         }
 
         private void BindFolderMapping()
         {
-            var folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID);
+            var folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID);
 
             this.NameTextbox.Text = folderMapping.MappingName;
 
@@ -231,7 +232,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             if (this.FolderMappingID != Null.NullInteger)
             {
-                var folderMapping = this._folderMappingController.GetFolderMapping(this.FolderMappingID);
+                var folderMapping = this.folderMappingController.GetFolderMapping(this.FolderMappingID);
                 folderProviderType = folderMapping.FolderProviderType;
             }
             else

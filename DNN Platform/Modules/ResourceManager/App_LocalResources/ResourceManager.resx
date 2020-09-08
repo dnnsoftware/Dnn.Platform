@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -287,5 +287,29 @@
   </data>
   <data name="SyncThisFolderAndSubfolders.Text" xml:space="preserve">
     <value>Sync This Folder &amp; Subfolders</value>
+  </data>
+  <data name="ManageFolderTypes.Text" xml:space="preserve">
+    <value>Manage Folder Types</value>
+  </data>
+  <data name="AddFolderType.Text" xml:space="preserve">
+    <value>Add Folder Type</value>
+  </data>
+  <data name="FolderProvider.Text" xml:space="preserve">
+    <value>Folder Provider</value>
+  </data>
+  <data name="FolderTypeDefinitions.Text" xml:space="preserve">
+    <value>Folder Type Definitions</value>
+  </data>
+  <data name="EditFolderType.Text" xml:space="preserve">
+    <value>Edit Folder Type</value>
+  </data>
+  <data name="RemoveFolderType.Text" xml:space="preserve">
+    <value>Remove Folder Type</value>
+  </data>
+  <data name="RemoveFolderTypeDialogBody.Text" xml:space="preserve">
+    <value>Are you sure you want to remove this folder type?</value>
+  </data>
+  <data name="RemoveFolderTypeDialogHeader.Text" xml:space="preserve">
+    <value>Remove Folder Type</value>
   </data>
 </root>

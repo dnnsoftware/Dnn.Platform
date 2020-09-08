@@ -11,11 +11,20 @@ class AddFolderPanelContainer extends React.Component {
         super(props);
         this.props.loadFolderMappings();
         this.nameInput = React.createRef();
+        this.container = React.createRef();
     }
 
     componentDidUpdate(previousProps) {
         if (!previousProps.expanded && this.props.expanded) {
             this.nameInput.focus();
+
+            // Workaround so the dropdown shows properly with more than 3 folder providers
+            setTimeout(() => {
+                this.container.style = "overflow: visible;";
+            }, 1000);
+        }
+        if (previousProps.expanded && !this.props.expanded) {
+            this.container.style = "overflow: hidden;";
         }
     }
 
@@ -79,7 +88,7 @@ class AddFolderPanelContainer extends React.Component {
         }
 
         return hasPermission ? (
-            <div className={"top-panel add-folder" + (expanded ? " rm-expanded" : "")} >
+            <div ref={e => this.container = e} className={"top-panel add-folder" + (expanded ? " rm-expanded" : "")} >
                 <div className="folder-adding">
                     <div>
                         <label className="folder-parent-label">{ localizeService.getString("FolderParent") + ":" }</label>
@@ -103,7 +112,6 @@ class AddFolderPanelContainer extends React.Component {
                         <label className="rm-error">{typeValidationError}</label>                        
                     </div>
                     }
-                    
                 </div>
 
                 <div className="cancel">

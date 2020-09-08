@@ -27,7 +27,8 @@
         sorting: '<%=DefaultSortingField%>',
         userLogged: '<%=UserLogged%>' === 'True',
         extensionWhitelist: '<%= ExtensionWhitelist %>',
-        validationCode: '<%= ValidationCode %>'
+        validationCode: '<%= ValidationCode %>',
+        isAdmin: '<%=IsAdmin%>' === 'True',
       }
 
       var openFolderId = <%=OpenFolderId%>;
