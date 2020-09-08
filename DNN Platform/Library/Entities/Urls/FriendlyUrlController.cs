@@ -14,7 +14,6 @@ namespace DotNetNuke.Entities.Urls
     using System.Web;
     using System.Web.UI.WebControls;
 
-
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -922,7 +921,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
         {
             var canUseMobileDevice = true;
-            var cn = new FriendlyUrlController();
             int val;
             if (int.TryParse(request.QueryString[DisableMobileRedirectQueryStringName], out val))
             {
