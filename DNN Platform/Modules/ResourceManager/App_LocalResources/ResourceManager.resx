@@ -295,7 +295,7 @@
     <value>Edit Folder Type</value>
   </data>
   <data name="RemoveFolderType.Text" xml:space="preserve">
-    <value>Remove folder type</value>
+    <value>Remove Folder Type</value>
   </data>
   <data name="RemoveFolderTypeDialogBody.Text" xml:space="preserve">
     <value>Are you sure you want to remove this folder type?</value>
