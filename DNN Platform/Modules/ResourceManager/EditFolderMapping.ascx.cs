@@ -108,7 +108,7 @@ namespace Dnn.Modules.ResourceManager
             }
         }
 
-        protected void cboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)
+        protected void CboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.BindFolderMappingSettings();
         }

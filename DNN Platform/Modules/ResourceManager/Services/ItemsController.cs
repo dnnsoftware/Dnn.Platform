@@ -2,31 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web;
-using System.Web.Http;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.FileSystem;
-using Dnn.Modules.ResourceManager.Components;
-using Dnn.Modules.ResourceManager.Helpers;
-using Dnn.Modules.ResourceManager.Services.Attributes;
-using Dnn.Modules.ResourceManager.Services.Dto;
-using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
-using DotNetNuke.UI.Modules;
 
 namespace Dnn.Modules.ResourceManager.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Api;
+    using Dnn.Modules.ResourceManager.Components;
+    using Dnn.Modules.ResourceManager.Helpers;
+    using Dnn.Modules.ResourceManager.Services.Attributes;
+    using Dnn.Modules.ResourceManager.Services.Dto;
+    using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
+
     /// <summary>
     /// Expose any services via this class. You can keep services in separate classes or all together in one service class
     /// </summary>

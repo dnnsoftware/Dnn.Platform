@@ -20,7 +20,7 @@
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="FolderProviderLabel" runat="server" controlname="cboFolderProviders" />  
-                        <asp:DropDownList ID="FolderProvidersComboBox" runat="server" AutoPostBack="true" CausesValidation="false" OnSelectedIndexChanged="cboFolderProviders_SelectedIndexChanged" />
+                        <asp:DropDownList ID="FolderProvidersComboBox" runat="server" AutoPostBack="true" CausesValidation="false" OnSelectedIndexChanged="CboFolderProviders_SelectedIndexChanged" />
                         <asp:RequiredFieldValidator ID="FolderProviderValidator" runat="server" ControlToValidate="FolderProvidersComboBox" InitialValue="" Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="FolderProviderValidator.ErrorMessage" EnableClientScript="false" ValidationGroup="vgEditFolderMapping"></asp:RequiredFieldValidator>
                     </div>
                 </fieldset>
