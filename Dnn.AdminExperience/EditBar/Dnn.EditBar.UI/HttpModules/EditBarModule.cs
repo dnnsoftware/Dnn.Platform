@@ -13,6 +13,7 @@ namespace Dnn.EditBar.UI.HttpModules
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -59,7 +60,7 @@ namespace Dnn.EditBar.UI.HttpModules
 
         private void OnSkinInit(object sender, SkinEventArgs e)
         {
-            if (DotNetNukeContext.Current.Application.SKU != "DNN")
+            if (Host.DisableEditBar)
             {
                 return;
             }

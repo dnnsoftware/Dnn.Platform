@@ -112,6 +112,7 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("portalId", portalId);
             settings.Add("preferredTimeZone", preferredTimeZone);
 
+
             if (!settings.ContainsKey("isAdmin"))
             {
                 settings.Add("isAdmin", user.IsInRole(portalSettings.AdministratorRoleName));
@@ -129,6 +130,8 @@ namespace Dnn.PersonaBar.Library.Containers
 
             var customModules = new List<string>() { "serversummary" };
             settings.Add("customModules", customModules);
+
+            settings.Add("disableEditBar", Host.DisableEditBar);
 
             return settings;
         }

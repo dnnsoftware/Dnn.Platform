@@ -315,4 +315,10 @@
   <data name="UnlockEditMode.Text" xml:space="preserve">
     <value>Click to unlock Edit Mode.</value>
   </data>
+  <data name="DisableEditBar.Help" xml:space="preserve">
+    <value>This DNN installation is running an alternative edit bar. </value>
+  </data>
+  <data name="DisableEditBar.Text" xml:space="preserve">
+    <value>Edit Bar Disabled </value>
+  </data>
 </root>
