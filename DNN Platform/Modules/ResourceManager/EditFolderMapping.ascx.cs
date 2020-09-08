@@ -2,13 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 namespace Dnn.Modules.ResourceManager
 {
     using System;
     using System.Linq;
     using System.Web.UI.WebControls;
-    
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -17,20 +16,29 @@ namespace Dnn.Modules.ResourceManager
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
-    
+
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Provides editing capabilities for a folder mapping.
+    /// </summary>
     public partial class EditFolderMapping : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;
         private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
         private int folderMappingID = Null.NullInteger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditFolderMapping"/> class.
+        /// </summary>
         public EditFolderMapping()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <summary>
+        /// Gets the portalId for the folder.
+        /// </summary>
         public int FolderPortalID
         {
             get
@@ -39,6 +47,9 @@ namespace Dnn.Modules.ResourceManager
             }
         }
 
+        /// <summary>
+        /// Gets the id of the folder mapping.
+        /// </summary>
         public int FolderMappingID
         {
             get
@@ -55,6 +66,7 @@ namespace Dnn.Modules.ResourceManager
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -75,11 +87,12 @@ namespace Dnn.Modules.ResourceManager
             this.ModuleConfiguration.ModuleControl.ControlTitle = string.Format(controlTitle, controlTitlePrefix);
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            this.UpdateButton.Click += this.cmdUpdate_Click;
+            this.UpdateButton.Click += this.CmdUpdate_Click;
 
             try
             {
@@ -108,12 +121,17 @@ namespace Dnn.Modules.ResourceManager
             }
         }
 
+        /// <summary>
+        /// Handles the folder providers selection change.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         protected void CboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.BindFolderMappingSettings();
         }
 
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void CmdUpdate_Click(object sender, EventArgs e)
         {
             this.Page.Validate("vgEditFolderMapping");
 

@@ -4,8 +4,14 @@
 
 namespace Dnn.Modules.ResourceManager.Services.Dto
 {
+    /// <summary>
+    /// Represents a request to delete a file.
+    /// </summary>
     public class DeleteFileRequest
     {
+        /// <summary>
+        /// Gets or sets the id of the file to delete.
+        /// </summary>
         public int FileId { get; set; }
     }
 }

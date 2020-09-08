@@ -2,80 +2,99 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Net.Http;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.FileSystem;
-using Dnn.Modules.ResourceManager.Components.Models;
-
 namespace Dnn.Modules.ResourceManager.Components
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.IO;
+    using System.Net.Http;
+
+    using Dnn.Modules.ResourceManager.Components.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.FileSystem;
+
+    /// <summary>
+    /// Provides services related to thumbnails.
+    /// </summary>
     public class ThumbnailsManager : ServiceLocator<IThumbnailsManager, ThumbnailsManager>, IThumbnailsManager
     {
         private const int DefaultMaxWidth = 320;
         private const int DefaultMaxHeight = 240;
-        private readonly IFileManager _fileManager;
+        private readonly IFileManager fileManager;
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThumbnailsManager"/> class.
+        /// </summary>
         public ThumbnailsManager()
         {
-            _fileManager = FileManager.Instance;
+            this.fileManager = FileManager.Instance;
         }
 
-
-        public string DefaultContentType => "image/png";
-
-        public string DefaultThumbnailExtension => "png";
-
+        /// <summary>
+        /// Enumerates the possible thumbnail file name extensions.
+        /// </summary>
         private enum ThumbnailExtensions
         {
             JPEG,
             JPG,
             PNG,
-            GIF
+            GIF,
         }
 
+        /// <summary>
+        /// Gets the default content mime type.
+        /// </summary>
+        public string DefaultContentType => "image/png";
+
+        /// <summary>
+        /// Gets the default file name extension.
+        /// </summary>
+        public string DefaultThumbnailExtension => "png";
+
+        /// <inheritdoc/>
         public bool ThumbnailAvailable(string fileName)
         {
             var ext = Path.GetExtension(fileName).ToUpperInvariant();
-            ThumbnailExtensions extension;
             ext = ext.StartsWith(".") ? ext.Substring(1) : ext;
-            return Enum.TryParse(ext, out extension);
+            return Enum.TryParse(ext, out ThumbnailExtensions _);
         }
 
+        /// <inheritdoc/>
         public string ThumbnailUrl(int moduleId, int fileId, int width, int height)
         {
-            return ThumbnailUrl(moduleId, fileId, width, height, GetNewTimeStamp());
+            return this.ThumbnailUrl(moduleId, fileId, width, height, this.GetNewTimeStamp());
         }
 
+        /// <inheritdoc/>
         public string ThumbnailUrl(int moduleId, int fileId, int width, int height, string timestamp)
         {
             var tabId = PortalController.Instance.GetCurrentPortalSettings().ActiveTab.TabID;
-            
+
             return
                 $"{ServicesFramework.GetServiceFrameworkRoot()}API/ResourceManager/Items/ThumbnailDownLoad?fileId={fileId}&width={width}&height={height}&timestamp={timestamp}&moduleId={moduleId}&tabId={tabId}";
         }
 
+        /// <inheritdoc/>
         public string ThumbnailUrl(int moduleId, int fileId, int width, int height, int version)
         {
-            var result = ThumbnailUrl(moduleId, fileId, width, height, GetNewTimeStamp());
+            var result = this.ThumbnailUrl(moduleId, fileId, width, height, this.GetNewTimeStamp());
             return result + "&version=" + version;
         }
 
+        /// <inheritdoc/>
         public ThumbnailContent GetThumbnailContentFromImageUrl(string imageUrl, int width, int height)
         {
             Image image = new Bitmap(imageUrl);
-            var result = GetThumbnailContentFromImage(image, width, height);
+            var result = this.GetThumbnailContentFromImage(image, width, height);
             var indexOfSlash = imageUrl.LastIndexOf('/');
-            var thumbnailName = (indexOfSlash != -1) ? imageUrl.Substring(indexOfSlash + 1) + "." + DefaultThumbnailExtension : imageUrl + "." + DefaultThumbnailExtension;
+            var thumbnailName = (indexOfSlash != -1) ? imageUrl.Substring(indexOfSlash + 1) + "." + this.DefaultThumbnailExtension : imageUrl + "." + this.DefaultThumbnailExtension;
             result.ThumbnailName = thumbnailName;
             return result;
         }
 
+        /// <inheritdoc/>
         public ThumbnailContent GetThumbnailContentFromImage(Image image, int width, int height, bool crop = false)
         {
             int thumbnailWidth;
@@ -83,11 +102,11 @@ namespace Dnn.Modules.ResourceManager.Components
 
             if (crop)
             {
-                GetCroppedThumbnailSize(image, width, height, out thumbnailWidth, out thumbnailHeight);
+                this.GetCroppedThumbnailSize(image, width, height, out thumbnailWidth, out thumbnailHeight);
             }
             else
             {
-                GetThumbnailSize(image, width, height, out thumbnailWidth, out thumbnailHeight);
+                this.GetThumbnailSize(image, width, height, out thumbnailWidth, out thumbnailHeight);
             }
 
             // create the actual thumbnail image
@@ -95,7 +114,7 @@ namespace Dnn.Modules.ResourceManager.Components
 
             using (var memoryStream = new MemoryStream())
             {
-                //All thumbnails images will be Png
+                // All thumbnails images will be png
                 thumbnailImage.Save(memoryStream, ImageFormat.Png);
 
                 return new ThumbnailContent
@@ -103,36 +122,40 @@ namespace Dnn.Modules.ResourceManager.Components
                     Content = new ByteArrayContent(memoryStream.ToArray()),
                     Width = thumbnailWidth,
                     Height = thumbnailHeight,
-                    ContentType = DefaultContentType
+                    ContentType = this.DefaultContentType,
                 };
             }
         }
 
-        public ThumbnailContent GetThumbnailContent(IFileInfo item, int width, int height, bool crop=false)
+        /// <inheritdoc/>
+        public ThumbnailContent GetThumbnailContent(IFileInfo item, int width, int height, bool crop = false)
         {
-            using (var content = _fileManager.GetFileContent(item))
+            using (var content = this.fileManager.GetFileContent(item))
             {
                 Image image = new Bitmap(content);
-                var result = GetThumbnailContentFromImage(image, width, height, crop);
-                result.ThumbnailName = item.FileName + "." + DefaultThumbnailExtension;
+                var result = this.GetThumbnailContentFromImage(image, width, height, crop);
+                result.ThumbnailName = item.FileName + "." + this.DefaultThumbnailExtension;
                 return result;
             }
         }
 
-        #region Private Methods
-
-        //TODO: Correct below to proper US English
-        private int GetMinorSizeValue(int thumbnailMayorSize, int imageMayorSize, int imageMinorSize)
+        /// <inheritdoc/>
+        protected override Func<IThumbnailsManager> GetFactory()
         {
-            if (thumbnailMayorSize == imageMayorSize)
-            {
-                return imageMinorSize;
-            }
-
-            return (int)Math.Round(imageMinorSize * (double)thumbnailMayorSize / imageMayorSize);
+            return () => new ThumbnailsManager();
         }
 
-        private int GetMayorSizeValue(int size, int imageSize, int defaultMaxValue)
+        private int GetMinSizeValue(int thumbnailMaxSize, int imageMaxSize, int imageMinSize)
+        {
+            if (thumbnailMaxSize == imageMaxSize)
+            {
+                return imageMinSize;
+            }
+
+            return (int)Math.Round(imageMinSize * (double)thumbnailMaxSize / imageMaxSize);
+        }
+
+        private int GetMaxSizeValue(int size, int imageSize, int defaultMaxValue)
         {
             if (size >= imageSize)
             {
@@ -147,13 +170,13 @@ namespace Dnn.Modules.ResourceManager.Components
         {
             if (image.Width >= image.Height)
             {
-                thumbnailWidth = GetMayorSizeValue(width, image.Width, DefaultMaxWidth);
-                thumbnailHeight = GetMinorSizeValue(thumbnailWidth, image.Width, image.Height);
+                thumbnailWidth = this.GetMaxSizeValue(width, image.Width, DefaultMaxWidth);
+                thumbnailHeight = this.GetMinSizeValue(thumbnailWidth, image.Width, image.Height);
             }
             else
             {
-                thumbnailHeight = GetMayorSizeValue(height, image.Height, DefaultMaxHeight);
-                thumbnailWidth = GetMinorSizeValue(thumbnailHeight, image.Height, image.Width);
+                thumbnailHeight = this.GetMaxSizeValue(height, image.Height, DefaultMaxHeight);
+                thumbnailWidth = this.GetMinSizeValue(thumbnailHeight, image.Height, image.Width);
             }
         }
 
@@ -178,16 +201,5 @@ namespace Dnn.Modules.ResourceManager.Components
         {
             return DateTime.Now.ToString("yyyyMMddHHmmssfff");
         }
-
-        #endregion
-
-        #region Service Locator
-
-        protected override Func<IThumbnailsManager> GetFactory()
-        {
-            return () => new ThumbnailsManager();
-        }
-
-        #endregion
     }
 }

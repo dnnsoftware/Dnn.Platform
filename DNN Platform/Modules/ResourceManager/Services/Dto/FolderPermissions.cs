@@ -5,17 +5,31 @@
 namespace Dnn.Modules.ResourceManager.Services.Dto
 {
     using System.Linq;
+
     using Dnn.Modules.ResourceManager.Components;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
 
+    /// <summary>
+    /// Provides information about folder permissions.
+    /// </summary>
     public class FolderPermissions : Permissions
     {
-        public FolderPermissions() : base(false)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderPermissions"/> class.
+        /// </summary>
+        public FolderPermissions()
+            : base(false)
         {
         }
-        public FolderPermissions(bool needDefinitions) : base(needDefinitions)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderPermissions"/> class.
+        /// </summary>
+        /// <param name="needDefinitions">A vlaue indicating whether the permissions definitions need to be loaded.</param>
+        public FolderPermissions(bool needDefinitions)
+            : base(needDefinitions)
         {
             foreach (var role in PermissionProvider.Instance().ImplicitRolesForFolders(PortalSettings.Current.PortalId))
             {
@@ -23,12 +37,19 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
             }
         }
 
-        public FolderPermissions(bool needDefinitions, FolderPermissionCollection permissions) : base(needDefinitions)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderPermissions"/> class.
+        /// </summary>
+        /// <param name="needDefinitions">A value indicating whether the permission definitions need to be loaded.</param>
+        /// <param name="permissions">A colleciton of folder permissions.</param>
+        public FolderPermissions(bool needDefinitions, FolderPermissionCollection permissions)
+            : base(needDefinitions)
         {
             foreach (var role in PermissionProvider.Instance().ImplicitRolesForFolders(PortalSettings.Current.PortalId))
             {
                 this.EnsureRole(role, true, true);
             }
+
             foreach (FolderPermissionInfo permission in permissions)
             {
                 if (permission.UserID != Null.NullInteger)
@@ -39,6 +60,7 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
                 {
                     this.AddRolePermission(permission);
                 }
+
                 this.RolePermissions =
                         this.RolePermissions.OrderByDescending(p => p.Locked)
                             .ThenByDescending(p => p.IsDefault)
@@ -48,6 +70,7 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
             }
         }
 
+        /// <inheritdoc/>
         protected override void LoadPermissionDefinitions()
         {
             foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
@@ -57,7 +80,7 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
                     PermissionId = permission.PermissionID,
                     PermissionName = permission.PermissionName,
                     FullControl = PermissionHelper.IsFullControl(permission),
-                    View = PermissionHelper.IsViewPermission(permission)
+                    View = PermissionHelper.IsViewPermission(permission),
                 });
             }
         }

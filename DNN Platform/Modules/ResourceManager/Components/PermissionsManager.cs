@@ -2,67 +2,76 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using Dnn.Modules.ResourceManager.Components.Common;
-
 namespace Dnn.Modules.ResourceManager.Components
 {
+    using System;
+
+    using Dnn.Modules.ResourceManager.Components.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+
+    /// <summary>
+    /// Provides permissions checks.
+    /// </summary>
     public class PermissionsManager : ServiceLocator<IPermissionsManager, PermissionsManager>, IPermissionsManager
     {
+        private readonly IFolderManager folderManager;
+        private readonly IRoleController roleController;
+        private readonly IUserController userController;
 
-        private readonly IFolderManager _folderManager;
-        private readonly IRoleController _roleController;
-        private readonly IUserController _userController;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PermissionsManager"/> class.
+        /// </summary>
         public PermissionsManager()
         {
-            _folderManager = FolderManager.Instance;
-            _roleController = RoleController.Instance;
-            _userController = UserController.Instance;
+            this.folderManager = FolderManager.Instance;
+            this.roleController = RoleController.Instance;
+            this.userController = UserController.Instance;
         }
 
-
+        /// <inheritdoc/>
         public bool HasFolderContentPermission(int folderId, int moduleMode)
         {
-            return HasGroupFolderPublicOrMemberPermission(folderId);
+            return this.HasGroupFolderPublicOrMemberPermission(folderId);
         }
 
+        /// <inheritdoc/>
         public bool HasGetFileContentPermission(int folderId)
         {
-            if (!HasGroupFolderPublicOrMemberPermission(folderId))
+            if (!this.HasGroupFolderPublicOrMemberPermission(folderId))
             {
                 return false;
             }
 
-            var folder = _folderManager.GetFolder(folderId);
+            var folder = this.folderManager.GetFolder(folderId);
             return HasPermission(folder, "READ");
         }
 
+        /// <inheritdoc/>
         public bool HasAddFilesPermission(int moduleMode, int folderId)
         {
-            if (!HasGroupFolderMemberPermission(folderId))
+            if (!this.HasGroupFolderMemberPermission(folderId))
             {
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
             {
                 return false;
             }
 
-            var folder = _folderManager.GetFolder(folderId);
+            var folder = this.folderManager.GetFolder(folderId);
             return folder != null && HasPermission(folder, "ADD");
         }
 
+        /// <inheritdoc/>
         public bool HasAddFoldersPermission(int moduleMode, int folderId)
         {
-            if (!HasGroupFolderOwnerPermission(folderId))
+            if (!this.HasGroupFolderOwnerPermission(folderId))
             {
                 return false;
             }
@@ -72,60 +81,49 @@ namespace Dnn.Modules.ResourceManager.Components
                 return false;
             }
 
-            var folder = _folderManager.GetFolder(folderId);
+            var folder = this.folderManager.GetFolder(folderId);
             return folder != null && HasPermission(folder, "ADD");
         }
 
+        /// <inheritdoc/>
         public bool HasDeletePermission(int moduleMode, int folderId)
         {
-            if (!HasGroupFolderOwnerPermission(folderId))
+            if (!this.HasGroupFolderOwnerPermission(folderId))
             {
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
             {
                 return false;
             }
 
-            var folder = _folderManager.GetFolder(folderId);
-            return FolderPermissionController.CanDeleteFolder((FolderInfo) folder);
+            var folder = this.folderManager.GetFolder(folderId);
+            return FolderPermissionController.CanDeleteFolder((FolderInfo)folder);
         }
 
+        /// <inheritdoc/>
         public bool HasManagePermission(int moduleMode, int folderId)
         {
-            if (!HasGroupFolderOwnerPermission(folderId))
+            if (!this.HasGroupFolderOwnerPermission(folderId))
             {
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
             {
                 return false;
             }
 
-            var folder = _folderManager.GetFolder(folderId);
-            return FolderPermissionController.CanManageFolder((FolderInfo) folder);
+            var folder = this.folderManager.GetFolder(folderId);
+            return FolderPermissionController.CanManageFolder((FolderInfo)folder);
         }
 
-        #region Private methods
-
-        #region Group Folder Permissions
-
-        private bool HasGroupFolderPublicOrMemberPermission(int folderId)
-        {
-            var groupId = Utils.GetFolderGroupId(folderId);
-            if (groupId < 0)
-            {
-                return true;
-            }
-
-            var portalId = PortalSettings.Current.PortalId;
-            var folderGroup = _roleController.GetRoleById(portalId, groupId);
-
-            return folderGroup.IsPublic || UserIsGroupMember(groupId);
-        }
-
+        /// <summary>
+        /// Checks if the current user has permission on a group folder.
+        /// </summary>
+        /// <param name="folderId">The id of the folder.</param>
+        /// <returns>A value indicating whether the user has permission on the group folder.</returns>
         public bool HasGroupFolderMemberPermission(int folderId)
         {
             var groupId = Utils.GetFolderGroupId(folderId);
@@ -134,46 +132,21 @@ namespace Dnn.Modules.ResourceManager.Components
                 return true;
             }
 
-            return UserIsGroupMember(groupId);
+            return this.UserIsGroupMember(groupId);
         }
 
-        private bool HasGroupFolderOwnerPermission(int folderId)
+        /// <inheritdoc/>
+        protected override Func<IPermissionsManager> GetFactory()
         {
-            var groupId = Utils.GetFolderGroupId(folderId);
-            if (groupId < 0)
-            {
-                return true;
-            }
-
-            return UserIsGroupOwner(groupId);
+            return () => new PermissionsManager();
         }
 
-        private bool UserIsGroupMember(int groupId)
-        {
-            return GetUserRoleInfo(groupId) != null;
-        }
-
-        private bool UserIsGroupOwner(int groupId)
-        {
-            var userRole = GetUserRoleInfo(groupId);
-            return userRole != null && userRole.IsOwner;
-        }
-
-        #endregion
-
-        private bool IsUserFolder(int folderId)
-        {
-            var user = _userController.GetCurrentUserInfo();
-            return _folderManager.GetUserFolder(user).FolderID == folderId;
-        }
-
-        private UserRoleInfo GetUserRoleInfo(int groupId)
-        {
-            var userId = _userController.GetCurrentUserInfo().UserID;
-            var portalId = PortalSettings.Current.PortalId;
-            return _roleController.GetUserRole(portalId, userId, groupId);
-        }
-
+        /// <summary>
+        /// Check if a user has a specific permission key on a folder.
+        /// </summary>
+        /// <param name="folder">The id of the folder to check.</param>
+        /// <param name="permissionKey">The permission key.</param>
+        /// <returns>A value indicating whether the user has the permission key for the folder.</returns>
         private static bool HasPermission(IFolderInfo folder, string permissionKey)
         {
             var hasPermission = PortalSettings.Current.UserInfo.IsSuperUser;
@@ -186,15 +159,53 @@ namespace Dnn.Modules.ResourceManager.Components
             return hasPermission;
         }
 
-        #endregion
-
-        #region Service Locator
-
-        protected override Func<IPermissionsManager> GetFactory()
+        private bool HasGroupFolderPublicOrMemberPermission(int folderId)
         {
-            return () => new PermissionsManager();
+            var groupId = Utils.GetFolderGroupId(folderId);
+            if (groupId < 0)
+            {
+                return true;
+            }
+
+            var portalId = PortalSettings.Current.PortalId;
+            var folderGroup = this.roleController.GetRoleById(portalId, groupId);
+
+            return folderGroup.IsPublic || this.UserIsGroupMember(groupId);
         }
 
-        #endregion
+        private bool HasGroupFolderOwnerPermission(int folderId)
+        {
+            var groupId = Utils.GetFolderGroupId(folderId);
+            if (groupId < 0)
+            {
+                return true;
+            }
+
+            return this.UserIsGroupOwner(groupId);
+        }
+
+        private bool UserIsGroupMember(int groupId)
+        {
+            return this.GetUserRoleInfo(groupId) != null;
+        }
+
+        private bool UserIsGroupOwner(int groupId)
+        {
+            var userRole = this.GetUserRoleInfo(groupId);
+            return userRole != null && userRole.IsOwner;
+        }
+
+        private bool IsUserFolder(int folderId)
+        {
+            var user = this.userController.GetCurrentUserInfo();
+            return this.folderManager.GetUserFolder(user).FolderID == folderId;
+        }
+
+        private UserRoleInfo GetUserRoleInfo(int groupId)
+        {
+            var userId = this.userController.GetCurrentUserInfo().UserID;
+            var portalId = PortalSettings.Current.PortalId;
+            return this.roleController.GetUserRole(portalId, userId, groupId);
+        }
     }
 }
