@@ -135,7 +135,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     continue;
                 }
-                else if (pageName == pages[index])
+                else if (string.Equals(pageName, pages[index], StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
