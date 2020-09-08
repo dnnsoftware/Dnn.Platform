@@ -13,8 +13,8 @@ const FILE_UPLOAD = API_PATH + "FileUpload/UploadFromLocal";
 const SEARCH_FILES_ENDPOINT = "Items/Search";
 const SAVE_FILE_DETAILS_ENDPOINT = "Items/SaveFileDetails";
 const SAVE_FOLDER_DETAILS_ENDPOINT = "Items/SaveFolderDetails";
-
-let folderMappings;
+const REMOVE_FOLDER_TYPE_ENDPOINT = "Items/RemoveFolderType";
+const ADD_FOLDER_TYPE_URL_ENDPOINT = "Items/GetAddFolderTypeUrl";
 
 function getUrl(endpoint, ignoreCurrentModuleAPI=false) {
     return api.getServiceRoot(ignoreCurrentModuleAPI) + endpoint;
@@ -33,13 +33,8 @@ function getDownloadUrl(fileId) {
 }
 
 function loadFolderMappings() {
-    if (folderMappings) {
-        return Promise.resolve(folderMappings);
-    }
-
     return (api.get(getUrl(LOAD_FOLDER_MAPPINGS_ENDPOINT)))
         .then(response => {
-            folderMappings = response;
             return response;
         });
 }
@@ -112,6 +107,14 @@ function saveFolderDetails(item) {
     return api.post(getUrl(SAVE_FOLDER_DETAILS_ENDPOINT), item, { "Content-Type":"application/json" });
 }
 
+function removeFolderType(folderMappingId) {
+    return api.postPrimitive(getUrl(REMOVE_FOLDER_TYPE_ENDPOINT), folderMappingId.toString());
+}
+
+function getAddFolderTypeUrl() {
+    return api.get(getUrl(ADD_FOLDER_TYPE_URL_ENDPOINT))
+}
+
 export default {
     getContent,
     getDownloadUrl,
@@ -127,5 +130,7 @@ export default {
     getFolderUrl,
     getIconUrl,
     saveFileDetails,
-    saveFolderDetails
+    saveFolderDetails,
+    removeFolderType,
+    getAddFolderTypeUrl,
 };

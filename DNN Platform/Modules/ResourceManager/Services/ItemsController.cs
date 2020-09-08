@@ -2,30 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web;
-using System.Web.Http;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.FileSystem;
-using Dnn.Modules.ResourceManager.Components;
-using Dnn.Modules.ResourceManager.Helpers;
-using Dnn.Modules.ResourceManager.Services.Attributes;
-using Dnn.Modules.ResourceManager.Services.Dto;
-using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
 
 namespace Dnn.Modules.ResourceManager.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Api;
+    using Dnn.Modules.ResourceManager.Components;
+    using Dnn.Modules.ResourceManager.Helpers;
+    using Dnn.Modules.ResourceManager.Services.Attributes;
+    using Dnn.Modules.ResourceManager.Services.Dto;
+    using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
+
     /// <summary>
     /// Expose any services via this class. You can keep services in separate classes or all together in one service class
     /// </summary>
@@ -35,6 +38,14 @@ namespace Dnn.Modules.ResourceManager.Services
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     public class ItemsController : DnnApiController
     {
+        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
+        private readonly IModuleControlPipeline modulePipeline;
+
+        public ItemsController(IModuleControlPipeline modulePipeline)
+        {
+            this.modulePipeline = modulePipeline;
+        }
+
         [HttpGet]
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting)
         {
@@ -101,17 +112,52 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var mappings = FolderMappingController.Instance.GetFolderMappings(
                 isSuperTab && UserInfo.IsSuperUser ? Null.NullInteger : PortalSettings.PortalId);
+            var moduleContext = GetModuleContext();
 
             var r = from m in mappings
                     select new
                     {
                         m.FolderMappingID,
                         m.MappingName,
+                        m.FolderProviderType,
                         IsDefault =
-                        (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database")
+                        (m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database"),
+                        editUrl = UserInfo.IsAdmin ?
+                            moduleContext.EditUrl(
+                                "ItemID",
+                                m.FolderMappingID.ToString(),
+                                "EditFolderMapping",
+                                "mid",
+                                this.ActiveModule.ModuleID.ToString())
+                            :
+                            "",
                     };
 
             return Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+        [HttpGet]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Admin)]
+        public HttpResponseMessage GetAddFolderTypeUrl()
+        {
+            var moduleContext = GetModuleContext();
+            return Request.CreateResponse(
+                HttpStatusCode.OK,
+                moduleContext.EditUrl(
+                    "ItemID",
+                    "-1",
+                    "EditFolderMapping",
+                    "mid",
+                    this.ActiveModule.ModuleID.ToString()));
+        }
+
+        [HttpPost]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Admin)]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RemoveFolderType([FromBody] int folderMappingId)
+        {
+            this._folderMappingController.DeleteFolderMapping(PortalSettings.PortalId, folderMappingId);
+            return Request.CreateResponse(HttpStatusCode.OK, folderMappingId);
         }
 
         [HttpPost]
@@ -363,6 +409,12 @@ namespace Dnn.Modules.ResourceManager.Services
                 thumbnailAvailable = thumbnailsManager.ThumbnailAvailable(file.FileName),
                 thumbnailUrl = thumbnailsManager.ThumbnailUrl(ActiveModule.ModuleID, file.FileId, 110, 110)
             };
+        }
+
+        private ModuleInstanceContext GetModuleContext()
+        {
+            IModuleControl moduleControl = modulePipeline.CreateModuleControl(this.ActiveModule) as IModuleControl;
+            return new ModuleInstanceContext(moduleControl);
         }
         #endregion
     }

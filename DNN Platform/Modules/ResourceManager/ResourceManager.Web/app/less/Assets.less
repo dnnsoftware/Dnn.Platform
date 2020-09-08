@@ -818,12 +818,38 @@
         }
     }
     .top-panel {
-        &.add-folder {
+        &.add-folder, &.manage-folder-types {
             .animateHeight(970px, 0.5s);
             .rm-button {
                 margin-bottom: 30px;
             }
-        }   
+        }
+        &.manage-folder-types {
+            h3{
+                text-align: center;
+            }
+            table.folder-types{
+                margin: 1em auto;
+                border: 1px solid gray;
+                th{
+                    text-transform: uppercase;
+                }
+                th, td {
+                    padding: 1em 2em;
+                    border-bottom: 1px solid gray;
+                    button, a{
+                        border: none;
+                        margin: 0;
+                        padding: 0;
+                        background-color: transparent;
+                        svg{
+                            width: 1.5em;
+                            height: auto;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .folder-adding {

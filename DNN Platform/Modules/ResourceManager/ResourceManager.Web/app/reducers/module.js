@@ -5,7 +5,8 @@ const initialState = {
     moduleId: -1,
     moduleName: "",
     tabId: -1,
-    portalId: -1
+    portalId: -1,
+    isAdmin: false
 };
 
 export default function moduleReducer(state = initialState, action) {

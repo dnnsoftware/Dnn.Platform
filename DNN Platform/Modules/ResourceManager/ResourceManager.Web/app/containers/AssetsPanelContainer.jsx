@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AssetsHeader from "../components/AssetsHeader";
 import folderPanelActions from "../actions/folderPanelActions";
+import ManageFolderTypesContainer from "../containers/ManageFolderTypesPanelContainer";
 import AddFolderPanelContainer from "../containers/AddFolderPanelContainer";
 import AddAssetPanelContainer from "../containers/AddAssetPanelContainer";
 import TopBarContainer from "./TopBarContainer";
@@ -108,6 +109,7 @@ class AssetsPanelContainer extends React.Component {
                         ref={(c) => (this.mainContainer = c)}
                         className={"main-container" + (loading ? " loading" : "")}
                     >
+                        <ManageFolderTypesContainer />
                         <AddFolderPanelContainer />
                         <AddAssetPanelContainer />
                         <div

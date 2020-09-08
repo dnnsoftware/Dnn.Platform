@@ -9,6 +9,7 @@ import infiniteScroll from "./infiniteScroll";
 import messageModal from "./messageModal";
 import itemDetails from "./itemDetails";
 import topBar from "./topBar";
+import manageFolderTypesPanel from "./manageFolderTypesPanel";
 
 const rootReducer = combineReducers({
     module,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     infiniteScroll,
     messageModal,
     itemDetails,
-    topBar
+    topBar,
+    manageFolderTypesPanel,
 });
 
 export default rootReducer;

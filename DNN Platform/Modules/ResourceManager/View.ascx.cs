@@ -83,6 +83,7 @@ namespace Dnn.Modules.ResourceManager
             Constants.ResourceManagerLocalization).ToString();
         protected int HomeFolderId => new SettingsManager(ModuleId, GroupId).HomeFolderId;
         protected bool UserLogged => UserId > 0;
+        protected bool IsAdmin => UserInfo.IsAdmin || UserInfo.IsSuperUser;
         protected int FolderPanelNumItems => Constants.ItemsPerPage;
         protected int ItemWidth => Constants.ItemWidth;
         protected long MaxUploadSize => Config.GetMaxUploadSize();
