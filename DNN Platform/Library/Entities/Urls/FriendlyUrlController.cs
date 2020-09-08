@@ -931,7 +931,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 {
                     // no, can't do it
                     canUseMobileDevice = false;
-                    var cookie = new HttpCookie(cn.disableMobileViewCookieName)
+                    var cookie = new HttpCookie(DisableMobileViewCookieName)
+
                     {
                         Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                     };
