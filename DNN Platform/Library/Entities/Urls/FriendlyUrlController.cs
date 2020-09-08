@@ -878,7 +878,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                             // Store the result as a cookie.
                             if (viewMobileCookie == null)
                             {
-                                response.Cookies.Add(new HttpCookie(cn.mobileViewSiteCookieName, isMobile.ToString())
+                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
                                 { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
                             else
