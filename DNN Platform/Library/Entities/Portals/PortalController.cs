@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Text;
     using System.Web;
     using System.Xml;
@@ -392,7 +393,8 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSettings(int portalID)
         {
-            DeletePortalSettings(portalID, Null.NullString);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager.DeleteAllSettings(portalID);
         }
 
         /// <summary>
@@ -402,9 +404,8 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSettings(int portalID, string cultureCode)
         {
-            DataProvider.Instance().DeletePortalSettings(portalID, cultureCode);
-            EventLogController.Instance.AddLog("PortalID", portalID.ToString() + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-            DataCache.ClearHostCache(true);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager.DeleteAllSettings(portalID, cultureCode);
         }
 
         /// <summary>
@@ -416,12 +417,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static string GetEncryptedString(string settingName, int portalID, string passPhrase)
         {
-            Requires.NotNullOrEmpty("key", settingName);
-            Requires.NotNullOrEmpty("passPhrase", passPhrase);
-
-            var cipherText = GetPortalSetting(settingName, portalID, string.Empty);
-
-            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Host.Host.GUID);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .GetEncryptedString(settingName, passPhrase);
         }
 
         /// <summary>
@@ -434,20 +433,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue)
         {
-
-            var retValue = Null.NullString;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
-                retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .GetString(settingName, defaultValue);
         }
 
         /// <summary>
@@ -461,19 +450,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
         {
-            var retValue = Null.NullString;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID, cultureCode).TryGetValue(settingName, out setting);
-                retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .GetString(settingName, defaultValue);
         }
 
         /// <summary>
@@ -486,26 +466,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue)
         {
-            bool retValue = Null.NullBoolean;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .GetBoolean(key, defaultValue);
         }
 
         /// <summary>
@@ -519,26 +483,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
         {
-            bool retValue = Null.NullBoolean;
-            try
-            {
-                string setting;
-                GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .GetBoolean(key, defaultValue);
         }
 
         /// <summary>
@@ -551,26 +499,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue)
         {
-            int retValue = Null.NullInteger;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = Convert.ToInt32(setting);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .GetInteger(key, defaultValue);
         }
 
         /// <summary>
@@ -583,26 +515,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
         {
-            double retValue = Null.NullDouble;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalId).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = Convert.ToDouble(setting);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalId)
+                .GetDouble(key, defaultValue);
         }
 
         /// <summary>
@@ -616,26 +532,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
         {
-            int retValue = Null.NullInteger;
-            try
-            {
-                string setting;
-                GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = Convert.ToInt32(setting);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .GetInteger(key, defaultValue);
         }
 
         /// <summary>
