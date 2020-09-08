@@ -107,6 +107,7 @@ To build the .net projects to the right location, you'll need to create your ove
 ```
 
 Once you've created this file every time you click "rebuild" in Visual Studio on a project (or the solution) you'll see the content change in your dev site.
+**Note**: You may have to restart Visual Studio for this new build file to take effect.
 
 For the Webpack projects it is set up to read from the `settings.local.json` file and use the `WebsitePath` to copy generated js files to their right place.
 
