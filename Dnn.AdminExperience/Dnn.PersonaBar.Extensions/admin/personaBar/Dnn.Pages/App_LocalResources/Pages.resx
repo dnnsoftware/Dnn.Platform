@@ -463,10 +463,10 @@
     <value>Automatic</value>
   </data>
   <data name="CopyAppearanceToDescendantPagesSuccess.Text" xml:space="preserve">
-    <value>Appearance has been copy to descendant pages successfully</value>
+    <value>Appearance has been copied to descendant pages successfully</value>
   </data>
   <data name="CopyPermissionsToDescendantPagesSuccess.Text" xml:space="preserve">
-    <value>Permissions have been copy to descendant pages successfully</value>
+    <value>Permissions have been copied to descendant pages successfully</value>
   </data>
   <data name="DeletePageModuleSuccess.Text" xml:space="preserve">
     <value>Module "[MODULETITLE]" has been deleted successfully</value>

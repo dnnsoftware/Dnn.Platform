@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -253,7 +253,7 @@
     <value>Programma di miglioramento del prodotto</value>
   </data>
   <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Il programma di miglioramento del prodotto ci consente di capire meglio come possiamo migliorare DNN per te. I dati ci aiuteranno ad analizzare l'utilizzo e ciò che è importante per le persone che utilizzano il prodotto. Tutti i dati sono anonimi e solo per uso interno. Ulteriori informazioni sul &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;programma di miglioramento del prodotto&lt;/a&gt;.</value>
+    <value>Il programma di miglioramento del prodotto ci consente di capire meglio come possiamo migliorare DNN per te. I dati ci aiuteranno ad analizzare l'utilizzo e ciò che è importante per le persone che utilizzano il prodotto. Tutti i dati sono anonimi e solo per uso interno. Ulteriori informazioni sul &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;programma di miglioramento del prodotto&lt;/a&gt;.</value>
   </data>
   <data name="ImprovementProgramLabel.Text" xml:space="preserve">
     <value>Invia informazioni anonime sull'uso a DNN</value>

@@ -10,3 +10,7 @@ mergeable:
         begins_with:
           match: 'Type:' # or array of strings
           message: 'A `Type:` label must be assigned to this pull request'
+        must_exclude:
+          regex: 'On Hold'
+          regex_flag: 'none' # Optional. Specify the flag for Regex. default is 'i', to disable default use 'none'
+          message: 'This PR is `On Hold`'

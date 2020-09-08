@@ -11,17 +11,23 @@ namespace Dnn.PersonaBar.SiteSettings.MenuControllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
+    /// <summary>
+    /// Controls the site settings menu.
+    /// </summary>
     public class SiteSettingsMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();

@@ -9,8 +9,17 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     using System.Collections.Generic;
     using System.Globalization;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -22,6 +31,22 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             new object[] { string.Empty, -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },
             new object[] { "lorem ipsum", 456, DateTime.Now, DateTime.Today - DateTime.Now, },
         };
+
+        [SetUp]
+        public void Setup()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Globals.DependencyProvider = null;
+        }
 
         [Test]
         [TestCaseSource(nameof(NullableCases))]

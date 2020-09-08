@@ -14,25 +14,37 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
     using DotNetNuke.Entities.Users;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Controls the extensions menu.
+    /// </summary>
     public class ExtensionMenuController : IMenuItemController
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtensionMenuController"/> class.
+        /// </summary>
         public ExtensionMenuController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <summary>
+        /// Gets an <see cref="INavigationManager"/> instance to provide navigation services.
+        /// </summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();
