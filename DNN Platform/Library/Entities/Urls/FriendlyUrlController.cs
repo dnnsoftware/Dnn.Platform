@@ -966,7 +966,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             else
             {
                 // look for disable mobile view cookie
-                var cookie = request.Cookies[cn.disableMobileViewCookieName];
+                var cookie = request.Cookies[DisableMobileViewCookieName];
+
                 if (cookie != null)
                 {
                     canUseMobileDevice = false;
