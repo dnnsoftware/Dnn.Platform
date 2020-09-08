@@ -852,7 +852,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         public static BrowserTypes GetBrowserType(HttpRequest request, HttpResponse response, FriendlyUrlSettings settings)
         {
             var browserType = BrowserTypes.Normal;
-            var cn = new FriendlyUrlController();
             if (request != null && settings != null)
             {
                 bool isCookieSet = false;
