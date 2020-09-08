@@ -940,7 +940,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 else
                 {
                     // check for disable mobile view cookie name
-                    var cookie = request.Cookies[cn.disableMobileViewCookieName];
+                    var cookie = request.Cookies[DisableMobileViewCookieName];
+
                     if (cookie != null)
                     {
                         // if exists, expire cookie to allow redirect
