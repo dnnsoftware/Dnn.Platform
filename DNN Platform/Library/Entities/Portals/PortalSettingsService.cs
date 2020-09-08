@@ -3,42 +3,62 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using DotNetNuke.Abstractions.Settings;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
 
+    /// <summary>
+    /// Provides an implementation of the <see cref="ISettingsService"/>
+    /// used for updating the Portal Settings. This is instantiated by the
+    /// <see cref="PortalSettingsManager"/>.
+    /// </summary>
     public class PortalSettingsService : ISettingsService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalSettingsService));
 
-        int portalId = -1;
-        string cultureCode = string.Empty;
-        IDictionary<string, string> settings;
+        /// <summary>
+        /// Gets the current Portal Settings.
+        /// </summary>
+        protected IDictionary<string, string> Settings { get; }
 
-        public PortalSettingsService(int portalId, string cultureCode, IDictionary<string, string> settings)
+        /// <summary>
+        /// Gets the save service, used for saving the
+        /// current portal settings.
+        /// </summary>
+        protected ISaveSettingsService SaveService { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettingsService"/> class.
+        /// </summary>
+        /// <param name="settings">The current portal settings.</param>
+        /// <param name="saveService">The save settings implementation.</param>
+        public PortalSettingsService(IDictionary<string, string> settings, ISaveSettingsService saveService)
         {
-            this.portalId = portalId;
-            this.cultureCode = cultureCode;
-            this.settings = settings;
+            this.Settings = settings;
+            this.SaveService = saveService;
         }
 
         /// <inheritdoc />
         public bool GetBoolean(string key)
         {
+            return this.GetBoolean(key, false);
+        }
+
+        /// <inheritdoc />
+        public bool GetBoolean(string key, bool defaultValue)
+        {
             try
             {
-                if (this.settings.TryGetValue(key, out string value))
+                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
                 {
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return
-                            value.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) ||
-                            value.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
-                    }
+                    return
+                        value.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) ||
+                        value.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exception)
@@ -46,49 +66,71 @@ namespace DotNetNuke.Entities.Portals
                 Logger.Error(exception);
             }
 
-            return false;
-        }
-
-        /// <inheritdoc />
-        public bool GetBoolean(string key, bool defaultValue)
-        {
-            throw new NotImplementedException();
+            return defaultValue;
         }
 
         /// <inheritdoc />
         public double GetDouble(string key)
         {
-            throw new NotImplementedException();
+            return this.GetDouble(key, double.MinValue);
         }
 
         /// <inheritdoc />
         public double GetDouble(string key, double defaultValue)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
+                {
+                    return Convert.ToDouble(value);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
+
+            return defaultValue;
         }
 
         /// <inheritdoc />
         public string GetEncryptedString(string key, string passPhrase)
         {
-            throw new NotImplementedException();
+            Requires.NotNullOrEmpty(nameof(key), key);
+            Requires.NotNullOrEmpty(nameof(passPhrase), passPhrase);
+
+            var cipherText = this.GetString(key);
+            return FIPSCompliant.DecryptAES(cipherText, passPhrase, Host.GUID);
         }
 
         /// <inheritdoc />
         public string GetEncryptedString(string key)
         {
-            throw new NotImplementedException();
+            return this.GetEncryptedString(key, Config.GetDecryptionkey());
         }
 
         /// <inheritdoc />
         public int GetInteger(string key)
         {
-            throw new NotImplementedException();
+            return this.GetInteger(key, -1);
         }
 
         /// <inheritdoc />
         public int GetInteger(string key, int defaultValue)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
+                {
+                    return Convert.ToInt32(value);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
+
+            return defaultValue;
         }
 
         /// <inheritdoc />
@@ -100,19 +142,31 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public IDictionary<string, string> GetSettingsDictionary()
         {
-            throw new NotImplementedException();
+            return new ReadOnlyDictionary<string, string>(this.Settings);
         }
 
         /// <inheritdoc />
         public string GetString(string key)
         {
-            throw new NotImplementedException();
+            return this.GetString(key, string.Empty);
         }
 
         /// <inheritdoc />
         public string GetString(string key, string defaultValue)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
+                {
+                    return value;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
+
+            return defaultValue;
         }
 
         // this is specific to host settings and doesn't belong here
@@ -124,7 +178,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public void Update(IConfigurationSetting config)
         {
-            throw new NotImplementedException();
+            this.SaveService.Update(config.Key, config.Value, false);
         }
 
         /// <inheritdoc />
@@ -142,30 +196,37 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public void Update(string key, string value)
         {
-            throw new NotImplementedException();
+            this.SaveService.Update(key, value, false);
         }
 
         /// <inheritdoc />
         public void Update(string key, string value, bool clearCache)
         {
-            throw new NotImplementedException();
+            this.SaveService.Update(key, value, clearCache);
         }
 
         /// <inheritdoc />
         public void UpdateEncryptedString(string key, string value, string passPhrase)
         {
-            throw new NotImplementedException();
+            this.SaveService.UpdateEncrypted(key, value, passPhrase, false);
+        }
+
+        /// <inheritdoc />
+        public void UpdateEncryptedString(string key, string value, string passPhrase, bool clearCache)
+        {
+            this.SaveService.UpdateEncrypted(key, value, passPhrase, clearCache);
         }
 
         /// <inheritdoc />
         public void UpdateEncryptedString(string key, string value)
         {
-            throw new NotImplementedException();
+            this.SaveService.UpdateEncrypted(key, value, false);
         }
 
-        private void Update(string key, string value, bool clearCache, bool isSecure)
+        /// <inheritdoc />
+        public void UpdateEncryptedString(string key, string value, bool clearCache)
         {
-            throw new NotImplementedException();
+            this.SaveService.UpdateEncrypted(key, value, clearCache);
         }
     }
 }

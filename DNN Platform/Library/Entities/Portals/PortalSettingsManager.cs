@@ -1,4 +1,7 @@
-﻿namespace DotNetNuke.Entities.Portals
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
@@ -7,6 +10,7 @@
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -25,7 +29,8 @@
             }
 
             var cachedSettings = this.GetCachedSettings(portalId, cultureCode);
-            return new PortalSettingsService(portalId, cultureCode, cachedSettings);
+            var saveService = new PortalSaveSettingsService(portalId, cultureCode);
+            return new PortalSettingsService(cachedSettings, saveService);
         }
 
         private Dictionary<string, string> GetCachedSettings(int portalId, string cultureCode)

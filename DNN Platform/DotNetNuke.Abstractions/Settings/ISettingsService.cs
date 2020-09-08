@@ -155,6 +155,23 @@ namespace DotNetNuke.Abstractions.Settings
         /// </summary>
         /// <param name="key">host settings key.</param>
         /// <param name="value">host settings value.</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
+        /// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
+        void UpdateEncryptedString(string key, string value, string passPhrase, bool clearCache);
+
+        /// <summary>
+        /// Takes in a <see cref="string"/> value, encrypts it with a FIPS compliant algorithm and stores it.
+        /// </summary>
+        /// <param name="key">host settings key.</param>
+        /// <param name="value">host settings value.</param>
         void UpdateEncryptedString(string key, string value);
+
+        /// <summary>
+        /// Takes in a <see cref="string"/> value, encrypts it with a FIPS compliant algorithm and stores it.
+        /// </summary>
+        /// <param name="key">host settings key.</param>
+        /// <param name="value">host settings value.</param>
+        /// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
+        void UpdateEncryptedString(string key, string value, bool clearCache);
     }
 }
