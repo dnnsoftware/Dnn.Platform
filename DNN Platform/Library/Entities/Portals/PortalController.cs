@@ -369,7 +369,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSetting(int portalID, string settingName)
         {
-            DeletePortalSetting(portalID, settingName, Null.NullString);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID)
+                .Delete(settingName);
         }
 
         /// <summary>
@@ -381,9 +384,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
         {
-            DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLowerInvariant());
-            EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-            DataCache.ClearHostCache(true);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Delete(settingName);
         }
 
         /// <summary>

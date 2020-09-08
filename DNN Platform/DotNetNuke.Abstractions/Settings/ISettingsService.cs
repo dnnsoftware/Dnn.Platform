@@ -172,6 +172,10 @@ namespace DotNetNuke.Abstractions.Settings
         /// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
         void UpdateEncryptedString(string key, string value, bool clearCache);
 
+        /// <summary>
+        /// Deletes the setting.
+        /// </summary>
+        /// <param name="key">The setting key to delete.</param>
         void Delete(string key);
     }
 }

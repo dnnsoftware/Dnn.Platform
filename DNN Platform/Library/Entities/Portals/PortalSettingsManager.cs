@@ -32,7 +32,8 @@ namespace DotNetNuke.Entities.Portals
 
             var cachedSettings = this.GetCachedSettings(portalId, cultureCode);
             var saveService = new PortalSaveSettingsService(portalId, cultureCode);
-            return new PortalSettingsService(cachedSettings, saveService);
+            var deleteService = new PortalDeleteSettingsService(portalId, cultureCode);
+            return new PortalSettingsService(cachedSettings, saveService, deleteService);
         }
 
         /// <inheritdoc />

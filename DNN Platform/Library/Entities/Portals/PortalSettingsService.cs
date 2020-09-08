@@ -1,4 +1,6 @@
-﻿
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
 {
     using System;
@@ -33,11 +35,18 @@ namespace DotNetNuke.Entities.Portals
         protected ISaveSettingsService SaveService { get; }
 
         /// <summary>
+        /// Gets the delete service, used for deleting
+        /// a portal setting.
+        /// </summary>
+        protected IDeleteSettingsService DeleteService { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PortalSettingsService"/> class.
         /// </summary>
         /// <param name="settings">The current portal settings.</param>
         /// <param name="saveService">The save settings implementation.</param>
-        public PortalSettingsService(IDictionary<string, string> settings, ISaveSettingsService saveService)
+        /// <param name="deleteService">The delete settings implementation</param>
+        public PortalSettingsService(IDictionary<string, string> settings, ISaveSettingsService saveService, IDeleteSettingsService deleteService)
         {
             this.Settings = settings;
             this.SaveService = saveService;
@@ -221,6 +230,12 @@ namespace DotNetNuke.Entities.Portals
         public void UpdateEncryptedString(string key, string value, bool clearCache)
         {
             this.SaveService.UpdateEncrypted(key, value, clearCache);
+        }
+
+        /// <inheritdoc />
+        public void Delete(string key)
+        {
+            this.DeleteService.Delete(key);
         }
     }
 }
