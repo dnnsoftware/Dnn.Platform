@@ -38,7 +38,43 @@ function getContent(folderPanelState, changeToFolderId=null) {
             );
 }
 
+function syncContent(folderPanelState, recursive) {
+    const { numItems, sorting, currentFolderId } = folderPanelState;
+
+    return dispatch =>
+        ItemsService.syncContent(currentFolderId, numItems, sorting, recursive)
+            .then(
+                response => dispatch({
+                    type: actionTypes.CONTENT_LOADED,
+                    data: response
+                }),
+                reason => dispatch({
+                    type: actionTypes.LOAD_CONTENT_ERROR,
+                    data: reason.data ? reason.data.message : null
+                })
+            );
+}
+
 const folderPanelActions = {
+    syncContent(folderPanelState, changeToFolderId=null) {
+        return (dispatch) => {
+            let syncContentLogic = () => dispatch(syncContent(folderPanelState, changeToFolderId));
+            dispatch(loadingWrap(syncContentLogic));
+
+            let currentHistoryFolderId = history.state ? history.state.folderId : null;
+
+            if (changeToFolderId && currentHistoryFolderId !== changeToFolderId && changeToFolderId !== folderPanelState.homeFolderId) {
+                history.pushState({folderId: changeToFolderId}, null, "?folderId=" + changeToFolderId);
+            }
+            else if (changeToFolderId && currentHistoryFolderId !== changeToFolderId) {
+                let url = window.location.toString();
+                if (url.indexOf("?") > 0) {
+                    let clean_url = url.substring(0, url.indexOf("?"));
+                    history.pushState({folderId: changeToFolderId}, null, clean_url);
+                }
+            }
+        };
+    },
     loadContent(folderPanelState, changeToFolderId=null) {
         return (dispatch) => {
             let getContentLogic = () => dispatch(getContent(folderPanelState, changeToFolderId));

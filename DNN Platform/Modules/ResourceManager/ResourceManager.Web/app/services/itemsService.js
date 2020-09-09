@@ -1,6 +1,7 @@
 import api from "../globals/api";
 
 const GET_CONTENT_ENDPOINT = "Items/GetFolderContent";
+const SYNC_CONTENT_ENDPOINT = "Items/SyncFolderContent";
 const DOWNLOAD_FILE_ENDPOINT = "Items/Download";
 const FILE_DETAILS_ENDPOINT = "Items/GetFileDetails";
 const FOLDER_DETAILS_ENDPOINT = "Items/GetFolderDetails";
@@ -22,6 +23,13 @@ function getUrl(endpoint, ignoreCurrentModuleAPI=false) {
 
 function getContent(folderId, startIndex, numItems, sorting) {
     return api.get(getUrl(GET_CONTENT_ENDPOINT), {folderId, startIndex, numItems, sorting})
+        .then(response => {
+            return response;
+        });
+}
+
+function syncContent(folderId, numItems, sorting, recursive) {
+    return api.get(getUrl(SYNC_CONTENT_ENDPOINT), {folderId, numItems, sorting, recursive})
         .then(response => {
             return response;
         });
@@ -117,6 +125,7 @@ function getAddFolderTypeUrl() {
 
 export default {
     getContent,
+    syncContent,
     getDownloadUrl,
     loadFolderMappings,
     addFolder,

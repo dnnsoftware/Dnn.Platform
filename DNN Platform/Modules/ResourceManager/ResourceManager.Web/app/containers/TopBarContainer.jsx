@@ -57,12 +57,27 @@ class TopBarContainer extends React.Component {
         loadContent(newFolderPanelState, currentFolderId);
     }
 
-    onRefreshSyncChange() {
-
+    onRefreshSyncChange(folderPanelState, currentFolderId, option) {
+        switch (option.value) {
+            case "Refresh":
+                this.props.loadContent(folderPanelState, currentFolderId);
+                break;
+        
+            case "SyncThisFolder":
+                this.props.syncContent(folderPanelState, false);
+                break;
+        
+            case "SyncThisFolderAndSubfolders":
+                this.props.syncContent(folderPanelState, true);
+                break;
+    
+            default:
+                break;
+        }
     }
 
     render() {
-        const {folderPanelState, loadContent, search, userLogged, homeFolderId} = this.props;
+        const {folderPanelState, search, userLogged, homeFolderId} = this.props;
         const {currentFolderId, currentFolderName, sortOptions, sorting} = folderPanelState;
 
         return (
@@ -77,7 +92,7 @@ class TopBarContainer extends React.Component {
                                     { value: "SyncThisFolder", label: localizeService.getString("SyncThisFolder") },
                                     { value: "SyncThisFolderAndSubfolders", label: localizeService.getString("SyncThisFolderAndSubfolders") }
                                 ]} 
-                                onSelect={this.onRefreshSyncChange.bind(this)} 
+                                onSelect={option => this.onRefreshSyncChange(folderPanelState, currentFolderId, option)} 
                                 withBorder={false} 
                                 fixedHeight={200}
                                 label=""
@@ -101,7 +116,6 @@ class TopBarContainer extends React.Component {
                         onChange={this.onSearchChanged.bind(this)} value={search} >
                     </input>
                     <a className="icon-button search-button" onClick={this.searchHandler.bind(this, false)}></a>
-                    {/* <a className="icon-button sync-button" onClick={loadContent.bind(this, folderPanelState, currentFolderId)}></a> */}
                 </div>
             </div>
         );
@@ -111,6 +125,7 @@ class TopBarContainer extends React.Component {
 TopBarContainer.propTypes = {
     folderPanelState: PropTypes.object,
     loadContent: PropTypes.func,
+    syncContent: PropTypes.func,
     changeSearchingValue: PropTypes.func,
     searchFiles: PropTypes.func,
     changeSorting: PropTypes.func,
@@ -137,6 +152,7 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators({
             loadContent: folderPanelActions.loadContent,
+            syncContent: folderPanelActions.syncContent,
             searchFiles: folderPanelActions.searchFiles,
             changeSearchingValue: folderPanelActions.changeSearchingValue,
             changeSorting: folderPanelActions.changeSorting,

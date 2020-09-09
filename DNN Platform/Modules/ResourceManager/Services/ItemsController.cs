@@ -77,6 +77,14 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
+        public HttpResponseMessage SyncFolderContent(int folderId, int numItems, string sorting, bool recursive)
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+            FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, recursive, true);
+            return GetFolderContent(folderId, 0, numItems, sorting);
+        }
+
+        [HttpGet]
         public HttpResponseMessage ThumbnailDownLoad([FromUri] ThumbnailDownloadRequest item)
         {
             var file = FileManager.Instance.GetFile(item.FileId);
