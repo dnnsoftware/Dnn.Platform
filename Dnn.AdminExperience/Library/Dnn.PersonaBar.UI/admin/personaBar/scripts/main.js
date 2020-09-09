@@ -2,7 +2,6 @@
     'use strict';
 
     var debugMode = window.parent['personaBarSettings']['debugMode'] === true;
-    var disableEditBar = window.parent['personaBarSettings']['disableEditBar'] === true;
     var cdv = window.parent['personaBarSettings']['buildNumber'];
 
     requirejs.config({
@@ -88,7 +87,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         var $personaBar = $('#personabar');
         var $showSiteButton = $('#showsite');
         var customModules = [];
-        
+        var disableEditBar = window.parent['personaBarSettings']['disableEditBar'] === true;
+
         window.requirejs.config({
             paths: {
                 'rootPath': utility.getApplicationRootPath()
@@ -688,6 +688,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         }
 
         function handleDisabledEditBar($btnEdit) {
+
+            $btnEdit.addClass('disabled');
+
             var $tooltip = $('<div class="editmode-tooltip"><span class="tooltip-title"></span><span class="tooltip-message"></span></div>');
             $tooltip.click(function (e) {
                 e.preventDefault();
