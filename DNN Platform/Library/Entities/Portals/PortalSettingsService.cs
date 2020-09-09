@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalSettingsService"/> class.
         /// </summary>
-        /// <param name="settings">The current portal settings.</param>
+        /// <param name="loadSettingsCallback">A callback to retrieve the portal settings.</param>
         /// <param name="saveService">The save settings implementation.</param>
         /// <param name="deleteService">The delete settings implementation</param>
         public PortalSettingsService(Func<IDictionary<string, string>> loadSettingsCallback, ISaveSettingsService saveService, IDeleteSettingsService deleteService)
@@ -115,12 +115,26 @@ namespace DotNetNuke.Entities.Portals
         public void DeleteAll() =>
             this.DeleteService.DeleteAll();
 
-        public void DeleteAll(bool clearCache) =>
+        public void DeleteAll(bool clearCache)
+        {
             this.DeleteService.DeleteAll(clearCache);
 
+            if (clearCache)
+            {
+                this.Settings = this.LoadSettingsCallback();
+            }
+        }
+
         /// <inheritdoc />
-        public void Delete(string key, bool clearCache) => 
+        public void Delete(string key, bool clearCache)
+        {
             this.DeleteService.Delete(key, clearCache);
+
+            if (clearCache)
+            {
+                this.Settings = this.LoadSettingsCallback();
+            }
+        }
 
         /// <inheritdoc />
         public void Update(string key, string value) => 
@@ -135,16 +149,37 @@ namespace DotNetNuke.Entities.Portals
             this.SaveService.UpdateEncrypted(key, value, passPhrase, false);
 
         /// <inheritdoc />
-        public void Update(string key, string value, bool clearCache) =>
+        public void Update(string key, string value, bool clearCache)
+        {
             this.SaveService.Update(key, value, clearCache);
 
-        /// <inheritdoc />
-        public void UpdateEncrypted(string key, string value, bool clearCache) =>
-            this.SaveService.UpdateEncrypted(key, value, clearCache);
+            if (clearCache)
+            {
+                this.Settings = this.LoadSettingsCallback();
+            }
+        }
 
         /// <inheritdoc />
-        public void UpdateEncrypted(string key, string value, string passPhrase, bool clearCache) =>
+        public void UpdateEncrypted(string key, string value, bool clearCache)
+        {
+            this.SaveService.UpdateEncrypted(key, value, clearCache);
+
+            if (clearCache)
+            {
+                this.Settings = this.LoadSettingsCallback();
+            }
+        }
+
+        /// <inheritdoc />
+        public void UpdateEncrypted(string key, string value, string passPhrase, bool clearCache)
+        {
             this.SaveService.UpdateEncrypted(key, value, passPhrase, clearCache);
+
+            if (clearCache)
+            {
+                this.Settings = this.LoadSettingsCallback();
+            }
+        }
 
         protected virtual string Get(string key)
         {
