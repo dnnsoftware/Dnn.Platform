@@ -5,28 +5,30 @@
 namespace DotNetNuke.Web.Common
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.ComponentModel;
 
-    public class LazyServiceProvider : IServiceProvider
+    public class LazyServiceProvider : IServiceProvider, INotifyPropertyChanged
     {
-        private IServiceProvider _serviceProvider;
+        private IServiceProvider serviceProvider;
 
+        /// <inheritdoc/>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <inheritdoc/>
         public object GetService(Type serviceType)
         {
-            if (this._serviceProvider is null)
+            if (this.serviceProvider is null)
             {
                 throw new Exception("Cannot resolve services until the service provider is built.");
             }
 
-            return this._serviceProvider.GetService(serviceType);
+            return this.serviceProvider.GetService(serviceType);
         }
 
         internal void SetProvider(IServiceProvider serviceProvider)
         {
-            this._serviceProvider = serviceProvider;
+            this.serviceProvider = serviceProvider;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(serviceProvider)));
         }
     }
 }
