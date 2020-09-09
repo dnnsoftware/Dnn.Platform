@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <inheritdoc/>
-        Dictionary<string, IConfigurationSetting> IHostSettingsService.GetSettings()
+        IDictionary<string, IConfigurationSetting> IHostSettingsService.GetSettings()
         {
             return CBO.GetCachedObject<Dictionary<string, IConfigurationSetting>>(
                                             new CacheItemArgs(
@@ -128,9 +128,10 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <inheritdoc/>
-        public Dictionary<string, string> GetSettingsDictionary()
+        IDictionary<string, string> IHostSettingsService.GetSettingsDictionary()
         {
-            return this.GetSettings().ToDictionary(c => c.Key, c => c.Value.Value);
+            return ((IHostSettingsService)this).GetSettings()
+                .ToDictionary(c => c.Key, c => c.Value.Value);
         }
 
         /// <inheritdoc/>
@@ -162,7 +163,7 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <inheritdoc/>
-        public void Update(Dictionary<string, string> settings)
+        void IHostSettingsService.Update(IDictionary<string, string> settings)
         {
             foreach (KeyValuePair<string, string> settingKvp in settings)
             {

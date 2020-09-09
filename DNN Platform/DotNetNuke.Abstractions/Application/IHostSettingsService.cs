@@ -92,13 +92,13 @@ namespace DotNetNuke.Abstractions.Application
         /// Gets all host settings.
         /// </summary>
         /// <returns>host setting.</returns>
-        Dictionary<string, IConfigurationSetting> GetSettings();
+        IDictionary<string, IConfigurationSetting> GetSettings();
 
         /// <summary>
         /// Gets all host settings as dictionary.
         /// </summary>
         /// <returns>host setting's value.</returns>
-        Dictionary<string, string> GetSettingsDictionary();
+        IDictionary<string, string> GetSettingsDictionary();
 
         /// <summary>
         /// Gets the setting value by the specific key.
@@ -140,7 +140,7 @@ namespace DotNetNuke.Abstractions.Application
         /// Updates the specified settings.
         /// </summary>
         /// <param name="settings">The settings.</param>
-        void Update(Dictionary<string, string> settings);
+        void Update(IDictionary<string, string> settings);
 
         /// <summary>
         /// Updates the setting for a specified key.
