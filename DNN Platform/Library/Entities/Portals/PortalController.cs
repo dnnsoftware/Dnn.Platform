@@ -398,7 +398,9 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSettings(int portalID)
         {
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
-            portalSettingsManager.DeleteAllSettings(portalID);
+            portalSettingsManager
+                .GetPortalSettings(portalID)
+                .DeleteAll(true);
         }
 
         /// <summary>
@@ -409,7 +411,9 @@ namespace DotNetNuke.Entities.Portals
         public static void DeletePortalSettings(int portalID, string cultureCode)
         {
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
-            portalSettingsManager.DeleteAllSettings(portalID, cultureCode);
+            portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .DeleteAll(true);
         }
 
         /// <summary>
@@ -424,7 +428,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalID)
-                .GetEncryptedString(settingName, passPhrase);
+                .GetEncrypted<string>(settingName, passPhrase);
         }
 
         /// <summary>
@@ -440,7 +444,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalID)
-                .GetString(settingName, defaultValue);
+                .Get<string>(settingName) ?? defaultValue;
         }
 
         /// <summary>
@@ -457,7 +461,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalID, cultureCode)
-                .GetString(settingName, defaultValue);
+                .Get<string>(settingName) ?? defaultValue;
         }
 
         /// <summary>
@@ -473,7 +477,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalID)
-                .GetBoolean(key, defaultValue);
+                .Get<bool>(key);
         }
 
         /// <summary>
@@ -490,7 +494,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalID, cultureCode)
-                .GetBoolean(key, defaultValue);
+                .Get<bool>(key);
         }
 
         /// <summary>
@@ -506,7 +510,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalID)
-                .GetInteger(key, defaultValue);
+                .Get<int>(key);
         }
 
         /// <summary>
@@ -522,7 +526,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalId)
-                .GetDouble(key, defaultValue);
+                .Get<double>(key);
         }
 
         /// <summary>
@@ -539,7 +543,7 @@ namespace DotNetNuke.Entities.Portals
             var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
             return portalSettingsManager
                 .GetPortalSettings(portalID, cultureCode)
-                .GetInteger(key, defaultValue);
+                .Get<int>(key);
         }
 
         /// <summary>

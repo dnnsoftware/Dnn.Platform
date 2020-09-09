@@ -5,10 +5,8 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
     using DotNetNuke.Abstractions.Settings;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Instrumentation;
@@ -23,10 +21,12 @@ namespace DotNetNuke.Entities.Portals
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalSettingsService));
 
+        protected Func<IDictionary<string, string>> LoadSettingsCallback { get; }
+
         /// <summary>
         /// Gets the current Portal Settings.
         /// </summary>
-        protected IDictionary<string, string> Settings { get; }
+        protected IDictionary<string, string> Settings { get; private set; }
 
         /// <summary>
         /// Gets the save service, used for saving the
@@ -40,132 +40,122 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         protected IDeleteSettingsService DeleteService { get; }
 
+        /// <inheritdoc />
+        public string this[string key]
+        {
+            get => this.Get(key);
+            set => this.Update(key, value);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalSettingsService"/> class.
         /// </summary>
         /// <param name="settings">The current portal settings.</param>
         /// <param name="saveService">The save settings implementation.</param>
         /// <param name="deleteService">The delete settings implementation</param>
-        public PortalSettingsService(IDictionary<string, string> settings, ISaveSettingsService saveService, IDeleteSettingsService deleteService)
+        public PortalSettingsService(Func<IDictionary<string, string>> loadSettingsCallback, ISaveSettingsService saveService, IDeleteSettingsService deleteService)
         {
-            this.Settings = settings;
+            this.LoadSettingsCallback = loadSettingsCallback;
             this.SaveService = saveService;
         }
 
         /// <inheritdoc />
-        public bool GetBoolean(string key)
-        {
-            return this.GetBoolean(key, false);
-        }
-
-        /// <inheritdoc />
-        public bool GetBoolean(string key, bool defaultValue)
+        public T Get<T>(string key)
+            where T : IConvertible
         {
             try
             {
-                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
-                {
-                    return
-                        value.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) ||
-                        value.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
-                }
+                // DNN uses special logic for boolean. It accepts Y and TRUE. We should make sure that is convertible
+                return (T)Convert.ChangeType(this[key], typeof(T));
             }
             catch (Exception exception)
             {
                 Logger.Error(exception);
             }
 
-            return defaultValue;
+            return default(T);
         }
 
         /// <inheritdoc />
-        public double GetDouble(string key)
+        public T GetEncrypted<T>(string key)
+            where T : IConvertible
         {
-            return this.GetDouble(key, double.MinValue);
+            return this.GetEncrypted<T>(key, Config.GetDecryptionkey());
         }
 
         /// <inheritdoc />
-        public double GetDouble(string key, double defaultValue)
+        public T GetEncrypted<T>(string key, string passPhrase)
+            where T : IConvertible
         {
             try
             {
-                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
-                {
-                    return Convert.ToDouble(value);
-                }
+                var decryptedText = FIPSCompliant.DecryptAES(this[key], passPhrase, Host.GUID);
+                return (T)Convert.ChangeType(decryptedText, typeof(T));
             }
             catch (Exception exception)
             {
                 Logger.Error(exception);
             }
 
-            return defaultValue;
+            return default(T);
         }
 
         /// <inheritdoc />
-        public string GetEncryptedString(string key, string passPhrase)
-        {
-            Requires.NotNullOrEmpty(nameof(key), key);
-            Requires.NotNullOrEmpty(nameof(passPhrase), passPhrase);
-
-            var cipherText = this.GetString(key);
-            return FIPSCompliant.DecryptAES(cipherText, passPhrase, Host.GUID);
-        }
+        public string GetEncrypted(string key) =>
+            this.GetEncrypted<string>(key);
 
         /// <inheritdoc />
-        public string GetEncryptedString(string key)
-        {
-            return this.GetEncryptedString(key, Config.GetDecryptionkey());
-        }
+        public string GetEncrypted(string key, string passPhrase) =>
+            this.GetEncrypted<string>(key, passPhrase);
 
         /// <inheritdoc />
-        public int GetInteger(string key)
-        {
-            return this.GetInteger(key, -1);
-        }
+        public void Delete(string key) =>
+            this.DeleteService.Delete(key);
+
+        public void DeleteAll() =>
+            this.DeleteService.DeleteAll();
+
+        public void DeleteAll(bool clearCache) =>
+            this.DeleteService.DeleteAll(clearCache);
 
         /// <inheritdoc />
-        public int GetInteger(string key, int defaultValue)
+        public void Delete(string key, bool clearCache) => 
+            this.DeleteService.Delete(key, clearCache);
+
+        /// <inheritdoc />
+        public void Update(string key, string value) => 
+            this.SaveService.Update(key, value, false);
+
+        /// <inheritdoc />
+        public void UpdateEncrypted(string key, string value) => 
+            this.SaveService.UpdateEncrypted(key, value, false);
+
+        /// <inheritdoc />
+        public void UpdateEncrypted(string key, string value, string passPhrase) =>
+            this.SaveService.UpdateEncrypted(key, value, passPhrase, false);
+
+        /// <inheritdoc />
+        public void Update(string key, string value, bool clearCache) =>
+            this.SaveService.Update(key, value, clearCache);
+
+        /// <inheritdoc />
+        public void UpdateEncrypted(string key, string value, bool clearCache) =>
+            this.SaveService.UpdateEncrypted(key, value, clearCache);
+
+        /// <inheritdoc />
+        public void UpdateEncrypted(string key, string value, string passPhrase, bool clearCache) =>
+            this.SaveService.UpdateEncrypted(key, value, passPhrase, clearCache);
+
+        protected virtual string Get(string key)
         {
+            if (this.Settings == null)
+            {
+                this.Settings = this.LoadSettingsCallback();
+            }
+
             try
             {
-                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
-                {
-                    return Convert.ToInt32(value);
-                }
-            }
-            catch (Exception exception)
-            {
-                Logger.Error(exception);
-            }
-
-            return defaultValue;
-        }
-
-        /// <inheritdoc />
-        public IDictionary<string, IConfigurationSetting> GetSettings()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IDictionary<string, string> GetSettingsDictionary()
-        {
-            return new ReadOnlyDictionary<string, string>(this.Settings);
-        }
-
-        /// <inheritdoc />
-        public string GetString(string key)
-        {
-            return this.GetString(key, string.Empty);
-        }
-
-        /// <inheritdoc />
-        public string GetString(string key, string defaultValue)
-        {
-            try
-            {
-                if (this.Settings.TryGetValue(key, out string value) && !string.IsNullOrEmpty(value))
+                if (this.Settings.TryGetValue(key, out string value))
                 {
                     return value;
                 }
@@ -175,67 +165,7 @@ namespace DotNetNuke.Entities.Portals
                 Logger.Error(exception);
             }
 
-            return defaultValue;
-        }
-
-        /// <inheritdoc />
-        public void Update(IConfigurationSetting config)
-        {
-            this.SaveService.Update(config.Key, config.Value, false);
-        }
-
-        /// <inheritdoc />
-        public void Update(IConfigurationSetting config, bool clearCache)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Update(IDictionary<string, string> settings)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Update(string key, string value)
-        {
-            this.SaveService.Update(key, value, false);
-        }
-
-        /// <inheritdoc />
-        public void Update(string key, string value, bool clearCache)
-        {
-            this.SaveService.Update(key, value, clearCache);
-        }
-
-        /// <inheritdoc />
-        public void UpdateEncryptedString(string key, string value, string passPhrase)
-        {
-            this.SaveService.UpdateEncrypted(key, value, passPhrase, false);
-        }
-
-        /// <inheritdoc />
-        public void UpdateEncryptedString(string key, string value, string passPhrase, bool clearCache)
-        {
-            this.SaveService.UpdateEncrypted(key, value, passPhrase, clearCache);
-        }
-
-        /// <inheritdoc />
-        public void UpdateEncryptedString(string key, string value)
-        {
-            this.SaveService.UpdateEncrypted(key, value, false);
-        }
-
-        /// <inheritdoc />
-        public void UpdateEncryptedString(string key, string value, bool clearCache)
-        {
-            this.SaveService.UpdateEncrypted(key, value, clearCache);
-        }
-
-        /// <inheritdoc />
-        public void Delete(string key)
-        {
-            this.DeleteService.Delete(key);
+            return default(string);
         }
     }
 }

@@ -26,20 +26,5 @@ namespace DotNetNuke.Abstractions.Portals
         /// <param name="cultureCode">The culture code to retrieve the portal settings for.</param>
         /// <returns>The portal settings service implementation.</returns>
         ISettingsService GetPortalSettings(int portalId, string cultureCode);
-
-        /// <summary>
-        /// Deletes all portal settings by portal id and for a given
-        /// language (Null: all languages and neutral settings).
-        /// </summary>
-        /// <param name="portalId">The portalId to delete settings for.</param>
-        void DeleteAllSettings(int portalId);
-
-        /// <summary>
-        /// Deletes all portal settings by portal id and for a given
-        /// language (Null: all languages and neutral settings).
-        /// </summary>
-        /// <param name="portalId">The portalId to delete settings for.</param>
-        /// <param name="cultureCode">The culture code to delete settings for.</param>
-        void DeleteAllSettings(int portalId, string cultureCode);
     }
 }

@@ -33,24 +33,11 @@ namespace DotNetNuke.Entities.Portals
             var cachedSettings = this.GetCachedSettings(portalId, cultureCode);
             var saveService = new PortalSaveSettingsService(portalId, cultureCode);
             var deleteService = new PortalDeleteSettingsService(portalId, cultureCode);
-            return new PortalSettingsService(cachedSettings, saveService, deleteService);
+
+            return new PortalSettingsService(() => this.GetCachedSettings(portalId, cultureCode), saveService, deleteService);
         }
 
-        /// <inheritdoc />
-        public void DeleteAllSettings(int portalId)
-        {
-            this.DeleteAllSettings(portalId, string.Empty);
-        }
-
-        /// <inheritdoc />
-        public void DeleteAllSettings(int portalId, string cultureCode)
-        {
-            DataProvider.Instance().DeletePortalSettings(portalId, cultureCode);
-            EventLogController.Instance.AddLog("PortalID", portalId.ToString() + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-            DataCache.ClearHostCache(true);
-        }
-
-        private Dictionary<string, string> GetCachedSettings(int portalId, string cultureCode)
+        private IDictionary<string, string> GetCachedSettings(int portalId, string cultureCode)
         {
             var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
             var cacheItemArguments = new CacheItemArgs(

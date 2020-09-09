@@ -14,5 +14,11 @@
         /// </summary>
         /// <param name="key">The setting key to delete.</param>
         void Delete(string key);
+
+        void Delete(string key, bool clearCache);
+
+        void DeleteAll();
+
+        void DeleteAll(bool clearCache);
     }
 }

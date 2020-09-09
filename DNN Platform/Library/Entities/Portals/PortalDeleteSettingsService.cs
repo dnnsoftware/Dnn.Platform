@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
 {
-    using System;
-
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common.Utilities;
@@ -20,7 +18,6 @@ namespace DotNetNuke.Entities.Portals
         private readonly int portalId;
         private readonly string cultureCode;
         private readonly int userId;
-        private readonly Func<PortalSettings> getPortalSettingsCallback;
 
 
         /// <summary>
@@ -33,20 +30,40 @@ namespace DotNetNuke.Entities.Portals
             this.portalId = portalId;
             this.cultureCode = cultureCode;
             this.userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            this.getPortalSettingsCallback = getPortalSettingsCallback;
         }
 
         /// <inheritdoc />
-        public void Delete(string key)
+        public void Delete(string key) =>
+            this.Delete(key, false);
+
+        /// <inheritdoc />
+        public void Delete(string key, bool clearCache)
         {
             DataProvider.Instance().DeletePortalSetting(this.portalId, key, this.cultureCode.ToLowerInvariant());
             EventLogController.Instance.AddLog(
                 "SettingName",
                 key + ((this.cultureCode == Null.NullString) ? string.Empty : " (" + this.cultureCode + ")"),
                 this.GetPortalSettings(),
-                this.userId, 
+                this.userId,
                 EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-            DataCache.ClearHostCache(true);
+            DataCache.ClearHostCache(clearCache);
+        }
+
+        /// <inheritdoc />
+        public void DeleteAll() =>
+            this.DeleteAll(false);
+
+        /// <inheritdoc />
+        public void DeleteAll(bool clearCache)
+        {
+            DataProvider.Instance().DeletePortalSettings(this.portalId, this.cultureCode);
+            EventLogController.Instance.AddLog(
+                "PortalID",
+                portalId.ToString() + ((cultureCode == Null.NullString) ? string.Empty : " (" + this.cultureCode + ")"),
+                this.GetPortalSettings(),
+                this.userId,
+                EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            DataCache.ClearHostCache(clearCache);
         }
 
         private IPortalSettings GetPortalSettings()

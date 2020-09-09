@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Settings
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -11,6 +12,57 @@ namespace DotNetNuke.Abstractions.Settings
     /// </summary>
     public interface ISettingsService
     {
+        string this[string key] { get; set; }
+
+        T Get<T>(string key)
+            where T : IConvertible;
+
+        T GetEncrypted<T>(string key)
+            where T : IConvertible;
+
+        T GetEncrypted<T>(string key, string passPhrase)
+            where T : IConvertible;
+
+        string GetEncrypted(string key);
+
+        string GetEncrypted(string key, string passPhrase);
+
+        /// <summary>
+        /// Deletes the setting.
+        /// </summary>
+        /// <param name="key">The setting key to delete.</param>
+        void Delete(string key);
+
+        /// <summary>
+        /// Deletes the setting.
+        /// </summary>
+        /// <param name="key">The setting key to delete.</param>
+        /// <param name="clearCache">Clears the cache if true.</param>
+        void Delete(string key, bool clearCache);
+
+        void DeleteAll();
+
+        void DeleteAll(bool clearCache);
+
+        /// <summary>
+        /// Updates the setting for a specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        void Update(string key, string value);
+
+        void UpdateEncrypted(string key, string value);
+        void UpdateEncrypted(string key, string value, string passPhrase);
+
+        void Update(string key, string value, bool clearCache);
+        void UpdateEncrypted(string key, string value, bool clearCache);
+        void UpdateEncrypted(string key, string value, string passPhrase, bool clearCache);
+
+
+        // ------------------------------------------------------
+        // OLD INTERFACE MEMBERS
+        // ------------------------------------------------------
+        /*
         /// <summary>
         /// Gets the setting value by the specific key.
         /// </summary>
@@ -125,11 +177,7 @@ namespace DotNetNuke.Abstractions.Settings
         /// <param name="settings">The settings.</param>
         void Update(IDictionary<string, string> settings);
 
-        /// <summary>
-        /// Updates the setting for a specified key.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
+        
         void Update(string key, string value);
 
         /// <summary>
@@ -172,10 +220,7 @@ namespace DotNetNuke.Abstractions.Settings
         /// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
         void UpdateEncryptedString(string key, string value, bool clearCache);
 
-        /// <summary>
-        /// Deletes the setting.
-        /// </summary>
-        /// <param name="key">The setting key to delete.</param>
-        void Delete(string key);
+        
+        void Delete(string key);*/
     }
 }
