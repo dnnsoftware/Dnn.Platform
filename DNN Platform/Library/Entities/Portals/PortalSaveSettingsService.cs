@@ -3,13 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
 {
-    using System;
-
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Settings;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>
@@ -44,7 +44,12 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public void UpdateEncrypted(string key, string value, string passPhrase, bool clearCache)
         {
-            throw new NotImplementedException();
+            Requires.NotNullOrEmpty("key", key);
+            Requires.PropertyNotNull("value", value);
+            Requires.NotNullOrEmpty("passPhrase", passPhrase);
+
+            var encryptedText = FIPSCompliant.EncryptAES(value, passPhrase, Host.Host.GUID);
+            this.Update(key, encryptedText, true, clearCache);
         }
 
         /// <inheritdoc />
@@ -83,7 +88,7 @@ namespace DotNetNuke.Entities.Portals
 
             void ClearCache()
             {
-                DataCache.ClearPortalCache(portalId, false);
+                DataCache.ClearPortalCache(this.portalId, false);
                 DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
             }
         }
