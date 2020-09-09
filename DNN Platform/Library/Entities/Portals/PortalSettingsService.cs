@@ -21,6 +21,9 @@ namespace DotNetNuke.Entities.Portals
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalSettingsService));
 
+        /// <summary>
+        /// The callback for retrieving the most up to date settings data.
+        /// </summary>
         protected Func<IDictionary<string, string>> LoadSettingsCallback { get; }
 
         /// <summary>
@@ -112,9 +115,11 @@ namespace DotNetNuke.Entities.Portals
         public void Delete(string key) =>
             this.DeleteService.Delete(key);
 
+        /// <inheritdoc />
         public void DeleteAll() =>
-            this.DeleteService.DeleteAll();
+            this.DeleteService.DeleteAll(true);
 
+        /// <inheritdoc />
         public void DeleteAll(bool clearCache)
         {
             this.DeleteService.DeleteAll(clearCache);
@@ -181,6 +186,11 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <summary>
+        /// Gets the setting value for the specifeid key in plain text.
+        /// </summary>
+        /// <param name="key">The setting key to retrieve.</param>
+        /// <returns>The plain text value of the setting.</returns>
         protected virtual string Get(string key)
         {
             if (this.Settings == null)

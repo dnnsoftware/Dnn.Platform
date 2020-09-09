@@ -58,7 +58,6 @@ namespace DotNetNuke.Entities.Portals
             this.Update(key, value, true, clearCache);
         }
 
-        // TODO - Add xml docs
         private void Update(string key, string value, bool isSecure, bool shouldClearCache)
         {
             UpdateDatabase();
