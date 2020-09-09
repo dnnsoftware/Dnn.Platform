@@ -10,15 +10,16 @@
     public interface IDeleteSettingsService
     {
         /// <summary>
-        /// Deletes the setting.
+        /// Deletes the specified setting.
         /// </summary>
-        /// <param name="key">The setting key to delete.</param>
-        void Delete(string key);
-
+        /// <param name="key">The key to delete from the settings.</param>
+        /// <param name="clearCache">If true the cache will be reset and the settings will be reloaded.</param>
         void Delete(string key, bool clearCache);
 
-        void DeleteAll();
-
+        /// <summary>
+        /// Deletes all the settings.
+        /// </summary>
+        /// <param name="clearCache">If true the cache will be reset and the settings will be reloaded.</param>
         void DeleteAll(bool clearCache);
     }
 }

@@ -113,7 +113,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         public void Delete(string key) =>
-            this.DeleteService.Delete(key);
+            this.DeleteService.Delete(key, true);
 
         /// <inheritdoc />
         public void DeleteAll() =>
