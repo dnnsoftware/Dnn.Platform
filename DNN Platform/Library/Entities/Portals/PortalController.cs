@@ -10,7 +10,6 @@ namespace DotNetNuke.Entities.Portals
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Security.Cryptography;
     using System.Text;
     using System.Web;
     using System.Xml;
@@ -18,7 +17,6 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml.XPath;
 
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -67,16 +65,6 @@ namespace DotNetNuke.Entities.Portals
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
-
-        private readonly IPortalSettingsManager portalSettingsManager;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalController"/> class.
-        /// </summary>
-        public PortalController()
-        {
-            this.portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
-        }
 
         /// <summary>
         /// Adds the portal dictionary.
