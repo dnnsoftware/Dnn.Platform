@@ -112,7 +112,6 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("portalId", portalId);
             settings.Add("preferredTimeZone", preferredTimeZone);
 
-
             if (!settings.ContainsKey("isAdmin"))
             {
                 settings.Add("isAdmin", user.IsInRole(portalSettings.AdministratorRoleName));
