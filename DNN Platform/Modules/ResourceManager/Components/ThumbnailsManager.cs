@@ -12,6 +12,7 @@ namespace Dnn.Modules.ResourceManager.Components
 
     using Dnn.Modules.ResourceManager.Components.Models;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.FileSystem;
 
@@ -70,7 +71,7 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <inheritdoc/>
         public string ThumbnailUrl(int moduleId, int fileId, int width, int height, string timestamp)
         {
-            var tabId = PortalController.Instance.GetCurrentPortalSettings().ActiveTab.TabID;
+            var tabId = TabController.CurrentPage.TabID;
 
             return
                 $"{ServicesFramework.GetServiceFrameworkRoot()}API/ResourceManager/Items/ThumbnailDownLoad?fileId={fileId}&width={width}&height={height}&timestamp={timestamp}&moduleId={moduleId}&tabId={tabId}";
