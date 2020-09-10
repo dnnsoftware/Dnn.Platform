@@ -11,6 +11,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using System.Net.Http;
 
     using Dnn.Modules.ResourceManager.Components.Models;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
