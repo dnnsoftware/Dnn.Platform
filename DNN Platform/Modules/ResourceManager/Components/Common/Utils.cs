@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Components.Common
 {
     using System;
@@ -10,21 +9,21 @@ namespace Dnn.Modules.ResourceManager.Components.Common
     using DotNetNuke.Services.FileSystem;
 
     /// <summary>
-    /// Various utilities.
+    /// General utilities for the Resource Manager.
     /// </summary>
     public class Utils
     {
         /// <summary>
-        ///     Obtains a human friendly description from an enum value using the
-        ///     <see cref="System.ComponentModel.DescriptionAttribute" /> attribute to get a proper name.
+        /// Obtains a human friendly description from an enum value using the
+        /// <see cref="System.ComponentModel.DescriptionAttribute" /> attribute to get a proper name.
         /// </summary>
         /// <param name="enumValue">The enum value to lookup.</param>
         /// <returns>The specified description attribute name or the value of the enum as a string.</returns>
         public static string GetEnumDescription(Enum enumValue)
         {
             var fi = enumValue.GetType().GetField(enumValue.ToString());
-            var descriptionAttributes =
-                (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            var descriptionAttributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
             if (descriptionAttributes.Length > 0)
             {
                 return descriptionAttributes[0].Description;

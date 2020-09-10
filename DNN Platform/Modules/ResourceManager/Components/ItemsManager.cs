@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Components
 {
     using System;
@@ -12,6 +11,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using Dnn.Modules.ResourceManager.Exceptions;
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Dto;
+
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Portals;
@@ -29,7 +29,6 @@ namespace Dnn.Modules.ResourceManager.Components
     public class ItemsManager : ServiceLocator<IItemsManager, ItemsManager>, IItemsManager
     {
         private const int MaxDescriptionLength = 500;
-        private readonly IContentController contentController;
         private readonly IRoleController roleController;
         private readonly IFileManager fileManager;
         private readonly IAssetManager assetManager;
@@ -40,14 +39,13 @@ namespace Dnn.Modules.ResourceManager.Components
         /// </summary>
         public ItemsManager()
         {
-            this.contentController = ContentController.Instance;
             this.roleController = RoleController.Instance;
             this.fileManager = FileManager.Instance;
             this.assetManager = AssetManager.Instance;
             this.permissionsManager = PermissionsManager.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, int moduleMode)
         {
             var noPermissionMessage = Localization.GetExceptionMessage(
@@ -69,7 +67,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Stream GetFileContent(int fileId, out string fileName, out string contentType)
         {
             var file = this.fileManager.GetFile(fileId, true);
@@ -91,13 +89,8 @@ namespace Dnn.Modules.ResourceManager.Components
             return content;
         }
 
-        /// <inheritdoc/>
-        public IFolderInfo CreateNewFolder(
-            string folderName,
-            int parentFolderId,
-            int folderMappingId,
-            string mappedName,
-            int moduleMode)
+        /// <inheritdoc />
+        public IFolderInfo CreateNewFolder(string folderName, int parentFolderId, int folderMappingId, string mappedName, int moduleMode)
         {
             if (!this.permissionsManager.HasAddFoldersPermission(moduleMode, parentFolderId))
             {
@@ -107,7 +100,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return AssetManager.Instance.CreateFolder(folderName, parentFolderId, folderMappingId, mappedName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveFileDetails(IFileInfo file, FileDetailsRequest fileDetails)
         {
             var propertyChanged = false;
@@ -136,7 +129,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveFolderDetails(IFolderInfo folder, FolderDetailsRequest folderDetails)
         {
             this.assetManager.RenameFolder(folderDetails.FolderId, folderDetails.FolderName);
@@ -146,7 +139,7 @@ namespace Dnn.Modules.ResourceManager.Components
             FolderManager.Instance.UpdateFolder(folder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteFile(int fileId, int moduleMode, int groupId)
         {
             var file = FileManager.Instance.GetFile(fileId);
@@ -168,7 +161,7 @@ namespace Dnn.Modules.ResourceManager.Components
             AssetManager.Instance.DeleteFile(fileId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteFolder(int folderId, bool unlinkAllowedStatus, int moduleMode)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
@@ -186,7 +179,7 @@ namespace Dnn.Modules.ResourceManager.Components
             AssetManager.Instance.DeleteFolder(folderId, unlinkAllowedStatus, nonDeletedSubfolders);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IItemsManager> GetFactory()
         {
             return () => new ItemsManager();

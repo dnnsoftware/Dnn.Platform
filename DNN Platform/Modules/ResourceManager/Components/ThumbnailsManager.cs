@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Components
 {
     using System;
@@ -12,7 +11,6 @@ namespace Dnn.Modules.ResourceManager.Components
 
     using Dnn.Modules.ResourceManager.Components.Models;
 
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.FileSystem;
@@ -39,9 +37,24 @@ namespace Dnn.Modules.ResourceManager.Components
         /// </summary>
         private enum ThumbnailExtensions
         {
+            /// <summary>
+            /// A JPEG thumbnail.
+            /// </summary>
             JPEG,
+
+            /// <summary>
+            /// A JPG thumbnail.
+            /// </summary>
             JPG,
+
+            /// <summary>
+            /// A PNG thumbnail.
+            /// </summary>
             PNG,
+
+            /// <summary>
+            /// A GIF thumbnail.
+            /// </summary>
             GIF,
         }
 

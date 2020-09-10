@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Components
 {
     using System;
@@ -13,6 +12,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using System.Xml;
 
     using Dnn.Modules.ResourceManager.Components.Models;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
@@ -26,48 +26,46 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <inheritdoc/>
         public string CultureName => Instance.CultureName;
 
-        /// <inheritdoc/>
-        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
-            => Instance.GetLocalizedDictionary(resourceFile, culture);
+        /// <inheritdoc />
+        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture) =>
+            Instance.GetLocalizedDictionary(resourceFile, culture);
 
-        /// <inheritdoc/>
-        public Dictionary<string, string> GetLocalizedDictionary(
-            string resourceFile,
-            string culture,
-            Localization localization) => Instance.GetLocalizedDictionary(resourceFile, culture, localization);
+        /// <inheritdoc />
+        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Localization localization) =>
+            Instance.GetLocalizedDictionary(resourceFile, culture, localization);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public long GetResxTimeStamp(string resourceFile, Localization localization)
             => Instance.GetResxTimeStamp(resourceFile, localization);
 
-        /// <summary>
-        /// Provides a method to override Service Locator's GetFactory method.
-        /// </summary>
-        /// <returns>A <see cref="LocalizationControllerImpl"/>" instance.</returns>
+        /// <inheritdoc />
         protected override Func<ILocalizationController> GetFactory()
         {
-            return () => new LocalizationControllerImpl();
+            return () => new LocalizationControllerImplementation();
         }
 
-        private class LocalizationControllerImpl : ILocalizationController
+        /// <summary>
+        /// The localization controller implementation.
+        /// </summary>
+        private class LocalizationControllerImplementation : ILocalizationController
         {
             private static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
             private static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
+            /// <inheritdoc />
             public string CultureName
             {
                 get { return Thread.CurrentThread.CurrentUICulture.Name; }
             }
 
+            /// <inheritdoc />
             public long GetResxTimeStamp(string resourceFile, Localization localization)
             {
                 return this.GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
             }
 
-            public Dictionary<string, string> GetLocalizedDictionary(
-                string resourceFile,
-                string culture,
-                Localization localization)
+            /// <inheritdoc />
+            public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Localization localization)
             {
                 Requires.NotNullOrEmpty("resourceFile", resourceFile);
                 Requires.NotNullOrEmpty("culture", culture);
@@ -91,7 +89,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 DataCache.SetCache(
                     cacheKey,
                     dictionary,
-                    (DNNCacheDependency)null,
+                    default(DNNCacheDependency),
                     Cache.NoAbsoluteExpiration,
                     FiveMinutes,
                     CacheItemPriority.Normal,
@@ -100,15 +98,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return dictionary;
             }
 
-            /// <summary>
-            /// Gets a dictionary of localization keys and values.
-            /// </summary>
-            /// <param name="resourceFile">The resource file from which to get the localization values.</param>
-            /// <param name="culture">The culture to use.</param>
-            /// <returns>
-            /// A <see cref="Dictionary{TKey, TValue}"/> where the key is a string representing
-            /// the localization key and the value is a string containing the localized text.
-            /// </returns>
+            /// <inheritdoc />
             public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
             {
                 Requires.NotNullOrEmpty("resourceFile", resourceFile);
@@ -132,7 +122,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 DataCache.SetCache(
                     cacheKey,
                     dictionary,
-                    (DNNCacheDependency)null,
+                    default(DNNCacheDependency),
                     Cache.NoAbsoluteExpiration,
                     Constants.FiveMinutes,
                     CacheItemPriority.Normal,
@@ -185,7 +175,6 @@ namespace Dnn.Modules.ResourceManager.Components
                     document.Load(stream);
 
                     var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
-
                     AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
                     foreach (var xmlNode in document.SelectNodes("/root/data").Cast<XmlNode>())
@@ -232,7 +221,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 DataCache.SetCache(
                     cacheKey,
                     lastModifiedDate,
-                    (DNNCacheDependency)null,
+                    default(DNNCacheDependency),
                     Cache.NoAbsoluteExpiration,
                     OneHour,
                     CacheItemPriority.Normal,
@@ -243,8 +232,8 @@ namespace Dnn.Modules.ResourceManager.Components
 
             private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
             {
-                var cultureSpecificFile =
-                    System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
+                var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(
+                    resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
                 var lastModifiedDate = DateTime.MinValue;
 
                 if (File.Exists(cultureSpecificFile))

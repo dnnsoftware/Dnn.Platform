@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager
 {
     using System;
@@ -106,9 +105,8 @@ namespace Dnn.Modules.ResourceManager
         /// <summary>
         /// Gets the timestamp of the localization resource file.
         /// </summary>
-        protected string ResxTimeStamp => LocalizationController.Instance.GetResxTimeStamp(
-            Constants.ViewResourceFileName,
-            Constants.ResourceManagerLocalization).ToString();
+        protected string ResxTimeStamp => 
+            LocalizationController.Instance.GetResxTimeStamp(Constants.ViewResourceFileName, Constants.ResourceManagerLocalization).ToString();
 
         /// <summary>
         /// Gets the id of the home folder.
@@ -217,6 +215,7 @@ namespace Dnn.Modules.ResourceManager
             }
             catch (Exception exc)
             {
+                // Module failed to load
                 DnnExceptions.ProcessModuleLoadException(exc.Message, this, exc);
             }
         }

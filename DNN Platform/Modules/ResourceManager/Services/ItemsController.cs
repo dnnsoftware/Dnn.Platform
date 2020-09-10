@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Services
 {
     using System;
@@ -17,6 +16,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
@@ -24,7 +24,6 @@ namespace Dnn.Modules.ResourceManager.Services
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Assets;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Api;
 
     using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
@@ -158,8 +157,9 @@ namespace Dnn.Modules.ResourceManager.Services
             var isSuperTab = this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.IsSuperTab;
 
             var mappings = FolderMappingController.Instance.GetFolderMappings(
-                isSuperTab && this.UserInfo.IsSuperUser ? Null.NullInteger : this.PortalSettings.PortalId);
-            var moduleContext = this.GetModuleContext();
+                isSuperTab && UserInfo.IsSuperUser ? 
+                    Null.NullInteger : 
+                    PortalSettings.PortalId);
 
             var r = from m in mappings
                     select new

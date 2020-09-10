@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Components
 {
     using System.IO;
 
     using Dnn.Modules.ResourceManager.Services.Dto;
+
     using DotNetNuke.Services.Assets;
     using DotNetNuke.Services.FileSystem;
 
@@ -44,12 +44,7 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <param name="mappedName">Mapped name.</param>
         /// <param name="moduleMode">Current mode of the module instance.</param>
         /// <returns>Folder info object of the new created folder.</returns>
-        IFolderInfo CreateNewFolder(
-            string folderName,
-            int parentFolderId,
-            int folderMappingId,
-            string mappedName,
-            int moduleMode);
+        IFolderInfo CreateNewFolder(string folderName, int parentFolderId, int folderMappingId, string mappedName, int moduleMode);
 
         /// <summary>
         /// Update the asset details of a file.
