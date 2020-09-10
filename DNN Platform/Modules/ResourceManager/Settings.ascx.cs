@@ -2,73 +2,77 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.FileSystem;
-using Dnn.Modules.ResourceManager.Components.Common;
-using DnnExceptions = DotNetNuke.Services.Exceptions.Exceptions;
-using Constants = Dnn.Modules.ResourceManager.Components.Constants;
-
-
 namespace Dnn.Modules.ResourceManager
 {
+    using System;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using Dnn.Modules.ResourceManager.Components.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.FileSystem;
+
+    using Constants = Dnn.Modules.ResourceManager.Components.Constants;
+    using DnnExceptions = DotNetNuke.Services.Exceptions.Exceptions;
+
+    /// <summary>
+    /// Provides module settings control.
+    /// </summary>
     public partial class Settings : ModuleSettingsBase
     {
-        #region Base Method Implementations
-
+        /// <inheritdoc/>
         public override void LoadSettings()
         {
             try
             {
-                if (Page.IsPostBack) 
+                if (this.Page.IsPostBack)
+                {
                     return;
+                }
 
                 var displayTypesValues = Enum.GetValues(typeof(Constants.ModuleModes)).Cast<Constants.ModuleModes>();
                 var displayTypes = displayTypesValues.Select(t => new ListItem(Utils.GetEnumDescription(t), ((int)t).ToString())).ToArray();
 
-                ddlMode.Items.AddRange(displayTypes);
+                this.ddlMode.Items.AddRange(displayTypes);
 
-                ddlMode.SelectedValue = Settings.Contains(Constants.ModeSettingName)
-                    ? Settings[Constants.ModeSettingName].ToString()
+                this.ddlMode.SelectedValue = this.Settings.Contains(Constants.ModeSettingName)
+                    ? this.Settings[Constants.ModeSettingName].ToString()
                     : Constants.DefaultMode.ToString();
 
                 IFolderInfo homeFolder = null;
-                if (Settings.Contains(Constants.HomeFolderSettingName))
+                if (this.Settings.Contains(Constants.HomeFolderSettingName))
                 {
-                    int.TryParse(Settings[Constants.HomeFolderSettingName].ToString(), out var homeFolderId);
+                    int.TryParse(this.Settings[Constants.HomeFolderSettingName].ToString(), out var homeFolderId);
                     homeFolder = FolderManager.Instance.GetFolder(homeFolderId);
                 }
 
                 if (homeFolder == null)
                 {
-                    homeFolder = FolderManager.Instance.GetFolder(PortalId, "");
+                    homeFolder = FolderManager.Instance.GetFolder(this.PortalId, string.Empty);
                 }
 
-                ddlFolder.SelectedFolder = homeFolder;
+                this.ddlFolder.SelectedFolder = homeFolder;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc)
             {
                 DnnExceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        /// <inheritdoc/>
         public override void UpdateSettings()
         {
             try
             {
                 var modules = new ModuleController();
 
-                modules.UpdateModuleSetting(ModuleId, Constants.ModeSettingName, ddlMode.SelectedValue);
-                modules.UpdateModuleSetting(ModuleId, Constants.HomeFolderSettingName, ddlFolder.SelectedFolder.FolderID.ToString());
+                modules.UpdateModuleSetting(this.ModuleId, Constants.ModeSettingName, this.ddlMode.SelectedValue);
+                modules.UpdateModuleSetting(this.ModuleId, Constants.HomeFolderSettingName, this.ddlFolder.SelectedFolder.FolderID.ToString());
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc)
             {
                 DnnExceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
     }
 }

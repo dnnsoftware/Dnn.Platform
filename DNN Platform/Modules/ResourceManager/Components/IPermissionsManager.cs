@@ -5,55 +5,55 @@
 namespace Dnn.Modules.ResourceManager.Components
 {
     /// <summary>
-    /// Manager for permission logic of Resource Manager
+    /// Manager for permission logic of Resource Manager.
     /// </summary>
     public interface IPermissionsManager
     {
         /// <summary>
-        /// Return if the current user is allowed to view the content of a folder
+        /// Checks if the current user is allowed to view the content of a folder.
         /// </summary>
-        /// <param name="folderId">Id of the folder</param>
-        /// <param name="moduleMode">Current mode of the module instance</param>
-        /// <returns>If the user is allowed or not</returns>
+        /// <param name="folderId">Id of the folder.</param>
+        /// <param name="moduleMode">Current mode of the module instance.</param>
+        /// <returns>A value indicating whether the user is allowed to view the content of the folder.</returns>
         bool HasFolderContentPermission(int folderId, int moduleMode);
 
         /// <summary>
-        /// Return if the current user is allowed to read the files of a folder
+        /// Checks if the current user is allowed to read the files in a folder.
         /// </summary>
-        /// <param name="folderId">Id of the folder</param>
-        /// <returns>If the user is allowed or not</returns>
+        /// <param name="folderId">Id of the folder.</param>
+        /// <returns>A value indicating whether the user is allowed to view the content of the folder.</returns>
         bool HasGetFileContentPermission(int folderId);
 
         /// <summary>
-        /// Return if the current user is allowed to add files on a folder
+        /// Checks if the current user is allowed to add files to a folder.
         /// </summary>
-        /// <param name="moduleMode">Current mode of the module instance</param>
-        /// <param name="folderId">Id of the folder</param>
-        /// <returns>If the user is allowed or not</returns>
+        /// <param name="moduleMode">Current mode of the module instance.</param>
+        /// <param name="folderId">Id of the folder.</param>
+        /// <returns>A value indicating whether the user is allowed to add files to the folder.</returns>
         bool HasAddFilesPermission(int moduleMode, int folderId);
 
         /// <summary>
-        /// Return if the current user is allowed to add folders on a folder
+        /// Checks if the current user is allowed to add folders to a folder.
         /// </summary>
-        /// <param name="moduleMode">Current mode of the module instance</param>
-        /// <param name="folderId">Id of the folder</param>
-        /// <returns>If the user is allowed or not</returns>
+        /// <param name="moduleMode">Current mode of the module instance.</param>
+        /// <param name="folderId">Id of the folder.</param>
+        /// <returns>A value indicating whether the user is allowed to add folders to the folder.</returns>
         bool HasAddFoldersPermission(int moduleMode, int folderId);
 
         /// <summary>
-        /// Return if the current user is allowed to delete items from a folder
+        /// Cehcks if the current user is allowed to delete items from a folder.
         /// </summary>
-        /// <param name="moduleMode">Current mode of the module instace</param>
-        /// <param name="folderId">Id of the folder</param>
-        /// <returns>If the user is allowed or not</returns>
+        /// <param name="moduleMode">Current mode of the module instace.</param>
+        /// <param name="folderId">Id of the folder.</param>
+        /// <returns>A value indicating whether the user is allowed to delete items from the folder.</returns>
         bool HasDeletePermission(int moduleMode, int folderId);
 
         /// <summary>
-        /// Return if the current user is allowed to manage the items of a folder
+        /// Checks if the current user is allowed to manage the items in a folder.
         /// </summary>
-        /// <param name="moduleMode">Current mode of the module instance</param>
-        /// <param name="folderId">Id of the folder</param>
-        /// <returns>If the user is allowed or not</returns>
+        /// <param name="moduleMode">Current mode of the module instance.</param>
+        /// <param name="folderId">Id of the folder.</param>
+        /// <returns>A value indicating whether the user is allowed to manage the items in the folder.</returns>
         bool HasManagePermission(int moduleMode, int folderId);
     }
 }

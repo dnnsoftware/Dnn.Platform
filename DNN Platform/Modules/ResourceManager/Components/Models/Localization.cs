@@ -4,9 +4,19 @@
 
 namespace Dnn.Modules.ResourceManager.Components.Models
 {
+    /// <summary>
+    /// Represents a localization caching information.
+    /// </summary>
     public class Localization
     {
+        /// <summary>
+        /// Gets or sets the resource file localization cache key.
+        /// </summary>
         public string ResxDataCacheKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the modified date cache key.
+        /// </summary>
         public string ResxModifiedDateCacheKey { get; set; }
     }
 }

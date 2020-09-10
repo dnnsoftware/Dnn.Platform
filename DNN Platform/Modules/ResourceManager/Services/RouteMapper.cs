@@ -2,12 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Web.Api;
-
 namespace Dnn.Modules.ResourceManager.Services
 {
+    using DotNetNuke.Web.Api;
+
+    /// <summary>
+    /// Registers the WebApi routes for the resource manager module.
+    /// </summary>
     public class RouteMapper : IServiceRouteMapper
     {
+        /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute("ResourceManager", "default", "{controller}/{action}", new[] { "Dnn.Modules.ResourceManager.Services" });

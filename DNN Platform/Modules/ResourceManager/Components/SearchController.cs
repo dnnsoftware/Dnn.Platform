@@ -2,32 +2,41 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.Modules.ResourceManager.Exceptions;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.Modules.ResourceManager.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.Modules.ResourceManager.Exceptions;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+
+    /// <summary>
+    /// Provides search functionality.
+    /// </summary>
     public class SearchController : ComponentBase<ISearchController, SearchController>, ISearchController
     {
-        private readonly IPermissionsManager _permissionsManager;
+        private readonly IPermissionsManager permissionsManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchController"/> class.
+        /// </summary>
         public SearchController()
         {
-            _permissionsManager = PermissionsManager.Instance;
+            this.permissionsManager = PermissionsManager.Instance;
         }
 
+        /// <inheritdoc/>
         public IList<IFileInfo> SearchFolderContent(int moduleId, IFolderInfo folder, bool recursive, string search, int pageIndex, int pageSize, string sorting, int moduleMode, out int totalCount)
         {
-            var noPermissionMessage = Localization.GetExceptionMessage("UserHasNoPermissionToBrowseFolder",
+            var noPermissionMessage = Localization.GetExceptionMessage(
+                "UserHasNoPermissionToBrowseFolder",
                 Constants.UserHasNoPermissionToBrowseFolderDefaultMessage);
 
-            if (!_permissionsManager.HasFolderContentPermission(folder.FolderID, moduleMode))
+            if (!this.permissionsManager.HasFolderContentPermission(folder.FolderID, moduleMode))
             {
                 throw new FolderPermissionNotMetException(noPermissionMessage);
             }
