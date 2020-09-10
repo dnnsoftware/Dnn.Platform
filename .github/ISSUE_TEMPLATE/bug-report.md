@@ -42,8 +42,7 @@ Please add X in at least one of the boxes as appropriate. In order for an issue 
 -->
 * [ ] 10.00.00 alpha build
 * [ ] 09.07.02 release candidate
-* [ ] 09.07.01 release candidate
-* [ ] 09.07.00 latest supported release
+* [ ] 09.07.01 latest supported release
 
 ## Affected browser
 <!-- 
