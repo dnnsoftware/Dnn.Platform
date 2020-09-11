@@ -105,7 +105,7 @@ namespace Dnn.Modules.ResourceManager
         /// <summary>
         /// Gets the timestamp of the localization resource file.
         /// </summary>
-        protected string ResxTimeStamp => 
+        protected string ResxTimeStamp =>
             LocalizationController.Instance.GetResxTimeStamp(Constants.ViewResourceFileName, Constants.ResourceManagerLocalization).ToString();
 
         /// <summary>
