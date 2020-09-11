@@ -9,6 +9,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using System.Linq;
 
     using Dnn.Modules.ResourceManager.Services.Dto;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;

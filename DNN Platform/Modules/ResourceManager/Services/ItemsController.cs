@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Services
 {
     using System;
@@ -17,6 +16,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
@@ -94,18 +94,26 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         /// <summary>
-        /// Gets an image of the thumbnail for an item.
+        /// Syncs the folder content.
         /// </summary>
-        /// <param name="item">The thumbnail to get, <see cref="ThumbnailDownloadRequest"/>.</param>
-        /// <returns>An image file.</returns>
+        /// <param name="folderId">The folder id.</param>
+        /// <param name="numItems">The number of items.</param>
+        /// <param name="sorting">The sorting.</param>
+        /// <param name="recursive">If true sync recursively.</param>
+        /// <returns>The http response message.</returns>
         [HttpGet]
         public HttpResponseMessage SyncFolderContent(int folderId, int numItems, string sorting, bool recursive)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
             FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, recursive, true);
-            return GetFolderContent(folderId, 0, numItems, sorting);
+            return this.GetFolderContent(folderId, 0, numItems, sorting);
         }
 
+        /// <summary>
+        /// Download thumbnail.
+        /// </summary>
+        /// <param name="item">The thumbnail download request.</param>
+        /// <returns>The http repsonse message.</returns>
         [HttpGet]
         public HttpResponseMessage ThumbnailDownLoad([FromUri] ThumbnailDownloadRequest item)
         {
@@ -157,9 +165,11 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var isSuperTab = this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.IsSuperTab;
 
-            var mappings = FolderMappingController.Instance.GetFolderMappings(
-                isSuperTab && this.UserInfo.IsSuperUser ? Null.NullInteger : this.PortalSettings.PortalId);
             var moduleContext = this.GetModuleContext();
+            var mappings = FolderMappingController.Instance.GetFolderMappings(
+                isSuperTab && this.UserInfo.IsSuperUser ?
+                    Null.NullInteger :
+                    this.PortalSettings.PortalId);
 
             var r = from m in mappings
                     select new

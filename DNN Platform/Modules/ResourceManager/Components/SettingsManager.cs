@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Components
 {
     using System.Collections;
 
     using Dnn.Modules.ResourceManager.Exceptions;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -32,8 +32,8 @@ namespace Dnn.Modules.ResourceManager.Components
             this.groupId = groupId;
             var moduleController = new ModuleController();
             var module = moduleController.GetModule(moduleId);
-            this.moduleSettingsDictionary = module.ModuleSettings;
 
+            this.moduleSettingsDictionary = module.ModuleSettings;
             this.LoadSettings();
         }
 

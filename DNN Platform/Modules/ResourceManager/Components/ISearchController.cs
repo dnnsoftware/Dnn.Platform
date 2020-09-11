@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.Modules.ResourceManager.Components
 {
     using System.Collections.Generic;
@@ -26,15 +25,6 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <param name="moduleMode">Module Mode.</param>
         /// <param name="totalCount">Returns the total count (out parameter).</param>
         /// <returns>Result set of the file search page.</returns>
-        IList<IFileInfo> SearchFolderContent(
-            int moduleId,
-            IFolderInfo folder,
-            bool recursive,
-            string search,
-            int pageIndex,
-            int pageSize,
-            string sorting,
-            int moduleMode,
-            out int totalCount);
+        IList<IFileInfo> SearchFolderContent(int moduleId, IFolderInfo folder, bool recursive, string search, int pageIndex, int pageSize, string sorting, int moduleMode, out int totalCount);
     }
 }
