@@ -165,6 +165,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var isSuperTab = this.PortalSettings.ActiveTab != null && this.PortalSettings.ActiveTab.IsSuperTab;
 
+            var moduleContext = this.GetModuleContext();
             var mappings = FolderMappingController.Instance.GetFolderMappings(
                 isSuperTab && this.UserInfo.IsSuperUser ?
                     Null.NullInteger :
@@ -179,7 +180,7 @@ namespace Dnn.Modules.ResourceManager.Services
                         IsDefault =
                         m.MappingName == "Standard" || m.MappingName == "Secure" || m.MappingName == "Database",
                         editUrl = this.UserInfo.IsAdmin ?
-                            this.GetModuleContext().EditUrl(
+                            moduleContext.EditUrl(
                                 "ItemID",
                                 m.FolderMappingID.ToString(),
                                 "EditFolderMapping",
