@@ -215,7 +215,6 @@ namespace Dnn.Modules.ResourceManager
             }
             catch (Exception exc)
             {
-                // Module failed to load
                 DnnExceptions.ProcessModuleLoadException(exc.Message, this, exc);
             }
         }

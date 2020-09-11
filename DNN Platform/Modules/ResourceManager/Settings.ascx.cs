@@ -54,7 +54,6 @@ namespace Dnn.Modules.ResourceManager
             }
             catch (Exception exc)
             {
-                // Module failed to load
                 DnnExceptions.ProcessModuleLoadException(this, exc);
             }
         }
@@ -71,7 +70,6 @@ namespace Dnn.Modules.ResourceManager
             }
             catch (Exception exc)
             {
-                // Module failed to load
                 DnnExceptions.ProcessModuleLoadException(this, exc);
             }
         }
