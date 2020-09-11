@@ -254,8 +254,6 @@
     <Content Include="App_LocalResources\EditFolderMapping.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
     <None Include="packages.config" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">
