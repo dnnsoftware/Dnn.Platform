@@ -82,9 +82,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private void UpdateModuleProperties(DesktopModuleInfo desktopModule, IDictionary<string, string> settings)
         {
-            foreach (var settingName in settings.Keys)
+            foreach (var setting in settings)
             {
-                var settingValue = settings[settingName];
+                var settingName = setting.Key;
+                var settingValue = setting.Value;
 
                 switch (settingName.ToLowerInvariant())
                 {
