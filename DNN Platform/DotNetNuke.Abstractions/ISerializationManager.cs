@@ -12,42 +12,42 @@ namespace DotNetNuke.Abstractions
     public interface ISerializationManager
     {
         /// <summary>
-        /// Serializes the given input property.
+        /// Serialize the property.
         /// </summary>
         /// <typeparam name="T">The type to serialize.</typeparam>
-        /// <param name="myObject">todo.</param>
-        /// <param name="property">document.</param>
-        /// <returns>document1.</returns>
+        /// <param name="myObject">The object to serialize.</param>
+        /// <param name="property">The property info.</param>
+        /// <returns>A serialized string.</returns>
         string SerializeProperty<T>(T myObject, PropertyInfo property);
 
         /// <summary>
-        /// Needs documentation.
+        /// Serialize the property.
         /// </summary>
-        /// <typeparam name="T">Needs documentation1.</typeparam>
-        /// <param name="myObject">Needs documentation2.</param>
-        /// <param name="property">Needs documentation3.</param>
-        /// <param name="serializer">Needs documentation4.</param>
-        /// <returns>Needs documentation5.</returns>
+        /// <typeparam name="T">The type to serialize.</typeparam>
+        /// <param name="myObject">The object to serialize..</param>
+        /// <param name="property">The property info.</param>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns>A serialized string.</returns>
         string SerializeProperty<T>(T myObject, PropertyInfo property, string serializer);
 
         /// <summary>
-        /// Needs documentation.
+        /// Deserializes the string property.
         /// </summary>
-        /// <typeparam name="T">Needs documentation1.</typeparam>
-        /// <param name="myObject">Needs documentation2.</param>
-        /// <param name="property">Needs documentation3.</param>
-        /// <param name="propertyValue">Needs documentation4.</param>
+        /// <typeparam name="T">The object the string should be deserialized into.</typeparam>
+        /// <param name="myObject">The object..</param>
+        /// <param name="property">The property info..</param>
+        /// <param name="propertyValue">The serialized string.</param>
         void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue)
             where T : class, new();
 
         /// <summary>
-        /// Needs documentation.
+        /// Deserializes the string property.
         /// </summary>
-        /// <typeparam name="T">Needs documentation1.</typeparam>
-        /// <param name="myObject">Needs documentation2.</param>
-        /// <param name="property">Needs documentation3.</param>
-        /// <param name="propertyValue">Needs documentation4.</param>
-        /// <param name="serializer">Needs documentation5.</param>
+        /// <typeparam name="T">The object the string should be deserialized into.</typeparam>
+        /// <param name="myObject">The object..</param>
+        /// <param name="property">The property info..</param>
+        /// <param name="propertyValue">The serialized string.</param>
+        /// <param name="serializer">The serializer.</param>
         void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue, string serializer)
             where T : class, new();
     }
