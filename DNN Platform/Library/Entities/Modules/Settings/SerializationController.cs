@@ -17,6 +17,14 @@ namespace DotNetNuke.Entities.Modules.Settings
     public partial class SerializationController : ISerializationManager
     {
         /// <inheritdoc/>
+        string ISerializationManager.SerializeValue<T>(T value) =>
+            this.SerializeValue(value, null, typeof(T));
+
+        /// <inheritdoc/>
+        string ISerializationManager.SerializeValue<T>(T value, string serializer) =>
+            this.SerializeValue(value, serializer, typeof(T));
+
+        /// <inheritdoc/>
         string ISerializationManager.SerializeProperty<T>(T myObject, PropertyInfo property) =>
             ((ISerializationManager)this).SerializeProperty(myObject, property, null);
 
@@ -24,18 +32,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         string ISerializationManager.SerializeProperty<T>(T myObject, PropertyInfo property, string serializer)
         {
             var settingValue = property.GetValue(myObject, null) ?? string.Empty;
-            string settingValueAsString = null;
-            if (!string.IsNullOrEmpty(serializer))
-            {
-                settingValueAsString = (string)this.CallSerializerMethod(serializer, property.PropertyType, settingValue, nameof(ISettingsSerializer<T>.Serialize));
-            }
-
-            if (settingValueAsString == null)
-            {
-                settingValueAsString = this.GetSettingValueAsString(settingValue);
-            }
-
-            return settingValueAsString;
+            return this.SerializeValue(settingValue, serializer, property.PropertyType);
         }
 
         /// <inheritdoc/>
@@ -128,14 +125,33 @@ namespace DotNetNuke.Entities.Modules.Settings
             catch (Exception exception)
             {
                 // TODO: Localize exception
-                throw new InvalidCastException(string.Format(CultureInfo.CurrentUICulture, "Could not cast {0} to property {1} of type {2}",
-                                                             propertyValue,
-                                                             property.Name,
-                                                             property.PropertyType), exception);
+                var message = string.Format(
+                    CultureInfo.CurrentUICulture,
+                    "Could not cast {0} to property {1} of type {2}",
+                    propertyValue,
+                    property.Name,
+                    property.PropertyType);
+                throw new InvalidCastException(message, exception);
             }
         }
 
-        private string GetSettingValueAsString(object settingValue)
+        private string SerializeValue<T>(T value, string serializer, Type valueType)
+        {
+            string settingValueAsString = null;
+            if (!string.IsNullOrEmpty(serializer))
+            {
+                settingValueAsString = (string)this.CallSerializerMethod(serializer, valueType, value, nameof(ISettingsSerializer<T>.Serialize));
+            }
+
+            if (settingValueAsString == null)
+            {
+                settingValueAsString = this.GetSettingValueAsString(value);
+            }
+
+            return settingValueAsString;
+        }
+
+        private string GetSettingValueAsString<T>(T settingValue)
         {
             var dateTimeValue = settingValue as DateTime?;
             if (dateTimeValue != null)

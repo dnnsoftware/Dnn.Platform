@@ -6,11 +6,24 @@ namespace DotNetNuke.Abstractions
     using System.Reflection;
 
     /// <summary>
-    /// The Serialization Manager providesd APIs for serializing
-    /// and deserializing objects.
+    /// The Serialization Manager provides APIs for serializing
+    /// and deserializing objects to and from strings.
     /// </summary>
     public interface ISerializationManager
     {
+        /// <summary>Serialize the value.</summary>
+        /// <typeparam name="T">The type of value to serialize.</typeparam>
+        /// <param name="value">The value to serialize.</param>
+        /// <returns>The <paramref name="value" /> serialized to a <see cref="string" />.</returns>
+        string SerializeValue<T>(T value);
+
+        /// <summary>Serialize the value.</summary>
+        /// <typeparam name="T">The type of value to serialize.</typeparam>
+        /// <param name="value">The value to serialize.</param>
+        /// <param name="serializer">The name of a type implementing <c>DotNetNuke.Entities.Modules.Settings.ISettingsSerializer{T}</c> to use in serializing the value.</param>
+        /// <returns>The <paramref name="value" /> serialized to a <see cref="string" />.</returns>
+        string SerializeValue<T>(T value, string serializer);
+
         /// <summary>
         /// Serialize the property.
         /// </summary>
@@ -26,7 +39,7 @@ namespace DotNetNuke.Abstractions
         /// <typeparam name="T">The type to serialize.</typeparam>
         /// <param name="myObject">The object to serialize..</param>
         /// <param name="property">The property info.</param>
-        /// <param name="serializer">The serializer.</param>
+        /// <param name="serializer">The name of a type implementing <c>DotNetNuke.Entities.Modules.Settings.ISettingsSerializer{T}</c> to use in serializing the property.</param>
         /// <returns>A serialized string.</returns>
         string SerializeProperty<T>(T myObject, PropertyInfo property, string serializer);
 
@@ -47,7 +60,7 @@ namespace DotNetNuke.Abstractions
         /// <param name="myObject">The object..</param>
         /// <param name="property">The property info..</param>
         /// <param name="propertyValue">The serialized string.</param>
-        /// <param name="serializer">The serializer.</param>
+        /// <param name="serializer">The name of a type implementing <c>DotNetNuke.Entities.Modules.Settings.ISettingsSerializer{T}</c> to use in deserializing the property.</param>
         void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue, string serializer)
             where T : class, new();
     }
