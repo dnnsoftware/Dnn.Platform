@@ -1,42 +1,49 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Services.Exceptions;
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-
 namespace DotNetNuke.Entities.Modules.Settings
 {
-    public class SerializationController
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Services.Exceptions;
+
+    /// <inheritdoc/>
+    public partial class SerializationController : ISerializationManager
     {
-        public static string SerializeProperty<T>(T myObject, PropertyInfo property)
-        {
-            return SerializeProperty(myObject, property, null);
-        }
-        public static string SerializeProperty<T>(T myObject, PropertyInfo property, string serializer)
+        /// <inheritdoc/>
+        string ISerializationManager.SerializeProperty<T>(T myObject, PropertyInfo property) =>
+            ((ISerializationManager)this).SerializeProperty(myObject, property, null);
+
+        /// <inheritdoc/>
+        string ISerializationManager.SerializeProperty<T>(T myObject, PropertyInfo property, string serializer)
         {
             var settingValue = property.GetValue(myObject, null) ?? string.Empty;
             string settingValueAsString = null;
             if (!string.IsNullOrEmpty(serializer))
             {
-                settingValueAsString = (string)CallSerializerMethod(serializer, property.PropertyType, settingValue, nameof(ISettingsSerializer<T>.Serialize));
+                settingValueAsString = (string)this.CallSerializerMethod(serializer, property.PropertyType, settingValue, nameof(ISettingsSerializer<T>.Serialize));
             }
+
             if (settingValueAsString == null)
             {
-                settingValueAsString = GetSettingValueAsString(settingValue);
+                settingValueAsString = this.GetSettingValueAsString(settingValue);
             }
+
             return settingValueAsString;
         }
 
-        public static void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue) where T : class, new()
-        {
-            DeserializeProperty(myObject, property, propertyValue, null);
-        }
-        public static void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue, string serializer) where T : class, new()
+        /// <inheritdoc/>
+        void ISerializationManager.DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue) =>
+            ((ISerializationManager)this).DeserializeProperty(myObject, property, propertyValue, null);
+
+        /// <inheritdoc/>
+        void ISerializationManager.DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue, string serializer)
         {
             try
             {
@@ -62,7 +69,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (!string.IsNullOrEmpty(serializer))
                 {
-                    var deserializedValue = CallSerializerMethod(serializer, property.PropertyType, propertyValue, nameof(ISettingsSerializer<T>.Deserialize));
+                    var deserializedValue = this.CallSerializerMethod(serializer, property.PropertyType, propertyValue, nameof(ISettingsSerializer<T>.Deserialize));
                     property.SetValue(myObject, deserializedValue, null);
                     return;
                 }
@@ -107,7 +114,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (propertyType.GetInterface(typeof(IConvertible).FullName) != null)
                 {
-                    propertyValue = ChangeFormatForBooleansIfNeeded(propertyType, propertyValue);
+                    propertyValue = this.ChangeFormatForBooleansIfNeeded(propertyType, propertyValue);
                     property.SetValue(myObject, Convert.ChangeType(propertyValue, propertyType, CultureInfo.InvariantCulture), null);
                     return;
                 }
@@ -128,7 +135,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             }
         }
 
-        private static string GetSettingValueAsString(object settingValue)
+        private string GetSettingValueAsString(object settingValue)
         {
             var dateTimeValue = settingValue as DateTime?;
             if (dateTimeValue != null)
@@ -145,7 +152,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             return Convert.ToString(settingValue, CultureInfo.InvariantCulture);
         }
 
-        private static string ChangeFormatForBooleansIfNeeded(Type propertyType, string propertyValue)
+        private string ChangeFormatForBooleansIfNeeded(Type propertyType, string propertyValue)
         {
             if (!propertyType.Name.Equals("Boolean"))
             {
@@ -162,6 +169,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             {
                 return bool.TrueString;
             }
+
             if (propertyValue.Equals("0"))
             {
                 return bool.FalseString;
@@ -170,7 +178,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             return propertyValue;
         }
 
-        private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
+        private object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
         {
             var serializerType = Framework.Reflection.CreateType(serializerTypeName, true);
             if (serializerType == null)
@@ -188,6 +196,5 @@ namespace DotNetNuke.Entities.Modules.Settings
             var method = serializerInterfaceType.GetMethod(methodName);
             return method.Invoke(serializer, new[] { value, });
         }
-
     }
 }

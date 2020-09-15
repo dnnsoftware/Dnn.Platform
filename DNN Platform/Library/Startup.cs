@@ -31,6 +31,7 @@ namespace DotNetNuke
             services.AddTransient(x => PortalController.Instance);
             services.AddScoped<IHostSettingsService, HostController>();
             services.AddScoped<INavigationManager, NavigationManager>();
+            services.AddTransient<ISerializationManager, ISerializationManager>();
 
             services.AddScoped<IApplicationInfo, Application.Application>();
             services.AddScoped<IApplicationStatusInfo, ApplicationStatusInfo>();
