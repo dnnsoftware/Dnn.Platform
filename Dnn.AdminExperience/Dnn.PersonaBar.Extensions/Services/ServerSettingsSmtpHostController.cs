@@ -141,11 +141,11 @@ namespace Dnn.PersonaBar.Servers.Services
                     Encoding.UTF8,
                     "",
                     "",
-                    request.SmtpServer,
-                    request.SmtpAuthentication.ToString(),
-                    request.SmtpUsername,
-                    request.SmtpPassword,
-                    request.EnableSmtpSsl);
+                    smtpHostMode ? HostController.Instance.GetString("SMTPServer") : request.SmtpServer,
+                    smtpHostMode ? HostController.Instance.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
+                    smtpHostMode ? HostController.Instance.GetString("SMTPUsername") : request.SmtpUsername,
+                    smtpHostMode ? HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
+                    smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
 
                 var success = string.IsNullOrEmpty(errMessage);
                 return this.Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
