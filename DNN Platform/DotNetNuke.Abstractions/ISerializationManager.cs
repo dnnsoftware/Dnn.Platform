@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions
 {
+    using System;
     using System.Reflection;
 
     /// <summary>
@@ -43,13 +44,29 @@ namespace DotNetNuke.Abstractions
         /// <returns>A serialized string.</returns>
         string SerializeProperty<T>(T myObject, PropertyInfo property, string serializer);
 
+        /// <summary>Deserializes the string value.</summary>
+        /// <typeparam name="T">The type the string should be deserialized into.</typeparam>
+        /// <param name="value">The serialized string.</param>
+        /// <returns>The value deserialized into the given type.</returns>
+        /// <exception cref="InvalidCastException">The <paramref name="value"/> could not be deserialized into the given type.</exception>
+        T DeserializeValue<T>(string value);
+
+        /// <summary>Deserializes the string value.</summary>
+        /// <typeparam name="T">The type the string should be deserialized into.</typeparam>
+        /// <param name="value">The serialized string.</param>
+        /// <param name="serializer">The name of a type implementing <c>DotNetNuke.Entities.Modules.Settings.ISettingsSerializer{T}</c> to use in deserializing the property.</param>
+        /// <returns>The value deserialized into the given type.</returns>
+        /// <exception cref="InvalidCastException">The <paramref name="value"/> could not be deserialized into the given type.</exception>
+        T DeserializeValue<T>(string value, string serializer);
+
         /// <summary>
         /// Deserializes the string property.
         /// </summary>
         /// <typeparam name="T">The object the string should be deserialized into.</typeparam>
-        /// <param name="myObject">The object..</param>
+        /// <param name="myObject">The object.</param>
         /// <param name="property">The property info..</param>
         /// <param name="propertyValue">The serialized string.</param>
+        /// <exception cref="InvalidCastException">The <paramref name="propertyValue"/> could not be deserialized into the given type.</exception>
         void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue)
             where T : class, new();
 
@@ -61,6 +78,7 @@ namespace DotNetNuke.Abstractions
         /// <param name="property">The property info..</param>
         /// <param name="propertyValue">The serialized string.</param>
         /// <param name="serializer">The name of a type implementing <c>DotNetNuke.Entities.Modules.Settings.ISettingsSerializer{T}</c> to use in deserializing the property.</param>
+        /// <exception cref="InvalidCastException">The <paramref name="propertyValue"/> could not be deserialized into the given type.</exception>
         void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue, string serializer)
             where T : class, new();
     }

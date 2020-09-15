@@ -35,6 +35,15 @@ namespace DotNetNuke.Entities.Modules.Settings
             return this.SerializeValue(settingValue, serializer, property.PropertyType);
         }
 
+        /// <inheritdoc />
+        public T DeserializeValue<T>(string value) => ((ISerializationManager)this).DeserializeValue<T>(value, null);
+
+        /// <inheritdoc />
+        public T DeserializeValue<T>(string value, string serializer)
+        {
+            return (T)this.DeserializeValue(value, serializer, typeof(T));
+        }
+
         /// <inheritdoc/>
         void ISerializationManager.DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue) =>
             ((ISerializationManager)this).DeserializeProperty(myObject, property, propertyValue, null);
@@ -44,83 +53,9 @@ namespace DotNetNuke.Entities.Modules.Settings
         {
             try
             {
-                var valueType = propertyValue.GetType();
                 var propertyType = property.PropertyType;
-                if (propertyType.GetGenericArguments().Any() && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                {
-                    // Nullable type
-                    propertyType = propertyType.GetGenericArguments()[0];
-                    if (string.IsNullOrEmpty(propertyValue))
-                    {
-                        property.SetValue(myObject, null, null);
-                        return;
-                    }
-                }
-
-                if (propertyType == valueType)
-                {
-                    // The property and settingsValue have the same type - no conversion needed - just update!
-                    property.SetValue(myObject, propertyValue, null);
-                    return;
-                }
-
-                if (!string.IsNullOrEmpty(serializer))
-                {
-                    var deserializedValue = this.CallSerializerMethod(serializer, property.PropertyType, propertyValue, nameof(ISettingsSerializer<T>.Deserialize));
-                    property.SetValue(myObject, deserializedValue, null);
-                    return;
-                }
-
-                if (propertyType.BaseType == typeof(Enum))
-                {
-                    // The property is an enum. Determine if the enum value is persisted as string or numeric.
-                    if (Regex.IsMatch(propertyValue, "^\\d+$"))
-                    {
-                        // The enum value is a number
-                        property.SetValue(myObject, Enum.ToObject(propertyType, Convert.ToInt32(propertyValue, CultureInfo.InvariantCulture)), null);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            property.SetValue(myObject, Enum.Parse(propertyType, propertyValue, true), null);
-                        }
-                        catch (ArgumentException exception)
-                        {
-                            // Just log the exception. Use the default.
-                            Exceptions.LogException(exception);
-                        }
-                    }
-
-                    return;
-                }
-
-                TimeSpan timeSpanValue;
-                if (propertyType.IsAssignableFrom(typeof(TimeSpan)) && TimeSpan.TryParse(propertyValue, CultureInfo.InvariantCulture, out timeSpanValue))
-                {
-                    property.SetValue(myObject, timeSpanValue);
-                    return;
-                }
-
-                DateTime dateTimeValue;
-                if (propertyType.IsAssignableFrom(typeof(DateTime)) && DateTime.TryParse(propertyValue, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out dateTimeValue))
-                {
-                    property.SetValue(myObject, dateTimeValue);
-                    return;
-                }
-
-                if (propertyType.GetInterface(typeof(IConvertible).FullName) != null)
-                {
-                    propertyValue = this.ChangeFormatForBooleansIfNeeded(propertyType, propertyValue);
-                    property.SetValue(myObject, Convert.ChangeType(propertyValue, propertyType, CultureInfo.InvariantCulture), null);
-                    return;
-                }
-
-                var converter = TypeDescriptor.GetConverter(propertyType);
-                if (converter.IsValid(propertyValue))
-                {
-                    converter.ConvertFromInvariantString(propertyValue);
-                }
+                var deserializedValue = this.DeserializeValue(propertyValue, serializer, propertyType);
+                property.SetValue(myObject, deserializedValue, null);
             }
             catch (Exception exception)
             {
@@ -151,6 +86,91 @@ namespace DotNetNuke.Entities.Modules.Settings
             return settingValueAsString;
         }
 
+        private object DeserializeValue(
+            string propertyValue,
+            string serializer,
+            Type destinationType)
+        {
+            if (destinationType.GetGenericArguments().Any()
+                && destinationType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                // Nullable type
+                destinationType = destinationType.GetGenericArguments()[0];
+                if (string.IsNullOrEmpty(propertyValue))
+                {
+                    return null;
+                }
+            }
+
+            if (destinationType == propertyValue.GetType())
+            {
+                // The property and settingsValue have the same type - no conversion needed - just update!
+                return propertyValue;
+            }
+
+            if (!string.IsNullOrEmpty(serializer))
+            {
+                return this.CallSerializerMethod(
+                    serializer,
+                    destinationType,
+                    propertyValue,
+                    nameof(ISettingsSerializer<int>.Deserialize));
+            }
+
+            if (destinationType.BaseType == typeof(Enum))
+            {
+                // The property is an enum. Determine if the enum value is persisted as string or numeric.
+                if (Regex.IsMatch(propertyValue, "^\\d+$"))
+                {
+                    // The enum value is a number
+                    return Enum.ToObject(destinationType, Convert.ToInt32(propertyValue, CultureInfo.InvariantCulture));
+                }
+
+                try
+                {
+                    return Enum.Parse(destinationType, propertyValue, true);
+                }
+                catch (ArgumentException exception)
+                {
+                    // Just log the exception. Use the default.
+                    Exceptions.LogException(exception);
+                }
+
+                return 0;
+            }
+
+            if (destinationType.IsAssignableFrom(typeof(TimeSpan))
+                && TimeSpan.TryParse(propertyValue, CultureInfo.InvariantCulture, out var timeSpanValue))
+            {
+                return timeSpanValue;
+            }
+
+            if (destinationType.IsAssignableFrom(typeof(DateTime))
+                && DateTime.TryParse(
+                    propertyValue,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.RoundtripKind,
+                    out var dateTimeValue))
+            {
+                return dateTimeValue;
+            }
+
+            if (destinationType.GetInterface(typeof(IConvertible).FullName) != null)
+            {
+                propertyValue = this.ChangeFormatForBooleansIfNeeded(destinationType, propertyValue);
+                return Convert.ChangeType(propertyValue, destinationType, CultureInfo.InvariantCulture);
+            }
+
+            var converter = TypeDescriptor.GetConverter(destinationType);
+            if (converter.IsValid(propertyValue))
+            {
+                return converter.ConvertFromInvariantString(propertyValue);
+            }
+
+            // TODO: Localize exception
+            throw new InvalidCastException($"Could not cast {propertyValue} to {destinationType}");
+        }
+
         private string GetSettingValueAsString<T>(T settingValue)
         {
             var dateTimeValue = settingValue as DateTime?;
@@ -175,8 +195,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 return propertyValue;
             }
 
-            bool boolValue;
-            if (bool.TryParse(propertyValue, out boolValue))
+            if (bool.TryParse(propertyValue, out _))
             {
                 return propertyValue;
             }
@@ -210,7 +229,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             var serializerInterfaceType = typeof(ISettingsSerializer<>).MakeGenericType(typeArgument);
             var method = serializerInterfaceType.GetMethod(methodName);
-            return method.Invoke(serializer, new[] { value, });
+            return method?.Invoke(serializer, new[] { value, });
         }
     }
 }
