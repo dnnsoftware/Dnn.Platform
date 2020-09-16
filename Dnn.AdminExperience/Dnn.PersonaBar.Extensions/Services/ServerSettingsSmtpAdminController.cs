@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var portalId = PortalSettings.Current.PortalId;
                 PortalController.UpdatePortalSetting(portalId, "SMTPmode", request.SmtpServerMode, false);
 
-                //admins can only change site settings
+                // admins can only change site settings
                 PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPConnectionLimit", request.SmtpConnectionLimit, false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
@@ -128,8 +128,12 @@ namespace Dnn.PersonaBar.Servers.Services
                     success,
                     errMessage,
                     confirmationMessage =
-                        string.Format(Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
-                        mailFrom, mailTo)
+                        string.Format(
+                            Localization.GetString(
+                                "EmailSentMessage",
+                                Components.Constants.ServersResourcersPath),
+                            mailFrom,
+                            mailTo),
                 });
             }
             catch (Exception exc)
