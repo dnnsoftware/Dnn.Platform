@@ -86,20 +86,17 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostController.Instance.Update("SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
                     HostController.Instance.Update("SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
                     HostController.Instance.Update("SMTPUsername", request.SmtpUsername, false);
-                    HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword,
-                        Config.GetDecryptionkey());
+                    HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
                     HostController.Instance.Update("HostEmail", request.SmtpHostEmail);
                     HostController.Instance.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
-                    HostController.Instance.Update("MessageSchedulerBatchSize",
-                        request.MessageSchedulerBatchSize.ToString(), false);
+                    HostController.Instance.Update("MessageSchedulerBatchSize", request.MessageSchedulerBatchSize.ToString(), false);
                 }
                 else
                 {
                     PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPConnectionLimit", request.SmtpConnectionLimit, false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
-                    PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication",
-                        request.SmtpAuthentication.ToString(), false);
+                    PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPUsername", request.SmtpUsername, false);
                     PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
                     PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
@@ -176,7 +173,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception)
             {
-                //fixes case where smtppassword failed to encrypt due to failing upgrade
+                // fixes case where smtppassword failed to encrypt due to failing upgrade
                 var current = HostController.Instance.GetString("SMTPPassword");
                 if (!string.IsNullOrEmpty(current))
                 {
