@@ -127,8 +127,7 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var smtpHostMode = request.SmtpServerMode == "h";
-                var mailFrom = smtpHostMode ? Host.HostEmail : this.PortalSettings.Email;
+                var mailFrom = request.SmtpServerMode == "h" ? Host.HostEmail : this.PortalSettings.Email;
                 var mailTo = this.UserInfo.Email;
 
                 var errMessage = Mail.SendMail(mailFrom,
@@ -141,20 +140,24 @@ namespace Dnn.PersonaBar.Servers.Services
                     Encoding.UTF8,
                     "",
                     "",
-                    smtpHostMode ? HostController.Instance.GetString("SMTPServer") : request.SmtpServer,
-                    smtpHostMode ? HostController.Instance.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
-                    smtpHostMode ? HostController.Instance.GetString("SMTPUsername") : request.SmtpUsername,
-                    smtpHostMode ? HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
-                    smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
+                    request.SmtpServer,
+                    request.SmtpAuthentication.ToString(),
+                    request.SmtpUsername,
+                    request.SmtpPassword,
+                    request.EnableSmtpSsl);
 
                 var success = string.IsNullOrEmpty(errMessage);
                 return this.Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
                 {
                     success,
                     errMessage,
-                    confirmationMessage = success ?
-                        string.Format(Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
-                        mailFrom, mailTo) : Localization.GetString("errorMessageSendingTestEmail")
+                    confirmationMessage =
+                        string.Format(
+                            Localization.GetString(
+                                "EmailSentMessage",
+                                Components.Constants.ServersResourcersPath),
+                            mailFrom,
+                            mailTo),
                 });
             }
             catch (Exception exc)
