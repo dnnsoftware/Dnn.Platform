@@ -1,0 +1,9 @@
+﻿<configuration>
+    <location>
+        <distraction></distraction>
+    </location>
+    <location>
+        <updateme attrib="foo"></updateme>
+    </location>
+    <distraction2></distraction2>
+</configuration>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>DotNetNuke.Instrumentation</id>
+    <version>$version$</version>
+    <title>DNN Platform (Instrumentation)</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <icon>images\logo-for-nuget.png</icon>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
+    <description>
+      Provides references to enhanced logging and instrumentation available within DNN Platform for extension developers. Including access to Log4Net
+    </description>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Core" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.dll" target="lib\net45\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\net45\"/>
+    <file src="logo-for-nuget.png" target="images\"/>
+  </files>
+</package>

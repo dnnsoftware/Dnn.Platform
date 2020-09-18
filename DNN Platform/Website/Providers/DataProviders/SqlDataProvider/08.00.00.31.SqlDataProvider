@@ -1,0 +1,84 @@
+/* DNN-8315 */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTranslatedTabs]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTranslatedTabs]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTranslatedTabs]
+    @PortalID INT ,
+    @CultureCode NVARCHAR(10)
+AS 
+    BEGIN
+
+        SET NOCOUNT ON;
+		
+        BEGIN TRY
+
+            BEGIN TRANSACTION DeleteTranslatedTabs
+		
+			-- first store ContentItem records to be deleted
+            DECLARE @TempDeleteCI TABLE ( ContentItemId INT )
+        
+            INSERT  INTO @TempDeleteCI
+                    SELECT  ContentItemId
+                    FROM    {databaseOwner}{objectQualifier}Tabs
+                    WHERE   ( PortalID = @PortalID )
+                            AND ( CultureCode = @CultureCode )
+
+		-- delete all tabs in the portal that have been localized to the requested cultureCode
+		-- This will also delete related tabmodule records
+            DELETE  FROM {databaseOwner}{objectQualifier}Tabs
+            WHERE   ( PortalID = @PortalID )
+                    AND ( CultureCode = @CultureCode )
+
+		
+		-- append ContentItems to be deleted from stale modules
+            INSERT  INTO @TempDeleteCI
+                    SELECT  ContentItemID
+                    FROM    {databaseOwner}{objectQualifier}ContentItems CI
+                    WHERE   EXISTS ( SELECT *
+                                     FROM   {databaseOwner}{objectQualifier}Modules M
+                                     WHERE  ( CI.ModuleID = M.ModuleID )
+                                            AND NOT EXISTS ( SELECT
+                                                              *
+                                                             FROM
+                                                              {databaseOwner}{objectQualifier}TabModules TM
+                                                             WHERE
+                                                              M.ModuleID = TM.ModuleID ) )
+
+		-- delete stale modules (these are modules that do not have a corresponding TabModules record,
+		-- in other words: modules that are not placed on any page anymore)
+            DELETE  FROM {databaseOwner}{objectQualifier}Modules
+            WHERE   NOT EXISTS ( SELECT *
+                                 FROM   {databaseOwner}{objectQualifier}TabModules
+                                 WHERE  {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}TabModules.ModuleID )
+
+		-- finally delete all corresponding content items
+            DELETE  FROM {databaseOwner}{objectQualifier}ContentItems
+            WHERE   ContentItemID IN ( SELECT   ContentItemID
+                                       FROM     @TempDeleteCI )
+			AND ContentItemID NOT IN (SELECT ContentItemID FROM {databaseOwner}{objectQualifier}Modules)
+
+            COMMIT TRANSACTION DeleteTranslatedTabs
+
+        END TRY
+  
+        BEGIN CATCH
+            IF @@TRANCOUNT > 0 
+                ROLLBACK TRANSACTION DeleteTranslatedTabs
+
+
+            DECLARE @ErrorMessage NVARCHAR(4000);
+            DECLARE @ErrorSeverity INT;
+
+            SELECT  @ErrorMessage = ERROR_MESSAGE() ,
+                    @ErrorSeverity = ERROR_SEVERITY();
+
+            RAISERROR (@ErrorMessage, @ErrorSeverity, 1 );			
+			
+        END CATCH	      
+
+    END
+
+GO

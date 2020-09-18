@@ -1,0 +1,122 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Social Groups" type="Module" isSystem="true" version="09.07.02">
+      <friendlyName>Social Groups</friendlyName>
+      <description>DotNetNuke Corporation Social Groups module</description>
+      <iconFile>~/DesktopModules/SocialGroups/Images/Social_Groups_32X32.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>Social Groups</moduleName>
+            <foldername>SocialGroups</foldername>
+            <businessControllerClass>DotNetNuke.Modules.Groups.Components.GroupsBusinessController, DotNetNuke.Modules.Groups</businessControllerClass>
+            <supportedFeatures/>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Social Groups</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/SocialGroups/Loader.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle/>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Create</controlKey>
+                    <controlSrc>DesktopModules/SocialGroups/Create.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Create A Group</controlTitle>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Edit</controlKey>
+                    <controlSrc>DesktopModules/SocialGroups/GroupEdit.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Edit Group</controlTitle>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl/>
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/SocialGroups/ListSettings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Social Groups List Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile/>
+                    <helpUrl/>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+                <permissions>
+                  <permission code="GROUPS_MODULE" key="CREATEGROUP" name="Create Groups" />
+                  <permission code="GROUPS_MODULE" key="MODGROUP" name="Group Moderators" />
+                </permissions>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>DotNetNuke.Modules.Groups.Components.GroupsBusinessController</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>06.02.00,06.02.04,07.00.00</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Modules.Groups.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/SocialGroups</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\SocialGroups</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>09.00.00.SqlDataProvider</name>
+              <version>09.00.00</version>
+            </script>
+          </scripts>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

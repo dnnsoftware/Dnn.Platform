@@ -1,0 +1,1591 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules ADD
+	PortalID int NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules
+	DROP CONSTRAINT FK_{objectQualifier}Modules_{objectQualifier}Tabs
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}TabModules
+	(
+	TabModuleID int NOT NULL IDENTITY (1, 1),       
+	TabID int NOT NULL,
+	ModuleID int NOT NULL,
+	PaneName nvarchar(50) NOT NULL,
+	ModuleOrder int NOT NULL,
+        CacheTime int NOT NULL,
+        Alignment nvarchar(10) NULL,
+        Color nvarchar(20) NULL,
+        Border nvarchar(1) NULL,
+        IconFile nvarchar(100) NULL,
+        Visibility int NOT NULL,
+        ContainerSrc nvarchar(200) NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ADD CONSTRAINT
+	PK_{objectQualifier}TabModules PRIMARY KEY CLUSTERED 
+	(
+	TabModuleID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ADD CONSTRAINT
+	FK_{objectQualifier}TabModules_{objectQualifier}Tabs FOREIGN KEY
+	(
+	TabID
+	) REFERENCES {objectQualifier}Tabs
+	(
+	TabID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ADD CONSTRAINT
+	FK_{objectQualifier}TabModules_{objectQualifier}Modules FOREIGN KEY
+	(
+	ModuleID
+	) REFERENCES {objectQualifier}Modules
+	(
+	ModuleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+declare @PortalID int
+declare @ModuleID int
+declare @TabID int
+declare @PaneName nvarchar(50)
+declare @ModuleOrder int
+declare @CacheTime int
+declare @Alignment nvarchar(10)
+declare @Color nvarchar(20)
+declare @Border nvarchar(1)
+declare @IconFile nvarchar(100)
+declare @ShowTitle bit
+declare @Personalize int
+declare @ContainerSrc nvarchar(200)
+declare @AllTabs bit
+
+select @ModuleId = min(ModuleId)
+from {objectQualifier}Modules
+while @ModuleId is not null
+begin
+  select @TabID = TabID,
+         @PaneName = PaneName,
+         @ModuleOrder = ModuleOrder,
+         @CacheTime = CacheTime,
+         @Alignment = Alignment,
+         @Color = Color,
+         @Border = Border,
+         @IconFile = IconFile,
+         @AllTabs = @AllTabs,
+         @ShowTitle = ShowTitle,
+         @Personalize = Personalize,
+         @ContainerSrc = ContainerSrc
+  from   {objectQualifier}Modules
+  where  ModuleID = @ModuleID
+
+  select @PortalID = PortalID
+  from  {objectQualifier}Tabs
+  where TabID = @TabID
+
+  if @ShowTitle = 0
+  begin
+    select @ContainerSrc = '[G]Containers/_default/No Container.ascx'
+  end
+
+  if @AllTabs = 1
+  begin
+    select @TabID = min(TabID)
+    from {objectQualifier}Tabs
+    where PortalID = @PortalID
+    and TabOrder < 10000
+  end
+
+  while @TabID is not null
+  begin
+    if @AllTabs = 1
+    begin
+      select @ModuleOrder = max(ModuleOrder)
+      from {objectQualifier}Modules
+      where TabId = @TabId
+      and PaneName = @PaneName
+
+      if @ModuleOrder is null
+      begin
+        select @ModuleOrder = 1
+      end
+      else
+      begin
+        select @ModuleOrder = @ModuleOrder + 2
+      end
+    end
+
+    insert into {objectQualifier}TabModules (
+      TabID,
+      ModuleID,
+      PaneName,
+      ModuleOrder,
+      CacheTime,
+      Alignment,
+      Color,
+      Border,
+      IconFile,
+      Visibility,
+      ContainerSrc
+    )
+    values (
+      @TabID,
+      @ModuleID,
+      @PaneName,
+      @ModuleOrder,
+      @CacheTime,
+      @Alignment,
+      @Color,
+      @Border,
+      @IconFile,
+      @Personalize,
+      @ContainerSrc
+    )
+
+    if @AllTabs = 1
+    begin
+      select @TabID = min(TabID)
+      from {objectQualifier}Tabs
+      where PortalID = @PortalID
+      and TabID > @TabID
+      and TabOrder < 10000
+    end
+    else
+    begin
+      select @TabID = null
+    end
+  end
+
+  update {objectQualifier}Modules
+  set PortalID = @PortalID
+  where  ModuleID = @ModuleID
+
+  select @ModuleID = min(ModuleID)
+  from {objectQualifier}Modules
+  where ModuleID > @ModuleID
+end
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules
+	DROP CONSTRAINT DF_{objectQualifier}Modules_ShowTitle
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules
+	DROP CONSTRAINT DF_{objectQualifier}Modules_Personalize
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules
+	DROP COLUMN ModuleOrder, PaneName, CacheTime, Alignment, Color, Border, IconFile, Personalize, ShowTitle, ContainerSrc
+GO
+
+DROP INDEX {databaseOwner}{objectQualifier}Modules.IX_Modules_1
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules
+	DROP COLUMN TabID
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules WITH NOCHECK ADD CONSTRAINT
+	FK_Modules_Portals FOREIGN KEY
+	(
+	PortalID
+	) REFERENCES {databaseOwner}{objectQualifier}Portals
+	(
+	PortalID
+	) NOT FOR REPLICATION
+
+GO
+
+/* stored procedures */
+
+drop procedure {databaseOwner}{objectQualifier}GetModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetModule
+
+@ModuleId int,
+@TabId    int
+
+as
+
+select	{objectQualifier}Modules.*,
+        {objectQualifier}TabModules.*,
+        {objectQualifier}DesktopModules.*
+from	{objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefID = {objectQualifier}ModuleDefinitions.ModuleDefID
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleID = {objectQualifier}DesktopModules.DesktopModuleID
+left outer join {objectQualifier}TabModules on {objectQualifier}Modules.ModuleId = {objectQualifier}TabModules.ModuleId
+where   {objectQualifier}Modules.ModuleId = @ModuleId
+and     ({objectQualifier}TabModules.TabId = @TabId or @TabId is null)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModules
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetModules
+
+@PortalId int
+
+as
+
+select {objectQualifier}Modules.*,
+       {objectQualifier}DesktopModules.*
+from   {objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefID = {objectQualifier}ModuleDefinitions.ModuleDefID
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleID = {objectQualifier}DesktopModules.DesktopModuleID
+where  {objectQualifier}Modules.PortalId = @PortalId
+order by {objectQualifier}Modules.ModuleId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddModule
+    
+@PortalId                      int,
+@ModuleDefId                   int,
+@ModuleTitle                   nvarchar(256),
+@AllTabs                       bit,
+@Header                        text,
+@Footer                        text,
+@StartDate                     datetime,
+@EndDate                       datetime,
+@InheritViewPermissions        bit,
+@IsDeleted                     bit
+
+as
+
+insert into {objectQualifier}Modules ( 
+  PortalId,
+  ModuleDefId,
+  ModuleTitle,
+  AllTabs,
+  Header,
+  Footer, 
+  StartDate,
+  EndDate,
+  InheritViewPermissions,
+  IsDeleted
+)
+values (
+  @PortalId,
+  @ModuleDefId,
+  @ModuleTitle,
+  @AllTabs,
+  @Header,
+  @Footer, 
+  @StartDate,
+  @EndDate,
+  @InheritViewPermissions,
+  @IsDeleted
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddTabModule
+    
+@TabId                         int,
+@ModuleId                      int,
+@ModuleOrder                   int,
+@PaneName                      nvarchar(50),
+@CacheTime                     int,
+@Alignment                     nvarchar(10),
+@Color                         nvarchar(20),
+@Border                        nvarchar(1),
+@IconFile                      nvarchar(100),
+@Visibility                        int,
+@ContainerSrc                  nvarchar(200)
+
+as
+
+insert into {objectQualifier}TabModules ( 
+  TabId,
+  ModuleId,
+  ModuleOrder,
+  PaneName,
+  CacheTime,
+  Alignment,
+  Color,
+  Border,
+  IconFile,
+  Visibility,
+  ContainerSrc
+)
+values (
+  @TabId,
+  @ModuleId,
+  @ModuleOrder,
+  @PaneName,
+  @CacheTime,
+  @Alignment,
+  @Color,
+  @Border,
+  @IconFile,
+  @Visibility,
+  @ContainerSrc
+)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateModule
+
+@ModuleId               int,
+@ModuleTitle            nvarchar(256),
+@AllTabs                bit, 
+@Header                 text,
+@Footer                 text,
+@StartDate              datetime,
+@EndDate                datetime,
+@InheritViewPermissions	bit,
+@IsDeleted              bit
+
+as
+
+update {objectQualifier}Modules
+set    ModuleTitle = @ModuleTitle,
+       AllTabs = @AllTabs,
+       Header = @Header,
+       Footer = @Footer, 
+       StartDate = @StartDate,
+       EndDate = @EndDate,
+       InheritViewPermissions = @InheritViewPermissions,
+       IsDeleted = @IsDeleted
+where  ModuleId = @ModuleId
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateTabModule
+
+@TabId               int,
+@ModuleId            int,
+@ModuleOrder         int,
+@PaneName            nvarchar(50),
+@CacheTime           int,
+@Alignment           nvarchar(10),
+@Color               nvarchar(20),
+@Border              nvarchar(1),
+@IconFile            nvarchar(100),
+@Visibility              int,
+@ContainerSrc        nvarchar(200)
+
+as
+
+update {objectQualifier}TabModules
+set    ModuleOrder = @ModuleOrder,
+       PaneName = @PaneName,
+       CacheTime   = @CacheTime,
+       Alignment = @Alignment,
+       Color = @Color,
+       Border = @Border,
+       IconFile = @IconFile,
+       Visibility = @Visibility,
+       ContainerSrc = @ContainerSrc
+where  TabId = @TabId
+and    ModuleId = @ModuleId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeleteModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteModule
+
+@ModuleId   int
+
+as
+
+delete
+from   {objectQualifier}Modules 
+where  ModuleId = @ModuleId
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteTabModule
+
+@TabId      int,
+@ModuleId   int
+
+as
+
+delete
+from   {objectQualifier}TabModules 
+where  TabId = @TabId
+and    ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+
+@PortalId int, 
+@TabId int
+
+as
+
+select M.ModuleID,
+       M.PortalID,
+       M.ModuleDefId,
+       M.ModuleTitle,
+       M.AllTabs,
+       M.Header,
+       M.Footer,
+       M.StartDate,
+       M.EndDate,
+       M.InheritViewPermissions,
+       M.IsDeleted,
+       TM.TabModuleId,
+       TM.TabId,
+       TM.ModuleOrder,
+       TM.PaneName,
+       TM.CacheTime,
+       TM.Alignment,
+       TM.Color,
+       TM.Border,
+       TM.IconFile,
+       TM.Visibility,
+       TM.ContainerSrc,
+       MC.ModuleControlId,
+       MC.ControlSrc,
+       MC.ControlType,
+       MC.ControlTitle,
+       MC.HelpURL,
+       DM.*
+from {databaseOwner}{objectQualifier}Modules M
+inner join {databaseOwner}{objectQualifier}TabModules TM on M.ModuleId = TM.ModuleId
+inner join {databaseOwner}{objectQualifier}Tabs T on TM.TabId = T.TabId
+inner join {databaseOwner}{objectQualifier}ModuleDefinitions MD on M.ModuleDefId = MD.ModuleDefId
+inner join {databaseOwner}{objectQualifier}ModuleControls MC on MD.ModuleDefId = MC.ModuleDefId
+inner join {databaseOwner}{objectQualifier}DesktopModules DM on MD.DesktopModuleId = DM.DesktopModuleId
+where  TM.TabId = @TabId
+and    ControlKey is null
+order by TM.ModuleOrder
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetTabModuleOrder
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetTabModuleOrder
+
+@TabId    int, 
+@PaneName nvarchar(50)
+
+as
+
+select *
+from   {objectQualifier}TabModules 
+where  TabId = @TabId 
+and    PaneName = @PaneName
+order by ModuleOrder
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetTabPanes
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetTabPanes
+
+@TabId    int
+
+as
+
+select distinct(PaneName) as PaneName
+from   {objectQualifier}TabModules
+where  TabId = @TabId
+order by PaneName
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSiteModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteModule
+
+@FriendlyName nvarchar(128),
+@PortalId int
+
+as
+
+select {objectQualifier}Modules.ModuleId
+from   {objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefId = {objectQualifier}ModuleDefinitions.ModuleDefId
+where  {objectQualifier}Modules.PortalId = @PortalId
+and    {objectQualifier}ModuleDefinitions.FriendlyName = @FriendlyName
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateModuleOrder
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateModuleOrder
+
+@TabId              int,
+@ModuleId           int,
+@ModuleOrder        int,
+@PaneName           nvarchar(50)
+
+as
+
+update {objectQualifier}TabModules
+set    ModuleOrder = @ModuleOrder,
+       PaneName = @PaneName
+where  TabId = @TabId
+and    ModuleId = @ModuleId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateTabModuleOrder
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModulePermissionsByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetModulePermissionsByPortal
+	
+@PortalID int
+
+AS
+
+select MP.[ModulePermissionID],
+       MP.[ModuleID],
+       P.[PermissionID],
+       MP.[RoleID],
+       case MP.RoleID
+         when -1 then 'All Users'
+         when -2 then 'Superuser'
+         when -3 then 'Unauthenticated Users'
+         else R.RoleName
+       end
+       'RoleName',
+       MP.[AllowAccess],
+       P.[PermissionCode],
+       P.[ModuleDefID],
+       P.[PermissionKey],
+       P.[PermissionName]
+from   {databaseOwner}{objectQualifier}ModulePermission MP
+inner join {databaseOwner}{objectQualifier}Modules M on MP.ModuleID = M.ModuleID
+left join {databaseOwner}{objectQualifier}Permission P on MP.PermissionID = P.PermissionID
+left join {databaseOwner}{objectQualifier}ModuleDefinitions MD on P.ModuleDefID = MD.ModuleDefID
+left join {databaseOwner}{objectQualifier}Roles R on MP.RoleID = R.RoleID
+where  M.PortalID = @PortalID
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSearchResults
+GO
+
+CREATE  PROCEDURE {databaseOwner}{objectQualifier}GetSearchResults
+	@Word nVarChar(100)
+AS
+
+	/*****************************************************************************
+	 *  This procedure applies filters to the SearchItems to make sure that only
+	 *  active Search content is returned.  All security checks will be done in 
+	 *  the Business Logic.
+	 *****************************************************************************/
+	DECLARE @TempList table
+	(
+		Word nvarchar(100),
+		Occurences int,
+		Relevance int,
+		ModuleID int,
+		TabID int,
+		ModStartDate datetime,
+		ModEndDate datetime,
+		TabStartDate datetime,
+		TabEndDate datetime,
+		Title varchar(200),
+		Link varchar(256),
+		Description varchar(500),
+		Author int,
+		PubDate datetime,
+		Content text,
+		SearchKey varchar(100)
+	)
+
+	INSERT @TempList
+	SELECT    sw.Word, siw.Occurrences, siw.Occurrences + 1000 as Relevance, m.ModuleID, tm.TabID,
+						ISNULL(m.StartDate, GETDATE() - 1) AS ModStartDate, ISNULL(m.EndDate, GETDATE() + 1) AS ModEndDate, 
+						ISNULL(t.StartDate, GETDATE() - 1) AS TabStartDate, ISNULL(t.EndDate, GETDATE() + 1) AS TabEndDate, 
+						si.Title, si.Link, si.Description, si.Author, si.PubDate, si.Content, si.SearchKey
+	FROM      {databaseOwner}{objectQualifier}SearchWord sw INNER JOIN
+	          {databaseOwner}{objectQualifier}SearchItemWord siw ON sw.SearchWordsID = siw.SearchWordsID INNER JOIN
+	          {databaseOwner}{objectQualifier}SearchItem si ON siw.SearchItemID = si.SearchItemID INNER JOIN
+	          {databaseOwner}{objectQualifier}Modules m ON si.ModuleId = m.ModuleID LEFT OUTER JOIN
+	          {databaseOwner}{objectQualifier}TabModules tm ON si.ModuleId = tm.ModuleID INNER JOIN
+	          {databaseOwner}{objectQualifier}Tabs t ON tm.TabID = t.TabID
+	WHERE     (sw.Word = @Word) AND (t.IsDeleted = 0) AND (m.IsDeleted = 0)
+
+	SELECT Word, Occurences, Relevance, ModuleID, TabID, Title, Link, Description, Pubdate, SearchKey FROM @TempList 
+	WHERE GetDate() between ModStartDate and ModEndDate
+	AND GetDate() between TabStartDate and TabEndDate
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetDefaultLanguageByModule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetDefaultLanguageByModule
+(
+	@ModuleList varchar(1000)
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DECLARE @TempList table
+	(
+		ModuleID int
+	)
+
+	DECLARE @ModuleID varchar(10), @Pos int
+
+	SET @ModuleList = LTRIM(RTRIM(@ModuleList))+ ','
+	SET @Pos = CHARINDEX(',', @ModuleList, 1)
+
+	IF REPLACE(@ModuleList, ',', '') <> ''
+	BEGIN
+		WHILE @Pos > 0
+		BEGIN
+			SET @ModuleID = LTRIM(RTRIM(LEFT(@ModuleList, @Pos - 1)))
+			IF @ModuleID <> ''
+			BEGIN
+				INSERT INTO @TempList (ModuleID) VALUES (CAST(@ModuleID AS int)) 
+			END
+			SET @ModuleList = RIGHT(@ModuleList, LEN(@ModuleList) - @Pos)
+			SET @Pos = CHARINDEX(',', @ModuleList, 1)
+
+		END
+	END	
+
+SELECT DISTINCT m.ModuleID, p.DefaultLanguage
+FROM            {objectQualifier}Modules  m
+INNER JOIN      {objectQualifier}Portals p ON p.PortalID = m.PortalID
+WHERE		m.ModuleID in (SELECT ModuleID FROM @TempList)
+ORDER BY        m.ModuleID	
+		
+END
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSearchResultModules
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSiteModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetModuleByDefinition
+
+@PortalId int,
+@FriendlyName nvarchar(128)
+
+as
+
+select {objectQualifier}Modules.*,
+       {objectQualifier}TabModules.*,
+       {objectQualifier}DesktopModules.*
+from   {objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefId = {objectQualifier}ModuleDefinitions.ModuleDefId
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleId = {objectQualifier}DesktopModules.DesktopModuleId
+left outer join {objectQualifier}TabModules on {objectQualifier}Modules.ModuleID = {objectQualifier}TabModules.ModuleID
+where  (({objectQualifier}Modules.PortalId = @PortalId) or ({objectQualifier}Modules.PortalId is null and @PortalID is null))
+and    {objectQualifier}ModuleDefinitions.FriendlyName = @FriendlyName
+
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}TabModuleSettings
+	(
+	TabModuleID int NOT NULL,
+	SettingName nvarchar(50) NOT NULL,
+	SettingValue nvarchar(2000) NOT NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}TabModuleSettings ADD CONSTRAINT
+	PK_TabModuleSettings PRIMARY KEY CLUSTERED 
+	(
+	TabModuleID,
+	SettingName
+	) ON [PRIMARY]
+
+GO
+
+CREATE NONCLUSTERED INDEX IX_TabModuleSettings ON {databaseOwner}{objectQualifier}TabModuleSettings
+	(
+	TabModuleID,
+	SettingName
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}TabModuleSettings WITH NOCHECK ADD CONSTRAINT
+	FK_TabModuleSettings_TabModules FOREIGN KEY
+	(
+        TabModuleID
+	) REFERENCES {databaseOwner}{objectQualifier}TabModules
+	(
+        TabModuleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetTabModuleSettings
+
+@TabModuleId int
+
+as
+
+select SettingName,
+       SettingValue
+from   {objectQualifier}TabModuleSettings 
+where  TabModuleId = @TabModuleId
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetTabModuleSetting
+
+@TabModuleId int,
+@SettingName nvarchar(50)
+
+as
+
+select SettingName,
+       SettingValue
+from   {objectQualifier}TabModuleSettings 
+where  TabModuleId = @TabModuleId
+and    SettingName = @SettingName
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddTabModuleSetting
+
+@TabModuleId   int,
+@SettingName   nvarchar(50),
+@SettingValue  nvarchar(2000)
+
+as
+
+insert into {objectQualifier}TabModuleSettings ( 
+  TabModuleId,
+  SettingName, 
+  SettingValue 
+) 
+values ( 
+  @TabModuleId,
+  @SettingName, 
+  @SettingValue 
+)
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateTabModuleSetting
+
+@TabModuleId   int,
+@SettingName   nvarchar(50),
+@SettingValue  nvarchar(2000)
+
+as
+
+update {objectQualifier}TabModuleSettings
+set    SettingValue = @SettingValue
+where  TabModuleId = @TabModuleId
+and    SettingName = @SettingName
+
+GO
+
+update	{objectQualifier}ModuleControls
+set		ControlKey = 'Settings', 
+		ControlTitle = 'Links Settings', 
+		ControlSrc = 'DesktopModules/Links/Settings.ascx'
+where	ControlKey = 'ViewOptions'
+and		ControlSrc = 'DesktopModules/Links/EditLinksViewOptions.ascx'
+
+GO
+
+update	{objectQualifier}ModuleControls
+set		ControlKey = 'Settings', 
+		ControlTitle = 'Events Settings', 
+		ControlSrc = 'DesktopModules/Events/Settings.ascx'
+where	ControlKey = 'ViewOptions'
+and		ControlSrc = 'DesktopModules/Events/EditEventsViewOptions.ascx'
+
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}Lists (
+	[EntryID] [int] IDENTITY (1, 1) NOT NULL ,
+	[ListName] [nvarchar] (50)  NOT NULL ,
+	[Value] [nvarchar] (100)  NOT NULL ,
+	[Text] [nvarchar] (150)  NOT NULL ,
+	[ParentID] [int] NOT NULL ,	
+	[Level] [int] NOT NULL ,
+	[SortOrder] [int] NOT NULL ,
+	[DefinitionID] [int] NOT NULL ,	
+	[Description] [nvarchar] (500)  NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Lists ADD 
+	CONSTRAINT [DF_{objectQualifier}Lists_Level] DEFAULT (0) FOR [Level],
+	CONSTRAINT [DF_{objectQualifier}Lists_SortOrder] DEFAULT (0) FOR [SortOrder],
+	CONSTRAINT [DF_{objectQualifier}Lists_DefinitionID] DEFAULT (0) FOR [DefinitionID],
+	CONSTRAINT [DF_{objectQualifier}Lists_ParentID] DEFAULT (0) FOR [ParentID],
+	CONSTRAINT [PK_{objectQualifier}Lists] PRIMARY KEY  CLUSTERED 
+	(		
+		[ListName],
+		[Value],
+		[Text],
+		[ParentID]
+	)  ON [PRIMARY] 
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}AddListEntry
+
+@ListName nvarchar(50), 
+@Value nvarchar(100), 
+@Text nvarchar(150), 
+@ParentKey nvarchar(150), 
+@EnableSortOrder bit,
+@DefinitionID int, 
+@Description nvarchar(500)
+
+as
+
+DECLARE @ParentID int
+DECLARE @Level int
+DECLARE @SortOrder int
+
+IF @EnableSortOrder = 1
+BEGIN
+	SET @SortOrder = IsNull((SELECT MAX ([SortOrder]) From {objectQualifier}Lists Where [ListName] = @ListName), 0) + 1
+END
+ELSE
+BEGIN
+	SET @SortOrder = 0
+END
+
+
+If @ParentKey <> ''
+BEGIN
+	DECLARE @ParentListName nvarchar(50)
+	DECLARE @ParentValue nvarchar(100)
+	SET @ParentListName = LEFT(@ParentKey, CHARINDEX( '.', @ParentKey) - 1)
+	SET @ParentValue = RIGHT(@ParentKey, LEN(@ParentKey) -  CHARINDEX( '.', @ParentKey))
+	SELECT @ParentID = [EntryID], @Level = ([Level] + 1) From {objectQualifier}Lists Where [ListName] = @ParentListName And [Value] = @ParentValue
+
+	Print 'ParentListName: ' + @ParentListName
+	Print 'ParentValue: ' + @ParentValue
+	--Print @ParentID
+END
+ELSE
+BEGIN
+	SET @ParentID = 0
+	SET @Level = 0
+END
+
+-- Check if this entry exists
+If EXISTS (SELECT [EntryID] From {objectQualifier}Lists WHERE [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
+BEGIN
+select -1
+Return 
+END
+
+insert into {objectQualifier}Lists 
+	(
+  	[ListName],
+	[Value],
+	[Text],
+	[Level],
+	[SortOrder],
+	[DefinitionID],
+	[ParentID],
+	[Description]
+	)
+values (
+	@ListName,
+	@Value,
+	@Text,
+	@Level,
+	@SortOrder,
+	@DefinitionID,
+	@ParentID,
+	@Description  	
+	)
+
+select SCOPE_IDENTITY()
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}DeleteListEntryByID
+
+@EntryId   int,
+@DeleteChild bit
+
+as
+
+Delete
+From {objectQualifier}Lists
+Where  [EntryID] = @EntryID
+
+If @DeleteChild = 1
+Begin
+	Delete 
+	From {objectQualifier}Lists
+	Where [ParentID] = @EntryID
+End
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE procedure {databaseOwner}{objectQualifier}DeleteList
+
+@ListName nvarchar(50),
+@ParentKey nvarchar(150)
+
+as
+
+DECLARE @EntryID int
+
+If @ParentKey = '' 
+Begin
+	-- need to store entries which to be deleted to clean up their sub entries
+	DECLARE allentry_cursor CURSOR FOR
+	SELECT [EntryID] FROM {objectQualifier}Lists Where  [ListName] = @ListName	
+	-- then delete their sub entires
+	OPEN allentry_cursor
+	FETCH NEXT FROM allentry_cursor INTO @EntryID
+	While @@FETCH_STATUS = 0
+	Begin	
+		Delete {objectQualifier}Lists Where [ParentID] = @EntryID
+   		FETCH NEXT FROM allentry_cursor INTO @EntryID
+	End
+	-- Delete entries belong to this list
+	Delete {objectQualifier}Lists
+	Where  [ListName] = @ListName
+End
+Else
+Begin
+
+	DECLARE @ParentListName nvarchar(50)
+	DECLARE @ParentValue nvarchar(100)
+	SET @ParentListName = LEFT(@ParentKey, CHARINDEX( '.', @ParentKey) - 1)
+	SET @ParentValue = RIGHT(@ParentKey, LEN(@ParentKey) -  CHARINDEX( '.', @ParentKey))
+
+	-- need to store entries which to be deleted to clean up their sub entries
+	DECLARE selentry_cursor CURSOR FOR
+	SELECT [EntryID] FROM {objectQualifier}Lists Where  [ListName] = @ListName And
+	[ParentID] = (SELECT [EntryID] From {objectQualifier}Lists Where [ListName] = @ParentListName And [Value] = @ParentValue)
+	-- delete their sub entires
+	OPEN selentry_cursor
+	FETCH NEXT FROM selentry_cursor INTO @EntryID
+	While @@FETCH_STATUS = 0
+	Begin	
+		Delete {objectQualifier}Lists Where [ParentID] = @EntryID
+   		FETCH NEXT FROM selentry_cursor INTO @EntryID
+	End
+	-- delete entry list
+	Delete {objectQualifier}Lists 
+	where  [ListName] = @ListName And
+	[ParentID] = (SELECT [EntryID] From {objectQualifier}Lists Where [ListName] = @ParentListName And [Value] = @ParentValue)	
+End
+
+
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetListEntries
+
+@ListName nvarchar(50),
+@ParentKey nvarchar(150),
+@EntryID int,
+@DefinitionID int,
+@Value nvarchar(200)
+
+as
+IF @ParentKey=''
+Begin
+	select 
+	E.[EntryID],
+	E.[ListName],
+	E.[Value],
+	E.[Text],
+	E.[Level],
+	E.[SortOrder],
+	E.[DefinitionID],
+	E.[ParentID],
+	E.[Description], 	
+	E.[ListName] + '.' + E.[Value] As [Key],	
+	E.[ListName] + '.' + E.[Text] As [DisplayName],
+	IsNull((SELECT [ListName] + '.' + [Value] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [ParentKey],
+	IsNull((SELECT [ListName] + '.' + [Text] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [Parent],
+	IsNull((SELECT [ListName] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]),'') As [ParentList],		
+	(SELECT COUNT(DISTINCT [ParentID]) FROM {objectQualifier}Lists (nolock) WHERE [ParentID] = E.[EntryID]) As HasChildren
+	From {objectQualifier}Lists E (nolock)
+	Where (E.[ListName] = @ListName or @ListName='')
+	and (E.[DefinitionID]=@DefinitionID or @DefinitionID = -1)
+	and (E.[EntryID]=@EntryID or @EntryID = -1)
+	and (E.[Value]=@Value or @Value = '')
+	Order By E.[Level], E.[ListName], E.[SortOrder], E.[Text]
+End
+Else
+Begin
+
+	DECLARE @ParentListName nvarchar(50)
+	DECLARE @ParentValue nvarchar(100)
+	SET @ParentListName = LEFT(@ParentKey, CHARINDEX( '.', @ParentKey) - 1)
+	SET @ParentValue = RIGHT(@ParentKey, LEN(@ParentKey) -  CHARINDEX( '.', @ParentKey))
+	select 
+	E.[EntryID],
+	E.[ListName],
+	E.[Value],
+	E.[Text],
+	E.[Level],
+	E.[SortOrder],
+	E.[DefinitionID],
+	E.[ParentID],
+	E.[Description], 	
+	E.[ListName] + '.' + E.[Value] As [Key],	
+	E.[ListName] + '.' + E.[Text] As [DisplayName],
+	IsNull((SELECT [ListName] + '.' + [Value] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [ParentKey],
+	IsNull((SELECT [ListName] + '.' + [Text] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [Parent],
+	IsNull((SELECT [ListName] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]),'') As [ParentList],	
+	(SELECT COUNT(DISTINCT [ParentID]) FROM {objectQualifier}Lists (nolock) WHERE [ParentID] = E.[EntryID]) As HasChildren
+	From {objectQualifier}Lists E (nolock)
+	where  [ListName] = @ListName 
+	and (E.[DefinitionID]=@DefinitionID or @DefinitionID = -1)
+	and (E.[EntryID]=@EntryID or @EntryID = -1)
+	and (E.[Value]=@Value or @Value = '')
+	and [ParentID] = (SELECT [EntryID] From {objectQualifier}Lists Where [ListName] = @ParentListName And [Value] = @ParentValue)
+	Order By E.[Level], E.[ListName], E.[SortOrder], E.[Text]
+
+End
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetList
+
+@ListName nvarchar(50),
+@ParentKey nvarchar(150),
+@DefinitionID int
+
+as
+If @ParentKey = '' 
+Begin
+	Select DISTINCT 	
+	E.[ListName],
+	E.[Level],	
+	E.[DefinitionID],
+	E.[ParentID],	
+	(SELECT MAX([SortOrder]) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName]) As [MaxSortOrder],
+	(SELECT COUNT(EntryID) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName] AND ParentID = E.[ParentID]) As EntryCount,
+	IsNull((SELECT [ListName] + '.' + [Value] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [Key],	
+	IsNull((SELECT [ListName] + '.' + [Text] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [DisplayName],
+	IsNull((SELECT [ListName] + '.' + [Value] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [ParentKey],
+	IsNull((SELECT [ListName] + '.' + [Text] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [Parent],
+	IsNull((SELECT [ListName] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]),'') As [ParentList]
+	From {objectQualifier}Lists E (nolock)
+	where  ([ListName] = @ListName or @ListName='')
+	and (DefinitionID = @DefinitionID or @DefinitionID = -1)
+End
+Else
+Begin
+
+	DECLARE @ParentListName nvarchar(50)
+	DECLARE @ParentValue nvarchar(100)
+	SET @ParentListName = LEFT(@ParentKey, CHARINDEX( '.', @ParentKey) - 1)
+	SET @ParentValue = RIGHT(@ParentKey, LEN(@ParentKey) -  CHARINDEX( '.', @ParentKey))
+	Select DISTINCT 	
+	E.[ListName],
+	E.[Level],	
+	E.[DefinitionID],
+	E.[ParentID],	
+	(SELECT MAX([SortOrder]) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName]) As [MaxSortOrder],
+	(SELECT COUNT(EntryID) FROM {objectQualifier}Lists WHERE [ListName] = E.[ListName] AND ParentID = E.[ParentID]) As EntryCount,
+	IsNull((SELECT [ListName] + '.' + [Value] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [Key],	
+	IsNull((SELECT [ListName] + '.' + [Text] + ':' FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') + E.[ListName] As [DisplayName],
+	IsNull((SELECT [ListName] + '.' + [Value] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [ParentKey],
+	IsNull((SELECT [ListName] + '.' + [Text] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]), '') As [Parent],
+	IsNull((SELECT [ListName] FROM {objectQualifier}Lists WHERE [EntryID] = E.[ParentID]),'') As [ParentList]
+	
+	From {objectQualifier}Lists E (nolock)
+	where  [ListName] = @ListName And
+	[ParentID] = (SELECT [EntryID] From {objectQualifier}Lists Where [ListName] = @ParentListName And [Value] = @ParentValue)	
+
+End
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateListEntry
+
+@EntryID int, 
+@ListName nvarchar(50), 
+@Value nvarchar(100), 
+@Text nvarchar(150), 
+@Description nvarchar(500)
+
+AS
+
+UPDATE {objectQualifier}Lists
+SET	
+	[ListName] = @ListName,
+	[Value] = @Value,
+	[Text] = @Text,	
+	[Description] = @Description
+WHERE 	[EntryID] = @EntryID
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateListSortOrder
+(
+@EntryID	int, 
+@MoveUp		bit
+)
+AS
+DECLARE @EntryListName nvarchar(50)
+DECLARE @ParentID int
+DECLARE @CurrentSortValue int
+DECLARE @ReplaceSortValue int
+-- Get the current sort order
+SELECT @CurrentSortValue = [SortOrder], @EntryListName = [ListName], @ParentID = [ParentID] FROM {objectQualifier}Lists (nolock) WHERE [EntryID] = @EntryID
+-- Move the item up or down?
+IF (@MoveUp = 1)
+  BEGIN
+    IF (@CurrentSortValue != 1) -- we rearrange sort order only if list enable sort order - sortorder >= 1
+      BEGIN
+        SET @ReplaceSortValue = @CurrentSortValue - 1
+        UPDATE {objectQualifier}Lists SET [SortOrder] = @CurrentSortValue WHERE [SortOrder] = @ReplaceSortValue And [ListName] = @EntryListName And [ParentID] = @ParentID
+        UPDATE {objectQualifier}Lists SET [SortOrder] = @ReplaceSortValue WHERE [EntryID] = @EntryID
+      END
+  END
+ELSE
+  BEGIN
+    IF (@CurrentSortValue < (SELECT MAX([SortOrder]) FROM {objectQualifier}Lists))
+    BEGIN
+      SET @ReplaceSortValue = @CurrentSortValue + 1
+      UPDATE {objectQualifier}Lists SET [SortOrder] = @CurrentSortValue WHERE SortOrder = @ReplaceSortValue And [ListName] = @EntryListName  And [ParentID] = @ParentID
+      UPDATE {objectQualifier}Lists SET [SortOrder] = @ReplaceSortValue WHERE EntryID = @EntryID
+    END
+  END
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+INSERT INTO {databaseOwner}{objectQualifier}Lists
+ ([ListName], [Value], [Text])
+SELECT 'Country', Code, [Description]
+FROM {databaseOwner}{objectQualifier}CodeCountry
+GO
+
+
+DECLARE @CanadaID int
+SELECT @CanadaID = [EntryID] FROM {databaseOwner}{objectQualifier}Lists WHERE [ListName] = 'Country' AND [Value] = 'CA'
+INSERT INTO {databaseOwner}{objectQualifier}Lists
+([ListName], [Value], [Text], [Level], [ParentID])
+SELECT 'Region', Code, [Description], 1, @CanadaID
+FROM {databaseOwner}{objectQualifier}CodeRegion
+WHERE Country='CA'
+
+GO
+
+DECLARE @UnitedStatesID int
+SELECT @UnitedStatesID = [EntryID] FROM {databaseOwner}{objectQualifier}Lists WHERE [ListName] = 'Country' AND [Value] = 'US'
+INSERT INTO {databaseOwner}{objectQualifier}Lists 
+([ListName], [Value], [Text], [Level], [ParentID])
+SELECT 'Region', Code, [Description], 1, @UnitedStatesID
+FROM {databaseOwner}{objectQualifier}CodeRegion
+WHERE Country='US'
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Lists ([ListName], [Value], [Text]) 
+SELECT 'Currency', Code, [Description]
+FROM {databaseOwner}{objectQualifier}CodeCurrency
+
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Lists ([ListName], [Value], [Text]) 
+SELECT 'Frequency', Code, [Description]
+FROM {databaseOwner}{objectQualifier}CodeFrequency
+
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Lists ([ListName], [Value], [Text]) 
+SELECT 'Processor', Processor, URL
+FROM {databaseOwner}{objectQualifier}CodeProcessor
+
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Lists ([ListName], [Value], [Text]) 
+SELECT 'Site Log Reports', Code, Description
+FROM {databaseOwner}{objectQualifier}CodeSiteLogReport
+
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}CodeProcessor
+GO
+DROP TABLE {databaseOwner}{objectQualifier}CodeCurrency
+GO
+DROP TABLE {databaseOwner}{objectQualifier}CodeRegion
+GO
+DROP TABLE {databaseOwner}{objectQualifier}CodeCountry
+GO
+DROP TABLE {databaseOwner}{objectQualifier}CodeSiteLogReport
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Roles DROP CONSTRAINT FK_{objectQualifier}Roles_{objectQualifier}CodeFrequency
+GO
+
+drop table {databaseOwner}{objectQualifier}CodeFrequency
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetBillingFrequencyCode
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetBillingFrequencyCodes
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetCountryCodes
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetCountry
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetProcessorCodes
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetRegion
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetRegionCodes
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetSiteLogReports
+
+GO
+
+alter procedure {databaseOwner}{objectQualifier}GetServices
+    
+@PortalId  int,
+@UserId    int = null
+
+as
+
+select RoleId,
+       R.RoleName,
+       R.Description,
+       'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+       'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+       'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.[Text] else '' end,
+       'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+       'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+       'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.[Text] else '' end,
+       'ExpiryDate' = ( select ExpiryDate from {databaseOwner}{objectQualifier}UserRoles where {databaseOwner}{objectQualifier}UserRoles.RoleId = R.RoleId and {databaseOwner}{objectQualifier}UserRoles.UserId = @UserId ),
+       'Subscribed' = ( select UserRoleId from {databaseOwner}{objectQualifier}UserRoles where {databaseOwner}{objectQualifier}UserRoles.RoleId = R.RoleId and {databaseOwner}{objectQualifier}UserRoles.UserId = @UserId )
+from {databaseOwner}{objectQualifier}Roles R
+inner join {databaseOwner}{objectQualifier}Lists L1 on R.BillingFrequency = L1.Value
+left outer join {databaseOwner}{objectQualifier}Lists L2 on R.TrialFrequency = L2.Value
+where  R.PortalId = @PortalId
+and    R.IsPublic = 1
+and L1.ListName='Frequency'
+and L2.ListName='Frequency'
+
+GO
+
+alter procedure {databaseOwner}{objectQualifier}GetPortalRoles
+
+@PortalId     int
+
+as
+
+select R.RoleId,
+       R.RoleName,
+       R.Description,
+       'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+       'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+       'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+       'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+       'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+       'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+       'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+       'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end
+from {databaseOwner}{objectQualifier}Roles R
+left outer join {databaseOwner}{objectQualifier}Lists L1 on R.BillingFrequency = L1.Value
+left outer join {databaseOwner}{objectQualifier}Lists L2 on R.TrialFrequency = L2.Value
+where  PortalId = @PortalId
+or     PortalId is null
+order by R.RoleName
+
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Lists SET [SortOrder] = 0, [DefinitionID] = -1
+
+GO
+
+update {databaseOwner}{objectQualifier}Portals 
+set BannerAdvertising = 1
+where PortalID = 0
+and PortalName = 'DotNetNuke'
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}Modules
+DROP COLUMN AuthorizedEditRoles
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Modules
+DROP COLUMN AuthorizedViewRoles
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+DROP COLUMN AdministratorRoles
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+DROP COLUMN AuthorizedRoles
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetTabs
+
+@PortalId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       'IconFile' = case when {objectQualifier}Files_1.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files_1.Folder + {objectQualifier}Files_1.FileName end,
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files {objectQualifier}Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files_1.FileID)
+where  {objectQualifier}Tabs.PortalId = @PortalId
+order by TabOrder, TabName
+
+
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}GetTabsByParentId
+
+@ParentId int
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       'IconFile' = case when {objectQualifier}Files_1.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files_1.Folder + {objectQualifier}Files_1.FileName end,
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files {objectQualifier}Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files_1.FileID)
+where  {objectQualifier}Tabs.ParentId = @ParentId
+
+
+GO
+
+
+drop procedure {databaseOwner}{objectQualifier}AddUserRole
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUserRole
+
+@PortalId   int,
+@UserId     int,
+@RoleId     int,
+@ExpiryDate datetime = null
+
+as
+
+declare @UserRoleId int
+
+select @UserRoleId = null
+
+select @UserRoleId = UserRoleId
+from {objectQualifier}UserRoles
+where  {objectQualifier}UserRoles.UserId = @UserId
+and    {objectQualifier}UserRoles.RoleId = @RoleId
+ 
+if @UserRoleId is not null
+begin
+  update {objectQualifier}UserRoles
+  set    ExpiryDate = @ExpiryDate
+  where  UserRoleId = @UserRoleId
+
+  select @UserRoleId
+end
+else
+begin
+  insert into {objectQualifier}UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @RoleId,
+    @ExpiryDate
+  )
+
+  select SCOPE_IDENTITY()
+end
+
+
+
+GO
+
+DROP procedure {databaseOwner}{objectQualifier}GetSuperUsers
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetSuperUsers
+
+as
+
+select U.*,
+       'PortalId' = -1,
+       'FullName' = U.FirstName + ' ' + U.LastName
+from   {databaseOwner}{objectQualifier}Users U
+where  U.IsSuperUser = 1
+
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}AddPortalUser
+GO
+DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePortalUser
+GO
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalUser
+GO
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalUsers
+GO
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetUserPortals
+GO
+DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalUser
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetUserRolesByUsername
+
+@PortalId int, 
+@Username nvarchar(100), 
+@Rolename nvarchar(50)
+
+as
+
+SELECT	R.*,        
+        'FullName' = U.FirstName + ' ' + U.LastName,
+        UR.UserRoleID,
+        UR.UserID,
+        UR.ExpiryDate,
+        UR.IsTrialUsed
+FROM	{databaseOwner}{objectQualifier}UserRoles UR
+INNER JOIN {databaseOwner}{objectQualifier}Users U ON UR.UserID = U.UserID
+INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON U.UserID = UP.UserID
+INNER JOIN {databaseOwner}{objectQualifier}Roles R ON R.RoleID = UR.RoleID
+WHERE  UP.PortalId = @PortalId
+AND    (U.Username = @Username or @Username is NULL)
+AND    (R.Rolename = @Rolename or @RoleName is NULL)
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

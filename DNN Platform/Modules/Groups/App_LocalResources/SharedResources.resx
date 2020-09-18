@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accessibility.Text" xml:space="preserve">
+    <value>Accessibility</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CreateGroup.Text" xml:space="preserve">
+    <value>Create A Group</value>
+  </data>
+  <data name="CreateGroupButton.Text" xml:space="preserve">
+    <value>Create Group</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="documents.Text" xml:space="preserve">
+    <value>documents</value>
+  </data>
+  <data name="GroupName.Required" xml:space="preserve">
+    <value>Group name is required. </value>
+  </data>
+  <data name="GroupName.Text" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="GroupPicture.Help" xml:space="preserve">
+    <value>Select an image from your computer, maximum file size is 2.5MB</value>
+  </data>
+  <data name="GroupPicture.Text" xml:space="preserve">
+    <value>Group Picture</value>
+  </data>
+  <data name="GroupViewTemplate.Text" xml:space="preserve">
+    <value>&lt;div class="GroupViewTop"&gt;
+    &lt;div class="dgdAvatar dnnLeft"&gt;&lt;img src="[groupitem:PhotoURL]" alt="[groupitem:GroupName]" /&gt;&lt;/div&gt;
+    &lt;div class="GroupViewHeader"&gt;
+        &lt;h1&gt;[groupitem:GroupName]&lt;/h1&gt;
+        &lt;p&gt;[groupitem:GroupDescription]&lt;/p&gt;
+    &lt;/div&gt;
+&lt;div class="dnnRight dnnClear"&gt;
+[IsOwner]
+[GROUPEDITBUTTON] 
+[/IsOwner]
+[IsMember]
+[IsNotOwner]
+ &lt;a href="#" id="LeaveGroup-[groupitem:RoleId]"&gt;{resx:LeaveGroup}&lt;/a&gt;
+[/IsNotOwner]
+[/IsMember]
+[IsNotMember]
+[AllowJoin]
+ &lt;a href="#" id="JoinGroup-[groupitem:RoleId]" groupid="[groupitem:RoleId]" groupViewTabId ="[GroupViewTabId]"&gt;{resx:JoinGroup}&lt;/a&gt;
+[/AllowJoin]
+[/IsNotMember]
+[IsPendingMember]
+ &lt;i&gt;Membership Pending&lt;/i&gt;
+[/IsPendingMember]
+&lt;/div&gt;
+&lt;/div&gt;</value>
+  </data>
+  <data name="Join.Text" xml:space="preserve">
+    <value>Join</value>
+  </data>
+  <data name="members.Text" xml:space="preserve">
+    <value>members</value>
+  </data>
+  <data name="photos.Text" xml:space="preserve">
+    <value>photos</value>
+  </data>
+  <data name="posts.Text" xml:space="preserve">
+    <value>posts</value>
+  </data>
+  <data name="Private.Help" xml:space="preserve">
+    <value>(no one can see but members)</value>
+  </data>
+  <data name="Private.Text" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="Public.Help" xml:space="preserve">
+    <value>(everyone can see and join)</value>
+  </data>
+  <data name="Public.Text" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="RequiredFields.Text" xml:space="preserve">
+    <value>Indicates required fields</value>
+  </data>
+  <data name="GroupListTemplate.Text" xml:space="preserve">
+    <value>&lt;div class="dgdGroupQuickInfoWrap dnnClear"&gt;
+                    &lt;div class="dgdAvatar dnnLeft"&gt;&lt;a href="[groupviewurl]"&gt;&lt;img src="[groupitem:PhotoURL]" alt="[groupitem:GroupName]" /&gt;&lt;/a&gt;&lt;/div&gt;
+                    &lt;div class="dgdGroupQuickInfo dnnLeft"&gt;
+                        &lt;h3&gt;&lt;a href="[groupviewurl]" title="[groupitem:GroupName]"&gt;[groupitem:GroupName]&lt;/a&gt;&lt;/h3&gt;
+                        &lt;p&gt;[groupitem:GroupDescription]&lt;/p&gt;
+                        &lt;ul&gt;
+                            &lt;li class="posts-icn"&gt;[groupitem:stat_status] {resx:posts}&lt;/li&gt;
+                            &lt;li class="member-icn"&gt;[groupitem:UserCount] {resx:members}&lt;/li&gt;
+                            &lt;li class="photo-icn"&gt;[groupitem:stat_photo] {resx:photos}&lt;/li&gt;
+                            &lt;li class="docs-icn"&gt;[groupitem:stat_file] {resx:documents}&lt;/li&gt;
+                            [IsNotMember]
+                            &lt;li class="join-group-icn"&gt;&lt;a href="#" title="" class="dnnTertiaryAction" id="groupJoin-[groupitem:RoleId]" groupid="[groupitem:RoleId]" groupViewTabId ="[GroupViewTabId]"&gt;{resx:Join}&lt;/a&gt;&lt;/li&gt;[/IsNotMember] 
+[IsPendingMember]&lt;li class="join-group-icn"&gt;&lt;a href="#" title="" class="dnnDisabled"&gt;{resx:Pending}&lt;/a&gt;&lt;/li&gt;[/IsPendingMember]
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;</value>
+  </data>
+  <data name="GroupNameDuplicate.Text" xml:space="preserve">
+    <value>The name you have entered is already in use.</value>
+  </data>
+  <data name="GroupPendingNotification.Body" xml:space="preserve">
+    <value>&lt;b&gt;Group Name:&lt;/b&gt; &lt;a href="[groupitem:URL]" target="_blank"&gt;[groupitem:GroupName]&lt;/a&gt;&lt;br /&gt;&lt;b&gt;Description:&lt;/b&gt; [groupitem:Description]&lt;br /&gt;&lt;b&gt;Group Type: &lt;/b&gt; [groupitem:GroupType]&lt;br /&gt;&lt;b&gt;Group Creator:&lt;/b&gt; [groupitem:GroupCreatorName]&lt;br /&gt;</value>
+  </data>
+  <data name="GroupPendingNotification.Subject" xml:space="preserve">
+    <value>The [groupitem:GroupName] group is pending approval.</value>
+  </data>
+  <data name="GroupApprovedNotification.Body" xml:space="preserve">
+    <value>Congratulations!  Your group has been approved! Click the link below to access your group.&lt;br /&gt;&lt;br /&gt;&lt;a href="[groupitem:URL]"&gt;[groupitem:GroupName]&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;</value>
+  </data>
+  <data name="GroupApprovedNotification.Subject" xml:space="preserve">
+    <value>The [groupitem:GroupName] group has been approved.</value>
+  </data>
+  <data name="GroupCreatedNotification.Body" xml:space="preserve">
+    <value>&lt;b&gt;Group Name:&lt;/b&gt; &lt;a href="[groupitem:URL]"&gt;[groupitem:GroupName]&lt;/a&gt;&lt;br /&gt;&lt;b&gt;Description:&lt;/b&gt; [groupitem:Description]&lt;br /&gt;&lt;b&gt;Group Type: &lt;/b&gt; [groupitem:GroupType]&lt;br /&gt;&lt;b&gt;Group Creator:&lt;/b&gt; [groupitem:GroupCreatorName]&lt;br /&gt;
+</value>
+  </data>
+  <data name="GroupCreatedNotification.Subject" xml:space="preserve">
+    <value>The [groupitem:GroupName] group has been created.</value>
+  </data>
+  <data name="GroupRejectedNotification.Body" xml:space="preserve">
+    <value>You requested to create the &lt;b&gt;[groupitem:GroupName]&lt;/b&gt; group.  We regret to inform you that we are unable to approve your group request at this time.</value>
+  </data>
+  <data name="GroupRejectedNotification.Subject" xml:space="preserve">
+    <value>Your new group request has been rejected.</value>
+  </data>
+  <data name="CreateNewGroup.Text" xml:space="preserve">
+    <value>Create New Group</value>
+  </data>
+  <data name="GroupIdNotFound.Text" xml:space="preserve">
+    <value>We were unable to locate the group you requested.  </value>
+  </data>
+  <data name="NoGroupsFound.Text" xml:space="preserve">
+    <value>No Groups were found.</value>
+  </data>
+  <data name="Sample_RoleDescription.Text" xml:space="preserve">
+    <value>This is the description for the sample group.  This group doesn't really exist.  You are seeing this because you are setting up the module for the first time or you are an administrator and navigated to this page without a group id.</value>
+  </data>
+  <data name="Sample_RoleName.Text" xml:space="preserve">
+    <value>Sample Social Group</value>
+  </data>
+  <data name="SetupHeader.Text" xml:space="preserve">
+    <value>Setup Social Groups</value>
+  </data>
+  <data name="SetupIntro.Text" xml:space="preserve">
+    <value>The Social Groups module allows users to browse, view and create groups.  The best way to configure the module is to create a page for listing your groups and another page for viewing the group details.  You can access the module settings to configure the module on your own or you can click the auto configure button below.  &lt;br /&gt;&lt;br /&gt;&lt;b&gt;We recommend using the Auto Configure option if you are not familiar with the module.&lt;/b&gt;</value>
+  </data>
+  <data name="RejectGroup.Text" xml:space="preserve">
+    <value>Reject this Group</value>
+  </data>
+  <data name="MembersMustBeApproved.Text" xml:space="preserve">
+    <value>&lt;b&gt;Review New Members:&lt;/b&gt; Users must request to join this group and be approved by a group manager.</value>
+  </data>
+  <data name="GroupMemberApprovedNotification.Body" xml:space="preserve">
+    <value>Your request to join &lt;a href="[groupitem:URL]"&gt;[groupitem:GroupName]&lt;/a&gt; has been approved.</value>
+  </data>
+  <data name="GroupMemberApprovedNotification.Subject" xml:space="preserve">
+    <value>Welcome to [groupitem:GroupName]!</value>
+  </data>
+  <data name="GroupMemberPendingNotification.Body" xml:space="preserve">
+    <value>&lt;a href="[ProfileUrl]" target="_blank"&gt;[DisplayName]&lt;/a&gt; has requested to join [groupitem:GroupName].</value>
+  </data>
+  <data name="GroupMemberPendingNotification.Subject" xml:space="preserve">
+    <value>[DisplayName] wants to join [groupitem:GroupName]</value>
+  </data>
+  <data name="GroupMemberRejectedNotification.Body" xml:space="preserve">
+    <value>We regret to inform you that your request to join &lt;a href="[groupitem:URL]"&gt;[groupitem:GroupName]&lt;/a&gt; has been denied.</value>
+  </data>
+  <data name="GroupMemberRejectedNotification.Subject" xml:space="preserve">
+    <value>Response to your request to join [groupitem:GroupName]</value>
+  </data>
+  <data name="LeaveGroup.Text" xml:space="preserve">
+    <value>Leave Group</value>
+  </data>
+  <data name="Pending.Text" xml:space="preserve">
+    <value>Membership Pending</value>
+  </data>
+  <data name="RejectMember.Text" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="EditGroup.Text" xml:space="preserve">
+    <value>Edit Group</value>
+  </data>
+  <data name="GroupEditUrl.Text" xml:space="preserve">
+    <value>&lt;a href="{0}"&gt;Edit Group&lt;/a&gt;</value>
+  </data>
+  <data name="JoinGroup.Text" xml:space="preserve">
+    <value>Join Group</value>
+  </data>
+  <data name="AutoConfigure.Text" xml:space="preserve">
+    <value>Auto Configure</value>
+  </data>
+  <data name="SearchButton.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="GroupSearch.Required" xml:space="preserve">
+    <value>Search term required.</value>
+  </data>
+  <data name="GroupName.Invalid" xml:space="preserve">
+    <value>The Name is invalid - roles can not contain the following characters: &amp; $ + , / ? ~ # &lt; &gt; ( ) ¿ ¡ « » !  . :  * ' [ ]</value>
+  </data>
+</root>

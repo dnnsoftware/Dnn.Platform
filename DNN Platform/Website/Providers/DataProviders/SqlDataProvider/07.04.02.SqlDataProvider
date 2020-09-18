@@ -1,0 +1,528 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* DNN-6398 */
+/************/
+
+UPDATE {databaseOwner}{objectQualifier}HostSettings
+  SET SettingValue ='http://www.dnnsoftware.com/help'
+  WHERE SettingName='HelpURL'
+
+GO
+
+/* DNN-6758 */
+/************/
+
+ ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFile      nVarChar(255);
+ ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFileLarge nVarChar(255);
+
+ GO
+
+/* DNN-5631 */
+/************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteList]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteList]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteList]
+	@ListName  nVarChar( 50), -- Not Null
+	@ParentKey nVarChar(150)  -- Not Null
+AS
+BEGIN
+	DELETE L
+	 FROM  {databaseOwner}[{objectQualifier}Lists] L
+	 WHERE ListName = @ListName 
+	   AND {databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentKey',  0) = @ParentKey;
+END
+GO
+
+/* DNN-6877 */
+/************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+BEGIN
+DELETE FROM {databaseOwner}[{objectQualifier}schedulehistory] WHERE schedulehistoryid IN (
+	SELECT TOP 50000 ScheduleHistoryID FROM {databaseOwner}[{objectQualifier}ScheduleHistory] sh 
+		INNER JOIN {databaseOwner}[{objectQualifier}Schedule] s ON s.ScheduleID = sh.ScheduleID AND s.Enabled = 1
+	WHERE (
+  SELECT COUNT(*) 
+  FROM {databaseOwner}[{objectQualifier}ScheduleHistory] sh
+  WHERE sh.ScheduleID = {databaseOwner}[{objectQualifier}ScheduleHistory].ScheduleID
+  AND sh.StartDate >= {databaseOwner}[{objectQualifier}ScheduleHistory].StartDate
+) > s.RetainHistoryNum
+		AND s.RetainHistoryNum <> -1
+		AND s.ScheduleID = sh.ScheduleID
+	ORDER BY ScheduleHistoryID
+)
+END
+GO
+
+/* DNN-6982 */
+/************/
+IF  EXISTS (SELECT * FROM sys.columns WHERE object_ID  = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentWorkflows]') AND Name Like 'PortalID ')
+	EXEC sp_rename '{databaseOwner}[{objectQualifier}ContentWorkflows].[PortalID ]', 'PortalID', 'COLUMN';
+GO
+
+/* DNN-6980 */
+/************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_DeleteUserNotifications
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]
+	@UserId INT,
+	@PortalId INT
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages
+	WHERE PortalId = @PortalId
+	  AND NotificationTypeID IS NOT NULL
+	  AND MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE UserID = @UserId)
+
+	SELECT @@ROWCOUNT
+END
+GO
+
+/***** DNN-5788: rename the column name. *****/
+IF EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}ContentWorkflows' AND  COLUMN_NAME = 'PortalID ')
+   BEGIN
+        EXECUTE sp_rename N'{databaseOwner}{objectQualifier}ContentWorkflows.[PortalID ]', N'PortalID', 'COLUMN'
+    END 
+GO
+
+/* DNN-7097 */
+/************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSchedule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSchedule]
+	@Server varchar(150)
+AS
+BEGIN
+SELECT
+	S.*,
+	(SELECT min(S1.NextStart) FROM {databaseOwner}{objectQualifier}ScheduleHistory S1 WHERE S1.ScheduleID = S.ScheduleID AND S1.NextStart >= GETDATE()) as NextStart
+	FROM {databaseOwner}{objectQualifier}Schedule S
+WHERE
+	(@Server IS NULL OR S.Servers LIKE '%,' + @Server + ',%' OR S.Servers IS NULL)
+	ORDER BY FriendlyName ASC
+END
+
+GO
+
+/* DNN-5631: prevent duplicate keys */
+/* ******************************** */
+
+-- ensure there are no duplicate rows:
+DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+ WHERE PortalSettingID NOT IN (SELECT Max(PortalSettingID) M 
+                                FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+								GROUP BY PortalID, CultureCode, SettingName)
+
+-- drop old Index
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') 
+                                       AND name = N'IX_{objectQualifier}PortalSettings')
+	DROP INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
+GO
+
+
+-- recreate Index
+CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
+    (  PortalID,
+       CultureCode,
+       SettingName
+    )
+GO
+
+-- prevent duplicates when adding/updating portal setting:
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+	@PortalID       Int,			-- Key, Not Null (unless for delete)
+	@SettingName    nVarChar(  50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(2000), -- Not Null
+	@UserID			Int,			-- Not Null (editing user)
+	@CultureCode    nVarChar(  10)  -- Key, Null|'' for neutral language 
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+		 WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+		   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@PortalID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		 USING (SELECT @PortalID PID, @CultureCode CC, @SettingName SN, @SettingValue SV) Q
+		    ON (S.PortalID = Q.PID AND IsNull(S.CultureCode, N'') = IsNull(Q.CC, N'') AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( PortalID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode)
+			VALUES (@PortalID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate(), NULLIF(@CultureCode, N''));
+		-- Saving a neutral setting overwrites all localized settings with same name (for current portal):
+		IF IsNull(@CultureCode, N'') = N''
+			DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+			 WHERE PortalID = @PortalID AND SettingName = @SettingName AND CultureCode IS Not Null;		       
+	END
+END
+GO
+
+/* Improve GetPortalSettings to return proper values: */
+-- SQL Server 2008:
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- Null|'' for neutral language
+AS
+BEGIN
+	DECLARE @DefaultLanguage nVarChar(20) = '';
+
+	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+					JOIN {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+					WHERE P.PortalID = @PortalID)
+		SELECT @DefaultLanguage = DefaultLanguage 
+		FROM {databaseOwner}[{objectQualifier}Portals] 
+		WHERE PortalID = @PortalID
+
+	SELECT
+		PS.SettingName,
+		CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
+			THEN {databaseOwner}[{objectQualifier}FilePath](PS.SettingValue)
+			ELSE PS.SettingValue END   AS SettingValue,
+		PS.CreatedByUserID,
+		PS.CreatedOnDate,
+		PS.LastModifiedByUserID,
+		PS.LastModifiedOnDate,
+		PS.CultureCode
+		FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+		WHERE PortalSettingID = (SELECT Top(1) PortalSettingID FROM {databaseOwner}[{objectQualifier}PortalSettings] S 
+		                         WHERE PS.PortalID = S.PortalID AND PS.SettingName = S.SettingName 
+								 ORDER BY CASE CultureCode WHEN @CultureCode THEN 2 WHEN Null THEN 1 ELSE 0 END DESC)
+		  AND PortalID = @PortalID
+	 ORDER BY SettingName
+END
+
+GO
+
+/* DNN-6015: Add missing view */
+/* ************************** */
+
+IF EXISTS (select * from Sys.Views where object_id = object_id(N'{databaseOwner}[{objectQualifier}vw_MasterPortals]'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_MasterPortals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_MasterPortals]
+AS
+	SELECT  P.PortalID,
+			P.PortalGroupID,
+			IsNull(G.MasterPortalID, P.PortalID) AS MasterPortalID
+	FROM      {databaseOwner}[{objectQualifier}Portals] AS P
+	LEFT JOIN {databaseOwner}[{objectQualifier}PortalGroups] AS G ON P.PortalGroupID = G.PortalGroupID
+GO
+
+/*** Fix bug DNN-4496: SProc GetUsersAdvancedSearch missing the {databaseOwner} placeholder several times calling a database. ***/
+/*** Fix bug DNN-7178: {databaseOwner} incorrectly applied in DNN-4496 which broke the Friends functionality. ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch] 
+(
+    @PortalID int,                          -- portal                
+    @UserId int,                            -- for determining correct visibility permissions
+    @FilterUserId int,                      -- for filtering relationships on    
+    @FilterRoleId int,                      -- for filtering by roles
+    @RelationshipTypeId int,                -- for filtering by relationships
+    @IsAdmin bit,                           -- determines visibility
+    @PageSize int,                          -- page size
+    @PageIndex int,                         -- 0 based page index
+    @SortBy nvarchar(100),                  -- sort field
+    @SortAscending bit,                     -- sort flag indicating whether sort is asc or desc
+    @PropertyNames nvarchar(max),           -- list of property names to filter
+    @PropertyValues nvarchar(max)           -- list of property values to filter
+)
+AS
+    -- Setup Top XX
+    DECLARE @topSql nvarchar(20) SET @topSql = ''
+    IF @PageSize > -1 BEGIN SET @topSql = ' TOP ' + CONVERT(nvarchar(20), @PageSize) END
+                
+    -- Setup Specific Page
+    DECLARE @minRowNumberSql nvarchar(20) SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+    -- Setup Pivot Field List
+    DECLARE @pivotSql nvarchar(max) SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+    -- Get User specific columns
+    DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users' AND TABLE_SCHEMA = REPLACE('{databaseOwner}', '.', '')
+
+    -- Lists Filters names and values into tables
+    DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    DECLARE @PropertyValuesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    INSERT INTO @PropertyNamesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)                      
+    INSERT INTO @PropertyValuesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyValues)
+                
+    -- Gets filters that are on the User rather than Profile Properties
+    DECLARE @UserFiltersTable TABLE (RowNumber Int, RowValue NVARCHAR(MAX))
+    INSERT INTO @UserFiltersTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@PropertyNames) WHERE RowValue IN (SELECT * FROM @UserColumns)
+
+
+    DECLARE @sql nvarchar(max) SET @sql = ''
+    DECLARE @filterSql nvarchar(max)SET @filterSql = ''
+
+    -- ///////////////////////////////////////////////////
+    -- FILTERING by PROFILE PROPERTY or USER PROPERTY
+    -- ///////////////////////////////////////////////////
+    --IF @PropertyNames IS NOT NULL AND @PropertyNames <> ''
+    IF ((SELECT COUNT(*) FROM @PropertyNamesTable) > 0) AND ((SELECT COUNT(*) FROM @PropertyValuesTable)> 0) 
+	    BEGIN
+            DECLARE @propertyFilter nvarchar(max)
+            DECLARE @userFilter nvarchar(max)
+            DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
+            DECLARE @profilePropertyCount INT
+            DECLARE @userFilterCount INT
+            DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
+            DECLARE @groupBy NVARCHAR(300)
+
+            -- Filters on Profile Properties    
+            ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyNamesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns)),
+            CTE_PropertyValues(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyValuesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns))
+
+            SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
+                                        + ' (PropertyName=''' + N.RowValue 
+                                        + ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%'')))'
+            FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
+                                
+            -- Filters on User Property                           
+            SELECT @userFilter = COALESCE(@userFilter + ' AND ', ' ')  
+										+ ' ((u.' + N.RowValue + ' LIKE ''' + V.RowValue +'%'') OR (u.' + N.RowValue + ' LIKE ''% ' + V.RowValue +'%'')) '
+            FROM @UserFiltersTable AS N  INNER JOIN @PropertyValuesTable AS V ON N.RowNumber = V.RowNumber
+                                
+            SELECT @userFilterCount = COUNT(*) FROM @UserFiltersTable
+            IF @userFilterCount > 0 BEGIN SET @userFilterJoin = ' INNER JOIN {objectQualifier}vw_Users u ON u.UserId = p.UserId ' END
+
+            -- Determining the Group By Clause -- dependant on types of filters used
+            SELECT @profilePropertyCount = COUNT(*) FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)
+            WHERE RowValue IN (SELECT PropertyName FROM {databaseOwner}{objectQualifier}ProfilePropertyDefinition WHERE PortalID = @PortalId)
+            AND RowValue NOT IN (SELECT ColumnName FROM @UserColumns)
+
+            IF @profilePropertyCount > 0
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) = ' + CONVERT(nvarchar(20),@profilePropertyCount ) END
+            ELSE
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) > 0 '     END
+
+            IF ( @profilePropertyCount > 0 AND @userFilterCount > 0)
+            BEGIN SET @propertyAndUserFilter = ' AND ' END
+
+            -- CREATE FINAL FILTER
+            SET @filterSql = ' DECLARE @MatchingUsers TABLE (UserID INT, Occurrances INT) INSERT INTO @MatchingUsers SELECT p.UserID, COUNT(*) AS occurances ' 
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
+                                        + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
+										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
+                                        + @groupBy
+		END
+
+        -- ///////////////////////////////////////////////////      
+        -- SETUP ROLE AND RELATIONSHIP FILTERS
+        -- ///////////////////////////////////////////////////
+        DECLARE @roleAndRelationshipFilter nvarchar(1000)
+        DECLARE @roleFilter nvarchar(100) SET @roleFilter = ''
+        DECLARE @relationshipFilter nvarchar(1000) SET @relationshipFilter = ''
+        DECLARE @roleAndRelationshipFlag bit SET @roleAndRelationshipFlag  = 0
+        DECLARE @RoleAndRelationshipSelect nvarchar(100) SET @RoleAndRelationshipSelect = ''
+                                
+        -- Filter by Role
+        IF @FilterRoleId <> -1 
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @roleFilter = ' JOIN {databaseOwner}{objectQualifier}UserRoles UR ON U.UserID = UR.UserID AND UR.RoleID = ' + CONVERT(nvarchar(20), @FilterRoleId)
+            END
+
+        -- Filter by Relationship
+        IF @RelationshipTypeId <> -1  
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @relationshipFilter = ' JOIN {databaseOwner}{objectQualifier}Relationships REL ON REL.PortalID = ' + CONVERT(nvarchar(20), @PortalID)
+                                            + ' AND RelationshipTypeID = ' + CONVERT(nvarchar(20), @RelationshipTypeId) 
+                                            + ' JOIN {databaseOwner}{objectQualifier}UserRelationships UREL ON REL.RelationshipID = UREL.RelationshipID AND
+                                            ((UREL.UserID = ' + CONVERT(nvarchar(20), @FilterUserId) + ' AND UREL.RelatedUserID = U.UserID) OR
+                                            (UREL.UserID = U.UserID AND UREL.RelatedUserID = ' + CONVERT(nvarchar(20), @FilterUserId) + '))'
+                                            + ' WHERE UREL.Status = 2'
+            END 
+
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
+
+        SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {databaseOwner}{objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
+
+        -- ///////////////////////////////////////////////////  
+        -- SET UP SORT
+        -- ///////////////////////////////////////////////////
+        DECLARE @sortSql nvarchar(1000) SET @sortSql = ''
+        DECLARE @propertySort nvarchar(1000) SET @propertySort = ''
+        DECLARE @filterJoin nvarchar(100) SET @filterJoin = ''
+        DECLARE @filterSortSql nvarchar(1000) SET @filterSortSql = ''
+        DECLARE @sortByUserProperty BIT         
+        SELECT @sortByUserProperty = COUNT(*) FROM @UserColumns WHERE ColumnName = @SortBy
+
+        IF ( @profilePropertyCount > 0 OR @userFilterCount > 0)
+	        BEGIN SET @filterJoin = ' INNER JOIN @MatchingUsers m ON m.UserID = s.UserID ' END
+
+        -- Determine the Type of Sort
+        IF (@SortBy IS NOT NULL AND @SortBy <> '') AND @sortByUserProperty <> 1
+	        BEGIN -- Sort By Profile Property
+                SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')
+                SET @propertySort = {databaseOwner}{objectQualifier}GetSortSql('PropertyValue',@SortAscending,'UserID')
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @propertySort + ' ) AS RowNumber, *  ' 
+                                                + ' FROM {databaseOwner}{objectQualifier}vw_Profile WHERE PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' AND PropertyName = ''' + @SortBy + ''' )'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+        ELSE
+		    BEGIN   
+                -- Sort By User Property
+                IF @sortByUserProperty = 1 BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')END
+                                
+                -- Default: Sort By UserID
+                ELSE BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql('UserID',@SortAscending,'UserID') END                        
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @sortSql + ' ) AS RowNumber, * '
+                                                + ' FROM {databaseOwner}{objectQualifier}vw_Users WHERE (PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR PortalID Is NULL) AND IsDeleted = 0)'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+
+		-- Check if any Profile Property Definitions exist for this portal
+		IF @pivotSql is not null
+			BEGIN
+				-- SELECT with PIVOT
+				SET @pivotSql = 'SELECT * FROM (SELECT * FROM PivotedUsers PIVOT (MAX(PropertyValue) for PropertyName in (' + @pivotSql + ') ) as pivotTable) T '
+			END
+		ELSE
+			BEGIN
+				-- SELECT with DISTINCT
+				SET @pivotSql = 'SELECT distinct UserID, PortalID, Username, Email, DisplayName, IsSuperUser, IsDeleted, AffiliateID, UpdatePassword, Authorised FROM PivotedUsers '
+			END
+
+        -- ///////////////////////////////////////////////////
+        -- CREATE FINAL QUERY
+        -- ///////////////////////////////////////////////////
+        SET @sql = @filterSql
+                + ' DECLARE @TempUsers TABLE (SortOrder INT, UserID INT) '
+                + @filterSortSql
+                + @roleAndRelationshipFilter
+                + ' INSERT INTO @TempUsers SELECT ' + @topSql + ' * FROM (SELECT '
+                + ' ROW_NUMBER() OVER ( ORDER BY [RowNumber] ) AS RowNumber, s.UserId FROM MatchingSorted s ' 
+                + ' WHERE 1=1 ' + @roleAndRelationshipSelect
+				+ ') t WHERE RowNumber >= '+ @minRowNumberSql
+                + ' ;WITH PivotedUsers AS ( SELECT U.UserID, U.PortalID, U.Username, U.Email, U.DisplayName, U.IsSuperUser, U.IsDeleted, U.CreatedOnDate,        
+                                                U.AffiliateID, U.UpdatePassword, U.Authorised, Prop.PropertyName,
+                                                CASE
+                                                    WHEN (P.Visibility = 0) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 0 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) THEN P.PropertyValue
+                                                    WHEN U.UserID = ' + CONVERT(nvarchar(20), @UserId) + ' OR (P.Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    ELSE NULL
+                                                END AS PropertyValue
+                                            FROM   {databaseOwner}{objectQualifier}vw_Users AS U
+                                                INNER JOIN {databaseOwner}{objectQualifier}UserProfile AS P ON U.UserID = P.UserID
+                                                LEFT OUTER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition AS Prop ON 
+                                                (Prop.PropertyDefinitionID = P.PropertyDefinitionID and Prop.Deleted = 0 and Prop.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ')
+                                            WHERE U.UserId IN (SELECT UserId FROM @TempUsers) AND (U.PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalId IS NULL)
+                                            )' +
+                @pivotSql + @sortSql            
+
+        EXEC(@sql)
+GO
+
+/* Get Workflow Usage */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+AS
+    SELECT COALESCE(cm.MetaDataValue, ci.Content) as 'ContentName', ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+		LEFT JOIN {databaseOwner}[{objectQualifier}ContentItems_MetaData] cm
+			ON ci.ContentItemID = cm.ContentItemID 
+				AND cm.MetaDataID = (SELECT MetaDataID FROM {databaseOwner}[{objectQualifier}MetaData] WHERE MetaDataName = 'Title')
+	WHERE ct.ContentType != 'Tab' -- Tabs will be managed specifically
+		AND ct.ContentType != 'File' -- Exclude Files
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) not like '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) not like '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NOT NULL
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, 
+		(SELECT CAST(ps.SettingValue AS INT) value 
+			FROM {databaseOwner}[{objectQualifier}PortalSettings] ps
+			WHERE ps.SettingName = 'DefaultTabWorkflowKey' 
+			AND ps.PortalID = t.PortalID) as WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) NOT LIKE '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) NOT LIKE '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', f.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NOT NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', 
+		(SELECT wf.WorkflowID 
+			FROM {databaseOwner}[{objectQualifier}ContentWorkflows] wf
+			WHERE wf.WorkflowKey = 'DirectPublish' 
+			AND wf.PortalID = f.PortalID) AS WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NULL
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

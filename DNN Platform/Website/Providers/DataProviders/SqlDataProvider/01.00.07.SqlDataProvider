@@ -1,0 +1,565 @@
+/************************************************************/
+/*****              Upgrade Script 1.0.7                *****/
+/************************************************************/
+
+drop procedure GetUsers
+GO
+
+create procedure GetUsers
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+if @PortalID is null
+begin
+  select Users.*,
+         'FullName' = Users.FirstName + ' ' + Users.LastName
+  from   Users
+  order by UserID
+end
+else
+begin
+  if @Filter = '-'
+  begin
+    select Users.UserID,
+           Users.Username,
+           Users.Email,
+           'FullName' = Users.FirstName + ' ' + Users.LastName,
+           Users.FirstName,
+           Users.LastName,
+           Users.Unit,
+           Users.Street,
+           Users.City,
+           Users.Region,
+           Users.PostalCode,
+           Users.Country,
+           Users.Telephone,
+           'Authorized' = 'N',
+           UserPortals.CreatedDate,
+           UserPortals.LastLoginDate
+    from   Users
+    inner join UserPortals on Users.UserId = UserPortals.UserId
+    where  UserPortals.PortalId = @PortalId
+    and    ( UserPortals.Authorized = 0 or UserPortals.LastLoginDate is null )
+    order  by 'FullName'
+  end
+  else
+  begin
+    select Users.UserID,
+           users.Username,
+           Users.Email,
+           'FullName' = Users.FirstName + ' ' + Users.LastName,
+           Users.FirstName,
+           Users.LastName,
+           Users.Unit,
+           Users.Street,
+           Users.City,
+           Users.Region,
+           Users.PostalCode,
+           Users.Country,
+           Users.Telephone,
+           'Authorized' = case when UserPortals.Authorized = 1 then 'Y' else 'N' end,
+           UserPortals.CreatedDate,
+           UserPortals.LastLoginDate
+    from   Users
+    inner join UserPortals on Users.UserId = UserPortals.UserId
+    where  UserPortals.PortalId = @PortalId
+    and    Users.FirstName like @Filter + '%'
+    order  by 'FullName'
+  end
+end
+
+GO
+
+ALTER TABLE Users
+	DROP CONSTRAINT IX_Users
+GO
+
+ALTER TABLE Users ADD CONSTRAINT
+	IX_Users UNIQUE NONCLUSTERED 
+	(
+	Username
+	) ON [PRIMARY]
+
+GO
+
+drop procedure AddUser
+GO
+
+create procedure AddUser
+
+@PortalId       int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@Unit		nvarchar(50),
+@Street		nvarchar(50),
+@City		nvarchar(50),
+@Region		nvarchar(50),
+@PostalCode	nvarchar(50),
+@Country	nvarchar(50),
+@Telephone      nvarchar(50),
+@Email		nvarchar(100),
+@Username	nvarchar(100),
+@Password	nvarchar(50),
+@Authorized     bit,
+@UserID	int	OUTPUT
+
+as
+
+select @UserID = null
+
+select	@UserID = UserID
+from 	Users
+where	Username = @Username 
+
+if @UserID is null
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Unit, 
+    Street, 
+    City,
+    Region, 
+    PostalCode,
+    Country,
+    Telephone,
+    Email,
+    Username,
+    Password
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Unit,
+    @Street,
+    @City,
+    @Region,
+    @PostalCode,
+    @Country,
+    @Telephone,
+    @Email,
+    @Username,
+    @Password
+  )
+
+  select @UserID = @@IDENTITY
+end
+
+if not exists ( select 1 from UserPortals where UserId = @UserId and PortalId = @PortalId )
+begin
+  insert into UserPortals (
+    UserId,
+    PortalId,
+    Authorized,
+    CreatedDate
+  )
+  values (
+    @UserId,
+    @PortalId,
+    @Authorized,
+    getdate()
+  )
+end
+
+GO
+
+ALTER TABLE ModuleDefinitions ADD
+	AdminTabIcon nvarchar(100) NULL,
+	EditModuleIcon nvarchar(100) NULL
+GO
+
+drop procedure GetPortalSettings
+GO
+
+create procedure GetPortalSettings
+
+@PortalAlias nvarchar(200),
+@TabID       int
+
+as
+
+declare @PortalID int
+declare @VerifyTabID int
+
+/* convert PortalAlias to PortalID */
+
+select @PortalID = null
+
+select @PortalID = PortalID
+from   Portals
+where  PortalAlias = @PortalAlias
+
+if @PortalID is null
+begin
+  select @PortalID = min(PortalID)
+  from   Portals
+  where  PortalAlias like '%' + @PortalAlias + '%' /* multiple alias may be specified seperated by commas */
+end
+
+select @VerifyTabID = null
+
+/* verify the TabID belongs to the portal */
+if @TabID <> 0
+begin
+  select @VerifyTabID = Tabs.TabID
+  from   Tabs
+  left outer join Portals on Tabs.PortalID = Portals.PortalID
+  where  TabId = @TabId
+  and    ( Portals.PortalID = @PortalID or Tabs.PortalId is null )
+end
+else
+begin
+  select @VerifyTabID = null
+end
+
+/* get the TabID if none provided */
+if @VerifyTabID is null
+begin
+  select @TabID = Tabs.TabID
+  from Tabs
+  inner join Portals on Tabs.PortalID = Portals.PortalID
+  where Portals.PortalID = @PortalID
+  and Tabs.TabOrder = 1  
+end
+
+/* First, get Out Params */
+select Portals.PortalAlias,
+       Portals.PortalID,
+       Portals.GUID,
+       Portals.PortalName,
+       Portals.LogoFile,
+       Portals.FooterText,
+       Portals.ExpiryDate,
+       Portals.UserRegistration,
+       Portals.BannerAdvertising,
+       Portals.Currency,
+       Portals.AdministratorId,
+       Users.Email,
+       Portals.HostFee,
+       Portals.HostSpace,
+       Portals.AdministratorRoleId,
+       Portals.RegisteredRoleId,
+       Portals.Description,
+       Portals.KeyWords,
+       Portals.BackgroundFile,
+       Portals.SiteLogHistory,
+       'AdminTabId' = ( select TabID from Tabs where PortalId = @PortalId and TabName = 'Admin' ),
+       'SuperUserId' = ( select UserID from Users where IsSuperUser = 1 ),
+       'SuperTabId' = ( select TabID from Tabs where PortalId is null and ParentId is null ),
+       Tabs.TabID,
+       Tabs.TabOrder,
+       Tabs.TabName,
+       Tabs.MobileTabName,
+       Tabs.AuthorizedRoles,
+       Tabs.AdministratorRoles,
+       Tabs.ShowMobile,
+       Tabs.LeftPaneWidth,
+       Tabs.RightPaneWidth,
+       Tabs.IsVisible,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+inner join Portals on Portals.PortalID = @PortalID
+inner join Users on Portals.AdministratorId = Users.UserId
+where  TabID = @TabID
+
+/* Get Tabs list */
+select TabName,
+       AuthorizedRoles,
+       AdministratorRoles,
+       TabID,
+       TabOrder,
+       IsVisible,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+where  PortalID = @PortalId
+order  by TabOrder, TabName
+
+/* Get Mobile Tabs list */
+select MobileTabName,
+       AuthorizedRoles,
+       AdministratorRoles,
+       TabID,
+       IsVisible,
+       'ParentId' = isnull(Tabs.ParentID,-1),
+       Tabs.Level,
+       Tabs.IconFile,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName ),
+       'HasChildren' = case when exists (select 1 from Tabs T2 where T2.ParentId = Tabs.TabId) then 'true' else 'false' end
+from   Tabs
+where  PortalID = @PortalID
+and    ShowMobile = 1
+order  by TabOrder, TabName
+
+/* Then, get the DataTable of module info */
+select Modules.*, ModuleDefinitions.*
+from   Modules
+inner join ModuleDefinitions on Modules.ModuleDefID = ModuleDefinitions.ModuleDefID
+inner join Tabs on Modules.TabID = Tabs.TabID
+where  Modules.TabID = @TabID
+or     (Modules.AllTabs = 1 and Tabs.PortalID = @PortalID)
+order by ModuleOrder
+
+GO
+
+drop procedure GetSingleModuleDefinitionByName
+GO
+
+create procedure GetSingleModuleDefinitionByName
+
+@FriendlyName nvarchar(128)
+
+as
+
+select *
+from   ModuleDefinitions
+where  FriendlyName = @FriendlyName
+
+GO
+
+drop procedure GetTabsByParentId
+GO
+
+create procedure GetTabsByParentId
+
+@ParentId int
+
+as
+
+select TabID,
+       TabOrder,
+       PortalID,
+       TabName,
+       MobileTabName,
+       AuthorizedRoles,
+       ShowMobile,
+       LeftPaneWidth,
+       RightPaneWidth,
+       IsVisible,
+       Level,
+       IconFile,
+       AdministratorRoles,
+       'AdminTabIcon' = ( select AdminTabIcon from ModuleDefinitions where ModuleDefinitions.FriendlyName = Tabs.TabName )
+from   Tabs
+where  ParentId = @ParentId
+order by TabOrder
+
+GO
+
+update ModuleDefinitions set AdminTabIcon = 'icon_portals_16px.gif', EditModuleIcon = 'icon_portals_40px.gif' where FriendlyName = 'Portals'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_moduledefinitions_16px.gif', EditModuleIcon = 'icon_moduledefinitions_32px.gif' where FriendlyName = 'Module Definitions'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_sql_16px.gif', EditModuleIcon = 'icon_sql_32px.gif' where FriendlyName = 'SQL'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_hostsettings_16px.gif', EditModuleIcon = 'icon_hostsettings_36px.gif' where FriendlyName = 'Host Settings'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_sitesettings_16px.gif', EditModuleIcon = 'icon_sitesettings_36px.gif' where FriendlyName = 'Site Settings'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_tabs_16px.gif', EditModuleIcon = 'icon_tabs_34px.gif' where FriendlyName = 'Tabs'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_securityroles_16px.gif', EditModuleIcon = 'icon_securityroles_32px.gif' where FriendlyName = 'Security Roles'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_users_16px.gif', EditModuleIcon = 'icon_users_32px.gif' where FriendlyName = 'Manage Users'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_filemanager_16px.gif', EditModuleIcon = 'icon_filemanager_32px.gif' where FriendlyName = 'File Manager'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_vendors_16px.gif', EditModuleIcon = 'icon_vendors_32px.gif' where FriendlyName = 'Vendors'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_sitelog_16px.gif', EditModuleIcon = 'icon_sitelog_32px.gif' where FriendlyName = 'Site Log'
+GO
+update ModuleDefinitions set AdminTabIcon = 'icon_bulkmail_16px.gif', EditModuleIcon = 'icon_bulkmail_32px.gif' where FriendlyName = 'Bulk Email'
+GO
+update ModuleDefinitions set EditModuleIcon = 'icon_moduledefinitions_32px.gif' where FriendlyName = 'Module'
+GO
+update ModuleDefinitions set EditModuleIcon = 'icon_users_32px.gif' where FriendlyName = 'Register'
+GO
+
+drop procedure GetSingleRegion
+GO
+
+create procedure GetSingleRegion
+
+@Code        char(2) = null,
+@Description varchar(100) = null
+
+as
+
+if @Code is null
+begin
+  select 'Region' = Code
+  from   CodeRegion
+  where  Description = @Description
+end
+else
+begin
+  select 'Region' = Description
+  from   CodeRegion
+  where  Code = @Code
+end
+
+GO
+
+drop procedure GetSingleCountry
+GO
+
+create procedure GetSingleCountry
+
+@Code        char(2) = null,
+@Description varchar(100) = null
+
+as
+
+if @Code is null
+begin
+  select 'Country' = Code
+  from   CodeCountry
+  where  Description = @Description
+end
+else
+begin
+  select 'Country' = Description
+  from   CodeCountry
+  where  Code = @Code
+end
+
+GO
+
+ALTER TABLE Announcements ADD
+	ViewOrder int NULL
+GO
+
+drop procedure AddAnnouncement
+GO
+
+create procedure AddAnnouncement
+
+@ModuleID       int,
+@UserName       nvarchar(100),
+@Title          nvarchar(150),
+@URL            nvarchar(150),
+@Syndicate      bit,
+@ExpireDate     DateTime,
+@Description    nvarchar(2000),
+@ViewOrder	int
+
+as
+
+insert into Announcements(
+  ModuleID,
+  CreatedByUser,
+  CreatedDate,
+  Title,
+  URL,
+  Syndicate,
+  ExpireDate,
+  Description,
+  ViewOrder
+)
+
+values (
+  @ModuleID,
+  @UserName,
+  getdate(),
+  @Title,
+  @URL,
+  @Syndicate,
+  @ExpireDate,
+  @Description,
+  @ViewOrder
+)
+
+GO
+
+drop procedure GetAnnouncements
+GO
+
+create procedure GetAnnouncements
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedByUser,
+       CreatedDate,
+       Title,
+       URL,
+       Syndicate,
+       ExpireDate,
+       Description,
+       ViewOrder
+from   Announcements
+where  ModuleID = @ModuleID
+and    (ExpireDate > GetDate() or ExpireDate is null)
+order by ViewOrder
+GO
+
+drop procedure GetSingleAnnouncement
+GO
+
+create procedure GetSingleAnnouncement
+
+@ItemID   int,
+@ModuleId int
+
+as
+
+select Title,
+       URL,
+       Syndicate,
+       ExpireDate,
+       Description,
+       Clicks,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Announcements.CreatedDate,
+       ViewOrder
+from   Announcements
+left outer join Users on Announcements.CreatedByUser = Users.UserID
+where  ItemID = @ItemID
+and    ModuleId = @ModuleId
+
+GO
+
+drop procedure UpdateAnnouncement
+GO
+
+create procedure UpdateAnnouncement
+
+@ItemID         int,
+@UserName       nvarchar(100),
+@Title          nvarchar(150),
+@URL            nvarchar(150),
+@Syndicate      bit,
+@ExpireDate     datetime,
+@Description    nvarchar(2000),
+@ViewOrder	int
+
+as
+
+update Announcements
+set    CreatedByUser = @UserName,
+       CreatedDate   = GetDate(),
+       Title         = @Title,
+       URL           = @URL,
+       Syndicate     = @Syndicate,
+       ExpireDate    = @ExpireDate,
+       Description   = @Description,
+       ViewOrder     = @ViewOrder
+where  ItemID = @ItemID
+
+GO
+
+/************************************************************/
+/*****              Upgrade Script 1.0.7                *****/
+/************************************************************/

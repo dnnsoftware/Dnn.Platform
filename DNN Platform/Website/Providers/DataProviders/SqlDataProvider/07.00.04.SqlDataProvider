@@ -1,0 +1,649 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** Fix bug 24927: Return the language package ID in sp UpdateLanguagePack. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateLanguagePack]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateLanguagePack
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateLanguagePack]
+	@LanguagePackID			int,
+	@PackageID			    int,
+	@LanguageID			    int,
+	@DependentPackageID		int,
+	@LastModifiedByUserID	int
+
+AS
+	UPDATE {databaseOwner}{objectQualifier}LanguagePacks
+		SET
+			PackageID = @PackageID,
+			LanguageID = @LanguageID,
+			DependentPackageID = @DependentPackageID,
+			[LastModifiedByUserID] = @LastModifiedByUserID,	
+			[LastModifiedOnDate] = GETDATE()
+	WHERE LanguagePackID = @LanguagePackID
+
+	SELECT @LanguagePackID
+GO
+
+/***** Fix bug 24221: add unique index on MetaData table. *****/
+DELETE FROM {databaseOwner}[{objectQualifier}MetaData] WHERE MetaDataID NOT IN (SELECT MIN(MetaDataID) FROM {databaseOwner}[{objectQualifier}MetaData] GROUP BY MetaDataName)
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}MetaData_MetaDataName')
+	DROP INDEX [IX_{objectQualifier}MetaData_MetaDataName] ON {databaseOwner}[{objectQualifier}MetaData]
+GO
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}MetaData_MetaDataName ON {databaseOwner}[{objectQualifier}MetaData](MetaDataName) 
+GO
+
+
+/*Fix bug 24977  */
+
+UPDATE {databaseOwner}[{objectQualifier}ModuleControls] 
+SET [ControlType] = 2 WHERE [ControlSrc] = N'DesktopModules/Admin/Extensions/UsageDetails.ascx'
+
+
+/***** DNN-25176 - Core allows duplicate ContentType. *****/
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}ContentTypes_ContentType')
+	CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}[{objectQualifier}ContentTypes](ContentType) 
+GO
+
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}ContentTypes WHERE [ContentType] = 'DNNCorp_JournalProfile') 
+		 INSERT INTO  {databaseOwner}{objectQualifier}ContentTypes (ContentType) VALUES ('DNNCorp_JournalProfile')
+GO
+
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}ContentTypes WHERE [ContentType] = 'DNNCorp_JournalGroup') 
+		 INSERT INTO  {databaseOwner}{objectQualifier}ContentTypes (ContentType) VALUES ('DNNCorp_JournalGroup')
+GO
+
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version nvarchar(8)
+SET @version = '07.00.04'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SiteWizard'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Lists'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='FileManager'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SiteLog'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Newsletters'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SQL'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='RecycleBin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='LogViewer'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Tabs'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Vendors'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Banners'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ProfessionalPreview'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchInput'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='FeedExplorer'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Solutions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='WhatsNew'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Dashboard'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Languages'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Skins'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SkinDesigner'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Console'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='GoogleAnalytics'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Marketplace'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Sitemap'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ContentList'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ConfigurationManager'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Banners'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.FeedExplorer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.FileManager'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Lists'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LogViewer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Newsletters'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.RecycleBin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchInput'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SiteLog'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SiteWizard'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Tabs'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SQL'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Vendors'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SOLPARTACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SOLPARTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Solutions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.WhatsNew'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Languages'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Skins'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Skin Designer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Console'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Google Analytics'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Marketplace'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Sitemap'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ContentList'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Configuration Manager'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ProfessionalPreview'
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Security Roles/About the Security Roles Module.html' WHERE ControlSrc='DesktopModules/Admin/Security/Roles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Security Roles/Module Editors/Editing a Security Role.html' WHERE ControlSrc='DesktopModules/Admin/Security/EditRoles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Adding and Managing Pages/About Pages.html' WHERE ControlSrc='DesktopModules/Admin/Tabs/Tabs.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Adding and Managing Pages/About Pages.html' WHERE ControlSrc='DesktopModules/Admin/Tabs/ManageTabs.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Site Settings/About the Site Settings Page.html' WHERE ControlSrc='DesktopModules/Admin/Portals/SiteSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/User Accounts/About the User Accounts Module.html' WHERE ControlSrc='DesktopModules/Admin/Security/Users.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/User Accounts/Module Editors/Adding a User Account.html' WHERE ControlSrc='DesktopModules/Admin/Security/ManageUsers.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/About the Admin Vendors Module.html' WHERE ControlSrc='DesktopModules/Admin/Vendors/Vendors.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/Module Editors/Vendor Accounts/Adding a New Vendor.html' WHERE ControlSrc='DesktopModules/Admin/Vendors/EditVendors.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Installed Modules/Banners/About the Banners Module.html' WHERE ControlSrc='DesktopModules/Admin/Banners/DisplayBanners.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Installed Modules/Banners/Module Editors/Editing Banner Options.html' WHERE ControlSrc='DesktopModules/Admin/Banners/BannerOptions.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/File Manager/About the Admin File Manager Module.html' WHERE ControlSrc='DesktopModules/Admin/FileManager/FileManager.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/File Manager/Folder Editors/Uploading Files.html' WHERE ControlSrc='DesktopModules/Admin/FileManager/WebUpload.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Site Log/About the Site Log Module.html' WHERE ControlSrc='DesktopModules/Admin/SiteLog/SiteLog.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Newsletters/About the Newsletters Module.html' WHERE ControlSrc='DesktopModules/Admin/Newsletters/Newsletter.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/Module Editors/Vendor Banners/Adding an Image Banner to a Vendor.html' WHERE ControlSrc='DesktopModules/Admin/Vendors/EditBanner.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Security Roles/About the Security Roles Module.html' WHERE ControlSrc='DesktopModules/Admin/Security/SecurityRoles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Site Management/About the Site Management Page.html' WHERE ControlSrc='DesktopModules/Admin/Portals/Portals.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/SQL/About the SQL Page.html' WHERE ControlSrc='DesktopModules/Admin/SQL/SQL.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Host Settings/About the Host Settings Page.html' WHERE ControlSrc='DesktopModules/Admin/HostSettings/HostSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Recycle Bin/About the Recycle Bin Module.html' WHERE ControlSrc='DesktopModules/Admin/RecycleBin/RecycleBin.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/Module Editors/Affiliate Accounts/Adding an Affiliate Referral Account .html' WHERE ControlSrc='DesktopModules/Admin/Vendors/EditAffiliate.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Event Viewer/About the Log Viewer Module.html' WHERE ControlSrc='DesktopModules/Admin/LogViewer/LogViewer.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Event Viewer/SuperUsers/Editing Log Settings.html' WHERE ControlSrc='DesktopModules/Admin/LogViewer/EditLogTypes.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Scheduler/About the Schedule Module.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/ViewSchedule.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Scheduler/Editing a Task.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/EditSchedule.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Scheduler/Viewing Schedule History For A Task.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/ViewScheduleHistory.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Scheduler/Viewing Schedule Status.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/ViewScheduleStatus.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Search Admin/About the Search Admin Module.html' WHERE ControlSrc='DesktopModules/Admin/SearchAdmin/SearchAdmin.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Search Admin/About the Search Admin Module.html' WHERE ControlSrc='DesktopModules/Admin/SearchResults/SearchResults.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Site Wizard/About the Site Wizard Module.html' WHERE ControlSrc='DesktopModules/Admin/SiteWizard/SiteWizard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Lists/About the Admin Lists Page.html' WHERE ControlSrc='DesktopModules/Admin/Lists/ListEditor.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Security Roles/Module Editors/Adding a Role Group.html' WHERE ControlSrc='DesktopModules/Admin/Security/EditGroups.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Managing Your User Account/Managing Your Profile/Managing your User Profile.html' WHERE ControlSrc='Admin/Users/ViewProfile.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Extensions/About the Admin Extensions Module.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/Extensions.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/WhatsNew/About the Whats New Module.html' WHERE ControlSrc='DesktopModules/Admin/WhatsNew/WhatsNew.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Dashboard/About the Dashboard Module.html' WHERE ControlSrc='DesktopModules/Admin/Dashboard/Dashboard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Languages/About the Languages Management Module.html' WHERE ControlSrc='DesktopModules/Admin/Languages/languageEnabler.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Installed Modules/Console/About the Console Module.htm' WHERE ControlSrc='DesktopModules/Admin/Console/ViewConsole.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Search Engine Site Map/About the Search Engine SiteMap Module.html' WHERE ControlSrc='DesktopModules/Admin/Sitemap/SitemapSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Installed Modules/Member Directory/About the Member Directory Module.html' WHERE ControlSrc='DesktopModules/MemberDirectory/View.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Installed Modules/Social Groups/About the Social Groups Module.html' WHERE ControlSrc='DesktopModules/SocialGroups/Loader.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Building Your Site/Installed Modules/Social Groups/Adding a Social Group.html' WHERE ControlSrc='DesktopModules/SocialGroups/Create.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Skins/About the Skins Module.html' WHERE ControlSrc='DesktopModules/Admin/Skins/editskins.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Configuration Manager/About the Configuration Manager Page.html' WHERE ControlSrc='DesktopModules/Admin/XmlMerge/XmlMerge.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Device Detection Management/About the Device Detection Management Module.html' WHERE ControlSrc='DesktopModules/Admin/FiftyOneClientCapabilityProvider/Administration.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/HTML Editor Manager/About the HTML Editor Manager.html' WHERE ControlSrc='DesktopModules/Admin/RadEditorProvider/ProviderConfig.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Managing Your User Account/Managing Your Profile/Managing your User Profile.html' WHERE ControlSrc='DesktopModules/Admin/ViewProfile/ViewProfile.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Languages/SuperUsers/Adding a New Language.html' WHERE ControlSrc='DesktopModules/Admin/Languages/EditLanguage.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Extensions/Installing an Extension.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/Install.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Extensions/Creating a New Extension.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/ExtensionWizard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Languages/SuperUsers/Creating a Full Language Pack.html' WHERE ControlSrc='DesktopModules/Admin/Languages/LanguagePackWriter.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Languages/SuperUsers/Verifying Resource Files.html' WHERE ControlSrc='DesktopModules/Admin/Languages/resourceverifier.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Extensions/Creating a New Extension.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/ExtensionWizard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Host Console/Extensions/Creating a New Module.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/Editors/EditModuleDefinition.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/#Using the Control Panel/Admin Console/Advanced Settings/About Advanced Settings.html' WHERE ControlSrc='DesktopModules/Admin/AdvancedSettings/AdvancedSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Documentation/Using the Control Panel/Admin Console/Languages/SuperUsers/Adding a New Language.html' WHERE ControlSrc='DesktopModules/Admin/Languages/EditLanguage.ascx'
+
+
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{objectQualifier}Tabs') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{objectQualifier}Tabs') AND name = 'Level'))
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD CONSTRAINT
+		DF_{objectQualifier}Tabs_Level DEFAULT 0 FOR [Level]
+END
+GO
+
+/***** Fix bug 24171: update sp UpdateOnlineUser to check whether user is exist first. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateOnlineUser]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateOnlineUser
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateOnlineUser
+@UserID 	INT,
+@PortalID 	INT,
+@TabID 		INT,
+@LastActiveDate DATETIME 
+AS
+BEGIN
+	IF EXISTS (SELECT UserID FROM {databaseOwner}{objectQualifier}Users WHERE UserID = @UserID)
+	BEGIN
+		IF EXISTS (SELECT UserID FROM {databaseOwner}{objectQualifier}UsersOnline WHERE UserID = @UserID and PortalID = @PortalID)
+			UPDATE 
+				{databaseOwner}{objectQualifier}UsersOnline
+			SET 
+				TabID = @TabID,
+				LastActiveDate = @LastActiveDate
+			WHERE
+				UserID = @UserID
+				and 
+				PortalID = @PortalID
+		ELSE
+			INSERT INTO
+				{databaseOwner}{objectQualifier}UsersOnline
+				(UserID, PortalID, TabID, CreationDate, LastActiveDate) 
+			VALUES
+				(@UserID, @PortalID, @TabID, GetDate(), @LastActiveDate)
+	END
+
+END
+GO
+
+/*****Journal Updates *****/
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Journal' AND COLUMN_NAME='CommentsDisabled')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Journal
+			ADD CommentsDisabled bit NOT NULL CONSTRAINT DF_{objectQualifier}Journal_CommentsDisabled DEFAULT 0
+	END
+GO
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Journal' AND COLUMN_NAME='CommentsHidden')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Journal
+			ADD CommentsHidden bit NOT NULL CONSTRAINT DF_{objectQualifier}Journal_CommentsHidden DEFAULT 0
+	END
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_GetByKey]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_GetByKey
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForSummary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_ListForSummary
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForProfile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_ListForProfile
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForGroup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_ListForGroup
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Get
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Save]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Save
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Update]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Update
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Comments_ToggleDisable]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Comments_ToggleDisable
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Comments_ToggleHidden]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Comments_ToggleHidden
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetByKey]
+	@PortalId int,
+	@ObjectKey nvarchar(255),
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0
+	AS
+	SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM       	{databaseOwner}[{objectQualifier}Journal] AS j INNER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE		((@IncludeAllItems = 0) AND (j.ObjectKey = @ObjectKey AND j.ObjectKey IS NOT NULL AND @ObjectKey <> '' AND j.IsDeleted = @IsDeleted)) 
+				OR 
+				((@IncludeAllItems = 1) AND (j.ObjectKey = @ObjectKey AND j.ObjectKey IS NOT NULL AND @ObjectKey <> ''))
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0	
+	AS
+	IF @RowIndex = 0
+	BEGIN
+		SET @RowIndex = 1
+	END
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows - 1;
+	DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+	{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE	((@IncludeAllItems = 0) AND (RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted = @IsDeleted)) 
+			OR 
+			((@IncludeAllItems = 1) AND (RowNumber BETWEEN @RowIndex AND @EndRow ))
+	ORDER BY RowNumber ASC;
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForProfile]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@ProfileId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0
+	AS
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows;
+	DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId AND j.ProfileId = @ProfileId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+	{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE	((@IncludeAllItems = 0) AND (RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted = @IsDeleted)) 
+			OR 
+			((@IncludeAllItems = 1) AND (RowNumber BETWEEN @RowIndex AND @EndRow))	
+	ORDER BY RowNumber ASC;
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@GroupId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0
+	AS
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows;
+		DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+					INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(r.RoleId as nvarchar(150)) + '</id><name><![CDATA[' + r.RoleName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+		{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId INNER JOIN
+		{databaseOwner}[{objectQualifier}Roles] as r ON j.GroupId = r.RoleId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE		((@IncludeAllItems = 0) AND (RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted = @IsDeleted)) 
+				OR 
+				((@IncludeAllItems = 1) AND (RowNumber BETWEEN @RowIndex AND @EndRow))
+	ORDER BY RowNumber ASC;
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+	@PortalId int,
+	@CurrentUserId int,
+	@JournalId int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0
+	AS
+	SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM       	{databaseOwner}[{objectQualifier}Journal] AS j INNER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE		((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) 
+				OR 
+				((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Save]
+@PortalId int,
+@JournalId int,
+@JournalTypeId int,
+@UserId int,
+@ProfileId int,
+@GroupId int,
+@Title nvarchar(255),
+@Summary nvarchar(2000),
+@ItemData nvarchar(2000),
+@JournalXML xml,
+@ObjectKey nvarchar(255),
+@AccessKey uniqueidentifier,
+@SecuritySet nvarchar(2000),
+@CommentsDisabled bit,
+@CommentsHidden bit
+AS
+INSERT INTO {databaseOwner}[{objectQualifier}Journal]
+	(JournalTypeId, UserId, DateCreated, DateUpdated, PortalId, ProfileId, GroupId,Title,Summary, ObjectKey, AccessKey, ItemData, CommentsHidden, CommentsDisabled)
+	VALUES
+	(@JournalTypeId, @UserId, GETUTCDATE(), GETUTCDATE(), @PortalId, @ProfileId, @GroupId, @Title, @Summary, @ObjectKey, @AccessKey, @ItemData, @CommentsHidden, @CommentsDisabled)
+SET @JournalId = SCOPE_IDENTITY()
+BEGIN
+INSERT INTO {databaseOwner}[{objectQualifier}Journal_Security]
+	(JournalId, SecurityKey) 
+	SELECT @JournalId, string from {databaseOwner}[{objectQualifier}Journal_SplitText](@SecuritySet,',')
+END
+IF @JournalXML IS NOT NULL
+BEGIN
+INSERT INTO {databaseOwner}[{objectQualifier}Journal_Data]
+	(JournalId, JournalXML)
+	VALUES
+	(@JournalId, @JournalXML)
+END
+SELECT @JournalId
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Update]
+@PortalId int,
+@JournalId int,
+@JournalTypeId int,
+@UserId int,
+@ProfileId int,
+@GroupId int,
+@Title nvarchar(255),
+@Summary nvarchar(2000),
+@ItemData nvarchar(2000),
+@JournalXML xml,
+@ObjectKey nvarchar(255),
+@AccessKey uniqueidentifier,
+@SecuritySet nvarchar(2000),
+@CommentsDisabled bit,
+@CommentsHidden bit
+AS
+UPDATE {databaseOwner}[{objectQualifier}Journal]
+	SET 
+		JournalTypeId = @JournalTypeId,
+		UserId = @UserId,
+		DateUpdated = GETUTCDATE(),
+		PortalId = @PortalId,
+		ProfileId = @ProfileId,
+		GroupId = @GroupId,
+		Title = @Title,
+		Summary = @Summary,
+		ObjectKey = @ObjectKey,
+		AccessKey = @AccessKey,
+		ItemData = @ItemData,
+		CommentsHidden = @CommentsHidden,
+		CommentsDisabled = @CommentsDisabled
+	WHERE JournalId = @JournalId
+IF @SecuritySet IS NOT NULL AND @SecuritySet <> ''
+BEGIN
+DELETE FROM {databaseOwner}[{objectQualifier}Journal_Security] WHERE JournalId = @JournalId
+INSERT INTO {databaseOwner}[{objectQualifier}Journal_Security]
+	(JournalId, SecurityKey) 
+	SELECT @JournalId, string from {databaseOwner}[{objectQualifier}Journal_SplitText](@SecuritySet,',')
+END
+SELECT @JournalId
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comments_ToggleDisable]
+@PortalId int,
+@JournalId int,
+@Disabled bit
+AS
+UPDATE {databaseOwner}[{objectQualifier}Journal]
+	SET CommentsDisabled = @Disabled
+	WHERE PortalId = @PortalId AND JournalId = @JournalId
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comments_ToggleHidden]
+@PortalId int,
+@JournalId int,
+@Hidden bit
+AS
+UPDATE {databaseOwner}[{objectQualifier}Journal]
+	SET CommentsHidden = @Hidden
+	WHERE PortalId = @PortalId AND JournalId = @JournalId
+GO
+/************************************************************/
+
+
+/*****              SqlDataProvider                     *****/
+/************************************************************/

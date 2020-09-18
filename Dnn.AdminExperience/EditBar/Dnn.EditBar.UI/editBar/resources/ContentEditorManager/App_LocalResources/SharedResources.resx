@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="25% + 50% + 25%.Text" xml:space="preserve">
+    <value>Three column 25 - 50 - 25</value>
+  </data>
+  <data name="25% + 75%.Text" xml:space="preserve">
+    <value>Two column 25 - 75</value>
+  </data>
+  <data name="33% + 33% + 33%.Text" xml:space="preserve">
+    <value>Three column 33 - 33 - 33</value>
+  </data>
+  <data name="50% + 50%.Text" xml:space="preserve">
+    <value>Two column 50 - 50</value>
+  </data>
+  <data name="75% + 25%.Text" xml:space="preserve">
+    <value>Two column 75 - 25</value>
+  </data>
+  <data name="AddModule.Text" xml:space="preserve">
+    <value>Add Module</value>
+  </data>
+  <data name="Blank.Text" xml:space="preserve">
+    <value>Blank</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CancelConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to cancel adding this module to the page?</value>
+  </data>
+  <data name="CloseLabel.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ConfirmNo.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ConfirmTitle.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ConfirmYes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="ContentLayout.Delete.Text" xml:space="preserve">
+    <value>Are you sure you wish to delete this layout?</value>
+  </data>
+  <data name="ContentLayout.Text" xml:space="preserve">
+    <value>Content Layout</value>
+  </data>
+  <data name="DiscardLabel.Text" xml:space="preserve">
+    <value>Discard</value>
+  </data>
+  <data name="DragTip.Text" xml:space="preserve">
+    <value>&lt;p&gt;ADD MODULE:&lt;/p&gt;&lt;p&gt;Click, drag and drop module into your chosen location&lt;/p&gt;</value>
+  </data>
+  <data name="EditBarMessageLabel.Text" xml:space="preserve">
+    <value>Changes shown are not published</value>
+  </data>
+  <data name="NoModules.Text" xml:space="preserve">
+    <value>There are no modules available to use on this page.</value>
+  </data>
+  <data name="PendingSave.Text" xml:space="preserve">
+    <value>You have not finished adding the module, are you sure you want to continue without saving?</value>
+  </data>
+  <data name="PublishLabel.Text" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="Service_CopyPermissionError.Text" xml:space="preserve">
+    <value>Error occurred when copy permissions to descendant pages.</value>
+  </data>
+  <data name="Service_CopyPermissionSuccessful.Text" xml:space="preserve">
+    <value>Copy permissions to descendant pages successful.</value>
+  </data>
+  <data name="Service_LayoutNotExist.Text" xml:space="preserve">
+    <value>The layout has already been deleted.</value>
+  </data>
+  <data name="Service_ModuleNotExist.Text" xml:space="preserve">
+    <value>The module has already been deleted.</value>
+  </data>
+  <data name="System.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Service_RestoreTabModuleError.Text" xml:space="preserve">
+    <value>Error restoring page has occurred:&lt;br/&gt;{0}</value>
+  </data>
+  <data name="Service_RemoveTabModuleError.Text" xml:space="preserve">
+    <value>Error removing page has occurred:&lt;br/&gt;{0}</value>
+  </data>
+  <data name="Service_RestoreModuleError.Text" xml:space="preserve">
+    <value>Error restoring module {0} on page {1}. Page is deleted.</value>
+  </data>
+  <data name="Service_RestoreTabError.Text" xml:space="preserve">
+    <value>Page {0} cannot be restored until its parent is restored first.&lt;br/&gt;</value>
+  </data>
+  <data name="DeleteModuleConfirm.Text" xml:space="preserve">
+    <value>Are you sure you wish to delete this module?</value>
+  </data>
+  <data name="SearchPlaceHolder.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Category_Recommended.Text" xml:space="preserve">
+    <value>Recommended</value>
+  </data>
+  <data name="Category_All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Service_RemoveTabError.Text" xml:space="preserve">
+    <value>Page {0} cannot be deleted until its children have been deleted first.&lt;br/&gt;</value>
+  </data>
+  <data name="AddExistingModule.Text" xml:space="preserve">
+    <value>Add Existing Module</value>
+  </data>
+  <data name="pagePicker_clearButtonTooltip.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="pagePicker_loadingResultText.Text" xml:space="preserve">
+    <value>...Loading Results</value>
+  </data>
+  <data name="pagePicker_resultsText.Text" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="pagePicker_searchButtonTooltip.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="pagePicker_searchInputPlaceHolder.Text" xml:space="preserve">
+    <value>Page Name</value>
+  </data>
+  <data name="pagePicker_selectedItemCollapseTooltip.Text" xml:space="preserve">
+    <value>Click to collapse</value>
+  </data>
+  <data name="pagePicker_selectedItemExpandTooltip.Text" xml:space="preserve">
+    <value>Click to expand</value>
+  </data>
+  <data name="pagePicker_selectItemDefaultText.Text" xml:space="preserve">
+    <value>&lt;None Specified&gt;</value>
+  </data>
+  <data name="pagePicker_sortAscendingButtonTitle.Text" xml:space="preserve">
+    <value>A-Z</value>
+  </data>
+  <data name="pagePicker_sortAscendingButtonTooltip.Text" xml:space="preserve">
+    <value>Sort in ascending order</value>
+  </data>
+  <data name="pagePicker_unsortedOrderButtonTooltip.Text" xml:space="preserve">
+    <value>Remove sorting</value>
+  </data>
+  <data name="pagerPicker_sortDescendingButtonTooltip.Text" xml:space="preserve">
+    <value>Sort in descending order</value>
+  </data>
+  <data name="MakeCopy.Text" xml:space="preserve">
+    <value>Make a copy</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value>Page:</value>
+  </data>
+  <data name="Site.Text" xml:space="preserve">
+    <value>Site:</value>
+  </data>
+</root>

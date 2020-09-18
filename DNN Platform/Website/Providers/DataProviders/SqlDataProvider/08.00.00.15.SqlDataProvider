@@ -1,0 +1,22 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateUserLastIpAddress]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserLastIpAddress]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserLastIpAddress] 
+	@UserID         int,
+	@LastIPAddress	nvarchar(50)
+AS
+	UPDATE {databaseOwner}[{objectQualifier}Users] 
+	SET	LastIPAddress = @LastIPAddress
+	WHERE  UserId = @UserID
+GO

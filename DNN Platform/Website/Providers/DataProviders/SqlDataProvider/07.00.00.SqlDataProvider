@@ -1,0 +1,1555 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Remove Core Providers - now part of core */
+/********************************************/
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.DBLoggingProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.SchedulingProvider'
+	
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.CorePermissionProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.SearchIndexProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.SearchProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.SearchProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.CoreSitemapProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.FileBasedCachingProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.ModuleCaching.FileProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.ModuleCaching.MemoryProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.AspNetMembershipProvider'
+
+DELETE FROM {databaseOwner}{objectQualifier}Packages
+	WHERE Name = 'DotNetNuke.DNNProfileProvider'
+
+/*
+ * Add new IsShareable and IsShareableViewOnly columns to Modules Table
+ */
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Modules' AND COLUMN_NAME='IsShareable')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Modules
+			ADD IsShareable bit NOT NULL CONSTRAINT DF_{objectQualifier}Modules_IsShareable DEFAULT 1
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Modules' AND COLUMN_NAME='IsShareableViewOnly')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Modules
+			ADD IsShareableViewOnly bit NOT NULL CONSTRAINT DF_{objectQualifier}Modules_IsShareableViewOnly DEFAULT 1
+	END
+GO
+
+/*
+ * Break the chain of foreign key references between Modules, Portals, and TabModules so that we can
+ * support the Module Sharing feature.  Now PortalID on Modules will refer to the ``source'' portal
+ * that the module was originally installed on, and the PortalID on TabModules will be used to indicate
+ * which portal the module (or a module reference) is on.
+ */
+
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}Modules_{objectQualifier}Portals]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]'))
+    ALTER TABLE {databaseOwner}[{objectQualifier}Modules]
+        DROP CONSTRAINT FK_{objectQualifier}Modules_{objectQualifier}Portals
+GO
+
+/*
+ * Update module-related views and stored procedures to pull the PortalID from TabModules->Tabs rather
+ * than Modules, so as to support module-by-reference on different portals.  A lot of these stored
+ * procedures probably don't need to be updated but I am including them here for now as these are all
+ * the places that Modules.PortalID is referenced.
+ */
+
+/* vw_TabModules */
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_TabModules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_TabModules
+AS
+    SELECT
+		M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID, 
+        TM.TabModuleID, 
+        M.ModuleID, 
+        M.ModuleDefID, 
+        TM.ModuleOrder, 
+        TM.PaneName, 
+        TM.ModuleTitle, 
+        TM.CacheTime, 
+        TM.CacheMethod, 
+        TM.Alignment, 
+        TM.Color, 
+        TM.Border, 
+        CASE WHEN LEFT(LOWER(TM.IconFile), 6) = 'fileid' THEN (SELECT Folder + FileName FROM {databaseOwner}{objectQualifier}Files WHERE 'fileid=' + CONVERT(varchar, {databaseOwner}{objectQualifier}Files.FileID) = TM.IconFile) ELSE TM.IconFile END AS IconFile, 
+        M.AllTabs, 
+        TM.Visibility, 
+        TM.IsDeleted, 
+        TM.Header, 
+        TM.Footer, 
+        M.StartDate, 
+        M.EndDate, 
+        TM.ContainerSrc, 
+        TM.DisplayTitle, 
+        TM.DisplayPrint, 
+        TM.DisplaySyndicate, 
+        TM.IsWebSlice, 
+        TM.WebSliceTitle, 
+        TM.WebSliceExpiryDate, 
+        TM.WebSliceTTL, 
+        M.InheritViewPermissions,
+		M.IsShareable,
+		M.IsShareableViewOnly, 
+        MD.DesktopModuleID, 
+        MD.DefaultCacheTime, 
+        MC.ModuleControlID, 
+        DM.BusinessControllerClass, 
+        DM.IsAdmin, 
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        TM.CreatedByUserID, 
+        TM.CreatedOnDate, 
+        TM.LastModifiedByUserID, 
+        TM.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId, 
+        TM.VersionGuid, 
+        TM.DefaultLanguageGuid, 
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM {databaseOwner}{objectQualifier}ModuleDefinitions AS MD 
+        INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON MD.ModuleDefID = M.ModuleDefID 
+        INNER JOIN {databaseOwner}{objectQualifier}ModuleControls AS MC ON MD.ModuleDefID = MC.ModuleDefID 
+        INNER JOIN {databaseOwner}{objectQualifier}DesktopModules AS DM ON MD.DesktopModuleID = DM.DesktopModuleID 
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON M.ContentItemID = CI.ContentItemID
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}TabModules AS TM ON M.ModuleID = TM.ModuleID
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Tabs AS T ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+/* vw_Modules */
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Modules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Modules
+AS
+    SELECT     
+		M.PortalID AS [OwnerPortalID],
+        T.PortalID, 
+        TM.TabID, 
+        TM.TabModuleID, 
+        M.ModuleID, 
+        M.ModuleDefID, 
+        TM.ModuleOrder, 
+        TM.PaneName, 
+        TM.ModuleTitle, 
+        TM.CacheTime, 
+        TM.CacheMethod, 
+        TM.Alignment, 
+        TM.Color, 
+        TM.Border, 
+        CASE WHEN LEFT(LOWER(TM.IconFile), 6) = 'fileid' THEN (SELECT Folder + FileName FROM {databaseOwner}{objectQualifier}Files WHERE 'fileid=' + CONVERT(varchar, {databaseOwner}{objectQualifier}Files.FileID) = TM.IconFile) ELSE TM.IconFile END AS IconFile, 
+        M.AllTabs, 
+        TM.Visibility, 
+        TM.IsDeleted, 
+        TM.Header, 
+        TM.Footer, 
+        M.StartDate, 
+        M.EndDate, 
+        TM.ContainerSrc, 
+        TM.DisplayTitle, 
+        TM.DisplayPrint, 
+        TM.DisplaySyndicate, 
+        TM.IsWebSlice, 
+        TM.WebSliceTitle, 
+        TM.WebSliceExpiryDate, 
+        TM.WebSliceTTL, 
+        M.InheritViewPermissions, 
+		M.IsShareable,
+		M.IsShareableViewOnly, 
+        MD.DesktopModuleID, 
+        MD.DefaultCacheTime, 
+        MC.ModuleControlID, 
+        DM.BusinessControllerClass, 
+        DM.IsAdmin, 
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        M.CreatedByUserID, 
+        M.CreatedOnDate, 
+        M.LastModifiedByUserID, 
+        M.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId, 
+        TM.VersionGuid, 
+        TM.DefaultLanguageGuid, 
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM {databaseOwner}{objectQualifier}ModuleDefinitions AS MD 
+        INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON MD.ModuleDefID = M.ModuleDefID 
+        INNER JOIN {databaseOwner}{objectQualifier}ModuleControls AS MC ON MD.ModuleDefID = MC.ModuleDefID 
+        INNER JOIN {databaseOwner}{objectQualifier}DesktopModules AS DM ON MD.DesktopModuleID = DM.DesktopModuleID 
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON M.ContentItemID = CI.ContentItemID
+        LEFT OUTER JOIN {databaseOwner}{objectQualifier}TabModules AS TM ON M.ModuleID = TM.ModuleID
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Tabs AS T ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+
+GO
+
+/* Add Shareable to DesktopModules table */
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}DesktopModules' AND COLUMN_NAME = 'Shareable')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModules] ADD Shareable INT
+		CONSTRAINT DF_{objectQualifier}DesktopModules_Shareable DEFAULT 0 NOT NULL
+END
+GO
+
+/* AddDesktopModule */
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddDesktopModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModule]
+	@PackageID		int,
+	@ModuleName		nvarchar(128),
+	@FolderName		nvarchar(128),
+	@FriendlyName		nvarchar(128),
+	@Description		nvarchar(2000),
+	@Version		nvarchar(8),
+	@IsPremium		bit,
+	@IsAdmin		bit,
+	@BusinessController	nvarchar(200),
+	@SupportedFeatures	int,
+	@Shareable		int,
+	@CompatibleVersions	nvarchar(500),
+	@Dependencies		nvarchar(400),
+	@Permissions		nvarchar(400),
+	@ContentItemId		int,
+	@CreatedByUserID	int
+
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}DesktopModules (
+		PackageID,
+		ModuleName,
+		FolderName,
+		FriendlyName,
+		Description,
+		Version,
+		IsPremium,
+		IsAdmin,
+		BusinessControllerClass,
+		SupportedFeatures,
+		Shareable,
+		CompatibleVersions,
+		Dependencies,
+		Permissions,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		ContentItemId
+	)
+	VALUES (
+		@PackageID,
+		@ModuleName,
+		@FolderName,
+		@FriendlyName,
+		@Description,
+		@Version,
+		@IsPremium,
+		@IsAdmin,
+		@BusinessController,
+		@SupportedFeatures,
+		@Shareable,
+		@CompatibleVersions,
+		@Dependencies,
+		@Permissions,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@ContentItemId
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* UpdateDesktopModule */
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateDesktopModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
+	@DesktopModuleId		int,    
+	@PackageID			int,
+	@ModuleName			nvarchar(128),
+	@FolderName			nvarchar(128),
+	@FriendlyName			nvarchar(128),
+	@Description			nvarchar(2000),
+	@Version			nvarchar(8),
+	@IsPremium			bit,
+	@IsAdmin			bit,
+	@BusinessController		nvarchar(200),
+	@SupportedFeatures		int,
+	@Shareable			int,
+	@CompatibleVersions		nvarchar(500),
+	@Dependencies			nvarchar(400),
+	@Permissions			nvarchar(400),
+	@ContentItemId			int,
+	@LastModifiedByUserID		int
+
+AS
+		UPDATE {databaseOwner}{objectQualifier}DesktopModules
+		SET    	
+			PackageID = @PackageID,
+			ModuleName = @ModuleName,
+			FolderName = @FolderName,
+			FriendlyName = @FriendlyName,
+			Description = @Description,
+			Version = @Version,
+			IsPremium = @IsPremium,
+			IsAdmin = @IsAdmin,
+			BusinessControllerClass = @BusinessController,
+			SupportedFeatures = @SupportedFeatures,
+			Shareable = @Shareable,
+			CompatibleVersions = @CompatibleVersions,
+			Dependencies = @Dependencies,
+			Permissions = @Permissions,
+			ContentItemId = @ContentItemId,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+	WHERE  DesktopModuleId = @DesktopModuleId
+
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_DesktopModules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_DesktopModules]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_DesktopModules]
+AS
+	SELECT
+		DM.DesktopModuleID,
+		DM.FriendlyName,
+		DM.Description,
+		DM.Version,
+		DM.IsPremium,
+		DM.IsAdmin,
+		DM.BusinessControllerClass,
+		DM.FolderName,
+		DM.ModuleName,
+		DM.SupportedFeatures,
+		DM.CompatibleVersions,
+		DM.Dependencies,
+		DM.Permissions,
+		DM.PackageID,
+		DM.CreatedByUserID,
+		DM.CreatedOnDate,
+		DM.LastModifiedByUserID,
+		DM.LastModifiedOnDate,
+		CI.ContentItemID,
+		CI.[Content],
+		CI.ContentTypeID,
+		CI.TabID,
+		CI.ModuleID,
+		CI.ContentKey,
+		CI.Indexed,
+		DM.Shareable
+	FROM {databaseOwner}[{objectQualifier}DesktopModules] AS DM
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}ContentItems] AS CI ON DM.ContentItemId = CI.ContentItemID
+GO
+
+/* Update AddModule */
+/********************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddModule]
+	@ContentItemID				int,
+	@PortalID					int,
+	@ModuleDefId				int,
+	@AllTabs					bit,
+	@StartDate					datetime,
+	@EndDate					datetime,
+	@InheritViewPermissions     bit,
+	@IsShareable				bit,
+	@IsShareableViewOnly		bit,
+	@IsDeleted					bit,
+	@CreatedByUserID  			int
+	
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Modules (
+		ContentItemID, 
+		PortalId,
+		ModuleDefId,
+		AllTabs,
+		StartDate,
+		EndDate,
+		InheritViewPermissions,
+		IsShareable,
+		IsShareableViewOnly,
+		IsDeleted,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+	VALUES (
+		@ContentItemID,
+		@PortalID,
+		@ModuleDefId,
+		@AllTabs,
+		@StartDate,
+		@EndDate,
+		@InheritViewPermissions,
+		@IsShareable,
+		@IsShareableViewOnly,
+		@IsDeleted,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+
+GO
+
+/* Update UpdateModule */
+/***********************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModule]
+	@ModuleId					int,
+    @ModuleDefId                int,
+	@ContentItemID				int,
+	@AllTabs					bit, 
+	@StartDate					datetime,
+	@EndDate					datetime,
+	@InheritViewPermissions		bit,
+	@IsShareable				bit,
+	@IsShareableViewOnly		bit,
+	@IsDeleted					bit,
+	@LastModifiedByUserID  		int
+	
+AS
+	UPDATE	{databaseOwner}{objectQualifier}Modules
+		SET		
+			ModuleDefId = @ModuleDefId,
+            ContentItemID = @ContentItemID,
+			AllTabs = @AllTabs,
+			StartDate = @StartDate,
+			EndDate = @EndDate,
+			InheritViewPermissions = @InheritViewPermissions,
+			IsShareable = @IsShareable,
+			IsShareableViewOnly = @IsShareableViewOnly,
+			IsDeleted = @IsDeleted,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+	WHERE  ModuleId = @ModuleId	
+
+GO
+
+/* Add PortalID column to ModulePermission Table */
+/*************************************************/
+
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}ModulePermission' AND COLUMN_NAME='PortalID')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ModulePermission
+			ADD PortalID int NULL
+	END
+GO	
+
+UPDATE MP
+	SET MP.PortalID = M.PortalID
+FROM {databaseOwner}{objectQualifier}ModulePermission AS MP
+	INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON M.ModuleID = MP.ModuleID
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}ModulePermission 
+	WHERE EXISTS (SELECT ModuleId FROM {databaseOwner}{objectQualifier}Modules WHERE (PortalID IS NULL) 
+					AND ({databaseOwner}{objectQualifier}ModulePermission.ModuleID = {databaseOwner}{objectQualifier}Modules.ModuleID))
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ModulePermission
+	DROP CONSTRAINT IX_{objectQualifier}ModulePermission
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ModulePermission
+	ALTER COLUMN PortalID int NOT NULL 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ModulePermission ADD CONSTRAINT
+	IX_{objectQualifier}ModulePermission UNIQUE NONCLUSTERED ( PortalID, ModuleID, PermissionID, RoleID, UserID )
+GO
+
+/* Update ModulePermissions View */
+/*********************************/
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_ModulePermissions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+AS
+	SELECT     
+		MP.ModulePermissionID, 
+		MP.ModuleID,
+		MP.PortalID, 
+		P.PermissionID, 
+		MP.RoleID, 
+        CASE MP.RoleID WHEN - 1 THEN 'All Users' WHEN - 2 THEN 'Superuser' WHEN - 3 THEN 'Unauthenticated Users' ELSE R.RoleName END AS RoleName, 
+		MP.AllowAccess, 
+		MP.UserID, 
+		U.Username, 
+		U.DisplayName, 
+		P.PermissionCode, 
+		P.ModuleDefID, 
+		P.PermissionKey, 
+		P.PermissionName, 
+		MP.CreatedByUserID, 
+        MP.CreatedOnDate, 
+		MP.LastModifiedByUserID, 
+		MP.LastModifiedOnDate
+	FROM {databaseOwner}{objectQualifier}ModulePermission AS MP 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Permission AS P ON MP.PermissionID = P.PermissionID 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Roles AS R ON MP.RoleID = R.RoleID 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON MP.UserID = U.UserID
+
+GO
+
+/* Update AddModulePermission */
+/******************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddModulePermission]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddModulePermission]
+	@ModuleID 			int,
+	@PortalID			int,
+	@PermissionID 		int,
+	@RoleID 			int,
+	@AllowAccess 		bit,
+	@UserID 			int,
+	@CreatedByUserID	int
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}ModulePermission (
+		[ModuleID],
+		[PortalID],
+		[PermissionID],
+		[RoleID],
+		[AllowAccess],
+		[UserID],
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+	) VALUES (
+		@ModuleID,
+		@PortalID,
+		@PermissionID,
+		@RoleID,
+		@AllowAccess,
+		@UserID,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Update DeleteModulePermissionsByModuleID */
+/********************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteModulePermissionsByModuleID]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteModulePermissionsByModuleID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteModulePermissionsByModuleID]
+	@ModuleID int,
+	@PortalID int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}ModulePermission
+		WHERE ModuleID = @ModuleID
+			AND PortalID = @PortalID
+GO
+
+/* Update GetModulePermissionsByTabID */
+/**************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+	
+	@TabID int
+
+AS
+SELECT MP.*
+	FROM {databaseOwner}{objectQualifier}TabModules AS TM
+		INNER JOIN {databaseOwner}{objectQualifier}Tabs AS T ON TM.TabID = T.TabID 
+		INNER JOIN {databaseOwner}{objectQualifier}vw_ModulePermissions AS MP ON TM.ModuleID = MP.ModuleID 
+		INNER JOIN {databaseOwner}{objectQualifier}Portals AS P ON T.PortalID = P.PortalID 
+			AND MP.PortalID = P.PortalID
+	WHERE T.TabID = @TabID
+
+GO
+
+/* Update UpdateModulePermission */
+/*********************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateModulePermission]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModulePermission]
+	@ModulePermissionID		int, 
+	@ModuleID				int, 
+	@PortalID				int,
+	@PermissionID			int, 
+	@RoleID					int,
+	@AllowAccess			bit,
+	@LastModifiedByUserID	int
+AS
+	UPDATE {databaseOwner}{objectQualifier}ModulePermission SET
+		[ModuleID] = @ModuleID,
+		[PortalID] = @PortalID,
+		[PermissionID] = @PermissionID,
+		[RoleID] = @RoleID,
+		[AllowAccess] = @AllowAccess,
+		[UserID] = @LastModifiedByUserID,
+		[LastModifiedByUserID] = @LastModifiedByUserID,
+		[LastModifiedOnDate] = getdate()
+	WHERE
+		[ModulePermissionID] = @ModulePermissionID
+GO
+
+/* Add new ModulePermissions Module Control */
+/********************************************/
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ControlSrc = 'Admin/Modules/ModulePermissions.ascx')
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}ModuleControls
+			([ModuleDefID]
+			,[ControlKey]
+			,[ControlTitle]
+			,[ControlSrc]
+			,[IconFile]
+			,[ControlType]
+			,[ViewOrder]
+			,[SupportsPartialRendering]
+			,[CreatedByUserID]
+			,[CreatedOnDate]
+			,[LastModifiedByUserID]
+			,[LastModifiedOnDate]
+			,[SupportsPopUps])
+		VALUES
+			(NULL
+			,'ModulePermissions'
+			,'ModulePermissions'
+			,'Admin/Modules/ModulePermissions.ascx'
+			,'~/Icons/Sigma/Moduledefinitions_32X32_Standard.png'
+			,4
+			,0
+			,1
+			,-1
+			,getDate()
+			,-1
+			,getDate()
+			,1)
+	END
+GO
+
+
+
+/* Update Roles table to add IsSystemRole field */
+/*************************************************/
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME= N'{objectQualifier}Roles' AND COLUMN_NAME='IsSystemRole')
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}Roles]
+			ADD IsSystemRole bit NOT NULL CONSTRAINT DF_{objectQualifier}Roles_IsSystemRole DEFAULT 0
+	END
+GO	
+
+
+
+/* Update Roles AddRole SP to add IsSystemRole field */
+/*************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddRole]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddRole
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddRole 
+	@PortalID         int,
+	@RoleGroupId      int,
+	@RoleName         nvarchar(50),
+	@Description      nvarchar(1000),
+	@ServiceFee       money,
+	@BillingPeriod    int,
+	@BillingFrequency char(1),
+	@TrialFee         money,
+	@TrialPeriod      int,
+	@TrialFrequency   char(1),
+	@IsPublic         bit,
+	@AutoAssignment   bit,
+	@RSVPCode         nvarchar(50),
+	@IconFile         nvarchar(100),
+	@CreatedByUserID  int,
+	@Status			  int,
+	@SecurityMode   int,
+	@IsSystemRole bit
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Roles (
+	  PortalId,
+	  RoleGroupId,
+	  RoleName,
+	  Description,
+	  ServiceFee,
+	  BillingPeriod,
+	  BillingFrequency,
+	  TrialFee,
+	  TrialPeriod,
+	  TrialFrequency,
+	  IsPublic,
+	  AutoAssignment,
+	  RSVPCode,
+	  IconFile,
+	  CreatedByUserID,
+	  CreatedOnDate,
+	  LastModifiedByUserID,
+	  LastModifiedOnDate,
+	  Status,
+	  SecurityMode,
+	  IsSystemRole
+	)
+	VALUES (
+	  @PortalID,
+	  @RoleGroupId,
+	  @RoleName,
+	  @Description,
+	  @ServiceFee,
+	  @BillingPeriod,
+	  @BillingFrequency,
+	  @TrialFee,
+	  @TrialPeriod,
+	  @TrialFrequency,
+	  @IsPublic,
+	  @AutoAssignment,
+	  @RSVPCode,
+	  @IconFile,
+	  @CreatedByUserID,
+	  getdate(),
+	  @CreatedByUserID,
+	  getdate(),
+	  @Status,
+	  @SecurityMode,
+	  @IsSystemRole
+	)
+	SELECT SCOPE_IDENTITY()
+GO
+/* Update Roles UpdateRole SP to add IsSystemRole field */
+/*************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateRole]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateRole
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateRole
+	@RoleId					int,
+	@RoleGroupId			int,
+	@RoleName				nvarchar(50),
+	@Description			nvarchar(1000),
+	@ServiceFee				money,
+	@BillingPeriod			int,
+	@BillingFrequency		char(1),
+	@TrialFee				money,
+	@TrialPeriod			int,
+	@TrialFrequency			char(1),
+	@IsPublic				bit,
+	@AutoAssignment			bit,
+	@RSVPCode				nvarchar(50),
+	@IconFile				nvarchar(100),
+	@LastModifiedByUserID	int,
+	@Status					int,
+	@SecurityMode			int,
+	@IsSystemRole			bit
+AS
+	UPDATE {databaseOwner}{objectQualifier}Roles
+	SET    RoleGroupId			= @RoleGroupId,
+		   RoleName				= @RoleName,
+		   Description			= @Description,
+		   ServiceFee			= @ServiceFee,
+		   BillingPeriod		= @BillingPeriod,
+		   BillingFrequency		= @BillingFrequency,
+		   TrialFee				= @TrialFee,
+		   TrialPeriod			= @TrialPeriod,
+		   TrialFrequency		= @TrialFrequency,
+		   IsPublic				= @IsPublic,
+		   AutoAssignment		= @AutoAssignment,
+		   RSVPCode				= @RSVPCode,
+		   IconFile				= @IconFile,
+		   LastModifiedByUserID = @LastModifiedByUserID,
+		   LastModifiedOnDate		= getdate(),
+		   Status				= @Status,
+		   SecurityMode			= @SecurityMode,
+		   IsSystemRole			= @IsSystemRole
+	WHERE  RoleId = @RoleId
+GO
+
+
+/* Update [GetPortalRoles] SP to add IsSystemRole field */
+/*************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalRoles
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalRoles
+	@PortalId     int
+AS
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   R.ServiceFee,
+		   case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end AS BillingPeriod,
+		   case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end AS BillingFrequency,
+		   R.TrialFee,
+		   case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end AS TrialPeriod,
+		   case when R.TrialFrequency <> 'N' then L2.Text else '' end AS TrialFrequency,
+		   R.IsPublic,
+		   R.AutoAssignment,
+		   R.RSVPCode,
+		   R.IconFile,
+		   R.Status,
+		   R.SecurityMode,
+		   (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}UserRoles U WHERE U.RoleID = R.RoleID) AS UserCount,
+		   R.CreatedByUserID,
+		   R.CreatedOnDate,
+		   R.LastModifiedByUserID,
+		   R.LastModifiedOnDate,
+		   R.IsSystemRole
+	FROM {databaseOwner}{objectQualifier}Roles R
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 ON R.BillingFrequency = L1.Value AND L1.ListName='Frequency'
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 ON R.TrialFrequency = L2.Value AND L2.ListName='Frequency'
+	WHERE  ( R.PortalId = @PortalId OR R.PortalId is null )
+	ORDER BY R.RoleName
+
+
+GO
+
+
+/* Update SystemRoles to set IsSystemRole field to true */
+/*************************************************/
+
+	UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Administrators'
+	UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Subscribers'
+	UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Registered Users'
+
+GO
+
+/* Insert New ControlPanel Bar: ControlBar */
+/*************************************************/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE [ControlKey] = N'CONTROLPANEL:CONTROLBAR')
+	INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (NULL, N'CONTROLPANEL:CONTROLBAR', NULL, N'Admin/ControlPanel/ControlBar.ascx', NULL, -3, NULL, NULL, 0, NULL, NULL, -1, NULL, 1)
+GO
+
+
+/* Drop Procedures that are no longer being used */
+/*************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetServerConfiguration]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetServerConfiguration]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalByAlias]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalByAlias]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalByTab]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalByTab]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}VerifyPortal]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}VerifyPortal]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortal]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortal]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalCount]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalCount]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}VerifyPortalTab]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}VerifyPortalTab]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabByName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabByName]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabCount]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabCount]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByParentId]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByParentId]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleControlsByKey]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleControlsByKey]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleControlByKeyAndSrc]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleControlByKeyAndSrc]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleControl]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleControl]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserLogin]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UserLogin]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAuthRoles]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAuthRoles]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsers]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsers]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSuperUsers]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSuperUsers]
+GO
+
+/* Add DefinitionName to ModuleDefinitions */
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}ModuleDefinitions' AND COLUMN_NAME='DefinitionName')
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}ModuleDefinitions]
+			ADD DefinitionName nvarchar(128) NOT NULL CONSTRAINT DF_{objectQualifier}ModuleDefinitions_DefinitionName DEFAULT ''
+	END
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}ModuleDefinitions] WHERE DefinitionName = '')
+	BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}ModuleDefinitions] SET DefinitionName = FriendlyName
+
+        ALTER TABLE {databaseOwner}[{objectQualifier}ModuleDefinitions]
+	        DROP CONSTRAINT  DF_{objectQualifier}ModuleDefinitions_DefinitionName
+
+        ALTER TABLE {databaseOwner}[{objectQualifier}ModuleDefinitions]
+        	DROP CONSTRAINT IX_{objectQualifier}ModuleDefinitions
+        
+        CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModuleDefinitions ON {databaseOwner}[{objectQualifier}ModuleDefinitions]
+	    (
+	        DefinitionName
+	    )
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddModuleDefinition]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddModuleDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddModuleDefinition
+
+	@DesktopModuleId int,    
+	@FriendlyName    nvarchar(128),
+	@DefinitionName nvarchar(128),
+	@DefaultCacheTime int,
+	@CreatedByUserID  int
+
+as
+
+insert into {databaseOwner}{objectQualifier}ModuleDefinitions (
+	DesktopModuleId,
+	FriendlyName,
+	DefinitionName,
+	DefaultCacheTime,
+	CreatedByUserID,
+	CreatedOnDate,
+	LastModifiedByUserID,
+	LastModifiedOnDate
+)
+values (
+	@DesktopModuleId,
+	@FriendlyName,
+	@DefinitionName,
+	@DefaultCacheTime,
+	@CreatedByUserID,
+	getdate(),
+	@CreatedByUserID,
+	getdate()
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateModuleDefinition]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateModuleDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateModuleDefinition
+
+	@ModuleDefId			int,    
+	@FriendlyName			nvarchar(128),
+	@DefinitionName			nvarchar(128),
+	@DefaultCacheTime		int,
+	@LastModifiedByUserID	int
+
+as
+
+update {databaseOwner}{objectQualifier}ModuleDefinitions 
+	SET FriendlyName = @FriendlyName,
+		DefinitionName = @DefinitionName,
+		DefaultCacheTime = @DefaultCacheTime,
+		LastModifiedByUserID = @LastModifiedByUserID,
+		LastModifiedOnDate = getdate()
+	WHERE ModuleDefId = @ModuleDefId
+
+GO
+
+/* Update AddSkin */
+/******************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSkin]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddSkin
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSkin
+	@SkinPackageID		int,
+    @SkinSrc			nvarchar(200)		
+AS
+	BEGIN
+		IF NOT EXISTS (
+			SELECT 1 FROM {databaseOwner}{objectQualifier}Skins S
+				WHERE S.SkinPackageID = @SkinPackageID AND S.SkinSrc = @SkinSrc
+			)
+			BEGIN
+				INSERT INTO {databaseOwner}{objectQualifier}Skins (SkinPackageID, SkinSrc)
+				VALUES (@SkinPackageID, @SkinSrc)
+			END
+	END
+	
+	SELECT SkinID FROM {databaseOwner}{objectQualifier}Skins S
+		WHERE S.SkinPackageID = @SkinPackageID AND S.SkinSrc = @SkinSrc
+
+GO
+
+
+/* Add CoreMessaging_MarkMessageAsSent */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_MarkMessageAsSent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_MarkMessageAsSent
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkMessageAsSent]
+	@MessageId int,
+	@RecipientId int
+AS
+BEGIN
+	Update {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients set EmailSent = 1  where MessageID =@MessageId AND RecipientId=@RecipientId
+END
+
+GO
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version nvarchar(8)
+SET @version = '07.00.00'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SiteWizard'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Lists'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='FileManager'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SiteLog'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Newsletters'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SQL'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='RecycleBin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='LogViewer'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Tabs'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Vendors'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Banners'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ProfessionalPreview'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchInput'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='FeedExplorer'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Solutions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='WhatsNew'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Dashboard'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Languages'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Skins'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SkinDesigner'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Console'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='GoogleAnalytics'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Marketplace'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Sitemap'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ContentList'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ConfigurationManager'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Banners'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.FeedExplorer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.FileManager'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Lists'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LogViewer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Newsletters'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.RecycleBin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchInput'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SiteLog'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SiteWizard'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Tabs'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SQL'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Vendors'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SOLPARTACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SOLPARTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Solutions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.WhatsNew'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Languages'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Skins'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Skin Designer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Console'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Google Analytics'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Marketplace'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Sitemap'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ContentList'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Configuration Manager'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ProfessionalPreview'
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Security Roles/About the Security Roles Module.html' WHERE ControlSrc='DesktopModules/Admin/Security/Roles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Security Roles/Module Editors/Editing a Security Role.html' WHERE ControlSrc='DesktopModules/Admin/Security/EditRoles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Adding and Managing Pages/About Pages.html' WHERE ControlSrc='DesktopModules/Admin/Tabs/Tabs.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Adding and Managing Pages/About Pages.html' WHERE ControlSrc='DesktopModules/Admin/Tabs/ManageTabs.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Site Settings/About the Site Settings Page.html' WHERE ControlSrc='DesktopModules/Admin/Portals/SiteSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/User Accounts/About the User Accounts Module.html' WHERE ControlSrc='DesktopModules/Admin/Security/Users.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/User Accounts/Module Editors/Adding a User Account.html' WHERE ControlSrc='DesktopModules/Admin/Security/ManageUsers.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Vendors/About the Admin Vendors Module.html' WHERE ControlSrc='DesktopModules/Admin/Vendors/Vendors.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Vendors/Module Editors/Vendor Accounts/Adding a New Vendor.html' WHERE ControlSrc='DesktopModules/Admin/Vendors/EditVendors.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Installed Modules/Banners/About the Banners Module.html' WHERE ControlSrc='DesktopModules/Admin/Banners/DisplayBanners.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Installed Modules/Banners/Module Editors/Editing Banner Options.html' WHERE ControlSrc='DesktopModules/Admin/Banners/BannerOptions.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/File Manager/About the Admin File Manager Module.html' WHERE ControlSrc='DesktopModules/Admin/FileManager/FileManager.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/File Manager/Folder Editors/Uploading Files.html' WHERE ControlSrc='DesktopModules/Admin/FileManager/WebUpload.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Site Log/About the Site Log Module.html' WHERE ControlSrc='DesktopModules/Admin/SiteLog/SiteLog.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Newsletters/About the Newsletters Module.html' WHERE ControlSrc='DesktopModules/Admin/Newsletters/Newsletter.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Vendors/Module Editors/Vendor Banners/Adding an Image Banner to a Vendor.html' WHERE ControlSrc='DesktopModules/Admin/Vendors/EditBanner.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Security Roles/About the Security Roles Module.html' WHERE ControlSrc='DesktopModules/Admin/Security/SecurityRoles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Site Management/About the Site Management Page.html' WHERE ControlSrc='DesktopModules/Admin/Portals/Portals.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/SQL/About the SQL Page.html' WHERE ControlSrc='DesktopModules/Admin/SQL/SQL.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Host Settings/About the Host Settings Page.html' WHERE ControlSrc='DesktopModules/Admin/HostSettings/HostSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Recycle Bin/About the Recycle Bin Module.html' WHERE ControlSrc='DesktopModules/Admin/RecycleBin/RecycleBin.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Vendors/Module Editors/Affiliate Accounts/Adding an Affiliate Referral Account .html' WHERE ControlSrc='DesktopModules/Admin/Vendors/EditAffiliate.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Event Viewer/About the Log Viewer Module.html' WHERE ControlSrc='DesktopModules/Admin/LogViewer/LogViewer.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Event Viewer/SuperUsers/Editing Log Settings.html' WHERE ControlSrc='DesktopModules/Admin/LogViewer/EditLogTypes.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Scheduler/About the Schedule Module.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/ViewSchedule.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Scheduler/Editing a Task.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/EditSchedule.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Scheduler/Viewing Schedule History For A Task.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/ViewScheduleHistory.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Scheduler/Viewing Schedule Status.html' WHERE ControlSrc='DesktopModules/Admin/Scheduler/ViewScheduleStatus.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Search Admin/About the Search Admin Module.html' WHERE ControlSrc='DesktopModules/Admin/SearchAdmin/SearchAdmin.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Search Admin/About the Search Admin Module.html' WHERE ControlSrc='DesktopModules/Admin/SearchResults/SearchResults.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Site Wizard/About the Site Wizard Module.html' WHERE ControlSrc='DesktopModules/Admin/SiteWizard/SiteWizard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Lists/About the Admin Lists Page.html' WHERE ControlSrc='DesktopModules/Admin/Lists/ListEditor.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Security Roles/Module Editors/Adding a Role Group.html' WHERE ControlSrc='DesktopModules/Admin/Security/EditGroups.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Managing Your User Account/Managing Your Profile/Managing your User Profile.html' WHERE ControlSrc='Admin/Users/ViewProfile.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Extensions/About the Admin Extensions Module.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/Extensions.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/WhatsNew/About the Whats New Module.html' WHERE ControlSrc='DesktopModules/Admin/WhatsNew/WhatsNew.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Dashboard/About the Dashboard Module.html' WHERE ControlSrc='DesktopModules/Admin/Dashboard/Dashboard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Languages/About the Languages Management Module.html' WHERE ControlSrc='DesktopModules/Admin/Languages/languageEnabler.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Installed Modules/Console/About the Console Module.htm' WHERE ControlSrc='DesktopModules/Admin/Console/ViewConsole.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Search Engine Site Map/About the Search Engine SiteMap Module.html' WHERE ControlSrc='DesktopModules/Admin/Sitemap/SitemapSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Installed Modules/Member Directory/About the Member Directory Module.html' WHERE ControlSrc='DesktopModules/MemberDirectory/View.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Installed Modules/Social Groups/About the Social Groups Module.html' WHERE ControlSrc='DesktopModules/SocialGroups/Loader.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Building Your Site/Installed Modules/Social Groups/Adding a Social Group.html' WHERE ControlSrc='DesktopModules/SocialGroups/Create.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Skins/About the Skins Module.html' WHERE ControlSrc='DesktopModules/Admin/Skins/editskins.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Configuration Manager/About the Configuration Manager Page.html' WHERE ControlSrc='DesktopModules/Admin/XmlMerge/XmlMerge.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Device Detection Management/About the Device Detection Management Module.html' WHERE ControlSrc='DesktopModules/Admin/FiftyOneClientCapabilityProvider/Administration.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/HTML Editor Manager/About the HTML Editor Manager.html' WHERE ControlSrc='DesktopModules/Admin/RadEditorProvider/ProviderConfig.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Managing Your User Account/Managing Your Profile/Managing your User Profile.html' WHERE ControlSrc='DesktopModules/Admin/ViewProfile/ViewProfile.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Languages/SuperUsers/Adding a New Language.html' WHERE ControlSrc='DesktopModules/Admin/Languages/EditLanguage.ascx'
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Extensions/Installing an Extension.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/Install.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Extensions/Creating a New Extension.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/ExtensionWizard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Languages/SuperUsers/Creating a Full Language Pack.html' WHERE ControlSrc='DesktopModules/Admin/Languages/LanguagePackWriter.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Languages/SuperUsers/Verifying Resource Files.html' WHERE ControlSrc='DesktopModules/Admin/Languages/resourceverifier.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Extensions/Creating a New Extension.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/ExtensionWizard.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Host Console/Extensions/Creating a New Module.html' WHERE ControlSrc='DesktopModules/Admin/Extensions/Editors/EditModuleDefinition.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm##Using the Control Panel/Admin Console/Advanced Settings/About Advanced Settings.html' WHERE ControlSrc='DesktopModules/Admin/AdvancedSettings/AdvancedSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET HelpUrl = 'http://help.dotnetnuke.com/070000/default.htm#Using the Control Panel/Admin Console/Languages/SuperUsers/Adding a New Language.html' WHERE ControlSrc='DesktopModules/Admin/Languages/EditLanguage.ascx'
+
+
+GO
+
+/* Moved from Upgrade.cs becuase UpdateUser has changed */
+/********************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}Users 
+	SET UpdatePassword = 0 
+	WHERE IsSuperUser = 1
+GO
+
+/* Allow PackageID to be NULL in Assemblies Table */
+/**************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Assemblies
+	ALTER COLUMN PackageID int NULL
+	
+GO
+
+/* Add ClearFileContent */
+/************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}ClearFileContent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}ClearFileContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ClearFileContent]
+
+	@FileId      int
+
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Files
+	SET    Content = NULL
+	WHERE  FileId = @FileId
+
+GO
+
+/* Update Control Panel */
+/************************/
+
+UPDATE {databaseOwner}{objectQualifier}HostSettings 
+	SET SettingValue = 'Admin/ControlPanel/ControlBar.ascx'
+	WHERE SettingName = 'ControlPanel'
+		AND SettingValue = 'Admin/ControlPanel/RibbonBar.ascx'
+GO
+
+/*Insert Skin Package for Gravity Skin*/
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Packages] WHERE [Name] = N'Gravity')
+BEGIN
+	DECLARE @PackageId int
+	
+	INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'Gravity',
+		'Gravity',
+		'Gravity Skin',
+		'Skin',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Gravity" type="Skin" version="07.00.00">
+      <friendlyName>Gravity</friendlyName>
+      <description>Gravity</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>Gravity</skinName>
+            <basePath>Portals\_default\Skins\Gravity</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="Gravity" type="Container" version="07.00.00">
+      <friendlyName>Gravity</friendlyName>
+      <description>Gravity</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>Gravity</containerName>
+            <basePath>Portals\_default\Containers\Gravity</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+	Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'Gravity',
+	  'Skin',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+
+		INSERT INTO {databaseOwner}{objectQualifier}Packages
+	(
+		PortalID,
+		[Name],
+		FriendlyName,
+		[Description],
+		PackageType,
+		Version,
+		License,
+		Manifest,
+		ReleaseNotes,
+		[Owner],
+		Organization,
+		Url,
+		Email,
+		IsSystemPackage,
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		FolderName,
+		IconFile
+	)
+	VALUES (
+		Null,
+		'Gravity',
+		'Gravity',
+		'Gravity Container',
+		'Container',
+		'07.00.00',
+		'',
+		'<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Gravity" type="Skin" version="07.00.00">
+      <friendlyName>Gravity</friendlyName>
+      <description>Gravity demo</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>Gravity</skinName>
+            <basePath>Portals\_default\Skins\Gravity</basePath>
+          </skinFiles>
+        </component>
+      </components>
+    </package>
+    <package name="Gravity" type="Container" version="07.00.00">
+      <friendlyName>Gravity</friendlyName>
+      <description>Gravity</description>
+      <owner>
+        <name>DotNetNuke</name>
+        <organization>DotNetNuke Corporation</organization>
+        <url>www.dotnetnuke.com</url>
+        <email>support@dotnetnuke.com</email>
+      </owner>
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>Gravity</containerName>
+            <basePath>Portals\_default\Containers\Gravity</basePath>
+          </containerFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>',
+		'',
+		'DotNetNuke',
+		'DotNetNuke Corp',
+		'www.dotnetnuke.com',
+		'support@dotnetnuke.com',
+		1,
+		-1,
+		getdate(),
+		-1,
+		getdate(),
+		Null,
+		Null
+	)
+
+		Set @PackageId = SCOPE_IDENTITY()
+
+	INSERT INTO {databaseOwner}{objectQualifier}SkinPackages (
+	  PackageID,
+	  PortalID,
+	  SkinName,
+	  SkinType,
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate]
+	)
+	VALUES (
+	  @PackageID,
+	  Null,
+	  'Gravity',
+	  'Container',
+	  -1,
+	  getdate(),
+	  -1,
+	  getdate()
+	)
+END
+
+GO
+
+-- DNNDEV-24083 BuildTabLevelAndPath has been updated by adding : and * special chars
+-- we need to ensure that after upgrade all the paths are also fixed
+UPDATE {databaseOwner}[{objectQualifier}Tabs] SET [TabPath] = Replace([TabPath], ':', '') WHERE [TabPath] LIKE '%:%'
+UPDATE {databaseOwner}[{objectQualifier}Tabs] SET [TabPath] = Replace([TabPath], '*', '') WHERE [TabPath] LIKE '%*%'
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

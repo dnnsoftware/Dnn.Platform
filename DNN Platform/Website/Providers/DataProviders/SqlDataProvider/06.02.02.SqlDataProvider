@@ -1,0 +1,237 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/**************** Fix bug DNN-21747 ***************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}BuildTabLevelAndPath]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BuildTabLevelAndPath](@TabId INT, @IncludeChild BIT = 0)
+	AS
+	BEGIN
+		DECLARE @ParentId INT, @Level INT, @TabPath NVARCHAR(255), @TabName NVARCHAR(50)
+		SELECT @ParentId = ParentId, @TabName = TabName FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+		IF @ParentId > 0
+		BEGIN
+			SELECT 
+				@Level = [Level] + 1,
+				@TabPath = TabPath + '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''-#:')
+			 FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @ParentId
+		END
+		ELSE
+		BEGIN
+			SELECT @Level = 0, @TabPath = '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''-#:')
+		END
+		
+		UPDATE {databaseOwner}[{objectQualifier}Tabs] SET [Level] = @Level, TabPath = @TabPath WHERE TabID = @TabId
+		
+		IF @IncludeChild = 1
+		BEGIN
+			DECLARE @ChildTabs TABLE(TabID INT)
+			DECLARE @ChildID INT
+			INSERT INTO @ChildTabs SELECT TabID FROM {databaseOwner}[{objectQualifier}Tabs] WHERE ParentId =  @TabId
+			WHILE EXISTS (SELECT TOP 1 TabID FROM @ChildTabs)
+				BEGIN
+					SET @ChildID = (SELECT TOP 1 TabID FROM @ChildTabs)
+					EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @ChildID, @IncludeChild
+					DELETE FROM @ChildTabs WHERE TabID = @ChildID
+				END
+		END
+	END
+
+GO
+
+
+
+/**************** Fix bug DNN-20539 ***************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetScheduleByTypeFullName]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetScheduleByTypeFullName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetScheduleByTypeFullName]
+	@TypeFullName	varchar(200),
+	@Server			varchar(150)
+AS
+    SELECT S.*
+	FROM {databaseOwner}[{objectQualifier}Schedule] S
+	WHERE S.TypeFullName = @TypeFullName 
+		AND (@Server IS NULL OR ISNULL(s.Servers, '') = '' OR ',' + s.Servers + ',' LIKE '%,' + @Server + ',%')
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetScheduleByEvent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetScheduleByEvent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetScheduleByEvent]
+	@EventName	varchar(50),
+	@Server		varchar(150)
+AS
+    SELECT S.*
+	FROM {databaseOwner}[{objectQualifier}Schedule] S
+	WHERE S.AttachToEvent = @EventName
+		AND (@Server IS NULL OR ISNULL(s.Servers, '') = '' OR ',' + s.Servers + ',' LIKE '%,' + @Server + ',%')
+GO
+
+/**************** Fix Bug 21784 **********************/
+/* Add GetUsersByPropertyName Function */
+/***************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByPropertyName]') AND type in (N'FN', N'TF', N'IF'))
+	DROP FUNCTION {databaseOwner}[{objectQualifier}GetUsersByPropertyName]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetUsersByPropertyName]
+(
+	@PropertyName nvarchar(100),
+	@PropertyValue nvarchar(max),
+	@PortalID int
+)
+RETURNS TABLE
+AS
+	RETURN
+		SELECT *
+			FROM {databaseOwner}[{objectQualifier}vw_Profile]
+			WHERE PropertyName = @PropertyName 
+				AND PropertyValue LIKE @PropertyValue
+				AND PortalID = @PortalID
+
+GO
+
+/**************** Fix Bug 18658: Set AddTab to return the tab id **********************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTab] 
+    @ContentItemID			int,
+    @PortalID				int,
+    @TabOrder				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(Max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50)
+
+AS
+    INSERT INTO {databaseOwner}{objectQualifier}Tabs (
+        ContentItemID,
+        PortalID,
+        TabOrder,
+        UniqueId,
+        VersionGuid,
+        DefaultLanguageGuid,
+        LocalizedVersionGuid,
+        TabName,
+        IsVisible,
+        DisableLink,
+        ParentId,
+        IconFile,
+        IconFileLarge,
+        Title,
+        Description,
+        KeyWords,
+        IsDeleted,
+        Url,
+        SkinSrc,
+        ContainerSrc,
+        StartDate,
+        EndDate,
+        RefreshInterval,
+        PageHeadText,
+        IsSecure,
+        PermanentRedirect,
+        SiteMapPriority,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate,
+        CultureCode
+    )
+    VALUES (
+        @ContentItemID,
+        @PortalID,
+        @TabOrder,
+        @UniqueId,
+        @VersionGuid,
+        @DefaultLanguageGuid,
+        @LocalizedVersionGuid,
+        @TabName,
+        @IsVisible,
+        @DisableLink,
+        @ParentId,
+        @IconFile,
+        @IconFileLarge,
+        @Title,
+        @Description,
+        @KeyWords,
+        0,
+        @Url,
+        @SkinSrc,
+        @ContainerSrc,
+        @StartDate,
+        @EndDate,
+        @RefreshInterval,
+        @PageHeadText,
+        @IsSecure,
+        @PermanentRedirect,
+        @SiteMapPriority,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate(),
+        @CultureCode
+    )
+	DECLARE @TabId INT
+    SELECT @TabId = SCOPE_IDENTITY()
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+	SELECT @TabId
+    RETURN @TabId
+GO
+
+
+/*****************  Fix bug 21989 **********************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}UserRelationships_{objectQualifier}Users_OnRelatedUser]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRelationships]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}UserRelationships] DROP CONSTRAINT [FK_{objectQualifier}UserRelationships_{objectQualifier}Users_OnRelatedUser]
+GO
+ 
+ 
+ALTER TABLE {databaseOwner}[{objectQualifier}UserRelationships]
+WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}UserRelationships_{objectQualifier}Users_OnRelatedUser] FOREIGN KEY([RelatedUserID])
+REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}UserRelationships] CHECK CONSTRAINT [FK_{objectQualifier}UserRelationships_{objectQualifier}Users_OnRelatedUser]
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

@@ -1,0 +1,179 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* -- code to assign read access to existing portals Root folder -- */
+declare @permid as int
+select @permid = permissionid 
+from {databaseOwner}{objectQualifier}permission 
+where permissionkey='READ' and permissioncode='SYSTEM_FOLDER'
+
+INSERT INTO {databaseOwner}{objectQualifier}folderpermission (folderid,permissionid,roleid,allowaccess)
+SELECT folderid,@permid,-1,1
+FROM {databaseOwner}{objectQualifier}folders
+WHERE FolderPath = '' AND
+folderid not in (
+	SELECT {databaseOwner}{objectQualifier}folders.folderid
+	FROM {databaseOwner}{objectQualifier}Folders 
+	INNER JOIN {databaseOwner}{objectQualifier}FolderPermission ON {databaseOwner}{objectQualifier}Folders.FolderID = {databaseOwner}{objectQualifier}FolderPermission.FolderID
+	WHERE {databaseOwner}{objectQualifier}Folders.FolderPath = '' AND {databaseOwner}{objectQualifier}FolderPermission.RoleID = - 1
+)
+GO
+
+/* -- code to remove blank profiles -- */
+DELETE FROM {objectQualifier}Profile
+WHERE ProfileData LIKE '' OR ProfileData Is Null
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetAllProfiles
+AS
+SELECT * FROM {objectQualifier}Profile
+
+GO
+
+/* -- alter procedure to Retrive Url if it is a file (DNN-611)-- */
+ALTER  procedure {databaseOwner}{objectQualifier}GetTab
+
+@TabId    int
+
+as
+
+select TabID, 
+TabOrder, 
+{objectQualifier}Tabs.PortalID, 
+TabName, 
+IsVisible, 
+ParentId, 
+[Level], 
+DisableLink, 
+Title, 
+Description, 
+KeyWords, 
+IsDeleted, 
+'Url'= case when F2.FileName is null then {objectQualifier}Tabs.Url else F2.Folder + F2.FileName end, 
+SkinSrc, 
+ContainerSrc, 
+TabPath, 
+StartDate, 
+EndDate,
+'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files F2 on {objectQualifier}Tabs.Url = 'fileid=' + convert(varchar,F2.FileID)
+where  TabId = @TabId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddBanner
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddBanner
+
+@BannerName    nvarchar(100),
+@VendorId      int,
+@ImageFile     nvarchar(100),
+@URL           nvarchar(255),
+@Impressions   int,
+@CPM           float,
+@StartDate     datetime,
+@EndDate       datetime,
+@UserName      nvarchar(100),
+@BannerTypeId  int,
+@Description   nvarchar(2000),
+@GroupName     nvarchar(100),
+@Criteria      bit
+
+as
+
+insert into {objectQualifier}Banners (
+    VendorId,
+    ImageFile,
+    BannerName,
+    URL,
+    Impressions,
+    CPM,
+    Views,
+    ClickThroughs,
+    StartDate,
+    EndDate,
+    CreatedByUser,
+    CreatedDate,
+    BannerTypeId,
+    Description,
+    GroupName,
+    Criteria
+)
+values (
+    @VendorId,
+    @ImageFile,
+    @BannerName,
+    @URL,
+    @Impressions,
+    @CPM,
+    0,
+    0,
+    @StartDate,
+    @EndDate,
+    @UserName,
+    getdate(),
+    @BannerTypeId,
+    @Description,
+    @GroupName,
+    @Criteria
+)
+
+select SCOPE_IDENTITY()
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateBanner
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateBanner
+
+@BannerId     int,
+@BannerName   nvarchar(100),
+@ImageFile    nvarchar(100),
+@URL          nvarchar(255),
+@Impressions  int,
+@CPM          float,
+@StartDate    datetime,
+@EndDate      datetime,
+@UserName     nvarchar(100),
+@BannerTypeId int,
+@Description  nvarchar(2000),
+@GroupName    nvarchar(100),
+@Criteria     bit
+
+as
+
+update dnn_Banners
+set    ImageFile     = @ImageFile,
+       BannerName    = @BannerName,
+       URL           = @URL,
+       Impressions   = @Impressions,
+       CPM           = @CPM,
+       StartDate     = @StartDate,
+       EndDate       = @EndDate,
+       CreatedByUser = @UserName,
+       CreatedDate   = getdate(),
+       BannerTypeId  = @BannerTypeId,
+       Description   = @Description,
+       GroupName     = @GroupName,
+       Criteria      = @Criteria
+where  BannerId = @BannerId 
+
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

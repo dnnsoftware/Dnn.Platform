@@ -1,0 +1,116 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.ipFilterItems) {
+    margin: 20px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    display: block;
+    .ip-filter-items-grid {
+        border: solid 1px @alto;
+        margin: 20px 0 55px 0;
+        float: left;
+        width: 100%;
+    }
+    .header-row {
+        padding: 10px 0 10px 0;
+        width: 100%;
+        float: left;
+        overflow: hidden;
+    }
+    .header-RuleType {
+        width: 20%;
+        float: left;
+        font-weight: bolder;
+        padding-left: 15px;
+    }
+    .header-IPAddress {
+        width: 65%;
+        float: left;
+        font-weight: bolder;
+    }
+    .collapsible-component {
+        .collapsible-header {
+            text-align: right;
+            text-transform: none;
+            padding-right: 40px;
+            .collapse-icon {
+                display: none;
+                &.collapsed {
+                    display: none;
+                }
+            }
+        }
+    }
+    .ip-filter-topbar {
+        border-bottom: 1px solid @alto;
+        float: left;
+        width: 100%;
+        .warning-container {
+            width: 75%;
+            float: left;
+            margin: 10px 0 15px 0;
+            font-weight: bolder;
+            color: @alizarinCrimson;
+            .collapsible-content {
+                margin-top: 5px;
+                > div {
+                    border: solid 1px;
+                }
+            }
+            .warning-icon {
+                > svg {
+                    width: 17px;
+                    float: left;
+                    height: 17px;
+                    margin: 0 10px 0 0;
+                }
+            }
+        }
+        .AddItemRow {
+            text-align: right;
+            width: 25%;
+            float: right;
+            margin: 10px 0 15px 0;
+            font-weight: bolder;
+            overflow: hidden;
+            cursor: pointer;
+            .AddItemBox {
+                width: auto;
+                float: right;
+                color: @thunder;
+                .add-icon {
+                    margin-left: 20px;
+                    margin-right: 5px;
+                    float: left;
+                    cursor: pointer;
+                    svg {
+                        width: 16px;
+                        float: left;
+                        height: 16px;
+                        fill: @thunder;
+                    }
+                }
+            }
+            .AddItemBox-active {
+                width: auto;
+                float: right;
+                color: @curiousBlue;
+                .add-icon {
+                    margin-left: 20px;
+                    margin-right: 5px;
+                    float: left;
+                    cursor: pointer;
+                    svg {
+                        width: 16px;
+                        float: left;
+                        height: 16px;
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+        }
+    }
+    .ip-filter-item {
+        color: @thunder;
+    }
+}

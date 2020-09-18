@@ -1,0 +1,619 @@
+<?xml version="1.0"?>
+<xs:schema id="PortalTemplate" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified">
+  <xs:element name="portal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+        <xs:element name="settings" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="enableskinwidgets" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="enableautosave" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="timetoautosave" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="logofile" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="footertext" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="expirydate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="userregistration" type="userRegistrationEnum" minOccurs="0" maxOccurs="1" />
+              <xs:element name="banneradvertising" type="advertisingEnum" minOccurs="0" maxOccurs="1" />
+              <xs:element name="currency" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="hostfee" type="xs:double" minOccurs="0" maxOccurs="1" />
+              <xs:element name="hostspace" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="userquota" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="pagequota" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="backgroundfile" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="paymentprocessor" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="siteloghistory" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="defaultlanguage" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="timezoneoffset" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="timezone" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="skinsrc" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="skinsrcadmin" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="containersrc" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="containersrcadmin" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="portalaliasmapping" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="contentlocalizationenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="inlineeditorenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="enablepopups" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="hidefoldersenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelmode" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelsecurity" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelvisibility" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="injectmodulehyperlink" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="addcompatiblehttpheader" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="allowuseruiculture" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="enablebrowserlanguage" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="showcookieconsent" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="cookiemorelink" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentactive" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsenttermslastchange" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentconsentredirect" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentuserdeleteaction" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentdelay" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentdelaymeasurement" type="xs:string" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="sku" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="locales" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="locale" minOccurs="0" maxOccurs="unbounded">
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="extensionUrlProviders" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="extensionUrlProvider" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="active" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="settings" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="setting" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="name" type="xs:string"/>
+                              <xs:attribute name="value" type="xs:string"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="profiledefinitions" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="profiledefinition" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="propertycategory" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="propertyname" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="datatype" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="length" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="defaultvisibility" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="portalDesktopModules" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="portalDesktopModule" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="friendlyname" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="portalDesktopModulePermissions" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="portalDesktopModulePermission" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="permissioncode" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="permissionkey" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="rolename" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="allowaccess" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attribute name="sku" type="xs:string"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="rolegroups" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="rolegroup" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="rolegroupname" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="roles" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="role" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="rolename" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="servicefee" type="xs:double" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="billingperiod" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="billingfrequency" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="trialfee" type="xs:double" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="trialperiod" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="trialfrequency" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="ispublic" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="autoassignment" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="roletype" type="roleType" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="iconfile" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="rsvpcode" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="securitymode" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="status" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="issystemrole" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="roles" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="role" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="rolename" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="servicefee" type="xs:double" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="billingperiod" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="billingfrequency" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="trialfee" type="xs:double" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="trialperiod" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="trialfrequency" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ispublic" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="autoassignment" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="roletype" type="roleType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="iconfile" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="rsvpcode" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="issystemrole" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="tabs" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="tab" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Terms" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Term" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="ChildTerms " type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="ParentTermId" type="xs:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+                                <xs:element name="TermId" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="Weight" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="KeyID" type="xs:string" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="moduleID" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="contentKey" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="KeyID" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="tabtype" type="tabType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="keywords" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="visible" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="issecure" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="issystem" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="disabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="iconfile" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="iconfilelarge" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="parent" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="skinsrc" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="containersrc" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="sitemappriority" type="xs:float" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="cultureCode" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="defaultLanguageTab" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="UseBaseFriendlyUrls" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="url" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base='xs:string'>
+                            <xs:attribute name="type" type="xs:string"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="startdate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="enddate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="tabpermissions" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="permission" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="permissioncode" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="permissionkey" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="rolename" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="allowaccess" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="tabsettings" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="tabsetting" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="settingname" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="settingvalue" type="xs:string" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="tabUrls" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="tabUrl" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="SeqNum" type="xs:string"/>
+                              <xs:attribute name="Url" type="xs:string"/>
+                              <xs:attribute name="QueryString" type="xs:string"/>
+                              <xs:attribute name="HttpStatus" type="xs:string"/>
+                              <xs:attribute name="CultureCode" type="xs:string"/>
+                              <xs:attribute name="IsSystem" type="xs:string"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="refreshinterval" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="permanentredirect" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="panes" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="pane" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="modules" minOccurs="0" maxOccurs="1">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="module" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                          <xs:all>
+                                            <xs:element name="moduleID" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="Terms" maxOccurs="1" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="Term" minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                      <xs:all>
+                                                        <xs:element name="ChildTerms " type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="ParentTermId" type="xs:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+                                                        <xs:element name="TermId" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="Weight" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="KeyID" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                      </xs:all>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="KeyID" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="contentKey" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="ownerportalid" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="alignment" type="alignmentEnum" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="showtitle" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="alltabs" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="cachetime" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="cachemethod" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="visibility" type="visibilityEnum" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="iconfile" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="color" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="border" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="header" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="footer" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="startdate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="enddate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="containersrc" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="inheritviewpermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="displaytitle" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="displayprint" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="displaysyndicate" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="iswebslice" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="webslicetitle" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="websliceexpirydate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="webslicettl" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="definition" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                            <xs:element name="moduledefinition" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="uniqueId" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="cultureCode" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="defaultLanguageGuid" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                            <xs:element name="content" nillable="true" minOccurs="0" maxOccurs="1">
+                                              <xs:complexType>
+                                                <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                    <xs:attribute name="version" form="unqualified" type="xs:string" />
+                                                    <xs:attribute name="type" form="unqualified" type="xs:string" />
+                                                  </xs:extension>
+                                                </xs:simpleContent>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="modulepermissions" maxOccurs="1" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="permission" minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                      <xs:all>
+                                                        <xs:element name="permissioncode" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="permissionkey" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="rolename" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="allowaccess" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                      </xs:all>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="modulesettings" maxOccurs="1" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="modulesetting" minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                      <xs:all>
+                                                        <xs:element name="settingname" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="settingvalue" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                      </xs:all>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="tabmodulesettings" maxOccurs="1" minOccurs="0">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="tabmodulesetting" minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                      <xs:all>
+                                                        <xs:element name="settingname" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                        <xs:element name="settingvalue" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                                      </xs:all>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:all>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="layouts" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="layout" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="control" type="xs:string" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                              <xs:attribute name="id" form="unqualified" type="xs:integer" />
+                              <xs:attribute name="paneName" form="unqualified" type="xs:string" />
+                              <xs:attribute name="position" form="unqualified" type="xs:integer" />
+                              <xs:attribute name="columnSizes" form="unqualified" type="xs:string" />
+                              <xs:attribute name="enabled" form="unqualified" type="xs:string" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attribute name="sku" type="xs:string"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="folders" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="folder" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="folderpath" type="xs:string" />
+                    <xs:element name="storagelocation" type="xs:integer" maxOccurs="1" minOccurs="0" />
+                    <xs:element name="isprotected" type="xs:boolean" maxOccurs="1" minOccurs="0" />
+                    <xs:element name="folderpermissions" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="permission" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="permissioncode" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="permissionkey" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="rolename" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="allowaccess" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="files" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="file" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="filename" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="extension" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="size" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="width" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="height" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="contenttype" type="xs:string" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="TemplateVersion" use="optional" />
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="roleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="adminrole">
+      </xs:enumeration>
+      <xs:enumeration value="registeredrole">
+      </xs:enumeration>
+      <xs:enumeration value="subscriberrole">
+      </xs:enumeration>
+      <xs:enumeration value="unverifiedrole">
+      </xs:enumeration>
+      <xs:enumeration value="none">
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="userRegistrationEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>None</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Private</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Public</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Verified</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="advertisingEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>None</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Site</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Host</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="tabType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="hometab"/>
+      <xs:enumeration value="usertab"/>
+      <xs:enumeration value="logintab"/>
+      <xs:enumeration value="splashtab"/>
+      <xs:enumeration value="404tab"/>
+      <xs:enumeration value="500tab"/>
+      <xs:enumeration value="searchtab"/>
+      <xs:enumeration value="termstab"/>
+      <xs:enumeration value="privacytab"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="alignmentEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="left">
+      </xs:enumeration>
+      <xs:enumeration value="right">
+      </xs:enumeration>
+      <xs:enumeration value="center">
+      </xs:enumeration>
+      <xs:enumeration value="">
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="visibilityEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Maximized">
+      </xs:enumeration>
+      <xs:enumeration value="Minimized">
+      </xs:enumeration>
+      <xs:enumeration value="None">
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TemplateVersion">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{1}\.\d{1}" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

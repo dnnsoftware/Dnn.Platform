@@ -1,0 +1,50 @@
+﻿@{
+    if (IsPost)  {
+        var errors = false;
+        var companyname = Request["companyname"];
+        if (companyname.IsEmpty()) {
+            errors = true;
+            @:Company name is required.<br />
+        }
+        var contactname = Request["contactname"];
+        if (contactname.IsEmpty()) {
+            errors = true;
+            @:Contact name is required.<br />
+        }
+        var employeecount = 0;
+        if (Request["employees"].IsInt()) {
+            employeecount = Request["employees"].AsInt();
+        } else {
+            errors = true;
+            @:Employee count must be a number.<br />
+        }
+        if (errors == false) {
+            <text>
+              You entered: <br />
+              Company Name: @companyname <br />
+              Contact Name: @contactname <br />
+              Employee Count: @employeecount <br />
+            </text>
+        }    
+    }
+}
+<fieldset>
+    <legend>Add Customer</legend>
+    <div>
+        <label for="CompanyName">Company Name:</label>
+        <input type="text" name="CompanyName" value="@Request["companyname"]" />
+    </div>
+    <div>
+        <label for="ContactName">Contact Name:</label>
+        <input type="text" name="ContactName" value="@Request["contactname"]" />
+    </div>
+    <div>
+        <label for="Employees">Employee Count:</label>
+        <input type="text" name="Employees" value="@Request["employees"]" />
+    </div>
+    <div>
+        <label>
+            &nbsp;</label>
+        <input type="submit" value="Submit" class="submit" />
+    </div>
+</fieldset>

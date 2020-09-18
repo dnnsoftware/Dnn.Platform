@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <language name="English" key="en-US" fallback="" />
+  <language name="Français" key="fr-FR" fallback="en-US" />
+  <language name="Deutsch" key="de-DE" fallback="en-US" />
+  <language name="Español" key="es-ES" fallback="en-US" />
+  <language name="Italiano" key="it-IT" fallback="en-US" />
+  <language name="Nederlands" key="nl-NL" fallback="en-US" />
+</root>

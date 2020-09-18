@@ -1,0 +1,88 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* DNN-7198 */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}Roles_RoleID_Status')
+	DROP INDEX [IX_{objectQualifier}Roles_RoleID_Status] ON {databaseOwner}[{objectQualifier}Roles] 
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Roles_RoleID_Status] ON {databaseOwner}[{objectQualifier}Roles]
+(
+	 [RoleID] ASC,
+	 [Status] ASC
+)
+	INCLUDE ( 
+	[PortalID],
+	[RoleName],
+	[Description],
+	[ServiceFee],
+	[BillingFrequency],
+	[TrialPeriod],
+	[TrialFrequency],
+	[BillingPeriod],
+	[TrialFee],
+	[IsPublic],
+	[AutoAssignment],
+	[RoleGroupID],
+	[RSVPCode],
+	[IconFile],
+	[SecurityMode]) 
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_RoleID_UserID')
+	DROP INDEX [IX_{objectQualifier}UserRoles_RoleID_UserID] ON {databaseOwner}[{objectQualifier}UserRoles]
+GO
+
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_RoleID_UserID] ON {databaseOwner}[{objectQualifier}UserRoles]
+(
+	 [RoleID] ASC,
+	 [UserID] ASC
+)
+INCLUDE ( 
+	[UserRoleID],
+	[ExpiryDate],
+	[IsTrialUsed],
+	[EffectiveDate],
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate],
+	[Status],
+	[IsOwner])
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_UserName_UserID')
+	DROP INDEX [IX_{objectQualifier}Users_UserName_UserID] ON {databaseOwner}[{objectQualifier}Users] 
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Users_UserName_UserID] ON {databaseOwner}[{objectQualifier}Users]
+(
+	[Username] ASC,
+	[UserID] ASC
+)
+INCLUDE ( 
+	[FirstName],
+	[LastName],
+	[IsSuperUser],
+	[AffiliateId],
+	[Email],
+	[DisplayName],
+	[UpdatePassword],
+	[LastIPAddress],
+	[IsDeleted],
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate],
+	[PasswordResetToken],
+	[PasswordResetExpiration])
+GO
+

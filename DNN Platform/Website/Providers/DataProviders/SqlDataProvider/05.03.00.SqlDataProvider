@@ -1,0 +1,1801 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Add ContentItemID Column to Tabs Table */
+/******************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='ContentItemID')
+	BEGIN
+		-- Add new Column
+		ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+			ADD ContentItemID int NULL
+	END
+
+GO
+
+/* Add ContentItemID Column to Modules Table */
+/*********************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Modules' AND COLUMN_NAME='ContentItemID')
+	BEGIN
+		-- Add new Column
+		ALTER TABLE {databaseOwner}{objectQualifier}Modules
+			ADD ContentItemID int NULL
+	END
+
+GO
+
+/* Add ContentTypes Table */
+/**************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}ContentTypes]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes]
+		(
+			[ContentTypeID] [int] IDENTITY(1,1) NOT NULL,
+			[ContentType] [nvarchar](100) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes] PRIMARY KEY CLUSTERED ( [ContentTypeID] ASC )
+		)
+	END
+GO
+
+/* Add ContentItems Table */
+/**************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}ContentItems]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentItems]
+		(
+			[ContentItemID] [int] IDENTITY(1,1) NOT NULL,
+			[Content] [nvarchar](max) NULL,
+			[ContentTypeID] [int] NOT NULL,
+			[TabID] [int] NOT NULL,
+			[ModuleID] [int] NOT NULL,
+			[ContentKey] [nvarchar](250) NULL,
+			[Indexed] [bit] NOT NULL,
+			[CreatedByUserID] [int] NULL,
+			[CreatedOnDate] [datetime] NULL,
+			[LastModifiedByUserID] [int] NULL,
+			[LastModifiedOnDate] [datetime] NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentItems] PRIMARY KEY CLUSTERED ( [ContentItemID] ASC )
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems] 
+			ADD  CONSTRAINT [DF_{objectQualifier}ContentItems_Indexed] DEFAULT ((0)) FOR [Indexed]	
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Modules]
+			ADD  CONSTRAINT [FK_{objectQualifier}Modules_{objectQualifier}ContentItems] FOREIGN KEY([ContentItemID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID])
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] 
+			ADD  CONSTRAINT [FK_{objectQualifier}Tabs_{objectQualifier}ContentItems] FOREIGN KEY([ContentItemID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID])
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems]  
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentItems_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])	
+	END
+GO
+	
+/* Update Tabs View to Include ContentItemID */
+/*********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') AND OBJECTPROPERTY(id, N'IsVIEW') = 1)
+  DROP VIEW {databaseOwner}{objectQualifier}vw_Tabs
+GO
+	
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Tabs
+AS
+	SELECT     
+		T.TabID, 
+		T.TabOrder, 
+		T.PortalID, 
+		T.TabName, 
+		T.IsVisible, 
+		T.ParentId, 
+		T.[Level], 
+        CASE WHEN LEFT(LOWER(T.IconFile), 7) = 'fileid=' THEN
+                  (SELECT Folder + FileName
+                    FROM  {databaseOwner}{objectQualifier}Files
+                    WHERE fileid = CAST((RIGHT(LOWER(T.IconFile), Len(T.IconFile) - 7)) AS int)) ELSE T.IconFile END AS IconFile, 
+        CASE WHEN LEFT(LOWER(T.IconFileLarge), 7) = 'fileid=' THEN
+                  (SELECT Folder + FileName
+                    FROM  {databaseOwner}{objectQualifier}Files
+                    WHERE fileid = CAST((RIGHT(LOWER(T.IconFileLarge), Len(T.IconFileLarge) - 7)) AS int)) ELSE T.IconFileLarge END AS IconFileLarge, 
+		T.DisableLink, 
+		T.Title, 
+		T.Description, 
+		T.KeyWords, 
+		T.IsDeleted, 
+		T.SkinSrc, 
+		T.ContainerSrc, 
+		T.TabPath, 
+		T.StartDate, 
+		T.EndDate, 
+		T.Url, 
+		CASE WHEN EXISTS (SELECT  1 FROM {databaseOwner}{objectQualifier}Tabs T2 WHERE T2.ParentId = T.TabId) THEN 'true' ELSE 'false' END AS HasChildren, 
+		T.RefreshInterval, 
+		T.PageHeadText, 
+		T.IsSecure, 
+		T.PermanentRedirect, 
+		T.SiteMapPriority,
+		CI.ContentItemID,
+		CI.Content,
+		CI.ContentTypeID, 
+		CI.ModuleID, 
+		CI.ContentKey,
+		CI.Indexed,
+		T.CreatedByUserID, 
+		T.CreatedOnDate, 
+		T.LastModifiedByUserID, 
+		T.LastModifiedOnDate
+	FROM {databaseOwner}{objectQualifier}Tabs AS T
+		LEFT OUTER JOIN  {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+
+GO
+
+/* Update AddTab Stored Procedure */
+/**********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddTab
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddTab
+	@ContentItemID		int,
+	@PortalID           int,
+	@TabName            nvarchar(50),
+	@IsVisible          bit,
+	@DisableLink        bit,
+	@ParentId           int,
+	@IconFile           nvarchar(100),
+	@IconFileLarge      nvarchar(100),
+	@Title              nvarchar(200),
+	@Description        nvarchar(500),
+	@KeyWords           nvarchar(500),
+	@Url                nvarchar(255),
+	@SkinSrc            nvarchar(200),
+	@ContainerSrc       nvarchar(200),
+	@TabPath            nvarchar(255),
+	@StartDate          datetime,
+	@EndDate            datetime,
+	@RefreshInterval    int,
+	@PageHeadText	    nvarchar(500),
+	@IsSecure           bit,
+	@PermanentRedirect	bit,
+	@SiteMapPriority	float,
+	@CreatedByUserID	int,
+	@CultureCode		nvarchar(50)
+
+AS
+
+	INSERT INTO {databaseOwner}{objectQualifier}Tabs (
+		ContentItemID,
+		PortalID,
+		TabName,
+		IsVisible,
+		DisableLink,
+		ParentId,
+		IconFile,
+		IconFileLarge,
+		Title,
+		Description,
+		KeyWords,
+		IsDeleted,
+		Url,
+		SkinSrc,
+		ContainerSrc,
+		TabPath,
+		StartDate,
+		EndDate,
+		RefreshInterval,
+		PageHeadText,
+		IsSecure,
+		PermanentRedirect,
+		SiteMapPriority,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	)
+	VALUES (
+		@ContentItemID,
+		@PortalID,
+		@TabName,
+		@IsVisible,
+		@DisableLink,
+		@ParentId,
+		@IconFile,
+		@IconFileLarge,
+		@Title,
+		@Description,
+		@KeyWords,
+		0,
+		@Url,
+		@SkinSrc,
+		@ContainerSrc,
+		@TabPath,
+		@StartDate,
+		@EndDate,
+		@RefreshInterval,
+		@PageHeadText,
+		@IsSecure,
+		@PermanentRedirect,
+		@SiteMapPriority,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@CultureCode
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Update UpdateTab Stored Procedure */
+/*************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTab
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateTab
+	@TabId					int,
+	@ContentItemID			int,
+	@PortalId				int,
+	@TabName				nvarchar(50),
+	@IsVisible				bit,
+	@DisableLink			bit,
+	@ParentId				int,
+	@IconFile				nvarchar(100),
+	@IconFileLarge			nvarchar(100),
+	@Title					nvarchar(200),
+	@Description			nvarchar(500),
+	@KeyWords				nvarchar(500),
+	@IsDeleted				bit,
+	@Url					nvarchar(255),
+	@SkinSrc				nvarchar(200),
+	@ContainerSrc			nvarchar(200),
+	@TabPath				nvarchar(255),
+	@StartDate				datetime,
+	@EndDate				datetime,
+	@RefreshInterval		int,
+	@PageHeadText			nvarchar(500),
+	@IsSecure				bit,
+	@PermanentRedirect		bit,
+	@SiteMapPriority		float,
+	@LastModifiedByUserID	int,
+	@CultureCode			nvarchar(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Tabs
+		SET
+		    ContentItemID			= @ContentItemID,
+		    PortalId				= @PortalId,
+		    TabName					= @TabName,
+			IsVisible				= @IsVisible,
+			DisableLink				= @DisableLink,
+			ParentId				= @ParentId,
+			IconFile				= @IconFile,
+			IconFileLarge			= @IconFileLarge,
+			Title					= @Title,
+			Description				= @Description,
+			KeyWords				= @KeyWords,
+			IsDeleted				= @IsDeleted,
+			Url						= @Url,
+			SkinSrc					= @SkinSrc,
+			ContainerSrc			= @ContainerSrc,
+			TabPath					= @TabPath,
+			StartDate				= @StartDate,
+			EndDate					= @EndDate,
+			RefreshInterval			= @RefreshInterval,
+			PageHeadText			= @PageHeadText,
+			IsSecure				= @IsSecure,
+			PermanentRedirect		= @PermanentRedirect,
+			SiteMapPriority			= @SiteMapPriority,
+			LastModifiedByUserID	= @LastModifiedByUserID,
+			LastModifiedOnDate		= getdate(),
+			CultureCode				= @CultureCode
+	WHERE  TabId = @TabId
+
+GO
+
+/* Update Modules View */
+/***********************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_Modules]') AND OBJECTPROPERTY(id, N'IsVIEW') = 1)
+  DROP VIEW {databaseOwner}{objectQualifier}vw_Modules
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Modules
+AS
+	SELECT     
+		M.PortalID, 
+		TM.TabID, 
+		TM.TabModuleID, 
+		M.ModuleID, 
+		M.ModuleDefID, 
+		TM.ModuleOrder, 
+		TM.PaneName, 
+		M.ModuleTitle, 
+		TM.CacheTime, 
+		TM.CacheMethod, 
+		TM.Alignment, 
+		TM.Color, 
+		TM.Border, 
+		CASE WHEN LEFT(LOWER(TM.IconFile), 6) = 'fileid' THEN (SELECT Folder + FileName FROM {databaseOwner}{objectQualifier}Files WHERE 'fileid=' + CONVERT(varchar, {databaseOwner}{objectQualifier}Files.FileID) = TM.IconFile) ELSE TM.IconFile END AS IconFile, 
+		M.AllTabs, 
+		TM.Visibility, 
+		TM.IsDeleted, 
+		M.Header, 
+		M.Footer, 
+		M.StartDate, 
+		M.EndDate, 
+		TM.ContainerSrc, 
+		TM.DisplayTitle, 
+		TM.DisplayPrint, 
+		TM.DisplaySyndicate, 
+		TM.IsWebSlice, 
+		TM.WebSliceTitle, 
+		TM.WebSliceExpiryDate, 
+		TM.WebSliceTTL, 
+		M.InheritViewPermissions, 
+		MD.DesktopModuleID, 
+		MD.DefaultCacheTime, 
+		MC.ModuleControlID, 
+		DM.BusinessControllerClass, 
+		DM.IsAdmin, 
+		DM.SupportedFeatures,
+		CI.ContentItemID,
+		CI.Content,
+		CI.ContentTypeID,
+		CI.ContentKey,
+		CI.Indexed,
+		M.CreatedByUserID, 
+		M.CreatedOnDate, 
+		M.LastModifiedByUserID, 
+		M.LastModifiedOnDate
+	FROM {databaseOwner}{objectQualifier}ModuleDefinitions AS MD 
+		INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON MD.ModuleDefID = M.ModuleDefID 
+		INNER JOIN {databaseOwner}{objectQualifier}ModuleControls AS MC ON MD.ModuleDefID = MC.ModuleDefID 
+		INNER JOIN {databaseOwner}{objectQualifier}DesktopModules AS DM ON MD.DesktopModuleID = DM.DesktopModuleID 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON M.ContentItemID = CI.ContentItemID
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}TabModules AS TM ON M.ModuleID = TM.ModuleID
+	WHERE (MC.ControlKey IS NULL)
+
+GO
+
+/* Update AddModule Stored Procedure */
+/*************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddModule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddModule
+	@ContentItemID				int,
+	@PortalID					int,
+	@ModuleDefId				int,
+	@ModuleTitle				nvarchar(256),
+	@AllTabs					bit,
+	@Header						ntext,
+	@Footer						ntext,
+	@StartDate					datetime,
+	@EndDate					datetime,
+	@InheritViewPermissions     bit,
+	@IsDeleted					bit,
+	@CreatedByUserID  			int
+	
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Modules (
+		ContentItemID, 
+		PortalId,
+		ModuleDefId,
+		ModuleTitle,
+		AllTabs,
+		Header,
+		Footer, 
+		StartDate,
+		EndDate,
+		InheritViewPermissions,
+		IsDeleted,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+	values (
+		@ContentItemID,
+		@PortalID,
+		@ModuleDefId,
+		@ModuleTitle,
+		@AllTabs,
+		@Header,
+		@Footer, 
+		@StartDate,
+		@EndDate,
+		@InheritViewPermissions,
+		@IsDeleted,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Update UpdateModule Stored Procedure */
+/****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateModule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateModule
+	@ModuleId               int,
+	@ContentItemID			int,
+	@ModuleTitle            nvarchar(256),
+	@AllTabs                bit, 
+	@Header                 ntext,
+	@Footer                 ntext,
+	@StartDate              datetime,
+	@EndDate                datetime,
+	@InheritViewPermissions	bit,
+	@IsDeleted              bit,
+	@LastModifiedByUserID  	int
+	
+AS
+UPDATE	{databaseOwner}{objectQualifier}Modules
+	SET		
+			ContentItemID = @ContentItemID,
+			ModuleTitle = @ModuleTitle,
+			AllTabs = @AllTabs,
+			Header = @Header,
+			Footer = @Footer, 
+			StartDate = @StartDate,
+			EndDate = @EndDate,
+			InheritViewPermissions = @InheritViewPermissions,
+			IsDeleted = @IsDeleted,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+WHERE  ModuleId = @ModuleId
+
+GO
+
+/* Add ContentItems_Tags Table */
+/*******************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}ContentItems_Tags]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentItems_Tags]
+		(
+			[ContentItemTagID] [int] IDENTITY(1,1) NOT NULL,
+			[ContentItemID] [int] NOT NULL,
+			[TermID] [int] NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentItems_Tags] PRIMARY KEY CLUSTERED ( [ContentItemTagID] ASC )
+		)
+
+		CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_Tags] ON {databaseOwner}[{objectQualifier}ContentItems_Tags]
+		(
+			[ContentItemID] ASC,
+			[TermID] ASC
+		)
+	END
+GO
+
+/* Add ScopeTypes Table */
+/************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Taxonomy_ScopeTypes]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes
+		(
+			[ScopeTypeID] [int] IDENTITY(1,1) NOT NULL,
+			[ScopeType] [nvarchar](250) NULL
+			CONSTRAINT [PK_{objectQualifier}ScopeTypes] PRIMARY KEY CLUSTERED ( [ScopeTypeID] ASC )
+		)
+	END
+GO
+
+/* Add VocabularyTypes Table */
+/*****************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Taxonomy_VocabularyTypes]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes
+		(
+			[VocabularyTypeID] [int] IDENTITY(1,1) NOT NULL,
+			[VocabularyType] [nvarchar](50) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}Taxonomy_VocabularyType] PRIMARY KEY CLUSTERED ( [VocabularyTypeID] ASC )
+		)
+
+	END
+GO
+
+/* Add Vocabularies Table */
+/**************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Taxonomy_Vocabularies]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}Taxonomy_Vocabularies
+		(
+			[VocabularyID] [int] IDENTITY(1,1) NOT NULL,
+			[VocabularyTypeID] [int] NOT NULL,
+			[Name] [nvarchar](250) NOT NULL,
+			[Description] [nvarchar](2500) NULL,
+			[Weight] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}Taxonomy_Vocabularies_Weight]  DEFAULT ((0)),
+			[ScopeID] [int] NULL,
+			[ScopeTypeID] [int] NOT NULL,
+			[CreatedByUserID] [int] NULL,
+			[CreatedOnDate] [datetime] NULL,
+			[LastModifiedByUserID] [int] NULL,
+			[LastModifiedOnDate] [datetime] NULL,
+			CONSTRAINT [PK_{objectQualifier}Taxonomy_Vocabulary] PRIMARY KEY CLUSTERED ( [VocabularyID] ASC )
+		)
+
+	ALTER TABLE  {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies]  WITH CHECK 
+		ADD CONSTRAINT [FK_{objectQualifier}Taxonomy_Vocabularies_{objectQualifier}Taxonomy_ScopeTypes] FOREIGN KEY([ScopeTypeID]) REFERENCES {databaseOwner}[{objectQualifier}Taxonomy_ScopeTypes] ([ScopeTypeID]) ON DELETE CASCADE
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies]  WITH CHECK 
+		ADD CONSTRAINT [FK_{objectQualifier}Taxonomy_Vocabularies_{objectQualifier}Taxonomy_VocabularyTypes] FOREIGN KEY([VocabularyTypeID]) REFERENCES {databaseOwner}[{objectQualifier}Taxonomy_VocabularyTypes] ([VocabularyTypeID])
+	END
+GO
+
+/* Add Terms Table */
+/*******************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Taxonomy_Terms]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}Taxonomy_Terms
+		(
+			[TermID] [int] IDENTITY(1,1) NOT NULL,
+			[VocabularyID] [int] NOT NULL,
+			[ParentTermID] [int] NULL,
+			[Name] [nvarchar](250) NOT NULL,
+			[Description] [nvarchar](2500) NULL,
+			[Weight] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}Taxonomy_Terms_Weight]  DEFAULT ((0)),
+			[TermLeft] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}Taxonomy_Terms_TermLeft]  DEFAULT ((0)),
+			[TermRight] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}Taxonomy_Terms_TermRight]  DEFAULT ((0)),
+			[CreatedByUserID] [int] NULL,
+			[CreatedOnDate] [datetime] NULL,
+			[LastModifiedByUserID] [int] NULL,
+			[LastModifiedOnDate] [datetime] NULL,
+			CONSTRAINT [PK_{objectQualifier}Taxonomy_Terms] PRIMARY KEY CLUSTERED ( [TermID] ASC )
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Terms]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}Taxonomy_Terms_{objectQualifier}Taxonomy_Vocabularies] FOREIGN KEY([VocabularyID]) REFERENCES {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] ([VocabularyID]) ON DELETE CASCADE
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Terms]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}Taxonomy_Terms_{objectQualifier}Taxonomy_Terms] FOREIGN KEY([ParentTermID]) REFERENCES {databaseOwner}[{objectQualifier}Taxonomy_Terms] ([TermID])
+	END
+
+GO
+
+/* Add AddContentItem Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddContentItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddContentItem
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddContentItem] 
+	@Content			nvarchar(max),
+	@ContentTypeID		int,
+	@TabID				int,
+	@ModuleID			int, 
+	@ContentKey			nvarchar(250),
+	@Indexed			bit,
+	@CreatedByUserID	int
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}ContentItems (
+		Content,
+		ContentTypeID,
+		TabID,
+		ModuleID,
+		ContentKey,
+		Indexed,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+
+	VALUES (
+		@Content,
+		@ContentTypeID,
+		@TabID,
+		@ModuleID,
+		@ContentKey,
+		@Indexed,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Add DeleteContentItem Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteContentItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteContentItem
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteContentItem] 
+	@ContentItemId			int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}ContentItems
+	WHERE ContentItemId = @ContentItemId
+
+GO
+
+/* Add GetContentItem Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetContentItem
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItem] 
+	@ContentItemId			int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}ContentItems
+	WHERE ContentItemId = @ContentItemId
+GO
+
+/* Add GetContentItemsByTerm Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItemsByTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetContentItemsByTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByTerm] 
+	@Term	nvarchar(250)
+AS
+	DECLARE @TermID			int
+	DECLARE @TermLeft		int
+	DECLARE @TermRight		int
+	DECLARE @VocabularyID	int
+	
+	SET @TermID = (SELECT TermID FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE Name = @Term)
+	SET @TermLeft = (SELECT TermLeft FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE Name = @Term)
+	SET @TermRight = (SELECT TermRight FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE Name = @Term)
+	SET @VocabularyID = (SELECT VocabularyID FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE Name = @Term)
+	
+	IF @TermLeft = 0 AND @TermRight = 0
+		-- Simple Term
+		BEGIN
+			SELECT c.*
+			FROM {databaseOwner}{objectQualifier}ContentItems As c
+				INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags ct ON ct.ContentItemID = c.ContentItemID
+				INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms t ON t.TermID = ct.TermID
+			WHERE t.TermID = @TermID
+		END
+	ELSE
+		BEGIN
+		-- Hierarchical Term
+			SELECT c.*
+			FROM {databaseOwner}{objectQualifier}ContentItems As c
+				INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags ct ON ct.ContentItemID = c.ContentItemID
+				INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms t ON t.TermID = ct.TermID
+			WHERE t.TermLeft >= @TermLeft
+				AND t.TermRight <= @TermRight
+				AND t.VocabularyID = @VocabularyID
+		END
+GO
+
+/* Add GetUnIndexedContentItems Procedure */
+/**************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUnIndexedContentItems]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetUnIndexedContentItems
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUnIndexedContentItems] 
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}ContentItems
+	WHERE Indexed = 0
+GO
+
+/* Add UpdateContentItem Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateContentItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateContentItem
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateContentItem] 
+	@ContentItemID			int,
+	@Content				nvarchar(max),
+	@ContentTypeID			int,
+	@TabID					int,
+	@ModuleID				int, 
+	@ContentKey				nvarchar(250),
+	@Indexed				bit,
+	@LastModifiedByUserID	int
+AS
+	UPDATE {databaseOwner}{objectQualifier}ContentItems 
+		SET 
+			Content = @Content,
+			ContentTypeID = @ContentTypeID,
+			TabID = @TabID,
+			ModuleID = @ModuleID,
+			ContentKey = @ContentKey,
+			Indexed = @Indexed,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+	WHERE ContentItemId = @ContentItemId
+		
+GO
+
+/* Add AddScopeType Procedure */
+/******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddScopeType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddScopeType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddScopeType] 
+	@ScopeType			nvarchar(250)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes (
+		ScopeType
+	)
+
+	VALUES (
+		@ScopeType
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Add DeleteScopeType Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteScopeType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteScopeType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteScopeType] 
+	@ScopeTypeId			int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes
+	WHERE ScopeTypeId = @ScopeTypeId
+
+GO
+
+/* Add GetScopeTypes Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetScopeTypes]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetScopeTypes
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetScopeTypes] 
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes
+GO
+
+/* Add UpdateScopeType Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateScopeType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateScopeType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateScopeType] 
+	@ScopeTypeId				int,
+	@ScopeType					nvarchar(250)
+AS
+	UPDATE {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes 
+		SET 
+			ScopeType = @ScopeType
+	WHERE ScopeTypeId = @ScopeTypeId
+		
+GO
+
+/* Add AddHeirarchicalTerm Procedure */
+/*************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddHeirarchicalTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddHeirarchicalTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddHeirarchicalTerm] 
+	@VocabularyID		int,
+	@ParentTermID		int,
+	@Name				nvarchar(250),
+	@Description		nvarchar(2500),
+	@Weight				int,
+	@CreatedByUserID	int
+AS
+
+	DECLARE @Left int
+	
+	-- Get Left value of Sibling that we are inserting before
+	SET @Left = (SELECT TOP 1 TermLeft FROM {databaseOwner}{objectQualifier}Taxonomy_Terms 
+						WHERE VocabularyID = @VocabularyID 
+							AND ParentTermID = @ParentTermID
+							AND Name > @Name
+						ORDER BY Name)
+						
+	-- Term is to be inserted at end of sibling list so get the Right value of the parent, which will become our new left value						
+	IF @Left IS NULL
+		SET @Left = (SELECT TermRight FROM {databaseOwner}{objectQualifier}Taxonomy_Terms 
+							WHERE VocabularyID = @VocabularyID 
+								AND TermID = @ParentTermID)
+								
+	-- Left is still null means this is the first term in this vocabulary - set the Left to 1
+	IF @Left IS NULL
+		SET @Left = 1
+								
+	BEGIN TRANSACTION
+		-- Update Left values for all items that are after new term
+		UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+			SET TermLeft = TermLeft + 2 
+			WHERE TermLeft >= @Left
+				AND VocabularyID = @VocabularyID
+
+		IF @@ERROR = 0
+			BEGIN
+			-- Update Right values for all items that are after new term
+				UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+					SET TermRight = TermRight + 2 
+					WHERE TermRight >= @Left
+						AND VocabularyID = @VocabularyID
+
+				IF @@ERROR = 0
+					BEGIN
+							-- Insert new term
+							INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_Terms (
+								VocabularyID,
+								ParentTermID,
+								[Name],
+								Description,
+								Weight,
+								TermLeft,
+								TermRight,
+								CreatedByUserID,
+								CreatedOnDate,
+								LastModifiedByUserID,
+								LastModifiedOnDate
+							)
+
+							VALUES (
+								@VocabularyID,
+								@ParentTermID,
+								@Name,
+								@Description,
+								@Weight,
+								@Left,
+								@Left + 1,
+								@CreatedByUserID,
+								getdate(),
+								@CreatedByUserID,
+								getdate()
+							)
+
+							SELECT SCOPE_IDENTITY()
+
+							IF @@ERROR = 0
+								BEGIN
+									COMMIT TRANSACTION
+								END
+							ELSE
+								BEGIN
+									-- Rollback the transaction
+									ROLLBACK TRANSACTION		
+								END
+						END
+				ELSE
+					BEGIN
+						-- Rollback the transaction
+						ROLLBACK TRANSACTION
+					END
+			END
+		ELSE
+			BEGIN
+				-- Rollback the transaction
+				ROLLBACK TRANSACTION		
+			END
+
+GO
+
+/* Add AddSimpleTerm Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSimpleTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddSimpleTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddSimpleTerm] 
+	@VocabularyID		int,
+	@Name				nvarchar(250),
+	@Description		nvarchar(2500),
+	@Weight				int,
+	@CreatedByUserID	int
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_Terms (
+		VocabularyID,
+		[Name],
+		Description,
+		Weight,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+
+	VALUES (
+		@VocabularyID,
+		@Name,
+		@Description,
+		@Weight,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Add AddTermToContent Procedure */
+/**********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTermToContent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddTermToContent
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTermToContent] 
+	@TermID			int,
+	@ContentItemID	int
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}ContentItems_Tags (
+		TermID,
+		ContentItemID
+	)
+
+	VALUES (
+		@TermID,
+		@ContentItemID
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Add DeleteHeirarchicalTerm Procedure */
+/****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteHeirarchicalTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteHeirarchicalTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteHeirarchicalTerm] 
+	@TermId			int
+AS
+
+	DECLARE @Left			int
+	DECLARE @Right			int
+	DECLARE @VocabularyID	int
+	DECLARE @Width			int
+	
+	SET @Left = (SELECT TermLeft FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE TermID = @TermID)
+	SET @Right = (SELECT TermRight FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE TermID = @TermID)
+	SET @VocabularyID = (SELECT VocabularyID FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE TermID = @TermID)
+	SET @Width = @Right - @Left + 1
+	
+
+	BEGIN TRANSACTION
+		-- Delete term(s)
+		DELETE FROM {databaseOwner}{objectQualifier}Taxonomy_Terms
+		WHERE TermLeft > = @Left AND TermLeft > 0 
+			AND TermRight <= @Right AND TermRight > 0
+				AND VocabularyID = @VocabularyID
+
+		IF @@ERROR = 0
+			BEGIN
+				-- Update Left values for all items that are after deleted term
+				UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+					SET TermLeft = TermLeft - @Width 
+					WHERE TermLeft >= @Left + @Width
+						AND VocabularyID = @VocabularyID
+
+				IF @@ERROR = 0
+					BEGIN
+					-- Update Right values for all items that are after deleted term
+						UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+							SET TermRight = TermRight - @Width 
+							WHERE TermRight >= @Right
+								AND VocabularyID = @VocabularyID
+
+							IF @@ERROR = 0
+								BEGIN
+									COMMIT TRANSACTION
+								END
+							ELSE
+								BEGIN
+									-- Rollback the transaction
+									ROLLBACK TRANSACTION		
+								END
+						END
+				ELSE
+					BEGIN
+						-- Rollback the transaction
+						ROLLBACK TRANSACTION
+					END
+			END
+		ELSE
+			BEGIN
+				-- Rollback the transaction
+				ROLLBACK TRANSACTION		
+			END
+GO
+
+/* Add DeleteSimpleTerm Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteSimpleTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteSimpleTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteSimpleTerm] 
+	@TermId			int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}Taxonomy_Terms
+	WHERE TermID = @TermID
+
+GO
+
+/* Add GetTerm Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTerm] 
+	@TermId			int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}Taxonomy_Terms
+	WHERE TermId = @TermId
+GO
+
+/* Add GetTermsByContent Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTermsByContent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTermsByContent
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTermsByContent] 
+	@ContentItemID			int
+AS
+	SELECT T.*
+	FROM {databaseOwner}{objectQualifier}ContentItems_Tags TG
+		INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms T ON TG.TermID = T.TermID
+	WHERE TG.ContentItemID = @ContentItemID
+GO
+
+/* Add GetTermsByVocabulary Procedure */
+/**************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTermsByVocabulary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTermsByVocabulary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTermsByVocabulary] 
+	@VocabularyID			int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}Taxonomy_Terms
+	WHERE VocabularyID = @VocabularyID
+	ORDER BY TermLeft Asc, Weight Asc, Name Asc
+GO
+
+/* Add RemoveTermsFromContent Procedure */
+/****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}RemoveTermsFromContent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}RemoveTermsFromContent
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}RemoveTermsFromContent] 
+	@ContentItemID	int
+AS
+	DELETE {databaseOwner}{objectQualifier}ContentItems_Tags 
+	WHERE ContentItemID = @ContentItemID
+GO
+
+/* Add UpdateHeirarchicalTerm Procedure */
+/****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateHeirarchicalTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateHeirarchicalTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateHeirarchicalTerm] 
+	@TermID					int, 
+	@VocabularyID			int,
+	@ParentTermID			int,
+	@Name					nvarchar(250),
+	@Description			nvarchar(2500),
+	@Weight					int,
+	@LastModifiedByUserID	int
+AS
+
+	DECLARE @Left				int
+	DECLARE @Right				int
+	DECLARE @Width				int
+	
+	SET @Left = (SELECT TermLeft FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE TermID = @TermID)
+	SET @Right = (SELECT TermRight FROM {databaseOwner}{objectQualifier}Taxonomy_Terms WHERE TermID = @TermID)
+	SET @Width = @Right - @Left + 1
+	
+	BEGIN TRANSACTION
+		BEGIN
+			-- Temporarily remove term from heirarchy - but retain information about term and children 
+			-- (these should now be -n, ...,-2,-1 etc)
+			UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+				SET TermLeft = TermLeft - @Right - 1,
+					TermRight = TermRight - @Right - 1
+				WHERE TermLeft >= @Left
+					AND TermRight <= @Right
+					AND VocabularyID = @VocabularyID
+			
+			IF @@ERROR = 0
+				BEGIN
+					-- Update Left values for all items that are after the original term
+					UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+						SET TermLeft = TermLeft - @Width 
+						WHERE TermLeft >= @Left + @Width
+							AND VocabularyID = @VocabularyID
+
+					IF @@ERROR = 0
+						BEGIN
+						-- Update Right values for all items that are after the original term
+							UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+								SET TermRight = TermRight - @Width 
+								WHERE TermRight >= @Right
+									AND VocabularyID = @VocabularyID
+
+							IF @@ERROR = 0
+								BEGIN
+									-- Get Left value of Sibling that we are inserting before
+									SET @Left = (SELECT TOP 1 TermLeft FROM {databaseOwner}{objectQualifier}Taxonomy_Terms 
+														WHERE VocabularyID = @VocabularyID 
+															AND ParentTermID = @ParentTermID
+															AND Name > @Name
+														ORDER BY Name)
+														
+									-- Term is to be inserted at end of sibling list so get the Right value of the parent, which will become our new left value						
+									IF @Left IS NULL
+										SET @Left = (SELECT TermRight FROM {databaseOwner}{objectQualifier}Taxonomy_Terms 
+															WHERE VocabularyID = @VocabularyID 
+																AND TermID = @ParentTermID)
+
+									-- Left is still null means this is the first term in this vocabulary - set the Left to 1
+									IF @Left IS NULL
+										SET @Left = 1
+							
+									SET @Right = @Left + @Width - 1
+																	
+									-- Update Left values for all items that are after the updated term
+									UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+										SET TermLeft = TermLeft + @Width 
+										WHERE TermLeft >= @Left
+											AND VocabularyID = @VocabularyID
+
+									IF @@ERROR = 0
+										BEGIN
+										-- Update Right values for all items that are after the term
+											UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+												SET TermRight = TermRight + @Width 
+												WHERE TermRight >= @Left
+													AND VocabularyID = @VocabularyID
+
+											IF @@ERROR = 0
+												BEGIN
+													-- Update Left/Right values for all items temporarily removed from heirarchy
+													UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms 
+														SET TermLeft = TermLeft + @Left + @Width,
+															TermRight = TermRight + @Left + @Width
+														WHERE TermLeft < 0
+															AND TermRight < 0
+															AND VocabularyID = @VocabularyID
+
+													IF @@ERROR = 0
+														BEGIN
+															-- Update Term
+															UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms
+																SET 
+																	VocabularyID = @VocabularyID,
+																	ParentTermID = @ParentTermID,
+																	[Name] = @Name,
+																	Description = @Description,
+																	Weight = @Weight,
+																	LastModifiedByUserID = @LastModifiedByUserID,
+																	LastModifiedOnDate = getdate()
+															WHERE TermID = @TermID
+
+															IF @@ERROR = 0
+																BEGIN
+																	COMMIT TRANSACTION
+																END
+															ELSE
+																BEGIN
+																	-- Rollback the transaction
+																	ROLLBACK TRANSACTION		
+																END
+															END
+													ELSE
+														BEGIN
+															-- Rollback the transaction
+															ROLLBACK TRANSACTION
+														END
+													END
+											ELSE
+												BEGIN
+													-- Rollback the transaction
+													ROLLBACK TRANSACTION
+												END
+											END
+									ELSE
+										BEGIN
+											-- Rollback the transaction
+											ROLLBACK TRANSACTION
+										END
+									END
+								ELSE
+									BEGIN
+										-- Rollback the transaction
+										ROLLBACK TRANSACTION		
+									END
+							END
+					ELSE
+						BEGIN
+							-- Rollback the transaction
+							ROLLBACK TRANSACTION
+						END
+				END
+			ELSE
+				BEGIN
+					-- Rollback the transaction
+					ROLLBACK TRANSACTION		
+				END
+		END		
+GO
+
+/* Add UpdateSimpleTerm Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateSimpleTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateSimpleTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateSimpleTerm] 
+	@TermID					int,
+	@VocabularyID			int,
+	@Name					nvarchar(250),
+	@Description			nvarchar(2500),
+	@Weight					int,
+	@LastModifiedByUserID	int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Taxonomy_Terms
+		SET 
+			VocabularyID = @VocabularyID,
+			[Name] = @Name,
+			Description = @Description,
+			Weight = @Weight,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+	WHERE TermID = @TermID
+		
+GO
+
+/* Add AddVocabulary Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddVocabulary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddVocabulary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddVocabulary] 
+	@VocabularyTypeID	int,
+	@Name				nvarchar(250),
+	@Description		nvarchar(2500),
+	@Weight				int,
+	@ScopeID			int,
+	@ScopeTypeID		int,
+	@CreatedByUserID	int
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_Vocabularies (
+		VocabularyTypeID,
+		[Name],
+		Description,
+		Weight,
+		ScopeID,
+		ScopeTypeID,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+
+	VALUES (
+		@VocabularyTypeID,
+		@Name,
+		@Description,
+		@Weight,
+		@ScopeID,
+		@ScopeTypeID,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Add DeleteVocabulary Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteVocabulary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteVocabulary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteVocabulary] 
+	@VocabularyID			int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}Taxonomy_Vocabularies
+	WHERE VocabularyID = @VocabularyID
+
+GO
+
+/* Add GetVocabularies Procedure */
+/*********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetVocabularies]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetVocabularies
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetVocabularies] 
+AS
+	SELECT *
+		FROM {databaseOwner}{objectQualifier}Taxonomy_Vocabularies
+GO
+
+/* Add UpdateVocabulary Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateVocabulary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateVocabulary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateVocabulary] 
+	@VocabularyID			int,
+	@VocabularyTypeID		int,
+	@Name					nvarchar(250),
+	@Description			nvarchar(2500),
+	@Weight					int,
+	@ScopeID				int,
+	@ScopeTypeID			int,
+	@LastModifiedByUserID	int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Taxonomy_Vocabularies
+		SET 
+			VocabularyTypeID = @VocabularyTypeID,
+			[Name] = @Name,
+			Description = @Description,
+			Weight = @Weight,
+			ScopeID = @ScopeID,
+			ScopeTypeID = @ScopeTypeID,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+	WHERE VocabularyId = @VocabularyId
+		
+GO
+
+SET IDENTITY_INSERT  {databaseOwner}{objectQualifier}ContentTypes ON
+INSERT INTO {databaseOwner}{objectQualifier}ContentTypes ([ContentTypeID], [ContentType]) VALUES (1, 'Tab')
+INSERT INTO {databaseOwner}{objectQualifier}ContentTypes ([ContentTypeID], [ContentType]) VALUES (2, 'Module')
+SET IDENTITY_INSERT  {databaseOwner}{objectQualifier}ContentTypes OFF
+
+
+SET IDENTITY_INSERT  {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes ON
+INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes ([ScopeTypeID], [ScopeType]) VALUES (1, 'Application')
+INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes ([ScopeTypeID], [ScopeType]) VALUES (2, 'Portal')
+SET IDENTITY_INSERT  {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes OFF
+
+SET IDENTITY_INSERT  {databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes ON
+INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes ([VocabularyTypeID], [VocabularyType]) VALUES (1, 'Simple')
+INSERT INTO {databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes ([VocabularyTypeID], [VocabularyType]) VALUES (2, 'Heirarchy')
+SET IDENTITY_INSERT  {databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes OFF
+
+/* Add AddContentType Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddContentType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddContentType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddContentType] 
+	@ContentType	nvarchar(250)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}ContentTypes (
+		ContentType
+	)
+
+	VALUES (
+		@ContentType
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Add DeleteContentType Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteContentType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteContentType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteContentType] 
+	@ContentTypeId	int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}ContentTypes
+	WHERE ContentTypeId = @ContentTypeId
+
+GO
+
+/* Add GetContentTypes Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentTypes]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetContentTypes
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentTypes] 
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}ContentTypes
+GO
+
+/* Add UpdateContentType Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateContentType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateContentType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateContentType] 
+	@ContentTypeId		int,
+	@ContentType		nvarchar(250)
+AS
+	UPDATE {databaseOwner}{objectQualifier}ContentTypes 
+		SET 
+			ContentType = @ContentType
+	WHERE ContentTypeId = @ContentTypeId
+		
+GO
+
+/* Add Messages Table */
+/**********************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_Messages]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Messaging_Messages]
+		(
+			[MessageID] [bigint] IDENTITY(1,1) NOT NULL,
+			[PortalID] [int] NOT NULL,
+			[FromUserID] [int] NOT NULL,
+			[ToUserName] [nvarchar](50) COLLATE Latin1_General_CI_AS NULL,
+			[FromUserName] [nvarchar](50) COLLATE Latin1_General_CI_AS NULL,
+			[ToUserID] [int] NULL,
+			[ToRoleID] [int] NULL,
+			[Status] [tinyint] NOT NULL,
+			[Subject] [nvarchar](max) COLLATE Latin1_General_CI_AS NULL,
+			[Body] [nvarchar](max) COLLATE Latin1_General_CI_AS NULL,
+			[Date] [datetime] NOT NULL,
+			[Conversation] [uniqueidentifier] NOT NULL,
+			[ReplyTo] [bigint] NULL,
+			[AllowReply] [bit] NOT NULL,
+			[SkipPortal] [bit] NOT NULL,
+			[EmailSent] [bit] NOT NULL,
+			[EmailSentDate] [datetime] NULL,
+			[EmailSchedulerInstance] [uniqueidentifier] NULL,
+			CONSTRAINT [PK_{objectQualifier}Messaging_Messages] PRIMARY KEY CLUSTERED ( [MessageID] ASC )	
+		)
+	END
+GO
+
+
+
+/* Add GetInbox Procedure */
+/**************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_GetInbox]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_GetInbox
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetInbox] 
+	@PortalID int,
+	@UserID int,
+	@PageNumber int,
+	@PageSize int
+AS
+
+DECLARE	
+	@FirstRow INT,
+	@LastRow INT
+
+SELECT	
+	@FirstRow = (@PageNumber - 1) * @PageSize + 1,
+	@LastRow = (@PageNumber - 1) * @PageSize + @PageSize ;
+
+WITH UserInbox  AS
+(
+	SELECT	
+		* ,
+		ROW_NUMBER() OVER (ORDER BY Date DESC) AS RowNumber
+	FROM {databaseOwner}{objectQualifier}Messaging_Messages 
+	WHERE (ToUserID= @UserID AND Status IN (1,2) AND SkipPortal = '0') 
+		OR (FromUserID = @UserID AND Status = 0)
+)
+
+SELECT *  
+	FROM UserInbox
+	WHERE RowNumber BETWEEN @FirstRow AND @LastRow
+	ORDER BY date desc
+		
+GO
+
+/* Add GetInboxCount Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_GetInboxCount]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_GetInboxCount
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetInboxCount] 
+	@PortalID int,
+	@UserID int
+AS
+
+	SELECT COUNT (*)[Body]
+	FROM {databaseOwner}{objectQualifier}Messaging_Messages
+	WHERE (ToUserID= @UserID AND Status in (1,2) AND SkipPortal = '0') 
+		OR (FromUserID = @UserID AND Status = 0)
+GO
+
+/* Add GetMessage Procedure */
+/****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_GetMessage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_GetMessage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetMessage] 
+	@MessageID bigint
+AS
+	SELECT * FROM {objectQualifier}Messaging_Messages WHERE MessageID = @MessageID
+GO
+
+/* Add GetNewMessageCount Procedure */
+/************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_GetNewMessageCount]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_GetNewMessageCount
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetNewMessageCount] 
+	@PortalID int,
+	@UserID int
+AS
+	SELECT count(*) FROM {objectQualifier}Messaging_Messages WHERE ToUserID = @UserID AND Status = 1
+GO
+
+
+/*Add Messaging_GetNextMessageForDispatch */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_GetNextMessageForDispatch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_GetNextMessageForDispatch
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetNextMessageForDispatch] 
+	@SchedulerInstance uniqueidentifier
+AS
+	Declare  @target_messageID int
+
+	SELECT @target_messageID =  MessageID FROM {objectQualifier}Messaging_Messages WHERE EmailSent = 0  AND  
+	(EmailSchedulerInstance is NULL or EmailSchedulerInstance= '00000000-0000-0000-0000-000000000000') 
+	AND status not in  (0,3) ORDER BY Date DESC
+
+Update {objectQualifier}Messaging_Messages set EmailSchedulerInstance = @SchedulerInstance  where MessageID = @target_messageID
+select * from {objectQualifier}Messaging_Messages where MessageID = @target_messageID 
+
+GO
+
+/* Add Messaging_MarkMessageAsDispatched */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_MarkMessageAsDispatched]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_MarkMessageAsDispatched
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkMessageAsDispatched]
+	@MessageId int
+AS
+BEGIN
+	Update {objectQualifier}Messaging_Messages set EmailSent = 1, EmailSentDate =GETDATE()   where MessageID =@MessageId
+END
+
+GO
+
+/* Add Save_Message Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_Save_Message]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_Save_Message
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_Save_Message] 
+   @PortalID int,
+   @FromUserID int,
+   @ToUserID int,
+   @ToRoleID int,
+   @Status int,
+   @Subject nvarchar(max),
+   @Body nvarchar(max),
+   @Date datetime,
+   @Conversation uniqueidentifier,
+   @ReplyTo bigint,
+   @AllowReply bit,
+   @SkipPortal bit
+
+AS
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}Messaging_Messages
+       ([PortalID]
+       ,[FromUserID]
+	   ,[FromUserName]
+       ,[ToUserID]
+       ,[ToRoleID]
+	   ,[ToUserName]
+       ,[Status]
+       ,[Subject]
+       ,[Body]
+       ,[Date]
+       ,[Conversation]
+       ,[ReplyTo]
+       ,[AllowReply]
+       ,[SkipPortal]
+		,[EmailSent])
+ SELECT
+       @PortalID,
+       @FromUserID,
+	   (SELECT UserName FROM {objectQualifier}Users WHERE UserID = @FromUserID) as FromUserName,
+       @ToUserID,
+       @ToRoleID,
+	   (SELECT UserName FROM {objectQualifier}Users WHERE UserID = @ToUserID) as ToUserName, 
+       @Status,
+       @Subject, 
+       @Body,
+       @Date, 
+       @Conversation,
+       @ReplyTo,
+       @AllowReply, 
+       @SkipPortal,
+	   '0'
+			
+		SELECT SCOPE_IDENTITY()						
+	END
+GO
+
+/* Add UpdateMessage Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Messaging_UpdateMessage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Messaging_UpdateMessage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Messaging_UpdateMessage] 
+   @MessageID bigint,
+   @ToUserID int,
+   @ToRoleID int,
+   @Status int,
+   @Subject nvarchar(max),
+   @Body nvarchar(max),
+   @Date datetime,
+   @ReplyTo bigint,
+   @AllowReply bit,
+   @SkipPortal bit
+AS
+	UPDATE {databaseOwner}{objectQualifier}Messaging_Messages
+	SET ToUserID=@ToUserID, 
+		ToRoleID=@ToRoleID, 
+		Status=@Status, 
+		Subject=@Subject, 
+		Body=@Body, 
+		Date= @Date,
+		ReplyTo= @ReplyTo,
+		AllowReply = @AllowReply,
+		SkipPortal = @SkipPortal
+	WHERE MessageID=@MessageID
+GO
+
+/* Change module title of Language Editor module in 'Languages'*/
+
+DECLARE @LangDesktopModuleId INT
+DECLARE @LangModuleDefId int
+SELECT @LangDesktopModuleId=[DesktopModuleID] FROM {databaseOwner}[{objectQualifier}DesktopModules] WHERE [FriendlyName]='Languages' AND [FolderName]='Admin/Languages'
+SELECT @LangModuleDefId = [ModuleDefID] FROM {databaseOwner}[{objectQualifier}ModuleDefinitions] WHERE [DesktopModuleID] = @LangDesktopModuleId
+UPDATE {databaseOwner}[{objectQualifier}Modules] SET ModuleTitle = 'Languages' WHERE [ModuleDefID] = @LangModuleDefId
+
+GO
+
+
+/* Add Messaging Dispatch Schedule Job */
+/*************************************/
+
+INSERT INTO {databaseOwner}{objectQualifier}Schedule
+		   ([TypeFullName]
+		   ,[TimeLapse]
+		   ,[TimeLapseMeasurement]
+		   ,[RetryTimeLapse]
+		   ,[RetryTimeLapseMeasurement]
+		   ,[RetainHistoryNum]
+		   ,[AttachToEvent]
+		   ,[CatchUpEnabled]
+		   ,[Enabled]
+		   ,[ObjectDependencies]
+		   ,[Servers]
+		   ,[CreatedByUserID]
+		   ,[CreatedOnDate]
+		   ,[LastModifiedByUserID]
+		   ,[LastModifiedOnDate]
+		   ,[FriendlyName])
+	 VALUES
+		   ('DotNetNuke.Services.Messaging.Scheduler.MessagingScheduler, DotNetNuke'
+		   ,1
+		   ,'m'
+		   ,30
+		   ,'s'
+		   ,10
+		   ,''
+		   ,0
+		   ,1
+		   ,'Messaging'
+		   ,NULL
+		   ,NULL
+		   ,NULL
+		   ,NULL
+		   ,NULL
+		   ,'Messaging Dispatch')
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+

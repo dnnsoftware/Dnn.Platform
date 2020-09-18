@@ -1,0 +1,1197 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Vendors
+	ADD Cell VARCHAR(50) NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItem 
+	ALTER COLUMN Guid varchar(200)
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItem 
+	ADD ImageFileId int
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSearchResults
+GO
+
+/*****************************************************************************
+ *  This procedure applies filters to the SearchItems to make sure that only
+ *  active Search content is returned.  All security checks will be done in 
+ *  the Business Logic.
+ *****************************************************************************/
+CREATE procedure {databaseOwner}{objectQualifier}GetSearchResults
+	@PortalID	int,
+	@Word 	nVarChar(100)
+AS
+	DECLARE @TempList table
+	(
+		Word nvarchar(100),
+		Occurences int,
+		Relevance int,
+		ModuleID int,
+		TabID int,
+		ModStartDate datetime,
+		ModEndDate datetime,
+		TabStartDate datetime,
+		TabEndDate datetime,
+		Title varchar(200),
+		Description varchar(500),
+		Author int,
+		PubDate datetime,
+		SearchKey varchar(100),
+		Guid varchar(200),
+		ImageFileId int
+	)
+
+	INSERT @TempList
+	SELECT  sw.Word, 
+			siw.Occurrences, 
+			siw.Occurrences + 1000 as Relevance, 
+			m.ModuleID, 
+			tm.TabID,
+			ISNULL(m.StartDate, GETDATE() - 1) AS ModStartDate, 
+			ISNULL(m.EndDate, GETDATE() + 1) AS ModEndDate, 
+			ISNULL(t.StartDate, GETDATE() - 1) AS TabStartDate, 
+			ISNULL(t.EndDate, GETDATE() + 1) AS TabEndDate, 
+			si.Title, 
+			si.Description, 
+			si.Author, 
+			si.PubDate, 
+			si.SearchKey,
+			si.Guid,
+			si.ImageFileId
+	FROM   {databaseOwner}{objectQualifier}SearchWord sw INNER JOIN
+	         	{databaseOwner}{objectQualifier}SearchItemWord siw ON sw.SearchWordsID = siw.SearchWordsID INNER JOIN
+	          	{databaseOwner}{objectQualifier}SearchItem si ON siw.SearchItemID = si.SearchItemID INNER JOIN
+	         	{databaseOwner}{objectQualifier}Modules m ON si.ModuleId = m.ModuleID LEFT OUTER JOIN
+	          	{databaseOwner}{objectQualifier}TabModules tm ON si.ModuleId = tm.ModuleID INNER JOIN
+	          	{databaseOwner}{objectQualifier}Tabs t ON tm.TabID = t.TabID
+	WHERE     (sw.Word = @Word) 
+		AND (t.IsDeleted = 0) 
+		AND (m.IsDeleted = 0)
+		AND (t.PortalID = @PortalID)
+
+	SELECT 	Word, 
+			Occurences, 
+			Relevance, 
+			ModuleID, 
+			TabID, 
+			Title, 
+			Description,
+			Author,
+			Pubdate, 
+			SearchKey,
+			Guid,
+			ImageFileId
+	FROM @TempList 
+	WHERE GetDate() between ModStartDate and ModEndDate
+	AND GetDate() between TabStartDate and TabEndDate
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSearchSettings
+
+	@ModuleID	int
+
+AS
+
+select     	tm.ModuleID, 
+			settings.SettingName, 
+			settings.SettingValue
+from	{objectQualifier}Tabs searchTabs INNER JOIN
+		{objectQualifier}TabModules searchTabModules ON searchTabs.TabID = searchTabModules.TabID INNER JOIN
+        {objectQualifier}Portals p ON searchTabs.PortalID = p.PortalID INNER JOIN
+        {objectQualifier}Tabs t ON p.PortalID = t.PortalID INNER JOIN
+        {objectQualifier}TabModules tm ON t.TabID = tm.TabID INNER JOIN
+        {objectQualifier}ModuleSettings settings ON searchTabModules.ModuleID = settings.ModuleID
+where   searchTabs.TabName = N'Search Admin'
+and		tm.ModuleID = @ModuleID
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UserLogin
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSiteLog3
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSiteLog3
+
+	@PortalId int,
+	@PortalAlias nvarchar(50),
+	@StartDate datetime,
+	@EndDate datetime
+
+as
+
+select 'Name' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+	'Requests' = count(*),
+	'LastRequest' = max(DateTime)
+from {objectQualifier}SiteLog
+inner join {objectQualifier}Users on {objectQualifier}SiteLog.UserId = {objectQualifier}Users.UserId
+where {objectQualifier}SiteLog.PortalId = @PortalId
+and {objectQualifier}SiteLog.DateTime between @StartDate and @EndDate
+and {objectQualifier}SiteLog.UserId is not null
+group by {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName
+order by Requests desc
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddSearchItem
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddSearchItem
+
+	@Title nvarchar(200),
+	@Description nvarchar(2000),
+	@Author int,
+	@PubDate datetime,
+	@ModuleId int,
+	@SearchKey nvarchar(100),
+	@Guid nvarchar(200), 
+	@ImageFileId int
+
+as
+
+insert into {objectQualifier}SearchItem (
+	Title,
+	Description,
+	Author,
+	PubDate,
+	ModuleId,
+ 	SearchKey,
+	Guid,
+	HitCount,
+	ImageFileId
+) 
+values (
+	@Title,
+	@Description,
+	@Author,
+	@PubDate,
+	@ModuleId,
+	@SearchKey,
+	@Guid,
+	0,
+	@ImageFileId
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteSearchItemWords
+	@SearchItemID int
+AS
+
+delete from {databaseOwner}{objectQualifier}SearchItemWord
+where
+	[SearchItemID] = @SearchItemID
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSearchItem
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetSearchItem
+	@ModuleId int,
+	@SearchKey varchar(100) 
+AS
+
+select
+	[SearchItemID],
+	[Title],
+	[Description],
+	[Author],
+	[PubDate],
+	[ModuleId],
+	[SearchKey],
+	[Guid],
+	[HitCount],
+	ImageFileId
+from
+	{objectQualifier}SearchItem
+where
+	[ModuleID] = @ModuleID AND
+	[SearchKey] = @SearchKey
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}ListSearchItem
+GO
+
+create procedure {databaseOwner}{objectQualifier}ListSearchItem
+
+AS
+
+select
+	[SearchItemID],
+	[Title],
+	[Description],
+	[Author],
+	[PubDate],
+	[ModuleId],
+	[SearchKey],
+	[Guid],
+	[HitCount],
+	ImageFileId
+from
+	{objectQualifier}SearchItem
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateSearchItem
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateSearchItem
+	@SearchItemID int, 
+	@Title varchar(200), 
+	@Description varchar(500), 
+	@Author int, 
+	@PubDate datetime, 
+	@ModuleId int, 
+	@SearchKey varchar(100), 
+	@Guid nvarchar(200), 
+	@HitCount int, 
+	@ImageFileId int
+AS
+
+UPDATE {objectQualifier}SearchItem SET
+	[Title] = @Title,
+	[Description] = @Description,
+	[Author] = @Author,
+	[PubDate] = @PubDate,
+	[ModuleId] = @ModuleId,
+	[SearchKey] = @SearchKey,
+	[Guid] = @Guid,
+	[HitCount] = @HitCount,
+	ImageFileId = 	@ImageFileId
+WHERE
+	[SearchItemID] = @SearchItemID
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddVendor
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}AddVendor
+
+@PortalId 	int,
+@VendorName nvarchar(50),
+@Unit    	nvarchar(50),
+@Street 	nvarchar(50),
+@City		nvarchar(50),
+@Region	    nvarchar(50),
+@Country	nvarchar(50),
+@PostalCode	nvarchar(50),
+@Telephone	nvarchar(50),
+@Fax   	    nvarchar(50),
+@Cell   	nvarchar(50),
+@Email    	nvarchar(50),
+@Website	nvarchar(100),
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@UserName   nvarchar(100),
+@LogoFile   nvarchar(100),
+@KeyWords   text,
+@Authorized bit
+
+as
+
+insert into {objectQualifier}Vendors (
+  VendorName,
+  Unit,
+  Street,
+  City,
+  Region,
+  Country,
+  PostalCode,
+  Telephone,
+  PortalId,
+  Fax,
+  Cell,
+  Email,
+  Website,
+  FirstName,
+  Lastname,
+  ClickThroughs,
+  Views,
+  CreatedByUser,
+  CreatedDate,
+  LogoFile,
+  KeyWords,
+  Authorized
+)
+values (
+  @VendorName,
+  @Unit,
+  @Street,
+  @City,
+  @Region,
+  @Country,
+  @PostalCode,
+  @Telephone,
+  @PortalId,
+  @Fax,
+  @Cell,
+  @Email,
+  @Website,
+  @FirstName,
+  @LastName,
+  0,
+  0,
+  @UserName,
+  getdate(), 
+  @LogoFile,
+  @KeyWords,
+  @Authorized
+)
+
+select SCOPE_IDENTITY()
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateVendor
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdateVendor
+
+@VendorId	int,
+@VendorName nvarchar(50),
+@Unit	 	nvarchar(50),
+@Street 	nvarchar(50),
+@City		nvarchar(50),
+@Region	    nvarchar(50),
+@Country	nvarchar(50),
+@PostalCode	nvarchar(50),
+@Telephone	nvarchar(50),
+@Fax		nvarchar(50),
+@Cell		nvarchar(50),
+@Email		nvarchar(50),
+@Website	nvarchar(100),
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@UserName   nvarchar(100),
+@LogoFile   nvarchar(100),
+@KeyWords   text,
+@Authorized bit
+
+as
+
+update {objectQualifier}Vendors
+set    VendorName    = @VendorName,
+       Unit          = @Unit,
+       Street        = @Street,
+       City          = @City,
+       Region        = @Region,
+       Country       = @Country,
+       PostalCode    = @PostalCode,
+       Telephone     = @Telephone,
+       Fax           = @Fax,
+       Cell          = @Cell,
+       Email         = @Email,
+       Website       = @Website,
+       FirstName     = @FirstName,
+       LastName      = @LastName,
+       CreatedByUser = @UserName,
+       CreatedDate   = getdate(),
+       LogoFile      = @LogoFile,
+       KeyWords      = @KeyWords,
+       Authorized    = @Authorized
+where  VendorId = @VendorId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetVendor
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetVendor
+
+@VendorId int
+
+as
+
+select {objectQualifier}Vendors.VendorName, 
+       {objectQualifier}Vendors.Unit, 
+       {objectQualifier}Vendors.Street, 
+       {objectQualifier}Vendors.City, 
+       {objectQualifier}Vendors.Region, 
+       {objectQualifier}Vendors.Country, 
+       {objectQualifier}Vendors.PostalCode, 
+       {objectQualifier}Vendors.Telephone,
+       {objectQualifier}Vendors.Fax,
+       {objectQualifier}Vendors.Cell,
+       {objectQualifier}Vendors.Email,
+       {objectQualifier}Vendors.Website,
+       {objectQualifier}Vendors.FirstName,
+       {objectQualifier}Vendors.LastName,
+       {objectQualifier}Vendors.ClickThroughs,
+       {objectQualifier}Vendors.Views,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Vendors.CreatedDate,
+      'LogoFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Vendors.LogoFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Vendors.KeyWords,
+       {objectQualifier}Vendors.Authorized
+from {objectQualifier}Vendors
+left outer join {objectQualifier}Users on {objectQualifier}Vendors.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Vendors.LogoFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  VendorId = @VendorId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetThreadMessages
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetThreadMessages
+
+@Parent nvarchar(750)
+
+as
+
+select ItemId,
+       DisplayOrder,
+       'Indent' = ((LEN( DisplayOrder ) / 19 ) - 1 ) * 5,
+       Title,  
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Discussion.CreatedDate,
+       Body
+from {objectQualifier}Discussion
+left outer join {objectQualifier}Users on {objectQualifier}Discussion.CreatedByUser = {objectQualifier}Users.UserId
+where  LEFT(DisplayOrder, 19) = @Parent
+and    (LEN( DisplayOrder ) / 19 ) > 1
+order by DisplayOrder
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetTopLevelMessages
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}GetTopLevelMessages
+
+@ModuleId int
+
+as
+
+select ItemId,
+       DisplayOrder,
+       'Parent' = LEFT(DisplayOrder, 19),    
+       'ChildCount' = (SELECT COUNT(*) -1  from {objectQualifier}Discussion Disc2 WHERE LEFT(Disc2.DisplayOrder,LEN(RTRIM({objectQualifier}Discussion.DisplayOrder))) = {objectQualifier}Discussion.DisplayOrder),
+       Title,  
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Discussion.CreatedDate
+from {objectQualifier}Discussion
+left outer join {objectQualifier}Users on {objectQualifier}Discussion.CreatedByUser = {objectQualifier}Users.UserId
+where  ModuleId = @ModuleId
+and    (LEN( DisplayOrder ) / 19 ) = 1
+order by DisplayOrder
+
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUser
+
+@PortalID	int,
+@Username	nvarchar(100),
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@AffiliateId    int,
+@IsSuperUser    bit
+
+as
+
+declare @UserID int
+
+select @UserID = UserID
+from   {objectQualifier}Users
+where  Username = @Username
+
+if @UserID is null
+begin
+  insert into {objectQualifier}Users (
+    Username,
+    FirstName, 
+    LastName, 
+    AffiliateId,
+    IsSuperUser
+  )
+  values (
+    @Username,
+    @FirstName, 
+    @LastName, 
+    @AffiliateId,
+    @IsSuperUser
+  )
+
+  select @UserID = SCOPE_IDENTITY()
+end
+
+if not exists ( select 1 from {objectQualifier}UserPortals where UserID = @UserID and PortalID = @PortalID )
+begin
+  insert into {objectQualifier}UserPortals (
+    UserID,
+    PortalID
+  )
+  values (
+    @UserID,
+    @PortalID
+  )
+end
+
+select @UserID
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD
+	SplashTabId int NULL
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortal
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortal
+
+@PortalId  int
+
+as
+
+select {objectQualifier}Portals.PortalID,
+       {objectQualifier}Portals.PortalName,
+       'LogoFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Portals.LogoFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Portals.FooterText,
+       {objectQualifier}Portals.ExpiryDate,
+       {objectQualifier}Portals.UserRegistration,
+       {objectQualifier}Portals.BannerAdvertising,
+       {objectQualifier}Portals.AdministratorID,
+       {objectQualifier}Portals.Currency,
+       {objectQualifier}Portals.HostFee,
+       {objectQualifier}Portals.HostSpace,
+       {objectQualifier}Portals.AdministratorRoleID,
+       {objectQualifier}Portals.RegisteredRoleID,
+       {objectQualifier}Portals.Description,
+       {objectQualifier}Portals.KeyWords,
+       'BackGroundFile' = case when {objectQualifier}Files2.FileName is null then {objectQualifier}Portals.BackGroundFile else {objectQualifier}Files2.Folder + {objectQualifier}Files2.FileName end,
+       {objectQualifier}Portals.GUID,
+       {objectQualifier}Portals.PaymentProcessor,
+       {objectQualifier}Portals.ProcessorPassword,
+       {objectQualifier}Portals.SiteLogHistory,
+       {objectQualifier}Portals.SplashTabID,
+       {objectQualifier}Portals.HomeTabID,
+       {objectQualifier}Portals.LoginTabID,
+       {objectQualifier}Portals.UserTabID,
+       {objectQualifier}Portals.DefaultLanguage,
+       {objectQualifier}Portals.TimeZoneOffset,
+       {objectQualifier}Portals.AdminTabID,
+       {objectQualifier}Portals.HomeDirectory,
+       'SuperTabId' = ( select TabId from {objectQualifier}Tabs where PortalId is null and ParentId is null ),
+       'AdministratorRoleName' = ( select RoleName from {objectQualifier}Roles where RoleId = {objectQualifier}Portals.AdministratorRoleID ),
+       'RegisteredRoleName' = ( select RoleName from {objectQualifier}Roles where RoleId = {objectQualifier}Portals.RegisteredRoleID )
+from {objectQualifier}Portals
+left outer join {objectQualifier}Files on {objectQualifier}Portals.LogoFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files as {objectQualifier}Files2 on {objectQualifier}Portals.BackGroundFile = 'fileid=' +convert(varchar,{objectQualifier}Files2.FileID)
+where {objectQualifier}Portals.PortalId = @PortalId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdatePortalInfo
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdatePortalInfo
+
+@PortalId           int,
+@PortalName         nvarchar(128),
+@LogoFile           nvarchar(50),
+@FooterText         nvarchar(100),
+@ExpiryDate         datetime,
+@UserRegistration   int,
+@BannerAdvertising  int,
+@Currency           char(3),
+@AdministratorId    int,
+@HostFee            money,
+@HostSpace          int,
+@PaymentProcessor   nvarchar(50),
+@ProcessorUserId    nvarchar(50),
+@ProcessorPassword  nvarchar(50),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@BackgroundFile     nvarchar(50),
+@SiteLogHistory     int,
+@SplashTabId          int,
+@HomeTabId          int,
+@LoginTabId         int,
+@UserTabId          int,
+@DefaultLanguage    nvarchar(6),
+@TimeZoneOffset	    int,
+@HomeDirectory varchar(100)
+
+as
+
+update {databaseOwner}{objectQualifier}Portals
+set    PortalName = @PortalName,
+       LogoFile = @LogoFile,
+       FooterText = @FooterText,
+       ExpiryDate = @ExpiryDate,
+       UserRegistration = @UserRegistration,
+       BannerAdvertising = @BannerAdvertising,
+       Currency = @Currency,
+       AdministratorId = @AdministratorId,
+       HostFee = @HostFee,
+       HostSpace = @HostSpace,
+       PaymentProcessor = @PaymentProcessor,
+       ProcessorUserId = @ProcessorUserId,
+       ProcessorPassword = @ProcessorPassword,
+       Description = @Description,
+       KeyWords = @KeyWords,
+       BackgroundFile = @BackgroundFile,
+       SiteLogHistory = @SiteLogHistory,
+       SplashTabId = @SplashTabId,
+       HomeTabId = @HomeTabId,
+       LoginTabId = @LoginTabId,
+       UserTabId = @UserTabId,
+       DefaultLanguage = @DefaultLanguage,
+       TimeZoneOffset = @TimeZoneOffset,
+       HomeDirectory = @HomeDirectory
+where  PortalId = @PortalId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdatePortalSetup
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdatePortalSetup
+
+@PortalId            int,
+@AdministratorId     int,
+@AdministratorRoleId int,
+@RegisteredRoleId    int,
+@SplashTabId         int,
+@HomeTabId           int,
+@LoginTabId          int,
+@UserTabId           int,
+@AdminTabId          int
+
+as
+
+update {objectQualifier}Portals
+set    AdministratorId = @AdministratorId, 
+       AdministratorRoleId = @AdministratorRoleId, 
+       RegisteredRoleId = @RegisteredRoleId,
+       SplashTabId = @SplashTabId,
+       HomeTabId = @HomeTabId,
+       LoginTabId = @LoginTabId,
+       UserTabId = @UserTabId,
+       AdminTabId = @AdminTabId
+where  PortalId = @PortalId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortalByPortalAliasID
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalByPortalAliasID
+
+@PortalAliasId  int
+
+as
+
+select {objectQualifier}Portals.PortalID,
+       {objectQualifier}Portals.PortalName,
+       'LogoFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Portals.LogoFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Portals.FooterText,
+       {objectQualifier}Portals.ExpiryDate,
+       {objectQualifier}Portals.UserRegistration,
+       {objectQualifier}Portals.BannerAdvertising,
+       {objectQualifier}Portals.AdministratorID,
+       {objectQualifier}Portals.Currency,
+       {objectQualifier}Portals.HostFee,
+       {objectQualifier}Portals.HostSpace,
+       {objectQualifier}Portals.AdministratorRoleID,
+       {objectQualifier}Portals.RegisteredRoleID,
+       {objectQualifier}Portals.Description,
+       {objectQualifier}Portals.KeyWords,
+       'BackGroundFile' = case when {objectQualifier}Files2.FileName is null then {objectQualifier}Portals.BackGroundFile else {objectQualifier}Files2.Folder + {objectQualifier}Files2.FileName end,
+       {objectQualifier}Portals.GUID,
+       {objectQualifier}Portals.PaymentProcessor,
+       {objectQualifier}Portals.ProcessorPassword,
+       {objectQualifier}Portals.SiteLogHistory,
+       {objectQualifier}Portals.SplashTabID,
+       {objectQualifier}Portals.HomeTabID,
+       {objectQualifier}Portals.LoginTabID,
+       {objectQualifier}Portals.UserTabID,
+       {objectQualifier}Portals.DefaultLanguage,
+       {objectQualifier}Portals.TimeZoneOffset,
+       {objectQualifier}Portals.AdminTabID,
+       {objectQualifier}Portals.HomeDirectory, 
+       PA.HTTPAlias, 
+       PA.PortalAliasID, 
+       'SuperTabId' = ( select TabId from {objectQualifier}Tabs where PortalId is null and ParentId is null )
+from {objectQualifier}Portals
+INNER JOIN {objectQualifier}PortalAlias PA ON {objectQualifier}Portals.PortalID = PA.PortalID
+left outer join {objectQualifier}Files on {objectQualifier}Portals.LogoFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files as {objectQualifier}Files2 on {objectQualifier}Portals.BackGroundFile = 'fileid=' +convert(varchar,{objectQualifier}Files2.FileID)
+where PA.PortalAliasId = @PortalAliasId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortals
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortals
+
+as
+
+select {objectQualifier}Portals.PortalID,
+       {objectQualifier}Portals.PortalName,
+       'LogoFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Portals.LogoFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Portals.FooterText,
+       {objectQualifier}Portals.ExpiryDate,
+       {objectQualifier}Portals.UserRegistration,
+       {objectQualifier}Portals.BannerAdvertising,
+       {objectQualifier}Portals.AdministratorID,
+       {objectQualifier}Portals.Currency,
+       {objectQualifier}Portals.HostFee,
+       {objectQualifier}Portals.HostSpace,
+       {objectQualifier}Portals.AdministratorRoleID,
+       {objectQualifier}Portals.RegisteredRoleID,
+       {objectQualifier}Portals.Description,
+       {objectQualifier}Portals.KeyWords,
+       'BackGroundFile' = case when {objectQualifier}Files2.FileName is null then {objectQualifier}Portals.BackGroundFile else {objectQualifier}Files2.Folder + {objectQualifier}Files2.FileName end,
+       {objectQualifier}Portals.GUID,
+       {objectQualifier}Portals.PaymentProcessor,
+       {objectQualifier}Portals.ProcessorPassword,
+       {objectQualifier}Portals.SiteLogHistory,
+       {objectQualifier}Portals.SplashTabID,
+       {objectQualifier}Portals.HomeTabID,
+       {objectQualifier}Portals.LoginTabID,
+       {objectQualifier}Portals.UserTabID,
+       {objectQualifier}Portals.DefaultLanguage,
+       {objectQualifier}Portals.TimeZoneOffset,
+       {objectQualifier}Portals.AdminTabID,
+       {objectQualifier}Portals.HomeDirectory,
+       'Users' = ( select count(*) from {objectQualifier}UserPortals where {objectQualifier}UserPortals.PortalId = {objectQualifier}Portals.PortalId )
+from {objectQualifier}Portals
+left outer join {objectQualifier}Files on {objectQualifier}Portals.LogoFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files as {objectQualifier}Files2 on {objectQualifier}Portals.BackGroundFile = 'fileid=' +convert(varchar,{objectQualifier}Files2.FileID)
+order by {objectQualifier}Portals.PortalName
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModule
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetModule
+
+@ModuleId int,
+@TabId    int
+
+as
+
+select	{objectQualifier}Modules.ModuleID,
+		{objectQualifier}Modules.ModuleDefID,
+		{objectQualifier}Modules.ModuleTitle,
+		{objectQualifier}Modules.AllTabs,
+		{objectQualifier}Modules.IsDeleted,
+		{objectQualifier}Modules.InheritViewPermissions,
+		{objectQualifier}Modules.Header,
+		{objectQualifier}Modules.Footer,
+		{objectQualifier}Modules.StartDate,
+		{objectQualifier}Modules.EndDate,
+		{objectQualifier}Modules.PortalID,
+		{objectQualifier}TabModules.TabID,
+        {objectQualifier}TabModules.PaneName,
+		{objectQualifier}TabModules.ModuleOrder,
+		{objectQualifier}TabModules.CacheTime,
+		{objectQualifier}TabModules.Alignment,
+		{objectQualifier}TabModules.Color,
+		{objectQualifier}TabModules.Border,
+		'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}TabModules.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+		{objectQualifier}TabModules.Visibility,
+		{objectQualifier}TabModules.ContainerSrc,
+        {objectQualifier}DesktopModules.DesktopModuleID,
+		{objectQualifier}DesktopModules.FriendlyName,
+		{objectQualifier}DesktopModules.Description,
+		{objectQualifier}DesktopModules.Version,
+		{objectQualifier}DesktopModules.IsPremium,
+		{objectQualifier}DesktopModules.IsAdmin,
+		{objectQualifier}DesktopModules.BusinessControllerClass
+from	{objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefID = {objectQualifier}ModuleDefinitions.ModuleDefID
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleID = {objectQualifier}DesktopModules.DesktopModuleID
+left outer join {objectQualifier}TabModules on {objectQualifier}Modules.ModuleId = {objectQualifier}TabModules.ModuleId
+left outer join {objectQualifier}Files on {objectQualifier}TabModules.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where   {objectQualifier}Modules.ModuleId = @ModuleId
+and     ({objectQualifier}TabModules.TabId = @TabId or @TabId is null)
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalTabModules
+
+@PortalId int, 
+@TabId int
+
+as
+
+select M.ModuleID,
+       M.PortalID,
+       M.ModuleDefId,
+       M.ModuleTitle,
+       M.AllTabs,
+       M.Header,
+       M.Footer,
+       M.StartDate,
+       M.EndDate,
+       M.InheritViewPermissions,
+       M.IsDeleted,
+       TM.TabModuleId,
+       TM.TabId,
+       TM.ModuleOrder,
+       TM.PaneName,
+       TM.CacheTime,
+       TM.Alignment,
+       TM.Color,
+       TM.Border,
+       'IconFile' = case when F.FileName is null then TM.IconFile else F.Folder + F.FileName end,
+       TM.Visibility,
+       TM.ContainerSrc,
+       MC.ModuleControlId,
+       MC.ControlSrc,
+       MC.ControlType,
+       MC.ControlTitle,
+       MC.HelpURL,
+       DM.*
+from {objectQualifier}Modules M
+inner join {objectQualifier}TabModules TM on M.ModuleId = TM.ModuleId
+inner join {objectQualifier}Tabs T on TM.TabId = T.TabId
+inner join {objectQualifier}ModuleDefinitions MD on M.ModuleDefId = MD.ModuleDefId
+inner join {objectQualifier}ModuleControls MC on MD.ModuleDefId = MC.ModuleDefId
+inner join {objectQualifier}DesktopModules DM on MD.DesktopModuleId = DM.DesktopModuleId
+left outer join {objectQualifier}Files F on TM.IconFile = 'fileid=' + convert(varchar,F.FileID)
+where  TM.TabId = @TabId
+and    ControlKey is null
+order by TM.ModuleOrder
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModuleByDefinition
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetModuleByDefinition
+
+@PortalId int,
+@FriendlyName nvarchar(128)
+
+as
+
+select	{objectQualifier}Modules.ModuleID,
+		{objectQualifier}Modules.ModuleDefID,
+		{objectQualifier}Modules.ModuleTitle,
+		{objectQualifier}Modules.AllTabs,
+		{objectQualifier}Modules.IsDeleted,
+		{objectQualifier}Modules.InheritViewPermissions,
+		{objectQualifier}Modules.Header,
+		{objectQualifier}Modules.Footer,
+		{objectQualifier}Modules.StartDate,
+		{objectQualifier}Modules.EndDate,
+		{objectQualifier}Modules.PortalID,
+       	{objectQualifier}TabModules.PaneName,
+		{objectQualifier}TabModules.TabModuleID,
+		{objectQualifier}TabModules.TabID,
+		{objectQualifier}TabModules.ModuleID,
+		{objectQualifier}TabModules.ModuleOrder,
+		{objectQualifier}TabModules.CacheTime,
+		{objectQualifier}TabModules.Alignment,
+		{objectQualifier}TabModules.Color,
+		{objectQualifier}TabModules.Border,
+		'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}TabModules.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+		{objectQualifier}TabModules.Visibility,
+		{objectQualifier}TabModules.ContainerSrc,
+       	{objectQualifier}DesktopModules.DesktopModuleID,
+		{objectQualifier}DesktopModules.FriendlyName,
+		{objectQualifier}DesktopModules.Description,
+		{objectQualifier}DesktopModules.Version,
+		{objectQualifier}DesktopModules.IsPremium,
+		{objectQualifier}DesktopModules.IsAdmin,
+		{objectQualifier}DesktopModules.BusinessControllerClass
+from   {objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefId = {objectQualifier}ModuleDefinitions.ModuleDefId
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleId = {objectQualifier}DesktopModules.DesktopModuleId
+left outer join {objectQualifier}TabModules on {objectQualifier}Modules.ModuleID = {objectQualifier}TabModules.ModuleID
+left outer join {objectQualifier}Files on {objectQualifier}TabModules.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  (({objectQualifier}Modules.PortalId = @PortalId) or ({objectQualifier}Modules.PortalId is null and @PortalID is null))
+and    {objectQualifier}ModuleDefinitions.FriendlyName = @FriendlyName
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetEvent
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetEvent
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Events.ItemId,
+       {objectQualifier}Events.Description,
+       {objectQualifier}Events.DateTime,
+       {objectQualifier}Events.Title,
+       {objectQualifier}Events.ExpireDate,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Events.CreatedDate,
+       {objectQualifier}Events.Every,
+       {objectQualifier}Events.Period,
+       'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Events.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Events.AltText
+from   {objectQualifier}Events
+left outer join {objectQualifier}Users on {objectQualifier}Events.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  ItemId = @ItemId
+and    ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetEvents
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetEvents
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Events.ItemId,
+       {objectQualifier}Events.Description,
+       {objectQualifier}Events.DateTime,
+       {objectQualifier}Events.Title,
+       {objectQualifier}Events.ExpireDate,
+       {objectQualifier}Events.CreatedByUser,
+       {objectQualifier}Events.CreatedDate,
+       'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Events.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Events.AltText,
+       'MaxWIdth' = (select max(WIdth) from {objectQualifier}Events left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID) where ModuleId = @ModuleId and (ExpireDate > getdate() or ExpireDate is null))
+from   {objectQualifier}Events
+left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  ModuleId = @ModuleId
+and    (ExpireDate > getdate() or ExpireDate is null)
+order by DateTime
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetEventsByDate
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetEventsByDate
+
+@ModuleId int,
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select {objectQualifier}Events.ItemId,
+       {objectQualifier}Events.Description,
+       {objectQualifier}Events.DateTime,
+       {objectQualifier}Events.Title,
+       {objectQualifier}Events.ExpireDate,
+       {objectQualifier}Events.CreatedByUser,
+       {objectQualifier}Events.CreatedDate,
+       {objectQualifier}Events.Every,
+       {objectQualifier}Events.Period,
+       'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Events.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Events.AltText
+from   {objectQualifier}Events
+left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  ModuleId = @ModuleId
+and    ( (Period is null and (DateTime >= @StartDate and DateTime <= @EndDate)) or Period is not null )
+order by DateTime
+GO
+
+
+/* Remove Vendor Feedback */
+delete from {databaseOwner}{objectQualifier}ModuleControls
+where ControlSrc = 'Admin/Vendors/VendorFeedback.ascx'
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetTabByName
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetTabByName
+
+@TabName  nvarchar(50),
+@PortalId int
+
+as
+
+select TabID, 
+TabOrder, 
+{objectQualifier}Tabs.PortalID, 
+TabName, 
+IsVisible, 
+ParentId, 
+[Level], 
+DisableLink, 
+Title, 
+Description, 
+KeyWords, 
+IsDeleted, 
+Url, 
+SkinSrc, 
+ContainerSrc, 
+TabPath, 
+StartDate, 
+EndDate,
+ 'IconFile' = case when {objectQualifier}Files_1.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files_1.Folder + {objectQualifier}Files_1.FileName end,
+'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+LEFT OUTER JOIN {objectQualifier}Files {objectQualifier}Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files_1.FileID)
+where  TabName = @TabName
+and    (({objectQualifier}Tabs.PortalId = @PortalId) or (@PortalId is null AND {objectQualifier}Tabs.PortalId is null))
+order by TabID
+GO
+
+
+ALTER procedure {databaseOwner}{objectQualifier}GetAllTabs
+
+as
+
+select TabID, 
+       TabOrder, 
+       {objectQualifier}Tabs.PortalID, 
+       TabName, 
+       IsVisible, 
+       ParentId, 
+       [Level], 
+       'IconFile' = case when {objectQualifier}Files_1.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files_1.Folder + {objectQualifier}Files_1.FileName end,
+       DisableLink, 
+       Title, 
+       Description, 
+       KeyWords, 
+       IsDeleted,
+       SkinSrc,
+       ContainerSrc,
+       TabPath,
+       StartDate,
+       EndDate,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.URL = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+LEFT OUTER JOIN dbo.{objectQualifier}Files {objectQualifier}Files_1 ON {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files_1.FileID)
+order by TabOrder, TabName
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetTab
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}GetTab
+
+@TabId    int
+
+as
+
+select TabID, 
+TabOrder, 
+{objectQualifier}Tabs.PortalID, 
+TabName, 
+IsVisible, 
+ParentId, 
+[Level], 
+DisableLink, 
+Title, 
+Description, 
+KeyWords, 
+IsDeleted, 
+Url, 
+SkinSrc, 
+ContainerSrc, 
+TabPath, 
+StartDate, 
+EndDate,
+'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Tabs.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+'HasChildren' = case when exists (select 1 from {objectQualifier}Tabs T2 where T2.ParentId = {objectQualifier}Tabs.TabId) then 'true' else 'false' end
+from   {objectQualifier}Tabs
+left outer join {objectQualifier}Files on {objectQualifier}Tabs.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  TabId = @TabId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetRole
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetRole
+
+@RoleId   int,
+@PortalId int
+
+as
+
+select RoleId,
+       PortalId,
+       RoleName,
+       Description,
+       ServiceFee,
+       BillingPeriod,
+       BillingFrequency,
+       TrialFee,
+       TrialPeriod,
+       TrialFrequency,
+       IsPublic,
+       AutoAssignment
+from   {objectQualifier}Roles
+where  RoleId = @RoleId
+and    PortalId = @PortalId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetVendor
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetVendor
+
+@VendorId int,
+@PortalId int
+
+as
+
+select {objectQualifier}Vendors.VendorName, 
+       {objectQualifier}Vendors.Unit, 
+       {objectQualifier}Vendors.Street, 
+       {objectQualifier}Vendors.City, 
+       {objectQualifier}Vendors.Region, 
+       {objectQualifier}Vendors.Country, 
+       {objectQualifier}Vendors.PostalCode, 
+       {objectQualifier}Vendors.Telephone,
+       {objectQualifier}Vendors.Fax,
+       {objectQualifier}Vendors.Cell,
+       {objectQualifier}Vendors.Email,
+       {objectQualifier}Vendors.Website,
+       {objectQualifier}Vendors.FirstName,
+       {objectQualifier}Vendors.LastName,
+       {objectQualifier}Vendors.ClickThroughs,
+       {objectQualifier}Vendors.Views,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Vendors.CreatedDate,
+      'LogoFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Vendors.LogoFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Vendors.KeyWords,
+       {objectQualifier}Vendors.Authorized,
+       {objectQualifier}Vendors.PortalId
+from {objectQualifier}Vendors
+left outer join {objectQualifier}Users on {objectQualifier}Vendors.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Vendors.LogoFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  VendorId = @VendorId
+and    (({objectQualifier}Vendors.PortalId = @PortalId) or ({objectQualifier}Vendors.PortalId is null and @PortalId is null))
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

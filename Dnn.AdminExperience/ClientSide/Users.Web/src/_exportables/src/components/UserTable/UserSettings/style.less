@@ -1,0 +1,82 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.userSettings) {
+    box-sizing: border-box;
+    float: left;
+    margin: 15px 0px;
+    .dnn-grid-cell {
+        margin: 5px 0px;
+        float: left;
+        text-align: left;
+        .outer-box {
+            padding: 10px 30px;
+            &.right {
+                .dnn-grid-system {
+                    margin: 10px 0px;
+                    &.first {
+                        margin-bottom: 4.5px;
+                        margin-right: 0px;
+                        margin-left: 0px;
+                        margin-top: 0px;
+                    }
+                    .dnn-grid-cell {
+                        padding: 0px;
+                        margin: 0px;
+                    }
+                }
+                //padding-left: 30px;
+                border-left: 1px solid @alto;
+            }
+        }
+        &.no-padding {
+            padding: 0px;
+        }
+        .title {
+            //margin-top: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 20px;
+            float: left;
+        }
+        .link {
+            padding: 0px;
+            font-weight: bold;
+            cursor: pointer;
+            color: @curiousBlue;
+            &:active, &:hover {
+                color: @cerulean;
+            }
+            &.disabled {
+                color: #C8C8C8;
+                cursor: default;
+            }
+            &:visited {
+                color: @matisse;
+            }
+        }
+        span.importantNote {
+            text-transform: uppercase;
+            color: @alizarinCrimson;
+            display: block;
+            font-weight: bold;
+        }
+    }
+    .buttons {
+        .dnn-grid-cell {
+            &.leftBtn {
+                padding-right: 5px;
+                text-align: right;
+            }
+            &.rightBtn {
+                padding-left: 10px;
+            }
+        }
+    }
+    .isloading {
+        .input-tooltip-container {
+            input {
+                pointer-events: none;
+                border-color: @alto;
+            }
+        }
+    }
+}

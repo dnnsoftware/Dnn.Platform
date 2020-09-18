@@ -1,0 +1,4 @@
+Components\Wizards\Success.ascx
+Components\Wizards\Success.ascx.vb
+Components\Wizards\Success.ascx.resx
+

@@ -1,0 +1,28 @@
+<Settings>
+  <Setting>
+    <Name>BorderWidth</Name>
+    <Type>String</Type>
+    <Help>Sets the border width of the logo image</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets a CSS class on the logo</Help>
+    <Value></Value>
+  </Setting>
+    <Setting>
+    <Name>LinkCssClass</Name>
+    <Type>String</Type>
+    <Help>Sets a CSS class on the hyperlink</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>InjectSvg</Name>
+    <Type>Boolean</Type>
+    <Help>
+      If set to true, the control will read the contents of the Logo file, look for an svg tag, and inject it directly into the hyperlink
+    </Help>
+    <Value></Value>
+  </Setting>
+</Settings>

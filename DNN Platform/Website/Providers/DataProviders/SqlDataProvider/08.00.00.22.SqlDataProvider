@@ -1,0 +1,24 @@
+/* DNN-7163 */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetInstalledModules]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
+AS
+BEGIN
+	SELECT		
+		DM.DesktopModuleID, 
+		DM.ModuleName,
+		DM.FriendlyName,
+		DM.Version,
+		--Left Joined nulls will not add to the count
+		COUNT(MDEF.DesktopModuleID) as Instances
+	FROM {databaseOwner}[{objectQualifier}DesktopModules] AS DM
+		--Paren's Will enforce inner join first before left outer joining
+		LEFT JOIN ({databaseOwner}[{objectQualifier}ModuleDefinitions] MDEF 
+				INNER JOIN {databaseOwner}[{objectQualifier}Modules] MODS ON MDEF.ModuleDefID = MODS.ModuleDefID)
+	ON dm.DesktopModuleID = MDEF.DesktopModuleID 
+	WHERE (IsAdmin = 0)
+	GROUP BY DM.DesktopModuleID, DM.ModuleName, DM.FriendlyName, DM.Version
+	ORDER BY DM.[FriendlyName] ASC
+END
+GO

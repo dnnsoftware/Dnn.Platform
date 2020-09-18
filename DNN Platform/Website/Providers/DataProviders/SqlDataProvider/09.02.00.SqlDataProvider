@@ -1,0 +1,1088 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version NVARCHAR(8)
+SET @version = '09.02.00'
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Registration'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ToastSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+
+GO
+
+/***** DNN-9991: Add Connectors packages type. *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PackageTypes WHERE PackageType='Connector')
+BEGIN
+    INSERT INTO {databaseOwner}{objectQualifier}PackageTypes(PackageType, Description, SecurityAccessLevel)
+    VALUES ('Connector', 'Connector', 2)
+END
+GO
+
+/***** DNN-10091: Add THML5 video files (.mp4, .webm, .ogv) to allowed files list . *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%mp4%')
+	UPDATE {databaseOwner}{objectQualifier}HostSettings
+		SET SettingValue = SettingValue + ',mp4'
+		WHERE SettingName='FileExtensions'
+GO
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%webm%')
+	UPDATE {databaseOwner}{objectQualifier}HostSettings
+		SET SettingValue = SettingValue + ',webm'
+		WHERE SettingName='FileExtensions'
+GO
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%ogv%')
+	UPDATE {databaseOwner}{objectQualifier}HostSettings
+		SET SettingValue = SettingValue + ',ogv'
+		WHERE SettingName='FileExtensions'
+GO
+
+/***** DNN-9963: Add svg & ico Image File Type to Lists *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='svg')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'svg', N'Scalable Vector Graphics', 0, 0, 0, -1, N'', -1, 1, -1, '2000-01-01 00:00:00.000', NULL, NULL)
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='ico')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'ico', N'Icon', 0, 0, 0, -1, N'', -1, 1, -1, '2000-01-01 00:00:00.000', NULL, NULL)
+END
+GO
+
+/***** DNN-10042 *****/
+UPDATE {databaseOwner}[{objectQualifier}Lists] 
+    SET Text = 'DotNetNuke.Web.UI.WebControls.DnnTimeZoneEditControl, DotNetNuke.Web'
+    WHERE ListName = N'DataType' and Value = N'TimeZone'
+GO
+
+
+/***** DNN-10200: update newtonsoft.json assembly to 10.0.3. *****/
+DELETE FROM {databaseOwner}[{objectQualifier}Assemblies]
+    WHERE PackageID IS NULL AND AssemblyName = 'Newtonsoft.Json.dll'
+GO
+
+/***** CONTENT-8440: update default MessagingThrottlingInterval value to 30 seconds. *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = '0.5' 
+    WHERE SettingName = 'MessagingThrottlingInterval' and SettingValue = '0'
+
+GO
+
+/**********************************************/
+/* DNN-10072 Incorrect assembly version check */
+/**********************************************/
+
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}fn_ParseVersion]') IS NOT NULL)
+  DROP FUNCTION {databaseOwner}[{objectQualifier}fn_ParseVersion];
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}fn_ParseVersion]
+(
+	@Version	nvarchar(20)
+)
+RETURNS @VersionParts TABLE (Major int, Minor int, Build int)
+WITH SCHEMABINDING
+AS
+	BEGIN
+		DECLARE @Pos int;
+		DECLARE @String nvarchar(20);
+		DECLARE @Major int;
+		DECLARE @Minor int;
+		DECLARE @Build int;
+
+		SET @String = @Version;
+		SET @Pos = CHARINDEX('.' , @String);
+		SET @Major = CONVERT(int, LEFT(@String, @Pos - 1));
+		SET @String = STUFF(@String, 1, @Pos, '');
+		SET @Pos = CHARINDEX('.' , @String);
+		SET @Minor = CONVERT(int, LEFT(@String, @Pos - 1));
+		SET @String = STUFF(@String, 1, @Pos, '');
+		SET @Build = CONVERT(int, @String);
+
+		INSERT INTO @VersionParts(Major, Minor, Build)
+		VALUES (@Major, @Minor, @Build);
+
+		RETURN;
+	END
+GO
+
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}fn_CompareVersion]') IS NOT NULL)
+  DROP FUNCTION {databaseOwner}[{objectQualifier}fn_CompareVersion];
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}fn_CompareVersion]
+(
+	@Version		nvarchar(20),
+	@CurrentVersion nvarchar(20)
+)
+RETURNS int
+
+AS
+	BEGIN
+
+		DECLARE @MajorVersion int
+		DECLARE @MajorCurrentVersion int
+		DECLARE @MinorVersion int
+		DECLARE @MinorCurrentVersion int
+		DECLARE @BuildVersion int
+		DECLARE @BuildCurrentVersion int
+
+		SELECT @MajorVersion = Major, @MinorVersion = Minor, @BuildVersion = Build
+		FROM {databaseOwner}[{objectQualifier}fn_ParseVersion](@Version)
+		SELECT @MajorCurrentVersion = Major, @MinorCurrentVersion = Minor, @BuildCurrentVersion = Build
+		FROM {databaseOwner}[{objectQualifier}fn_ParseVersion](@CurrentVersion)
+
+		IF @CurrentVersion IS NULL
+			-- Assembly Not Registered -  Set ReturnCode = 0, so assembly is copied
+			RETURN 0
+		ELSE
+			IF @Version = @CurrentVersion
+				-- Same Version - Set ReturnCode = 2, so assembly is only copied on repair
+				RETURN 2
+			ELSE
+				-- Different Version
+				-- Compare Major, Minor, Revision
+				IF @MajorVersion > @MajorCurrentVersion
+					OR (@MajorVersion = @MajorCurrentVersion AND @MinorVersion > @MinorCurrentVersion)
+						OR (@MajorVersion = @MajorCurrentVersion AND @MinorVersion = @MinorCurrentVersion AND @BuildVersion > @BuildCurrentVersion)
+					-- Newer version - at least on of Major, Minor, Revision is larger - Set ReturnCode = 1, so assembly is copied
+					RETURN 1
+				ELSE
+					-- Older Version - Set ReturnCode = 3, so assembly is not copied
+					RETURN 3
+
+		RETURN 3
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}RegisterAssembly]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}RegisterAssembly]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}RegisterAssembly]
+	@PackageID      int,
+	@AssemblyName   nvarchar(250),
+	@Version		nvarchar(20)
+As
+BEGIN
+	DECLARE @AssemblyID int
+	DECLARE @CurrentVersion nvarchar(20)
+	/*	@ReturnCode Values
+		0 - Assembly NOT Registered Before
+		1 - Assembly Already Registered - New Version > Current Version
+		2 - Assembly Already Registered - New Version = Current Version
+		3 - Assembly Already Registered - New Version < Current Version
+	*/
+	DECLARE @CompareVersion int
+
+	-- First check if this assembly is registered to this package
+	SET @AssemblyID = (SELECT AssemblyID
+							FROM {databaseOwner}{objectQualifier}Assemblies
+							WHERE PackageID = @PackageID
+								AND AssemblyName = @AssemblyName)
+
+	-- but assembly may be registerd by other packages so check for Max unstalled version
+	SET @CurrentVersion  = (SELECT TOP 1 a.Version
+							FROM {databaseOwner}{objectQualifier}Assemblies a
+							CROSS APPLY {databaseOwner}[{objectQualifier}fn_ParseVersion](a.Version) AS v
+							WHERE a.AssemblyName = @AssemblyName
+							ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC)
+
+	SET @CompareVersion = {databaseOwner}{objectQualifier}fn_CompareVersion(@Version, @CurrentVersion)
+
+	IF @AssemblyID IS NULL
+		BEGIN
+			-- AssemblyID is null (not registered)
+			-- Add an assembly regsitration for this package
+			INSERT INTO {databaseOwner}{objectQualifier}Assemblies (
+				PackageID,
+				AssemblyName,
+				Version
+			)
+			VALUES (
+				@PackageID,
+				@AssemblyName,
+				@Version
+			)
+		END
+	ELSE
+		BEGIN
+			-- AssemblyID is not null - Assembly is registered
+			IF @CompareVersion = 1
+				BEGIN
+					-- Newer version - Update Assembly registration
+					UPDATE {databaseOwner}{objectQualifier}Assemblies
+					SET    Version = @Version
+					WHERE  AssemblyID = @AssemblyID
+				END
+		END
+
+	SELECT @CompareVersion
+END
+GO
+/********************/
+/* DNN-10072 -- end */
+/********************/
+
+/***** DNN-10349: update sp GetUsersAdvancedSearch to allow search region/country name. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch] 
+(
+    @PortalID int,                          -- portal                
+    @UserId int,                            -- for determining correct visibility permissions
+    @FilterUserId int,                      -- for filtering relationships on    
+    @FilterRoleId int,                      -- for filtering by roles
+    @RelationshipTypeId int,                -- for filtering by relationships
+    @IsAdmin bit,                           -- determines visibility
+    @PageSize int,                          -- page size
+    @PageIndex int,                         -- 0 based page index
+    @SortBy nvarchar(100),                  -- sort field
+    @SortAscending bit,                     -- sort flag indicating whether sort is asc or desc
+    @PropertyNames nvarchar(max),           -- list of property names to filter
+    @PropertyValues nvarchar(max)           -- list of property values to filter
+)
+AS
+BEGIN
+    -- Setup Top XX
+    DECLARE @topSql nvarchar(20) SET @topSql = ''
+    IF @PageSize > -1 BEGIN SET @topSql = ' TOP ' + CONVERT(nvarchar(20), @PageSize) END
+                
+    -- Setup Specific Page
+    DECLARE @minRowNumberSql nvarchar(20) SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+    -- Setup Pivot Field List
+    DECLARE @pivotSql nvarchar(max) SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+    -- Get User specific columns
+    DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users' AND TABLE_SCHEMA = REPLACE('{databaseOwner}', '.', '')
+
+    -- Lists Filters names and values into tables
+    DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    DECLARE @PropertyValuesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    INSERT INTO @PropertyNamesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)                      
+    INSERT INTO @PropertyValuesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyValues)
+                
+    -- Gets filters that are on the User rather than Profile Properties
+    DECLARE @UserFiltersTable TABLE (RowNumber Int, RowValue NVARCHAR(MAX))
+    INSERT INTO @UserFiltersTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@PropertyNames) WHERE RowValue IN (SELECT * FROM @UserColumns)
+
+
+    DECLARE @sql nvarchar(max) SET @sql = ''
+    DECLARE @filterSql nvarchar(max)SET @filterSql = ''
+
+    -- ///////////////////////////////////////////////////
+    -- FILTERING by PROFILE PROPERTY or USER PROPERTY
+    -- ///////////////////////////////////////////////////
+    --IF @PropertyNames IS NOT NULL AND @PropertyNames <> ''
+    IF ((SELECT COUNT(*) FROM @PropertyNamesTable) > 0) AND ((SELECT COUNT(*) FROM @PropertyValuesTable)> 0) 
+	    BEGIN
+            DECLARE @propertyFilter nvarchar(max)
+            DECLARE @userFilter nvarchar(max)
+            DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
+            DECLARE @profilePropertyCount INT
+            DECLARE @userFilterCount INT
+            DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
+            DECLARE @groupBy NVARCHAR(300)
+
+            -- Filters on Profile Properties    
+            ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyNamesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns)),
+            CTE_PropertyValues(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyValuesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns))
+
+            SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
+                                        + ' (PropertyName=''' + N.RowValue 
+                                        + CASE WHEN SUBSTRING(V.RowValue, 1, 1) = '$' AND SUBSTRING(V.RowValue, LEN(V.RowValue), 1) = '$' THEN
+                                            ''' AND CHARINDEX(''$'' + PropertyValue + ''$'', ''' + V.RowValue + ''') > 0'
+                                          ELSE 
+                                            ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%''))'
+                                          END
+                                        + ')'
+            FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
+                                
+            -- Filters on User Property                           
+            SELECT @userFilter = COALESCE(@userFilter + ' AND ', ' ')  
+										+ ' ((u.' + N.RowValue + ' LIKE ''' + V.RowValue +'%'') OR (u.' + N.RowValue + ' LIKE ''% ' + V.RowValue +'%'')) '
+            FROM @UserFiltersTable AS N  INNER JOIN @PropertyValuesTable AS V ON N.RowNumber = V.RowNumber
+                                
+            SELECT @userFilterCount = COUNT(*) FROM @UserFiltersTable
+            IF @userFilterCount > 0 BEGIN SET @userFilterJoin = ' INNER JOIN {objectQualifier}vw_Users u ON u.UserId = p.UserId ' END
+
+            -- Determining the Group By Clause -- dependant on types of filters used
+            SELECT @profilePropertyCount = COUNT(*) FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)
+            WHERE RowValue IN (SELECT PropertyName FROM {databaseOwner}{objectQualifier}ProfilePropertyDefinition WHERE PortalID = @PortalId)
+            AND RowValue NOT IN (SELECT ColumnName FROM @UserColumns)
+
+            IF @profilePropertyCount > 0
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) = ' + CONVERT(nvarchar(20),@profilePropertyCount ) END
+            ELSE
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) > 0 '     END
+
+            IF ( @profilePropertyCount > 0 AND @userFilterCount > 0)
+            BEGIN SET @propertyAndUserFilter = ' AND ' END
+
+            -- CREATE FINAL FILTER
+            SET @filterSql = ' CREATE TABLE #MatchingUsers (UserId int, occurances int) INSERT INTO #MatchingUsers SELECT p.UserID, COUNT(*) AS occurances' 
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
+                                        + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
+										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
+                                        + @groupBy
+		END
+
+        -- ///////////////////////////////////////////////////      
+        -- SETUP ROLE AND RELATIONSHIP FILTERS
+        -- ///////////////////////////////////////////////////
+        DECLARE @roleAndRelationshipFilter nvarchar(1000)
+        DECLARE @roleFilter nvarchar(500) SET @roleFilter = ''
+        DECLARE @relationshipFilter nvarchar(1000) SET @relationshipFilter = ''
+        DECLARE @roleAndRelationshipFlag bit SET @roleAndRelationshipFlag  = 0
+        DECLARE @RoleAndRelationshipSelect nvarchar(100) SET @RoleAndRelationshipSelect = ''
+                                
+        -- Filter by Role
+        IF @FilterRoleId <> -1 
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @roleFilter = ' JOIN {databaseOwner}{objectQualifier}UserRoles UR ON U.UserID = UR.UserID AND UR.Status = 1 '
+					+ ' AND (UR.EffectiveDate < GETDATE() OR UR.EffectiveDate IS NULL) '
+                    + ' AND (UR.ExpiryDate > GETDATE() OR UR.ExpiryDate IS NULL) AND UR.RoleID = ' + CONVERT(nvarchar(20), @FilterRoleId)
+            END
+
+        -- Filter by Relationship
+        IF @RelationshipTypeId <> -1  
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @relationshipFilter = ' JOIN {databaseOwner}{objectQualifier}Relationships REL ON REL.PortalID = ' + CONVERT(nvarchar(20), @PortalID)
+                                            + ' AND RelationshipTypeID = ' + CONVERT(nvarchar(20), @RelationshipTypeId) 
+                                            + ' JOIN {databaseOwner}{objectQualifier}UserRelationships UREL ON REL.RelationshipID = UREL.RelationshipID AND
+                                            ((UREL.UserID = ' + CONVERT(nvarchar(20), @FilterUserId) + ' AND UREL.RelatedUserID = U.UserID) OR
+                                            (UREL.UserID = U.UserID AND UREL.RelatedUserID = ' + CONVERT(nvarchar(20), @FilterUserId) + '))'
+                                            + ' WHERE UREL.Status = 2'
+            END 
+
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
+
+        SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {databaseOwner}{objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
+
+        -- ///////////////////////////////////////////////////  
+        -- SET UP SORT
+        -- ///////////////////////////////////////////////////
+        DECLARE @sortSql nvarchar(1000) SET @sortSql = ''
+        DECLARE @propertySort nvarchar(1000) SET @propertySort = ''
+        DECLARE @filterJoin nvarchar(100) SET @filterJoin = ''
+        DECLARE @filterSortSql nvarchar(1000) SET @filterSortSql = ''
+        DECLARE @sortByUserProperty BIT         
+        SELECT @sortByUserProperty = COUNT(*) FROM @UserColumns WHERE ColumnName = @SortBy
+
+        IF ( @profilePropertyCount > 0 OR @userFilterCount > 0)
+	        BEGIN SET @filterJoin = ' INNER JOIN #MatchingUsers m ON m.UserID = s.UserID ' END
+
+        -- Determine the Type of Sort
+        IF (@SortBy IS NOT NULL AND @SortBy <> '') AND @sortByUserProperty <> 1
+	        BEGIN -- Sort By Profile Property
+                SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')
+                SET @propertySort = {databaseOwner}{objectQualifier}GetSortSql('PropertyValue',@SortAscending,'UserID')
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @propertySort + ' ) AS RowNumber, *  ' 
+                                                + ' FROM {databaseOwner}{objectQualifier}vw_Profile WHERE PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' AND PropertyName = ''' + @SortBy + ''' )'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+        ELSE
+		    BEGIN   
+                -- Sort By User Property
+                IF @sortByUserProperty = 1 BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')END
+                                
+                -- Default: Sort By UserID
+                ELSE BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql('UserID',@SortAscending,'UserID') END                        
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @sortSql + ' ) AS RowNumber, * '
+                                                + ' FROM {databaseOwner}{objectQualifier}vw_Users WHERE (PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR PortalID Is NULL) AND IsDeleted = 0)'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+
+		-- Check if any Profile Property Definitions exist for this portal
+		IF @pivotSql is not null
+			BEGIN
+				-- SELECT with PIVOT
+				SET @pivotSql = 'SELECT * FROM (SELECT * FROM PivotedUsers PIVOT (MAX(PropertyValue) for PropertyName in (' + @pivotSql + ') ) as pivotTable) T '
+			END
+		ELSE
+			BEGIN
+				-- SELECT with DISTINCT
+				SET @pivotSql = 'SELECT distinct UserID, PortalID, Username, Email, DisplayName, IsSuperUser, IsDeleted, AffiliateID, UpdatePassword, Authorised FROM PivotedUsers '
+			END
+
+        -- ///////////////////////////////////////////////////
+        -- CREATE FINAL QUERY
+        -- ///////////////////////////////////////////////////
+        SET @sql = @filterSql
+                + ' DECLARE @TempUsers TABLE (SortOrder INT, UserID INT) '
+                + @filterSortSql
+                + @roleAndRelationshipFilter
+                + ' INSERT INTO @TempUsers SELECT ' + @topSql + ' * FROM (SELECT '
+                + ' ROW_NUMBER() OVER ( ORDER BY [RowNumber] ) AS RowNumber, s.UserId FROM MatchingSorted s ' 
+                + ' WHERE 1=1 ' + @roleAndRelationshipSelect
+				+ ') t WHERE RowNumber >= '+ @minRowNumberSql
+                + ' ;WITH PivotedUsers AS ( SELECT U.UserID, U.PortalID, U.Username, U.Email, U.DisplayName, U.IsSuperUser, U.IsDeleted, U.CreatedOnDate,        
+                                                U.AffiliateID, U.UpdatePassword, U.Authorised, Prop.PropertyName,
+                                                CASE
+                                                    WHEN (P.Visibility = 0) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 0 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) THEN P.PropertyValue
+                                                    WHEN U.UserID = ' + CONVERT(nvarchar(20), @UserId) + ' OR (P.Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    ELSE NULL
+                                                END AS PropertyValue
+                                            FROM   {databaseOwner}{objectQualifier}vw_Users AS U
+                                                INNER JOIN {databaseOwner}{objectQualifier}UserProfile AS P ON U.UserID = P.UserID
+                                                LEFT OUTER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition AS Prop ON 
+                                                (Prop.PropertyDefinitionID = P.PropertyDefinitionID and Prop.Deleted = 0 and Prop.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ')
+                                            WHERE U.UserId IN (SELECT UserId FROM @TempUsers) AND (U.PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalId IS NULL)
+                                            )' +
+                @pivotSql + @sortSql + ' DROP TABLE #MatchingUsers'           
+
+        EXEC(@sql)
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ConvertListToTable]') AND type in (N'FN', N'TF', N'IF'))
+	DROP FUNCTION {databaseOwner}[{objectQualifier}ConvertListToTable]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}ConvertListToTable]
+(  
+	@Delimiter	NVARCHAR(5), 
+    @List		NVARCHAR(MAX)
+) 
+RETURNS @TableOfValues TABLE 
+(  
+	RowNumber	SMALLINT IDENTITY(1,1), 
+    RowValue	NVARCHAR(1000) 
+) 
+AS 
+   BEGIN
+      DECLARE @LenString INT 
+ 
+      WHILE len( @List ) > 0 
+         BEGIN 
+         
+            SELECT @LenString = 
+               (CASE charindex( @Delimiter, @List ) 
+                   WHEN 0 THEN len( @List ) 
+                   ELSE ( charindex( @Delimiter, @List ) -1 )
+                END
+               ) 
+                                
+            INSERT INTO @TableOfValues 
+               SELECT substring( @List, 1, @LenString )
+                
+            SELECT @List = 
+               (CASE ( len( @List ) - @LenString ) 
+                   WHEN 0 THEN '' 
+                   ELSE right( @List, len( @List ) - @LenString - 1 ) 
+                END
+               ) 
+         END
+      RETURN 
+   END 
+GO
+
+/* DNN-8564: Update DeleteTab so that TabOrder of other Portals is not affected on Delete */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+  @TabId INT  -- ID of tab to delete; Not Null and > 0
+AS
+BEGIN
+    DECLARE @TabOrder INT
+    DECLARE @ParentId INT
+    DECLARE @ContentItemId INT
+	DECLARE @PortalId INT
+    SELECT @TabOrder = TabOrder, @ParentId = ParentID, @ContentItemID = ContentItemID, @PortalId = PortalID FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+
+    -- Delete Tab --
+    DELETE FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+
+    -- Update TabOrder of remaining Tabs --
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET TabOrder = TabOrder - 2
+        WHERE ISNULL(ParentID, -1) = ISNULL(@ParentId , -1) AND TabOrder > @TabOrder 
+		AND (PortalID = @PortalId OR (PortalID IS NULL AND @PortalId IS NULL))
+
+    -- Delete Content Item --
+    DELETE FROM {databaseOwner}[{objectQualifier}ContentItems] WHERE ContentItemID = @ContentItemId
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPasswordHistory]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddPasswordHistory
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPasswordHistory]
+	@UserId             int,
+	@Password           nvarchar(128),
+	@PasswordSalt       nvarchar(128),
+	@PasswordsRetained  int,
+	@DaysRetained       int,
+	@CreatedByUserID    int
+AS
+
+	BEGIN
+
+	INSERT INTO {databaseOwner}{objectQualifier}PasswordHistory (
+		UserId,
+		[Password],
+		PasswordSalt,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+	VALUES (
+		@UserId,
+		@Password,
+		@PasswordSalt,
+		@CreatedByUserID,
+		GETDATE(),
+		@CreatedByUserID,
+		GETDATE()
+	)
+
+	DELETE FROM {databaseOwner}{objectQualifier}PasswordHistory
+	WHERE UserID=@UserId
+	  AND PasswordHistoryID NOT IN (
+		SELECT TOP (@PasswordsRetained) PasswordHistoryID
+		FROM {databaseOwner}{objectQualifier}PasswordHistory
+		WHERE UserID=@UserId
+		ORDER BY CreatedOnDate DESC
+		)
+	  AND DATEDIFF(day, CreatedOnDate, GETDATE()) > @DaysRetained
+
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPasswordHistory]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetPasswordHistory
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPasswordHistory]
+	@UserID             int,
+	@PasswordsRetained  int,
+	@DaysRetained       int
+AS
+	SELECT TOP (@PasswordsRetained) *
+	FROM {databaseOwner}{objectQualifier}PasswordHistory
+	WHERE UserID=@UserID
+	  AND DATEDIFF(day, CreatedOnDate, GETDATE()) <= @DaysRetained;
+GO
+
+/***** DNN-10266: add security checker for svg files. *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='FileSecurityChecker' AND Value='svg')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] (
+        [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]
+    ) VALUES (
+        N'FileSecurityChecker', N'svg', N'DotNetNuke.Services.FileSystem.Internal.SecurityCheckers.SvgFileChecker, DotNetNuke', 0, 0, 0, -1, N'', -1, 1, -1, GETDATE(), -1, GETDATE()
+    )
+END
+GO
+
+/***** DNN-4350: Clear the PortalAliasId in TabUrls when delete the portal alias. *****/
+UPDATE u SET PortalAliasId = NULL
+    FROM {databaseOwner}[{objectQualifier}TabUrls] u
+    LEFT JOIN {databaseOwner}[{objectQualifier}PortalAlias] a ON a.PortalAliasId = u.PortalAliasId
+    WHERE u.PortalAliasId IS NOT NULL AND a.PortalAliasID IS NULL
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeletePortalAlias]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePortalAlias
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}DeletePortalAlias]
+    @PortalAliasID INT
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalAlias]
+        WHERE PortalAliasID = @PortalAliasID
+        
+    UPDATE 	{databaseOwner}[{objectQualifier}TabUrls]
+        SET PortalAliasID = NULL WHERE PortalAliasID = @PortalAliasID
+GO
+
+/*************************************************************************/
+/***** DNN-4350: add encryption capability for PortalSettings values *****/
+/*************************************************************************/
+
+IF EXISTS( SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}Portals' AND  COLUMN_NAME = N'ProcessorPassword' )
+   BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}Portals]
+            ALTER COLUMN ProcessorPassword nvarchar(100)
+    END
+GO
+
+IF NOT EXISTS( SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}PortalSettings' AND  COLUMN_NAME = N'IsSecure' )
+   BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] ADD
+            IsSecure BIT NOT NULL DEFAULT(0)
+    END
+GO
+
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]') IS NOT NULL)
+
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+--  covers delete, add and update scenarios:
+	@PortalID       Int,		   -- Key, Not Null (unless for delete)
+	@SettingName    nVarChar( 50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(Max), -- Not Null
+	@UserID			Int,		   -- Not Null (editing user)
+	@CultureCode    nVarChar( 10), -- Key, Null|'' for neutral language
+	@IsSecure       Bit = 0        -- NotNUll default 0
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+		 WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+		   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@PortalID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		 USING (SELECT @PortalID PID, @CultureCode CC, @SettingName SN, @SettingValue SV, @IsSecure Sec) Q
+		    ON (S.PortalID = Q.PID AND IsNull(S.CultureCode, N'') = IsNull(Q.CC, N'') AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN
+		    INSERT ( PortalID,  SettingName,  SettingValue, CultureCode,               CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@PortalID, @SettingName, @SettingValue, NULLIF(@CultureCode, N''), IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+		-- Saving a neutral setting overwrites all localized settings with same name (for current portal):
+		IF IsNull(@CultureCode, N'') = N''
+			DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+			 WHERE PortalID = @PortalID AND SettingName = @SettingName AND CultureCode IS Not Null;
+	END; -- Else If
+END; -- Procedure
+GO
+
+/******************************************************************************************************************/
+/***** Fix DNN-10557: Fix xml storage for comment & comment moderation in case of longer than 2000 characters *****/
+/******************************************************************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Comment_Save]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+	@JournalId int,
+	@CommentId int,
+	@UserId int,
+	@Comment nvarchar(max),
+	@CommentXML xml,
+	@DateUpdated datetime
+AS
+
+DECLARE @cxml xml
+DECLARE @xml xml
+DECLARE @cdataComment nvarchar(max)
+
+IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId AND CommentId = @CommentId)
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET Comment = @Comment,
+			CommentXML = @CommentXML,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId
+	END
+	ELSE
+	BEGIN		
+		IF @CommentXML IS NULL
+			SET @cxml = '<root></root>';
+		ELSE
+			SET @cxml = @CommentXML
+
+		IF NOT(@cxml.exist('/root/comment') = 1)
+			SET @cxml.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		SET @cxml.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")')
+		
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET CommentXML = @cxml,
+			Comment = NULL,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId
+	END
+END
+ELSE
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, @Comment, @CommentXML, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()
+	END
+	ELSE
+	BEGIN
+		IF @CommentXML IS NULL
+			SET @cxml = '<root></root>';
+		ELSE
+			SET @cxml = @CommentXML
+
+		IF NOT(@cxml.exist('/root/comment') = 1)
+			SET @cxml.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		SET @cxml.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")')
+		
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, NULL, @cxml, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()
+	END		
+END
+SELECT @CommentId
+GO
+
+/*************************************/
+/***** DNN-8014: login cookies   *****/
+/*************************************/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthCookies]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}AuthCookies](
+		[CookieId]    [int] IDENTITY(1,1) NOT NULL,
+		[CookieValue] [nvarchar](200) NOT NULL,
+		[ExpiresOn]   [datetime] NOT NULL, -- in UTC
+		[UserId]      [int] NOT NULL,
+		[CreatedOn]   [datetime], -- UTC
+		[UpdatedOn]   [datetime], -- UTC
+		CONSTRAINT [PK_{objectQualifier}AuthCookies] PRIMARY KEY CLUSTERED([CookieId] DESC)
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthCookies]')
+				AND name = N'IX_{objectQualifier}AuthCookies_CookieValue')
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}AuthCookies_CookieValue]
+		ON {databaseOwner}[{objectQualifier}AuthCookies] ([CookieValue])
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Update]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Update]
+GO
+
+-- Adds new or Updates existing entry
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Update]
+    @CookieValue  nvarchar(200),
+	@ExpiresOn   datetime, -- in UTC
+	@UserId		  int
+AS
+BEGIN
+	MERGE INTO {databaseOwner}[{objectQualifier}AuthCookies] AC
+		USING (SELECT @CookieValue CVal, @UserId [UID], @ExpiresOn EXPDT) Q
+		ON (AC.CookieValue = Q.CVal)
+		WHEN MATCHED AND AC.ExpiresOn <> Q.EXPDT THEN -- update only, if there is a change, user ID shouldn't change
+		UPDATE SET ExpiresOn = @ExpiresOn, UpdatedOn = GetUtcDate()
+		WHEN NOT MATCHED THEN
+		INSERT ( CookieValue,  UserId, ExpiresOn,  CreatedOn,    UpdatedOn )
+		VALUES (@CookieValue, @UserId, @ExpiresOn, GetUtcDate(), GetUtcDate());
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Find]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Find]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Find]
+    @CookieValue  nvarchar(200)
+AS
+BEGIN
+	SELECT TOP(1) * FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE CookieValue = @CookieValue
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]
+    @CookieValue  nvarchar(200)
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE CookieValue = @CookieValue
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+	@CutoffDate   datetime -- in UTC
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE ExpiresOn < @CutoffDate
+END
+GO
+
+/**************************************************************************/
+/***** DNN-9070:  PB Admin Logs: No Mail From Address (Portal SMTP)   *****/
+/**************************************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddEventLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddEventLog]
+GO
+
+CREATE PROCEDURE  {databaseOwner}[{objectQualifier}AddEventLog] 
+	@LogGUID varchar(36),
+	@LogTypeKey nvarchar(35),
+	@LogUserID int,
+	@LogUserName nvarchar(50),
+	@LogPortalID int,
+	@LogPortalName nvarchar(100),
+	@LogCreateDate datetime,
+	@LogServerName nvarchar(50),
+	@LogProperties ntext,
+	@LogConfigID int,
+	@ExceptionHash varchar(100) = NULL,
+	@NotificationActive bit = 0
+AS
+BEGIN
+	DECLARE @LogEventID bigint
+
+	INSERT INTO  {databaseOwner}[{objectQualifier}EventLog]
+		(LogGUID,
+		LogTypeKey,
+		LogUserID,
+		LogUserName,
+		LogPortalID,
+		LogPortalName,
+		LogCreateDate,
+		LogServerName,
+		LogProperties,
+		LogConfigID,
+		ExceptionHash)
+	VALUES
+		(@LogGUID,
+		@LogTypeKey,
+		@LogUserID,
+		@LogUserName,
+		@LogPortalID,
+		@LogPortalName,
+		@LogCreateDate,
+		@LogServerName,
+		@LogProperties,
+		@LogConfigID,
+		@ExceptionHash)
+
+	SELECT @LogEventID = SCOPE_IDENTITY()
+
+	IF @NotificationActive=1
+	BEGIN
+
+		DECLARE @NotificationThreshold int
+		DECLARE @ThresholdQueue int
+		DECLARE @NotificationThresholdTime int
+		DECLARE @NotificationThresholdTimeType int
+		DECLARE @MinDateTime smalldatetime
+		DECLARE @CurrentDateTime smalldatetime
+
+		SET @CurrentDateTime = getDate()
+		
+		SELECT TOP 1 @NotificationThreshold = NotificationThreshold,
+			@NotificationThresholdTime = NotificationThresholdTime,
+			@NotificationThresholdTimeType = NotificationThresholdTimeType,
+			@MinDateTime = 
+				CASE
+					 --seconds
+					WHEN NotificationThresholdTimeType=1 THEN DateAdd(second, NotificationThresholdTime * -1, @CurrentDateTime)
+					--minutes
+					WHEN NotificationThresholdTimeType=2  THEN DateAdd(minute, NotificationThresholdTime * -1, @CurrentDateTime)
+					--hours
+					WHEN NotificationThresholdTimeType=3  THEN DateAdd(Hour, NotificationThresholdTime * -1, @CurrentDateTime)
+					--days
+					WHEN NotificationThresholdTimeType=4  THEN DateAdd(Day, NotificationThresholdTime * -1, @CurrentDateTime)
+				END
+		FROM  {databaseOwner}[{objectQualifier}EventLogConfig]
+		WHERE ID = @LogConfigID
+
+		SELECT @ThresholdQueue = COUNT(*)
+		FROM  {databaseOwner}[{objectQualifier}EventLog] el
+			INNER JOIN  {databaseOwner}[{objectQualifier}EventLogConfig] elc
+				ON  el.LogConfigID =  elc.ID
+		WHERE LogCreateDate > @MinDateTime 
+			  AND el.LogNotificationPending IS NULL 
+			  AND elc.ID = @LogConfigID
+
+		IF @ThresholdQueue >= @NotificationThreshold
+		BEGIN
+			UPDATE  {databaseOwner}[{objectQualifier}EventLog]
+			SET LogNotificationPending = 1 
+			WHERE LogConfigID = @LogConfigID
+				AND LogNotificationPending IS NULL		
+				AND LogCreateDate > @MinDateTime
+		END
+
+	END
+ 
+	SELECT @LogEventID
+END
+GO
+
+/***** DNN-8787: add file operations events to log viewer *****/
+
+-- FILE_ADDED
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_ADDED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_ADDED', N'File added', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_ADDED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_ADDED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+-- FILE_CHANGED
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_CHANGED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_CHANGED', N'File changed', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_CHANGED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_CHANGED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+-- FILE_DELETED
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_DELETED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_DELETED', N'File deleted', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_DELETED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_DELETED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+-- FILE_DOWNLOADED
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_DOWNLOADED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_DOWNLOADED', N'File downloaded', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_DOWNLOADED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_DOWNLOADED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+-- FILE_MOVED
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_MOVED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_MOVED', N'File moved', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_MOVED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_MOVED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+-- FILE_OVERWRITTEN
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_OVERWRITTEN')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_OVERWRITTEN', N'File overwritten', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_OVERWRITTEN')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_OVERWRITTEN', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+-- FILE_RENAMED
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_RENAMED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_RENAMED', N'File renamed', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_RENAMED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_RENAMED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+-- FILE_METADATACHANGED
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_METADATACHANGED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'FILE_METADATACHANGED', N'File metadata changed', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_METADATACHANGED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'FILE_METADATACHANGED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

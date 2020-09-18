@@ -1,0 +1,2 @@
+' Remove files which are no longer required in version 5.0.1
+Install\Package\

@@ -1,0 +1,73 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DNN_GoogleAuthentication" type="Auth_System" version="09.07.02" >
+      <friendlyName>DotNetNuke Google Authentication Project</friendlyName>
+      <description>The DotNetNuke Google Authentication Project is an Authentication provider for DotNetNuke that uses 
+        Google authentication to authenticate users.
+      </description>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releasenotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="AuthenticationSystem">
+          <authenticationService>
+            <type>Google</type>
+            <settingsControlSrc>DesktopModules/AuthenticationServices/Google/Settings.ascx</settingsControlSrc>
+            <loginControlSrc>DesktopModules/AuthenticationServices/Google/Login.ascx</loginControlSrc>
+            <logoffControlSrc/>
+          </authenticationService>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Authentication.Google.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules/AuthenticationServices/Google</basePath>
+            <file>
+              <path>App_LocalResources</path>
+              <name>Login.ascx.resx</name>
+            </file>
+            <file>
+              <path>App_LocalResources</path>
+              <name>Settings.ascx.resx</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>google_16X16.jpg</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>google_32X32.jpg</name>
+            </file>
+            <file>
+              <name>Login.ascx</name>
+            </file>
+            <file>
+              <name>Settings.ascx</name>
+            </file>
+            <file>
+              <name>license.txt</name>
+            </file>
+            <file>
+              <name>releasenotes.txt</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

@@ -1,0 +1,11 @@
+﻿Test,								Setting,						Value,				Scheme,		Page Name,		Params,					Expected Url,	
+Ignore Empty,						IgnoreRegex,					,					http://,	About Us,		,						http://{alias}/AboutUs
+DoNotRewriteRegex Empty,			DoNotRewriteRegex,				,					http://,	About Us,		,						http://{alias}/AboutUs
+UseSiteUrlsRegex Empty,				UseSiteUrlsRegex,				,					http://,	About Us,		,						http://{alias}/AboutUs
+DoNotRedirectRegex Empty,			DoNotRedirectRegex,				,					http://,	About Us,		,						http://{alias}/AboutUs
+DoNotRedirectSecureRegex Empty,		DoNotRedirectSecureRegex,		,					http://,	About Us,		,						http://{alias}/AboutUs
+ForceLowerCaseRegex Empty,			ForceLowerCaseRegex,			,					http://,	About Us,		,						http://{alias}/AboutUs
+NoFriendlyUrlRegex Empty,			NoFriendlyUrlRegex,				,					http://,	About Us,		,						http://{alias}/AboutUs
+DoNotIncludeInPathRegex Empty,		DoNotIncludeInPathRegex,		,					http://,	About Us,		,						http://{alias}/AboutUs
+ValidExtensionlessUrlsRegex Empty,	ValidExtensionlessUrlsRegex,	,					http://,	About Us,		,						http://{alias}/AboutUs
+RegexMatch Empty,					RegexMatch,						,					http://,	About Us,		,						http://{alias}/AboutUs

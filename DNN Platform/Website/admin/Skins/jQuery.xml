@@ -1,0 +1,20 @@
+<Settings>
+  <Setting>
+    <Name>DnnjQueryPlugins</Name>
+    <Type>Boolean</Type>
+    <Help>If true, the dnn plugins used for panels and tabs will be loaded in addition to jQuery and jQueryUI.</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>jQueryHoverIntent</Name>
+    <Type>Boolean</Type>
+    <Help>If true, the HoverIntent script used for tooltips will be loaded in addition to jQuery.</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>jQueryUI</Name>
+    <Type>Boolean</Type>
+    <Help>If true, jQueryUI will be loaded in addition to jQuery.</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

@@ -1,0 +1,787 @@
+/************************************************************/
+/*****              Upgrade Script 1.0.1                *****/
+/************************************************************/
+
+
+drop procedure AddModule
+GO
+
+create procedure AddModule
+    
+@TabID          int,
+@ModuleOrder    int,
+@ModuleTitle    nvarchar(256),
+@PaneName       nvarchar(50),
+@ModuleDefID    int,
+@CacheTime      int,
+@EditRoles      nvarchar(256),
+@ShowMobile     bit
+
+as
+
+if @ModuleOrder = -1
+begin
+  select @ModuleOrder = max(ModuleOrder) + 2
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+
+  if @ModuleOrder is null
+    select @ModuleOrder = 1
+end
+
+insert into Modules (
+  TabID,
+  ModuleOrder,
+  ModuleTitle,
+  PaneName,
+  ModuleDefID,
+  CacheTime,
+  AuthorizedEditRoles,
+  ShowMobile
+) 
+values (
+  @TabID,
+  @ModuleOrder,
+  @ModuleTitle,
+  @PaneName,
+  @ModuleDefID,
+  @CacheTime,
+  @EditRoles,
+  @ShowMobile
+)
+
+GO
+
+drop procedure UpdateModuleOrder
+GO
+
+create procedure UpdateModuleOrder
+
+@ModuleID           int,
+@ModuleOrder        int,
+@PaneName           nvarchar(50)
+
+as
+
+declare @TabID int
+
+select @TabID = TabID
+from   Modules
+where  ModuleID = @ModuleID
+
+if @ModuleOrder = -1
+begin
+  select @ModuleOrder = max(ModuleOrder) + 2
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+
+  if @ModuleOrder is null
+    select @ModuleOrder = 1
+end
+
+update Modules
+set    ModuleOrder = @ModuleOrder,
+       PaneName = @PaneName
+where  ModuleID = @ModuleID
+
+GO
+
+create procedure UpdateTabModuleOrder
+
+@TabID           int
+
+as
+
+declare @PaneName nvarchar(50)
+declare @ModuleCounter int
+declare @ModuleOrder int
+
+select @PaneName = min(PaneName)
+from   Modules
+where  TabID = @TabID
+while @PaneName is not null 
+begin
+  select @ModuleCounter = 0
+
+  select @ModuleOrder = min(ModuleOrder)
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+  while @ModuleOrder is not null
+  begin
+    select @ModuleCounter = @ModuleCounter + 1        
+
+    update Modules
+    set    ModuleOrder = ((@ModuleCounter * 2) - 1) * -1 
+    where  TabID = @TabID
+    and    PaneName = @PaneName
+    and    ModuleOrder = @ModuleOrder  
+
+    select @ModuleOrder = min(ModuleOrder)
+    from   Modules
+    where  TabID = @TabID
+    and    PaneName = @PaneName
+    and    ModuleOrder > @ModuleOrder
+  end 
+
+  update Modules
+  set    ModuleOrder = ModuleOrder * -1 
+  where  TabID = @TabID
+  and    PaneName = @PaneName
+
+  select @PaneName = min(PaneName)
+  from   Modules
+  where  TabID = @TabID
+  and    PaneName > @PaneName
+end
+
+go
+
+drop procedure AddTab
+GO
+
+create procedure AddTab
+
+@PortalID        int,
+@TabName         nvarchar(50),
+@ShowMobile      bit,
+@MobileTabName   nvarchar(50),
+@AuthorizedRoles nvarchar (256),
+@LeftPaneWidth   nvarchar(5),
+@RightPaneWidth  nvarchar(5),
+@IsVisible       bit,
+@TabID           int OUTPUT
+
+as
+
+declare @TabOrder int
+
+select @TabOrder = TabOrder
+from   Tabs
+where  PortalID = @PortalID
+and    TabName = 'Admin'
+
+update Tabs
+set    TabOrder = @TabOrder + 2
+where  PortalID = @PortalID
+and    TabName = 'Admin'
+
+insert into Tabs (
+    PortalID,
+    TabName,
+    TabOrder,
+    ShowMobile,
+    MobileTabName,
+    AuthorizedRoles,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible
+)
+values (
+    @PortalID,
+    @TabName,
+    @TabOrder,
+    @ShowMobile,
+    @MobileTabName,
+    @AuthorizedRoles,
+    @LeftPaneWidth,
+    @RightPaneWidth,
+    @IsVisible
+)
+
+select @TabID = @@IDENTITY
+
+GO
+
+create procedure CopyTab
+
+@FromTabId       int,
+@ToTabId         int
+
+as
+
+declare @ModuleId int
+
+select @ModuleId = min(ModuleId)
+from   Modules
+where  TabId = @FromTabId
+while @ModuleId is not null
+begin
+  insert into Modules ( TabId, ModuleDefID, ModuleOrder, PaneName, ModuleTitle, AuthorizedEditRoles, CacheTime, ShowMobile, AuthorizedViewRoles, Alignment, Color, Border, IconFile )
+    select @ToTabId, ModuleDefID, ModuleOrder, PaneName, ModuleTitle, AuthorizedEditRoles, CacheTime, ShowMobile, AuthorizedViewRoles, Alignment, Color, Border, IconFile
+    from   Modules
+    where  ModuleId = @ModuleId
+
+  select @ModuleId = min(ModuleId)
+  from   Modules
+  where  TabId = @FromTabId
+  and    ModuleId > @ModuleId
+end
+
+GO
+
+create procedure UpdatePortalTabOrder
+
+@PortalID int
+
+as
+
+declare @TabCounter int
+declare @TabOrder int
+
+select @TabCounter = 0
+
+select @TabOrder = min(TabOrder)
+from   Tabs
+where  PortalID = @PortalID
+while @TabOrder is not null
+begin
+  select @TabCounter = @TabCounter + 1        
+
+  update Tabs
+  set    TabOrder = ((@TabCounter * 2) - 1) * -1 
+  where  PortalID = @PortalID
+  and    TabOrder = @TabOrder  
+
+  select @TabOrder = min(TabOrder)
+  from   Tabs
+  where  PortalID = @PortalID
+  and    TabOrder > @TabOrder
+end 
+
+update Tabs
+set    TabOrder = TabOrder * -1 
+where  PortalID = @PortalID
+
+go
+
+drop procedure UpdateModule
+GO
+
+create procedure UpdateModule
+
+@ModuleID       int,
+@ModuleTitle    nvarchar(256),
+@Alignment      nvarchar(10),
+@Color          nvarchar(20),
+@Border         nvarchar(1),
+@IconFile       nvarchar(100),
+@CacheTime      int,
+@ViewRoles      nvarchar(256),
+@EditRoles      nvarchar(256),
+@ShowMobile     bit,
+@TabId          int
+
+as
+
+declare @OldTabId int
+declare @ModuleOrder int
+
+select @OldTabId = TabId
+from   Modules
+where  ModuleID = @ModuleID
+
+update Modules
+set    ModuleTitle = @ModuleTitle,
+       CacheTime   = @CacheTime,
+       ShowMobile  = @ShowMobile,
+       AuthorizedViewRoles = @ViewRoles,
+       AuthorizedEditRoles = @EditRoles,
+       Alignment = @Alignment,
+       Color = @Color,
+       Border = @Border,
+       IconFile = @IconFile,
+       TabId = @TabId
+where  ModuleID = @ModuleID
+
+if @OldTabId <> @TabId
+begin
+  select @ModuleOrder = max(ModuleOrder) + 2
+  from   Modules
+  where  TabID = @TabId
+  and    PaneName = 'ContentPane'
+
+  update Modules
+  set    PaneName = 'ContentPane',
+         ModuleOrder = @ModuleOrder
+  where  ModuleId = @ModuleId
+end
+
+GO
+
+drop procedure DeleteFile
+GO
+
+create procedure DeleteFile
+
+@FileName nvarchar(100),
+@PortalId int
+
+as
+
+if @PortalId is null
+begin
+  delete 
+  from   Files
+  where  FileName = @FileName
+  and    PortalId is null
+end
+else
+begin
+  delete 
+  from   Files
+  where  FileName = @FileName
+  and    PortalId = @PortalId
+end
+
+return 1
+
+GO
+
+drop procedure GetPortalSpaceUsed
+GO
+
+create procedure GetPortalSpaceUsed
+
+@PortalId int
+
+as
+
+if @PortalId is null
+begin
+  select 'SpaceUsed' = sum(Size)
+  from   Files
+  where  PortalId is null
+end
+else
+begin
+  select 'SpaceUsed' = sum(Size)
+  from   Files
+  where  PortalId = @PortalId
+end
+
+return 1
+
+GO
+
+drop procedure GetSingleFile
+GO
+
+create procedure GetSingleFile
+
+@FileName  nvarchar(100),
+@PortalId  int
+
+as
+
+if @PortalId is null
+begin
+  select FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  FileName = @FileName
+  and    PortalId is null
+end
+else
+begin
+  select FileName,
+         Extension,
+         Size,
+         Width,
+         Height,
+         ContentType
+  from   Files
+  where  FileName = @FileName
+  and    PortalId = @PortalId
+end
+
+return 1
+
+GO
+
+drop procedure AddPortalInfo
+GO
+
+create procedure AddPortalInfo
+
+@PortalName         nvarchar(50),
+@PortalAlias        nvarchar(200),
+@UploadDirectory    nvarchar(100),
+@LogoFile           nvarchar(50) = null,
+@FooterText         nvarchar(100) = null,
+@UserRegistration   int = null,
+@BannerAdvertising  int = null,
+@Currency           char(3) = null,
+@AdministratorId    int = null,
+@FirstName          nvarchar(100),
+@LastName           nvarchar(100),
+@Email              nvarchar(200),
+@Password           nvarchar(40),
+@ExpiryDate         datetime = null,
+@HostFee            nvarchar(10) = null,
+@HostSpace          int = null,
+@PayPalId           nvarchar(50) = null,
+@PortalID           int OUTPUT
+
+as
+
+declare @AdminOrder int
+declare @ModuleDefId int
+declare @FriendlyName nvarchar(128)
+declare @PaneName nvarchar(50)
+declare @TabId int
+declare @ModuleOrder int
+declare @RoleId int
+declare @UserId int
+declare @AdministratorRoleId int
+declare @RegisteredRoleId    int
+
+begin transaction
+
+insert into Portals (
+  PortalName,
+  PortalAlias,
+  UploadDirectory,
+  LogoFile,
+  FooterText,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  AdministratorId,
+  HostFee,
+  HostSpace,
+  PayPalId,
+  AdministratorRoleId,
+  RegisteredRoleId
+)
+values (
+  @PortalName,
+  @PortalAlias,
+  @UploadDirectory,
+  @LogoFile,
+  @FooterText,
+  @ExpiryDate,
+  @UserRegistration,
+  @BannerAdvertising,
+  @Currency,
+  null,
+  @HostFee,
+  @HostSpace,
+  @PayPalId,
+  null,
+  null
+)
+
+select @PortalID = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingFrequency,
+  TrialPeriod,
+  TrialFrequency
+)
+values (
+  @PortalID,
+  'Administrators',
+  'Portal Administration',
+  null,
+  4,
+  null,
+  null
+)
+
+select @AdministratorRoleId = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingFrequency,
+  TrialPeriod,
+  TrialFrequency
+)
+values (
+  @PortalID,
+  'Registered Users',
+  'Registered Users',
+  null,
+  0,
+  null,
+  null
+)
+
+select @RegisteredRoleId = @@IDENTITY
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth
+) 
+values (
+    @PortalID,
+    1,
+    'Home',
+    '-1;',
+    'Home',
+    1,
+    '200',
+    '200'   
+)
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth
+) 
+values (
+    @PortalID,
+    5,
+    'Admin',
+    convert(varchar,@AdministratorRoleId) + ';',
+    'Admin',
+    0,
+    '200',
+    '200'   
+)
+
+select @TabId = @@IDENTITY
+
+select @ModuleOrder = 0
+
+select @AdminOrder = min(AdminOrder)
+from   ModuleDefinitions
+where  AdminOrder is not null
+and    AdminOrder > 0
+while @AdminOrder is not null
+begin
+  select @ModuleDefId = ModuleDefId,
+         @FriendlyName = FriendlyName
+  from   ModuleDefinitions
+  where  AdminOrder = @AdminOrder
+
+  select @ModuleOrder = @ModuleOrder + 1
+
+  select @PaneName = 'ContentPane'
+
+  insert Modules ( 
+    TabID,
+    ModuleDefID,
+    ModuleOrder,
+    PaneName,
+    ModuleTitle,
+    AuthorizedEditRoles,
+    CacheTime,
+    ShowMobile
+  )
+  values (
+    @TabId,
+    @ModuleDefId,
+    @ModuleOrder,
+    @PaneName,
+    @FriendlyName,
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    0
+  )
+
+  select @AdminOrder = min(AdminOrder)
+  from   ModuleDefinitions
+  where  AdminOrder is not null
+  and    AdminOrder > @AdminOrder
+end 
+
+select @UserId = null
+
+if @AdministratorId is null
+  select @UserId = UserId
+  from   Users
+  where  Email = @Email
+else
+  select @UserId = @AdministratorId
+
+if @UserId is null
+begin
+  insert into Users (
+    FirstName,
+    LastName, 
+    Email,
+    Password,
+    CreatedDate 
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Email,
+    @Password,
+    getdate()
+  )
+
+  select @UserId = @@IDENTITY
+end
+
+insert into UserPortals (
+  UserId,
+  PortalId,
+  Authorized
+)
+values (
+  @UserId,
+  @PortalID,
+  1
+)
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @AdministratorRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @AdministratorRoleId, /* Administrators */
+    null
+  )
+end
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @RegisteredRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @RegisteredRoleId, /* Registered */
+    null
+  )
+end
+
+update Portals
+set    UploadDirectory = @UploadDirectory + '/' + convert(varchar,@PortalID) + '/',
+       AdministratorId = @UserId,
+       AdministratorRoleId = @AdministratorRoleId,
+       RegisteredRoleId = @RegisteredRoleId
+where  PortalID = @PortalID
+
+if @@error <> 0
+  rollback transaction
+else
+  commit transaction
+
+GO
+
+drop procedure GetUsers
+GO
+
+create procedure GetUsers
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+select Users.UserID,
+       Users.Email,
+       'FullName' = Users.FirstName + ' ' + Users.LastName,
+       Users.FirstName,
+       Users.LastName,
+       Users.Unit,
+       Users.Street,
+       Users.City,
+       Users.Region,
+       Users.Country,
+       Users.PostalCode,
+       'Authorized' = case when UserPortals.Authorized = 1 then 'Y' else 'N' end
+from   Users
+inner join UserPortals on Users.UserId = UserPortals.UserId
+where  UserPortals.PortalId = @PortalId
+and    Users.FirstName like @Filter + '%'
+order  by 'FullName'
+
+GO
+
+drop procedure GetVendors
+GO
+
+create procedure GetVendors
+
+@PortalId int,
+@Filter   nvarchar(1)
+
+as
+
+if @PortalId is null
+begin
+  select VendorID,
+         VendorName,
+         Unit, 
+         Street, 
+         City, 
+         Region, 
+         Country, 
+         PostalCode, 
+         Telephone,
+         Fax,
+         Email,
+         Website,
+         Contact,
+         ClickThroughs,
+         Views,
+         'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+  from   Vendors
+  where  PortalId is null
+  and    VendorName like @Filter + '%'
+  order  by VendorName
+end
+else
+begin
+  select VendorID,
+         VendorName,
+         Unit, 
+         Street, 
+         City, 
+         Region, 
+         Country, 
+         PostalCode, 
+         Telephone,
+         Fax,
+         Email,
+         Website,
+         Contact,
+         ClickThroughs,
+         Views,
+         'Banners' = ( select count(*) from Banners where Banners.VendorId = Vendors.VendorId )
+  from   Vendors
+  where  PortalId = @PortalId
+  and    VendorName like @Filter + '%'
+  order  by VendorName
+end
+
+return 1
+
+GO
+
+

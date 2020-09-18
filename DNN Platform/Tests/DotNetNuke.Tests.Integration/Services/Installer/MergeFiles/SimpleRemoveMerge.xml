@@ -1,0 +1,6 @@
+﻿<configuration>
+    <nodes configfile="Web.config">
+        <node path="/configuration/removeme" action="remove" collision="overwrite">            
+        </node>
+    </nodes>
+</configuration>

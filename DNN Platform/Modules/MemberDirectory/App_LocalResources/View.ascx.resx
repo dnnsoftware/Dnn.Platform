@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddFriend.Text" xml:space="preserve">
+    <value>Add as Friend</value>
+  </data>
+  <data name="Follow.Text" xml:space="preserve">
+    <value>Follow</value>
+  </data>
+  <data name="Loading.Text" xml:space="preserve">
+    <value>Loading ....</value>
+  </data>
+  <data name="LoadMore.Text" xml:space="preserve">
+    <value>Load more</value>
+  </data>
+  <data name="SendMessage.Text" xml:space="preserve">
+    <value>Send message</value>
+  </data>
+  <data name="UserName.Text" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="RemoveFriend.Text" xml:space="preserve">
+    <value>Remove Friend</value>
+  </data>
+  <data name="FriendPending.Text" xml:space="preserve">
+    <value>Friend Request Pending</value>
+  </data>
+  <data name="AcceptFriend.Text" xml:space="preserve">
+    <value>Accept Friend Request</value>
+  </data>
+  <data name="City.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="UnFollow.Text" xml:space="preserve">
+    <value>Unfollow</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="AdvancedSearch.Text" xml:space="preserve">
+    <value>Advanced Search</value>
+  </data>
+  <data name="Country.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="Prefix.Text" xml:space="preserve">
+    <value>Prefix</value>
+  </data>
+  <data name="NoMembers.Text" xml:space="preserve">
+    <value>No members were found that satisfy the search conditions.</value>
+  </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>An error occurred while processing the request.  Please try again later.</value>
+  </data>
+  <data name="ServerErrorWithDescription.Text" xml:space="preserve">
+    <value>An error occurred while processing the request:</value>
+  </data>
+  <data name="SearchConnections.Text" xml:space="preserve">
+    <value>Search Connections ...</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Refresh Results</value>
+  </data>
+  <data name="SearchError.Text" xml:space="preserve">
+    <value>Searches can only contain alphanumeric characters and spaces.</value>
+  </data>
+  <data name="Attachments.Text" xml:space="preserve">
+    <value>Attachment(s)</value>
+  </data>
+  <data name="AutoSuggestError.Text" xml:space="preserve">
+    <value>An error occurred while getting suggestions:</value>
+  </data>
+  <data name="Browse.Text" xml:space="preserve">
+    <value>Browse From Site</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CreateMessageError.Text" xml:space="preserve">
+    <value>An error occurred while creating the message.  Please try again later.</value>
+  </data>
+  <data name="CreateMessageErrorWithDescription.Text" xml:space="preserve">
+    <value>An error occurred while creating the message:</value>
+  </data>
+  <data name="DismissThis.Text" xml:space="preserve">
+    <value>Dismiss this</value>
+  </data>
+  <data name="Message.Text" xml:space="preserve">
+    <value>Your message</value>
+  </data>
+  <data name="MessageSent.Text" xml:space="preserve">
+    <value>Your message has been sent successfully.</value>
+  </data>
+  <data name="MessageSentTitle.Text" xml:space="preserve">
+    <value>Message Sent</value>
+  </data>
+  <data name="NoResults.Text" xml:space="preserve">
+    <value>No results</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Remove attachment</value>
+  </data>
+  <data name="Searching.Text" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="Send.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Subject.Text" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="Throttling.Text" xml:space="preserve">
+    <value>Please wait before sending a new message.</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Compose Message</value>
+  </data>
+  <data name="To.Text" xml:space="preserve">
+    <value>Send to</value>
+  </data>
+  <data name="Upload.Text" xml:space="preserve">
+    <value>Upload From Computer</value>
+  </data>
+</root>

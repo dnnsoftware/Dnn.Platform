@@ -1,0 +1,51 @@
+.dnnTabImport {
+    width: 100%;
+    margin: 2em auto;
+}
+.dnnTabImport textarea, .dnnTabExport textarea {
+    min-height: 120px;
+}
+.dnnTabImport .dnnFormItem textarea, .dnnTabExport .dnnFormItem textarea {
+    width: 45%;
+}
+.dnnTabImport .dnnFormItem input[type=checkbox], .dnnTabImport .dnnFormItem input[type=radio], .dnnTabExport .dnnFormItem input[type=checkbox] {
+    width: auto;
+}
+.dnnTabImport .dnnFormItem input[type=radio] {
+    margin-top: 4px;
+}
+.dnnFormItem .dnnTIRadioButtons label, .dnnFormItem .dnnTIRadioButtons input, .dnnFormItem .dnnTIRadioButtons label, .dnnFormItem .dnnTIRadioButtons input {
+    padding: 0;
+    width: auto;
+    text-align: left;
+}
+.dnnFormItem .dnnTIRadioButtons label, .dnnFormItem .dnnTIRadioButtons label {
+    width: auto;
+    padding: 0 15px 0 6px;
+    font-weight: normal;
+    margin-top: 0;
+}
+.dnnTabImport .dnnTIRadioButtons br {
+    display: none !important;
+    font-size: 0;
+    line-height: 0;
+    border-collapse: collapse;
+}
+.dnnPositionInput {
+    margin-left: 36%;
+}
+
+/* adjust form item padding/spacing */
+.dnnFormItem input[type="checkbox"] + span, .dnnFormItem input[type="radio"] + span {
+    margin: 5px 5px 15px 5px;
+}
+.dnnFormItem textarea + span.dnnFormError{
+    top: -30% !important;
+}
+.dnnFormItem span.dnnFormMessage.dnnFormError {
+    top: -110%;
+}
+.dnnFormItem .labelTemplateDescription{
+     margin-left: 36%;
+     margin-bottom: 15px;
+}

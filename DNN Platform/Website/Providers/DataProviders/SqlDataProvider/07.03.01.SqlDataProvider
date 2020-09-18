@@ -1,0 +1,62 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* DNN-5506. */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePackage]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
+	@PackageID			int,
+	@PortalID			int,
+	@Name			    nvarchar(128),
+	@FriendlyName	    nvarchar(250),
+	@Description	    nvarchar(2000),
+	@PackageType	    nvarchar(50),
+	@Version		    nvarchar(50),
+	@License		    ntext,
+	@Manifest		    ntext,
+	@Owner				nvarchar(100),
+	@Organization		nvarchar(100),
+	@Url				nvarchar(250),
+	@Email				nvarchar(100),
+	@ReleaseNotes	    ntext,
+	@IsSystemPackage    bit,
+	@LastModifiedByUserID	int,
+	@FolderName			nvarchar(128),
+	@IconFile			nvarchar(100)
+AS
+	UPDATE {databaseOwner}{objectQualifier}Packages
+		SET	
+			PortalID = @PortalID,
+			FriendlyName = @FriendlyName,
+			[Description] = @Description,
+			PackageType = @PackageType,
+			Version = @Version,
+			License = @License,
+			Manifest = @Manifest,
+			[Owner] = @Owner,
+			Organization = @Organization,
+			Url = @Url,
+			Email = @Email,
+			ReleaseNotes = @ReleaseNotes,
+			IsSystemPackage = @IsSystemPackage,
+			[LastModifiedByUserID] = @LastModifiedByUserID,	[LastModifiedOnDate] = getdate(),
+			FolderName = @FolderName,
+			IconFile = @IconFile
+		WHERE  PackageID = @PackageID
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

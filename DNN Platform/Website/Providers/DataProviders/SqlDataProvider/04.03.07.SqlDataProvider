@@ -1,0 +1,41 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* fix security issue with vendor management */
+update {databaseOwner}{objectQualifier}ModuleControls
+set    ControlType = 1
+where  ControlSrc = 'Admin/Vendors/EditVendors.ascx'
+GO
+
+/* remove orphaned users which will appear as SuperUsers in Host / SuperUsers Accounts */
+delete
+from   {databaseOwner}{objectQualifier}Users
+where  UserID in ( select {databaseOwner}{objectQualifier}Users.UserID
+  from   {databaseOwner}{objectQualifier}Users
+  left outer join {databaseOwner}{objectQualifier}UserPortals on {databaseOwner}{objectQualifier}Users.UserID = {databaseOwner}{objectQualifier}UserPortals.UserID
+  where  IsSuperUser = 0
+  and {databaseOwner}{objectQualifier}UserPortals.PortalID is null )
+GO
+
+/* remove any double slashes which may have been created by upgrades */
+update {databaseOwner}{objectQualifier}Folders
+set    FolderPath = REPLACE(FolderPath, '//', '/')
+GO
+
+/* make site wizard visible in admin menu */
+update {databaseOwner}{objectQualifier}Tabs
+set    IsVisible = 1
+where  TabName = 'Site Wizard'
+and    TabOrder > 10000
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

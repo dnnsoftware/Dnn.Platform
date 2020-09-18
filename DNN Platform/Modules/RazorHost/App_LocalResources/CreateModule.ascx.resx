@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ControlTitle_createmodule.Text" xml:space="preserve">
+    <value>Create Module</value>
+  </data>
+  <data name="SourceFile.Text" xml:space="preserve">
+    <value>Source Script - {0}</value>
+  </data>
+  <data name="plSource.Text" xml:space="preserve">
+    <value>Script Source:</value>
+  </data>
+  <data name="scriptsLabel.Help" xml:space="preserve">
+    <value>Select the script you would like to use from the list.</value>
+  </data>
+  <data name="scriptsLabel.Text" xml:space="preserve">
+    <value>Select Script:</value>
+  </data>
+  <data name="plAddPage.Help" xml:space="preserve">
+    <value>Check this box to create a test page for your new module.</value>
+  </data>
+  <data name="plAddPage.Text" xml:space="preserve">
+    <value>Add Test Page?</value>
+  </data>
+  <data name="plDescription.Help" xml:space="preserve">
+    <value>Enter a description for the module.</value>
+  </data>
+  <data name="plDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="plFolder.Help" xml:space="preserve">
+    <value>Enter the name of the Folder for the new module.  This folder will be a child of "DesktopModules/RazorModules"</value>
+  </data>
+  <data name="plFolder.Text" xml:space="preserve">
+    <value>Folder:</value>
+  </data>
+  <data name="plName.Help" xml:space="preserve">
+    <value>Enter a friendly name for the module.</value>
+  </data>
+  <data name="plName.Text" xml:space="preserve">
+    <value>Module Name:</value>
+  </data>
+  <data name="cmdCreate.Text" xml:space="preserve">
+    <value>Create Module</value>
+  </data>
+  <data name="SourceControl.Text" xml:space="preserve">
+    <value>Module Control - {0}</value>
+  </data>
+  <data name="valFolder.Text" xml:space="preserve">
+    <value>The folder is required.&lt;br/&gt;</value>
+  </data>
+  <data name="valName.Text" xml:space="preserve">
+    <value>The name is required.&lt;br/&gt;</value>
+  </data>
+  <data name="FolderExists.Text" xml:space="preserve">
+    <value>The folder you selected already exists.  Please select another name.</value>
+  </data>
+  <data name="ManifestCreationError.Text" xml:space="preserve">
+    <value>There was an unexpected error creating the manifest.  Please check the Event Viewer for more information.</value>
+  </data>
+  <data name="ManifestText.Text" xml:space="preserve">
+    <value>&lt;dotnetnuke type="Package" version="5.0"&gt;
+  &lt;packages&gt;
+    &lt;package name="{0}" type="Module" version="01.00.00"&gt;
+      &lt;friendlyName&gt;{0}&lt;/friendlyName&gt;
+      &lt;description&gt;{1}&lt;/description&gt;
+      &lt;owner&gt;
+        &lt;name/&gt;
+        &lt;organization/&gt;
+        &lt;url/&gt;
+        &lt;email/&gt;
+      &lt;/owner&gt;
+      &lt;license src="license.txt"/&gt;
+      &lt;releaseNotes src="releaseNotes.txt" /&gt;
+      &lt;dependencies&gt;
+        &lt;dependency type="coreversion"&gt;07.00.00&lt;/dependency&gt;
+        &lt;dependency type="type"&gt;System.Tuple&lt;/dependency&gt;
+      &lt;/dependencies&gt;
+      &lt;components&gt;
+        &lt;component type="Module"&gt;
+          &lt;desktopModule&gt;
+            &lt;moduleName&gt;{0}&lt;/moduleName&gt;
+            &lt;foldername&gt;RazorModules/{2}&lt;/foldername&gt;
+            &lt;businessControllerClass /&gt;
+            &lt;supportedFeatures /&gt;
+            &lt;moduleDefinitions&gt;
+              &lt;moduleDefinition&gt;
+                &lt;friendlyName&gt;{0}&lt;/friendlyName&gt;
+                &lt;defaultCacheTime&gt;0&lt;/defaultCacheTime&gt;
+                &lt;moduleControls&gt;
+                  &lt;moduleControl&gt;
+                    &lt;controlKey /&gt;
+                    &lt;controlSrc&gt;DesktopModules/RazorModules/{2}/{3}&lt;/controlSrc&gt;
+                    &lt;supportsPartialRendering&gt;False&lt;/supportsPartialRendering&gt;
+                    &lt;controlTitle /&gt;
+                    &lt;controlType&gt;View&lt;/controlType&gt;
+                    &lt;iconFile /&gt;
+                    &lt;helpUrl /&gt;
+                    &lt;viewOrder&gt;0&lt;/viewOrder&gt;
+                  &lt;/moduleControl&gt;
+                &lt;/moduleControls&gt;
+              &lt;/moduleDefinition&gt;
+            &lt;/moduleDefinitions&gt;
+          &lt;/desktopModule&gt;
+        &lt;/component&gt;
+        &lt;component type="File"&gt;
+          &lt;files&gt;
+            &lt;basePath&gt;DesktopModules\RazorModules\{2}&lt;/basePath&gt;
+            &lt;file&gt;
+              &lt;name&gt;{3}&lt;/name&gt;
+            &lt;/file&gt;
+            &lt;file&gt;
+              &lt;name&gt;{4}&lt;/name&gt;
+            &lt;/file&gt;
+          &lt;/files&gt;
+        &lt;/component&gt;
+      &lt;/components&gt;
+    &lt;/package&gt;
+  &lt;/packages&gt;
+&lt;/dotnetnuke&gt;</value>
+  </data>
+  <data name="ModuleControlCreationError.Text" xml:space="preserve">
+    <value>There was an unexpected error creating the module control.  Please check the Event Viewer for more information.</value>
+  </data>
+  <data name="ModuleControlText.Text" xml:space="preserve">
+    <value>&lt;%@ Control AutoEventWireup="false" Inherits="DotNetNuke.Web.Razor.RazorModuleBase" %&gt;</value>
+  </data>
+  <data name="ScriptCopyError.Text" xml:space="preserve">
+    <value>There was an unexpected error copying the script to the target folder.  Please check the Event Viewer for more information.</value>
+  </data>
+  <data name="ImportControl.ErrorMessage" xml:space="preserve">
+    <value>There was an error importing the module control, please see the event log for further details</value>
+  </data>
+  <data name="TabExists.Text" xml:space="preserve">
+    <value>The page name exists for this module name.  The module was created but the test page was not generated.</value>
+  </data>
+</root>

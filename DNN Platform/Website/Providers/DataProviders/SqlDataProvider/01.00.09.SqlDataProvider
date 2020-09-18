@@ -1,0 +1,489 @@
+/************************************************************/
+/*****              Upgrade Script 1.0.9                *****/
+/************************************************************/
+
+update Roles
+set    TrialFrequency = 'N'
+where  TrialFrequency = '0'
+GO
+
+drop procedure dbo.GetDocuments
+GO
+
+create procedure dbo.GetDocuments
+
+@ModuleID int,
+@PortalId int
+
+as
+
+select ItemID,
+       Title,
+       URL,
+       'CreatedByUser' = Users.FirstName + ' ' + Users.LastName,
+       Documents.CreatedDate,
+       Category,
+       Size,
+       Syndicate
+from   Documents
+left outer join Users on Documents.CreatedByUser = Users.UserID
+left outer join Files on Documents.URL = Files.FileName and Files.PortalId = @PortalId
+where  ModuleID = @ModuleID
+order by Title
+
+GO
+
+drop procedure dbo.GetAnnouncements
+GO
+
+create procedure dbo.GetAnnouncements
+
+@ModuleID int
+
+as
+
+select ItemID,
+       CreatedByUser,
+       CreatedDate,
+       Title,
+       URL,
+       Syndicate,
+       ExpireDate,
+       Description,
+       ViewOrder
+from   Announcements
+where  ModuleID = @ModuleID
+and    (ExpireDate > GetDate() or ExpireDate is null)
+order by ViewOrder asc, CreatedDate desc
+
+GO
+
+create procedure dbo.DeleteVendors
+
+@PortalId  int 
+
+as
+
+if @PortalId is null
+begin
+  delete 
+  from   Vendors
+  where  PortalId is null
+  and    Authorized = 0
+  and    datediff(day, CreatedDate, getdate()) > 7
+end
+else
+begin
+  delete 
+  from   Vendors
+  where  PortalId = @PortalId
+  and    Authorized = 0
+  and    datediff(day, CreatedDate, getdate()) > 7
+end
+
+GO
+
+
+create procedure dbo.DeleteUsers
+
+@PortalID int
+
+as
+
+declare @UserID int
+
+select @UserID = min(UserID)
+from   UserPortals
+where  PortalID = @PortalID
+and    ( UserPortals.Authorized = 0 or UserPortals.LastLoginDate is null )
+and    datediff(day, UserPortals.CreatedDate, getdate()) > 7
+
+while @UserID is not null
+begin
+  exec DeleteUser @PortalID, @UserID
+
+  select @UserID = min(UserID)
+  from   UserPortals
+  where  PortalID = @PortalID
+  and    ( UserPortals.Authorized = 0 or UserPortals.LastLoginDate is null )
+  and    datediff(day, UserPortals.CreatedDate, getdate()) > 7
+  and    UserID > @UserID
+end
+
+GO
+
+drop procedure dbo.AddPortalInfo
+GO
+
+create procedure dbo.AddPortalInfo
+
+@PortalName         nvarchar(128),
+@PortalAlias        nvarchar(200),
+@Currency           char(3) = null,
+@FirstName          nvarchar(100),
+@LastName           nvarchar(100),
+@Username           nvarchar(100),
+@Password           nvarchar(50),
+@Email              nvarchar(100),
+@ExpiryDate         datetime = null,
+@HostFee            money = 0,
+@HostSpace          int = null,
+@SiteLogHistory     int = null,
+@PortalID           int OUTPUT
+
+as
+
+declare @AdminOrder int
+declare @ModuleDefId int
+declare @FriendlyName nvarchar(128)
+declare @PaneName nvarchar(50)
+declare @TabId int
+declare @TabOrder int
+declare @ChildTabId int
+declare @RoleId int
+declare @UserId int
+declare @AdministratorRoleId int
+declare @RegisteredRoleId    int
+declare @ModuleId int
+
+begin transaction
+
+insert into Portals (
+  PortalName,
+  PortalAlias,
+  LogoFile,
+  FooterText,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  AdministratorId,
+  HostFee,
+  HostSpace,
+  AdministratorRoleId,
+  RegisteredRoleId,
+  Description,
+  KeyWords,
+  BackgroundFile
+)
+values (
+  @PortalName,
+  @PortalAlias,
+  null,
+  null,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  null,
+  @HostFee,
+  @HostSpace,
+  null,
+  null,
+  @PortalName,
+  @PortalName,
+  null
+)
+
+select @PortalID = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingPeriod,
+  BillingFrequency,
+  TrialFee,
+  TrialPeriod,
+  TrialFrequency,
+  IsPublic,
+  AutoAssignment
+)
+values (
+  @PortalID,
+  'Administrators',
+  'Portal Administration',
+  0,
+  null,
+  'M',
+  null,
+  null,
+  'N',
+  0,
+  0
+)
+
+select @AdministratorRoleId = @@IDENTITY
+
+insert into Roles (
+  PortalID,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingPeriod,
+  BillingFrequency,
+  TrialFee,
+  TrialPeriod,
+  TrialFrequency,
+  IsPublic,
+  AutoAssignment
+)
+values (
+  @PortalID,
+  'Registered Users',
+  'Registered Users',
+  0,
+  null,
+  'N',
+  null,
+  null,
+  'N',
+  0,
+  1
+)
+
+select @RegisteredRoleId = @@IDENTITY
+
+select @TabOrder = 1
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+) 
+values (
+    @PortalID,
+    @TabOrder,
+    'Home',
+    '-1;',
+    null,
+    'Home',
+    1,
+    '200',
+    '200',
+    1,
+    null,
+    null,
+    0
+)
+
+select @TabOrder = @TabOrder + 2
+
+insert into Tabs (
+    PortalID,
+    TabOrder,
+    TabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    MobileTabName,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+) 
+values (
+    @PortalID,
+    @TabOrder,
+    'Admin',
+    convert(varchar,@AdministratorRoleId) + ';',
+    null,
+    'Admin',
+    0,
+    '200',
+    '200',
+    1,
+    null,
+    null,
+    0
+)
+
+select @TabId = @@IDENTITY
+
+select @AdminOrder = min(AdminOrder)
+from   ModuleDefinitions
+where  AdminOrder is not null
+and    AdminOrder > 0
+while @AdminOrder is not null
+begin
+  select @ModuleDefId = ModuleDefId,
+         @FriendlyName = FriendlyName
+  from   ModuleDefinitions
+  where  AdminOrder = @AdminOrder
+
+  select @TabOrder = @TabOrder + 2
+
+  insert into Tabs (
+    TabOrder,
+    PortalID,
+    TabName,
+    MobileTabName,
+    AuthorizedRoles,
+    AdministratorRoles,
+    ShowMobile,
+    LeftPaneWidth,
+    RightPaneWidth,
+    IsVisible,
+    ParentId,
+    IconFile,
+    Level
+  )
+  values (
+    @TabOrder,
+    @PortalID,
+    @FriendlyName,
+    '',
+    convert(varchar,@AdministratorRoleId) + ';',
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    '200',
+    '200',
+    1,
+    @TabID,
+    null,
+    1      
+  )
+
+  select @ChildTabId = @@IDENTITY
+
+  insert Modules ( 
+    TabID,
+    ModuleDefID,
+    ModuleOrder,
+    PaneName,
+    ModuleTitle,
+    AuthorizedEditRoles,
+    CacheTime,
+    ShowMobile
+  )
+  values (
+    @ChildTabId,
+    @ModuleDefId,
+    1,
+    'ContentPane',
+    @FriendlyName,
+    convert(varchar,@AdministratorRoleId) + ';',
+    0,
+    0
+  )
+
+  select @ModuleId = @@IDENTITY
+
+  if @FriendlyName = 'Site Settings'
+  begin
+    exec UpdateModuleSetting @ModuleId, 'container', '<table cellpadding="2" cellspacing="0" width="100%"[COLOR][BORDER]><tr><td[ALIGN]>[MODULE]</td></tr></table>'
+  end
+
+  select @AdminOrder = min(AdminOrder)
+  from   ModuleDefinitions
+  where  AdminOrder is not null
+  and    AdminOrder > @AdminOrder
+end 
+
+select @UserId = null
+
+select @UserId = UserId
+from   Users
+where  Username = @Username
+
+if @UserId is null
+begin
+  insert into Users (
+    FirstName,
+    LastName,
+    Username, 
+    Password,
+    Email
+  )
+  values (
+    @FirstName,
+    @LastName,
+    @Username,
+    @Password,
+    @Email
+  )
+
+  select @UserId = @@IDENTITY
+end
+
+insert into UserPortals (
+  UserId,
+  PortalId,
+  Authorized,
+  CreatedDate,
+  LastLoginDate
+)
+values (
+  @UserId,
+  @PortalID,
+  1,
+  getdate(),
+  getdate()
+)
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @AdministratorRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @AdministratorRoleId, /* Administrators */
+    null
+  )
+end
+
+if not exists ( select 1 from UserRoles where UserId = @UserId and RoleID = @RegisteredRoleId )
+begin
+  insert into UserRoles (
+    UserId,
+    RoleId,
+    ExpiryDate
+  )
+  values (
+    @UserId,
+    @RegisteredRoleId, /* Registered */
+    null
+  )
+end
+
+update Portals
+set    AdministratorId = @UserId,
+       AdministratorRoleId = @AdministratorRoleId,
+       RegisteredRoleId = @RegisteredRoleId
+where  PortalID = @PortalID
+
+if @@error <> 0
+  rollback transaction
+else
+  commit transaction
+
+GO
+
+update HostSettings
+set    SettingValue = SettingValue + ',zip'
+where  SettingName = 'FileExtensions'
+GO
+
+/************************************************************/
+/*****              Upgrade Script 1.0.9                *****/
+/************************************************************/
+
+
+
+

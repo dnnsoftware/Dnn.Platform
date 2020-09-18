@@ -1,0 +1,50 @@
+﻿-- DNN-7813: update PortalID, if moving cross portal:
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId                 Int,
+    @VersionGuid            UniqueIdentifier,
+    @FileName               nVarChar(246),
+    @Extension              nVarChar(100),
+    @Size                   Int,
+    @Width                  Int,
+    @Height                 Int,
+    @ContentType            nVarChar(200),
+    @FolderID               Int,
+    @LastModifiedByUserID   Int,
+    @Hash                   VarChar(40),
+    @LastModificationTime   DateTime,
+    @Title                  nVarChar(256),
+    @EnablePublishPeriod    Bit,
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @ContentItemID          Int
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @PortalID int;
+    SELECT @PortalID = PortalID FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderID = @FolderID;
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+     SET   FileName             = @FileName,
+           VersionGuid          = @VersionGuid,
+           Extension            = @Extension,
+           Size                 = @Size,
+           Width                = @Width,
+           Height               = @Height,
+           ContentType          = @ContentType,
+           FolderID             = @FolderID,
+           PortalID             = @PortalID,
+           LastModifiedByUserID = @LastModifiedByUserID,
+           LastModifiedOnDate   = GetDate(),
+           SHA1Hash             = @Hash,
+           LastModificationTime = @LastModificationTime,
+           Title                = @Title,
+           EnablePublishPeriod  = @EnablePublishPeriod,
+           StartDate            = @StartDate,
+           EndDate              = @EndDate,
+           ContentItemID        = @ContentItemID
+     WHERE FileId = @FileId
+    SET NOCOUNT OFF;
+END

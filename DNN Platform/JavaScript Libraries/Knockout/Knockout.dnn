@@ -1,0 +1,37 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Knockout" type="JavaScript_Library" version="03.03.00">
+      <friendlyName>Knockout JavaScript Library</friendlyName>
+      <description>Knockout is an MVVM library that is used for client side databinding.</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="Knockout (MIT).txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>Knockout</libraryName>
+            <fileName>knockout.js</fileName>
+            <objectName>ko</objectName>
+            <CDNPath>//cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>Knockout</libraryFolderName>
+            <jsfile>
+              <name>knockout.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>
+        <component type="Cleanup" version="02.02.01" fileName="02.02.01.txt" />
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

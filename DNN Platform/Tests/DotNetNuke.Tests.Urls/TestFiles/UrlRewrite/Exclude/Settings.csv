@@ -1,0 +1,6 @@
+﻿Key,									Value
+UrlFormat,								advanced
+FriendlyAdminHostUrls,					true
+PageExtensionUsageType,					Never
+ForcePortalDefaultLanguage,				false
+DoNotRewriteRegex,						@"(\.axd)|(/DesktopModules/)|(/Providers/HtmlEditProviders/)

@@ -1,0 +1,26 @@
+<Settings>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render this skin object</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>Text</Name>
+    <Type>String</Type>
+    <Help>Overides the default text for the User link</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>URL</Name>
+    <Type>String</Type>
+    <Help>URL of login page</Help>
+    <Value></Value>
+  </Setting>
+	<Setting>
+		<Name>ShowUnreadMessages</Name>
+		<Type>Boolean</Type>
+		<Help>If set to true number of unread messages will be appanded to the end of user name</Help>
+		<Value></Value>
+	</Setting>
+</Settings>

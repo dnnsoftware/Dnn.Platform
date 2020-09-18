@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+
+-->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{181FE707-E161-4722-9F38-6AAAB6FAA106}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>log4net</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>log4net</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\build\bin\net\4.0\debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;NET;NET_2_0;NET_4_0</DefineConstants>
+    <DocumentationFile>log4net.xml</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>SecurityRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\build\bin\net\4.0\release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;STRONG;NET;NET_2_0;NET_4_0</DefineConstants>
+    <DocumentationFile>log4net.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Appender\AdoNetAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\AnsiColorTerminalAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\AppenderCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\AppenderSkeleton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\AspNetTraceAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\BufferingAppenderSkeleton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\BufferingForwardingAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\ColoredConsoleAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\ConsoleAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\DebugAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\EventLogAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\FileAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\ForwardingAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\IAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\IBulkAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\IFlushable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\LocalSyslogAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\ManagedColoredConsoleAppender.cs" />
+    <Compile Include="Appender\MemoryAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\NetSendAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\OutputDebugStringAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\RemoteSyslogAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\RemotingAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\RollingFileAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\SmtpAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\SmtpPickupDirAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\TelnetAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\TextWriterAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\TraceAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Appender\UdpAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyVersionInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\AliasDomainAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\AliasRepositoryAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\BasicConfigurator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\ConfiguratorAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\DomainAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\DOMConfigurator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\DOMConfiguratorAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\Log4NetConfigurationSectionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\PluginAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\RepositoryAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\SecurityContextProviderAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\XmlConfigurator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\XmlConfiguratorAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\CompactRepositorySelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\DefaultRepositorySelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ErrorCode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ExceptionEvaluator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\IAppenderAttachable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\IErrorHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\IFixingRequired.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ILogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ILoggerWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\IOptionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\IRepositorySelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ITriggeringEventEvaluator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Level.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LevelCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LevelEvaluator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LevelMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LocationInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LogException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LoggerManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LoggerWrapperImpl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LoggingEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\LogImpl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\MethodItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\SecurityContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\SecurityContextProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\StackFrameItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\TimeEvaluator.cs" />
+    <Compile Include="Core\WrapperMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateFormatter\AbsoluteTimeDateFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateFormatter\DateTimeDateFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateFormatter\IDateFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateFormatter\Iso8601DateFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateFormatter\SimpleDateFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\DenyAllFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\FilterDecision.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\FilterSkeleton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\IFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\LevelMatchFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\LevelRangeFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\LoggerMatchFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\MdcFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\NdcFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\PropertyFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filter\StringMatchFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GlobalContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ILog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\DynamicPatternLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\ExceptionLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\ILayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\IRawLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Layout2RawLayoutAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\LayoutSkeleton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\PatternLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\AppDomainPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\AspNetCachePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\AspNetContextPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\AspNetPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\AspNetRequestPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\AspNetSessionPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\DatePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\ExceptionPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\FileLocationPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\FullLocationPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\IdentityPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\LevelPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\LineLocationPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\LoggerPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\MessagePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\MethodLocationPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\NamedPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\NdcPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\PatternLayoutConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\PropertyPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\RelativeTimePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\StackTraceDetailPatternConverter.cs" />
+    <Compile Include="Layout\Pattern\StackTracePatternConverter.cs" />
+    <Compile Include="Layout\Pattern\ThreadPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\TypeNamePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\UserNamePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\Pattern\UtcDatePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\RawLayoutConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\RawPropertyLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\RawTimeStampLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\RawUtcTimeStampLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\SimpleLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\XmlLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\XmlLayoutBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\XmlLayoutSchemaLog4j.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogicalThreadContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MDC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NDC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectRenderer\DefaultRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectRenderer\IObjectRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectRenderer\RendererMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Plugin\IPlugin.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Plugin\IPluginFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Plugin\PluginCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Plugin\PluginMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Plugin\PluginSkeleton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Plugin\RemoteLoggingServerPlugin.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\ConfigurationChangedEventArgs.cs" />
+    <Compile Include="Repository\Hierarchy\DefaultLoggerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\Hierarchy\Hierarchy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\Hierarchy\ILoggerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\Hierarchy\Logger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\Hierarchy\LoggerKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\Hierarchy\ProvisionNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\Hierarchy\RootLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\Hierarchy\XmlHierarchyConfigurator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\IBasicRepositoryConfigurator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\ILoggerRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\IXmlRepositoryConfigurator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\LoggerRepositorySkeleton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ThreadContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\AppenderAttachedImpl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\CompositeProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ContextPropertiesBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ConverterInfo.cs" />
+    <Compile Include="Util\CountingQuietTextWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\CyclicBuffer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\EmptyCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\EmptyDictionary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\FormattingInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\GlobalContextProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ILogExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\LevelMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\LevelMappingEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\LogicalThreadContextProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\LogLog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\NativeError.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\NullDictionaryEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\NullEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\NullSecurityContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\OnlyOnceErrorHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\OptionConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternString.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\AppDomainPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\AppSettingPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\DatePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\EnvironmentFolderPathPatternConverter.cs" />
+    <Compile Include="Util\PatternStringConverters\EnvironmentPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\IdentityPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\LiteralPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\NewLinePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\ProcessIdPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\PropertyPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\RandomStringPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\UserNamePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\UtcDatePatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PropertiesDictionary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PropertyEntry.cs" />
+    <Compile Include="Util\ProtectCloseTextWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\QuietTextWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ReaderWriterLock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ReadOnlyPropertiesDictionary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ReusableStringWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\SystemInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\SystemStringFormat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TextWriterAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ThreadContextProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\LogicalThreadContextStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ThreadContextStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\LogicalThreadContextStacks.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ThreadContextStacks.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\Transform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\BooleanConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\ConversionNotSupportedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\ConverterRegistry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\EncodingConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\IConvertFrom.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\IConvertTo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\IPAddressConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\PatternLayoutConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\PatternStringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\TypeConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\TypeConverters\TypeConverterAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\WindowsSecurityContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

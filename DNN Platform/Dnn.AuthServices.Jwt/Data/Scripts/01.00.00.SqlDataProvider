@@ -1,0 +1,178 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/************************************************************
+ ***** TABLE: JsonWebTokens
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}{objectQualifier}JsonWebTokens', N'U') IS NULL
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}JsonWebTokens]
+	(
+		[TokenId]           VARCHAR(36) NOT NULL,   -- this is not a unicode string!
+		[UserId]            INT NOT NULL,
+		[CreatedOn]         SMALLDATETIME DEFAULT (GETUTCDATE()),
+		[RenewCount]        INT DEFAULT (0),
+		[TokenExpiry]       SMALLDATETIME NOT NULL, -- access token expiry UTC timestamp
+		[RenewalExpiry]     SMALLDATETIME NOT NULL, -- renewal token expiry UTC timestamp
+		[TokenHash]         VARCHAR(96) NOT NULL,   -- access token SHA1 (for validation)
+		[RenewalHash]       VARCHAR(96) NOT NULL,   -- renewal token SHA1 (for validation)
+		CONSTRAINT [PK_{objectQualifier}JsonWebTokens] PRIMARY KEY ([TokenId])
+	)
+
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}JsonWebTokens_UsertId]
+		ON {databaseOwner}[{objectQualifier}JsonWebTokens] ([UserId])
+
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}JsonWebTokens_RenewalExpiry]
+		ON {databaseOwner}[{objectQualifier}JsonWebTokens] ([RenewalExpiry])
+END
+GO
+
+/************************************************************
+ ***** SPROC: JsonWebTokens_GetById
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}JsonWebTokens_GetById]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_GetById] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_GetById]
+	@TokenId VARCHAR(36)
+AS
+BEGIN
+	SELECT [TokenId],
+		   [UserId],
+		   [RenewCount],
+		   [TokenExpiry],
+		   [RenewalExpiry],
+		   [TokenHash],
+		   [RenewalHash]
+	FROM {databaseOwner}[{objectQualifier}JsonWebTokens]
+	WHERE TokenId=@TokenId
+END
+GO
+
+/************************************************************
+ ***** SPROC: JsonWebTokens_GetUserTokens
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}JsonWebTokens_GetUserTokens]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_GetUserTokens] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_GetUserTokens]
+	@UserId INT
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}JsonWebTokens]
+	WHERE UserId=@UserId
+END
+GO
+
+/************************************************************
+ ***** SPROC: JsonWebTokens_Add
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}JsonWebTokens_Add]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_Add] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_Add]
+	@TokenId VARCHAR(36),
+	@UserId INT,
+	@TokenExpiry SMALLDATETIME,
+	@RenewalExpiry SMALLDATETIME,
+	@TokenHash VARCHAR(96),
+	@RenewalHash VARCHAR(96)
+AS
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}JsonWebTokens] (
+		TokenId,
+		UserId,
+		TokenExpiry,
+		RenewalExpiry,
+		TokenHash,
+		RenewalHash)
+	VALUES (
+		@TokenId,
+		@UserId,
+		@TokenExpiry,
+		@RenewalExpiry,
+		@TokenHash,
+		@RenewalHash)
+END
+GO
+
+/************************************************************
+ ***** SPROC: JsonWebTokens_Update
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}JsonWebTokens_Update]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_Update] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_Update]
+	@TokenId VARCHAR(36),
+	@TokenExpiry SMALLDATETIME,
+	@TokenHash VARCHAR(96)
+AS
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}JsonWebTokens]
+	SET TokenExpiry=@TokenExpiry, TokenHash=@TokenHash, RenewCount=RenewCount+1
+	WHERE TokenId=@TokenId
+END
+GO
+
+/************************************************************
+ ***** SPROC: JsonWebTokens_DeleteById
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}JsonWebTokens_DeleteById]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_DeleteById] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_DeleteById]
+	@TokenId VARCHAR(36)
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}JsonWebTokens]
+	WHERE TokenId=@TokenId
+END
+GO
+
+/************************************************************
+ ***** SPROC: JsonWebTokens_DeleteByUser
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}JsonWebTokens_DeleteByUser]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_DeleteByUser] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_DeleteByUser]
+	@UserId INT
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}JsonWebTokens]
+	WHERE UserId=@UserId
+END
+GO
+
+/************************************************************
+ ***** SPROC: JsonWebTokens_DeleteExpired
+ ************************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}JsonWebTokens_DeleteExpired]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_DeleteExpired] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_DeleteExpired]
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}JsonWebTokens]
+	WHERE DATEDIFF(day, RenewalExpiry, GETUTCDATE()) > 0
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

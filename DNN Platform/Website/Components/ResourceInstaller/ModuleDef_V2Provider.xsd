@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<xs:schema id="ModuleDefinition" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+	elementFormDefault="unqualified">
+	<xs:element name="dotnetnuke">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="folder" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="name" type="xs:string" />
+							<xs:element name="type" type="providerType" />
+							<xs:element name="files" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="file" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="path" type="xs:string" minOccurs="0" />
+													<xs:element name="name" type="xs:string" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="version" form="unqualified" type="moduleDefinitionVersion" use="required" />
+			<xs:attribute name="type" type="paType" />
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="moduleDefinitionVersion">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{1}\.\d{1}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="paType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Module">
+				<xs:annotation>
+					<xs:documentation>Defines a module installation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SkinObject">
+				<xs:annotation>
+					<xs:documentation>Defines a skin object installation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Provider">
+				<xs:annotation>
+					<xs:documentation>Defines a Provider installation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="providerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DataProviders" />
+			<xs:enumeration value="LoggingProviders" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

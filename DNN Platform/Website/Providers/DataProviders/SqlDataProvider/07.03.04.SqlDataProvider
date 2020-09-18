@@ -1,0 +1,121 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+-- ensure, last modified is not Null (should not exist)
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+ SET   LastModifiedOnDate = '2000-01-01' 
+ WHERE LastModifiedOnDate is Null
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID    Int,		    -- Not Null
+    @SettingName nVarChar(50),	-- Not Null
+    @CultureCode nVarChar(50)	-- not Null
+AS
+BEGIN
+	SELECT TOP (1)
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE PortalID    = @PortalID
+	   AND SettingName = @SettingName
+	 ORDER BY LastModifiedOnDate DESC
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- not Null!
+AS
+BEGIN
+	SELECT
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings] P
+	 JOIN  (SELECT PortalID, SettingName SN, Max(LastModifiedOnDate) MD
+	        FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+			WHERE PortalID = @PortalId
+			GROUP BY PortalID, SettingName) S 
+	   ON P.PortalID = S.PortalID AND P.SettingName = S.SN AND P.LastModifiedOnDate = S.MD;
+END
+GO
+
+/***** DNN-6031 Change binding from Value to ID for Country and Region in profile and use short version of region code for value again *****/
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.Value
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Text = up.PropertyValue AND l.ListName = 'Country'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Country'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.Value
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Text = up.PropertyValue AND l.ListName = 'Region'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Region'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.EntryID
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Value = up.PropertyValue AND l.ListName = 'Country'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Country'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.EntryID
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Value = up.PropertyValue AND l.ListName = 'Region'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Region'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}Lists]
+SET [Value] = SUBSTRING([Value], 4, 10)
+WHERE
+ [ListName] = 'Region'
+ AND [Value] LIKE '%-%'
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

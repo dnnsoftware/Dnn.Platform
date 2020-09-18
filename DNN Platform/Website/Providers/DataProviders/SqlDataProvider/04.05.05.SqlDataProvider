@@ -1,0 +1,47 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRolesByGroup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}GetRolesByGroup
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByGroup]
+
+	@RoleGroupId     int,
+	@PortalId        int
+
+AS
+
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+		   'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+		   'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+		   'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+		   'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+		   'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+		   'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+		   'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+		   R.RSVPCode,
+		   R.IconFile
+	FROM {databaseOwner}{objectQualifier}Roles R
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 on R.BillingFrequency = L1.Value and L1.ListName = 'Frequency' 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 on R.TrialFrequency = L2.Value and L2.ListName = 'Frequency' 
+	WHERE  (RoleGroupId = @RoleGroupId OR (RoleGroupId IS NULL AND @RoleGroupId IS NULL))
+		AND R.PortalId = @PortalId
+	ORDER BY R.RoleName
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

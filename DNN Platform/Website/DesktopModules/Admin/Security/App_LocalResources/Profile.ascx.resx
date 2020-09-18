@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ProfileProperties_FirstName.Text" xml:space="preserve">
+    <value>First Name:</value>
+  </data>
+  <data name="ProfileProperties_LastName.Text" xml:space="preserve">
+    <value>Last Name:</value>
+  </data>
+  <data name="ProfileProperties_MiddleName.Text" xml:space="preserve">
+    <value>Middle Name:</value>
+  </data>
+  <data name="ProfileProperties_Prefix.Text" xml:space="preserve">
+    <value>Prefix:</value>
+  </data>
+  <data name="ProfileProperties_FirstName.Help" xml:space="preserve">
+    <value>Enter a first name.</value>
+  </data>
+  <data name="ProfileProperties_LastName.Help" xml:space="preserve">
+    <value>Enter a last name.</value>
+  </data>
+  <data name="ProfileProperties_MiddleName.Help" xml:space="preserve">
+    <value>Enter a middle name.</value>
+  </data>
+  <data name="ProfileProperties_Prefix.Help" xml:space="preserve">
+    <value>Enter a prefix. E.g. Mr, Dr</value>
+  </data>
+  <data name="ProfileProperties_Suffix.Text" xml:space="preserve">
+    <value>Suffix:</value>
+  </data>
+  <data name="ProfileProperties_Suffix.Help" xml:space="preserve">
+    <value>Enter a suffix. E.g. BSc, PhD</value>
+  </data>
+  <data name="ProfileProperties_Unit.Text" xml:space="preserve">
+    <value>Unit:</value>
+  </data>
+  <data name="ProfileProperties_Unit.Help" xml:space="preserve">
+    <value>Enter a unit number for an apartment or condominium.</value>
+  </data>
+  <data name="ProfileProperties_Street.Text" xml:space="preserve">
+    <value>Street:</value>
+  </data>
+  <data name="ProfileProperties_Street.Help" xml:space="preserve">
+    <value>Enter the street part of the address. E.g. 123 Main Street</value>
+  </data>
+  <data name="ProfileProperties_City.Text" xml:space="preserve">
+    <value>City:</value>
+  </data>
+  <data name="ProfileProperties_City.Help" xml:space="preserve">
+    <value>Enter the city part of the address.</value>
+  </data>
+  <data name="ProfileProperties_Region.Text" xml:space="preserve">
+    <value>Region:</value>
+  </data>
+  <data name="ProfileProperties_Region.Help" xml:space="preserve">
+    <value>Enter the region (state, province or county) part of the address.</value>
+  </data>
+  <data name="ProfileProperties_Country.Text" xml:space="preserve">
+    <value>Country:</value>
+  </data>
+  <data name="ProfileProperties_Country.Help" xml:space="preserve">
+    <value>Select the country part of the address.</value>
+  </data>
+  <data name="ProfileProperties_PostalCode.Text" xml:space="preserve">
+    <value>Postal Code:</value>
+  </data>
+  <data name="ProfileProperties_PostalCode.Help" xml:space="preserve">
+    <value>Enter the Postal/Zip Code part of the address.</value>
+  </data>
+  <data name="ProfileProperties_Telephone.Text" xml:space="preserve">
+    <value>Telephone:</value>
+  </data>
+  <data name="ProfileProperties_Telephone.Help" xml:space="preserve">
+    <value>Enter a telephone number.</value>
+  </data>
+  <data name="ProfileProperties_Cell.Text" xml:space="preserve">
+    <value>Cell/Mobile:</value>
+  </data>
+  <data name="ProfileProperties_Cell.Help" xml:space="preserve">
+    <value>Enter a cell/mobile phone number.</value>
+  </data>
+  <data name="ProfileProperties_Fax.Text" xml:space="preserve">
+    <value>Fax:</value>
+  </data>
+  <data name="ProfileProperties_Fax.Help" xml:space="preserve">
+    <value>Enter a fax number.</value>
+  </data>
+  <data name="ProfileProperties_Website.Text" xml:space="preserve">
+    <value>Website:</value>
+  </data>
+  <data name="ProfileProperties_Website.Help" xml:space="preserve">
+    <value>Enter a website URL.</value>
+  </data>
+  <data name="ProfileProperties_IM.Text" xml:space="preserve">
+    <value>IM:</value>
+  </data>
+  <data name="ProfileProperties_IM.Help" xml:space="preserve">
+    <value>Enter an instant messenger id. E.g. Skype, Yahoo, Google</value>
+  </data>
+  <data name="ProfileProperties_TimeZone.Text" xml:space="preserve">
+    <value>Time Zone:</value>
+  </data>
+  <data name="ProfileProperties_TimeZone.Help" xml:space="preserve">
+    <value>Select your time zone.</value>
+  </data>
+  <data name="ProfileProperties_PreferredLocale.Text" xml:space="preserve">
+    <value>Preferred Locale:</value>
+  </data>
+  <data name="ProfileProperties_PreferredLocale.Help" xml:space="preserve">
+    <value>Choose your preferred locale.</value>
+  </data>
+  <data name="ProfileTitle.Text" xml:space="preserve">
+    <value>Edit Profile - {0} (Id: {1})</value>
+  </data>
+  <data name="ProfileProperties_Cell.Required" xml:space="preserve">
+    <value>Cell phone is required.</value>
+  </data>
+  <data name="ProfileProperties_City.Required" xml:space="preserve">
+    <value>City is required.</value>
+  </data>
+  <data name="ProfileProperties_Country.Not Specified" xml:space="preserve">
+    <value>Not Specified</value>
+  </data>
+  <data name="ProfileProperties_Country.Required" xml:space="preserve">
+    <value>Country is required.</value>
+  </data>
+  <data name="ProfileProperties_Fax.Required" xml:space="preserve">
+    <value>Fax number is required.</value>
+  </data>
+  <data name="ProfileProperties_FirstName.Required" xml:space="preserve">
+    <value>First name is required.</value>
+  </data>
+  <data name="ProfileProperties_IM.Required" xml:space="preserve">
+    <value>IM handle is required.</value>
+  </data>
+  <data name="ProfileProperties_LastName.Required" xml:space="preserve">
+    <value>Last name is required.</value>
+  </data>
+  <data name="ProfileProperties_MiddleName.Required" xml:space="preserve">
+    <value>Middle name is required.</value>
+  </data>
+  <data name="ProfileProperties_PostalCode.Required" xml:space="preserve">
+    <value>Postal Code is required.</value>
+  </data>
+  <data name="ProfileProperties_PreferredLocale.Required" xml:space="preserve">
+    <value>Preferred locale is required.</value>
+  </data>
+  <data name="ProfileProperties_Prefix.Required" xml:space="preserve">
+    <value>Prefix is required.</value>
+  </data>
+  <data name="ProfileProperties_Region.Required" xml:space="preserve">
+    <value>Region is required.</value>
+  </data>
+  <data name="ProfileProperties_Street.Required" xml:space="preserve">
+    <value>Street is required.</value>
+  </data>
+  <data name="ProfileProperties_Suffix.Required" xml:space="preserve">
+    <value>Suffix is required.</value>
+  </data>
+  <data name="ProfileProperties_Telephone.Required" xml:space="preserve">
+    <value>Telephone is required.</value>
+  </data>
+  <data name="ProfileProperties_TimeZone.Required" xml:space="preserve">
+    <value>Time zone is required.</value>
+  </data>
+  <data name="ProfileProperties_Unit.Required" xml:space="preserve">
+    <value>Unit is required.</value>
+  </data>
+  <data name="ProfileProperties_Website.Required" xml:space="preserve">
+    <value>Website is required.</value>
+  </data>
+  <data name="ProfileProperties_Biography.Text" xml:space="preserve">
+    <value>Biography:</value>
+  </data>
+  <data name="ProfileProperties_Biography.Help" xml:space="preserve">
+    <value>Enter a short biography.</value>
+  </data>
+  <data name="ProfileProperties_Biography.Required" xml:space="preserve">
+    <value>Biography is required.</value>
+  </data>
+  <data name="ProfileProperties_Address.Header" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="ProfileProperties_Contact Info.Header" xml:space="preserve">
+    <value>Contact Info</value>
+  </data>
+  <data name="ProfileProperties_Name.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ProfileProperties_Preferences.Header" xml:space="preserve">
+    <value>Preferences</value>
+  </data>
+  <data name="ProfileProperties_Photo.Help" xml:space="preserve">
+    <value>Select a photo or upload an image from your local file system.</value>
+  </data>
+  <data name="ProfileProperties_Photo.Required" xml:space="preserve">
+    <value>Photo is required.</value>
+  </data>
+  <data name="ProfileProperties_Photo.Text" xml:space="preserve">
+    <value>Photo:</value>
+  </data>
+  <data name="ProfileProperties_PreferredTimeZone.Help" xml:space="preserve">
+    <value>Choose your preferred time zone.</value>
+  </data>
+  <data name="ProfileProperties_PreferredTimeZone.Required" xml:space="preserve">
+    <value>Preferred time zone is required.</value>
+  </data>
+  <data name="ProfileProperties_PreferredTimeZone.Text" xml:space="preserve">
+    <value>Preferred Time Zone:</value>
+  </data>
+  <data name="RequireProfile.Text" xml:space="preserve">
+    <value>Your Profile</value>
+  </data>
+  <data name="ProfileProperties_Email.Text" xml:space="preserve">
+    <value>Email Address:</value>
+  </data>
+  <data name="ProfileProperties_Username.Text" xml:space="preserve">
+    <value>Username:</value>
+  </data>
+  <data name="ProfileProperties_DisplayName.Text" xml:space="preserve">
+    <value>Display Name:</value>
+  </data>
+  <data name="Address.Text" xml:space="preserve">
+    <value>Address Details</value>
+  </data>
+  <data name="Contact Info.Text" xml:space="preserve">
+    <value>Contact Information</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Preferences.Text" xml:space="preserve">
+    <value>Preferences</value>
+  </data>
+  <data name="ProfileProperties_Facebook.Help" xml:space="preserve">
+    <value>A link to your Facebook profile with a format beginning with facebook.com/</value>
+  </data>
+  <data name="ProfileProperties_Facebook.Required" xml:space="preserve">
+    <value>Facebook is required.</value>
+  </data>
+  <data name="ProfileProperties_Facebook.Text" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="ProfileProperties_GooglePlus.Help" xml:space="preserve">
+    <value>A link to your Google+ profile with a format beginning with plus.google.com/</value>
+  </data>
+  <data name="ProfileProperties_GooglePlus.Required" xml:space="preserve">
+    <value>Google+ is required.</value>
+  </data>
+  <data name="ProfileProperties_GooglePlus.Text" xml:space="preserve">
+    <value>Google+</value>
+  </data>
+  <data name="ProfileProperties_LinkedIn.Help" xml:space="preserve">
+    <value>A link to your LinkedIn profile with a format beginning with www.linkedin.com/ or [country].linkedin.com/</value>
+  </data>
+  <data name="ProfileProperties_LinkedIn.Required" xml:space="preserve">
+    <value>LinkedIn is required.</value>
+  </data>
+  <data name="ProfileProperties_LinkedIn.Text" xml:space="preserve">
+    <value>LinkedIn</value>
+  </data>
+  <data name="ProfileProperties_Twitter.Help" xml:space="preserve">
+    <value>A link to your Twitter profile with a format beginning with twitter.com/</value>
+  </data>
+  <data name="ProfileProperties_Twitter.Required" xml:space="preserve">
+    <value>Twitter is required.</value>
+  </data>
+  <data name="ProfileProperties_Twitter.Text" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="ProfileProperties_Skype.Help" xml:space="preserve">
+    <value>A link to your call you on Skype via your user name.</value>
+  </data>
+  <data name="ProfileProperties_Skype.Required" xml:space="preserve">
+    <value>Skype ID is required.</value>
+  </data>
+  <data name="ProfileProperties_Skype.Text" xml:space="preserve">
+    <value>Skype ID</value>
+  </data>
+  <data name="DisplayNameNotUnique.Text" xml:space="preserve">
+    <value>The display name you have entered is already in use, please choose a different one.</value>
+  </data>
+</root>

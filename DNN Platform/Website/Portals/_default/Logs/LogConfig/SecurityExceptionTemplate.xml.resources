@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LogConfig version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <LogTypes>
+    <LogType LogTypeKey="SECURITY_EXCEPTION" LogTypeFriendlyName="Security Exception" LogTypeDescription="" LogTypeOwner="DotNetNuke.Logging.ExceptionLogType" LogTypeCSSClass="SecurityException" />
+  </LogTypes>
+  <LogTypeConfig LogFileID="7826e8d5-5d2b-4ddb-848e-91831a6b3f4e" LoggingStatus="On" LogTypeKey="SECURITY_EXCEPTION" LogTypePortalID="*" KeepMostRecent="100" FileName="Exception.xml.resources" EmailNotificationStatus="Off" NotificationThreshold="1" NotificationThresholdTime="1" NotificationThresholdTimeType="1" MailFromAddress="" MailToAddress="" />
+</LogConfig>

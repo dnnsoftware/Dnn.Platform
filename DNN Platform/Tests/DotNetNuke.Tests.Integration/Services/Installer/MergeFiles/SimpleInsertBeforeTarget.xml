@@ -1,0 +1,7 @@
+﻿<configuration>
+    <node1>
+        <foo></foo>
+        <fee></fee>
+    </node1>
+    <node2></node2>
+</configuration>

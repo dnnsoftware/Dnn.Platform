@@ -1,0 +1,3 @@
+﻿Test,				Scheme,		Page Name,		Test Url,							Expected Url,	Status
+axd,				http://,	Home,			http://{alias}/WebResource.axd,		,				200
+axd With QS,		http://,	Home,			http://{alias}/WebResource.axd,		,				200

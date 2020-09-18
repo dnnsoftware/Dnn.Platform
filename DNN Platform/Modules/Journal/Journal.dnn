@@ -1,0 +1,86 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="Journal" type="Module" isSystem="true" version="09.07.02">
+            <friendlyName>Journal</friendlyName>
+            <description>DotNetNuke Corporation Journal module</description>
+            <iconFile>DesktopModules/Journal/Images/journal_32X32.png</iconFile>
+            <owner>
+                <name>DNN</name>
+                <organization>.NET Foundation</organization>
+                <url>https://dnncommunity.org</url>
+                <email>info@dnncommunity.org</email>
+            </owner>
+            <license src="License.txt"></license>
+            <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+            <azureCompatible>true</azureCompatible>
+            <dependencies>
+                <dependency type="CoreVersion">07.00.00</dependency>
+            </dependencies>
+            <components>
+                <component type="Module">
+                    <desktopModule>
+                        <moduleName>Journal</moduleName>
+                        <foldername>Journal</foldername>
+                        <shareable>Supported</shareable>
+                        <businessControllerClass>DotNetNuke.Modules.Journal.Components.FeatureController</businessControllerClass>
+                        <supportedFeatures/>
+                        <moduleDefinitions>
+                            <moduleDefinition>
+                                <friendlyName>Journal</friendlyName>
+                                <defaultCacheTime>0</defaultCacheTime>
+                                <moduleControls>
+                                    <moduleControl>
+                                        <controlKey/>
+                                        <controlSrc>DesktopModules/Journal/View.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle/>
+                                        <controlType>View</controlType>
+                                        <iconFile/>
+                                        <helpUrl>https://dnndocs.com</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Settings</controlKey>
+                                        <controlSrc>DesktopModules/Journal/Settings.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle>Journal Settings</controlTitle>
+                                        <controlType>Edit</controlType>
+                                        <iconFile/>
+                                        <helpUrl>https://dnndocs.com</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                </moduleControls>
+                            </moduleDefinition>
+                        </moduleDefinitions>
+                    </desktopModule>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules/Journal</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>DotNetNuke.Modules.Journal.dll</name>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\Journal</basePath>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>07.03.00.SqlDataProvider</name>
+                            <version>07.03.00</version>
+                        </script>
+                    </scripts>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>

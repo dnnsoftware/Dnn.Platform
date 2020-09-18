@@ -1,0 +1,16 @@
+﻿#connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div, .connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div {
+    width: 100%;
+}
+
+#connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div input[type='text'], #connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div textarea, .connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div input[type='text'] {
+    width: 65% !important;
+}
+
+#connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div label, .connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div label {
+    width: 25% !important;
+}
+
+#connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div span, .connector-CoreGoogleAnalyticsConnector > div.edit-fields > div > div span {
+    font-size:0.75em;
+    font-style:italic;
+}

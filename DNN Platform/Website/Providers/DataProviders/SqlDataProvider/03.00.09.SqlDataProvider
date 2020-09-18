@@ -1,0 +1,508 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+drop procedure {databaseOwner}{objectQualifier}GetUserRolesByUsername
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetUserRolesByUsername
+
+@PortalId int, 
+@Username nvarchar(100), 
+@Rolename nvarchar(50)
+
+as
+
+SELECT	R.*,        
+        'FullName' = U.FirstName + ' ' + U.LastName,
+        UR.UserRoleID,
+        UR.UserID,
+        UR.ExpiryDate,
+        UR.IsTrialUsed
+FROM	{objectQualifier}UserRoles UR
+INNER JOIN {objectQualifier}Users U ON UR.UserID = U.UserID
+INNER JOIN {objectQualifier}Roles R ON R.RoleID = UR.RoleID
+WHERE  R.PortalId = @PortalId
+AND    (U.Username = @Username or @Username is NULL)
+AND    (R.Rolename = @Rolename or @RoleName is NULL)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSearchResultModules
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetSearchResultModules
+
+@PortalID int
+
+AS
+
+SELECT     
+		TM.TabID, 
+		T.TabName  AS SearchTabName
+FROM	{objectQualifier}Modules M
+INNER JOIN	{objectQualifier}ModuleDefinitions MD ON MD.ModuleDefID = M.ModuleDefID 
+INNER JOIN	{objectQualifier}TabModules TM ON TM.ModuleID = M.ModuleID 
+INNER JOIN	{objectQualifier}Tabs T ON T.TabID = TM.TabID
+WHERE	MD.FriendlyName = N'Search Results'
+	AND T.PortalID = @PortalID
+	AND T.IsDeleted = 0
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetFolderPermissionsByFolderPath
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetFolderPermissionsByFolderPath
+	@PortalID int,
+	@FolderPath varchar(300), 
+	@PermissionID int
+AS
+
+SELECT
+	FP.[FolderPermissionID],
+	F.[FolderID],
+	F.[FolderPath],
+	P.[PermissionID],
+	FP.[RoleID],
+	case FP.RoleID
+		when -1 then 'All Users'
+		when -2 then 'Superuser'		
+		when -3 then 'Unauthenticated Users'
+		else 	R.RoleName
+	end
+	'RoleName',
+	FP.[AllowAccess],
+	P.[PermissionCode],
+	P.[PermissionKey],
+	P.[PermissionName]
+FROM
+	{objectQualifier}FolderPermission FP
+LEFT JOIN {objectQualifier}Folders F ON	FP.FolderID = F.FolderID	
+LEFT JOIN {objectQualifier}Permission P ON	FP.PermissionID = P.PermissionID
+LEFT JOIN {objectQualifier}Roles R ON	FP.RoleID = R.RoleID
+WHERE
+	( (F.[FolderPath] = @FolderPath and ((F.[PortalID] = @PortalID) or (F.[PortalID] is null and @PortalID is null)))
+          or (F.FolderPath is null and P.PermissionCode = 'SYSTEM_FOLDER') )
+AND	(P.[PermissionID] = @PermissionID or @PermissionID = -1)
+
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAllTabsModules
+
+@PortalId int,
+@AllTabs bit
+
+AS
+
+select 
+  {objectQualifier}tabmodules.tabid,
+  {objectQualifier}Modules.*,
+  {objectQualifier}DesktopModules.*
+from   {objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefID = {objectQualifier}ModuleDefinitions.ModuleDefID
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleID = {objectQualifier}DesktopModules.DesktopModuleID
+inner join {objectQualifier}TabModules on {objectQualifier}Modules.ModuleID = {objectQualifier}TabModules.ModuleID
+where  {objectQualifier}Modules.PortalId = @PortalId and {objectQualifier}Modules.AllTabs = @AllTabs
+  and {objectQualifier}tabmodules.tabmoduleID =(select min(tabmoduleID) 
+		from {objectQualifier}tabmodules
+		where ModuleID = {objectQualifier}Modules.ModuleID)
+order by {objectQualifier}Modules.ModuleId
+
+GO
+
+declare @ModuleDefID int
+
+select @ModuleDefID = ModuleDefID
+from   {objectQualifier}ModuleDefinitions
+where  FriendlyName = 'Module Definitions'
+
+INSERT INTO {databaseOwner}{objectQualifier}ModuleControls (
+	[ModuleDefID], 
+	[ControlKey], 
+	[ControlTitle], 
+	[ControlSrc], 
+	[IconFile], 
+	[ControlType], 
+	[ViewOrder], 
+	[HelpUrl]
+) 
+VALUES (
+	@ModuleDefID, 
+	N'Package', 
+	N'Create Private Assembly', 
+	N'Admin/ModuleDefinitions/PrivateAssembly.ascx', 
+	N'icon_moduledefinitions_32px.gif', 
+	3, 
+	NULL, 
+	NULL
+)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetBanner
+
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetBanner
+
+@BannerId int,
+@VendorId int,
+@PortalID int
+
+as
+
+select {objectQualifier}Banners.BannerId,
+       {objectQualifier}Banners.VendorId,
+       'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Banners.BannerName,
+       {objectQualifier}Banners.Impressions,
+       {objectQualifier}Banners.CPM,
+       {objectQualifier}Banners.Views,
+       {objectQualifier}Banners.ClickThroughs,
+       {objectQualifier}Banners.StartDate,
+       {objectQualifier}Banners.EndDate,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Banners.CreatedDate,
+       {objectQualifier}Banners.BannerTypeId,
+       {objectQualifier}Banners.Description,
+       {objectQualifier}Banners.GroupName,
+       {objectQualifier}Banners.Criteria,
+       {objectQualifier}Banners.URL        
+FROM   {objectQualifier}Banners 
+INNER JOIN {objectQualifier}Vendors ON {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId 
+LEFT OUTER JOIN {objectQualifier}Users ON {objectQualifier}Banners.CreatedByUser = {objectQualifier}Users.UserID
+left outer join {objectQualifier}Files on {objectQualifier}Banners.ImageFile = 'FileId=' + convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Banners.BannerId = @BannerId
+and   {objectQualifier}Banners.vendorId = @VendorId
+AND {objectQualifier}Vendors.PortalId = @PortalID
+
+GO
+
+UPDATE {objectQualifier}Announcements
+	SET URL = 'FileID=' + convert(varchar,F.FileID)
+FROM 
+	{objectQualifier}Announcements AS A
+	INNER JOIN {objectQualifier}Files AS F ON A.URL = F.FileName
+GO
+
+UPDATE {objectQualifier}Links
+	SET URL = 'FileID=' + convert(varchar,F.FileID)
+FROM 
+	{objectQualifier}Links AS L
+	INNER JOIN {objectQualifier}Files AS F ON L.URL = F.FileName
+GO
+
+UPDATE {objectQualifier}Documents
+	SET URL = 'FileID=' + convert(varchar,F.FileID)
+FROM 
+	{objectQualifier}Documents AS D
+	INNER JOIN {objectQualifier}Files AS F ON D.URL = F.FileName
+GO
+
+DROP procedure {databaseOwner}{objectQualifier}GetSearchResults
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetSearchResults
+	@PortalID int,
+	@Word nVarChar(100)
+AS
+SELECT si.SearchItemID,
+	sw.Word,
+	siw.Occurrences,
+	siw.Occurrences + 1000 as Relevance,
+	m.ModuleID,
+	tm.TabID,
+	si.Title,
+	si.Description,
+	si.Author,
+	si.PubDate,
+	si.SearchKey,
+	si.Guid,
+	si.ImageFileId,
+	u.FirstName + ' ' + u.LastName As AuthorName
+FROM    {objectQualifier}SearchWord sw
+	INNER JOIN {objectQualifier}SearchItemWord siw ON sw.SearchWordsID = siw.SearchWordsID
+	INNER JOIN {objectQualifier}SearchItem si ON siw.SearchItemID = si.SearchItemID
+	INNER JOIN {objectQualifier}Modules m ON si.ModuleId = m.ModuleID
+	LEFT OUTER JOIN {objectQualifier}TabModules tm ON si.ModuleId = tm.ModuleID
+	INNER JOIN {objectQualifier}Tabs t ON tm.TabID = t.TabID
+	LEFT OUTER JOIN {objectQualifier}Users u ON si.Author = u.UserID
+WHERE   (((m.StartDate Is Null) OR (GetDate() > m.StartDate)) AND ((m.EndDate Is Null) OR (GetDate() < m.EndDate)))
+	AND (((t.StartDate Is Null) OR (GetDate() > t.StartDate)) AND ((t.EndDate Is Null) OR (GetDate() < t.EndDate)))
+	AND (sw.Word = @Word) 
+	AND (t.IsDeleted = 0) 
+	AND (m.IsDeleted = 0) 
+	AND (t.PortalID = @PortalID)
+GO
+
+
+/************************************************************/
+/*****        Fix Missing Object Qualifiers             *****/
+/************************************************************/
+
+SET NUMERIC_ROUNDABORT OFF
+GO
+SET ANSI_PADDING, ANSI_WARNINGS, CONCAT_NULL_YIELDS_NULL, ARITHABORT, QUOTED_IDENTIFIER, ANSI_NULLS ON
+GO
+SET XACT_ABORT ON
+GO
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Announcements].[IX_Announcements]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Announcements] ON {databaseOwner}[{objectQualifier}Announcements] ([ModuleID])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Classification].[IX_Classification]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Classification] ON {databaseOwner}[{objectQualifier}Classification] ([ParentId])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Contacts].[IX_Contacts]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Contacts] ON {databaseOwner}[{objectQualifier}Contacts] ([ModuleID])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Discussion].[IX_Discussion]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Discussion] ON {databaseOwner}[{objectQualifier}Discussion] ([ModuleID])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Documents].[IX_Documents]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Documents] ON {databaseOwner}[{objectQualifier}Documents] ([ModuleID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Files] DROP CONSTRAINT [FK_Files_Portals]
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Files].[IX_Files]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files] ON {databaseOwner}[{objectQualifier}Files] ([PortalId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Files] WITH NOCHECK ADD CONSTRAINT [FK_{objectQualifier}Files_{objectQualifier}Portals] FOREIGN KEY ([PortalId]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE NOT FOR REPLICATION
+DROP INDEX {databaseOwner}[{objectQualifier}Links].[IX_Links]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Links] ON {databaseOwner}[{objectQualifier}Links] ([ModuleID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Modules] DROP
+CONSTRAINT [FK_Modules_Portals]
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Modules].[IX_Modules]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Modules] ON {databaseOwner}[{objectQualifier}Modules] ([ModuleDefID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Modules] WITH NOCHECK ADD
+CONSTRAINT [FK_{objectQualifier}Modules_{objectQualifier}Portals] FOREIGN KEY ([PortalID]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) NOT FOR REPLICATION
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Roles] DROP CONSTRAINT [IX_RoleName]
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Roles].[IX_Roles]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Roles] ON {databaseOwner}[{objectQualifier}Roles] ([BillingFrequency])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Roles] ADD CONSTRAINT [IX_{objectQualifier}RoleName] UNIQUE NONCLUSTERED  ([PortalID], [RoleName])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SearchIndexer] DROP CONSTRAINT [PK_SearchIndexer]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SearchIndexer] ADD CONSTRAINT [PK_{objectQualifier}SearchIndexer] PRIMARY KEY CLUSTERED  ([SearchIndexerID])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}SiteLog].[IX_SiteLog]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}SiteLog] ON {databaseOwner}[{objectQualifier}SiteLog] ([PortalId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SystemMessages] DROP
+CONSTRAINT [FK_SystemMessages_Portals]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SystemMessages] DROP CONSTRAINT [IX_SystemMessages]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SystemMessages] DROP CONSTRAINT [PK_SystemMessages]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SystemMessages] ADD CONSTRAINT [PK_{objectQualifier}SystemMessages] PRIMARY KEY CLUSTERED  ([MessageID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SystemMessages] ADD CONSTRAINT [IX_{objectQualifier}SystemMessages] UNIQUE NONCLUSTERED  ([MessageName], [PortalID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}SystemMessages] WITH NOCHECK ADD
+CONSTRAINT [FK_{objectQualifier}SystemMessages_{objectQualifier}Portals] FOREIGN KEY ([PortalID]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE NOT FOR REPLICATION
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] DROP
+CONSTRAINT [FK_TabModuleSettings_TabModules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] DROP CONSTRAINT [PK_TabModuleSettings]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] ADD CONSTRAINT [PK_{objectQualifier}TabModuleSettings] PRIMARY KEY CLUSTERED  ([TabModuleID], [SettingName])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] WITH NOCHECK ADD
+CONSTRAINT [FK_{objectQualifier}TabModuleSettings_{objectQualifier}TabModules] FOREIGN KEY ([TabModuleID]) REFERENCES {databaseOwner}[{objectQualifier}TabModules] ([TabModuleID]) ON DELETE CASCADE NOT FOR REPLICATION
+GO
+DECLARE @name varchar(64)
+SET @name = (SELECT name from sysobjects WHERE name Like 'DF__Tabs__DisableLin%')
+IF Not @name Is Null
+  EXEC ('ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] DROP CONSTRAINT ' + @name)
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_Tabs_1]
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}Tabs].[IX_Tabs_2]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN [DisableLink] [bit] NOT NULL
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_1] ON {databaseOwner}[{objectQualifier}Tabs] ([PortalID])
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_2] ON {databaseOwner}[{objectQualifier}Tabs] ([ParentId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ADD CONSTRAINT [DF_{objectQualifier}Tabs_DisableLink] DEFAULT (0) FOR [DisableLink]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Urls] DROP CONSTRAINT [FK_Urls_Portals]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Urls] DROP CONSTRAINT [IX_Urls]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Urls] DROP CONSTRAINT [PK_Urls]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Urls] ADD CONSTRAINT [PK_{objectQualifier}Urls] PRIMARY KEY CLUSTERED  ([UrlID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Urls] ADD CONSTRAINT [IX_{objectQualifier}Urls] UNIQUE NONCLUSTERED  ([Url], [PortalID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Urls] WITH NOCHECK ADD
+CONSTRAINT [FK_{objectQualifier}Urls_{objectQualifier}Portals] FOREIGN KEY ([PortalID]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE NOT FOR REPLICATION
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] DROP CONSTRAINT [FK_UrlTracking_Portals]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlLog] DROP CONSTRAINT [FK_{objectQualifier}UrlLog_{objectQualifier}UrlTracking]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] DROP CONSTRAINT [PK_UrlTracking]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] DROP CONSTRAINT [DF_{objectQualifier}UrlTracking_{objectQualifier}TrackClicks]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] DROP CONSTRAINT [DF_{objectQualifier}UrlTracking_{objectQualifier}NewWindow]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] ALTER COLUMN [TrackClicks] [bit] NOT NULL
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] ALTER COLUMN [NewWindow] [bit] NOT NULL
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] ADD CONSTRAINT [PK_{objectQualifier}UrlTracking] PRIMARY KEY CLUSTERED  ([UrlTrackingID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] ADD CONSTRAINT [DF_{objectQualifier}UrlTracking_TrackClicks] DEFAULT (1) FOR [TrackClicks]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] ADD CONSTRAINT [DF_{objectQualifier}UrlTracking_NewWindow] DEFAULT (0) FOR [NewWindow]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlTracking] WITH NOCHECK ADD
+CONSTRAINT [FK_{objectQualifier}UrlTracking_{objectQualifier}Portals] FOREIGN KEY ([PortalID]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE NOT FOR REPLICATION
+ALTER TABLE {databaseOwner}[{objectQualifier}UrlLog] WITH NOCHECK ADD
+CONSTRAINT [FK_{objectQualifier}UrlLog_{objectQualifier}UrlTracking] FOREIGN KEY ([UrlTrackingID]) REFERENCES {databaseOwner}[{objectQualifier}UrlTracking] ([UrlTrackingID]) ON DELETE CASCADE NOT FOR REPLICATION
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserDefinedData].[IX_UserDefinedData]
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserDefinedData].[IX_UserDefinedData_1]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserDefinedData] ON {databaseOwner}[{objectQualifier}UserDefinedData] ([UserDefinedFieldId])
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserDefinedData_1] ON {databaseOwner}[{objectQualifier}UserDefinedData] ([UserDefinedRowId])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserDefinedFields].[IX_UserDefinedFields]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserDefinedFields] ON {databaseOwner}[{objectQualifier}UserDefinedFields] ([ModuleId])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserDefinedRows].[IX_UserDefinedRows]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserDefinedRows] ON {databaseOwner}[{objectQualifier}UserDefinedRows] ([ModuleId])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserPortals].[IX_UserPortals]
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserPortals].[IX_UserPortals_1]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserPortals] ON {databaseOwner}[{objectQualifier}UserPortals] ([PortalId])
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserPortals_1] ON {databaseOwner}[{objectQualifier}UserPortals] ([UserId])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserRoles].[IX_UserRoles]
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}UserRoles].[IX_UserRoles_1]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles] ON {databaseOwner}[{objectQualifier}UserRoles] ([RoleID])
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_1] ON {databaseOwner}[{objectQualifier}UserRoles] ([UserID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Users] DROP CONSTRAINT [IX_{objectQualifier}Users]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Users] ADD CONSTRAINT [IX_{objectQualifier}Users] UNIQUE NONCLUSTERED  ([Username])
+GO
+DROP INDEX {databaseOwner}[{objectQualifier}VendorClassification].[IX_VendorClassification_1]
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}VendorClassification_1] ON {databaseOwner}[{objectQualifier}VendorClassification] ([ClassificationId])
+GO
+ALTER PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+AS
+SELECT S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, SH.NextStart
+FROM {objectQualifier}Schedule S
+LEFT JOIN {objectQualifier}ScheduleHistory SH
+ON S.ScheduleID = SH.ScheduleID
+WHERE SH.ScheduleHistoryID = (SELECT TOP 1 S1.ScheduleHistoryID FROM {objectQualifier}ScheduleHistory S1 WHERE S1.ScheduleID = S.ScheduleID ORDER BY S1.NextStart DESC)
+OR  SH.ScheduleHistoryID IS NULL
+GROUP BY S.ScheduleID, S.TypeFullName, S.TimeLapse, S.TimeLapseMeasurement,  S.RetryTimeLapse, S.RetryTimeLapseMeasurement, S.ObjectDependencies, S.AttachToEvent, S.RetainHistoryNum, S.CatchUpEnabled, S.Enabled, SH.NextStart
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP
+CONSTRAINT [FK_Folders_Portals]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP
+CONSTRAINT [FK_FolderPermission_Permission]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP
+CONSTRAINT [FK_FolderPermission_Folders]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP
+CONSTRAINT [FK_ModulePermission_Permission]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP
+CONSTRAINT [FK_ModulePermission_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] DROP
+CONSTRAINT [FK_TabPermission_Permission]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] DROP
+CONSTRAINT [FK_TabPermission_Tabs]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] DROP CONSTRAINT [PK_Folders]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT [PK_ModulePermission]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Permission] DROP CONSTRAINT [PK_Permission]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] DROP CONSTRAINT [PK_TabPermission]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT [PK_FolderPermission]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] ADD CONSTRAINT [PK_{objectQualifier}FolderPermission] PRIMARY KEY CLUSTERED  ([FolderPermissionID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] ADD CONSTRAINT [PK_{objectQualifier}Folders] PRIMARY KEY CLUSTERED  ([FolderID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] ADD CONSTRAINT [PK_{objectQualifier}TabPermission] PRIMARY KEY CLUSTERED  ([TabPermissionID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Permission] ADD CONSTRAINT [PK_{objectQualifier}Permission] PRIMARY KEY CLUSTERED  ([PermissionID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] ADD 
+CONSTRAINT [PK_{objectQualifier}ModulePermission] PRIMARY KEY CLUSTERED  ([ModulePermissionID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] ADD
+CONSTRAINT [FK_{objectQualifier}FolderPermission_{objectQualifier}Folders] FOREIGN KEY ([FolderID]) REFERENCES {databaseOwner}[{objectQualifier}Folders] ([FolderID]) ON DELETE CASCADE,
+CONSTRAINT [FK_{objectQualifier}FolderPermission_{objectQualifier}Permission] FOREIGN KEY ([PermissionID]) REFERENCES {databaseOwner}[{objectQualifier}Permission] ([PermissionID]) ON DELETE CASCADE
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] ADD
+CONSTRAINT [FK_{objectQualifier}Folders_{objectQualifier}Portals] FOREIGN KEY ([PortalID]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] WITH NOCHECK ADD
+CONSTRAINT [FK_{objectQualifier}TabPermission_{objectQualifier}Permission] FOREIGN KEY ([PermissionID]) REFERENCES {databaseOwner}[{objectQualifier}Permission] ([PermissionID]) ON DELETE CASCADE,
+CONSTRAINT [FK_{objectQualifier}TabPermission_{objectQualifier}Tabs] FOREIGN KEY ([TabID]) REFERENCES {databaseOwner}[{objectQualifier}Tabs] ([TabID]) ON DELETE CASCADE
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] ADD
+CONSTRAINT [FK_{objectQualifier}ModulePermission_{objectQualifier}Permission] FOREIGN KEY ([PermissionID]) REFERENCES {databaseOwner}[{objectQualifier}Permission] ([PermissionID]) ON DELETE CASCADE,
+CONSTRAINT [FK_{objectQualifier}ModulePermission_{objectQualifier}Modules] FOREIGN KEY ([ModuleID]) REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE
+GO
+
+insert into {objectQualifier}HostSettings (
+  SettingName,
+  SettingValue
+)
+values (
+  'SMTPAuthentication',
+  ''
+)
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

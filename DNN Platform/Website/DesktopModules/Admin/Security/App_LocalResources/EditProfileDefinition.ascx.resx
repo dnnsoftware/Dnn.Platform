@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EditProperty.Text" xml:space="preserve">
+    <value>Edit Profile Property Definition</value>
+  </data>
+  <data name="AddContent.Action" xml:space="preserve">
+    <value>Add New Profile Property</value>
+  </data>
+  <data name="ProfilePropertyDefinition_DataType.Text" xml:space="preserve">
+    <value>Data Type:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_DataType.Help" xml:space="preserve">
+    <value>Select the data type for this field.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_DefaultValue.Text" xml:space="preserve">
+    <value>Default Value:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_DefaultValue.Help" xml:space="preserve">
+    <value>Optionally provide a default value for this property.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_PropertyCategory.Text" xml:space="preserve">
+    <value>Property Category:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_PropertyCategory.Help" xml:space="preserve">
+    <value>Enter the category for this property.  This will allow the related properties to be grouped when dislayed to the user.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_PropertyName.Text" xml:space="preserve">
+    <value>Property Name:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_PropertyName.Help" xml:space="preserve">
+    <value>Enter a name for the property.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_ValidationExpression.Text" xml:space="preserve">
+    <value>Validation Expression:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_ValidationExpression.Help" xml:space="preserve">
+    <value>You can provide a regular expression to validate the data entered for this property.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_ViewOrder.Text" xml:space="preserve">
+    <value>View Order:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_ViewOrder.Help" xml:space="preserve">
+    <value>Enter a number to determine the view order for this property or leave blank to add.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_Visible.Text" xml:space="preserve">
+    <value>Visible:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_Visible.Help" xml:space="preserve">
+    <value>Check this box if this property can be viewed and edited by the user or leave it unchecked if it is visible to Administrators only.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_Required.Text" xml:space="preserve">
+    <value>Required:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_Required.Help" xml:space="preserve">
+    <value>Set whether this property is required.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_Length.Text" xml:space="preserve">
+    <value>Length:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_Length.Help" xml:space="preserve">
+    <value>Enter the maximum length for this property.  This will only be applicable for specific data types.</value>
+  </data>
+  <data name="DuplicateName.Text" xml:space="preserve">
+    <value>This property already exists.  Property names must be unique.  Please select a different name for this property.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_PropertyCategory.Required" xml:space="preserve">
+    <value>The category is required.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_PropertyName.Required" xml:space="preserve">
+    <value>The property name is required.</value>
+  </data>
+  <data name="plCategoryName.Help" xml:space="preserve">
+    <value>Enter the text for the category's name in the selected language.</value>
+  </data>
+  <data name="plCategoryName.Text" xml:space="preserve">
+    <value>Category Name:</value>
+  </data>
+  <data name="plLocales.Help" xml:space="preserve">
+    <value>Select the language.</value>
+  </data>
+  <data name="plLocales.Text" xml:space="preserve">
+    <value>Choose Language:</value>
+  </data>
+  <data name="plPropertyHelp.Help" xml:space="preserve">
+    <value>Enter the Help for this property in the selected language.</value>
+  </data>
+  <data name="plPropertyHelp.Text" xml:space="preserve">
+    <value>Property Help:</value>
+  </data>
+  <data name="plPropertyName.Help" xml:space="preserve">
+    <value>Enter the text for the property's name in the selected language.</value>
+  </data>
+  <data name="plPropertyName.Text" xml:space="preserve">
+    <value>Property Name:</value>
+  </data>
+  <data name="cmdCreate.Text" xml:space="preserve">
+    <value>Create New Property</value>
+  </data>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>Update Property</value>
+  </data>
+  <data name="Introduction.Help" xml:space="preserve">
+    <value>The first step in editing a Profile Property Definition is to update the property's details.  Make any changes you need to the fields on this page, and click Next to save the changes, and proceed to the next step.</value>
+  </data>
+  <data name="Introduction.Title" xml:space="preserve">
+    <value>Edit Property Details</value>
+  </data>
+  <data name="List.Help" xml:space="preserve">
+    <value>The property details have been updated.  This property is a List type property.  The next step is to define the list entries.</value>
+  </data>
+  <data name="List.Title" xml:space="preserve">
+    <value>Manage List Entries</value>
+  </data>
+  <data name="Introduction_Add.Help" xml:space="preserve">
+    <value>The first step in setting up a Profile Property Definition is to define the property's details.  Enter the details in this page and click "Next" to create the Property Definition.   &lt;b&gt;Note:&lt;/b&gt; All fields marked with a red asterisk are required.</value>
+  </data>
+  <data name="Introduction_Add.Title" xml:space="preserve">
+    <value>Add New Property Details</value>
+  </data>
+  <data name="Localization.Help" xml:space="preserve">
+    <value>The next step is to manage the localization of this property.  Select the language you want to update, add new text or modify the existing text and then click Update.</value>
+  </data>
+  <data name="Localization.Title" xml:space="preserve">
+    <value>Manage Localization</value>
+  </data>
+  <data name="cmdCancel.Text" xml:space="preserve">
+    <value>Return to Profile Properties List</value>
+  </data>
+  <data name="ProfilePropertyDefinition_PropertyName.Validation" xml:space="preserve">
+    <value>The property name cannot contain spaces.</value>
+  </data>
+  <data name="plPropertyRequired.Help" xml:space="preserve">
+    <value>Enter the error message to display for this field when the property is Required but not present.</value>
+  </data>
+  <data name="plPropertyRequired.Text" xml:space="preserve">
+    <value>Required Error Message:</value>
+  </data>
+  <data name="plPropertyValidation.Help" xml:space="preserve">
+    <value>Enter the error message to display for this field when the property fails the Regular Expression Validation.</value>
+  </data>
+  <data name="plPropertyValidation.Text" xml:space="preserve">
+    <value>Validation Error Message:</value>
+  </data>
+  <data name="RequiredTextBox.Text" xml:space="preserve">
+    <value>If you use a TextBox field, the required length must be greater than 0.</value>
+  </data>
+  <data name="AddProperty.Text" xml:space="preserve">
+    <value>Add Profile Property Definition</value>
+  </data>
+  <data name="ProfilePropertyDefinition_DefaultVisibility.Help" xml:space="preserve">
+    <value>You can set the default visibility of the profile property.  This is the initial value of the visibility and applies if the user does not modify it, when editing their profile.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_DefaultVisibility.Text" xml:space="preserve">
+    <value>Default Visibility:</value>
+  </data>
+  <data name="ProfilePropertyDefinition_ReadOnly.Help" xml:space="preserve">
+    <value>Read only profile properties can be edited by the Administrator but are read-only to the user.</value>
+  </data>
+  <data name="ProfilePropertyDefinition_ReadOnly.Text" xml:space="preserve">
+    <value>Read Only:</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Return.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="valPropertyName.ErrorMessage" xml:space="preserve">
+    <value>You need enter a name for this property.</value>
+  </data>
+</root>

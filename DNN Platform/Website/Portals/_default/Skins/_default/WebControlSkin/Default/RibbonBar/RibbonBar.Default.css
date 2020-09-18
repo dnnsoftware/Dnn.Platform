@@ -1,0 +1,163 @@
+ /*ie6 needs width - hack by adding an _underscore for ie6 and *star for 7 */
+
+/* RibbonBar Header and Content */
+.dnnRibbonBarHeader { width:100%; white-space: nowrap; }
+.dnnRibbonBarHeader table { width:100%; white-space: nowrap;}
+
+.dnnRibbonBar { width:100%; white-space: nowrap;}
+.dnnRibbonBarCol1 { text-align:left; vertical-align:middle; width:33%; white-space: nowrap; }
+.dnnRibbonBarCol2 { text-align:center; vertical-align:middle; width:33%; }
+.dnnRibbonBarCol3 { text-align:right; vertical-align:middle; white-space: nowrap; width:33%; }	
+
+.dnnRibbon { white-space:nowrap; width:100%;background-color:#ffffff;padding:0px; }
+.dnnRibbon .barContent { white-space:nowrap;width:100%;background-color:#ffffff;padding:0px;border:solid 1px #dadada; }
+.dnnRibbon .barBottomLeft { display:none; }
+.dnnRibbon .barBottomRight { display:none; }
+.dnnRibbon .dnnLabel { font-size:11px; font-weight: normal; }
+
+/* RibbonBar Group Styles */
+.dnnRibbonGroup { margin:0px;border-top-style:none;border-bottom-style:none;border-right:solid 1px #dadada; }
+.dnnRibbonGroupFirst { border-left-style:none; }
+.dnnRibbonGroupLast { }
+
+.dnnRibbonGroup .topLeft { display:none; }
+.dnnRibbonGroup .topRight { display:none; }
+.dnnRibbonGroup .bottomLeft { display:none; }
+.dnnRibbonGroup .bottomRight { display:none; }
+
+.dnnRibbonGroup .content { height:113px; background-color: #ffffff; padding:5px; text-align:left; }
+.dnnRibbonGroup .footer { text-align:center; vertical-align:bottom;	font-size:11px;	background-color: #f4f4f4; padding:2px 2px 0px 2px; white-space:nowrap; }
+
+/* RibbonBar Image Link Styles */
+.dnnRibbonGroup .IconLeft { margin:8px 0px 0px 0px;padding:0px 0px 8px 0px;display:block; }
+.dnnRibbonGroup .IconLeft img { vertical-align:middle;padding-right:4px;border-width:0px; }
+.dnnRibbonGroup .IconLeft input { vertical-align:middle;padding-right:4px;border-width:0px; }
+.dnnRibbonGroup .IconLeft a { font-size:11px;margin:0px;padding:0px; }
+.dnnRibbonGroup .IconLeft a:Link { font-size:11px; }
+.dnnRibbonGroup .IconLeft a:Visited { font-size:11px; }
+.dnnRibbonGroup .IconLeft a:Hover { font-size:11px; }
+.dnnRibbonGroup .IconLeft a:Active { font-size:11px; }
+
+.dnnRibbonGroup .IconTop { text-align:center;margin:0px;padding:0px 0px 10px 0px;display:block; }
+.dnnRibbonGroup .IconTop img { border-width:0px; }
+.dnnRibbonGroup .IconTop input { border-width:0px; }
+.dnnRibbonGroup .IconTop a { font-size:11px;margin:0px;padding: 0px 0px 0px 0px; display:block; }
+.dnnRibbonGroup .IconTop a:Link { font-size:11px; }
+.dnnRibbonGroup .IconTop a:Visited { font-size:11px; }
+.dnnRibbonGroup .IconTop a:Hover { font-size:11px; }
+.dnnRibbonGroup .IconTop a:Active { font-size:11px; }
+
+.dnnRibbonGroup .rgIconDisabled { color:Gray;font-size:11px; }
+.dnnRibbonGroup .rgIconDisabled input { color:Gray;font-size:11px; }
+.dnnRibbonGroup .rgIconDisabled a { color:Gray;font-size:11px; }
+.dnnRibbonGroup .rgIconDisabled a:Link { color:Gray;font-size:11px; }
+.dnnRibbonGroup .rgIconDisabled a:Visited { color:Gray;font-size:11px; }
+.dnnRibbonGroup .rgIconDisabled a:Hover { color:Gray; text-decoration:none; font-size:11px; }
+.dnnRibbonGroup .rgIconDisabled a:Active { color:Gray;font-size:11px; }
+
+.dnnRibbonActionsStart { vertical-align:top; white-space:nowrap; }
+.dnnRibbonActions { vertical-align:top; padding-left:15px; white-space:nowrap; }
+
+.dnnRibbonBar .LabelCell { text-align:right; white-space:nowrap; }
+
+.dnnRibbonBar .CommandButton,
+.dnnRibbonBar .CommandButton:Link,
+.dnnRibbonBar .CommandButton:Hover,
+.dnnRibbonBar .CommandButton:Visited
+{ font-size:11px; margin:0px; padding: 0px 2px 0px 2px; text-decoration:none; font-weight: normal; font-style:normal; }
+
+.dnnRibbonBar .CommandButton:Active
+{ border-style: none; }
+
+.dnnRibbonBar .CommandButtonDisabled,
+.dnnRibbonBar .CommandButtonDisabled:Link,
+.dnnRibbonBar .CommandButtonDisabled:Hover,
+.dnnRibbonBar .CommandButtonDisabled:Active,
+.dnnRibbonBar .CommandButtonDisabled:Visited
+{ font-size:11px; padding: 0px 2px 0px 2px; text-decoration:none; font-weight: normal; }
+
+/* Tab 1 Styles */
+.Tab1_Actions { _width:45px; text-align:center; white-space:nowrap; }
+
+.Tab1_AddMod { _width:521px;white-space:nowrap; }
+
+.Tab1_AddMod .AddMod1 { padding-top:6px;white-space:nowrap;}
+.Tab1_AddMod .AddMod2,
+.Tab1_AddMod .AddMod3 
+{ padding-left:15px;white-space:nowrap;}
+.Tab1_AddMod .AddMod2 td,
+.Tab1_AddMod .AddMod3 td
+{ padding: 1px 2px 1px 0px;}
+
+.Tab1_AddPage { _width:344px;white-space:nowrap; }
+.Tab1_AddPage td { padding: 1px 2px 1px 0px; }
+
+/* Tab 2 Styles */
+.Tab2_Settings { _width:55px; text-align:center; white-space:nowrap;}
+.Tab2_Actions { _width:99px; white-space:nowrap; }
+.Tab2_Actions .content { _height:89px;_overflow:hidden; }
+ 
+.Tab2_EditPage { _width:451px; white-space:nowrap;}
+.Tab2_EditPage .content { _height:89px;_overflow:hidden;}
+.Tab2_EditPage .SkinListHeader { font-weight:bold; border-bottom: solid 1px #dcdcdc; }
+.Tab2_EditPage .SkinListSeparator { font-weight:bold; border-bottom: solid 1px #dcdcdc; }
+.Tab2_EditPage .EditPage1 { }
+.Tab2_EditPage .EditPage2 { padding-left:10px; }
+
+.Tab2_EditPage .EditPage1 td,
+.Tab2_EditPage .EditPage2 td 
+{ padding: 1px 2px 1px 0px; }
+
+.Tab2_Copy { _width:202px; white-space:nowrap;}
+.Tab2_Help { _width:45px; white-space:nowrap;}
+
+/* Tab 3 Styles */
+.Tab3_Settings { _width:80px;white-space:nowrap;}
+.Tab3_Settings .content { _height:89px;_overflow:hidden;}
+.Tab3_Manage { _width:155px; white-space:nowrap; }
+.Tab3_Manage .content { _height:89px;_overflow:hidden; }
+
+.Tab3_AddPage { _width:445px;white-space:nowrap;}
+.Tab3_AddPage .content { _height:89px;_overflow:hidden;}
+
+.Tab3_AddPage .AddPage1 { }
+.Tab3_AddPage .AddPage2 { padding-left:10px; }
+
+.Tab3_AddPage .AddPage1 td,
+.Tab3_AddPage .AddPage2 td 
+{ padding: 1px 2px 1px 0px; }
+
+.Tab3_Features { _width:154px; white-space:nowrap; }
+.Tab3_Features .content { _height:89px;_overflow:hidden; }
+.Tab3_Restore { _width:72px;white-space:nowrap;}
+
+/* Tab 4 Styles */
+.Tab4_Settings { _width:90px;white-space:nowrap;}
+.Tab4_Manage { _width:160px; white-space:nowrap; }
+
+.Tab4_Info { _width:80px;white-space:nowrap; }
+.Tab4_SwitchSite { _width:280px;white-space:nowrap; }
+.SwitchSiteFields  { padding-top:10px; height:82px; }
+.SwitchSiteFields .row { padding:2px; }
+
+.Tab4_Tools { _width:75px;white-space:nowrap;}
+.Tab4_Marketplace { _width:80px;white-space:nowrap;}
+
+/* **************************************************************************************** */
+/* Generic ImageTextButton style : todo - move to portal.css */
+.dnnImageTextButton { font-size:11px; }
+.dnnImageTextButton .Disabled a { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextButton .Disabled a:Link { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextButton .Disabled a:Active { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextButton .Disabled a:Hover { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextButton .Disabled a:Visited { color:Gray; text-decoration:none;font-size:11px; }
+
+.dnnImageTextLink { font-size:11px; }
+.dnnImageTextLink .Disabled a { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextLink .Disabled a:Link { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextLink .Disabled a:Active { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextLink .Disabled a:Hover { color:Gray; text-decoration:none;font-size:11px; }
+.dnnImageTextLink .Disabled a:Visited { color:Gray; text-decoration:none;font-size:11px; }
+
+
+

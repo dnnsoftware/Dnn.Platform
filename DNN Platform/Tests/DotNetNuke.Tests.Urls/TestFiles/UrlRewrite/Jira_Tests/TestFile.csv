@@ -1,0 +1,4 @@
+﻿Test,				Test File,		Scheme,		Page Name,		Test Url,										Expected Url,										Status,		Final Url,					RedirectReason
+DNN_3361,			DNN_3361,		http://,	,				http://{alias},									{defaultPage}?language=en-US,						200,								
+DNN_5318_No_Ext,	DNN_5318_,		http://,	,				http://{alias}/deadpage,						,													404,								
+DNN_5318_Ext,		DNN_5318,		http://,	,				http://{alias}/deadpage.aspx,					,													404,								

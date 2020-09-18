@@ -1,0 +1,32 @@
+@{ 
+    var db = Database.Open("SiteSqlServer");
+    var usersTableName = String.Format("{0}Users", DotNetNuke.Data.DataProvider.Instance().ObjectQualifier);
+    var portalTableName = String.Format("{0}UserPortals", DotNetNuke.Data.DataProvider.Instance().ObjectQualifier);
+
+ var selectQueryString = "select * from " + usersTableName  + " as ut  inner join " + portalTableName + " as up on ut.userid = up.userid where portalid = " + Dnn.Portal.PortalId + " and ut.IsSuperUser = 0 order by username";
+ }
+
+<h2>Razor User List Module Example</h2>
+<table>
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+			<th>Email Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in db.Query(selectQueryString))
+        {
+
+            <tr>
+                <td>@row.Username</td>
+                <td>@row.FirstName</td>
+                <td>@row.LastName</td>
+	        <td>@row.Email</td>
+
+            </tr>
+        }
+    </tbody>
+</table>

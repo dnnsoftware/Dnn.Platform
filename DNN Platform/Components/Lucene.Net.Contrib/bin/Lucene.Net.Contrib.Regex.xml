@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lucene.Net.Contrib.Regex</name>
+    </assembly>
+    <members>
+        <member name="T:Contrib.Regex.CSharpRegexCapabilities">
+            <summary>
+            C# Regex based implementation of <see cref="T:Contrib.Regex.IRegexCapabilities"/>.
+            </summary>
+            <remarks>http://www.java2s.com/Open-Source/Java-Document/Net/lucene-connector/org/apache/lucene/search/regex/JavaUtilRegexCapabilities.java.htm</remarks>
+        </member>
+        <member name="T:Contrib.Regex.IRegexCapabilities">
+            <summary>
+            Defines basic operations needed by <see cref="T:Contrib.Regex.RegexQuery"/> for a regular expression implementation.
+            </summary>
+            <remarks>http://www.java2s.com/Open-Source/Java-Document/Net/lucene-connector/org/apache/lucene/search/regex/RegexCapabilities.java.htm</remarks>
+        </member>
+        <member name="M:Contrib.Regex.IRegexCapabilities.Compile(System.String)">
+            <summary>
+            Called by the constructor of <see cref="T:Contrib.Regex.RegexTermEnum"/> allowing implementations to cache 
+            a compiled version of the regular expression pattern.
+            </summary>
+            <param name="pattern">regular expression pattern</param>
+        </member>
+        <member name="M:Contrib.Regex.IRegexCapabilities.Match(System.String)">
+            <summary>
+            True on match.
+            </summary>
+            <param name="s">text to match</param>
+            <returns>true on match</returns>
+        </member>
+        <member name="M:Contrib.Regex.IRegexCapabilities.Prefix">
+            <summary>
+            A wise prefix implementation can reduce the term enumeration (and thus performance)
+            of RegexQuery dramatically.
+            </summary>
+            <returns>static non-regex prefix of the pattern last passed to <see cref="M:Contrib.Regex.IRegexCapabilities.Compile(System.String)"/>.
+              May return null</returns>
+        </member>
+        <member name="M:Contrib.Regex.CSharpRegexCapabilities.Compile(System.String)">
+            <summary>
+            Called by the constructor of <see cref="T:Contrib.Regex.RegexTermEnum"/> allowing implementations to cache 
+            a compiled version of the regular expression pattern.
+            </summary>
+            <param name="pattern">regular expression pattern</param>
+        </member>
+        <member name="M:Contrib.Regex.CSharpRegexCapabilities.Match(System.String)">
+            <summary>
+            True on match.
+            </summary>
+            <param name="s">text to match</param>
+            <returns>true on match</returns>
+        </member>
+        <member name="M:Contrib.Regex.CSharpRegexCapabilities.Prefix">
+            <summary>
+            A wise prefix implementation can reduce the term enumeration (and thus performance)
+            of RegexQuery dramatically.
+            </summary>
+            <returns>static non-regex prefix of the pattern last passed to <see cref="M:Contrib.Regex.IRegexCapabilities.Compile(System.String)"/>.
+              May return null</returns>
+        </member>
+        <member name="M:Contrib.Regex.CSharpRegexCapabilities.Equals(Contrib.Regex.CSharpRegexCapabilities)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object</param>
+        </member>
+        <member name="T:Contrib.Regex.IRegexQueryCapable">
+            <summary>
+            Defines methods for regular expression supporting queries to use.
+            </summary>
+            <remarks>http://www.java2s.com/Open-Source/Java-Document/Net/lucene-connector/org/apache/lucene/search/regex/RegexQueryCapable.java.htm</remarks>
+        </member>
+        <member name="T:Contrib.Regex.RegexQuery">
+            <summary>
+            Regular expression based query.
+            </summary>
+            <remarks>http://www.java2s.com/Open-Source/Java-Document/Net/lucene-connector/org/apache/lucene/search/regex/RegexQuery.java.htm</remarks>
+        </member>
+        <member name="M:Contrib.Regex.RegexQuery.GetEnum(Lucene.Net.Index.IndexReader)">
+            <summary>Construct the enumeration to be used, expanding the pattern term. </summary>
+        </member>
+        <member name="M:Contrib.Regex.RegexQuery.Equals(Contrib.Regex.RegexQuery)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object</param>
+        </member>
+        <member name="T:Contrib.Regex.RegexTermEnum">
+            <summary>
+            Subclass of FilteredTermEnum for enumerating all terms that match the
+            specified regular expression term using the specified regular expression
+            implementation.
+            <para>Term enumerations are always ordered by Term.compareTo().  Each term in
+            the enumeration is greater than all that precede it.</para>
+            </summary>
+            <remarks>http://www.java2s.com/Open-Source/Java-Document/Net/lucene-connector/org/apache/lucene/search/regex/RegexTermEnum.java.htm</remarks>
+        </member>
+        <member name="M:Contrib.Regex.RegexTermEnum.TermCompare(Lucene.Net.Index.Term)">
+            <summary>Equality compare on the term </summary>
+        </member>
+        <member name="M:Contrib.Regex.RegexTermEnum.Difference">
+            <summary>Equality measure on the term </summary>
+        </member>
+        <member name="M:Contrib.Regex.RegexTermEnum.EndEnum">
+            <summary>Indicates the end of the enumeration has been reached </summary>
+        </member>
+        <member name="T:Contrib.Regex.SpanRegexQuery">
+            <summary>
+            A SpanQuery version of <see cref="T:Contrib.Regex.RegexQuery"/> allowing regular expression queries to be nested
+            within other SpanQuery subclasses.
+            </summary>
+            <remarks>http://www.java2s.com/Open-Source/Java-Document/Net/lucene-connector/org/apache/lucene/search/regex/SpanRegexQuery.java.htm</remarks>
+        </member>
+        <member name="M:Contrib.Regex.SpanRegexQuery.GetSpans(Lucene.Net.Index.IndexReader)">
+            <summary>Expert: Returns the matches for this query in an index.  Used internally
+            to search for spans. 
+            </summary>
+        </member>
+        <member name="M:Contrib.Regex.SpanRegexQuery.Equals(Contrib.Regex.SpanRegexQuery)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.
+                            </param>
+        </member>
+        <member name="M:Contrib.Regex.SpanRegexQuery.Equals(System.Object)">
+            <summary>
+            True if this object equals the specified object.
+            </summary>
+            <param name="obj">object</param>
+            <returns>true on equality</returns>
+        </member>
+        <member name="M:Contrib.Regex.SpanRegexQuery.GetHashCode">
+            <summary>
+            Get hash code for this object.
+            </summary>
+            <returns>hash code</returns>
+        </member>
+        <member name="P:Contrib.Regex.SpanRegexQuery.Field">
+            <summary>Returns the name of the field matched by this query.</summary>
+        </member>
+    </members>
+</doc>

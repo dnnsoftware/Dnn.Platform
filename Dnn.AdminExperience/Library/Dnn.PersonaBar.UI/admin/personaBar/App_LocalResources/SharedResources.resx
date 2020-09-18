@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrMissPermissions.Text" xml:space="preserve">
+    <value>You don't have permission to upload file.</value>
+  </data>
+  <data name="ErrUploadFile.Text" xml:space="preserve">
+    <value>Error: File couldn't be uploaded.</value>
+  </data>
+  <data name="ErrUploadStream.Text" xml:space="preserve">
+    <value>Sorry, the image could not be saved.</value>
+  </data>
+  <data name="Root.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="JustNow.Text" xml:space="preserve">
+    <value>moments ago</value>
+  </data>
+  <data name="Day.Text" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="DayAgo.Text" xml:space="preserve">
+    <value>{0} day ago</value>
+  </data>
+  <data name="Days.Text" xml:space="preserve">
+    <value>days</value>
+  </data>
+  <data name="DaysAgo.Text" xml:space="preserve">
+    <value>{0} days ago</value>
+  </data>
+  <data name="Hour.Text" xml:space="preserve">
+    <value>hour</value>
+  </data>
+  <data name="HourAgo.Text" xml:space="preserve">
+    <value>{0} hour ago</value>
+  </data>
+  <data name="Hours.Text" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="HoursAgo.Text" xml:space="preserve">
+    <value>{0} hours ago</value>
+  </data>
+  <data name="Minute.Text" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="MinuteAgo.Text" xml:space="preserve">
+    <value>{0} minute ago</value>
+  </data>
+  <data name="Minutes.Text" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="MinutesAgo.Text" xml:space="preserve">
+    <value>{0} minutes ago</value>
+  </data>
+  <data name="Month.Text" xml:space="preserve">
+    <value>month</value>
+  </data>
+  <data name="MonthAgo.Text" xml:space="preserve">
+    <value>{0} month ago</value>
+  </data>
+  <data name="Months.Text" xml:space="preserve">
+    <value>months</value>
+  </data>
+  <data name="MonthsAgo.Text" xml:space="preserve">
+    <value>{0} months ago</value>
+  </data>
+  <data name="LongTimeAgo.Text" xml:space="preserve">
+    <value>long time ago</value>
+  </data>
+  <data name="Never.Text" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="Second.Text" xml:space="preserve">
+    <value>second</value>
+  </data>
+  <data name="SecondAgo.Text" xml:space="preserve">
+    <value>{0} second ago</value>
+  </data>
+  <data name="Seconds.Text" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="SecondsAgo.Text" xml:space="preserve">
+    <value>{0} seconds ago</value>
+  </data>
+  <data name="WeekAgo.Text" xml:space="preserve">
+    <value>{0} week ago</value>
+  </data>
+  <data name="WeeksAgo.Text" xml:space="preserve">
+    <value>{0} weeks ago</value>
+  </data>
+  <data name="Year.Text" xml:space="preserve">
+    <value>year</value>
+  </data>
+  <data name="YearAgo.Text" xml:space="preserve">
+    <value>{0} year ago</value>
+  </data>
+  <data name="Years.Text" xml:space="preserve">
+    <value>years</value>
+  </data>
+  <data name="YearsAgo.Text" xml:space="preserve">
+    <value>{0} years ago</value>
+  </data>
+  <data name="UserHasNoPermissionToReadFile.Error" xml:space="preserve">
+    <value>The user has no permission to read this file</value>
+  </data>
+  <data name="UserHasNoPermissionToReadFolder.Error" xml:space="preserve">
+    <value>The user has no permission to read this folder</value>
+  </data>
+  <data name="Anonymous.Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="RegisterationFailed.Text" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="RegistrationUsernameAlreadyPresent.Text" xml:space="preserve">
+    <value>The username is already in use.</value>
+  </data>
+  <data name="FolderDoesNotExist.Error" xml:space="preserve">
+    <value>The folder does not exist</value>
+  </data>
+  <data name="VisibleOnPage.Header" xml:space="preserve">
+    <value>Visible on Page</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="UnauthorizedRequest.Text" xml:space="preserve">
+    <value>Authorization has been denied for this request.</value>
+  </data>
+  <data name="GenericErrorMessage.Error" xml:space="preserve">
+    <value>An unknown error has occured. Please check the admin logs for more information.</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="AllSites.Text" xml:space="preserve">
+    <value>All Sites</value>
+  </data>
+  <data name="Prompt_FlagIsRequired.Text" xml:space="preserve">
+    <value>'[0]' is required.\n</value>
+  </data>
+  <data name="Prompt_InvalidType.Text" xml:space="preserve">
+    <value>The value entered for '[0]' is not valid '[1]'.\n</value>
+  </data>
+  <data name="Promp_MainFlagIsRequired.Text" xml:space="preserve">
+    <value>The '[0]' is required. Please use the --[1] flag or pass it as the first argument after the command name.\n</value>
+  </data>
+  <data name="Promp_PositiveValueRequired.Text" xml:space="preserve">
+    <value>'[0]' must be greater than 0.\n</value>
+  </data>
+  <data name="SwitchOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SwitchOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+</root>

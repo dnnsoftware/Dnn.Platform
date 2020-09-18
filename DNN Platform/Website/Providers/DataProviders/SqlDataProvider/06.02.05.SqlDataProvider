@@ -1,0 +1,115 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab] 
+    @TabId					int,
+    @ContentItemID			int,
+    @PortalId				int,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(50),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @IsDeleted				bit,
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @LastModifiedByUserID	int,
+    @CultureCode			nvarchar(50)
+
+AS
+	BEGIN
+		DECLARE @OldParentId int
+		SET @OldParentId = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+		DECLARE @TabOrder int
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+				
+		-- Get New TabOrder
+		DECLARE @NewTabOrder int
+		SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentId IS NULL)))
+		IF @NewTabOrder IS NULL 
+			SET @NewTabOrder = 1
+		ELSE
+			SET @NewTabOrder = @NewTabOrder + 2
+		
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+			SET
+				ContentItemID			= @ContentItemID,
+				PortalId				= @PortalId,
+				VersionGuid				= @VersionGuid,
+				DefaultLanguageGuid		= @DefaultLanguageGuid,
+				LocalizedVersionGuid	= @LocalizedVersionGuid,
+				TabName					= @TabName,
+				IsVisible				= @IsVisible,
+				DisableLink				= @DisableLink,
+				ParentId				= @ParentId,
+				IconFile				= @IconFile,
+				IconFileLarge			= @IconFileLarge,
+				Title					= @Title,
+				Description				= @Description,
+				KeyWords				= @KeyWords,
+				IsDeleted				= @IsDeleted,
+				Url						= @Url,
+				SkinSrc					= @SkinSrc,
+				ContainerSrc			= @ContainerSrc,
+				StartDate				= @StartDate,
+				EndDate					= @EndDate,
+				RefreshInterval			= @RefreshInterval,
+				PageHeadText			= @PageHeadText,
+				IsSecure				= @IsSecure,
+				PermanentRedirect		= @PermanentRedirect,
+				SiteMapPriority			= @SiteMapPriority,
+				LastModifiedByUserID	= @LastModifiedByUserID,
+				LastModifiedOnDate		= getdate(),
+				CultureCode				= @CultureCode
+		WHERE  TabId = @TabId
+		
+		IF (@OldParentId <> @ParentId)
+			BEGIN
+				-- update TabOrder of Tabs with same original Parent
+				UPDATE {databaseOwner}[{objectQualifier}Tabs]
+					SET TabOrder = TabOrder - 2
+					WHERE (ParentId = @OldParentId) 
+						AND TabOrder > @TabOrder
+
+				-- Update Tab with new TabOrder
+				UPDATE {databaseOwner}[{objectQualifier}Tabs]
+					SET 
+						TabOrder = @NewTabOrder
+					WHERE TabID = @TabId
+			END
+		
+		EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+    END
+GO
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

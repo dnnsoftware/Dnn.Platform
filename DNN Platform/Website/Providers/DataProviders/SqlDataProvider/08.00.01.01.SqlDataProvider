@@ -1,0 +1,1707 @@
+/* DNN-4562 */
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+    @MessageID int,         -- message id
+    @RoleIDs nvarchar(max), -- comma separated list of RoleIds
+	@CreateUpdateUserID INT -- create / update user id
+AS
+BEGIN    
+
+    INSERT {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients](
+			[MessageID],
+			[UserID],
+			[Read],
+			[Archived],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+            )
+			SELECT distinct 
+			  @MessageID,
+			  UserID,
+			  0,
+			  0,
+              @CreateUpdateUserID , -- CreatedBy - int
+              GETDATE(), -- CreatedOn - datetime
+              @CreateUpdateUserID , -- LastModifiedBy - int
+              GETDATE() -- LastModifiedOn - datetime
+           FROM {databaseOwner}[{objectQualifier}vw_UserRoles] ur
+			INNER JOIN {databaseOwner}[{objectQualifier}SplitStrings_CTE](@RoleIDs,',') m on ur.RoleID = m.Item
+			WHERE ur.ExpiryDate >= getdate() OR ur.ExpiryDate IS NULL
+END
+GO
+
+/* DNN-8361 */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePackagesInUse]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+	@PortalID INT,
+	@ForHost BIT
+AS
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+
+	IF (@ForHost = 1)
+		-- Get in use for all host pages and portal pages
+		SELECT AllPackages.* FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM {databaseOwner}{objectQualifier}Packages P
+					INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM 
+						ON P.PackageID=DM.PackageID
+					INNER JOIN {databaseOwner}{objectQualifier}vw_Modules M
+						ON M.DesktopModuleID=DM.DesktopModuleID
+					INNER JOIN {databaseOwner}{objectQualifier}tabs T 
+						ON T.TabID=M.TabID
+					LEFT JOIN #TabsLatestPublished TLP 
+						ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE T.IsDeleted=0
+					AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))) AS InUsePackages	
+			ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+	ELSE
+		-- Get in use for portal or host only
+		SELECT AllPackages.* FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM {databaseOwner}{objectQualifier}Packages P
+					INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM 
+						ON P.PackageID=DM.PackageID
+					INNER JOIN {databaseOwner}{objectQualifier}vw_Modules M
+						ON M.DesktopModuleID=DM.DesktopModuleID
+					INNER JOIN {databaseOwner}{objectQualifier}tabs T 
+						ON T.TabID=M.TabID
+					LEFT JOIN #TabsLatestPublished TLP 
+						ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE ((@PortalID IS NULL AND T.PortalID IS NULL) OR T.PortalID = @PortalID)
+					AND T.IsDeleted=0
+					AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))) AS InUsePackages	
+			ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByPackageID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+    @PortalId  Int, -- Null for Host menu items
+    @PackageId Int, -- Not Null!
+    @ForHost   Bit  -- 0: Get pages for a specific portal (or host pages only)
+                    -- 1: Get all host pages and portal pages
+AS
+BEGIN
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+	
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs]
+    WHERE (IsNull(PortalId, -1) = IsNull(@PortalId, -1) Or @ForHost = 1)
+		AND IsDeleted = 0
+		AND TabId IN (SELECT M.TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
+                      INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] DM ON M.DesktopModuleID = DM.DesktopModuleID
+					  LEFT JOIN #TabsLatestPublished TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+                      WHERE DM.PackageID = @PackageId AND (M.IsDeleted = 0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL)))
+    ORDER BY PortalID, TabName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN, @PackageId UNKNOWN, @ForHost UNKNOWN));
+END
+GO
+
+-- DNN-8333	Make JWT work when module page is under host.
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByName] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}GetTabModuleSettingsByName
+	@PortalId INT,
+	@SettingName NVARCHAR(50)
+AS
+BEGIN
+	SELECT tms.TabModuleID, tms.SettingValue
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] tm ON tms.TabModuleID = tm.TabModuleID
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON tm.TabID = t.TabID AND (t.PortalID = @PortalID OR t.PortalID IS NULL)
+	WHERE tms.SettingName = @SettingName
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleIdsBySettingNameAndValue]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleIdsBySettingNameAndValue] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}GetTabModuleIdsBySettingNameAndValue
+	@PortalId INT,
+	@SettingName NVARCHAR(50),
+	@SettingValue NVARCHAR(max)
+AS
+BEGIN
+	SELECT DISTINCT tms.TabModuleID
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] tm ON tms.TabModuleID = tm.TabModuleID
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON tm.TabID = t.TabID AND (t.PortalID = @PortalID OR t.PortalID IS NULL)
+	WHERE tms.SettingName = @SettingName
+	  AND tms.SettingValue = @SettingValue
+END
+GO
+
+-- DNN-8333 END
+
+/***** DNN-5147: update sp GetRoles, GetPortalRoles, GetUsersAdvancedSearch to check UserRoles' expire date. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+AS
+BEGIN
+     SELECT R.*,
+          (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}UserRoles] U 
+				WHERE U.RoleID = R.RoleID 
+					AND U.Status = 1 
+					AND (U.EffectiveDate < GETDATE() OR U.EffectiveDate IS NULL)
+                    AND (U.ExpiryDate > GETDATE() OR U.ExpiryDate IS NULL)) AS UserCount
+     FROM {databaseOwner}[{objectQualifier}Roles] AS R
+     WHERE RoleID >= 0 -- ignore virtual roles. Note: might be removed, after controller has been adjusted
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+    @PortalId     Int -- Null: Host Roles
+AS
+BEGIN
+    SELECT R.*,
+          (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}UserRoles] U 
+				WHERE U.RoleID = R.RoleID 
+					AND U.Status = 1 
+					AND (U.EffectiveDate < GETDATE() OR U.EffectiveDate IS NULL)
+                    AND (U.ExpiryDate > GETDATE() OR U.ExpiryDate IS NULL)) AS UserCount
+     FROM {databaseOwner}[{objectQualifier}Roles] R
+    WHERE (R.PortalId = @PortalId OR R.PortalId is null)
+      AND (R.RoleId >= 0) -- DNN-4288: hide system role atm to prevent duplicates. Might be removed, after API has been adopt
+    ORDER BY R.RoleName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
+
+/*** Fix bug DNN-7178: {databaseOwner} incorrectly applied in DNN-4496 which broke the Friends functionality. ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch] 
+(
+    @PortalID int,                          -- portal                
+    @UserId int,                            -- for determining correct visibility permissions
+    @FilterUserId int,                      -- for filtering relationships on    
+    @FilterRoleId int,                      -- for filtering by roles
+    @RelationshipTypeId int,                -- for filtering by relationships
+    @IsAdmin bit,                           -- determines visibility
+    @PageSize int,                          -- page size
+    @PageIndex int,                         -- 0 based page index
+    @SortBy nvarchar(100),                  -- sort field
+    @SortAscending bit,                     -- sort flag indicating whether sort is asc or desc
+    @PropertyNames nvarchar(max),           -- list of property names to filter
+    @PropertyValues nvarchar(max)           -- list of property values to filter
+)
+AS
+    -- Setup Top XX
+    DECLARE @topSql nvarchar(20) SET @topSql = ''
+    IF @PageSize > -1 BEGIN SET @topSql = ' TOP ' + CONVERT(nvarchar(20), @PageSize) END
+                
+    -- Setup Specific Page
+    DECLARE @minRowNumberSql nvarchar(20) SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
+    -- Setup Pivot Field List
+    DECLARE @pivotSql nvarchar(max) SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
+
+    -- Get User specific columns
+    DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users' AND TABLE_SCHEMA = REPLACE('{databaseOwner}', '.', '')
+
+    -- Lists Filters names and values into tables
+    DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    DECLARE @PropertyValuesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
+    INSERT INTO @PropertyNamesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)                      
+    INSERT INTO @PropertyValuesTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyValues)
+                
+    -- Gets filters that are on the User rather than Profile Properties
+    DECLARE @UserFiltersTable TABLE (RowNumber Int, RowValue NVARCHAR(MAX))
+    INSERT INTO @UserFiltersTable SELECT * FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@PropertyNames) WHERE RowValue IN (SELECT * FROM @UserColumns)
+
+
+    DECLARE @sql nvarchar(max) SET @sql = ''
+    DECLARE @filterSql nvarchar(max)SET @filterSql = ''
+
+    -- ///////////////////////////////////////////////////
+    -- FILTERING by PROFILE PROPERTY or USER PROPERTY
+    -- ///////////////////////////////////////////////////
+    --IF @PropertyNames IS NOT NULL AND @PropertyNames <> ''
+    IF ((SELECT COUNT(*) FROM @PropertyNamesTable) > 0) AND ((SELECT COUNT(*) FROM @PropertyValuesTable)> 0) 
+	    BEGIN
+            DECLARE @propertyFilter nvarchar(max)
+            DECLARE @userFilter nvarchar(max)
+            DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
+            DECLARE @profilePropertyCount INT
+            DECLARE @userFilterCount INT
+            DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
+            DECLARE @groupBy NVARCHAR(300)
+
+            -- Filters on Profile Properties    
+            ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyNamesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns)),
+            CTE_PropertyValues(RowNumber, RowValue) AS
+            (              SELECT * FROM @PropertyValuesTable
+                            WHERE RowValue NOT IN (SELECT ColumnName FROM @UserColumns))
+
+            SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
+                                        + ' (PropertyName=''' + N.RowValue 
+                                        + ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%'')))'
+            FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
+                                
+            -- Filters on User Property                           
+            SELECT @userFilter = COALESCE(@userFilter + ' AND ', ' ')  
+										+ ' ((u.' + N.RowValue + ' LIKE ''' + V.RowValue +'%'') OR (u.' + N.RowValue + ' LIKE ''% ' + V.RowValue +'%'')) '
+            FROM @UserFiltersTable AS N  INNER JOIN @PropertyValuesTable AS V ON N.RowNumber = V.RowNumber
+                                
+            SELECT @userFilterCount = COUNT(*) FROM @UserFiltersTable
+            IF @userFilterCount > 0 BEGIN SET @userFilterJoin = ' INNER JOIN {objectQualifier}vw_Users u ON u.UserId = p.UserId ' END
+
+            -- Determining the Group By Clause -- dependant on types of filters used
+            SELECT @profilePropertyCount = COUNT(*) FROM {databaseOwner}{objectQualifier}ConvertListToTable(',', @PropertyNames)
+            WHERE RowValue IN (SELECT PropertyName FROM {databaseOwner}{objectQualifier}ProfilePropertyDefinition WHERE PortalID = @PortalId)
+            AND RowValue NOT IN (SELECT ColumnName FROM @UserColumns)
+
+            IF @profilePropertyCount > 0
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) = ' + CONVERT(nvarchar(20),@profilePropertyCount ) END
+            ELSE
+                BEGIN SET @groupBy = ' GROUP BY p.UserId HAVING COUNT(*) > 0 '     END
+
+            IF ( @profilePropertyCount > 0 AND @userFilterCount > 0)
+            BEGIN SET @propertyAndUserFilter = ' AND ' END
+
+            -- CREATE FINAL FILTER
+            SET @filterSql = ' DECLARE @MatchingUsers TABLE (UserID INT, Occurrances INT) INSERT INTO @MatchingUsers SELECT p.UserID, COUNT(*) AS occurances ' 
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
+                                        + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
+										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
+                                        + @groupBy
+		END
+
+        -- ///////////////////////////////////////////////////      
+        -- SETUP ROLE AND RELATIONSHIP FILTERS
+        -- ///////////////////////////////////////////////////
+        DECLARE @roleAndRelationshipFilter nvarchar(1000)
+        DECLARE @roleFilter nvarchar(500) SET @roleFilter = ''
+        DECLARE @relationshipFilter nvarchar(1000) SET @relationshipFilter = ''
+        DECLARE @roleAndRelationshipFlag bit SET @roleAndRelationshipFlag  = 0
+        DECLARE @RoleAndRelationshipSelect nvarchar(100) SET @RoleAndRelationshipSelect = ''
+                                
+        -- Filter by Role
+        IF @FilterRoleId <> -1 
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @roleFilter = ' JOIN {databaseOwner}{objectQualifier}UserRoles UR ON U.UserID = UR.UserID AND UR.Status = 1 '
+					+ ' AND (UR.EffectiveDate < GETDATE() OR UR.EffectiveDate IS NULL) '
+                    + ' AND (UR.ExpiryDate > GETDATE() OR UR.ExpiryDate IS NULL) AND UR.RoleID = ' + CONVERT(nvarchar(20), @FilterRoleId)
+            END
+
+        -- Filter by Relationship
+        IF @RelationshipTypeId <> -1  
+            BEGIN
+                SET @roleAndRelationshipFlag = 1
+                SET @relationshipFilter = ' JOIN {databaseOwner}{objectQualifier}Relationships REL ON REL.PortalID = ' + CONVERT(nvarchar(20), @PortalID)
+                                            + ' AND RelationshipTypeID = ' + CONVERT(nvarchar(20), @RelationshipTypeId) 
+                                            + ' JOIN {databaseOwner}{objectQualifier}UserRelationships UREL ON REL.RelationshipID = UREL.RelationshipID AND
+                                            ((UREL.UserID = ' + CONVERT(nvarchar(20), @FilterUserId) + ' AND UREL.RelatedUserID = U.UserID) OR
+                                            (UREL.UserID = U.UserID AND UREL.RelatedUserID = ' + CONVERT(nvarchar(20), @FilterUserId) + '))'
+                                            + ' WHERE UREL.Status = 2'
+            END 
+
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
+
+        SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {databaseOwner}{objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
+
+        -- ///////////////////////////////////////////////////  
+        -- SET UP SORT
+        -- ///////////////////////////////////////////////////
+        DECLARE @sortSql nvarchar(1000) SET @sortSql = ''
+        DECLARE @propertySort nvarchar(1000) SET @propertySort = ''
+        DECLARE @filterJoin nvarchar(100) SET @filterJoin = ''
+        DECLARE @filterSortSql nvarchar(1000) SET @filterSortSql = ''
+        DECLARE @sortByUserProperty BIT         
+        SELECT @sortByUserProperty = COUNT(*) FROM @UserColumns WHERE ColumnName = @SortBy
+
+        IF ( @profilePropertyCount > 0 OR @userFilterCount > 0)
+	        BEGIN SET @filterJoin = ' INNER JOIN @MatchingUsers m ON m.UserID = s.UserID ' END
+
+        -- Determine the Type of Sort
+        IF (@SortBy IS NOT NULL AND @SortBy <> '') AND @sortByUserProperty <> 1
+	        BEGIN -- Sort By Profile Property
+                SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')
+                SET @propertySort = {databaseOwner}{objectQualifier}GetSortSql('PropertyValue',@SortAscending,'UserID')
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @propertySort + ' ) AS RowNumber, *  ' 
+                                                + ' FROM {databaseOwner}{objectQualifier}vw_Profile WHERE PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' AND PropertyName = ''' + @SortBy + ''' )'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+        ELSE
+		    BEGIN   
+                -- Sort By User Property
+                IF @sortByUserProperty = 1 BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy,@SortAscending,'UserID')END
+                                
+                -- Default: Sort By UserID
+                ELSE BEGIN SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql('UserID',@SortAscending,'UserID') END                        
+                SET @filterSortSql = ' ;WITH SortedUsers AS ( SELECT ROW_NUMBER() OVER( ' + @sortSql + ' ) AS RowNumber, * '
+                                                + ' FROM {databaseOwner}{objectQualifier}vw_Users WHERE (PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR PortalID Is NULL) AND IsDeleted = 0)'
+                                                + ' , MatchingSorted AS ( SELECT ROW_NUMBER() OVER(ORDER BY [RowNumber]) AS RowNumber, s.UserId FROM SortedUsers s '
+                                                + @filterJoin + ' ) '
+	        END
+
+		-- Check if any Profile Property Definitions exist for this portal
+		IF @pivotSql is not null
+			BEGIN
+				-- SELECT with PIVOT
+				SET @pivotSql = 'SELECT * FROM (SELECT * FROM PivotedUsers PIVOT (MAX(PropertyValue) for PropertyName in (' + @pivotSql + ') ) as pivotTable) T '
+			END
+		ELSE
+			BEGIN
+				-- SELECT with DISTINCT
+				SET @pivotSql = 'SELECT distinct UserID, PortalID, Username, Email, DisplayName, IsSuperUser, IsDeleted, AffiliateID, UpdatePassword, Authorised FROM PivotedUsers '
+			END
+
+        -- ///////////////////////////////////////////////////
+        -- CREATE FINAL QUERY
+        -- ///////////////////////////////////////////////////
+        SET @sql = @filterSql
+                + ' DECLARE @TempUsers TABLE (SortOrder INT, UserID INT) '
+                + @filterSortSql
+                + @roleAndRelationshipFilter
+                + ' INSERT INTO @TempUsers SELECT ' + @topSql + ' * FROM (SELECT '
+                + ' ROW_NUMBER() OVER ( ORDER BY [RowNumber] ) AS RowNumber, s.UserId FROM MatchingSorted s ' 
+                + ' WHERE 1=1 ' + @roleAndRelationshipSelect
+				+ ') t WHERE RowNumber >= '+ @minRowNumberSql
+                + ' ;WITH PivotedUsers AS ( SELECT U.UserID, U.PortalID, U.Username, U.Email, U.DisplayName, U.IsSuperUser, U.IsDeleted, U.CreatedOnDate,        
+                                                U.AffiliateID, U.UpdatePassword, U.Authorised, Prop.PropertyName,
+                                                CASE
+                                                    WHEN (P.Visibility = 0) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    WHEN (P.Visibility = 1 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 0 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) THEN P.PropertyValue
+                                                    WHEN U.UserID = ' + CONVERT(nvarchar(20), @UserId) + ' OR (P.Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1) THEN P.PropertyValue
+                                                    ELSE NULL
+                                                END AS PropertyValue
+                                            FROM   {databaseOwner}{objectQualifier}vw_Users AS U
+                                                INNER JOIN {databaseOwner}{objectQualifier}UserProfile AS P ON U.UserID = P.UserID
+                                                LEFT OUTER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition AS Prop ON 
+                                                (Prop.PropertyDefinitionID = P.PropertyDefinitionID and Prop.Deleted = 0 and Prop.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ')
+                                            WHERE U.UserId IN (SELECT UserId FROM @TempUsers) AND (U.PortalId = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalId IS NULL)
+                                            )' +
+                @pivotSql + @sortSql            
+
+        EXEC(@sql)
+GO
+
+/****************************/
+/* DNN-6547: Modify AddPortalLanguage to insert record into PortalLocalization table. */
+/****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalLanguage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddPortalLanguage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalLanguage]
+    @PortalId			int,
+    @LanguageId			int,
+    @IsPublished		bit,
+    @CreatedByUserID	int
+
+AS
+    DECLARE @PortalLanguageId INT
+    DECLARE @CultureCode NVARCHAR(50)
+
+    INSERT INTO {databaseOwner}{objectQualifier}PortalLanguages (
+        PortalId,
+        LanguageId,
+        IsPublished,
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate]
+    )
+    VALUES (
+        @PortalId,
+        @LanguageId,
+        @IsPublished,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate()
+    )
+
+    SELECT @PortalLanguageId = SCOPE_IDENTITY()
+
+	SELECT @CultureCode = CultureCode FROM {databaseOwner}{objectQualifier}Languages WHERE LanguageID = @LanguageId
+
+	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
+	
+	SELECT @PortalLanguageId
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalLocalizations]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalLocalizations] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}GetPortalLocalizations]
+    @PortalId			int
+AS
+	SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE PortalId = @PortalId
+GO
+
+/****************************/
+
+/* DNN-7333 */
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_UserRoles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_UserRoles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_UserRoles]
+AS
+	SELECT     
+		UR.UserRoleID, 
+		R.RoleID, 
+		U.UserID, 
+		R.PortalID, 
+		R.RoleName, 
+		U.Username, 
+		R.Description, 
+		U.DisplayName, 
+		U.Email,
+		UR.Status, 
+		UR.IsOwner,
+		R.SecurityMode,
+		R.ServiceFee, 
+		R.BillingFrequency, 
+		R.TrialPeriod, 
+        R.TrialFrequency, 
+		R.BillingPeriod, 
+		R.TrialFee, 
+		R.IsPublic, 
+		R.AutoAssignment, 
+		R.RoleGroupID, 
+		R.RSVPCode, 
+		R.IconFile, 
+		UR.EffectiveDate, 
+		UR.ExpiryDate, 
+        UR.IsTrialUsed, 
+		UR.CreatedByUserID, 
+		UR.CreatedOnDate, 
+		UR.LastModifiedByUserID, 
+		UR.LastModifiedOnDate,
+		R.IsSystemRole 
+	FROM {databaseOwner}{objectQualifier}UserRoles AS UR 
+		INNER JOIN {databaseOwner}{objectQualifier}Users AS U ON UR.UserID = U.UserID 
+		INNER JOIN {databaseOwner}{objectQualifier}Roles AS R ON UR.RoleID = R.RoleID
+	WHERE R.Status = 1
+
+GO
+
+/* DNN-8378 Start */
+/* Create HasBeenPublished field */
+IF NOT EXISTS
+(SELECT * FROM sys.all_columns c INNER JOIN sys.tables t
+    ON c.object_id = t.object_id AND t.name = '{objectQualifier}Files'
+    WHERE c.name = 'HasBeenPublished')
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}Files]
+        ADD HasBeenPublished bit DEFAULT 1 NOT NULL        
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}SetFileHasBeenPublished]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}SetFileHasBeenPublished
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetFileHasBeenPublished] 
+    @FileId                    int,
+    @HasBeenPublished        bit
+AS
+BEGIN
+
+    -- Change Files.HasBeenPublished to the passed value
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+    SET     [HasBeenPublished] = @HasBeenPublished
+    FROM {databaseOwner}[{objectQualifier}Files] f
+    WHERE f.FileId = @FileId
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFileVersion]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFileVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFileVersion] 
+    @FileId int,
+    @Version int
+AS
+BEGIN
+    DECLARE @PublishedVersion int
+
+    -- Check there is at least one version
+    IF NOT EXISTS(SELECT FileID FROM {objectQualifier}FileVersions WHERE FileId = @FileId)
+    BEGIN
+        SELECT 1 -- We need to return 1 in order to allow initial version
+        RETURN
+    END
+        
+    SELECT @PublishedVersion = PublishedVersion
+    FROM {databaseOwner}{objectQualifier}Files
+    WHERE FileId = @FileId
+
+    IF @PublishedVersion = @Version 
+    BEGIN
+        -- Get the previous version
+        SELECT @PublishedVersion = MAX(Version)
+        FROM {databaseOwner}{objectQualifier}FileVersions 
+        WHERE FileId = @FileId
+            AND Version < @Version
+
+        -- If there is no previous version, get the min exsisting version
+        IF @PublishedVersion IS NULL 
+            SELECT @PublishedVersion = MIN(Version)
+            FROM {databaseOwner}{objectQualifier}FileVersions 
+            WHERE FileId = @FileId
+
+        -- Update the published version
+        IF @PublishedVersion IS NOT NULL 
+        BEGIN
+            UPDATE {databaseOwner}{objectQualifier}Files
+            SET [PublishedVersion] = @PublishedVersion,
+                [Extension] = v.[Extension],
+                [Size] = v.[Size],
+                [Width] = v.Width,        
+                [Height] = v.Height,
+                [ContentType] = v.ContentType,
+                [Content] = v.Content,
+                [LastModifiedByUserID] = v.LastModifiedByUserID,
+                [LastModifiedOnDate] = v.LastModifiedOnDate,
+                [SHA1Hash] = v.SHA1Hash
+            FROM {databaseOwner}{objectQualifier}files AS f
+                INNER JOIN {databaseOwner}{objectQualifier}FileVersions AS v
+                ON ( f.FileId = v.FileId AND v.Version = @PublishedVersion)        
+            WHERE f.FileId = @FileId
+
+            DELETE FROM {databaseOwner}{objectQualifier}FileVersions
+            WHERE FileId = @FileId 
+            AND Version = @PublishedVersion
+        END
+    END
+
+    DELETE FROM {databaseOwner}{objectQualifier}FileVersions
+    WHERE FileId = @FileId 
+      AND Version = @Version
+
+    SELECT @PublishedVersion
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Files]') AND type in (N'V'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Files]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Files]
+AS
+    SELECT    fi.FileId, 
+            fi.PortalId, 
+            fi.FileName, 
+            fi.Extension, 
+            fi.Size, 
+            fi.Width, 
+            fi.Height, 
+            fi.ContentType, 
+            fi.FolderID, 
+            fi.[Content], 
+            fi.CreatedByUserID, 
+            fi.CreatedOnDate, 
+            fi.LastModifiedByUserID, 
+            fi.LastModifiedOnDate, 
+            fi.UniqueId, 
+            fi.VersionGuid, 
+            fi.SHA1Hash, 
+            fi.LastModificationTime, 
+            fi.Title, 
+            fi.StartDate, 
+            fi.EnablePublishPeriod, 
+            fi.EndDate, 
+            fi.ContentItemID, 
+            fi.PublishedVersion, 
+            fo.FolderPath AS Folder,
+            fo.IsCached,
+            fo.FolderMappingID,
+            fo.StorageLocation,
+            fi.HasBeenPublished
+    FROM         {databaseOwner}[{objectQualifier}Files] AS fi 
+    INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS fo 
+        ON fi.FolderID = fo.FolderID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_PublishedFiles]') AND type in (N'V'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+AS
+    SELECT     
+       fi.[FileId]
+      ,fi.[PortalId]
+      ,fi.[FileName]
+      ,fi.[Extension]
+      ,fi.[Size]
+      ,fi.[Width]
+      ,fi.[Height]
+      ,fi.[ContentType]
+      ,fi.[FolderID]
+      ,fi.[Content]
+      ,fi.[CreatedByUserID]
+      ,fi.[CreatedOnDate]
+      ,fi.[LastModifiedByUserID]
+      ,fi.[LastModifiedOnDate]
+      ,fi.[UniqueId]
+      ,fi.[VersionGuid]
+      ,fi.[SHA1Hash]
+      ,fi.[LastModificationTime]
+      ,fi.[Title]
+      ,fi.[StartDate]
+      ,fi.[EnablePublishPeriod]
+      ,fi.[EndDate]
+      ,fi.[ContentItemID]
+      ,fi.[PublishedVersion]
+      ,fi.[Folder]
+      ,fi.[IsCached]
+      ,fi.[StorageLocation]
+      ,fi.[FolderMappingID]
+      ,fi.[HasBeenPublished]
+    FROM       {databaseOwner}[{objectQualifier}vw_Files] fi
+      WHERE ([EnablePublishPeriod] = 0 AND [HasBeenPublished] = 1)
+         OR ([StartDate] <= GETDATE()
+            AND ([EndDate] IS NULL OR GETDATE() <= [EndDate]) AND [HasBeenPublished] = 1)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SetPublishedVersion]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SetPublishedVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetPublishedVersion] 
+    @FileId                    int,
+    @NewPublishedVersion    int
+AS
+BEGIN
+
+    -- Insert a new record in the FileVersions table for the old published version
+    INSERT {databaseOwner}[{objectQualifier}FileVersions]
+                ([FileId]
+                ,[Version]
+                ,[FileName]
+                ,[Extension]
+                ,[Size]
+                ,[Width]
+                ,[Height]
+                ,[ContentType]
+                ,[Content]
+                ,[CreatedByUserID]
+                ,[CreatedOnDate]
+                ,[LastModifiedByUserID]
+                ,[LastModifiedOnDate]
+                ,[SHA1Hash])
+    SELECT        [FileId]
+                ,[PublishedVersion]  [Version]                
+                ,CONVERT(nvarchar, [FileId]) + '_' + CONVERT(nvarchar, [PublishedVersion]) +'.v.resources' 
+                ,[Extension]
+                ,[Size]
+                ,[Width]
+                ,[Height]
+                ,[ContentType]
+                ,[Content]
+                ,[CreatedByUserID]
+                ,[CreatedOnDate]
+                ,[LastModifiedByUserID]
+                ,[LastModifiedOnDate]
+                ,[SHA1Hash]                    
+    FROM {objectQualifier}Files
+    WHERE FileId = @FileId
+
+    -- Change Files.PublishedVersion to the new version number
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+    SET     [PublishedVersion] = @NewPublishedVersion        
+        ,[Extension] =v.[Extension]
+        ,[Size] = v.[Size]
+        ,[Width] = v.[Width]
+        ,[Height] = v.[Height]
+        ,[ContentType] = v.[ContentType]
+        ,[Content] = v.[Content]
+        ,[CreatedByUserID] = v.[CreatedByUserID]
+        ,[CreatedOnDate] = v.[CreatedOnDate]
+        ,[LastModifiedByUserID] = v.[LastModifiedByUserID]
+        ,[LastModifiedOnDate] = v.[LastModifiedOnDate]
+        ,[SHA1Hash] = v.[SHA1Hash]
+        ,[HasBeenPublished] = 1
+    FROM {databaseOwner}[{objectQualifier}Files] f
+        JOIN {databaseOwner}[{objectQualifier}FileVersions] v ON f.FileId = v.FileId
+    WHERE f.FileId = @FileId
+        AND v.Version = @NewPublishedVersion
+
+    -- Delete the FileVersions entry of the version being published
+    DELETE {databaseOwner}[{objectQualifier}FileVersions]
+    WHERE FileId = @FileId AND Version = @NewPublishedVersion
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFile]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+    @FileName nvarchar(246),
+    @FolderID int,
+    @RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+    IF @RetrieveUnpublishedFiles = 0 BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               UniqueId,
+               VersionGuid,       
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               ContentItemID,
+               PublishedVersion,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]             
+        WHERE [FileName] = @FileName AND FolderID = @FolderID
+    END
+    ELSE BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               UniqueId,
+               VersionGuid,       
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               ContentItemID,
+               PublishedVersion,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files]
+        WHERE [FileName] = @FileName AND FolderID = @FolderID
+    END
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFileById]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+    @FileId int    ,
+    @RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+    IF @RetrieveUnpublishedFiles = 0 BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               UniqueId,
+               VersionGuid,
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               PublishedVersion,
+               ContentItemID,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+        WHERE FileId = @FileId
+    END
+    ELSE BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               [UniqueId],
+               [VersionGuid],
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               PublishedVersion,
+               ContentItemID,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files] 
+        WHERE FileId = @FileId
+    END    
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+    IF @RetrieveUnpublishedFiles = 0 
+    BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F            
+        WHERE F.FolderID = @FolderID
+        ORDER BY [FolderID], [FileName]
+    END
+    ELSE BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files] F            
+        WHERE F.FolderID = @FolderID
+        ORDER BY [FolderID], [FileName]
+    END
+GO
+/* DNN-8378 End */
+
+/*DNN-7960 Changes Start*/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate]
+    @FolderID	Int
+AS
+BEGIN
+	SET NOCOUNT OFF;
+	--Update the folder only if it has LastModifiedOnDate more than 59 secs old.
+	--This is to avoid too many updates during massive sync
+	UPDATE {databaseOwner}[{objectQualifier}Folders] SET LastModifiedOnDate=GETDATE() WHERE FolderID=@FolderID AND DATEDIFF(SECOND,LastModifiedOnDate,GETDATE())>=60
+	IF(@@ROWCOUNT>0)
+	BEGIN
+		--Check if the parent also needs updation
+		DECLARE @ParentID Int;
+		SELECT @ParentID = ParentID FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderID=@FolderID
+		IF(@ParentID>0)
+		BEGIN
+			EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+		END
+	END
+END
+
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+	@PortalId   int,
+	@UniqueId   uniqueidentifier,
+	@VersionGuid  uniqueidentifier,
+	@FileName   nvarchar(246),
+	@Extension   nvarchar(100),
+	@Size    int,
+	@Width    int,
+	@Height    int,
+	@ContentType  nvarchar(200),
+	@Folder    nvarchar(246),
+	@FolderID   int,
+	@CreatedByUserID   int,
+	@Hash     varchar(40),
+	@LastModificationTime	datetime, 
+	@Title					nvarchar(256),
+	@EnablePublishPeriod	bit,
+	@StartDate				datetime,
+	@EndDate				datetime,
+	@ContentItemID			int
+AS
+BEGIN
+	
+	SET NOCOUNT OFF;
+	DECLARE @FileID int
+
+	UPDATE {databaseOwner}[{objectQualifier}Files]
+	SET
+		/* retrieves FileId from table */
+		@FileID = FileId,
+		FileName = @FileName,
+		VersionGuid = @VersionGuid,
+		Extension = @Extension,
+		Size = @Size,
+		Width = @Width,
+		Height = @Height,
+		ContentType = @ContentType,
+		FolderID = @FolderID,
+		LastModifiedByUserID = @CreatedByUserID,
+		LastModifiedOnDate = getdate(),
+		SHA1Hash = @Hash,
+		LastModificationTime = @LastModificationTime, 
+		Title = @Title,
+		EnablePublishPeriod = @EnablePublishPeriod,
+		StartDate = @StartDate,
+		EndDate = @EndDate,
+		ContentItemID = @ContentItemID
+	WHERE
+		FolderID = @FolderID AND FileName = @FileName
+	
+	DECLARE @RowCount int = @@ROWCOUNT;
+	IF @RowCount = 0
+	BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Files] (
+		PortalId,
+		UniqueId,
+		VersionGuid,
+		FileName,
+		Extension,
+		Size,
+		Width,
+		Height,
+		ContentType,
+		FolderID,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		SHA1Hash,
+		LastModificationTime, 
+		Title,
+		EnablePublishPeriod,
+		StartDate,
+		EndDate,
+		ContentItemID
+	)
+	VALUES (
+		@PortalId,
+		@UniqueId,
+		@VersionGuid,
+		@FileName,
+		@Extension,
+		@Size,
+		@Width,
+		@Height,
+		@ContentType,
+		@FolderID,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@Hash,
+		@LastModificationTime, 
+		@Title,
+		@EnablePublishPeriod,
+		@StartDate,
+		@EndDate,
+		@ContentItemID
+	)
+	SELECT @FileID = SCOPE_IDENTITY()
+	END
+
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LATEST DATE
+	IF((@RowCount>0 OR @@ROWCOUNT>0) AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+	
+	SELECT @FileID
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFolder]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFolder]
+	@PortalID 			int,
+	@UniqueId	 		uniqueidentifier,
+	@VersionGuid 		uniqueidentifier,
+	@FolderPath 		nvarchar(300),
+	@MappedPath 		nvarchar(300),
+	@StorageLocation 	int,
+	@IsProtected 		bit,
+	@IsCached 			bit,
+	@LastUpdated 		datetime,
+	@CreatedByUserID  	int,
+	@FolderMappingID	int = 0,
+	@IsVersioned		bit = 0,
+	@WorkflowID			int = NULL,
+	@ParentID			int = NULL
+AS
+BEGIN
+	IF @FolderMappingID = 0 BEGIN
+		SELECT @FolderMappingID = FM.FolderMappingID
+		FROM {databaseOwner}[{objectQualifier}FolderMappings] as FM
+		WHERE ISNULL(FM.PortalID, -1) = ISNULL(@PortalID, -1)
+		AND FolderProviderType = (
+			CASE @StorageLocation
+				WHEN 0 THEN 'StandardFolderProvider'
+				WHEN 1 THEN 'SecureFolderProvider'
+				WHEN 2 THEN 'DatabaseFolderProvider'
+				ELSE 'StandardFolderProvider'
+			END
+		)
+	END
+	
+	SET NOCOUNT OFF;
+	INSERT INTO {databaseOwner}[{objectQualifier}Folders] (
+		PortalID, 
+		UniqueId,
+		VersionGuid,
+		FolderPath,
+		MappedPath, 
+		StorageLocation, 
+		IsProtected, 
+		IsCached, 
+		LastUpdated,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		FolderMappingID,
+		IsVersioned,
+		WorkflowID,
+		ParentID
+	)
+	VALUES (
+		@PortalID, 
+		@UniqueId,
+		@VersionGuid,
+		@FolderPath,
+		@MappedPath, 
+		@StorageLocation, 
+		@IsProtected, 
+		@IsCached, 
+		@LastUpdated,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@FolderMappingID,
+		@IsVersioned,
+		@WorkflowID,
+		@ParentID
+	)
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @ParentID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+	END
+
+	DECLARE @FolderId INT
+    SELECT @FolderId = SCOPE_IDENTITY()
+    SELECT @FolderId
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFile]	
+    @PortalID int,
+	@FileName nvarchar(246),
+	@FolderID int
+AS
+BEGIN
+	SET NOCOUNT OFF;
+    IF @PortalID is null
+    BEGIN
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE FileName = @FileName AND FolderID = @FolderID AND PortalId IS Null
+    END 
+	ELSE 
+	BEGIN
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE FileName = @FileName AND FolderID = @FolderID AND PortalId = @PortalID
+    END
+	
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFiles]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFiles]	
+    @PortalID int
+AS
+BEGIN
+    SET NOCOUNT OFF;
+	DECLARE @FolderID int;
+
+    IF @PortalID is null
+    BEGIN
+		SELECT TOP 1 @FolderID=FolderID FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId is null
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId is null
+    END 
+	ELSE 
+	BEGIN
+		SELECT TOP 1 @FolderID=FolderID FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId = @PortalID
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId = @PortalID
+    END
+
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFolder]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolder]	
+    @PortalID int,
+    @FolderPath nvarchar(300)
+AS
+BEGIN
+    SET NOCOUNT OFF;
+	DECLARE @ParentID int;
+
+	IF @PortalID is null
+    BEGIN
+		SELECT @ParentID=ParentID FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID = @PortalID AND FolderPath = @FolderPath;
+	    DELETE FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID is null AND FolderPath = @FolderPath
+    END 
+	ELSE 
+	BEGIN
+		SELECT @ParentID=ParentID FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID is null AND FolderPath = @FolderPath;
+        DELETE FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID = @PortalID AND FolderPath = @FolderPath
+    END
+
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @ParentID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+	END
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId                 Int,
+    @VersionGuid            UniqueIdentifier,
+    @FileName               nVarChar(246),
+    @Extension              nVarChar(100),
+    @Size                   Int,
+    @Width                  Int,
+    @Height                 Int,
+    @ContentType            nVarChar(200),
+    @FolderID               Int,
+    @LastModifiedByUserID   Int,
+    @Hash                   VarChar(40),
+    @LastModificationTime   DateTime,
+    @Title                  nVarChar(256),
+    @EnablePublishPeriod    Bit,
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @ContentItemID          Int
+AS
+BEGIN
+    SET NOCOUNT OFF;
+    DECLARE @PortalID int;
+    SELECT @PortalID = PortalID FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderID = @FolderID;
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+     SET   FileName             = @FileName,
+           VersionGuid          = @VersionGuid,
+           Extension            = @Extension,
+           Size                 = @Size,
+           Width                = @Width,
+           Height               = @Height,
+           ContentType          = @ContentType,
+           FolderID             = @FolderID,
+           PortalID             = @PortalID,
+           LastModifiedByUserID = @LastModifiedByUserID,
+           LastModifiedOnDate   = GetDate(),
+           SHA1Hash             = @Hash,
+           LastModificationTime = @LastModificationTime,
+           Title                = @Title,
+           EnablePublishPeriod  = @EnablePublishPeriod,
+           StartDate            = @StartDate,
+           EndDate              = @EndDate,
+           ContentItemID        = @ContentItemID
+     WHERE FileId = @FileId
+    
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFolder]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolder]
+	@PortalID 				int,
+	@VersionGuid 			uniqueidentifier,	
+	@FolderID 				int,
+	@FolderPath 			nvarchar(300),
+	@MappedPath 			nvarchar(300),
+	@StorageLocation 		int,
+	@IsProtected 			bit,
+	@IsCached 				bit,
+	@LastUpdated 			datetime,
+	@LastModifiedByUserID  	int,
+	@FolderMappingID		int,
+	@IsVersioned			bit = 0,
+	@WorkflowID				int = NULL,
+	@ParentID				int = NULL
+AS
+BEGIN
+	SET NOCOUNT OFF;
+	UPDATE {databaseOwner}[{objectQualifier}Folders]
+	SET
+		FolderPath = @FolderPath,
+		MappedPath = @MappedPath,
+		VersionGuid = @VersionGuid,
+		StorageLocation = @StorageLocation,
+		IsProtected = @IsProtected,
+		IsCached = @IsCached,
+		LastUpdated = @LastUpdated,
+		LastModifiedByUserID = @LastModifiedByUserID,
+		LastModifiedOnDate = getdate(),
+		FolderMappingID = @FolderMappingID,
+		IsVersioned = @IsVersioned,
+		WorkflowID = @WorkflowID,
+		ParentID = @ParentID
+	WHERE FolderID = @FolderID
+	
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @ParentID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+	END
+END
+GO
+/*DNN-7960 Changes End*/
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version NVARCHAR(8)
+SET @version = '08.00.01'
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Registration'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ToastSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.WebServer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Database'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Host'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Modules'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Skins'
+
+/* One Time Fix to correct URL and Email Address */
+UPDATE {databaseOwner}{objectQualifier}Packages SET Url = 'http://www.dnnsoftware.com' WHERE Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Url = 'http://www.dnnsoftware.com' WHERE Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Url = 'http://www.dnnsoftware.com' WHERE Name='DotNetNuke.DNNJSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Url = 'http://www.dnnsoftware.com' WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Email = 'support@dnnsoftware.com' WHERE Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Email = 'support@dnnsoftware.com' WHERE Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Email = 'support@dnnsoftware.com' WHERE Name='DotNetNuke.DNNJSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Email = 'support@dnnsoftware.com' WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+
+GO
+
+/* DNN-8368 Remove leftover ModuleDefinitions record from module Newsletters */
+
+DELETE 	FROM {databaseOwner}[{objectQualifier}ModuleDefinitions] 
+WHERE 	({databaseOwner}[{objectQualifier}ModuleDefinitions].DesktopModuleID NOT IN ( SELECT  DesktopModuleID FROM {databaseOwner}[{objectQualifier}DesktopModules] ))
+		AND 
+		({databaseOwner}[{objectQualifier}ModuleDefinitions].FriendlyName = 'Newsletters');
+		
+GO
+
+/***** DNN-6523: update module definitions of users and roles package to set default cache time as -1. *****/
+DECLARE @DesktopModuleId INT
+SELECT @DesktopModuleId = DesktopModuleId FROM {databaseOwner}[{objectQualifier}DesktopModules] WHERE ModuleName = 'Security'
+UPDATE {databaseOwner}[{objectQualifier}ModuleDefinitions] 
+    SET DefaultCacheTime = -1,
+        LastModifiedByUserID = -1,
+        LastModifiedOnDate = GETDATE()
+    WHERE DesktopModuleID = @DesktopModuleId
+GO
+
+/***** DNN-8467 *****/
+DELETE p
+FROM {databaseOwner}[{objectQualifier}PortalDesktopModules] p
+JOIN {databaseOwner}[{objectQualifier}desktopmodules] m
+ON p.DesktopModuleID = m.DesktopModuleID
+WHERE m.ModuleName = '51Degrees.mobi'
+GO
+
+/***** DNN-27129 *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetNonExpiredUsersByRoleName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetNonExpiredUsersByRoleName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetNonExpiredUsersByRoleName]
+	@PortalID	INT,
+	@Rolename	NVARCHAR(50)
+AS
+	DECLARE @UserPortalId INT
+	DECLARE @PortalGroupId INT
+	SELECT @PortalGroupId = PortalGroupId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalID
+	IF EXISTS(SELECT PortalGroupID FROM {databaseOwner}[{objectQualifier}PortalGroups] WHERE PortalGroupID = @PortalGroupId)
+	BEGIN
+		SELECT @UserPortalId = MasterPortalID FROM {databaseOwner}[{objectQualifier}PortalGroups] WHERE PortalGroupID = @PortalGroupId
+	END
+	ELSE
+	BEGIN
+		SELECT @UserPortalId = @PortalID
+	END
+	SELECT     
+		U.*, 
+		UP.PortalId, 
+		UP.Authorised, 
+		UP.IsDeleted,
+		UP.RefreshRoles,
+		UP.VanityUrl
+	FROM {databaseOwner}{objectQualifier}UserPortals AS UP 
+			RIGHT OUTER JOIN {databaseOwner}{objectQualifier}UserRoles  UR 
+			INNER JOIN {databaseOwner}{objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+			RIGHT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON UR.UserID = U.UserID 
+		ON UP.UserId = U.UserID	
+	WHERE ( UP.PortalId = @UserPortalId OR @UserPortalId IS Null )
+		AND (UP.IsDeleted = 0 OR UP.IsDeleted Is NULL)
+		AND (R.RoleName = @Rolename)
+		AND (R.PortalId = @PortalID OR @PortalID IS Null )
+		AND (UR.ExpiryDate >= GETDATE() OR UR.ExpiryDate IS NULL)
+	ORDER BY U.FirstName + ' ' + U.LastName
+
+GO
+
+/* DNN-8327: Add GetUserByPasswordResetToken Procedure. */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]
+	@PortalID int,
+	@PasswordResetToken UNIQUEIDENTIFIER
+
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_Users
+	WHERE  PasswordResetToken = @PasswordResetToken
+		AND  ((@PortalId IS NULL) OR (PortalId = @PortalID) OR IsSuperUser = 1)
+
+GO
+
+/* Add New OutputCacheGetKeys  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetKeys]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+	@ItemId Int
+AS
+BEGIN
+    SELECT CacheKey
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE ItemId = @ItemId OR @ItemId IS NULL
+END
+GO
+
+/***** DNN-8474: Roleback changes from DNN-7906 and add SP to delete the tab version history *****/
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersionDetails]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] DROP CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabVersionDetailByModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersionDetailByModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteTabVersionDetailByModule
+	@ModuleId   INT
+AS
+DELETE FROM   {databaseOwner}{objectQualifier}TabVersionDetails
+WHERE  ModuleId = @ModuleId
+GO
+
+/***** DNN-8474 ENDS *****/
+
+/***** DNN-8502: get registered users role id from portals table. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+    @PortalId INT,
+    @CurrentUserId INT,
+    @JournalId INT,
+    @IncludeAllItems INT = 0,
+    @IsDeleted INT = 0,
+    @SecurityCheck BIT = 0
+    AS
+    DECLARE @RegisteredRoleId INT
+	SELECT @RegisteredRoleId = RegisteredRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+    SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+                j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+                "JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+                "JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+                "JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+                 jt.Icon, jt.JournalType,
+                "Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+                jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+    FROM        {databaseOwner}[{objectQualifier}Journal] AS j
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] AS js ON js.JournalId = j.JournalId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId, @RegisteredRoleId) as t ON t.seckey = js.SecurityKey OR @SecurityCheck = 0
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+    WHERE       ((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) 
+                OR 
+                ((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+

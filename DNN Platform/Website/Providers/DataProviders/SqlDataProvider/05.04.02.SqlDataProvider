@@ -1,0 +1,202 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetDesktopModulesByPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetDesktopModulesByPortal
+GO
+
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetDesktopModulesByPortal
+	@PortalId int 
+AS 
+	SELECT DISTINCT DM.* 
+	FROM {databaseOwner}{objectQualifier}DesktopModules DM 
+	WHERE ( IsPremium = 0 ) 
+	OR  ( DesktopModuleID IN ( 
+		SELECT DesktopModuleID 
+		FROM {databaseOwner}{objectQualifier}PortalDesktopModules PDM 
+		WHERE PDM.PortalId = @PortalId ) ) 
+	ORDER BY FriendlyName 
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}EnsureLocalizationExists
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}EnsureLocalizationExists
+	@PortalId       int,
+	@CultureCode	nvarchar(10)
+AS
+	IF NOT EXISTS (select * from {databaseOwner}{objectQualifier}PortalLocalization where culturecode=@CultureCode and portalid=@PortalId)
+		BEGIN
+			DECLARE @PortalName nvarchar(128)
+			DECLARE @LogoFile nvarchar(50)
+			DECLARE @FooterText nvarchar(100)
+			DECLARE @Description nvarchar(500)
+			DECLARE @KeyWords nvarchar(500)
+			DECLARE @BackgroundFile nvarchar(50)
+			DECLARE @HomeTabId int
+			DECLARE @LoginTabId int
+			DECLARE @UserTabId int
+			DECLARE @AdminTabId int
+			DECLARE @RegisterTabId int
+			
+			--cannot select by particular culturecode as its currently possible to delete any
+			SELECT TOP 1 
+				@PortalName = PortalName,
+				@LogoFile = LogoFile,
+				@FooterText = FooterText,
+				@Description = Description,
+				@KeyWords = KeyWords,
+				@BackgroundFile = BackgroundFile,
+				@HomeTabId = HomeTabId,
+				@LoginTabId=LoginTabId,
+				@UserTabId=UserTabId,
+				@AdminTabId=AdminTabId,
+				@RegisterTabId=RegisterTabId 
+			FROM {databaseOwner}{objectQualifier}PortalLocalization
+			WHERE PortalId = @PortalId
+			INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+				PortalId,
+				CultureCode,
+				PortalName,
+				LogoFile,
+				FooterText,
+				Description,
+				KeyWords,
+				BackgroundFile, 
+				HomeTabId,
+				LoginTabId,
+				UserTabId,
+				AdminTabId,
+				RegisterTabId,
+				CreatedByUserID,
+				CreatedOnDate,
+				LastModifiedByUserID,
+				LastModifiedOnDate
+			) 
+			VALUES	(
+				@PortalId,
+				@CultureCode,
+				@PortalName,
+				@LogoFile,
+				@FooterText,
+				@Description,
+				@KeyWords,
+				@BackgroundFile,
+				@HomeTabId,
+				@LoginTabId,
+				@UserTabId,
+				@AdminTabId,
+				@RegisterTabId,
+				-1,
+				getdate(),
+				-1,
+				getdate()
+			)
+		END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddListEntry]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddListEntry
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddListEntry]
+
+	@ListName nvarchar(50), 
+	@Value nvarchar(100), 
+	@Text nvarchar(150),
+	@ParentID int,
+	@Level int, 
+	@EnableSortOrder bit,
+	@DefinitionID int, 
+	@Description nvarchar(500),
+	@PortalID int,
+	@SystemList bit,
+	@CreatedByUserID	int
+
+AS
+	DECLARE @SortOrder int
+
+	IF @EnableSortOrder = 1
+		SET @SortOrder = IsNull((SELECT MAX ([SortOrder]) From {databaseOwner}[{objectQualifier}Lists] Where [ListName] = @ListName), 0) + 1
+	ELSE
+		SET @SortOrder = 0
+
+	-- Check if this entry exists
+	If EXISTS (SELECT [EntryID] From {databaseOwner}[{objectQualifier}Lists] WHERE [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
+	BEGIN
+		SELECT -1
+		RETURN 
+	END
+
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] 
+		(
+  		[ListName],
+		[Value],
+		[Text],
+		[Level],
+		[SortOrder],
+		[DefinitionID],
+		[ParentID],
+		[Description],
+		[PortalID],
+		[SystemList],
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+		)
+	VALUES (
+		@ListName,
+		@Value,
+		@Text,
+		@Level,
+		@SortOrder,
+		@DefinitionID,
+		@ParentID,
+		@Description,
+		@PortalID,
+		@SystemList,
+  		@CreatedByUserID,
+	  	getdate(),
+	  	@CreatedByUserID,
+	  	getdate()	
+		)
+
+	SELECT SCOPE_IDENTITY()
+
+GO
+
+IF (EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Lists L WHERE L.[ListName] = 'DataType' AND L.[Value] = 'Image' AND L.[Text] = 'DotNetNuke.Web.UI.WebControls.DnnImageEditControl, DotNetNuke.Web'))
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}Lists
+		SET [Description]= NULL, [PortalID] = -1, [SystemList] = 1, [CreatedByUserID]= NULL, 
+			[CreatedOnDate]=NULL,[LastModifiedByUserID]= NULL, [LastModifiedOnDate]=NULL
+		WHERE [ListName] = 'DataType' AND [Value] = 'Image' AND [Text] = 'DotNetNuke.Web.UI.WebControls.DnnImageEditControl, DotNetNuke.Web'
+	END
+ELSE
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}Lists ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],
+															[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+		VALUES
+           ('DataType','Image','DotNetNuke.Web.UI.WebControls.DnnImageEditControl, DotNetNuke.Web',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL)
+	END
+
+GO

@@ -1,0 +1,75 @@
+﻿<dotnetnuke type="Package" version="6.0">
+  <packages>
+    <package name="DotNetNuke.HtmlEditorManager" type="Module" version="09.07.02" >
+      <friendlyName>Html Editor Management</friendlyName>
+      <iconFile>Images/HtmlEditorManager_Standard_32x32.png</iconFile>
+      <description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke HtmlEditor Provider.</description>
+      <owner>
+          <name>DNN</name>
+          <organization>.NET Foundation</organization>
+          <url>https://dnncommunity.org</url>
+          <email>info@dnncommunity.org</email>
+      </owner>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">09.01.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DotNetNuke.HtmlEditorManager</moduleName>
+            <foldername>Admin/HtmlEditorManager</foldername>
+            <businessControllerClass>DotNetNuke.Modules.HtmlEditorManager.Components.UpgradeController, DotNetNuke.Modules.HtmlEditorManager</businessControllerClass>
+            <supportedFeatures/>
+            <isPremium>false</isPremium>
+            <isAdmin>true</isAdmin>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Html Editor Management</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/Admin/HtmlEditorManager/Views/ProviderConfiguration.ascx</controlSrc>
+                    <supportsPopUps>True</supportsPopUps>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle>Html Editor Management</controlTitle>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>DotNetNuke.Modules.HtmlEditorManager.Components.UpgradeController, DotNetNuke.Modules.HtmlEditorManager</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>07.04.00,09.01.01,09.02.00,09.02.01</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Modules.HtmlEditorManager.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules\Admin\HtmlEditorManager</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

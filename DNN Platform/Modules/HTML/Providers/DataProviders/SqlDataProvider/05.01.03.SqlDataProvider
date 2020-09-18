@@ -1,0 +1,34 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+DELETE {databaseOwner}{objectQualifier}ModuleSettings 
+WHERE SettingName = 'HtmlText_ReplaceTokens'
+AND ModuleID IN (
+    -- Select records that have both 'TEXTHML_ReplaceTokens' and 'HtmlText_ReplaceTokens'
+	SELECT a.ModuleID 
+	FROM {databaseOwner}{objectQualifier}ModuleSettings a
+	WHERE 
+	SettingName = 'TEXTHTML_ReplaceTokens'
+	AND  EXISTS 
+		(SELECT b.ModuleID  
+		 FROM   {databaseOwner}{objectQualifier}ModuleSettings b 
+		 WHERE  a.ModuleID = b.ModuleID 
+		 AND    SettingName = 'HtmlText_ReplaceTokens')
+	)
+ 
+UPDATE {databaseOwner}{objectQualifier}ModuleSettings
+SET    SettingName = 'HtmlText_ReplaceTokens'
+WHERE  SettingName = 'TEXTHTML_ReplaceTokens'
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

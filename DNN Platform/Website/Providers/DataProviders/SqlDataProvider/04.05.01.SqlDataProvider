@@ -1,0 +1,225 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/* add unique constraint to Folders table */
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[IX_{objectQualifier}FolderPath]') and OBJECTPROPERTY(id, N'IsConstraint') = 1)
+BEGIN
+  declare @PortalID int
+  declare @FolderPath varchar(300)
+  declare @LastFolderPath varchar(300)
+  declare @FolderID int
+  declare @MinFolderID int
+
+  select @PortalID = min(PortalID)
+  from {databaseOwner}{objectQualifier}Portals
+  while @PortalID is not null
+  begin  
+    /* check for duplicate FolderPaths */
+    select @FolderPath = null
+    select @FolderPath = FolderPath 
+    from {databaseOwner}{objectQualifier}Folders 
+    where PortalID = @PortalID 
+    group by FolderPath 
+    having COUNT(*) > 1
+  
+    /* if duplicates exist */
+    while @FolderPath is not null
+    begin
+      /* iterate through the duplicates */
+      select @FolderID = min(FolderID)
+      from {databaseOwner}{objectQualifier}Folders
+      where PortalID = @PortalID
+      and FolderPath = @FolderPath
+
+      /* save min FolderID */
+      select @MinFolderID = @FolderID
+
+      while @FolderID is not null
+      begin
+        if @FolderID <> @MinFolderID
+        begin
+          /* reassign FolderId to min FolderID for duplicate folders */
+          update {databaseOwner}{objectQualifier}Files
+          set FolderID = @MinFolderID
+          where FolderID = @FolderID
+
+          /* remove duplicate folder */
+          delete
+          from {databaseOwner}{objectQualifier}Folders
+          where FolderID = @FolderID
+        end
+
+        select @FolderID = min(FolderID)
+        from {databaseOwner}{objectQualifier}Folders
+        where PortalID = @PortalID
+        and FolderPath = @FolderPath
+        and FolderID > @FolderID
+      end
+
+      /* save last FolderPath */
+      select @LastFolderPath = @FolderPath
+
+      /* check for duplicate FolderPaths */
+      select @FolderPath = null
+      select @FolderPath = FolderPath 
+      from {databaseOwner}{objectQualifier}Folders 
+      where PortalID = @PortalID 
+      and FolderPath <> @LastFolderPath
+      group by FolderPath 
+      having COUNT(*) > 1
+    end
+  
+    select @PortalID = min(PortalID)
+    from {databaseOwner}{objectQualifier}Portals
+    where PortalID > @PortalID
+  end
+
+  /* add unique constraint */
+  ALTER TABLE {databaseOwner}{objectQualifier}Folders ADD CONSTRAINT
+    IX_{objectQualifier}FolderPath UNIQUE NONCLUSTERED 
+    (
+      PortalID,
+      FolderPath
+    ) ON [PRIMARY]
+END
+GO
+
+/* correct any File folderpaths which do not match the value in the Folders table */
+update {databaseOwner}{objectQualifier}Files
+set    Folder = FolderPath
+from   {databaseOwner}{objectQualifier}Folders
+where  {databaseOwner}{objectQualifier}Files.FolderID = {databaseOwner}{objectQualifier}Folders.FolderID
+and    Folder <> FolderPath  
+GO
+
+/* add unique constraint to Files table */
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[IX_{objectQualifier}FileName]') and OBJECTPROPERTY(id, N'IsConstraint') = 1)
+BEGIN
+  declare @FolderID int
+  declare @FileName nvarchar(100)
+  declare @LastFileName nvarchar(100)
+  declare @FileID int
+  declare @MinFileID int
+
+  select @FolderID = min(FolderID)
+  from {databaseOwner}{objectQualifier}Folders
+  while @FolderID is not null
+  begin  
+    /* check for duplicate Filenames */
+    select @FileName = null
+    select @FileName = FileName
+    from {databaseOwner}{objectQualifier}Files 
+    where FolderID = @FolderID 
+    group by FileName 
+    having COUNT(*) > 1
+  
+    /* if duplicates exist */
+    while @FileName is not null
+    begin
+      /* iterate through the duplicates */
+      select @FileID = min(FileID)
+      from {databaseOwner}{objectQualifier}Files
+      where FolderID = @FolderID
+      and FileName = @FileName
+
+      /* save min FileID */
+      select @MinFileID = @FileID
+
+      while @FileID is not null
+      begin
+        if @FileID <> @MinFileID
+        begin
+          /* remove duplicate file */
+          delete
+          from {databaseOwner}{objectQualifier}Files
+          where FileID = @FileID
+        end
+
+        select @FileID = min(FileID)
+        from {databaseOwner}{objectQualifier}Files
+        where FolderID = @FolderID
+        and FileName = @FileName
+        and FileID > @FileID
+      end
+
+      /* save last FileName */
+      select @LastFileName = @FileName
+
+      /* check for duplicate Filenames */
+      select @FileName = null
+      select @FileName = FileName
+      from {databaseOwner}{objectQualifier}Files 
+      where FolderID = @FolderID
+      and FileName <> @LastFileName 
+      group by FileName 
+      having COUNT(*) > 1
+    end
+
+    select @FolderID = min(FolderID)
+    from {databaseOwner}{objectQualifier}Folders
+    where FolderID > @FolderID
+  end
+		
+  ALTER TABLE {databaseOwner}{objectQualifier}Files ADD CONSTRAINT
+    IX_{objectQualifier}FileName UNIQUE NONCLUSTERED 
+    (
+      FolderID,
+      FileName
+    ) ON [PRIMARY]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddModuleControl]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}AddModuleControl
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddModuleControl
+	
+	@ModuleDefID                int,
+	@ControlKey                 nvarchar(50),
+	@ControlTitle               nvarchar(50),
+	@ControlSrc                 nvarchar(256),
+	@IconFile                   nvarchar(100),
+	@ControlType                int,
+	@ViewOrder                  int,
+	@HelpUrl                    nvarchar(200),
+	@SupportsPartialRendering   bit
+
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}ModuleControls (
+	  ModuleDefID,
+	  ControlKey,
+	  ControlTitle,
+	  ControlSrc,
+	  IconFile,
+	  ControlType,
+	  ViewOrder,
+	  HelpUrl,
+          SupportsPartialRendering
+	)
+	VALUES (
+	  @ModuleDefID,
+	  @ControlKey,
+	  @ControlTitle,
+	  @ControlSrc,
+	  @IconFile,
+	  @ControlType,
+	  @ViewOrder,
+	  @HelpUrl,
+          @SupportsPartialRendering
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

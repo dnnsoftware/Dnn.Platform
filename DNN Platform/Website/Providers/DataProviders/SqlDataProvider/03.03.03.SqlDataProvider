@@ -1,0 +1,363 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Fix Source for User Accounts Module */
+/***************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET ControlSrc = 'Admin/Users/ManageUsers.ascx'
+	WHERE ControlTitle = 'User Account'
+		AND ControlSrc = 'Admin/Security/Register.ascx'
+GO
+
+/* Update Folder Permissions */
+/*****************************/
+
+DECLARE @ReadPermissionID	int
+DECLARE @WritePermissionID	int
+DECLARE @AdminRoleID		int
+DECLARE @PortalID			int
+
+/* get the PermissionID for READ permissions on the SYSTEM_FOLDER */
+SELECT @ReadPermissionID = PermissionID
+FROM   {databaseOwner}{objectQualifier}Permission
+WHERE  PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'READ'
+
+/* get the PermissionID for WRITE permissions on the SYSTEM_FOLDER */
+SELECT @WritePermissionID = PermissionID
+FROM   {databaseOwner}{objectQualifier}Permission
+WHERE  PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'WRITE'
+
+--Iterate through each portal
+SELECT @PortalID = min(PortalID)
+FROM   {databaseOwner}{objectQualifier}Portals
+WHILE @PortalID is not null
+BEGIN
+
+	/* get the Administrator Role ID */
+	SELECT @AdminRoleID = AdministratorRoleID
+		FROM {databaseOwner}{objectQualifier}Portals
+		WHERE PortalID = @PortalID	
+
+	/* remove any records which already exist to avoid a duplicate key error on the insert */
+	DELETE
+		FROM   {databaseOwner}{objectQualifier}FolderPermission
+		WHERE  (PermissionID = @ReadPermissionID AND RoleID = @AdminRoleID)
+			OR  (PermissionID = @WritePermissionID AND RoleID = @AdminRoleID)
+
+	/* give Administrators READ access to unsecure folders */
+	INSERT INTO {databaseOwner}{objectQualifier}FolderPermission
+		SELECT FolderID, @ReadPermissionID, @AdminRoleID, 1
+		FROM {databaseOwner}{objectQualifier}Folders
+		WHERE PortalID = @PortalID
+
+	/* give Administrators WRITE access to unsecure folders */
+	INSERT INTO {databaseOwner}{objectQualifier}FolderPermission
+		SELECT FolderID, @WritePermissionID, @AdminRoleID, 1
+		FROM {databaseOwner}{objectQualifier}Folders
+		WHERE PortalID = @PortalID
+
+	SELECT @PortalID = min(PortalID)
+		FROM   {databaseOwner}{objectQualifier}Portals
+		WHERE  PortalID > @PortalID
+END
+
+GO
+
+/* Change ProfilePropertyDefinition to use NULL instead of -1 for the Host Portal */
+/**********************************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+	ALTER COLUMN PortalID int NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+	SET PortalId = NULL
+	WHERE PortalId = -1
+GO
+	
+IF NOT EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'FK_{objectQualifier}ProfilePropertyDefinition_{objectQualifier}Portals') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+		ADD CONSTRAINT FK_{objectQualifier}ProfilePropertyDefinition_{objectQualifier}Portals FOREIGN KEY (PortalID) REFERENCES {databaseOwner}{objectQualifier}Portals (PortalID) ON DELETE CASCADE	
+GO
+
+/* Update AddPropertyDefinition */
+/********************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddPropertyDefinition') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+	@PortalId int,
+	@ModuleDefId int,
+	@DataType int,
+	@DefaultValue nvarchar(50),
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(100),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int
+
+AS
+DECLARE @PropertyDefinitionId int
+
+SELECT @PropertyDefinitionId = PropertyDefinitionId
+	FROM   {objectQualifier}ProfilePropertyDefinition
+	WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+		AND PropertyName = @PropertyName
+
+IF @PropertyDefinitionId is null
+	BEGIN
+		INSERT {objectQualifier}ProfilePropertyDefinition	(
+				PortalId,
+				ModuleDefId,
+				Deleted,
+				DataType,
+				DefaultValue,
+				PropertyCategory,
+				PropertyName,
+				Required,
+				ValidationExpression,
+				ViewOrder,
+				Visible,
+				Length
+			)
+			VALUES	(
+				@PortalId,
+				@ModuleDefId,
+				0,
+				@DataType,
+				@DefaultValue,
+				@PropertyCategory,
+				@PropertyName,
+				@Required,
+				@ValidationExpression,
+				@ViewOrder,
+				@Visible,
+				@Length
+			)
+
+		SELECT @PropertyDefinitionId = SCOPE_IDENTITY()
+	END
+ELSE
+	BEGIN
+		UPDATE {objectQualifier}ProfilePropertyDefinition 
+			SET DataType = @DataType,
+				ModuleDefId = @ModuleDefId,
+				DefaultValue = @DefaultValue,
+				PropertyCategory = @PropertyCategory,
+				Required = @Required,
+				ValidationExpression = @ValidationExpression,
+				ViewOrder = @ViewOrder,
+				Deleted = 0,
+				Visible = @Visible,
+				Length = @Length
+			WHERE PropertyDefinitionId = @PropertyDefinitionId
+	END
+	
+SELECT @PropertyDefinitionId
+
+GO
+
+/* Update GetPropertyDefinitionsByCategory */
+/*******************************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetPropertyDefinitionsByCategory') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionsByCategory
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionsByCategory
+	@PortalID	int,
+	@Category	nvarchar(50)
+
+AS
+SELECT	*
+	FROM	{objectQualifier}ProfilePropertyDefinition
+	WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+		AND PropertyCategory = @Category
+	ORDER BY ViewOrder
+
+GO
+
+/* Update GetPropertyDefinitionByName */
+/**************************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetPropertyDefinitionByName') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionByName
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionByName
+	@PortalID	int,
+	@Name		nvarchar(50)
+
+AS
+SELECT	*
+	FROM	{objectQualifier}ProfilePropertyDefinition
+	WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+		AND PropertyName = @Name
+	ORDER BY ViewOrder
+
+GO
+
+/* Update GetPropertyDefinitionsByPortal */
+/*****************************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetPropertyDefinitionsByPortal') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionsByPortal
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPropertyDefinitionsByPortal
+
+	@PortalID	int
+
+AS
+SELECT	{databaseOwner}{objectQualifier}ProfilePropertyDefinition.*
+	FROM	{databaseOwner}{objectQualifier}ProfilePropertyDefinition
+	WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+		AND Deleted = 0
+	ORDER BY ViewOrder
+
+GO
+
+/* Fix GetUsersByProfileProperty */
+/*********************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetUsersByProfileProperty') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetUsersByProfileProperty
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+    @PortalId		int,
+    @PropertyName   nvarchar(256),
+    @PropertyValue  nvarchar(256),
+    @PageIndex      int,
+    @PageSize       int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForUsers (UserId)
+        SELECT U.UserId 
+		FROM   {objectQualifier}ProfilePropertyDefinition P
+			INNER JOIN {objectQualifier}UserProfile UP ON P.PropertyDefinitionID = UP.PropertyDefinitionID 
+			INNER JOIN {objectQualifier}Users U ON UP.UserID = U.UserID
+		WHERE (PropertyName = @PropertyName) AND (PropertyValue LIKE @PropertyValue OR PropertyText LIKE @PropertyValue )
+			AND (P.Portalid = @PortalId OR (P.PortalId Is Null AND @PortalId is null ))
+		ORDER BY U.DisplayName
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId
+			AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+		ORDER BY U.DisplayName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+
+END
+
+GO
+
+/* Add New  GetUserRoles */
+/*************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetUserRoles') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetUserRoles
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserRoles]
+    
+@PortalId  int,
+@UserId    int
+
+AS
+
+SELECT     
+	UR.UserRoleID, 
+	U.UserID, 
+	U.DisplayName, 
+	U.Email, 
+	UR.EffectiveDate, 
+    UR.ExpiryDate, 
+	UR.IsTrialUsed
+FROM {objectQualifier}UserRoles UR
+	INNER JOIN {objectQualifier}Users U ON UR.UserID = U.UserID 
+	INNER JOIN {objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+WHERE
+	U.UserID = @UserId AND R.PortalID = @PortalId
+GO
+
+/* Fix GetAllUsers */
+/*******************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetAllUsers') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+
+    @PortalId		int,
+    @PageIndex      int,
+    @PageSize       int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForUsers (UserId)
+        SELECT UserId FROM	{objectQualifier}vw_Users 
+		WHERE (PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+		ORDER BY FirstName + ' ' + LastName
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId 
+		AND (PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+        AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+	ORDER BY FirstName + ' ' + LastName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

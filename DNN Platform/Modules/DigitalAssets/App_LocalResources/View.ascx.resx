@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ChooseFiles.Text" xml:space="preserve">
+    <value>Choose Files</value>
+  </data>
+  <data name="Close.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="EditModule.Text" xml:space="preserve">
+    <value>Edit Module</value>
+  </data>
+  <data name="FolderName.Help" xml:space="preserve">
+    <value>The name of the folder.</value>
+  </data>
+  <data name="FolderName.Text" xml:space="preserve">
+    <value>Folder Name</value>
+  </data>
+  <data name="FolderType.Help" xml:space="preserve">
+    <value>Select the folder type.</value>
+  </data>
+  <data name="FolderType.Text" xml:space="preserve">
+    <value>Folder Type</value>
+  </data>
+  <data name="Modified.Header" xml:space="preserve">
+    <value>Date modified</value>
+  </data>
+  <data name="Name.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="rfvFolderName.ErrorMessage" xml:space="preserve">
+    <value>Folder name is required.</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="UploadFiles.DropHere" xml:space="preserve">
+    <value>DROP STUFF HERE</value>
+  </data>
+  <data name="UploadFiles.Info" xml:space="preserve">
+    <value>You can select more than one file at a time.</value>
+  </data>
+  <data name="CreateNewFolderTitle.Text" xml:space="preserve">
+    <value>Create New Folder</value>
+  </data>
+  <data name="Loading.Text" xml:space="preserve">
+    <value>loading...</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="NoItemsSelected.Text" xml:space="preserve">
+    <value>You must select at least one item to perform the delete operation.</value>
+  </data>
+  <data name="DeleteConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to delete [ITEMS]?</value>
+  </data>
+  <data name="OneFile.Text" xml:space="preserve">
+    <value>1 File</value>
+  </data>
+  <data name="OneFolder.Text" xml:space="preserve">
+    <value>1 Folder</value>
+  </data>
+  <data name="Items.Text" xml:space="preserve">
+    <value>Item(s)</value>
+  </data>
+  <data name="UploadError.Text" xml:space="preserve">
+    <value>Error uploading file</value>
+  </data>
+  <data name="And.Text" xml:space="preserve">
+    <value>[FILES] and [FOLDERS]</value>
+  </data>
+  <data name="NoItems.Text" xml:space="preserve">
+    <value>This folder is empty.</value>
+  </data>
+  <data name="ExtensionChangeConfirmContent.Text" xml:space="preserve">
+    <value>If you change a file name extension, the file might become unusable. &lt;br&gt;Are you sure you want to change it?</value>
+  </data>
+  <data name="ExtensionChangeConfirmTitle.Text" xml:space="preserve">
+    <value>Extension has changed.</value>
+  </data>
+  <data name="NoConfirm.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="OkConfirm.Text" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="CopyFiles.Text" xml:space="preserve">
+    <value>Copy Files</value>
+  </data>
+  <data name="CopyFiles.Title" xml:space="preserve">
+    <value>Copy [SELECTION] to...</value>
+  </data>
+  <data name="NFiles.Text" xml:space="preserve">
+    <value>[NUM] Files</value>
+  </data>
+  <data name="NFolders.Text" xml:space="preserve">
+    <value>[NUM] Folders</value>
+  </data>
+  <data name="NoItemsDeletedDescription.Text" xml:space="preserve">
+    <value>You do not have permission to delete the following items:</value>
+  </data>
+  <data name="NoItemsDeleted.Title" xml:space="preserve">
+    <value>[ITEMS] cannot be deleted</value>
+  </data>
+  <data name="Move.Title" xml:space="preserve">
+    <value>Move [SELECTION] to...</value>
+  </data>
+  <data name="Keep.Text" xml:space="preserve">
+    <value>Keep</value>
+  </data>
+  <data name="Replace.Text" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="DuplicateCopy.Subtext" xml:space="preserve">
+    <value>Items with the filename(s) you tried to copy already exist in this location.</value>
+  </data>
+  <data name="DuplicateFilesExist.Text" xml:space="preserve">
+    <value>Duplicate Files Exist</value>
+  </data>
+  <data name="DuplicateMove.Subtext" xml:space="preserve">
+    <value>Items with the filename(s) you tried to move already exist in this location.</value>
+  </data>
+  <data name="DuplicateUpload.Subtext" xml:space="preserve">
+    <value>Items with the filename(s) you tried to upload already exist in this location.</value>
+  </data>
+  <data name="KeepAll.Text" xml:space="preserve">
+    <value>Keep All</value>
+  </data>
+  <data name="ReplaceAll.Text" xml:space="preserve">
+    <value>Replace All</value>
+  </data>
+  <data name="CreateFolderError.Title" xml:space="preserve">
+    <value>An error occurred while creating the folder.</value>
+  </data>
+  <data name="DeleteItemsError.Title" xml:space="preserve">
+    <value>An error occurred while deleting the items.</value>
+  </data>
+  <data name="LoadFolderContentError.Title" xml:space="preserve">
+    <value>An error occurred while loading the folder content.</value>
+  </data>
+  <data name="LoadSubFoldersError.Title" xml:space="preserve">
+    <value>An error occurred while loading the sub folders.</value>
+  </data>
+  <data name="RenameFileError.Title" xml:space="preserve">
+    <value>File naming error.</value>
+  </data>
+  <data name="RenameFolderError.Title" xml:space="preserve">
+    <value>Folder naming error.</value>
+  </data>
+  <data name="UploadFiles.Title" xml:space="preserve">
+    <value>Upload Files.</value>
+  </data>
+  <data name="FileUploadAlreadyExists.Text" xml:space="preserve">
+    <value>The file you want to upload already exists in this location.</value>
+  </data>
+  <data name="FileUploadErrorOccurred.Error" xml:space="preserve">
+    <value>An error occurred while uploading the file.</value>
+  </data>
+  <data name="FileUploadStopped.Text" xml:space="preserve">
+    <value>File upload stopped.</value>
+  </data>
+  <data name="ExpandFile.Text" xml:space="preserve">
+    <value>Expand File</value>
+  </data>
+  <data name="KeepCompressed.Text" xml:space="preserve">
+    <value>Keep Compressed</value>
+  </data>
+  <data name="ZipConfirmation.Text" xml:space="preserve">
+    <value>You tried to upload a compressed zip file called [FILE].&lt;br /&gt;Do you want to expand this compressed file?</value>
+  </data>
+  <data name="GetUrl.Text" xml:space="preserve">
+    <value>Get URL</value>
+  </data>
+  <data name="GetUrl.Title" xml:space="preserve">
+    <value>Get URL</value>
+  </data>
+  <data name="GetUrlAltText.Text" xml:space="preserve">
+    <value>Click and press CTRL+C to copy...</value>
+  </data>
+  <data name="GetFileUrlLabel.Text" xml:space="preserve">
+    <value>File URL Is:</value>
+  </data>
+  <data name="GetUrlError.Title" xml:space="preserve">
+    <value>An error occurred while getting the URL.</value>
+  </data>
+  <data name="ManageFolderTypes.Text" xml:space="preserve">
+    <value>Manage Folder Types</value>
+  </data>
+  <data name="ParentFolder.Header" xml:space="preserve">
+    <value>Parent Folder</value>
+  </data>
+  <data name="SearchBreadcrumb.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="NoItemsSearch.Text" xml:space="preserve">
+    <value>No items match your search</value>
+  </data>
+  <data name="Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="CreateFolder.Text" xml:space="preserve">
+    <value>Create Folder</value>
+  </data>
+  <data name="DeleteFolder.Text" xml:space="preserve">
+    <value>Delete Folder</value>
+  </data>
+  <data name="RefreshFolder.Text" xml:space="preserve">
+    <value>Refresh Folder</value>
+  </data>
+  <data name="RenameFolder.Text" xml:space="preserve">
+    <value>Rename Folder</value>
+  </data>
+  <data name="ViewFolderProperties.Text" xml:space="preserve">
+    <value>View Folder Properties</value>
+  </data>
+  <data name="Download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Move.Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="Rename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="ViewProperties.Text" xml:space="preserve">
+    <value>View Properties</value>
+  </data>
+  <data name="Size.Header" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Copy.Error" xml:space="preserve">
+    <value>Copy Error</value>
+  </data>
+  <data name="Move.Error" xml:space="preserve">
+    <value>Move Error</value>
+  </data>
+  <data name="LeftPaneFilesTab.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="UploadFilesDragDrop.Info" xml:space="preserve">
+    <value>Or drag and drop on the blue area below</value>
+  </data>
+  <data name="ParentFolder.Text" xml:space="preserve">
+    <value>Parent Folder</value>
+  </data>
+  <data name="ParentFolder.Help" xml:space="preserve">
+    <value>The parent folder in which the new folder will be created.</value>
+  </data>
+  <data name="Moving.Text" xml:space="preserve">
+    <value>Moving [SELECTION]</value>
+  </data>
+  <data name="MappedPath.Help" xml:space="preserve">
+    <value>Enter the path to this folder in the folder provider. The path entered is relative to the root of the provider, so if the field is left empty then the folder will map to the provider root.</value>
+  </data>
+  <data name="MappedPath.Text" xml:space="preserve">
+    <value>Mapped Path</value>
+  </data>
+  <data name="SelectAll.Text" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="UnselectAll.Text" xml:space="preserve">
+    <value>Unselect All</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="PagerFirstPage.Text" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="PagerFirstPage.ToolTip" xml:space="preserve">
+    <value>Go to the first page</value>
+  </data>
+  <data name="PagerLastPage.Text" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="PagerLastPage.ToolTip" xml:space="preserve">
+    <value>Go to the last page</value>
+  </data>
+  <data name="PagerNextPage.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="PagerNextPage.ToolTip" xml:space="preserve">
+    <value>Go to the next page</value>
+  </data>
+  <data name="PagerPageSize.Text" xml:space="preserve">
+    <value>Items per Page:</value>
+  </data>
+  <data name="PagerPreviousPage.Text" xml:space="preserve">
+    <value>Prev</value>
+  </data>
+  <data name="PagerPreviousPage.ToolTip" xml:space="preserve">
+    <value>Go to the previous page</value>
+  </data>
+  <data name="PagerTextFormatMultiplePages.Text" xml:space="preserve">
+    <value>[ITEMS] items on [PAGES] pages</value>
+  </data>
+  <data name="PagerTextFormatOnePage.Text" xml:space="preserve">
+    <value>[ITEMS] items</value>
+  </data>
+  <data name="PagerTextFormatOnePageOneItem.Text" xml:space="preserve">
+    <value>[ITEMS] item</value>
+  </data>
+  <data name="MaxFileUploadSizeError.Text" xml:space="preserve">
+    <value>Could not be uploaded: File size bigger than [MAXFILESIZE]</value>
+  </data>
+  <data name="Delete.Title" xml:space="preserve">
+    <value>Delete [ITEMS] ...</value>
+  </data>
+  <data name="UnzipFile.Text" xml:space="preserve">
+    <value>Unzip File</value>
+  </data>
+  <data name="UnzipFileErrorTitle.Text" xml:space="preserve">
+    <value>An error occured while unzipping the file.</value>
+  </data>
+  <data name="MappedPathRegExValidator.ErrorMessage" xml:space="preserve">
+    <value>The path must be relative to the root of the provider.</value>
+  </data>
+  <data name="FileUploadEmptyFileIsNotSupported.Error" xml:space="preserve">
+    <value>Your browser does not support empty file uploads.</value>
+  </data>
+  <data name="UploadingExtracting.Text" xml:space="preserve">
+    <value>Uploading and extracting...</value>
+  </data>
+  <data name="InvalidGroup.Error" xml:space="preserve">
+    <value>The group ID is not set. Please go back to the groups page and select the desired group.</value>
+  </data>
+  <data name="InvalidUser.Error" xml:space="preserve">
+    <value>The module is configured as User mode, it cannot be used with unauthenticated user.</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="ToolbarTitle.Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ToolbarTitle.Views.Text" xml:space="preserve">
+    <value>Views</value>
+  </data>
+  <data name="Unlink.Text" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UnlinkFolder.Text" xml:space="preserve">
+    <value>Unlink Folder</value>
+  </data>
+  <data name="UnlinkFolderError.Title" xml:space="preserve">
+    <value>An error occurred while unlinking the folder.</value>
+  </data>
+  <data name="Unlink.Title" xml:space="preserve">
+    <value>Unlink Folder...</value>
+  </data>
+  <data name="UnlinkConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to unlink the Folder?</value>
+  </data>
+  <data name="DeleteConfirmWithMappedSubfolder.Text" xml:space="preserve">
+    <value>Note: Selected folders include [COUNT] Remote Folder.  This will be unlinked from this site and the folder and files will remain at the remote location.</value>
+  </data>
+  <data name="DeleteConfirmWithMappedSubfolders.Text" xml:space="preserve">
+    <value>Note: Selected folders include [COUNT] Remote Folders.  These will be unlinked from this site and folders and files will remain at the remote location.</value>
+  </data>
+  <data name="FileLabel.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileMultLabel.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="FolderLabel.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="FolderMultLabel.Text" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+</root>

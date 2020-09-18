@@ -1,0 +1,10 @@
+﻿<configuration>
+    <nodes configfile="Web.config">
+        <node path="/configuration/updateme" action="update" collision="overwrite">
+            <children>
+                <child>Value1</child>
+                <child>Value2</child>
+            </children>            
+        </node>
+    </nodes>
+</configuration>

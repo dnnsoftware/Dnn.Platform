@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ArrangeConversation.Text" xml:space="preserve">
+    <value>Conversation</value>
+  </data>
+  <data name="ArrangeDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="ArrangeFrom.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="ArrangeMessages.Text" xml:space="preserve">
+    <value>Arrange</value>
+  </data>
+  <data name="Attach.Text" xml:space="preserve">
+    <value>Attach</value>
+  </data>
+  <data name="Attachments.Text" xml:space="preserve">
+    <value>Attachment(s)</value>
+  </data>
+  <data name="Browse.Text" xml:space="preserve">
+    <value>Browse From Site</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ComposeNewMessage.Text" xml:space="preserve">
+    <value>Compose New Message</value>
+  </data>
+  <data name="DismissThis.Text" xml:space="preserve">
+    <value>Dismiss this</value>
+  </data>
+  <data name="DismissAllNotifications.Text" xml:space="preserve">
+    <value>Dismiss All Notifications</value>
+  </data>
+  <data name="DismissAllConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to dismiss all {0} notification(s)?</value>
+  </data>
+  <data name="EditModule.Text" xml:space="preserve">
+    <value>Edit Module</value>
+  </data>
+  <data name="FileSize.Header" xml:space="preserve">
+    <value>File Size:</value>
+  </data>
+  <data name="Filter.Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="FilterCategory.Text" xml:space="preserve">
+    <value>category</value>
+  </data>
+  <data name="FilterFriends.Text" xml:space="preserve">
+    <value>friends</value>
+  </data>
+  <data name="FilterFrom.Text" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="FilterGroups.Text" xml:space="preserve">
+    <value>groups</value>
+  </data>
+  <data name="FilterUnread.Text" xml:space="preserve">
+    <value>unread</value>
+  </data>
+  <data name="FilterViewAll.Text" xml:space="preserve">
+    <value>view All</value>
+  </data>
+  <data name="LastModified.Header" xml:space="preserve">
+    <value>Last modified</value>
+  </data>
+  <data name="LoadMore.Text" xml:space="preserve">
+    <value>Load More</value>
+  </data>
+  <data name="MarkArchive.Text" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="MarkRead.Text" xml:space="preserve">
+    <value>Mark as Read</value>
+  </data>
+  <data name="MarkUnread.Text" xml:space="preserve">
+    <value>Mark as Unread</value>
+  </data>
+  <data name="Message.Text" xml:space="preserve">
+    <value>Your Message:</value>
+  </data>
+  <data name="MessageSent.Text" xml:space="preserve">
+    <value>Your message has been sent successfully.</value>
+  </data>
+  <data name="MessageSentTitle.Text" xml:space="preserve">
+    <value>Message Sent</value>
+  </data>
+  <data name="Name.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="NoResults.Text" xml:space="preserve">
+    <value>No results</value>
+  </data>
+  <data name="Read.Text" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="ReadStatusToggle.Text" xml:space="preserve">
+    <value>Mark as Read or Unread</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Remove attachment</value>
+  </data>
+  <data name="Reply.Text" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="Searching.Text" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="Select.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Send.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Subject.Text" xml:space="preserve">
+    <value>Subject:</value>
+  </data>
+  <data name="Throttling.Text" xml:space="preserve">
+    <value>Please wait before sending a new message.</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Compose Message</value>
+  </data>
+  <data name="To.Text" xml:space="preserve">
+    <value>Send To:</value>
+  </data>
+  <data name="Type.Header" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Unread.Text" xml:space="preserve">
+    <value>Unread</value>
+  </data>
+  <data name="UserFileManagerTitle.Text" xml:space="preserve">
+    <value>Browse file to use</value>
+  </data>
+  <data name="ApplyActionToMessages.Text" xml:space="preserve">
+    <value>Apply An Action To Your Messages</value>
+  </data>
+  <data name="Archived.Text" xml:space="preserve">
+    <value>Archived</value>
+  </data>
+  <data name="ArchivedMessages.Text" xml:space="preserve">
+    <value>Archived Messages</value>
+  </data>
+  <data name="ArchiveMessages.Text" xml:space="preserve">
+    <value>Archive Message(s)</value>
+  </data>
+  <data name="BackToMessages.Text" xml:space="preserve">
+    <value>Back to Messages</value>
+  </data>
+  <data name="ConversationArchived.Text" xml:space="preserve">
+    <value>The conversation has been archived.</value>
+  </data>
+  <data name="ConversationSetAsRead.Text" xml:space="preserve">
+    <value>The conversation has been set as read.</value>
+  </data>
+  <data name="ConversationSetAsUnread.Text" xml:space="preserve">
+    <value>The conversation has been set as unread.</value>
+  </data>
+  <data name="ConversationUnarchived.Text" xml:space="preserve">
+    <value>The conversation has been unarchived.</value>
+  </data>
+  <data name="Conversations.Text" xml:space="preserve">
+    <value>Conversations</value>
+  </data>
+  <data name="Loading.Text" xml:space="preserve">
+    <value>loading...</value>
+  </data>
+  <data name="LoadingContent.Text" xml:space="preserve">
+    <value>Loading Content...</value>
+  </data>
+  <data name="MarkUnarchive.Text" xml:space="preserve">
+    <value>Unarchive</value>
+  </data>
+  <data name="Messages.Text" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="NewUnreadMessages.Text" xml:space="preserve">
+    <value> New unread messages</value>
+  </data>
+  <data name="SelectMessages.Text" xml:space="preserve">
+    <value>Select Messages</value>
+  </data>
+  <data name="Sent.Text" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="SentMessages.Text" xml:space="preserve">
+    <value>Sent Messages</value>
+  </data>
+  <data name="ShowPreviousReplies.Text" xml:space="preserve">
+    <value>Show Previous Replies</value>
+  </data>
+  <data name="PermissionsNotProperlySet.Text" xml:space="preserve">
+    <value>Module permissions are not properly set. The module shouldn't be visible for unauthenticated users.  Please correct.</value>
+  </data>
+  <data name="ContentNotAvailable.Text" xml:space="preserve">
+    <value>The content of this module cannot be visible by unauthenticated users. Please login in order to see its content.</value>
+  </data>
+  <data name="Notifications.Text" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Of.Text" xml:space="preserve">
+    <value> of </value>
+  </data>
+  <data name="TotalNotifications.Text" xml:space="preserve">
+    <value> Total notifications</value>
+  </data>
+  <data name="From.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="SentTo.Text" xml:space="preserve">
+    <value>Sent to</value>
+  </data>
+  <data name="NotificationConfirmNo.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NotificationConfirmTitle.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="NotificationConfirmYes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="ActionNotPerformed.Text" xml:space="preserve">
+    <value>An error occurred while performing the action.  Please try again later.</value>
+  </data>
+  <data name="ActionPerformed.Text" xml:space="preserve">
+    <value>The action has been performed successfully.</value>
+  </data>
+  <data name="ReplyHasNoRecipients.Text" xml:space="preserve">
+    <value>The message no longer has any valid recipients so replies have been disabled.</value>
+  </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>An error occurred while processing the request.  Please try again later.</value>
+  </data>
+  <data name="ServerErrorWithDescription.Text" xml:space="preserve">
+    <value>An error occurred while processing the request: </value>
+  </data>
+  <data name="CreateMessageError.Text" xml:space="preserve">
+    <value>An error occurred while creating the message.  Please try again later.</value>
+  </data>
+  <data name="CreateMessageErrorWithDescription.Text" xml:space="preserve">
+    <value>An error occurred while creating the message:</value>
+  </data>
+  <data name="AutoSuggestError.Text" xml:space="preserve">
+    <value>An error occurred while getting suggestions:</value>
+  </data>
+  <data name="Upload.Text" xml:space="preserve">
+    <value>Upload From Computer</value>
+  </data>
+  <data name="Subscriptions.Text" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="Action.Text" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Activity.Text" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="ManageSubscriptions.Text" xml:space="preserve">
+    <value>Manage Subscriptions</value>
+  </data>
+  <data name="Frequency.Text" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
+  <data name="lblMessageFreq.Help" xml:space="preserve">
+    <value>Select how frequently you will receive emails informing you of new messages.</value>
+  </data>
+  <data name="lblMessageFreq.Text" xml:space="preserve">
+    <value>Message Digest Frequency:</value>
+  </data>
+  <data name="lblNotificationFreq.Help" xml:space="preserve">
+    <value>Select how frequently you will receive emails informing you of site notifications.</value>
+  </data>
+  <data name="lblNotificationFreq.Text" xml:space="preserve">
+    <value>Notification Digest Frequency:</value>
+  </data>
+  <data name="EmailDeliverySchedule.Text" xml:space="preserve">
+    <value>Email Delivery Schedule</value>
+  </data>
+  <data name="PrefSaved.Text" xml:space="preserve">
+    <value>Your preferences have been updated.</value>
+  </data>
+  <data name="SearchFilter.Text" xml:space="preserve">
+    <value>Search Filter</value>
+  </data>
+  <data name="SubscriptionType.Text" xml:space="preserve">
+    <value>Subscription Type</value>
+  </data>
+  <data name="Unsubscribe.Text" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
+  <data name="SubscribedDescription.Text" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="Unsubscribed.Text" xml:space="preserve">
+    <value>You have been successfully unsubscribed.</value>
+  </data>
+  <data name="lblSubscriptions.Help" xml:space="preserve">
+    <value>View and manage your subscriptions.</value>
+  </data>
+  <data name="lblSubscriptions.Text" xml:space="preserve">
+    <value>Subscriptions:</value>
+  </data>
+  <data name="DNNCorp_Answers_Question.Text" xml:space="preserve">
+    <value>Answers Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Blogs.Text" xml:space="preserve">
+    <value>Blogs Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Challenges_Challenge.Text" xml:space="preserve">
+    <value>Challenges Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Discussions_Topic.Text" xml:space="preserve">
+    <value>Discussions Subscriptions</value>
+  </data>
+  <data name="DNNCorp_File.Text" xml:space="preserve">
+    <value>File Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Folder.Text" xml:space="preserve">
+    <value>Folder Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Groups_CreatedApprovedGroup.Text" xml:space="preserve">
+    <value>Groups Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Ideas.Text" xml:space="preserve">
+    <value>Ideas Subscriptions</value>
+  </data>
+  <data name="DNNCorp_SocialEvents_Event.Text" xml:space="preserve">
+    <value>Events Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Wiki_Page.Text" xml:space="preserve">
+    <value>Wiki Subscriptions</value>
+  </data>
+</root>

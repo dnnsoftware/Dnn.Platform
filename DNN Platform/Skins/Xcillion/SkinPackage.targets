@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DotNetNukeMSBuildTasksLib>$(BuildScriptsPath)\DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
+  <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
+  <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <XmlRead Prefix="n"
+                   Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+                   XPath="dotnetnuke/packages/package[@type='Skin']/@version"
+                   XmlFileName="$(DNNFileName).dnn">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+    <ExtensionPackager Manifest="$(DNNFileName).dnn" WorkingFolder="$(MSBuildProjectDirectory)\">
+      <Output TaskParameter="PackageFiles" PropertyName="PackageFiles">
+      </Output>
+    </ExtensionPackager>
+    <Copy SourceFiles="$(DNNFileName).dnn" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Zip Files="@(ContainerFiles)" WorkingDirectory="Container" ZipFileName="$(MSBuildProjectDirectory)\Package\Resource-Container.zip" />
+    <Zip Files="@(SkinFiles)" WorkingDirectory="Skin" ZipFileName="$(MSBuildProjectDirectory)\Package\Resource-Skin.zip" />
+    <ItemGroup>
+      <LicenseFiles Include="license.htm"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(LicenseFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <ItemGroup>
+      <ReleaseNotesFiles Include="release_notes.htm"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ReleaseNotesFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <CreateItem Include="$(PackageFiles)">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <Copy SourceFiles="$(OutputContent)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(OutputContent.RecursiveDir)" />
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(WebsiteSkinInstallPath)" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
+  </Target>
+</Project>

@@ -1,0 +1,235 @@
+
+/* CSS Document */
+
+.ContentPane * {
+    zoom: 1;
+}
+/* Trigger quirks mode for IE */
+
+.dnnLogin {
+    width: 100%;
+}
+
+.LoginPanel {
+    width: 500px;
+    padding-right: 50px;
+    float: left;
+}
+
+/* Tabs */
+.dnnAdminTabNav {
+    width: 500px;
+}
+.dnnLoginService {
+    /*padding-top: 25px;*/
+}
+.dnnLoginService input[type="text"], .dnnLoginService input[type="password"] {
+    width: 200px;
+    min-width: 200px;
+    margin-bottom: 5px;
+}
+/*.dnnPrimaryAction {
+    margin-top: 18px;
+    margin-left: 34%;
+}*/
+
+/*
+.dnnLoginRememberMe {
+    padding-left: 34%;
+}*/
+
+#socialControls {
+    float: left;
+    padding-top: 27px;
+}
+
+#socialControls ul.buttonList {
+    list-style: none;
+    padding-left: 0;
+}
+ul.buttonList li {
+    float: none;
+    list-style: none;
+    width: 250px;
+    margin-bottom: 7px;
+}
+/* SET DEFUALT BUTTON STYLE */
+ul.buttonList li a {
+    clear: both;
+    overflow: auto;
+    position: relative;
+    display: block;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #fff;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    background: #e7e7e7 url(images/socialLoginbuttons-repeatingbg.png) repeat-x 0 -601px;
+    border: 1px solid #c9c9c9;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.7);
+    -moz-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.7);
+}
+/* Use span to set dimensions; a and li will inherit */
+ul.buttonList li a img {
+    float: left;
+}
+ul.buttonList li a span {
+    float: left;
+    display: block;
+    padding: 10px 15px;
+}
+ul.buttonList li a:hover {
+    border-color: #a8a8a8;
+    text-shadow: 0px 1px 0px #e1e1e1;
+    background-position: 0 -650px;
+    background-color: #cacbcd;
+}
+ul.buttonList li a:active {
+    color: #fff;
+    text-shadow: 0px -1px 0px #666;
+    border-color: #a3a3a3;
+    background-position: 0 -700px;
+    background-color: #b7b9bb;
+    -webkit-box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+}
+/* SET SOCIAL SPECIFIC STYLES */
+ul.buttonList .facebook a span, ul.buttonList .twitter a span, ul.buttonList .googleplus a span, ul.buttonList .windowslive a span {
+    padding-left: 45px;
+    background: url(images/socialLoginbuttons-icons.png) no-repeat 12px 7px;
+}
+ul.buttonList .facebook a:after, ul.buttonList .twitter a:after, ul.buttonList .googleplus a:after, ul.buttonList .windowslive a:after {
+    position: absolute;
+    left: 35px;
+    top: 0;
+    height: 100%;
+    width: 0;
+    content: "";
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(255,255,255,0.3);
+}
+/*FACEBOOK*/
+ul.buttonList .facebook a {
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    border-color: #286c93; /* dark blue */
+    background-position: 0 0;
+    background-color: #5581bb;
+}
+ul.buttonList .facebook a:hover {
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    border-color: #286c93; /* dark blue */
+    background-position: 0 -50px;
+    background-color: #729dcd;
+}
+ul.buttonList .facebook a:active {
+    background-position: 0 -100px;
+    border-color: #286c93; /* dark blue */
+    background-color: #537fba;
+}
+
+/*TWITTER*/
+ul.buttonList .twitter a {
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    border-color: #3d82a0; /* dark teal blue */
+    background-position: 0 -150px;
+    background-color: #11a2d6;
+}
+ul.buttonList .twitter a:hover {
+    color: #fff;
+    border-color: #3d82a0; /* dark teal blue */
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    background-position: 0 -200px;
+    background-color: #43c1e3;
+}
+ul.buttonList .twitter a:active {
+    background-position: 0 -250px;
+    border-color: #3d82a0; /* dark teal blue */
+    background-color: #0597cc;
+}
+ul.buttonList .twitter a span {
+    background-position: 9px -40px;
+}
+
+/*GOOGLE PLUS*/
+ul.buttonList .googleplus a {
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    border-color: #821e16; /* dark red */
+    background-position: 0 -300px;
+    background-color: #b12e1e;
+}
+ul.buttonList .googleplus a:hover {
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    border-color: #821e16; /* dark red */
+    background-position: 0 -350px;
+    background-color: #cc3633;
+}
+ul.buttonList .googleplus a:active {
+    background-position: 0 -400px;
+    border-color: #821e16; /* dark red */
+    background-color: #a5281a;
+}
+ul.buttonList .googleplus a span {
+    background-position: 10px -90px;
+}
+
+/*WINDOWS LIVE ID*/
+ul.buttonList .windowslive a {
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    border-color: #7a7a7a; /* dark grey*/
+    background-position: 0 -450px;
+    background-color: #8f8f8f;
+}
+ul.buttonList .windowslive a:hover {
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    border-color: #7a7a7a; /* dark grey*/
+    background-position: 0 -500px;
+    background-color: #b3b3b3;
+}
+ul.buttonList .windowslive a:active {
+    background-position: 0 -550px;
+    border-color: #7a7a7a; /* dark grey*/
+    background-color: #808080;
+}
+ul.buttonList .windowslive a span {
+    background-position: 9px -141px;
+}
+
+/* clean some form style */
+.dnnFormItem{
+    width: 100%;
+}
+.dnnFormItem > label.dnnFormLabel, .dnnFormItem > span.dnnFormLabel {
+    display: inline-block;
+    margin: 6px 18px 0 0;
+    width: 30%;
+    text-align: right;
+}
+div.dnnCaptcha
+{
+	width: 70% !important;
+	margin-left: 30%;
+	padding-left: 22px;
+}
+span.dnnFormMessage.dnnFormError.dnnCaptcha
+{
+	right: 24%;
+	bottom: -55px;
+}
+a.dnnDisabledAction:link, a.dnnDisabledAction:visited, a.dnnDisabledAction:active, a.dnnDisabledAction:hover {
+    text-decoration: none;
+    color: Silver;
+	opacity: 0.5;
+	/*IE8*/ -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";	
+}

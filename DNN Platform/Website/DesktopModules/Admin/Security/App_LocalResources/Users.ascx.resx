@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Name.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Username.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Address.Header" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Telephone.Header" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="Email.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="LastLogin.Header" xml:space="preserve">
+    <value>Last Login</value>
+  </data>
+  <data name="Authorized.Header" xml:space="preserve">
+    <value>Authorized</value>
+  </data>
+  <data name="DeleteUnauthorized.Text" xml:space="preserve">
+    <value>Delete Unauthorized Users</value>
+  </data>
+  <data name="AddContent.Action" xml:space="preserve">
+    <value>Add New User</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="RecordsPage.Text" xml:space="preserve">
+    <value>Records Per Page:</value>
+  </data>
+  <data name="First.Text" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="Next.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Previous.Text" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Last.Text" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="CreatedDate.Header" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="DisplayDate.Text" xml:space="preserve">
+    <value>Display Date:</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About the User Management Module&lt;/h1&gt;&lt;p&gt;Administrators can manage their registered users. This module allows you to add new users, modify existing users, delete users, and manage the security roles for users.&lt;/p&gt;
+</value>
+  </data>
+  <data name="ManageProfile.Action" xml:space="preserve">
+    <value>Manage Profile Properties</value>
+  </data>
+  <data name="UserRoles.Text" xml:space="preserve">
+    <value>Manage Roles</value>
+  </data>
+  <data name="DeleteUnAuthorized.Action" xml:space="preserve">
+    <value>Delete Unauthorized Users</value>
+  </data>
+  <data name="RemoveDeleted.Action" xml:space="preserve">
+    <value>Remove Deleted Users</value>
+  </data>
+  <data name="UserSettings.Action" xml:space="preserve">
+    <value>User Settings</value>
+  </data>
+  <data name="FirstName.Header" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="LastName.Header" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="DisplayName.Header" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="Filter.Text" xml:space="preserve">
+    <value>A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z</value>
+  </data>
+  <data name="UserDeleted.Text" xml:space="preserve">
+    <value>User deleted successfully.</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Restore.Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="Prefix.Text" xml:space="preserve">
+    <value>Prefix</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="MiddleName.Text" xml:space="preserve">
+    <value>Middle Name</value>
+  </data>
+  <data name="Suffix.Text" xml:space="preserve">
+    <value>Suffix</value>
+  </data>
+  <data name="Unit.Text" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="Street.Text" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="City.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Region.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="Country.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="PostalCode.Text" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Telephone.Text" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="Cell.Text" xml:space="preserve">
+    <value>Cell</value>
+  </data>
+  <data name="Fax.Text" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="IM.Text" xml:space="preserve">
+    <value>IM</value>
+  </data>
+  <data name="Website.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="Biography.Text" xml:space="preserve">
+    <value>Biography</value>
+  </data>
+  <data name="TimeZone.Text" xml:space="preserve">
+    <value>Time Zone</value>
+  </data>
+  <data name="PreferredLocale.Text" xml:space="preserve">
+    <value>Preferred Locale</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Online.Text" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Delete.Confirm" xml:space="preserve">
+    <value>Are you sure you want to delete this user?</value>
+  </data>
+  <data name="Remove.Confirm" xml:space="preserve">
+    <value>Are you sure you want to permanently remove this user?</value>
+  </data>
+  <data name="PreferredTimeZone.Text" xml:space="preserve">
+    <value>Preferred Time Zone</value>
+  </data>
+  <data name="Restore.Confirm" xml:space="preserve">
+    <value>Are you sure you want to restore this user?</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="PagerPageSize.Text" xml:space="preserve">
+    <value>Items per page:</value>
+  </data>
+  <data name="PagerTextFormat.Text" xml:space="preserve">
+    <value>{4} Page {0} of {1}, users {2} to {3} of {5}</value>
+  </data>
+</root>

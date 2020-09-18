@@ -1,0 +1,45 @@
+<portal version="3.0">
+  <description>Default page template with just an HTML/Text module</description>
+  <tabs>
+    <tab>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <title>Enter Title</title>
+              <cachetime>1200</cachetime>
+              <alignment/>
+              <color />
+              <border />
+              <iconfile />
+              <alltabs>false</alltabs>
+              <visibility>Maximized</visibility>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00.0000000+11:00</startdate>
+              <enddate>0001-01-01T00:00:00.0000000+11:00</enddate>
+              <containersrc>
+              </containersrc>
+              <displaytitle>true</displaytitle>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <rolename>Administrators</rolename>
+                  <allowaccess>true</allowaccess>
+                </permission>
+              </modulepermissions>
+              <definition>DNN_HTML</definition>
+              <moduledefinition>Text/HTML</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+  </tabs>
+</portal>
+

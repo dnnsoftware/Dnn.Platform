@@ -1,0 +1,202 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* DNNPRO-14369 - Schedule Status missing names in Name column  */
+/****************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Schedule 
+	ALTER COLUMN FriendlyName nvarchar(200) NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Schedule 
+	SET FriendlyName = LEFT(TypeFullName, 100) 
+	WHERE FriendlyName = '' OR FriendlyName IS NULL
+
+GO
+
+/* Add UpdateTabModuleVersionByModule */
+/**************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabModuleVersionByModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateTabModuleVersionByModule
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleVersionByModule]
+    @ModuleID	int
+AS
+    UPDATE {databaseOwner}{objectQualifier}TabModules
+        SET    VersionGuid = NEWID()
+    WHERE  ModuleID = @ModuleID
+
+GO
+
+/* DNN-10645 - URLControl: Performance issue with many folders */
+/***************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetFoldersByPermissions
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+	@PortalID int,
+	@Permissions nvarchar(300),
+	@UserID int,
+	@FolderID int,
+	@FolderPath nvarchar(300)
+
+AS
+	DECLARE @IsSuperUser BIT
+	DECLARE @Admin BIT
+	DECLARE @Read INT
+	DECLARE @Write INT
+	DECLARE @Browse INT
+	DECLARE @Add INT
+
+	--Determine Admin or SuperUser
+	IF @UserId IN (SELECT UserId FROM {objectQualifier}UserRoles WHERE RoleId IN (SELECT RoleId FROM {objectQualifier}Roles WHERE PortalId = @PortalId AND RoleName = 'Administrators')) BEGIN SET @Admin = 1 END
+	SELECT @IsSuperUser = IsSuperUser FROM {objectQualifier}Users WHERE UserId = @UserId
+
+	--Retrieve Permission Ids
+	IF @Permissions LIKE 'READ' BEGIN SELECT TOP 1 @Read = PermissionID FROM {objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'READ' END
+	IF @Permissions LIKE 'WRITE' BEGIN SELECT TOP 1 @Write = PermissionID FROM {objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'WRITE' END
+	IF @Permissions LIKE 'BROWSE' BEGIN SELECT TOP 1 @Browse = PermissionID FROM {objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'BROWSE' END
+	IF @Permissions LIKE 'ADD' BEGIN SELECT TOP 1 @Add = PermissionID FROM {objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'ADD' END
+
+	SELECT DISTINCT F.*, FP.*, P.*
+	FROM {databaseOwner}{objectQualifier}Folders F
+		JOIN {databaseOwner}{objectQualifier}FolderPermission FP ON F.FolderId = FP.FolderID
+		JOIN {databaseOwner}{objectQualifier}Permission P ON FP.PermissionID = P.PermissionID
+		JOIN {databaseOwner}{objectQualifier}UserRoles UR ON UR.RoleID = FP.RoleID
+		JOIN {databaseOwner}{objectQualifier}Users U ON U.UserId = UR.UserId
+	WHERE ((F.PortalID = @PortalID) OR (F.PortalID IS NULL AND @PortalID IS NULL))
+		AND (F.FolderID = @FolderID OR @FolderID = -1)
+		AND (F.FolderPath = @FolderPath OR @FolderPath = '')
+		AND 
+			((P.PermissionKey = 'WRITE' OR @IsSuperUser=1 OR @Admin=1) OR
+				FP.PermissionID = CASE WHEN @Read > 0 THEN @Read END OR
+				FP.PermissionID = CASE WHEN @Write > 0 THEN @Write END OR
+				FP.PermissionID = CASE WHEN @Browse > 0 THEN @Browse END OR
+				FP.PermissionID = CASE WHEN @Add > 0 THEN @Add END)
+	  AND FP.AllowAccess = 1
+  
+	 ORDER BY F.FolderPath
+
+GO
+
+/* DNN-12957 - Re-Add Profile Property Type Checkbox */
+/*****************************************************/
+
+IF NOT EXISTS (SELECT value FROM {databaseOwner}{objectQualifier}Lists WHERE ListName ='DataType' AND Value = 'Checkbox')
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}Lists (
+			ListName, 
+			Value, 
+			Text, 
+			DefinitionId, 
+			PortalId, 
+			SystemList
+			) 
+			VALUES (
+				'DataType', 
+				'Checkbox ', 
+				'DotNetNuke.UI.WebControls.CheckEditControl, DotNetNuke',
+				 -1,
+				 -1,
+				 1
+			)
+	END
+GO
+
+/* update Install/UnInstall controls to correct control types*/
+/*************************************************************/
+UPDATE {databaseOwner}[{objectQualifier}ModuleControls] 
+	SET ControlType = 3
+	WHERE ModuleDefID is NULL AND
+	ControlKey = 'Install' AND
+	ControlSrc = 'DesktopModules/Admin/Extensions/Install.ascx'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}ModuleControls] 
+	SET ControlType = 3
+	WHERE ModuleDefID is NULL AND
+	ControlKey = 'UnInstall' AND
+	ControlSrc = 'DesktopModules/Admin/Extensions/UnInstall.ascx'
+GO
+
+/* DNN-14688 - Host > Superuser Accounts > Add New exception  */
+/**************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAllUsers]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetAllUsers
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+	@PortalID  int,
+	@PageIndex int,
+	@PageSize  int
+
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE 
+			@PageLowerBound INT, 
+			@PageUpperBound INT, 
+			@RowsToReturn int
+
+		exec {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
+
+		if @PortalID is null
+			begin
+				with [tmpUsers] as (
+					select U.*, row_number() over (order by U.UserName) AS rowid
+						FROM {databaseOwner}{objectQualifier}vw_Users u
+						where U.PortalID IS NULL AND U.IsDeleted = 0
+				)
+				select * from [tmpUsers]
+					where rowid > @PageLowerBound and rowid < @PageUpperBound
+					order by rowid
+			end 
+		else 
+			begin
+				with [tmpUsers] as (
+					select U.*, row_number() over (order by U.UserName) AS rowid
+						FROM {databaseOwner}{objectQualifier}vw_Users u
+						WHERE U.PortalID = @PortalID AND U.IsDeleted = 0
+				)
+				select * from [tmpUsers]
+					where rowid > @PageLowerBound and rowid < @PageUpperBound
+					order by rowid
+			end
+
+		set rowcount 0
+ 
+		if @PortalId is null
+			begin
+				SELECT COUNT(*) as TotalRecords
+					FROM   {databaseOwner}{objectQualifier}Users as U
+					WHERE U.IsDeleted = 0
+						AND NOT EXISTS (
+							select 1 from {databaseOwner}{objectQualifier}UserPortals UP where U.UserId = UP.UserId
+						)
+			end 
+		else 
+			begin
+				SELECT COUNT(*) as TotalRecords
+					FROM   {databaseOwner}{objectQualifier}Users U
+					INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON U.UserId = UP.UserId
+						WHERE UP.PortalId = @PortalId
+							AND UP.IsDeleted = 0
+			end
+	END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

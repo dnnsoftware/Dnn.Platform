@@ -1,0 +1,32 @@
+﻿<div>
+
+    <div>
+        <label for="txtTrackingID" data-bind="html: configurations[0].localizedName"></label>
+        <input id="txtTrackingID" data-bind="value: configurations[0].value" type="text" />
+    </div>
+
+    <div>
+        <label for="txtUrlParameter" data-bind="html: configurations[1].localizedName"></label>
+        <textarea id="txtUrlParameter" rows="6" data-bind="value: configurations[1].value" type="text"></textarea>
+    </div>
+
+    <div>
+        <label for="chkTrackAdmins" data-bind="html: configurations[2].localizedName"></label>
+        <input id="chkTrackAdmins" type="checkbox" data-bind="checked: configurations[2].value, checkedValue: configurations[2].value" />
+    </div>
+
+    <div>
+        <label for="chkAnonymizeIp" data-bind="html: configurations[3].localizedName"></label>
+        <input id="chkAnonymizeIp" type="checkbox" data-bind="checked: configurations[3].value, checkedValue: configurations[3].value, disable: configurations[5].value" />
+
+        <span data-bind="visible: configurations[5].value, html: configurations[5].localizedName"></span>
+    </div>
+
+    <div>
+        <label for="chkTrackUserId" data-bind="html: configurations[4].localizedName"></label>
+        <input id="chkTrackUserId" type="checkbox" data-bind="checked: configurations[4].value, checkedValue: configurations[4].value" />
+    </div>
+
+    <div class="clear"></div>
+
+</div>

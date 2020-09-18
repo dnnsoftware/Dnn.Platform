@@ -1,0 +1,99 @@
+<dotnetnuke type="Package" version="6.0">
+  <packages>
+    <package name="DotNetNuke.Modules.MemberDirectory" type="Module"  isSystem="true" version="09.07.02">
+      <friendlyName>Member Directory</friendlyName>      
+      <description>The Member Directory module displays a list of Members based on role, profile property or relationship.</description>
+      <iconFile>~/DesktopModules/MemberDirectory/Images/member_list_32X32.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DotNetNuke.Modules.MemberDirectory</moduleName>
+            <foldername>MemberDirectory</foldername>
+            <businessControllerClass/>
+            <supportedFeatures/>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Member Directory</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/MemberDirectory/View.ascx</controlSrc>
+                    <supportsPopUps>True</supportsPopUps>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle>Social Messaging View</controlTitle>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/MemberDirectory/Settings.ascx</controlSrc>
+                    <supportsPopUps>True</supportsPopUps>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle>Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+		  <eventMessage>
+		  	<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+			<processorCommand>UpgradeModule</processorCommand>
+			<attributes>
+				<businessControllerClass>DotNetNuke.Modules.MemberDirectory.Components.UpgradeController, DotNetNuke.Modules.MemberDirectory</businessControllerClass>
+				<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+				<upgradeVersionsList>07.00.06</upgradeVersionsList>
+			</attributes>
+		  </eventMessage>
+		</component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Modules.MemberDirectory.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\MemberDirectory</basePath>
+            <file>
+              <name>View.ascx</name>
+              <sourceFileName>View.ascx</sourceFileName>
+            </file>
+            <file>
+              <name>Settings.ascx</name>
+              <sourceFileName>Settings.ascx</sourceFileName>
+            </file>
+          </files>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/MemberDirectory</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

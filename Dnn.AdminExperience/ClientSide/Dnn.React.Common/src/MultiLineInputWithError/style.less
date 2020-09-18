@@ -1,0 +1,87 @@
+@import "../../styles/index";
+.dnn-multi-line-input-with-error {
+    display: inline-block;
+    position: relative;
+    .dnn-label {
+        label {
+            font-weight: 700;
+            cursor: pointer;
+            float: left;
+        }
+    }
+    textarea {
+        color: @bulgarianRose;
+    }
+    &.error {
+        .input-tooltip-container {
+            .dnn-ui-common-multi-line-input {
+                border-bottom: 2px solid @alizarinCrimson;
+            }
+            .dnn-inline-counter {
+                color: @alizarinCrimson;
+                right: 26px;
+            }
+        }
+    }
+    &.warning {
+        .input-tooltip-container {
+            .dnn-ui-common-multi-line-input {
+                border-bottom: 2px solid #EA9C00;
+            }
+            .dnn-inline-counter {
+                color: #EA9C00;
+                right: 26px;
+            }
+        }
+    }
+    &.disabled {
+        .dnn-label {
+            label {
+                color: @mountainMist;
+                cursor: not-allowed;
+            }
+        }
+        .input-tooltip-container {
+            .dnn-ui-common-multi-line-input {
+                color: @mountainMist;
+                cursor: not-allowed;
+            }
+        }
+    }
+    .input-tooltip-container {
+        float: left;
+        position: relative;
+        width: 100%;
+        .dnn-ui-common-multi-line-input{
+            width: 100%;
+            border-radius: 0px;
+        }
+        .dnn-inline-counter {
+            position: absolute;
+            color: @curiousBlue;
+            bottom: 13px;
+            right: 7px;
+        }
+        &.inline {
+            width: auto;
+        }
+        .dnn-ui-common-tooltip {
+            position: absolute;
+            bottom: 7px;
+            top: unset;
+            right: 7px;
+            .tooltip-text {
+                max-width: 255px;
+                text-align: center;
+                padding: 7px 15px;
+            }
+            &.outside {
+                right: -25px;
+            }
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}

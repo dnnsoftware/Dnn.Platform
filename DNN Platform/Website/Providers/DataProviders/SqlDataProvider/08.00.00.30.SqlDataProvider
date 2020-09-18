@@ -1,0 +1,7 @@
+/* DNN-5820 */
+IF NOT Exists (SELECT * FROM {databaseOwner}[{objectQualifier}Assemblies] 
+                WHERE PackageID Is Null AND AssemblyName LIKE N'Newtonsoft.Json.dll' AND Version = N'7.0.1')
+    INSERT INTO {databaseOwner}[{objectQualifier}Assemblies] 
+            (PackageID,      AssemblyName,  Version)
+     VALUES (NULL, N'Newtonsoft.Json.dll', N'7.0.1');
+GO

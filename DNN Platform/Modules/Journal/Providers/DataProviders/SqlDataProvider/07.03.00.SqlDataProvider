@@ -1,0 +1,60 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/****** Task DNN-3371: add sp Journal_GetSearchItems. ******/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_GetSearchItems]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_GetSearchItems
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetSearchItems]
+	@PortalId INT,
+	@ModuleId INT,
+	@StartDate DATETIME,
+	@StartJournalId INT,
+	@NumbersOfResult INT = 500
+AS
+	WITH ValidJournals AS (
+	SELECT	JournalId
+			FROM (
+					SELECT *, ROW_NUMBER() OVER (ORDER BY JournalId) rownumber FROM (
+						SELECT  DISTINCT(j.JournalId)
+								
+						 FROM {databaseOwner}{objectQualifier}Journal j
+						INNER JOIN {databaseOwner}{objectQualifier}Journal_Security js ON js.JournalId = j.JournalId
+						INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = j.UserId
+						INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID = j.ContentItemId
+                        LEFT JOIN {databaseOwner}{objectQualifier}Journal_Comments jc ON jc.JournalId = j.JournalId
+						WHERE ci.ModuleID = @ModuleId
+						AND (j.DateUpdated > @StartDate OR jc.DateUpdated > @StartDate) --check the update time both for journal item and journal comment
+						AND j.JournalId > @StartJournalId
+                        AND j.JournalTypeId IN (1,2,3,4)) AS T
+				 ) AS T WHERE rownumber <= @NumbersOfResult )
+
+				 SELECT  j.JournalId,
+								JournalTypeId,
+								j.UserId,
+								DateUpdated,
+								ProfileId,
+								GroupId,
+								u.DisplayName AS Title,
+								Summary,
+								js.SecurityKey,
+                                ci.TabID,
+								ci.ModuleID
+						 FROM {databaseOwner}{objectQualifier}Journal j
+						INNER JOIN {databaseOwner}{objectQualifier}Journal_Security js ON js.JournalId = j.JournalId
+						INNER JOIN ValidJournals vj ON vj.JournalId = j.JournalId
+						INNER JOIN {databaseOwner}{objectQualifier}Users u ON u.UserID = j.UserId
+                        INNER JOIN {databaseOwner}{objectQualifier}ContentItems ci ON ci.ContentItemID = j.ContentItemId
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

@@ -1,0 +1,9 @@
+﻿Test,								TestPageName,	AutoAscii,	ReplaceChars,	Scheme,		Page Name,	Test Url,											Expected Url,										Status
+Page Default,						ábout Us,		,			,				http://,	About Us,	http://{alias}/ábout-Us.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page Home Default,				ábout Us,		,			,				http://,	About Us,	http://{alias}/ábout-Us/ctl/Edit/mid/100.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=100,		200
+Page Off,							ábout Us,		false,		,				http://,	About Us,	http://{alias}/ábout-Us.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page Home Off,					ábout Us,		false,		,				http://,	About Us,	http://{alias}/ábout-Us/ctl/Edit/mid/100.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=100,		200
+Page On,							ábout Us,		true,		,				http://,	About Us,	http://{alias}/about-Us.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page Home On,					ábout Us,		true,		,				http://,	About Us,	http://{alias}/about-Us/ctl/Edit/mid/100.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=100,		200
+Page Custom,						æbout Us,		true,		æ:ae,			http://,	About Us,	http://{alias}/aebout-Us.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page Home Custom,				æßout Us,		true,		æ:ae;ß:ss,		http://,	About Us,	http://{alias}/aessout-Us/ctl/Edit/mid/100.aspx,	{defaultPage}?TabId={tabId}&ctl=Edit&mid=100,		200

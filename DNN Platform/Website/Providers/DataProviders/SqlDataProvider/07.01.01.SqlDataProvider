@@ -1,0 +1,346 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** Fix bug 27208: move webupload control into control panel folder. *****/
+IF NOT EXISTS(SELECT TOP 1 ModuleControlID FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ControlKey = 'WebUpload' AND ControlSrc = 'Admin/ControlPanel/WebUpload.ascx' AND ModuleDefID IS NULL)
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}ModuleControls ( ControlKey, ControlTitle, ModuleDefID, ControlSrc, IconFile, ControlType, ViewOrder )
+		VALUES ( 'WebUpload', 'Upload File', NULL, 'Admin/ControlPanel/WebUpload.ascx', NULL, 0, NULL)
+	END
+GO
+
+/***** Fix bug 27258: add the primary key. *****/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'PK_{objectQualifier}TabSettings') AND xtype = 'PK')
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}TabSettings ADD CONSTRAINT [PK_{objectQualifier}TabSettings] PRIMARY KEY NONCLUSTERED  ([TabID], [SettingName])
+END
+GO
+
+IF NOT EXISTS (SELECT NotificationTypeID FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes WHERE Name = 'NewUserRegistration' )
+BEGIN
+
+INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes(
+	[Name]
+      ,[Description]
+      ,[CreatedByUserID]
+      ,[CreatedOnDate]
+      ,[LastModifiedByUserID]
+      ,[LastModifiedOnDate]
+) VALUES (
+	'NewUserRegistration',
+	'New User Registration Notification',
+	-1,
+	GETDATE(),
+	-1,
+	GETDATE()
+)
+END
+GO
+
+/***** Fix bug DNNPRO 25417 - Wrong Send to user ID after archiving a message.  *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageReply]
+    @ConversationID    INT,           -- parent message id
+	@PortalID			INT,			--portalID of message
+    @Body               nvarchar(max), -- message body
+    @SenderUserID       INT,           -- create / update user id
+    @From               nvarchar(200), -- message from
+	@CreateUpdateUserID INT            -- create / update user id
+AS
+    DECLARE @ReplyAllAllowed BIT
+    DECLARE @NewMessageID INT
+    DECLARE @OriginalSenderUserID INT
+    DECLARE @OriginalTo nvarchar(2000)
+    DECLARE @OriginalSubject nvarchar(400)
+
+	--Was Sender a Recipient in the Original Message.
+	SELECT @ReplyAllAllowed = [ReplyAllAllowed],
+	       @OriginalSenderUserID = [SenderUserID],
+		   @OriginalTo = REPLACE(REPLACE([TO] + ',' + [FROM], ',' + @From, ''), @From + ',', ''),
+		   @OriginalSubject = [Subject]
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages m
+	INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients mr ON m.MessageID = mr.MessageID
+	AND m.MessageID = @ConversationID
+	AND mr.UserID = @SenderUserID
+
+	--Reply can only be create if Sender was Recipient of Orginial message
+	IF @ReplyAllAllowed IS NULL
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	--Create new message
+	INSERT {databaseOwner}{objectQualifier}CoreMessaging_Messages(
+					[PortalID],
+  					[To],
+					[From],
+					[Subject],
+					[Body],
+					[ConversationID],
+					[ReplyAllAllowed],
+					[SenderUserID],
+                    [CreatedByUserID],
+                    [CreatedOnDate],
+                    [LastModifiedByUserID],
+                    [LastModifiedOnDate]
+                    )
+            VALUES  (
+					@PortalID,
+     			    @OriginalTo,
+					@From,
+				    @OriginalSubject,
+					@Body,
+					@ConversationID,
+					@ReplyAllAllowed,
+					@SenderUserID,
+                    @CreateUpdateUserID , -- CreatedBy - int
+                    GETUTCDATE() , -- CreatedOn - datetime
+                    @CreateUpdateUserID , -- LastModifiedBy - int
+                    GETDATE() -- LastModifiedOn - datetime
+                    )
+
+	SELECT @NewMessageID = SCOPE_IDENTITY()
+
+	IF (@ReplyAllAllowed = 0) --original message was sent to a Role, reply will be sent to the original sender only
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+		        ( [MessageID],
+		          [UserID],
+		          [Read],
+		          [Archived],
+		          CreatedByUserID,
+		          CreatedOnDate,
+		          LastModifiedByUserID,
+		          LastModifiedOnDate
+		        )
+		VALUES  ( @NewMessageID, -- MessageID - int
+		          @OriginalSenderUserID, -- UserID - int
+		          0, -- Read - bit
+		          0, -- Archived - bit
+		          @CreateUpdateUserID , -- CreatedByUserID - int
+		          GETDATE() , -- CreatedOnDate - datetime
+		          @CreateUpdateUserID , -- LastModifiedByUserID - int
+		          GETDATE()  -- LastModifiedOnDate - datetime
+		        )
+        
+        IF @OriginalSenderUserID <> @SenderUserID
+        BEGIN
+            INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+		            ( [MessageID],
+		              [UserID],
+		              [Read],
+		              [Archived],
+		              CreatedByUserID,
+		              CreatedOnDate,
+		              LastModifiedByUserID,
+		              LastModifiedOnDate
+		            )
+		    VALUES  ( @NewMessageID, -- MessageID - int
+		              @SenderUserID, -- UserID - int
+		              1, -- Read - bit
+		              0, -- Archived - bit
+		              @CreateUpdateUserID , -- CreatedByUserID - int
+		              GETDATE() , -- CreatedOnDate - datetime
+		              @CreateUpdateUserID , -- LastModifiedByUserID - int
+		              GETDATE()  -- LastModifiedOnDate - datetime
+		            )
+        END
+	END
+	ELSE --Reply should be sent to all the original Recipients
+	BEGIN
+		INSERT {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients(
+			[MessageID],
+			[UserID],
+			[Read],
+			[Archived],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+            )
+			SELECT
+			  @NewMessageID,
+			  UserID,
+			  0,
+			  0,
+              @CreateUpdateUserID , -- CreatedBy - int
+              GETDATE() , -- CreatedOn - datetime
+              @CreateUpdateUserID , -- LastModifiedBy - int
+              GETDATE() -- LastModifiedOn - datetime
+           FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+           WHERE MessageID = @ConversationID
+	END
+
+	SELECT  @NewMessageID
+GO
+
+/* Update GetUsersByProfileProperty Procedure */
+/**********************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByProfileProperty]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+     @PortalID		int,
+    @PropertyName   nvarchar(256),
+    @PropertyValue  nvarchar(256),
+    @PageIndex      int,
+    @PageSize       INT,
+    @IncludeDeleted bit,
+    @SuperUsersOnly bit	
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE @PageLowerBound INT
+		DECLARE @PageUpperBound INT
+		SET @PageLowerBound = @PageSize * @PageIndex
+		SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+		-- Create a temp table TO store the select results
+		CREATE TABLE #PageIndexForUsers
+		(
+			IndexId int IDENTITY (0, 1) NOT NULL,
+			UserId int,
+			DisplayName varchar(512)
+		)
+
+		-- Insert into our temp table
+		INSERT INTO #PageIndexForUsers (UserId,DisplayName)
+			SELECT DISTINCT U.UserId, U.DisplayName 
+			FROM   {databaseOwner}{objectQualifier}ProfilePropertyDefinition P
+				INNER JOIN {databaseOwner}{objectQualifier}UserProfile UP ON P.PropertyDefinitionID = UP.PropertyDefinitionID 
+				INNER JOIN {databaseOwner}{objectQualifier}vw_Users U ON UP.UserID = U.UserID
+				INNER JOIN {databaseOwner}{objectQualifier}Lists dt ON dt.EntryID = P.DataType
+				LEFT JOIN {databaseOwner}{objectQualifier}Lists L ON L.ListName = @PropertyName AND L.Value = UP.PropertyValue AND L.Text LIKE @PropertyValue
+			WHERE (PropertyName = @PropertyName) AND (PropertyValue LIKE @PropertyValue OR PropertyText LIKE @PropertyValue OR (dt.Value = 'List' AND L.EntryID IS NOT NULL ))
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+				AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND (P.Portalid = @PortalID OR (@PortalID is null ))
+			ORDER BY U.DisplayName
+
+		SELECT  *
+		FROM	{databaseOwner}{objectQualifier}vw_Users u, 
+				#PageIndexForUsers p
+		WHERE  u.UserId = p.UserId
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+				AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND ( PortalId = @PortalID OR (@PortalID is null ))
+				AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+			ORDER BY U.DisplayName
+
+		SELECT  TotalRecords = COUNT(*)
+		FROM    #PageIndexForUsers
+	END
+
+GO
+
+/* Fix bug DNN-2695: Add sp GetUsersByDisplayName. */
+/***************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByDisplayName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByDisplayName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByDisplayName]
+    @PortalID		int,
+    @NameToMatch	nvarchar(256),
+    @PageIndex		int,
+    @PageSize		INT,
+    @IncludeDeleted     bit,
+    @SuperUsersOnly     bit		
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE @PageLowerBound INT
+		DECLARE @PageUpperBound INT
+		SET @PageLowerBound = @PageSize * @PageIndex
+		SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+		-- Create a temp table TO store the select results
+		CREATE TABLE #PageIndexForUsers
+		(
+			IndexId int IDENTITY (0, 1) NOT NULL,
+			UserId int
+		)
+
+		-- Insert into our temp table
+		INSERT INTO #PageIndexForUsers (UserId)
+			SELECT UserId FROM	{databaseOwner}{objectQualifier}vw_Users 
+			WHERE  DisplayName LIKE @NameToMatch
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+			        AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND ( PortalId = @PortalID OR (@PortalID is null ))
+			ORDER BY DisplayName
+
+		SELECT  *
+		FROM	{databaseOwner}{objectQualifier}vw_Users u, 
+				#PageIndexForUsers p
+		WHERE  u.UserId = p.UserId
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+			        AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND ( PortalId = @PortalID OR (@PortalID is null ))
+				AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+		ORDER BY u.DisplayName
+
+		SELECT  TotalRecords = COUNT(*)
+		FROM    #PageIndexForUsers
+	END
+
+GO
+
+/* Add new Column to SearchTypes Table - 26730 */
+ALTER TABLE {databaseOwner}{objectQualifier}SearchTypes ADD
+	IsPrivate bit NULL CONSTRAINT DF_{objectQualifier}SearchTypes_IsPrivate DEFAULT 0
+GO
+
+/* Set default value of new Column in SearchTypes Table */
+UPDATE {databaseOwner}{objectQualifier}SearchTypes
+	SET IsPrivate = 0
+GO
+
+/***** 27246: make LastContentModifiedOnDate nullable in Modules table *****/
+/* Drop default constraint first*/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}Modules_LastContentModifiedOnDate]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}Modules] DROP CONSTRAINT [DF_{objectQualifier}Modules_LastContentModifiedOnDate]
+END
+GO
+
+/* make column nullable */
+ALTER TABLE {databaseOwner}{objectQualifier}Modules ALTER COLUMN LastContentModifiedOnDate datetime NULL
+GO
+
+/* Set LastContentModifiedOnDate to Null when this value is same as CreatedOnDated */
+UPDATE {databaseOwner}{objectQualifier}Modules
+SET LastContentModifiedOnDate = NULL
+WHERE LastContentModifiedOnDate = CreatedOnDate
+GO
+
+/* Run Site Crawler faster (given above optimization) */
+UPDATE {databaseOwner}{objectQualifier}Schedule SET TimeLapse = 1, RetryTimeLapse = 30, RetryTimeLapseMeasurement = 's' WHERE FriendlyName = 'Search: Site Crawler' 
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

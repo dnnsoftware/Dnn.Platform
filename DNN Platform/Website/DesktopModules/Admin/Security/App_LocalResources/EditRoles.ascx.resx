@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BasicSettings.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="BasicSettingsDescription.Text" xml:space="preserve">
+    <value>In this section, you can set up the basic settings for this role.</value>
+  </data>
+  <data name="RoleName.Text" xml:space="preserve">
+    <value>Role Name:</value>
+  </data>
+  <data name="RoleName.Help" xml:space="preserve">
+    <value>Enter the name of the role.</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="Description.Help" xml:space="preserve">
+    <value>Enter a description of the role.</value>
+  </data>
+  <data name="PublicRole.Text" xml:space="preserve">
+    <value>Public Role:</value>
+  </data>
+  <data name="PublicRole.Help" xml:space="preserve">
+    <value>Check this box if users can subscribe to this role via the Manage Services page of their user account.</value>
+  </data>
+  <data name="AutoAssignment.Text" xml:space="preserve">
+    <value>Auto Assignment:</value>
+  </data>
+  <data name="AutoAssignment.Help" xml:space="preserve">
+    <value>Check this box if users are automatically assigned to this role</value>
+  </data>
+  <data name="AdvancedSettings.Text" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="AdvancedSettingsHelp.Text" xml:space="preserve">
+    <value>In this section, you can set up more advanced settings for this role.</value>
+  </data>
+  <data name="ServiceFee.Text" xml:space="preserve">
+    <value>Service Fee</value>
+  </data>
+  <data name="ServiceFee.Help" xml:space="preserve">
+    <value>Enter the fee charged for users in this role.</value>
+  </data>
+  <data name="BillingPeriod.Text" xml:space="preserve">
+    <value>Billing Period (Every)</value>
+  </data>
+  <data name="BillingPeriod.Help" xml:space="preserve">
+    <value>These two fields are used in conjunction to enter a Billing Period. E.g 2 weeks, or 1 month</value>
+  </data>
+  <data name="TrialFee.Text" xml:space="preserve">
+    <value>Trial Fee</value>
+  </data>
+  <data name="TrialFee.Help" xml:space="preserve">
+    <value>Enter the trial fee charged for users in this role.</value>
+  </data>
+  <data name="TrialPeriod.Text" xml:space="preserve">
+    <value>Trial Period (Every)</value>
+  </data>
+  <data name="TrialPeriod.Help" xml:space="preserve">
+    <value>These two fields are used in conjunction to enter a Trial Period. e.g 2 weeks, or 1 month</value>
+  </data>
+  <data name="cmdManage.Text" xml:space="preserve">
+    <value>Manage Users in this Role</value>
+  </data>
+  <data name="valRoleName.Text" xml:space="preserve">
+    <value>&lt;br&gt;You must enter a valid name.</value>
+  </data>
+  <data name="valServiceFee1.Text" xml:space="preserve">
+    <value>&lt;br&gt;Service fee value entered is not valid.</value>
+  </data>
+  <data name="valServiceFee2.Text" xml:space="preserve">
+    <value>&lt;br&gt;Service fee must be greater than or equal to zero.</value>
+  </data>
+  <data name="valBillingPeriod1.Text" xml:space="preserve">
+    <value>&lt;br&gt;Billing period value entered is not valid.</value>
+  </data>
+  <data name="valBillingPeriod2.Text" xml:space="preserve">
+    <value>&lt;br&gt;Billing period must be greater than zero.</value>
+  </data>
+  <data name="valTrialFee1.Text" xml:space="preserve">
+    <value>&lt;br&gt;Trial fee value entered is not valid.</value>
+  </data>
+  <data name="valTrialFee2.Text" xml:space="preserve">
+    <value>&lt;br&gt;Trial fee must be greater than or equal to zero.</value>
+  </data>
+  <data name="valTrialPeriod1.Text" xml:space="preserve">
+    <value>&lt;br&gt;Trial period value entered is not valid.</value>
+  </data>
+  <data name="valTrialPeriod2.Text" xml:space="preserve">
+    <value>&lt;br&gt;Trial period must be greater than zero.</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
+    <value>Edit Security Roles</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About Edit Security Roles&lt;/h1&gt;&lt;p&gt;Administrators can manage the security roles defined for their site. The module allows you to add new security roles, modify existing security roles, delete security roles, and manage the users assigned to security roles.&lt;/p&gt;</value>
+  </data>
+  <data name="plRoleGroups.Text" xml:space="preserve">
+    <value>Role Group:</value>
+  </data>
+  <data name="plRoleGroups.Help" xml:space="preserve">
+    <value>Select the role group to which this role belongs.</value>
+  </data>
+  <data name="plRSVPCode.Text" xml:space="preserve">
+    <value>RSVP Code:</value>
+  </data>
+  <data name="plRSVPCode.Help" xml:space="preserve">
+    <value>Enter an RSVP Code for the role.  Users can easily subscribe to this role by entering this code on the Manage Services page of their user account.</value>
+  </data>
+  <data name="plRSVPLink.Text" xml:space="preserve">
+    <value>RSVP Link:</value>
+  </data>
+  <data name="plRSVPLink.Help" xml:space="preserve">
+    <value>A link that allows users to subscribe to this role will be displayed when an RSVP Code is saved for this role.</value>
+  </data>
+  <data name="plIcon.Text" xml:space="preserve">
+    <value>Icon:</value>
+  </data>
+  <data name="plIcon.Help" xml:space="preserve">
+    <value>Select an icon for the role.</value>
+  </data>
+  <data name="DuplicateRole.Text" xml:space="preserve">
+    <value>A role with the same name already exists.  The role was not added.</value>
+  </data>
+  <data name="ProcessorWarning.Text" xml:space="preserve">
+    <value>&lt;b&gt;Warning:&lt;/b&gt; The Payment Processor settings on the Admin > Site Settings page must be configured to enable fee-base roles/services.</value>
+  </data>
+  <data name="IncompatibleFee.Text" xml:space="preserve">
+    <value>You must select a billing frequency if you want to enter a fee for this role.</value>
+  </data>
+  <data name="valRoleName2.Text" xml:space="preserve">
+    <value>&lt;br&gt;The Name is invalid - roles can not contain the following characters: &amp; $ + , / ? ~ # &lt; &gt; ¿ ¡ « » !  . :  * ' [ ]</value>
+  </data>
+  <data name="securityModeListLabel.Help" xml:space="preserve">
+    <value>Choose the security mode for this role/group.</value>
+  </data>
+  <data name="securityModeListLabel.Text" xml:space="preserve">
+    <value>Security Mode:</value>
+  </data>
+  <data name="statusListLabel.Help" xml:space="preserve">
+    <value>Select the status for this role/group.</value>
+  </data>
+  <data name="statusListLabel.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="SystemRoleWarning.Text" xml:space="preserve">
+    <value>This role is a system role, only minimal edits allowed.</value>
+  </data>
+  <data name="AssignToExistUsers.Help" xml:space="preserve">
+    <value>Assign this role to all existing users.</value>
+  </data>
+  <data name="AssignToExistUsers.Text" xml:space="preserve">
+    <value>Assign to existing users:</value>
+  </data>
+</root>

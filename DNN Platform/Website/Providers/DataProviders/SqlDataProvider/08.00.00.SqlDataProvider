@@ -1,0 +1,100 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update Version table for increment column */
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Version' AND COLUMN_NAME='Increment')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Version]
+		ADD	Increment int NULL;
+GO
+
+/* Drop existing constraint */
+IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Version]') AND name = N'IX_{objectQualifier}Version')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Version] DROP CONSTRAINT [IX_{objectQualifier}Version]
+GO
+
+IF EXISTS (SELECT * FROM Sys.Indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Version]') AND name = N'IX_{objectQualifier}Version')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Version] DROP CONSTRAINT [IX_{objectQualifier}Version]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Version]') AND name = N'IX_{objectQualifier}Version')
+	DROP INDEX [IX_{objectQualifier}Version] ON {databaseOwner}[{objectQualifier}Version]
+GO 
+
+/* Add new  constraint */
+ALTER TABLE {databaseOwner}[{objectQualifier}Version]
+	ADD CONSTRAINT [IX_{objectQualifier}Version] UNIQUE NONCLUSTERED  
+		([Major], [Minor], [Build],[Increment]);
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateDatabaseVersionIncrement]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionIncrement
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionIncrement 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int,
+	@Increment int,
+	@Name	nvarchar(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Version
+	SET Increment=@Increment where Major=@Major AND Minor=@Minor AND Build=@Build AND Name=@Name
+		
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetLastAppliedIteration]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int	
+
+AS
+
+	SELECT ISNULL(MAX(Increment),0) from {databaseOwner}{objectQualifier}Version WHERE Major=@Major AND Minor=@Minor AND Build=@Build
+GO
+
+/* DNN-7477: Extract Dashboard into a separate module. */
+/**************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetInstalledModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
+AS
+	SELECT		
+		DesktopModuleID, 
+		ModuleName,
+		FriendlyName,
+		Version,
+		(SELECT     COUNT(*) AS Instances
+			FROM          {databaseOwner}{objectQualifier}DesktopModules 
+				INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions ON {databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = {databaseOwner}{objectQualifier}ModuleDefinitions.DesktopModuleID 
+				INNER JOIN {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}ModuleDefinitions.ModuleDefID = {databaseOwner}{objectQualifier}Modules.ModuleDefID
+			WHERE      ({databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = DM.DesktopModuleID)) AS Instances
+	FROM {databaseOwner}{objectQualifier}DesktopModules AS DM
+	WHERE (IsAdmin = 0)
+	ORDER BY [FriendlyName] ASC
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

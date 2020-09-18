@@ -1,0 +1,132 @@
+@import "../../less/globals.less";
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.page-language {
+    background: @gallery;
+    float: left;
+    width: 250px;
+    padding-bottom: 40px;
+    * {
+        float: left;
+    }
+    .page-language-row {
+        width: 100%;
+        padding: 10px;
+        border-bottom: 1px solid @alto;
+        border-right: 1px solid @alto;
+        span {
+            margin-left: 4px;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 0;
+        }
+        textarea {
+            border: 1px solid #ddd;
+            width: 100%;
+            height: 100px;
+            padding: 8px 16px;
+            resize: none;
+        }
+        .icon {
+            float: right;
+            width: 18px;
+            cursor: pointer;
+            margin-left: 2px;
+            &.float-left {
+                float: left;
+            }
+            > svg {
+                width: 18px;
+                height: 18px;
+            }
+            &.blue {
+                svg {
+                    fill: @curiousBlue;
+                }
+            }
+        }
+        .page-language-row-header {
+            width: 100%;
+            height: 34px;
+            padding-top: 8px;
+            & > .icon {
+                svg {
+                    fill: black;
+                }
+            }
+            .dnn-checkbox-container .checkbox input[type=checkbox]+label {
+                background: white;
+            }
+            .dnn-checkbox-container .checkbox input[type=checkbox]:checked+label {
+                background: @curiousBlue;
+            }
+            .icon {
+                float: left !important;
+                width: 29px;
+                height: 13px;
+                margin-top: -7px;
+                &.blue {
+                    svg {
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .icons-container {
+                float: right;
+                .icon {
+                    width: 18px;
+                    margin-top: 0px;
+                }
+                .dnn-checkbox-container {
+                    width: 13px;
+                    height: 13px;
+                    margin-right: 2px;
+                    margin-top: 2px;
+                    margin-left: 3px;
+                }
+            }
+        }
+        .module-row {
+            margin-top: 10px;
+            width: 100%;
+            height: 34px;
+            .icons-container {
+                width: 90px;
+                width: 37px;
+                padding-top: 6px;
+                .dnn-checkbox-container {
+                    width: 13px;
+                    height: 13px;
+                    margin-left: 2px;
+                    margin-top: 2px;
+                }
+            }
+            &.copy {
+                padding: 8px 4px;
+            }
+            .dnn-ui-common-tooltip {
+                float: left;
+                position: static;
+                margin-top: 7px;
+                margin-right: 10px;
+            }
+            input {
+                width: ~"calc(100% - 67px)";
+                margin: 0px;
+            }
+            &.footer {
+                height: 10px;
+                margin-bottom: 6px;
+                & > div {
+                    float: right;
+                }
+                .checkbox {
+                    margin-left: 6px;
+                    margin-right: 2px;
+                    margin-top: 1px;
+                }
+            }
+        }
+    }
+}

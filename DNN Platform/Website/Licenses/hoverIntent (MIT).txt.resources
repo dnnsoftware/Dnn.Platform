@@ -1,0 +1,15 @@
+﻿PROJECT: hoverIntent
+
+WHERE WE USE IT: As a reusable javascript library as well as multiple places in the UI, see https://github.com/dnnsoftware/Dnn.Platform/search?q=hoverintent&unscoped_q=hoverintent
+
+LICENSE TYPE: MIT
+
+PROJECT LINK: https://github.com/briancherne/jquery-hoverIntent
+
+LICENSE (AS OF 2019-04-20): 
+hoverIntent v1.10.0 // 2019.02.25 // jQuery v1.7.0+
+http://briancherne.github.io/jquery-hoverIntent/
+
+You may use hoverIntent under the terms of the MIT license. Basically that
+means you are free to use hoverIntent as long as this header is left intact.
+Copyright 2007-2019 Brian Cherne

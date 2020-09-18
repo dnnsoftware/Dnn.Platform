@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="cmdEditor.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="cmdExtension.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="cmdLicense.Text" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="EditTitle.Text" xml:space="preserve">
+    <value>Extension Details</value>
+  </data>
+  <data name="cmdReleaseNotes.Text" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
+  <data name="cmdSecurity.Text" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="Permissions.Help" xml:space="preserve">
+    <value>Check the check boxes to set permissions for this package.</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Package Permissions:</value>
+  </data>
+  <data name="chkDelete.Text" xml:space="preserve">
+    <value>Delete Files</value>
+  </data>
+  <data name="cmdDelete.Text" xml:space="preserve">
+    <value>UnInstall Extension</value>
+  </data>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>Update Extension</value>
+  </data>
+  <data name="cmdUpdateLicense.Text" xml:space="preserve">
+    <value>Update License</value>
+  </data>
+  <data name="cmdUpdateReleaseNotes.Text" xml:space="preserve">
+    <value>Update Release Notes</value>
+  </data>
+  <data name="cmdPackage.Text" xml:space="preserve">
+    <value>Create Package</value>
+  </data>
+  <data name="EditHelp.Text" xml:space="preserve">
+    <value>In this section you can configure the package information for this Extension.</value>
+  </data>
+  <data name="cmdCreate.Text" xml:space="preserve">
+    <value>Add New Extension</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
+    <value>Edit Extension</value>
+  </data>
+  <data name="ExtensionSettings.Text" xml:space="preserve">
+    <value>Extension Settings</value>
+  </data>
+  <data name="PackageSettings.Text" xml:space="preserve">
+    <value>Package Settings</value>
+  </data>
+  <data name="Languages.Action" xml:space="preserve">
+    <value>Language Editor</value>
+  </data>
+  <data name="TimeZones.Action" xml:space="preserve">
+    <value>TimeZone Editor</value>
+  </data>
+  <data name="ManageSkins.Action" xml:space="preserve">
+    <value>Manage Themes</value>
+  </data>
+  <data name="cmdCreateLanguage.Text" xml:space="preserve">
+    <value>Add New Language</value>
+  </data>
+  <data name="cmdCreateModule.Text" xml:space="preserve">
+    <value>Add New Module</value>
+  </data>
+  <data name="cmdCreateSkin.Text" xml:space="preserve">
+    <value>Add New Theme</value>
+  </data>
+  <data name="cmdUpdateLanguage.Text" xml:space="preserve">
+    <value>Update Language</value>
+  </data>
+  <data name="cmdUpdateModule.Text" xml:space="preserve">
+    <value>Update Module</value>
+  </data>
+  <data name="cmdUpdateSkin.Text" xml:space="preserve">
+    <value>Update Theme</value>
+  </data>
+  <data name="EditLanguageHelp.Text" xml:space="preserve">
+    <value>In this section you can configure the package information for this language pack.</value>
+  </data>
+  <data name="EditModuleHelp.Text" xml:space="preserve">
+    <value>In this section you can configure the package information for this module.</value>
+  </data>
+  <data name="EditSkinHelp.Text" xml:space="preserve">
+    <value>In this section you can configure the package information for this theme.</value>
+  </data>
+  <data name="DuplicateName.Text" xml:space="preserve">
+    <value>Packages must have a unique name.</value>
+  </data>
+  <data name="Core.Text" xml:space="preserve">
+    <value>Core</value>
+  </data>
+  <data name="Package.Text" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="plPackageType.Help" xml:space="preserve">
+    <value>Select the type of language pack you want to create.</value>
+  </data>
+  <data name="plPackageType.Text" xml:space="preserve">
+    <value>Language Pack Type:</value>
+  </data>
+  <data name="PackageType.Error" xml:space="preserve">
+    <value>You must select a language pack type.</value>
+  </data>
+  <data name="cmdCreateContainer.Text" xml:space="preserve">
+    <value>Add New Container</value>
+  </data>
+  <data name="PackageUpdated.Text" xml:space="preserve">
+    <value>Extension updated succesfully.</value>
+  </data>
+  <data name="UpgradeMessage.Text" xml:space="preserve">
+    <value>Click Here to Get the Upgrade</value>
+  </data>
+  <data name="LanguageMessage.Text" xml:space="preserve">
+    <value>Click Here to Get the Language Pack</value>
+  </data>
+  <data name="AdminHeading.Text" xml:space="preserve">
+    <value>Configure {0} Extension Settings for This Site</value>
+  </data>
+  <data name="HostHeading.Text" xml:space="preserve">
+    <value>Configure {0} Extension Settings</value>
+  </data>
+  <data name="Controls.Help" xml:space="preserve">
+    <value>Displays the Module Definition's Module Controls.</value>
+  </data>
+</root>

@@ -1,0 +1,70 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetUnAuthorizedUsers') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetUnAuthorizedUsers
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUnAuthorizedUsers
+    @PortalId			int
+AS
+
+SELECT  *
+FROM	{databaseOwner}{objectQualifier}vw_Users
+WHERE  PortalId = @PortalId
+	AND Authorised = 0
+ORDER BY UserName
+GO
+
+/* This fixes the folder Ids for Host Folders */
+/**********************************************/
+
+UPDATE {databaseOwner}{objectQualifier}Files
+	SET    FolderID = FO.FolderID
+FROM   {databaseOwner}{objectQualifier}Files F, {databaseOwner}{objectQualifier}Folders FO
+WHERE F.Folder = FO.FolderPath
+	AND ( ( F.PortalID = FO.PortalID ) OR ( F.PortalID is NULL AND  FO.PortalID is NULL ) )
+GO
+
+/* This deletes the files with no valid folder Ids */
+/***************************************************/
+
+DELETE {databaseOwner}{objectQualifier}Files
+	WHERE FolderID Is NULL
+GO
+
+/* This sets all cache root folders to protected */
+/*************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}Folders
+	SET     IsProtected = 1
+WHERE
+	FolderPath = 'Cache/'
+GO
+
+/* This tries to apply a foreign key on the files/folders tables */
+/*****************************************************************/
+
+IF NOT EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'FK_{objectQualifier}Files_{objectQualifier}Folders') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Files ADD CONSTRAINT
+			FK_{objectQualifier}Files_{objectQualifier}Folders FOREIGN KEY
+			(
+			FolderID
+			) REFERENCES {databaseOwner}{objectQualifier}Folders
+			(
+			FolderID
+			)
+	END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

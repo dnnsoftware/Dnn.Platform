@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LogConfig version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <LogTypes>
+    <LogType LogTypeKey="CACHE_ERROR" LogTypeFriendlyName="Cache Error" LogTypeDescription="" LogTypeOwner="DotNetNuke.Logging.EventLogType" LogTypeCSSClass="GeneralAdminOperation" />
+  </LogTypes>
+  <LogTypeConfig LogFileID="4d27a89a-2320-46b8-8bf7-c94c2f7d4113" LoggingStatus="Off" LogTypeKey="CACHE_ERROR" LogTypePortalID="*" KeepMostRecent="-1" FileName="Log.xml.resources" EmailNotificationStatus="Off" NotificationThreshold="1" NotificationThresholdTime="1" NotificationThresholdTimeType="1" MailFromAddress="" MailToAddress="" />
+</LogConfig>

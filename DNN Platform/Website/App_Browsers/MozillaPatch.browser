@@ -1,0 +1,19 @@
+﻿<browsers>
+
+	<!-- sample UA "Mozilla/5.0+(X11;+U;+Linux+i686;+en-US;+rv:1.9.0.10)+Gecko/2009042523+Ubuntu/9.04+(jaunty)+Firefox/3.0.10" -->
+	<browser id="LinuxFirefox" parentID="MozillaRV">
+		<identification>
+			<userAgent match="Firefox" />
+			<userAgent match="Gecko\/\d+ .* Firefox\/(?'version'(?'major'\d+)(?'minor'\.[.\d]*))" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser"                         value="Firefox" />
+			<capability name="majorversion"                    value="${major}" />
+			<capability name="minorversion"                    value="${minor}" />
+			<capability name="version"                         value="${version}" />
+			<capability name="type"                            value="Firefox${version}" />
+		</capabilities>
+	</browser>
+
+</browsers>

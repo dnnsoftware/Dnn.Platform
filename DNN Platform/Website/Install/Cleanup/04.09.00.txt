@@ -1,0 +1,44 @@
+﻿' Remove uninstalled module packages that have new versions in distribution.
+Install\Module\Documents_03.01.06_Install.resources
+Install\Module\Links_03.03.07_Install.zip
+Install\Module\Repository_03.01.13_Install.resources
+Install\Module\Survey_04.01.10_Install.resources
+Install\Module\UserDefinedTable_03.04.00_Install.resources
+Install\Module\UserDefinedTable_03.05.00_Install.resources
+Install\Module\Wiki_04.00.01_Install.resources
+
+' Remove old files from the FCK Editor provider.
+Providers\HtmlEditorProviders\Fck\FCKeditor\_whatsnew.html
+Providers\HtmlEditorProviders\Fck\FCKeditor\_documentation.html
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\fckblank.html
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\css\behaviors\hiddenfield.htc
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\css\behaviors\hiddenfield.gif
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\lang\_getfontformat.html
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\classes\fckstylesloader.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\classes\fckstyledef.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\classes\fckstyledef_gecko.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\classes\fckstyledef_ie.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fck_1_ie.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fck_1.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fckdialog_ie.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fck_2_gecko.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fckundo_gecko.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fck_2.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fck_1_gecko.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fck_2_ie.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fckdialog_gecko.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\_source\internals\fckundo_ie.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey.html
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_find.html
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_about\lgpl.html
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\common\fcknumericfield.htc
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\common\moz-bindings.xml
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey\data.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey\dialogue.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey\00.gif
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey\diacritic.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey\multihexa.js
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey\fck_universalkey.css
+Providers\HtmlEditorProviders\Fck\FCKeditor\editor\dialog\fck_universalkey\keyboard_layout.gif
+Providers\HtmlEditorProviders\Fck\IE Custom\Intructions.Text
+Providers\HtmlEditorProviders\Fck\IE Custom\common\fck_dialog_common.js

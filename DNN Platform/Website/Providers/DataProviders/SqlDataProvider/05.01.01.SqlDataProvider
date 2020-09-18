@@ -1,0 +1,298 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/* Fix bug in changing the primary key of EventLog Table */
+/*********************************************************/
+
+--Some scenarios had the primary key as PK_{objectQualifier}EventLog
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'PK_{objectQualifier}EventLog'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}EventLog
+			DROP CONSTRAINT PK_{objectQualifier}EventLog
+		
+		ALTER TABLE {databaseOwner}{objectQualifier}EventLog
+			ADD CONSTRAINT PK_{objectQualifier}EventLogMaster PRIMARY KEY CLUSTERED ( LogEventID ) 
+	END	
+GO
+
+/* Update GetRole Stored Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRole]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRole
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetRole
+	@RoleId   int,
+	@PortalID int
+AS
+	SELECT *
+	FROM   {databaseOwner}{objectQualifier}Roles
+	WHERE  RoleId = @RoleId
+		AND    PortalId = @PortalID
+GO
+
+/* Update GetRoleByName Stored Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleByName]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRoleByName
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetRoleByName
+	@PortalID int,
+	@RoleName nvarchar(50)
+AS
+	SELECT *
+	FROM   {databaseOwner}{objectQualifier}Roles
+	WHERE  PortalId = @PortalID 
+		AND RoleName = @RoleName
+GO
+
+/* Update GetRolesByGroup Stored Procedure */
+/*******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRolesByGroup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRolesByGroup
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetRolesByGroup
+
+	@RoleGroupId     int,
+	@PortalId        int
+
+AS
+
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+		   'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+		   'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+		   'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+		   'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+		   'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+		   'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+		   'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+		   R.RSVPCode,
+		   R.IconFile,
+		   R.CreatedByUserID,
+		   R.CreatedOnDate,
+		   R.LastModifiedByUserID,
+		   R.LastModifiedOnDate
+	FROM {databaseOwner}{objectQualifier}Roles R
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 on R.BillingFrequency = L1.Value and L1.ListName = 'Frequency' 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 on R.TrialFrequency = L2.Value and L2.ListName = 'Frequency' 
+	WHERE  (RoleGroupId = @RoleGroupId OR (RoleGroupId IS NULL AND @RoleGroupId IS NULL))
+		AND R.PortalId = @PortalId
+	ORDER BY R.RoleName
+GO
+
+/* Update GetPortalRoles Stored Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalRoles
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalRoles
+	@PortalId     int
+
+AS
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+		   'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+		   'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+		   'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+		   'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+		   'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+		   'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+		   'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+		   R.RSVPCode,
+		   R.IconFile,
+		   R.CreatedByUserID,
+		   R.CreatedOnDate,
+		   R.LastModifiedByUserID,
+		   R.LastModifiedOnDate
+	FROM {databaseOwner}{objectQualifier}Roles R
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 ON R.BillingFrequency = L1.Value AND L1.ListName='Frequency'
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 ON R.TrialFrequency = L2.Value AND L2.ListName='Frequency'
+	WHERE  ( R.PortalId = @PortalId OR R.PortalId is null )
+	ORDER BY R.RoleName
+GO
+
+/* Update GetRoleGroups Stored Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleGroups]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRoleGroups
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetRoleGroups
+	@PortalID		int
+AS
+	SELECT *
+		FROM {databaseOwner}{objectQualifier}RoleGroups
+		WHERE  PortalId = @PortalID
+		ORDER BY RoleGroupName    
+GO
+
+/* Update GetRoleGroup Stored Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleGroup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRoleGroup
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetRoleGroup
+	@PortalID		int,
+	@RoleGroupId    int
+AS
+	SELECT *
+		FROM {databaseOwner}{objectQualifier}RoleGroups
+		WHERE  (RoleGroupId = @RoleGroupId OR RoleGroupId IS NULL AND @RoleGroupId IS NULL)
+			AND    PortalId = @PortalID
+GO
+
+/* Update GetRoleGroupByName Stored Procedure */
+/**********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleGroupByName]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRoleGroupByName
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetRoleGroupByName
+	@PortalID		int,
+	@RoleGroupId    int
+AS
+	SELECT *
+		FROM {databaseOwner}{objectQualifier}RoleGroups
+		WHERE  (RoleGroupId = @RoleGroupId OR RoleGroupId IS NULL AND @RoleGroupId IS NULL)
+			AND    PortalId = @PortalID
+GO
+
+/* Fix bug in drop index in 5.0 script - replay failed part of script */
+/**********************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Packages DROP CONSTRAINT DF_{objectQualifier}Packages_IsSystemPackage
+
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}Packages
+	(
+	PackageID int NOT NULL IDENTITY (1, 1),
+	PortalID int NULL,
+	Name nvarchar(128) NOT NULL,
+	FriendlyName nvarchar(250) NOT NULL,
+	[Description] nvarchar(2000) NULL,
+	PackageType nvarchar(100) NOT NULL,
+	[Version] nvarchar(50) NOT NULL,
+	License ntext NULL,
+	Manifest ntext NULL,
+	[Owner] nvarchar(100) NULL,
+	Organization nvarchar(100) NULL,
+	Url nvarchar(250) NULL,
+	Email nvarchar(100) NULL,
+	ReleaseNotes ntext NULL,
+	IsSystemPackage bit NOT NULL,
+	CreatedByUserID int NULL,
+	CreatedOnDate datetime NULL,
+	LastModifiedByUserID int NULL,
+	LastModifiedOnDate datetime NULL
+	)
+	
+ALTER TABLE {databaseOwner}Tmp_{objectQualifier}Packages ADD CONSTRAINT DF_{objectQualifier}Packages_IsSystemPackage DEFAULT ((0)) FOR IsSystemPackage
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Packages ON
+
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Packages)
+	 EXEC('INSERT INTO {databaseOwner}Tmp_{objectQualifier}Packages (PackageID, PortalID, Name, FriendlyName, Description, PackageType, Version, License, Manifest, Owner, Organization, Url, Email, ReleaseNotes, IsSystemPackage, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+		SELECT PackageID, PortalID, Name, FriendlyName, Description, PackageType, Version, License, Manifest, Owner, Organization, Url, Email, ReleaseNotes, IsSystemPackage, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate FROM {databaseOwner}{objectQualifier}Packages WITH (HOLDLOCK TABLOCKX)')
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Packages OFF
+
+ALTER TABLE {databaseOwner}{objectQualifier}Assemblies DROP CONSTRAINT FK_{objectQualifier}PackageAssemblies_PackageAssemblies
+
+ALTER TABLE {databaseOwner}{objectQualifier}DesktopModules DROP CONSTRAINT FK_{objectQualifier}DesktopModules_{objectQualifier}Packages
+
+ALTER TABLE {databaseOwner}{objectQualifier}LanguagePacks DROP CONSTRAINT FK_{objectQualifier}LanguagePacks_{objectQualifier}Packages
+
+DROP TABLE {databaseOwner}{objectQualifier}Packages
+
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}Packages', N'{objectQualifier}Packages', 'OBJECT' 
+
+ALTER TABLE {databaseOwner}{objectQualifier}Packages ADD CONSTRAINT PK_{objectQualifier}Packages PRIMARY KEY CLUSTERED ( PackageID )
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Packages ON {databaseOwner}{objectQualifier}Packages ( Owner, Name, PortalID )
+
+ALTER TABLE {databaseOwner}{objectQualifier}LanguagePacks ADD CONSTRAINT FK_{objectQualifier}LanguagePacks_{objectQualifier}Packages FOREIGN KEY ( PackageID ) REFERENCES {databaseOwner}{objectQualifier}Packages ( PackageID ) ON UPDATE  NO ACTION ON DELETE  CASCADE 
+	
+ALTER TABLE {databaseOwner}{objectQualifier}DesktopModules WITH NOCHECK ADD CONSTRAINT FK_{objectQualifier}DesktopModules_{objectQualifier}Packages FOREIGN KEY ( PackageID ) REFERENCES {databaseOwner}{objectQualifier}Packages ( PackageID ) ON UPDATE  CASCADE ON DELETE  CASCADE 
+
+ALTER TABLE {databaseOwner}{objectQualifier}Assemblies ADD CONSTRAINT FK_{objectQualifier}PackageAssemblies_PackageAssemblies FOREIGN KEY ( PackageID ) REFERENCES {databaseOwner}{objectQualifier}Packages ( PackageID ) ON UPDATE  NO ACTION ON DELETE  CASCADE 
+	
+GO
+
+/* Fix bug in upgrade.cs that incorrectly points a module control at an image */
+/******************************************************************************/
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET  ControlSrc='DesktopModules/Admin/Extensions/Editors/ImportModuleDefinition.ascx' where controlkey='ImportModuleDefinition'
+
+GO
+
+
+/* Updated GetTabsByPackageID Procedure to use tabs view instead of tabs table */
+/****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabsByPackageID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+	@PortalID INT,
+	@PackageID INT,
+	@ForHost BIT
+AS
+
+IF (@ForHost = 1)
+	-- Get all host pages and portal pages
+	SELECT DISTINCT T.*
+	FROM {databaseOwner}{objectQualifier}vw_Modules M 
+		INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM 
+			ON M.DesktopModuleID=DM.DesktopModuleID
+		INNER JOIN {databaseOwner}{objectQualifier}vw_Tabs T 
+			ON T.TabID=M.TabID
+	WHERE DM.PackageID=@PackageID
+		AND T.IsDeleted=0
+		AND M.IsDeleted=0
+	ORDER BY T.PortalID, T.TabName
+ELSE
+	-- Get pages for a specific portal (or host pages only)
+	SELECT DISTINCT T.*
+	FROM {databaseOwner}{objectQualifier}vw_Modules M 
+		INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM 
+			ON M.DesktopModuleID=DM.DesktopModuleID
+		INNER JOIN {databaseOwner}{objectQualifier}vw_Tabs T 
+			ON T.TabID=M.TabID
+	WHERE DM.PackageID=@PackageID
+		AND ((@PortalID IS NULL AND T.PortalID IS NULL) OR T.PortalID = @PortalID)
+		AND T.IsDeleted=0
+		AND M.IsDeleted=0
+	ORDER BY T.TabName
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

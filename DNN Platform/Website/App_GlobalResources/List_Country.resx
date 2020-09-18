@@ -1,0 +1,783 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AC.Text">
+    <value></value>
+  </data>
+  <data name="AD.Text">
+    <value></value>
+  </data>
+  <data name="AE.Text">
+    <value></value>
+  </data>
+  <data name="AF.Text">
+    <value></value>
+  </data>
+  <data name="AG.Text">
+    <value></value>
+  </data>
+  <data name="AI.Text">
+    <value></value>
+  </data>
+  <data name="AL.Text">
+    <value></value>
+  </data>
+  <data name="AM.Text">
+    <value></value>
+  </data>
+  <data name="AN.Text">
+    <value></value>
+  </data>
+  <data name="AO.Text">
+    <value></value>
+  </data>
+  <data name="AQ.Text">
+    <value></value>
+  </data>
+  <data name="AR.Text">
+    <value></value>
+  </data>
+  <data name="AS.Text">
+    <value></value>
+  </data>
+  <data name="AT.Text">
+    <value></value>
+  </data>
+  <data name="AU.Text">
+    <value></value>
+  </data>
+  <data name="AW.Text">
+    <value></value>
+  </data>
+  <data name="AX.Text">
+    <value></value>
+  </data>
+  <data name="AZ.Text">
+    <value></value>
+  </data>
+  <data name="BA.Text">
+    <value></value>
+  </data>
+  <data name="BB.Text">
+    <value></value>
+  </data>
+  <data name="BD.Text">
+    <value></value>
+  </data>
+  <data name="BE.Text">
+    <value></value>
+  </data>
+  <data name="BF.Text">
+    <value></value>
+  </data>
+  <data name="BG.Text">
+    <value></value>
+  </data>
+  <data name="BH.Text">
+    <value></value>
+  </data>
+  <data name="BI.Text">
+    <value></value>
+  </data>
+  <data name="BJ.Text">
+    <value></value>
+  </data>
+  <data name="BL.Text">
+    <value></value>
+  </data>
+  <data name="BM.Text">
+    <value></value>
+  </data>
+  <data name="BN.Text">
+    <value></value>
+  </data>
+  <data name="BO.Text">
+    <value></value>
+  </data>
+  <data name="BR.Text">
+    <value></value>
+  </data>
+  <data name="BS.Text">
+    <value></value>
+  </data>
+  <data name="BT.Text">
+    <value></value>
+  </data>
+  <data name="BV.Text">
+    <value></value>
+  </data>
+  <data name="BW.Text">
+    <value></value>
+  </data>
+  <data name="BY.Text">
+    <value></value>
+  </data>
+  <data name="BZ.Text">
+    <value></value>
+  </data>
+  <data name="CA.Text">
+    <value></value>
+  </data>
+  <data name="CC.Text">
+    <value></value>
+  </data>
+  <data name="CD.Text">
+    <value></value>
+  </data>
+  <data name="CF.Text">
+    <value></value>
+  </data>
+  <data name="CG.Text">
+    <value></value>
+  </data>
+  <data name="CH.Text">
+    <value></value>
+  </data>
+  <data name="CI.Text">
+    <value></value>
+  </data>
+  <data name="CK.Text">
+    <value></value>
+  </data>
+  <data name="CL.Text">
+    <value></value>
+  </data>
+  <data name="CM.Text">
+    <value></value>
+  </data>
+  <data name="CN.Text">
+    <value></value>
+  </data>
+  <data name="CO.Text">
+    <value></value>
+  </data>
+  <data name="CP.Text">
+    <value></value>
+  </data>
+  <data name="CR.Text">
+    <value></value>
+  </data>
+  <data name="CS.Text">
+    <value></value>
+  </data>
+  <data name="CU.Text">
+    <value></value>
+  </data>
+  <data name="CV.Text">
+    <value></value>
+  </data>
+  <data name="CX.Text">
+    <value></value>
+  </data>
+  <data name="CY.Text">
+    <value></value>
+  </data>
+  <data name="CZ.Text">
+    <value></value>
+  </data>
+  <data name="DE.Text">
+    <value></value>
+  </data>
+  <data name="DG.Text">
+    <value></value>
+  </data>
+  <data name="DJ.Text">
+    <value></value>
+  </data>
+  <data name="DK.Text">
+    <value></value>
+  </data>
+  <data name="DM.Text">
+    <value></value>
+  </data>
+  <data name="DO.Text">
+    <value></value>
+  </data>
+  <data name="DZ.Text">
+    <value></value>
+  </data>
+  <data name="EA.Text">
+    <value></value>
+  </data>
+  <data name="EC.Text">
+    <value></value>
+  </data>
+  <data name="EE.Text">
+    <value></value>
+  </data>
+  <data name="EG.Text">
+    <value></value>
+  </data>
+  <data name="EH.Text">
+    <value></value>
+  </data>
+  <data name="ER.Text">
+    <value></value>
+  </data>
+  <data name="ES.Text">
+    <value></value>
+  </data>
+  <data name="ET.Text">
+    <value></value>
+  </data>
+  <data name="EU.Text">
+    <value></value>
+  </data>
+  <data name="FI.Text">
+    <value></value>
+  </data>
+  <data name="FJ.Text">
+    <value></value>
+  </data>
+  <data name="FK.Text">
+    <value></value>
+  </data>
+  <data name="FM.Text">
+    <value></value>
+  </data>
+  <data name="FO.Text">
+    <value></value>
+  </data>
+  <data name="FR.Text">
+    <value></value>
+  </data>
+  <data name="GA.Text">
+    <value></value>
+  </data>
+  <data name="GB.Text">
+    <value></value>
+  </data>
+  <data name="GD.Text">
+    <value></value>
+  </data>
+  <data name="GE.Text">
+    <value></value>
+  </data>
+  <data name="GF.Text">
+    <value></value>
+  </data>
+  <data name="GG.Text">
+    <value></value>
+  </data>
+  <data name="GH.Text">
+    <value></value>
+  </data>
+  <data name="GI.Text">
+    <value></value>
+  </data>
+  <data name="GL.Text">
+    <value></value>
+  </data>
+  <data name="GM.Text">
+    <value></value>
+  </data>
+  <data name="GN.Text">
+    <value></value>
+  </data>
+  <data name="GP.Text">
+    <value></value>
+  </data>
+  <data name="GQ.Text">
+    <value></value>
+  </data>
+  <data name="GR.Text">
+    <value></value>
+  </data>
+  <data name="GS.Text">
+    <value></value>
+  </data>
+  <data name="GT.Text">
+    <value></value>
+  </data>
+  <data name="GU.Text">
+    <value></value>
+  </data>
+  <data name="GW.Text">
+    <value></value>
+  </data>
+  <data name="GY.Text">
+    <value></value>
+  </data>
+  <data name="HK.Text">
+    <value></value>
+  </data>
+  <data name="HM.Text">
+    <value></value>
+  </data>
+  <data name="HN.Text">
+    <value></value>
+  </data>
+  <data name="HR.Text">
+    <value></value>
+  </data>
+  <data name="HT.Text">
+    <value></value>
+  </data>
+  <data name="HU.Text">
+    <value></value>
+  </data>
+  <data name="IC.Text">
+    <value></value>
+  </data>
+  <data name="ID.Text">
+    <value></value>
+  </data>
+  <data name="IE.Text">
+    <value></value>
+  </data>
+  <data name="IL.Text">
+    <value></value>
+  </data>
+  <data name="IM.Text">
+    <value></value>
+  </data>
+  <data name="IN.Text">
+    <value></value>
+  </data>
+  <data name="IO.Text">
+    <value></value>
+  </data>
+  <data name="IQ.Text">
+    <value></value>
+  </data>
+  <data name="IR.Text">
+    <value></value>
+  </data>
+  <data name="IS.Text">
+    <value></value>
+  </data>
+  <data name="IT.Text">
+    <value></value>
+  </data>
+  <data name="JE.Text">
+    <value></value>
+  </data>
+  <data name="JM.Text">
+    <value></value>
+  </data>
+  <data name="JO.Text">
+    <value></value>
+  </data>
+  <data name="JP.Text">
+    <value></value>
+  </data>
+  <data name="KE.Text">
+    <value></value>
+  </data>
+  <data name="KG.Text">
+    <value></value>
+  </data>
+  <data name="KH.Text">
+    <value></value>
+  </data>
+  <data name="KI.Text">
+    <value></value>
+  </data>
+  <data name="KM.Text">
+    <value></value>
+  </data>
+  <data name="KN.Text">
+    <value></value>
+  </data>
+  <data name="KP.Text">
+    <value></value>
+  </data>
+  <data name="KR.Text">
+    <value></value>
+  </data>
+  <data name="KW.Text">
+    <value></value>
+  </data>
+  <data name="KY.Text">
+    <value></value>
+  </data>
+  <data name="KZ.Text">
+    <value></value>
+  </data>
+  <data name="LA.Text">
+    <value></value>
+  </data>
+  <data name="LB.Text">
+    <value></value>
+  </data>
+  <data name="LC.Text">
+    <value></value>
+  </data>
+  <data name="LI.Text">
+    <value></value>
+  </data>
+  <data name="LK.Text">
+    <value></value>
+  </data>
+  <data name="LR.Text">
+    <value></value>
+  </data>
+  <data name="LS.Text">
+    <value></value>
+  </data>
+  <data name="LT.Text">
+    <value></value>
+  </data>
+  <data name="LU.Text">
+    <value></value>
+  </data>
+  <data name="LV.Text">
+    <value></value>
+  </data>
+  <data name="LY.Text">
+    <value></value>
+  </data>
+  <data name="MA.Text">
+    <value></value>
+  </data>
+  <data name="MC.Text">
+    <value></value>
+  </data>
+  <data name="MD.Text">
+    <value></value>
+  </data>
+  <data name="ME.Text">
+    <value></value>
+  </data>
+  <data name="MF.Text">
+    <value></value>
+  </data>
+  <data name="MG.Text">
+    <value></value>
+  </data>
+  <data name="MH.Text">
+    <value></value>
+  </data>
+  <data name="MK.Text">
+    <value></value>
+  </data>
+  <data name="ML.Text">
+    <value></value>
+  </data>
+  <data name="MM.Text">
+    <value></value>
+  </data>
+  <data name="MN.Text">
+    <value></value>
+  </data>
+  <data name="MO.Text">
+    <value></value>
+  </data>
+  <data name="MP.Text">
+    <value></value>
+  </data>
+  <data name="MQ.Text">
+    <value></value>
+  </data>
+  <data name="MR.Text">
+    <value></value>
+  </data>
+  <data name="MS.Text">
+    <value></value>
+  </data>
+  <data name="MT.Text">
+    <value></value>
+  </data>
+  <data name="MU.Text">
+    <value></value>
+  </data>
+  <data name="MV.Text">
+    <value></value>
+  </data>
+  <data name="MW.Text">
+    <value></value>
+  </data>
+  <data name="MX.Text">
+    <value></value>
+  </data>
+  <data name="MY.Text">
+    <value></value>
+  </data>
+  <data name="MZ.Text">
+    <value></value>
+  </data>
+  <data name="NA.Text">
+    <value></value>
+  </data>
+  <data name="NC.Text">
+    <value></value>
+  </data>
+  <data name="NE.Text">
+    <value></value>
+  </data>
+  <data name="NF.Text">
+    <value></value>
+  </data>
+  <data name="NG.Text">
+    <value></value>
+  </data>
+  <data name="NI.Text">
+    <value></value>
+  </data>
+  <data name="NL.Text">
+    <value></value>
+  </data>
+  <data name="NO.Text">
+    <value></value>
+  </data>
+  <data name="NP.Text">
+    <value></value>
+  </data>
+  <data name="NR.Text">
+    <value></value>
+  </data>
+  <data name="NU.Text">
+    <value></value>
+  </data>
+  <data name="NZ.Text">
+    <value></value>
+  </data>
+  <data name="OM.Text">
+    <value></value>
+  </data>
+  <data name="PA.Text">
+    <value></value>
+  </data>
+  <data name="PE.Text">
+    <value></value>
+  </data>
+  <data name="PF.Text">
+    <value></value>
+  </data>
+  <data name="PG.Text">
+    <value></value>
+  </data>
+  <data name="PH.Text">
+    <value></value>
+  </data>
+  <data name="PK.Text">
+    <value></value>
+  </data>
+  <data name="PL.Text">
+    <value></value>
+  </data>
+  <data name="PM.Text">
+    <value></value>
+  </data>
+  <data name="PN.Text">
+    <value></value>
+  </data>
+  <data name="PR.Text">
+    <value></value>
+  </data>
+  <data name="PS.Text">
+    <value></value>
+  </data>
+  <data name="PT.Text">
+    <value></value>
+  </data>
+  <data name="PW.Text">
+    <value></value>
+  </data>
+  <data name="PY.Text">
+    <value></value>
+  </data>
+  <data name="QA.Text">
+    <value></value>
+  </data>
+  <data name="QO.Text">
+    <value></value>
+  </data>
+  <data name="RE.Text">
+    <value></value>
+  </data>
+  <data name="RO.Text">
+    <value></value>
+  </data>
+  <data name="RS.Text">
+    <value></value>
+  </data>
+  <data name="RU.Text">
+    <value></value>
+  </data>
+  <data name="RW.Text">
+    <value></value>
+  </data>
+  <data name="SA.Text">
+    <value></value>
+  </data>
+  <data name="SB.Text">
+    <value></value>
+  </data>
+  <data name="SC.Text">
+    <value></value>
+  </data>
+  <data name="SD.Text">
+    <value></value>
+  </data>
+  <data name="SE.Text">
+    <value></value>
+  </data>
+  <data name="SG.Text">
+    <value></value>
+  </data>
+  <data name="SH.Text">
+    <value></value>
+  </data>
+  <data name="SI.Text">
+    <value></value>
+  </data>
+  <data name="SJ.Text">
+    <value></value>
+  </data>
+  <data name="SK.Text">
+    <value></value>
+  </data>
+  <data name="SL.Text">
+    <value></value>
+  </data>
+  <data name="SM.Text">
+    <value></value>
+  </data>
+  <data name="SN.Text">
+    <value></value>
+  </data>
+  <data name="SO.Text">
+    <value></value>
+  </data>
+  <data name="SR.Text">
+    <value></value>
+  </data>
+  <data name="ST.Text">
+    <value></value>
+  </data>
+  <data name="SV.Text">
+    <value></value>
+  </data>
+  <data name="SY.Text">
+    <value></value>
+  </data>
+  <data name="SZ.Text">
+    <value></value>
+  </data>
+  <data name="TA.Text">
+    <value></value>
+  </data>
+  <data name="TC.Text">
+    <value></value>
+  </data>
+  <data name="TD.Text">
+    <value></value>
+  </data>
+  <data name="TF.Text">
+    <value></value>
+  </data>
+  <data name="TG.Text">
+    <value></value>
+  </data>
+  <data name="TH.Text">
+    <value></value>
+  </data>
+  <data name="TJ.Text">
+    <value></value>
+  </data>
+  <data name="TK.Text">
+    <value></value>
+  </data>
+  <data name="TL.Text">
+    <value></value>
+  </data>
+  <data name="TM.Text">
+    <value></value>
+  </data>
+  <data name="TN.Text">
+    <value></value>
+  </data>
+  <data name="TO.Text">
+    <value></value>
+  </data>
+  <data name="TR.Text">
+    <value></value>
+  </data>
+  <data name="TT.Text">
+    <value></value>
+  </data>
+  <data name="TV.Text">
+    <value></value>
+  </data>
+  <data name="TW.Text">
+    <value></value>
+  </data>
+  <data name="TZ.Text">
+    <value></value>
+  </data>
+  <data name="UA.Text">
+    <value></value>
+  </data>
+  <data name="UG.Text">
+    <value></value>
+  </data>
+  <data name="UM.Text">
+    <value></value>
+  </data>
+  <data name="US.Text">
+    <value></value>
+  </data>
+  <data name="UY.Text">
+    <value></value>
+  </data>
+  <data name="UZ.Text">
+    <value></value>
+  </data>
+  <data name="VA.Text">
+    <value></value>
+  </data>
+  <data name="VC.Text">
+    <value></value>
+  </data>
+  <data name="VE.Text">
+    <value></value>
+  </data>
+  <data name="VG.Text">
+    <value></value>
+  </data>
+  <data name="VI.Text">
+    <value></value>
+  </data>
+  <data name="VN.Text">
+    <value></value>
+  </data>
+  <data name="VU.Text">
+    <value></value>
+  </data>
+  <data name="WF.Text">
+    <value></value>
+  </data>
+  <data name="WS.Text">
+    <value></value>
+  </data>
+  <data name="YE.Text">
+    <value></value>
+  </data>
+  <data name="YT.Text">
+    <value></value>
+  </data>
+  <data name="ZA.Text">
+    <value></value>
+  </data>
+  <data name="ZM.Text">
+    <value></value>
+  </data>
+  <data name="ZW.Text">
+    <value></value>
+  </data>
+  <data name="ZZ.Text">
+    <value></value>
+  </data>
+</root>

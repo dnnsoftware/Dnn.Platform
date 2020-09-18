@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F9CE7C63-C729-4E3A-A266-6B23D75A1247}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotNetNuke.Tests.Urls</RootNamespace>
+    <AssemblyName>DotNetNuke.Tests.Urls</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Evoq.Content\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetNuke.HttpModules">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.log4net">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PetaPoco">
+      <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="ExtensionUrlProviderControllerTests.cs" />
+    <Compile Include="FriendlyUrlTests.cs" />
+    <Compile Include="TestUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UrlAssert.cs" />
+    <Compile Include="UrlRewriteTests.cs" />
+    <Compile Include="UrlTestBase.cs" />
+    <Compile Include="UrlTestFactoryClass.cs" />
+    <Compile Include="UrlTestHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <None Include="..\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="packages.config" />
+    <None Include="TestFiles\FriendlyUrl\PrimaryPortalAlias\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\PrimaryPortalAlias\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\Regex\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\Regex\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\DoNotRedirect\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\DoNotRedirect\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_5318.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_3361_dic.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_3361.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\SecureRedirect\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\SecureRedirect\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias_Default\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias_Default\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\ForwardExternalUrl\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\ForwardExternalUrl\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\Regex\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\Regex\TestFile.csv" />
+    <None Include="TestFiles\Users.csv" />
+    <None Include="DotNetNuke.config" />
+    <None Include="SiteUrls.config" />
+    <None Include="TestFiles\Aliases.csv" />
+    <None Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\BaseTestList.csv" />
+    <None Include="TestFiles\FriendlyUrl\Diacritics\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\Diacritics\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\ReplaceCharsTestList.csv" />
+    <None Include="TestFiles\FriendlyUrl\DoubleChars\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\DoubleChars\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\IllegalChars\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\IllegalChars\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\SpaceEncoding\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\SpaceEncoding\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\CustomPageName\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\CustomPageName\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\ImprovedFriendlyUrl\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\ForceLowerCase\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\ForceLowerCase\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\IncludePageName\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\IncludePageName\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\PageExtension\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\LanguageParameter\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\LanguageParameter\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\ReplaceSpace\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\ReplaceSpace\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\ReverseLanguageParameter\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\ReverseLanguageParameter\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\ImprovedTestList.csv" />
+    <None Include="TestFiles\FriendlyUrl\VanityUrl\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\VanityUrl\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\BasicUrlRewrite\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\CanonicalRedirect\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\CanonicalRedirect\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\VanityUrl\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\VanityUrl\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\DeletedTabHandling\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\DeletedTabHandling\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\ForceLowerCase\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\ForceLowerCase\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\ForcePortalDefaultLanguage\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\ForcePortalDefaultLanguage\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\Diacritics\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\Diacritics\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\DoubleChars\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\DoubleChars\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\IllegalChars\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\IllegalChars\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\CustomPageName\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\CustomPageName\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\ReplaceCharsTestList.csv" />
+    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\SiteRootRedirect\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\SiteRootRedirect\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\SearchFriendly\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\SearchFriendly\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\HumanFriendly\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\HumanFriendly\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\Exclude\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\Exclude\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\ExtensionLess\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\ExtensionLess\TestFile.csv" />
+    <None Include="TestFiles\FriendlyUrl\PageExtension\Settings.csv" />
+    <None Include="TestFiles\FriendlyUrl\ImprovedFriendlyUrl\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\LanguageParameter\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\LanguageParameter\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\ReplaceSpace\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\ReplaceSpace\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\ReverseLanguageParameter\Settings.csv" />
+    <None Include="TestFiles\UrlRewrite\ReverseLanguageParameter\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\TestList.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
+      <Project>{5AECE021-E449-4A7F-BF82-2FA7B236ED3E}</Project>
+      <Name>DotNetNuke.Tests.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestFiles\UrlRewrite\BasicUrlRewrite\TestFile.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\Setup.sql" />
+    <Content Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\TearDown.sql" />
+    <Content Include="TestFiles\FriendlyUrl\TearDown.sql" />
+    <Content Include="TestFiles\FriendlyUrl\Setup.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

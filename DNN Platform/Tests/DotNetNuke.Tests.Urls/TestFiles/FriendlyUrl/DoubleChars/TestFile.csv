@@ -1,0 +1,9 @@
+﻿Test,								TestPageName,		Scheme,		Page Name,	Params,					Expected Url,	
+Page Single,						About$Us,			http://,	About Us,	,						http://{alias}/About_Us.aspx
+Edit Page Single,					About$Us,			http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/About_Us/ctl/Edit/mid/100.aspx
+Page Double,						About$$Us,			http://,	About Us,	,						http://{alias}/About_Us.aspx
+Edit Page Double,					About$$Us,			http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/About_Us/ctl/Edit/mid/100.aspx
+Page Triple,						About$$$Us,			http://,	About Us,	,						http://{alias}/About_Us.aspx
+Edit Page Triple,					About$$$Us,			http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/About_Us/ctl/Edit/mid/100.aspx
+Page Two Periods,					About..Us,			http://,	About Us,	,						http://{alias}/AboutUs.aspx
+Edit Page Two Periods,				About..Us,			http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/AboutUs/ctl/Edit/mid/100.aspx

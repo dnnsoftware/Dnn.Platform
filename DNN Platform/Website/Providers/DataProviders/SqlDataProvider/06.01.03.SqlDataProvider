@@ -1,0 +1,91 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+ALTER TABLE {databaseOwner}[{objectQualifier}Files] ALTER COLUMN [Folder] NVARCHAR(246) NULL
+GO
+
+/***** Fix Issue 18967: Join MetaData to get meta name *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetMetaData]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetMetaData]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetMetaData] 
+	@ContentItemId   int
+AS
+	SELECT md.MetaDataName, cmd.MetaDataValue
+	FROM {databaseOwner}[{objectQualifier}ContentItems_MetaData] cmd
+	JOIN {databaseOwner}[{objectQualifier}MetaData] md on (cmd.MetaDataID = md.MetaDataID)
+	WHERE ContentItemId = @ContentItemId
+GO
+/***** End Fix Issue 18967 *****/
+
+/***** Fix Issue 18976: SI: Foreign Key Issue *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateUserProfileProperty]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserProfileProperty]
+
+	@ProfileID				int,
+	@UserID					int,
+	@PropertyDefinitionID	int,
+	@PropertyValue			ntext,
+	@Visibility				int,
+	@LastUpdatedDate		datetime
+
+AS
+IF @ProfileID IS NULL OR @ProfileID = -1
+	-- Try the UserID/PropertyDefinitionID to see if the Profile property exists
+	SELECT @ProfileID = ProfileID
+		FROM   {databaseOwner}{objectQualifier}UserProfile
+		WHERE  UserID = @UserID AND PropertyDefinitionID = @PropertyDefinitionID
+ 
+IF @ProfileID IS NOT NULL
+	-- Update Property
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}UserProfile
+			SET PropertyValue = case when (DATALENGTH(@PropertyValue) > 7500) then NULL else @PropertyValue end,
+				PropertyText = case when (DATALENGTH(@PropertyValue) > 7500) then @PropertyValue else NULL end,
+				Visibility = @Visibility,
+				LastUpdatedDate = @LastUpdatedDate
+			WHERE  ProfileID = @ProfileID
+		SELECT @ProfileID
+	END
+ELSE IF @UserID IS NOT NULL AND @UserID > -1
+	-- Insert New Property
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}UserProfile (
+			UserID,
+			PropertyDefinitionID,
+			PropertyValue,
+			PropertyText,
+			Visibility,
+			LastUpdatedDate
+		  )
+		VALUES (
+			@UserID,
+			@PropertyDefinitionID,
+			case when (DATALENGTH(@PropertyValue) > 7500) then NULL else @PropertyValue end,
+			case when (DATALENGTH(@PropertyValue) > 7500) then @PropertyValue else NULL end,
+			@Visibility,
+			@LastUpdatedDate
+		  )
+
+	SELECT SCOPE_IDENTITY()
+END
+
+GO
+
+/***** End Fix Issue 18976 *****/

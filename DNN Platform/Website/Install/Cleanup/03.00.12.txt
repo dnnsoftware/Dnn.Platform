@@ -1,0 +1,38 @@
+bin\DotNetNuke.HttpModules.AutoUpgrade.dll
+bin\DotNetNuke.HttpModules.Caching.dll
+bin\DotNetNuke.HttpModules.Logging.dll
+bin\DotNetNuke.HttpModules.Scheduler.dll
+Components\Exceptions\DALException.vb
+Components\Providers\Logging\Event Logging\EventLogInfo.vb
+Components\Providers\Logging\Event Logging\EventLogTypeInfo.vb
+Components\Providers\Logging\Exception Logging\ExceptionLogInfo.vb
+Components\Security\Security.vb
+controls\CountryListBox\bin\CountryListBox.dll
+controls\DotNetNuke.WebControls\Bin\DotNetNuke.WebControls.dll
+controls\DotNetNuke.WebControls\Bin\DotNetNuke.WebUtility.dll
+controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll
+controls\MemberRole\Member Roles (Conf) (1101204) FINAL.doc
+js\Client API Tests\
+Portals\_default\Containers\DNN - Blue\
+Portals\_default\Containers\DNN - Gray\
+Portals\_default\Containers\DNN - Green\
+Portals\_default\Containers\DNN - Red\
+Portals\_default\Containers\DNN - Yellow\
+Portals\_default\Skins\DNN - Blue\
+Portals\_default\Skins\DNN - Gray\
+Portals\_default\Skins\DNN - Green\
+Portals\_default\Skins\DNN - Red\
+Portals\_default\Skins\DNN - Yellow\
+Portals\_default\DotNetNuke.install
+Portals\_default\DotNetNuke.install.resources
+Portals\_default\portal.template.txt
+Providers\DataProviders\SqlDataProvider\InstallRolesProfileMembership.sql
+Providers\DataProviders\SqlDataProvider\MK_SqlDataProvider.bat
+Providers\DataProviders\SqlDataProvider\MK_SqlDataProvider.rsp
+Providers\HtmlEditorProviders\Ftb3HtmlEditorProvider\ftb3\Languages\ca-CA.xml
+Providers\HtmlEditorProviders\Ftb3HtmlEditorProvider\ftb3\Languages\cz-CZ.xml
+Providers\HtmlEditorProviders\Ftb3HtmlEditorProvider\ftb3\Languages\en-en.xml
+nant.bat
+Upgrade.aspx
+Upgrade.aspx.resx
+Upgrade.aspx.vb

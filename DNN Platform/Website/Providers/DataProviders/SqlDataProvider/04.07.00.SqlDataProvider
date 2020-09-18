@@ -1,0 +1,336 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update ModuleControls for SupportPartialRendering */
+/*****************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Security/Roles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Security/EditRoles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Tabs/Tabs.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Tabs/ManageTabs.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Portal/SiteSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Users/Users.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Users/ManageUsers.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Vendors/Vendors.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Vendors/EditVendors.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Security/SecurityRoles.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Modules/ModuleSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Portal/Signup.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/ModuleDefinitions/ModuleDefinitions.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/ModuleDefinitions/EditModuleDefinition.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/ModuleDefinitions/EditModuleControl.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'admin/Host/HostSettings.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Logging/LogViewer.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Logging/EditLogTypes.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Scheduling/ViewSchedule.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Scheduling/EditSchedule.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Scheduling/ViewScheduleHistory.ascx'
+UPDATE {databaseOwner}{objectQualifier}ModuleControls SET SupportsPartialRendering = 1 WHERE ControlSrc = 'Admin/Scheduling/ViewScheduleStatus.ascx'
+
+GO
+
+/* Update RegisterAssembly Procedure */
+/*************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}RegisterAssembly]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}RegisterAssembly
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}RegisterAssembly
+	@PackageID      int,
+	@AssemblyName   nvarchar(250),
+	@Version		nvarchar(20)
+As
+	DECLARE @AssemblyID int
+	DECLARE @CurrentVersion nvarchar(20)
+	/*	@ReturnCode Values
+		0 - Assembly Does not Exist
+		1 - Older Version of Assembly Exists
+		2 - Assembly Already Registered
+	*/
+	DECLARE @ReturnCode int
+
+	-- First check if this assembly is registered to this package
+	SET @AssemblyID = (SELECT AssemblyID 
+							FROM {databaseOwner}{objectQualifier}Assemblies
+							WHERE PackageID = @PackageID
+								AND AssemblyName = @AssemblyName)
+
+	IF @AssemblyID IS NULL
+		BEGIN
+			-- AssemblyID is null (not registered) 
+			-- but assembly may be registerd by other packages so check for Max unstalled version
+			SET @CurrentVersion  = (SELECT Max(Version )
+										FROM {databaseOwner}{objectQualifier}Assemblies
+										WHERE AssemblyName = @AssemblyName)
+
+			IF @CurrentVersion IS NULL
+				-- Assembly Not Regsitered -  Set ReturnCode = 0, so assembly is copied
+				SET @ReturnCode = 0
+			ELSE
+				IF @Version > @CurrentVersion
+					-- Newer version - Set ReturnCode = 1, so assembly is copied
+					SET @ReturnCode = 1
+				ELSE
+					-- Older or Same Version - Set ReturnCode = 2, so assembly is not copied
+					SET @ReturnCode = 2
+			
+			-- Add an assembly regsitration for this package
+			INSERT INTO {databaseOwner}{objectQualifier}Assemblies (
+				PackageID,
+				AssemblyName,
+				Version
+			)
+			VALUES (
+				@PackageID,
+				@AssemblyName,
+				@Version
+			)
+		END
+	ELSE
+		BEGIN
+			-- AssemblyID is not null - Assembly is registered - test for version
+			SET @CurrentVersion  = (SELECT Version 
+										FROM {databaseOwner}{objectQualifier}Assemblies
+										WHERE AssemblyID = @AssemblyID)
+			
+			IF @Version > @CurrentVersion
+				BEGIN
+					-- Newer version - Update Assembly registration
+					UPDATE {databaseOwner}{objectQualifier}Assemblies
+					SET    Version = @Version
+					WHERE  AssemblyID = @AssemblyID
+
+					-- Set ReturnCode = 1, so assembly is copied
+					SET @ReturnCode = 1
+				END
+			ELSE
+				-- Older or Same Version - Set ReturnCode = 2, so assembly is not copied
+				SET @ReturnCode = 2
+		END
+
+	SELECT @ReturnCode
+GO
+
+/* Add new ImportTab and ExportTab controls to ModuleControls */
+/**************************************************************/
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ModuleDefID IS NULL AND ControlKey = 'ImportTab') = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}ModuleControls
+			( ControlKey, ControlTitle, ControlSrc, ControlType )
+			VALUES ( 'ImportTab', 'Import Tab', 'Admin/Tabs/Import.ascx', 1 )
+	END
+GO
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ModuleDefID IS NULL AND ControlKey = 'ExportTab') = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}ModuleControls
+			( ControlKey, ControlTitle, ControlSrc, ControlType )
+			VALUES ( 'ExportTab', 'Export Tab', 'Admin/Tabs/Export.ascx', 1 )
+	END
+GO
+
+/* Add new Package Types */
+/*************************/
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}PackageTypes WHERE PackageType = 'Library' ) = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}PackageTypes
+			( PackageType, Description, SecurityAccessLevel )
+			VALUES ( 'Library', 'Library', 3 )
+	END
+GO
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}PackageTypes WHERE PackageType = 'Skin' ) = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}PackageTypes
+			( PackageType, Description, SecurityAccessLevel )
+			VALUES ( 'Skin', 'Skin', 3 )
+	END
+GO
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}PackageTypes WHERE PackageType = 'Container' ) = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}PackageTypes
+			( PackageType, Description, SecurityAccessLevel )
+			VALUES ( 'Container', 'Container', 3 )
+	END
+GO
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}PackageTypes WHERE PackageType = 'Provider' ) = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}PackageTypes
+			( PackageType, Description, SecurityAccessLevel )
+			VALUES ( 'Provider', 'Provider', 3 )
+	END
+GO
+
+/* Update GetAllUsers Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAllUsers]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+    @PortalId        int,
+    @PageIndex      int,
+    @PageSize       int
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE @PageLowerBound INT
+		DECLARE @PageUpperBound INT
+		SET @PageLowerBound = @PageSize * @PageIndex
+		SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+		-- Create a temp table TO store the select results
+		CREATE TABLE #PageIndexForUsers
+		(
+			IndexId int IDENTITY (0, 1) NOT NULL,
+			UserId int
+		)
+
+		-- Insert into our temp table
+		INSERT INTO #PageIndexForUsers (UserId)
+			SELECT        UserId
+			FROM            {databaseOwner}[{objectQualifier}vw_Users]
+			WHERE        (PortalId = @PortalId) OR
+									 (PortalId IS NULL) AND (@PortalId IS NULL)
+			ORDER BY DisplayName
+
+		SELECT  *
+		FROM    {databaseOwner}[{objectQualifier}vw_Users] u,
+				#PageIndexForUsers p
+		WHERE  u.UserId = p.UserId
+			AND (PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+		ORDER BY DisplayName
+
+		SELECT  TotalRecords = COUNT(*)
+		FROM    #PageIndexForUsers
+
+	END
+GO
+
+/* Update GetOnlineUsers Procedure */
+/***********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetOnlineUsers]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetOnlineUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetOnlineUsers]
+	@PortalID int
+AS
+	SELECT *
+		FROM {databaseOwner}{objectQualifier}UsersOnline UO
+			INNER JOIN {databaseOwner}{objectQualifier}vw_Users U ON UO.UserID = U.UserID 
+			INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON U.UserID = UP.UserId
+		WHERE  UP.PortalID = @PortalID AND U.PortalID = @PortalID
+
+GO
+
+/* Disable Print for Search Results as it doesn't work */
+/*******************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}TabModules
+	SET DisplayPrint = 0
+
+	FROM {databaseOwner}{objectQualifier}Modules M
+		INNER JOIN {databaseOwner}{objectQualifier}TabModules T On T.ModuleID = M.ModuleID
+		INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions MD ON M.ModuleDefID = MD.ModuleDefID
+		INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM ON DM.DesktopModuleID = MD.DesktopModuleID
+	WHERE DM.ModuleName = 'Search Results'
+
+GO
+
+/* Update DefaultCacheTime on Account Login Module to -1 */
+/*********************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleDefinitions
+	SET DefaultCacheTime = -1
+	WHERE FriendlyName = 'Account Login'
+GO
+
+update {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+set    PropertyName = REPLACE(PropertyName,' ','_')
+where  CHARINDEX(' ',PropertyName) <> 0
+GO
+
+/* Update UpdateAffiliateStats Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateAffiliateStats]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateAffiliateStats]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateAffiliateStats]
+	@AffiliateId  int,
+	@Clicks       int,
+	@Acquisitions int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Affiliates
+		SET	Clicks = Clicks + @Clicks,
+			Acquisitions = Acquisitions + @Acquisitions
+		WHERE  AffiliateId = @AffiliateId 
+			AND    ( StartDate < getdate() OR StartDate IS NULL ) 
+			AND    ( EndDate > getdate() OR EndDate IS NULL )
+
+GO
+
+/* Add New Index to ScheduleHistory */
+/************************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}ScheduleHistory')
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}ScheduleHistory ON {databaseOwner}[{objectQualifier}ScheduleHistory] 
+	(
+		[NextStart] DESC,
+		[ScheduleHistoryID] ASC,
+		[ScheduleID] ASC
+	)
+GO
+
+/* Update GetSchedule Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSchedule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSchedule]
+	@Server varchar(150)
+AS
+	SELECT 
+		S.ScheduleID, 
+		S.TypeFullName, 
+		S.TimeLapse, 
+		S.TimeLapseMeasurement,  
+		S.RetryTimeLapse, 
+		S.RetryTimeLapseMeasurement, 
+		S.ObjectDependencies, 
+		S.AttachToEvent, 
+		S.RetainHistoryNum, 
+		S.CatchUpEnabled, 
+		S.Enabled, 
+		SH.NextStart, 
+		S.Servers
+	FROM {databaseOwner}{objectQualifier}Schedule S
+		LEFT JOIN {databaseOwner}{objectQualifier}ScheduleHistory SH ON S.ScheduleID = SH.ScheduleID
+	WHERE (SH.ScheduleHistoryID = (SELECT TOP 1 S1.ScheduleHistoryID FROM {databaseOwner}{objectQualifier}ScheduleHistory S1 WHERE S1.ScheduleID = S.ScheduleID ORDER BY S1.NextStart DESC)
+		OR  SH.ScheduleHistoryID IS NULL)
+		AND (@Server IS NULL or S.Servers LIKE ',%' + @Server + '%,' or S.Servers IS NULL)
+
+GO
+	
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

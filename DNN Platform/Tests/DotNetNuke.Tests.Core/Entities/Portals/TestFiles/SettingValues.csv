@@ -1,0 +1,34 @@
+﻿Test,							PropertyName,					SettingName,					SettingValue,			PropertyValue
+Cdf Version,					CdfVersion,						CrmVersion,						-1
+DefaultAdminContainer,			DefaultAdminContainer,			DefaultAdminContainer,			AdminContainer
+DefaultAdminSkin,				DefaultAdminSkin,				DefaultAdminSkin,				AdminSkin
+DefaultIconLocation,			DefaultIconLocation,			DefaultIconLocation,			icons/sigma
+DefaultModuleId,				DefaultModuleId,				defaultmoduleid,				1
+DefaultPortalContainer,			DefaultPortalContainer,			DefaultPortalContainer,			PortalContainer
+DefaultPortalSkin,				DefaultPortalSkin,				DefaultPortalSkin,				PortalSkin
+DefaultTabId,					DefaultTabId,					defaulttabid,					1
+EnableBrowserLanguage,			EnableBrowserLanguage,			EnableBrowserLanguage,			false
+EnableCompositeFiles,			EnableCompositeFiles,			EnableCompositeFiles,			true
+EnablePopUps,					EnablePopUps,					EnablePopUps,					false
+EnableModuleEffect,				EnableModuleEffect,				EnableModuleEffect,				false
+HideLoginControl,				HideLoginControl,				HideLoginControl,				true
+EnableSkinWidgets,				EnableSkinWidgets,				EnableSkinWidgets,				false
+EnableUrlLanguage,				EnableUrlLanguage,				EnableUrlLanguage,				false
+HideFoldersEnabled,				HideFoldersEnabled,				HideFoldersEnabled,				false
+InlineEditorEnabled,			InlineEditorEnabled,			InlineEditorEnabled,			false
+SearchIncludeCommon,			SearchIncludeCommon,			SearchIncludeCommon,			false
+SearchIncludeNumeric,			SearchIncludeNumeric,			SearchIncludeNumeric,			false
+SearchIncludedTagInfoFilter,	SearchIncludedTagInfoFilter,	SearchIncludedTagInfoFilter,	b
+SearchMaxWordlLength,			SearchMaxWordlLength,			MaxSearchWordLength,			15
+SearchMinWordlLength,			SearchMinWordlLength,			MinSearchWordLength,			4
+SSLEnabled,						SSLEnabled,						SSLEnabled,						true
+SSLEnforced,					SSLEnforced,					SSLEnforced,					true
+SSLURL,							SSLURL,							SSLURL,							ssl
+STDURL,							STDURL,							STDURL,							std
+EnableRegisterNotification,		EnableRegisterNotification,		EnableRegisterNotification,		false
+DefaultAuthProvider,			DefaultAuthProvider,			DefaultAuthProvider,			EVOQ
+SMTPConnectionLimit,			SMTPConnectionLimit,			SMTPConnectionLimit,			2
+SMTPMaxIdleTime,				SMTPMaxIdleTime,				SMTPMaxIdleTime,				10
+ControlPanelSecurity,			ControlPanelSecurity,			ControlPanelSecurity,			TAB,					TabEditor
+DefaultControlPanelMode,		DefaultControlPanelMode,		ControlPanelMode,				Edit
+DefaultControlPanelVisibility,	DefaultControlPanelVisibility,	ControlPanelVisibility,			true

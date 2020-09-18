@@ -1,0 +1,18 @@
+' Remove uninstalled module packages that have new versions in distribution.
+Install\Module\Survey_04.00.20_Install.resources
+Install\Module\Survey_04.00.50_Install.resources
+Install\Module\XML_03.01.00_Install.resources
+Install\Module\XML_03.03.00_Install.resources
+Install\Module\XML_03.03.02_Install.resources
+Install\Module\Media_03.02.02._Install.resources
+Install\Module\IFrame_03.02.00._Install.resources
+Install\Module\IFrame_03.02.01._Install.resources
+Install\Module\Help_02.00.04._Install.resources
+Install\Module\Gallery_03.00.12._Install.resources
+Install\Module\Feedback_03.02.01._Install.resources
+Install\Module\Events_03.02.00._Install.resources
+Install\Module\Media_03.02.02._Install.resources
+Install\Module\Documents_03.01.05._Install.resources
+Install\Module\Announcements_03.03.05._Install.resources
+Install\Module\FAQs_03.01.00_Install.resources
+Install\Module\Feedback_03.02.01_Install.resources

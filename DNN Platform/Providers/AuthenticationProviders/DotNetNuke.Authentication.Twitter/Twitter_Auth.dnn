@@ -1,0 +1,74 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DNN_TwitterAuthentication" type="Auth_System" version="09.07.02" >
+      <friendlyName>DotNetNuke Twitter Authentication Project</friendlyName>
+      <description>
+        The DotNetNuke Twitter Authentication Project is an Authentication provider for DotNetNuke that uses
+        Twitter authentication to authenticate users.
+      </description>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releasenotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="AuthenticationSystem">
+          <authenticationService>
+            <type>Twitter</type>
+            <settingsControlSrc>DesktopModules/AuthenticationServices/Twitter/Settings.ascx</settingsControlSrc>
+            <loginControlSrc>DesktopModules/AuthenticationServices/Twitter/Login.ascx</loginControlSrc>
+            <logoffControlSrc/>
+          </authenticationService>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Authentication.Twitter.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules/AuthenticationServices/Twitter</basePath>
+            <file>
+              <path>App_LocalResources</path>
+              <name>Login.ascx.resx</name>
+            </file>
+            <file>
+              <path>App_LocalResources</path>
+              <name>Settings.ascx.resx</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>Twitter_16X16.jpg</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>Twitter_32X32.jpg</name>
+            </file>
+            <file>
+              <name>Login.ascx</name>
+            </file>
+            <file>
+              <name>Settings.ascx</name>
+            </file>
+            <file>
+              <name>license.txt</name>
+            </file>
+            <file>
+              <name>releasenotes.txt</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

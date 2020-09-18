@@ -1,0 +1,40 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* DNN-3017 Add Indexes */
+/************************/
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}HtmlText_ModuleID_Version' AND object_id = OBJECT_ID('{objectQualifier}HtmlText'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}HtmlText_ModuleID_Version] ON {databaseOwner}[{objectQualifier}HtmlText] 
+			(
+				[ModuleID],
+				[Version]
+			)
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}HtmlTextLog_ItemID' AND object_id = OBJECT_ID('{objectQualifier}HtmlTextLog'))
+    BEGIN
+        CREATE NONCLUSTERED INDEX [IX_{objectQualifier}HtmlTextLog_ItemID] ON {databaseOwner}[{objectQualifier}HtmlTextLog] 
+			(
+				[ItemID]
+			)
+			INCLUDE 
+			(
+				[HtmlTextLogID]
+			)
+    END
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

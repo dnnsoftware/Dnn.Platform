@@ -1,0 +1,7 @@
+﻿<configuration>
+    <nodes configfile="Web.config">
+        <node path="/configuration/updateme" action="update" key="test" collision="overwrite">
+            <add test="foo" />
+        </node>
+    </nodes>
+</configuration>

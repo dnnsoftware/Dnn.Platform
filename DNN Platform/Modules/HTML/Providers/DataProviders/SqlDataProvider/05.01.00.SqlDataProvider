@@ -1,0 +1,611 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Workflow') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}Workflow
+			(
+			WorkflowID int NOT NULL IDENTITY (1, 1),
+				PortalID int NULL,
+				WorkflowName nvarchar(50) NOT NULL,
+				[Description] nvarchar(2000) NULL,
+				IsDeleted bit NOT NULL
+			)  
+
+		ALTER TABLE {databaseOwner}{objectQualifier}Workflow ADD CONSTRAINT
+			PK_{objectQualifier}Workflow PRIMARY KEY CLUSTERED 
+			(
+			WorkflowID
+			) 
+
+		CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Workflow ON {databaseOwner}{objectQualifier}Workflow
+			(
+			PortalID,
+			WorkflowName
+			) 
+
+		CREATE TABLE {databaseOwner}{objectQualifier}WorkflowStates
+			(
+			StateID int NOT NULL IDENTITY (1, 1),
+				WorkflowID int NOT NULL,
+				StateName nvarchar(50) NOT NULL,
+				[Order] int NOT NULL,
+				IsActive bit NOT NULL,
+				Notify bit NOT NULL
+			)  
+
+		ALTER TABLE {databaseOwner}{objectQualifier}WorkflowStates ADD CONSTRAINT
+			PK_{objectQualifier}WorkflowStates PRIMARY KEY CLUSTERED 
+			(
+			StateID
+			) 
+
+		CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}WorkflowStates ON {databaseOwner}{objectQualifier}WorkflowStates
+			(
+			WorkflowID,
+			StateName
+			) 
+
+		ALTER TABLE {databaseOwner}{objectQualifier}WorkflowStates WITH NOCHECK ADD CONSTRAINT
+			FK_{objectQualifier}WorkflowStates_{objectQualifier}Workflow FOREIGN KEY
+			(
+			WorkflowID
+			) REFERENCES {databaseOwner}{objectQualifier}Workflow
+			(
+			WorkflowID
+			) ON UPDATE  NO ACTION 
+			 ON DELETE  CASCADE 			 
+	END
+GO
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}HtmlTextLog') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlText
+			DROP CONSTRAINT PK_{objectQualifier}HtmlText
+	END
+GO
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}HtmlTextLog') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlText ADD
+			ItemID int NOT NULL IDENTITY (1, 1),
+			Content ntext NULL,
+				Version int NULL,
+				StateID int NULL,
+				IsPublished bit NULL,
+				CreatedByUserID int NULL,
+				CreatedOnDate datetime NULL,
+			LastModifiedByUserID int NULL,
+			LastModifiedOnDate datetime NULL
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlText ADD CONSTRAINT
+			PK_{objectQualifier}HtmlText PRIMARY KEY CLUSTERED 
+			(
+			ItemID
+			) 
+	END
+GO
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}HtmlTextLog') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		update {databaseOwner}{objectQualifier}HtmlText
+		set    Content = DesktopHtml,
+			   Version = 1,
+			   IsPublished = 1,
+			   CreatedByUserID = CreatedByUser,
+			   CreatedOnDate = CreatedDate, 
+			   LastModifiedByUserID = CreatedByUser,
+			   LastModifiedOnDate = CreatedDate
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlText
+			DROP COLUMN DesktopHtml, DesktopSummary, CreatedByUser, CreatedDate
+
+		CREATE TABLE {databaseOwner}{objectQualifier}HtmlTextLog
+			(
+			HtmlTextLogID int NOT NULL IDENTITY (1, 1),
+				ItemID int NOT NULL,
+				StateID int NOT NULL,
+				Comment nvarchar(4000),
+				Approved bit NOT NULL,
+				CreatedByUserID int NOT NULL,
+				CreatedOnDate datetime NOT NULL
+			)  
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog ADD CONSTRAINT
+			PK_{objectQualifier}HtmlTextLog PRIMARY KEY CLUSTERED 
+			(
+			HtmlTextLogID
+			) 
+
+		CREATE TABLE {databaseOwner}{objectQualifier}HtmlTextUsers
+			(
+			HtmlTextUserID int NOT NULL IDENTITY (1, 1),
+				ItemID int NOT NULL,
+				StateID int NOT NULL,
+				ModuleID int NOT NULL,
+				TabID int NOT NULL,
+				UserID int NOT NULL,
+				CreatedOnDate datetime NOT NULL
+			)  
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextUsers ADD CONSTRAINT
+			PK_{objectQualifier}HtmlTextUsers PRIMARY KEY CLUSTERED 
+			(
+			HtmlTextUserID
+			) 
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH NOCHECK ADD CONSTRAINT
+			FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates FOREIGN KEY
+			(
+			StateID
+			) REFERENCES {databaseOwner}{objectQualifier}WorkflowStates
+			(
+			StateID
+			) ON UPDATE  NO ACTION 
+			 ON DELETE  NO ACTION 			 
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH NOCHECK ADD CONSTRAINT
+			FK_{objectQualifier}HtmlTextLog_{objectQualifier}HtmlText FOREIGN KEY
+			(
+			ItemID
+			) REFERENCES {databaseOwner}{objectQualifier}HtmlText
+			(
+			ItemID
+			) ON UPDATE  NO ACTION 
+			 ON DELETE  CASCADE 			 
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH NOCHECK ADD CONSTRAINT
+			FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates FOREIGN KEY
+			(
+				StateID
+			) REFERENCES {databaseOwner}{objectQualifier}WorkflowStates
+			(
+			StateID
+			) ON UPDATE  NO ACTION 
+			 ON DELETE  NO ACTION 			 
+
+		ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextUsers WITH NOCHECK ADD CONSTRAINT
+			FK_{objectQualifier}HtmlTextUsers_{objectQualifier}HtmlText FOREIGN KEY
+			(
+			ItemID
+			) REFERENCES {databaseOwner}{objectQualifier}HtmlText
+			(
+			ItemID
+			) ON UPDATE  NO ACTION 
+			 ON DELETE  CASCADE 			 
+	END
+GO
+
+IF NOT EXISTS ( select 1 from {databaseOwner}{objectQualifier}Workflow )
+	BEGIN
+		declare @WorkflowID int
+		declare @StateID int
+
+		insert into {databaseOwner}{objectQualifier}Workflow (
+		  PortalID,
+		  WorkflowName,
+		  [Description],
+		  IsDeleted
+		)
+		values (
+		  NULL,
+		  'Direct Publish',
+		  'Allows an author to directly publish content to the site',
+		  0
+		)
+
+		select @WorkflowID = SCOPE_IDENTITY()
+
+		insert into {databaseOwner}{objectQualifier}WorkflowStates (
+		  WorkflowID,
+		  StateName,
+		  [Order],
+		  IsActive,
+		  Notify
+		)
+		values (
+		  @WorkflowID,
+		  'Published',
+		  1,
+		  1,
+		  0
+		)
+
+		select @StateID = SCOPE_IDENTITY()
+
+		update {databaseOwner}{objectQualifier}HtmlText
+		set    StateID = @StateID
+
+		insert into {databaseOwner}{objectQualifier}Workflow (
+		  PortalID,
+		  WorkflowName,
+		  [Description],
+		  IsDeleted
+		)
+		values (
+		  NULL,
+		  'Content Staging',
+		  'Allows an author to manage content in a staging area before publishing it to the site',
+		  0
+		)
+
+		select @WorkflowID = SCOPE_IDENTITY()
+
+		insert into {databaseOwner}{objectQualifier}WorkflowStates (
+		  WorkflowID,
+		  StateName,
+		  [Order],
+		  IsActive,
+		  Notify
+		)
+		values (
+		  @WorkflowID,
+		  'Draft',
+		  1,
+		  1,
+		  0
+		)
+
+		insert into {databaseOwner}{objectQualifier}WorkflowStates (
+		  WorkflowID,
+		  StateName,
+		  [Order],
+		  IsActive,
+		  Notify
+		)
+		values (
+		  @WorkflowID,
+		  'Published',
+		  3,
+		  1,
+		  0
+		)
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflows') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetWorkflows
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetWorkflows
+	@PortalID int
+as
+	select *
+	from   {databaseOwner}{objectQualifier}Workflow
+	where (PortalID = @PortalID or PortalID is null)
+	order by WorkflowName
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowStates') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetWorkflowStates
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetWorkflowStates
+	@WorkflowID int
+
+as
+
+select *
+from   {databaseOwner}{objectQualifier}WorkflowStates
+inner join {databaseOwner}{objectQualifier}Workflow on {databaseOwner}{objectQualifier}WorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}Workflow.WorkflowID
+where {databaseOwner}{objectQualifier}WorkflowStates.WorkflowID = @WorkflowID
+order by [Order]
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}AddHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddHtmlText
+
+@ModuleID        int,
+@Content         ntext,
+@StateID         int,
+@IsPublished     bit,
+@UserID          int,
+@History         int
+
+as
+
+declare @Version int
+
+select @Version = max(Version) from {databaseOwner}{objectQualifier}HtmlText where ModuleID = @ModuleID
+
+if @Version is null
+  select @Version = 1
+else
+  select @Version = @Version + 1
+
+insert into {databaseOwner}{objectQualifier}HtmlText (
+  ModuleID,
+  Content,
+  Version,
+  StateID,
+  IsPublished,
+  CreatedByUserID,
+  CreatedOnDate,
+  LastModifiedByUserID,
+  LastModifiedOnDate
+) 
+values (
+  @ModuleID,
+  @Content,
+  @Version,
+  @StateID,
+  @IsPublished,
+  @UserID,
+  getdate(),
+  @UserID,
+  getdate()
+)
+
+if @History > 0
+begin
+  delete
+  from   {databaseOwner}{objectQualifier}HtmlText
+  where  ModuleID = @ModuleID
+  and    Version <= (@Version - @History)
+end
+
+select SCOPE_IDENTITY()
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}UpdateHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateHtmlText
+
+@ItemID          int,
+@Content         ntext,
+@StateID         int,
+@IsPublished     bit,
+@UserID          int
+
+as
+
+update {databaseOwner}{objectQualifier}HtmlText
+set    Content              = @Content,
+       StateID              = @StateID,
+       IsPublished          = @IsPublished,
+       LastModifiedByUserID = @UserID,
+       LastModifiedOnDate   = getdate()
+where  ItemID = @ItemID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}DeleteHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteHtmlText
+
+@ModuleID int,
+@ItemID int
+
+as
+
+delete
+from   {databaseOwner}{objectQualifier}HtmlText
+where  ModuleID = @ModuleID
+and ItemID = @ItemID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetHtmlText
+
+@ModuleID int,
+@ItemID int
+
+as
+
+select {databaseOwner}{objectQualifier}HtmlText.*,
+       {databaseOwner}{objectQualifier}WorkflowStates.*,
+       {databaseOwner}{objectQualifier}Workflow.WorkflowName,
+       {databaseOwner}{objectQualifier}Users.DisplayName,
+       {databaseOwner}{objectQualifier}Modules.PortalID
+from   {databaseOwner}{objectQualifier}HtmlText
+inner join {databaseOwner}{objectQualifier}Modules on {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}HtmlText.ModuleID
+inner join {databaseOwner}{objectQualifier}WorkflowStates on {databaseOwner}{objectQualifier}WorkflowStates.StateID = {databaseOwner}{objectQualifier}HtmlText.StateID
+inner join {databaseOwner}{objectQualifier}Workflow on {databaseOwner}{objectQualifier}WorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}Workflow.WorkflowID
+left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}HtmlText.LastModifiedByUserID = {databaseOwner}{objectQualifier}Users.UserID
+where  {databaseOwner}{objectQualifier}HtmlText.ModuleID = @ModuleID
+and ItemID = @ItemID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetTopHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetTopHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetTopHtmlText
+
+@ModuleID    int,
+@IsPublished bit
+
+as
+
+select top 1 {databaseOwner}{objectQualifier}HtmlText.*,
+       {databaseOwner}{objectQualifier}WorkflowStates.*,
+       {databaseOwner}{objectQualifier}Workflow.WorkflowName,
+       {databaseOwner}{objectQualifier}Users.DisplayName,
+       {databaseOwner}{objectQualifier}Modules.PortalID
+from   {databaseOwner}{objectQualifier}HtmlText
+inner join {databaseOwner}{objectQualifier}Modules on {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}HtmlText.ModuleID
+inner join {databaseOwner}{objectQualifier}WorkflowStates on {databaseOwner}{objectQualifier}WorkflowStates.StateID = {databaseOwner}{objectQualifier}HtmlText.StateID
+inner join {databaseOwner}{objectQualifier}Workflow on {databaseOwner}{objectQualifier}WorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}Workflow.WorkflowID
+left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}HtmlText.LastModifiedByUserID = {databaseOwner}{objectQualifier}Users.UserID
+where  {databaseOwner}{objectQualifier}HtmlText.ModuleID = @ModuleID
+and    (IsPublished = @IsPublished or @IsPublished = 0)
+order by {databaseOwner}{objectQualifier}HtmlText.LastModifiedOnDate desc
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetAllHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetAllHtmlText
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetAllHtmlText
+
+@ModuleID int
+
+as
+
+select {databaseOwner}{objectQualifier}HtmlText.*,
+       {databaseOwner}{objectQualifier}WorkflowStates.*,
+       {databaseOwner}{objectQualifier}Workflow.WorkflowName,
+       {databaseOwner}{objectQualifier}Users.DisplayName,
+       {databaseOwner}{objectQualifier}Modules.PortalID
+from   {databaseOwner}{objectQualifier}HtmlText
+inner join {databaseOwner}{objectQualifier}Modules on {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}HtmlText.ModuleID
+inner join {databaseOwner}{objectQualifier}WorkflowStates on {databaseOwner}{objectQualifier}WorkflowStates.StateID = {databaseOwner}{objectQualifier}HtmlText.StateID
+inner join {databaseOwner}{objectQualifier}Workflow on {databaseOwner}{objectQualifier}WorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}Workflow.WorkflowID
+left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}HtmlText.LastModifiedByUserID = {databaseOwner}{objectQualifier}Users.UserID
+where  {databaseOwner}{objectQualifier}HtmlText.ModuleID = @ModuleID
+order by {databaseOwner}{objectQualifier}HtmlText.LastModifiedOnDate desc
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlTextLog') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}AddHtmlTextLog
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddHtmlTextLog
+
+@ItemID          int,
+@StateID         int,
+@Comment         nvarchar(4000),
+@Approved        bit,
+@UserID          int
+
+as
+
+insert into {databaseOwner}{objectQualifier}HtmlTextLog (
+  ItemID,
+  StateID,
+  Comment,
+  Approved,
+  CreatedByUserID,
+  CreatedOnDate
+)
+values (
+  @ItemID,
+  @StateID,
+  @Comment,
+  @Approved,
+  @UserID,
+  getdate()
+)
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetHtmlTextLog') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetHtmlTextLog
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetHtmlTextLog
+
+@ItemID int
+
+as
+
+select {objectQualifier}HtmlTextLog.ItemID,
+       {objectQualifier}HtmlTextLog.StateID,
+       {objectQualifier}WorkflowStates.StateName,
+       {objectQualifier}HtmlTextLog.Comment,
+       {objectQualifier}HtmlTextLog.Approved,
+       {objectQualifier}HtmlTextLog.CreatedByUserID,
+       {objectQualifier}Users.DisplayName,
+       {objectQualifier}HtmlTextLog.CreatedOnDate
+from {databaseOwner}{objectQualifier}HtmlTextLog
+inner join {databaseOwner}{objectQualifier}WorkflowStates on {databaseOwner}{objectQualifier}HtmlTextLog.StateID = {databaseOwner}{objectQualifier}WorkflowStates.StateID
+left outer join {databaseOwner}{objectQualifier}Users on {databaseOwner}{objectQualifier}HtmlTextLog.CreatedByUserID = {databaseOwner}{objectQualifier}Users.UserID
+where ItemID = @ItemID
+order by {objectQualifier}HtmlTextLog.CreatedOnDate desc
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlTextUser') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}AddHtmlTextUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddHtmlTextUser
+
+@ItemID          int,
+@StateID         int,
+@ModuleID        int,
+@TabID           int,
+@UserID          int
+
+as
+
+insert into {databaseOwner}{objectQualifier}HtmlTextUsers (
+  ItemID,
+  StateID,
+  ModuleID,
+  TabID,
+  UserID,
+  CreatedOnDate
+)
+values (
+  @ItemID,
+  @StateID,
+  @ModuleID,
+  @TabID,
+  @UserID,
+  getdate()
+)
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetHtmlTextUser') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetHtmlTextUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetHtmlTextUser
+
+@UserID int
+
+as
+
+select {objectQualifier}HtmlTextUsers.*,
+       {objectQualifier}WorkflowStates.StateName
+from   {databaseOwner}{objectQualifier}HtmlTextUsers
+inner join {databaseOwner}{objectQualifier}WorkflowStates on {databaseOwner}{objectQualifier}HtmlTextUsers.StateID = {databaseOwner}{objectQualifier}WorkflowStates.StateID
+where  {objectQualifier}HtmlTextUsers.UserID = @UserID
+order by {objectQualifier}HtmlTextUsers.CreatedOnDate asc
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteHtmlTextUsers') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}DeleteHtmlTextUsers
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteHtmlTextUsers
+
+as
+
+delete
+from   {objectQualifier}HtmlTextUsers
+where  HtmlTextUserID in 
+  ( select HtmlTextUserID
+    from   {objectQualifier}HtmlTextUsers
+    inner join {databaseOwner}{objectQualifier}HtmlText on {databaseOwner}{objectQualifier}HtmlTextUsers.ItemID = {databaseOwner}{objectQualifier}HtmlText.ItemID
+    where {objectQualifier}HtmlTextUsers.ItemID = {objectQualifier}HtmlText.ItemID
+    and {objectQualifier}HtmlTextUsers.StateID <> {objectQualifier}HtmlText.StateID )
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

@@ -1,0 +1,216 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRolesByGroup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}GetRolesByGroup
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByGroup]
+
+	@RoleGroupId     int,
+	@PortalId        int
+
+AS
+
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+		   'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+		   'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+		   'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+		   'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+		   'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+		   'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+		   'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+		   R.RSVPCode,
+		   R.IconFile
+	FROM {databaseOwner}{objectQualifier}Roles R
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 on R.BillingFrequency = L1.Value and L1.ListName = 'Frequency' 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 on R.TrialFrequency = L2.Value and L2.ListName = 'Frequency' 
+	WHERE  (RoleGroupId = @RoleGroupId OR (RoleGroupId IS NULL AND @RoleGroupId IS NULL))
+		AND R.PortalId = @PortalId
+	ORDER BY R.RoleName
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD
+	IsSecure bit NOT NULL CONSTRAINT DF_{objectQualifier}Tabs_IsSecure DEFAULT (0)
+GO
+
+DROP VIEW {databaseOwner}{objectQualifier}vw_Tabs
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Tabs
+AS
+SELECT     
+	T.TabID, 
+	T.TabOrder, 
+	T.PortalID, 
+	T.TabName, 
+	T.IsVisible, 
+	T.ParentId, 
+	T.[Level],
+	CASE WHEN LEFT(LOWER(T.IconFile), 6) = 'fileid' 
+		THEN
+			(SELECT Folder + FileName  
+				FROM {databaseOwner}{objectQualifier}Files 
+				WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = T.IconFile
+			) 
+		ELSE 
+			T.IconFile  
+		END 
+	AS IconFile,
+	T.DisableLink, 
+	T.Title, 
+	T.Description, 
+	T.KeyWords, 
+	T.IsDeleted, 
+	T.SkinSrc, 
+        T.ContainerSrc, 
+        T.TabPath, 
+        T.StartDate, 
+        T.EndDate, 
+	T.URL, 
+        CASE WHEN EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}Tabs T2 WHERE T2.ParentId = T .TabId) THEN 'true' ELSE 'false' END AS 'HasChildren', 
+        T.RefreshInterval, 
+        T.PageHeadText,
+        T.IsSecure
+FROM {databaseOwner}{objectQualifier}Tabs AS T 
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddTab
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}AddTab
+
+@PortalId           int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200),
+@TabPath            nvarchar(255),
+@StartDate          datetime,
+@EndDate            datetime,
+@RefreshInterval    int,
+@PageHeadText	    nvarchar(500),
+@IsSecure           bit
+
+as
+
+insert into {databaseOwner}{objectQualifier}Tabs (
+    PortalId,
+    TabName,
+    IsVisible,
+    DisableLink,
+    ParentId,
+    IconFile,
+    Title,
+    Description,
+    KeyWords,
+    IsDeleted,
+    Url,
+    SkinSrc,
+    ContainerSrc,
+    TabPath,
+    StartDate,
+    EndDate,
+    RefreshInterval,
+    PageHeadText,
+    IsSecure
+)
+values (
+    @PortalId,
+    @TabName,
+    @IsVisible,
+    @DisableLink,
+    @ParentId,
+    @IconFile,
+    @Title,
+    @Description,
+    @KeyWords,
+    0,
+    @Url,
+    @SkinSrc,
+    @ContainerSrc,
+    @TabPath,
+    @StartDate,
+    @EndDate,
+    @RefreshInterval,
+    @PageHeadText,
+    @IsSecure
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateTab
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdateTab
+
+@TabId              int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@IsDeleted          bit,
+@Url                nvarchar(255),
+@SkinSrc            nvarchar(200),
+@ContainerSrc       nvarchar(200),
+@TabPath            nvarchar(255),
+@StartDate          datetime,
+@EndDate            datetime,
+@RefreshInterval    int,
+@PageHeadText	    nvarchar(500),
+@IsSecure           bit
+
+as
+
+update {databaseOwner}{objectQualifier}Tabs
+set    TabName            = @TabName,
+       IsVisible          = @IsVisible,
+       DisableLink        = @DisableLink,
+       ParentId           = @ParentId,
+       IconFile           = @IconFile,
+       Title              = @Title,
+       Description        = @Description,
+       KeyWords           = @KeyWords,
+       IsDeleted          = @IsDeleted,
+       Url                = @Url,
+       SkinSrc            = @SkinSrc,
+       ContainerSrc       = @ContainerSrc,
+       TabPath            = @TabPath,
+       StartDate          = @StartDate,
+       EndDate            = @EndDate,
+       RefreshInterval	  = @RefreshInterval,
+       PageHeadText       = @PageHeadText,
+       IsSecure           = @IsSecure
+where  TabId = @TabId
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

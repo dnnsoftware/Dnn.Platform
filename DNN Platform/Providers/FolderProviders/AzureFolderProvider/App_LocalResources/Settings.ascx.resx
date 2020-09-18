@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccessDenied.ErrorMessage" xml:space="preserve">
+    <value>Access was denied.</value>
+  </data>
+  <data name="AccountNotFound.ErrorMessage" xml:space="preserve">
+    <value>The specified account was not found.</value>
+  </data>
+  <data name="AuthenticationFailure.ErrorMessage" xml:space="preserve">
+    <value>An authentication error ocurred.</value>
+  </data>
+  <data name="CredentialsRequired.ErrorMessage" xml:space="preserve">
+    <value>Please, provide your credentials before refreshing the container list.</value>
+  </data>
+  <data name="ListContainers.ErrorMessage" xml:space="preserve">
+    <value>An error occurred while trying to get the list of containers.</value>
+  </data>
+  <data name="MultipleFolderMappingsWithSameSettings.ErrorMessage" xml:space="preserve">
+    <value>There is another FolderMapping using the same Account and Container. Please enter a different Account or Container.</value>
+  </data>
+  <data name="NewContainer.ErrorMessage" xml:space="preserve">
+    <value>An error occurred while creating the new container.</value>
+  </data>
+  <data name="NewContainer.Text" xml:space="preserve">
+    <value>New Container</value>
+  </data>
+  <data name="plAccountKey.Help" xml:space="preserve">
+    <value>Enter the Account Key. Either the Primary or Secondary Azure Access Keys can be used for the Account Key.</value>
+  </data>
+  <data name="plAccountKey.Text" xml:space="preserve">
+    <value>Account Key</value>
+  </data>
+  <data name="plAccountName.Help" xml:space="preserve">
+    <value>Enter the Account Name.</value>
+  </data>
+  <data name="plAccountName.Text" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
+  <data name="plContainerName.Help" xml:space="preserve">
+    <value>Select or enter the container name.</value>
+  </data>
+  <data name="plContainerName.Text" xml:space="preserve">
+    <value>Container Name</value>
+  </data>
+  <data name="plUseHttps.Help" xml:space="preserve">
+    <value>Select this option if you want to use default HTTPS endpoints.</value>
+  </data>
+  <data name="plUseHttps.Text" xml:space="preserve">
+    <value>Use HTTPS endpoints</value>
+  </data>
+  <data name="RefreshContainerList.Text" xml:space="preserve">
+    <value>&lt;Refresh&gt;</value>
+  </data>
+  <data name="SelectContainer.Text" xml:space="preserve">
+    <value>&lt;Select a Container&gt;</value>
+  </data>
+  <data name="SelectExistingContainer.Text" xml:space="preserve">
+    <value>Select Existing Container</value>
+  </data>
+  <data name="valAccountKey.ErrorMessage" xml:space="preserve">
+    <value>Account Key is required</value>
+  </data>
+  <data name="valAccountName.ErrorMessage" xml:space="preserve">
+    <value>Account Name is required</value>
+  </data>
+  <data name="valContainerName.ErrorMessage" xml:space="preserve">
+    <value>Container Name is required</value>
+  </data>
+  <data name="plDirectLink.Help" xml:space="preserve">
+    <value>If this field is checked, the path for files of this folder type will point to the real path. If not checked, the LinkClick path will be used.</value>
+  </data>
+  <data name="plDirectLink.Text" xml:space="preserve">
+    <value>Use Direct Link</value>
+  </data>
+  <data name="tbCustomDomain.Error" xml:space="preserve">
+    <value>The custom domain name must be a valid DNS name</value>
+  </data>
+  <data name="tbCustomDomain.Help" xml:space="preserve">
+    <value>Enter the same custom domain previosly set in the Azure Storage Account</value>
+  </data>
+  <data name="plCustomDomain.Help" xml:space="preserve">
+    <value>Enter the same custom domain previosly set in the Azure Storage Account</value>
+  </data>
+  <data name="plCustomDomain.Text" xml:space="preserve">
+    <value>Custom Domain</value>
+  </data>
+  <data name="tbSyncBatchSize.Error" xml:space="preserve">
+    <value>Synchronization batch size must be a positive integer number</value>
+  </data>
+  <data name="plSyncBatchSize.Help" xml:space="preserve">
+    <value>Sets the maximum number of items that can be fetched from Azure storage on each request during folder synchronization. The lower the number, the more round trips will be necessary to fetch all items. Large numbers will lead to timeouts in case of large repositories.</value>
+  </data>
+  <data name="plSyncBatchSize.Text" xml:space="preserve">
+    <value>Synchronization Batch Size</value>
+  </data>
+</root>

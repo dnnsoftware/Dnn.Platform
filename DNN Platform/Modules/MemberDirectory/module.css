@@ -1,0 +1,342 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/* GENERAL STYLES
+----------------------------------------------- */
+.dnnMemberDirectory{width:100%;}
+
+/* SEARCH HEADER
+----------------------------------------------- */
+.dnnMemberDirectory .mdSearch{ 
+	position:relative;
+	z-index:1;
+	padding:15px 0;
+	margin-bottom:25px;
+	border-bottom:1px solid #ddd;
+}
+.dnnMemberDirectory .mdSearch:hover, .dnnMemberDirectory .mdSearch.active{
+	zoom:1; /* quicks mode fix to make z-index work */
+	z-index:10;
+}
+
+.dnnMemberDirectory .mdSearchBar #refreshResults{
+	display:block;
+	float:left;
+	height:18px; width:30px;
+	background:url(images/refresh.png) no-repeat 6px 2px;
+	border-right:1px solid #ddd;
+	margin:2px 0 0 0;
+	opacity:0.5;
+}
+.dnnMemberDirectory .mdSearchBar #refreshResults:hover{opacity:1.0;}
+.dnnMemberDirectory .mdSearchBar #refreshResults.disabled{
+	opacity:0.30;
+	cursor:default;
+}
+
+.dnnMemberDirectory .mdSearchBar #refreshResults span{display:none;}
+.dnnMemberDirectory .mdSearchBar input[type="text"]{
+	float:left;
+	display:block;
+	width:452px;
+	/*padding:0 5px 5px 7px;
+	height:18px;
+	vertical-align:top;
+	border-color:transparent;
+	outline:none;*/
+}
+.dnnMemberDirectory .mdSearchBar .dnnPrimaryAction{
+	/*padding:2px 15px;*/
+	float: left;
+	margin-left: 10px;
+}
+
+/* Search Suggest */
+ul.ui-autocomplete, 
+ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
+	ul.ui-autocomplete{
+		display:none;
+		position:absolute;top:46px;left:0;
+		width:auto;
+		border:1px solid #ccc; background:#fff;
+		z-index:10;
+		
+		/*CSS3*/
+		-moz-border-radius-bottomright: 3px;
+		-moz-border-radius-bottomleft:	3px;
+		-webkit-border-radius: 			0px 0px 3px 3px;
+		border-radius: 					0px 0px 3px 3px; 
+		
+		-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+		-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+		box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+	}
+	ul.ui-autocomplete li{display:block;clear:both;overflow:hidden}
+		    ul.ui-autocomplete li a{
+				display:block;
+				padding:10px;
+				border-bottom:1px #e8e8e8 solid;
+				clear:both;overflow:hidden
+			}
+		    ul.ui-autocomplete li a:hover{
+				background:#FEFDDE;
+				cursor:pointer
+			}
+
+
+/* Advanced Search Button */
+.dnnMemberDirectory .selectDrop{
+	position:relative;
+	display:block;
+	float:right;
+	margin-right:0;
+}
+.dnnMemberDirectory #mdAdvancedSearch{margin-right:0; padding:9px 15px;}
+.selectDrop #mdAdvancedSearch:hover{text-decoration:none;}
+.dnnMemberDirectory .selectDrop #mdAdvancedSearch:after{
+	display:inline-block;
+	margin-left:7px;
+	content:'';
+	position:relative;
+    width:7px; height:9px;
+	background: url(images/icons.png) 0 3px no-repeat;
+}
+.selectDrop #mdAdvancedSearch:hover:after{background: url(images/icons.png) -250px 3px no-repeat;}
+
+
+/* Advanced Search Criteria */
+.dnnMemberDirectory .mdAdvancedSearchForm{
+	display:none;
+	position:absolute; right:-1px; top:30px;
+	padding:15px!important;
+	width:275px;
+	border:1px solid #ccc; background:#fff;
+	
+	/*CSS3*/
+	-moz-border-radius-bottomright: 3px;
+	-moz-border-radius-bottomleft:	3px;
+	-webkit-border-radius: 			0px 0px 3px 3px;
+	border-radius: 					0px 0px 3px 3px; 
+	
+	-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+	-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+	box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+}
+.dnnMemberDirectory .mdAdvancedSearchForm label{ width:100px;display: inline-block; }
+.dnnMemberDirectory .mdAdvancedSearchForm input[type="text"]{ width:130px; margin-right:0;display: inline-block;}
+.dnnMemberDirectory .mdAdvancedSearchForm .dnnPrimaryAction{margin:0 0 5px 105px;}
+
+/* SEARCH LIST
+----------------------------------------------- */
+.DnnModule #mdMemberList{
+
+
+	 display:inline-block; zoom:1; /*IE FIX for container child float collapse */
+	 position:relative;
+	 z-index:1;
+	 padding-left:0px; 
+}
+.DnnModule #mdMemberList:hover{z-index:3;}
+#mdMemberList > li,#mdMemberList > li * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+#mdMemberList > li{
+	position:relative;
+	z-index:1;
+	float:left;
+	width:273px;
+	height:75px;
+	margin:0 15px 15px 0;
+	padding:15px 15px 45px 15px;
+	list-style:none;
+	
+	background:#fff;
+	border:1px solid #cbcbcb;
+	-webkit-border-radius: 5px;
+	border-radius: 5px; 
+	
+	-webkit-transition: background 0.15s ease-in-out;
+	-moz-transition: 	background 0.15s ease-in-out;
+	-o-transition: 		background 0.15s ease-in-out;
+	-ms-transition: 	background 0.15s ease-in-out;
+	transition: 		background 0.15s ease-in-out;
+	
+	-webkit-box-shadow:  0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+	box-shadow:			 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+}
+#mdMemberList > li:hover{
+	background:#f2f2f2;
+	z-index:2; /*bring current li to top for tooltip */
+	
+    -webkit-box-shadow:  0px 1px 2px 0px rgba(0, 0, 0, 0.3), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+	box-shadow: 		 0px 1px 2px 0px rgba(0, 0, 0, 0.3),  inset 0px 1px 0px 0px rgba(255, 255, 255, 1); 
+}
+
+/* PROFILE IMG */
+.mdMemberDetails .mdMemberImg{
+	float:left;
+	display:block;
+	padding:3px;
+	min-width:50px; height:auto;
+	margin:0 15px 15px 0;
+	background:#fff;
+	border:1px solid #ddd;
+	border-radius:5px;
+}
+
+.mdMemberDetails .mdMemberImg img{
+	display:block; 
+	min-width:50px; 
+	background:#eee;
+}
+.mdMemberDetails .mdMemberImg span{
+	display:block;
+	width:50px; max-height:50px; 
+	overflow:hidden;
+}
+
+/* MEMBER INFO */
+.DnnModule .mdMemberDetails ul, .mdMemberDetails li {
+	list-style:none; padding:0; margin:0;
+	color:#666;
+}
+.mdMemberDetails p{margin-bottom:0; padding:0; line-height:1.5em;}
+.mdMemberDetails .mdDisplayName{margin-bottom:5px;}
+.mdMemberDetails .mdDisplayName{font-weight:bold;}
+.mdMemberDetails .mdTitle{font-style:italic;}
+
+
+/* MEMBER ACTIONS */
+
+.mdMemberDetails .mdHoverActions{
+	clear:both;
+	position:absolute;
+	width:100%;
+	bottom:0; left:0;
+	height:32px;
+	border-top:1px solid #bbb;
+	font-size:11px;
+	background:#e7e7e7 url(Images/mdhoverActionsBg.png) repeat-x 0 -1px;
+	
+	text-shadow: 0px 1px 0px #ffffff;
+    filter: dropshadow(color=#ffffff, offx=0, offy=1);
+        
+}
+.mdMemberDetails .mdHoverActions li{float:left;}
+.mdMemberDetails .mdHoverActions li:first-child{padding-left:7px;}
+.mdMemberDetails .mdHoverActions li a,
+.mdMemberDetails .mdHoverActions li p{
+	display:block;
+	padding:10px 7px;
+	font-size:11px;
+	min-height:12px;
+	min-width:35px;
+}
+.mdMemberDetails .mdHoverActions li p{padding:9px 7px;}
+
+.mdMemberDetails .mdHoverActions .mdComposeMessage{
+	display:block;
+	position:absolute;
+	right:0; bottom:0;
+	border-left: 1px solid #C7C7C7;
+}
+.mdMemberDetails .mdHoverActions .mdComposeMessage:hover{
+	background:#b7b9bb url(Images/mdhoverActionsBg.png) repeat-x 0 -100px;
+	-webkit-box-shadow:  0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    box-shadow:  0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+}
+.mdMemberDetails .mdHoverActions .mdComposeMessage a{
+	border-left: 1px solid #FCFCFC;
+	background:url(Images/sendMessageSprite.png) no-repeat 17px 12px;
+}
+.mdMemberDetails .mdHoverActions .mdComposeMessage:hover a{border-left: 1px solid #888;}
+.mdMemberDetails .mdHoverActions .mdComposeMessage a:hover{
+	background-position:17px -91px;
+}
+.mdMemberDetails .mdHoverActions .mdComposeMessage span{display:none;}
+
+/* TOOL TIP STYLES */
+.mdMemberList .mdHoverContent 
+{
+    display: none;
+	position:absolute;
+	left:12px; bottom:125px;
+	width:290px;
+	padding:15px 15px 40px 15px;
+	border:1px solid #ddd;
+	background:#fff;
+	font-size:12px;
+	color:#777;
+	
+	-webkit-border-radius: 5px;
+	border-radius: 5px; 
+}
+
+/* Tool tip prfile img */
+.mdMemberList .mdHoverContent .mdMemberImg{
+	float:left;
+	display:block;
+	padding:3px;
+	min-width:50px; height:auto;
+	margin:0 15px 15px 0;
+	background:#fff;
+	border:1px solid #ddd;
+	border-radius:5px;
+}
+
+.mdMemberList .mdHoverContent .mdMemberImg img{
+	display:block; 
+	min-width:50px;
+	background:#eee;
+}
+.mdMemberList .mdHoverContent .mdMemberImg span{
+	display:block;
+	width:50px; max-height:50px; 
+	overflow:hidden;
+}
+.DnnModule .mdHoverContent ul, .mdHoverContent li{
+	padding:0; margin:0; list-style:none;
+} 
+.mdMemberList .mdHoverContent .mdDisplayName{font-weight:bold; margin-bottom:5px;}
+.mdMemberList .mdHoverContent .mdTitle{font-style:italic;}
+.mdMemberList .mdHoverContent p,
+.mdMemberList .mdHoverContent a
+{padding:0; margin:0; line-height:1.4em;}
+
+/* Tool tip Actions List */
+.mdMemberList .mdHoverContent .mdHoverActions{
+	position:absolute;
+	left:0; bottom:0;
+	width:100%; height:30px;
+	border-top:1px solid #ddd;
+	font-size:11px;
+}
+.mdMemberList .mdHoverContent .mdHoverActions li{
+	padding:7px 7px 0 7px;
+	float:left;
+}
+.mdMemberList .mdHoverContent .mdHoverActions li:first-child{
+	padding-left:15px;
+}
+
+
+.mdMemberList .mdHoverContent span.tooltipArrow {
+    display: block!important;
+	position:absolute;
+	left:50px; bottom: -15px;
+    height:15px; width:30px;
+	background:url(images/tooltipArrow.png) no-repeat 0 0;
+}
+
+.dnnForm.dnnMemberDirectorySettings .dnnFormItem .dnnTooltip { width: 20%; }
+.dnnForm .dnnFormItem .mdFilters td { width:auto; padding-right:10px;}
+.dnnForm .dnnFormItem .mdFilters td label { width:auto; margin-top: 1px; white-space:nowrap; }
+
+.dnnForm .dnnFormItem .mdFilterLists { padding-left: 16px; }
+.dnnForm .dnnFormItem .mdFilterLists input { float: none;}
+.dnnForm .dnnFormItem .mdFilterLists input, .dnnForm .dnnFormItem .mdFilterLists select { width: 45%;}
+.dnnForm .dnnFormItem .mdFilterBy { background-color: #F0F0F0; margin-left: 36%; width: 50%;}
+.ui-helper-hidden-accessible { display:none; }

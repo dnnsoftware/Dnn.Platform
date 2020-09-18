@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Approved.Text" xml:space="preserve">
+    <value>Authorized:</value>
+  </data>
+  <data name="Approved.Help" xml:space="preserve">
+    <value>Indicates whether this user is authorized for the site.</value>
+  </data>
+  <data name="CreatedDate.Text" xml:space="preserve">
+    <value>Created Date:</value>
+  </data>
+  <data name="CreatedDate.Help" xml:space="preserve">
+    <value>The date this user account was created.</value>
+  </data>
+  <data name="LastActivityDate.Text" xml:space="preserve">
+    <value>Last Activity Date:</value>
+  </data>
+  <data name="LastActivityDate.Help" xml:space="preserve">
+    <value>The date this user was last active on the site.</value>
+  </data>
+  <data name="LastLoginDate.Text" xml:space="preserve">
+    <value>Last Login Date:</value>
+  </data>
+  <data name="LastLoginDate.Help" xml:space="preserve">
+    <value>The date this user last logged into the site.</value>
+  </data>
+  <data name="LastPasswordChangeDate.Text" xml:space="preserve">
+    <value>Last Password Change:</value>
+  </data>
+  <data name="LastPasswordChangeDate.Help" xml:space="preserve">
+    <value>The date this user last changed their password.</value>
+  </data>
+  <data name="LastLockoutDate.Text" xml:space="preserve">
+    <value>Last Lock-Out Date:</value>
+  </data>
+  <data name="LastLockoutDate.Help" xml:space="preserve">
+    <value>The date this user was last locked out of the site due to repetitive failed logins.</value>
+  </data>
+  <data name="IsOnLine.Text" xml:space="preserve">
+    <value>User Is Online:</value>
+  </data>
+  <data name="IsOnLine.Help" xml:space="preserve">
+    <value>Indicates whether the user is currently online.</value>
+  </data>
+  <data name="LockedOut.Text" xml:space="preserve">
+    <value>Locked Out:</value>
+  </data>
+  <data name="LockedOut.Help" xml:space="preserve">
+    <value>Indicates whether the user is currently locked out of the site due to repetitive failed logins.</value>
+  </data>
+  <data name="cmdAuthorize.Text" xml:space="preserve">
+    <value>Authorize User</value>
+  </data>
+  <data name="cmdUnAuthorize.Text" xml:space="preserve">
+    <value>UnAuthorize User</value>
+  </data>
+  <data name="cmdUnLock.Text" xml:space="preserve">
+    <value>Unlock Account</value>
+  </data>
+  <data name="UpdatePassword.Text" xml:space="preserve">
+    <value>Update Password:</value>
+  </data>
+  <data name="UpdatePassword.Help" xml:space="preserve">
+    <value>Indicates whether this user is forced to update their password.</value>
+  </data>
+  <data name="IsDeleted.Text" xml:space="preserve">
+    <value>Deleted:</value>
+  </data>
+  <data name="IsDeleted.Help" xml:space="preserve">
+    <value>Indicates whether this user is deleted.</value>
+  </data>
+  <data name="cmdPassword.Text" xml:space="preserve">
+    <value>Force Password Change</value>
+  </data>
+  <data name="Never.Text" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="OptionUnavailable.Text" xml:space="preserve">
+    <value>Reset Password option is currently unavailable.</value>
+  </data>
+  <data name="DemoteFromSuperUser.Text" xml:space="preserve">
+    <value>Make Regular User</value>
+  </data>
+  <data name="PromoteToSuperUser.Text" xml:space="preserve">
+    <value>Make Super User</value>
+  </data>
+  <data name="UserFolder.Help" xml:space="preserve">
+    <value>The folder that stores this user's files.</value>
+  </data>
+  <data name="UserFolder.Text" xml:space="preserve">
+    <value>User Folder:</value>
+  </data>
+</root>

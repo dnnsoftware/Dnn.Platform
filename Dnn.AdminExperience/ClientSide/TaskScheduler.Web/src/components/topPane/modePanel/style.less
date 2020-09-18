@@ -1,0 +1,62 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.collapsible-content-mode-hidden {
+    .collapsible-content-mode;
+    box-shadow: none;
+}
+
+.collapsible-content-mode {
+    box-shadow: 0 0 17px 2px @alto;
+    .modepanel-content-wrapper {
+        padding: 20px 30px 20px 30px;
+        .divider {
+            padding-bottom: 15px;
+        }
+        .editor-row {
+            float: left;
+            width: 100%;
+            label {
+                font-weight: bolder;
+                clear: both;
+                float: left;
+                text-align: left;
+                margin-bottom: 5px;
+                width: 120px;
+                padding: 7px 0 0 0;
+            }
+            select {
+                padding: 8px 16px 8px 5px;
+                &.full {
+                    float: left;
+                    width: 100%;
+                }
+                &.two-fifth {
+                    float: left;
+                    width: 40%
+                }
+                &.one-fourth {
+                    float: left;
+                    width: 25%;
+                }
+                width: 220px;
+            }
+            .text-section {
+                width: 5%;
+                float: left;
+                text-align: center;
+                vertical-align: middle;
+                margin-top: 9px;
+            }
+            input {
+                float: left;
+                width: 220px;
+            }
+        }
+        .action-buttons {
+            text-align: center;
+            margin: 20px 0;
+            button:first-child {
+                margin-right: 15px;
+            }
+        }
+    }
+}

@@ -1,0 +1,50 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]
+	@UserID              Int,
+	@PortalID            Int,
+	@AfterNotificationID Int,
+	@NumberOfRecords     Int
+AS
+BEGIN
+	--Get the top message for each conversation
+	SELECT TOP(@NumberOfRecords)
+			M.[MessageID],
+			M.[NotificationTypeId],
+			M.[To],
+			M.[From],
+			M.[Subject],
+			M.[Body],
+			M.[SenderUserID],
+			M.[ExpirationDate],
+            M.[IncludeDismissAction],
+			M.[CreatedByUserID],
+			M.[CreatedOnDate],
+			M.[LastModifiedByUserID],
+			M.[LastModifiedOnDate],
+            M.[Context],
+			ROW_NUMBER() OVER(ORDER BY M.MessageId DESC) AS RowNumber
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages]       AS M
+		JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] MR 
+				ON (M.[MessageID] = MR.[MessageID])
+		WHERE ([NotificationTypeId] IS NOT NULL)
+		  AND (MR.[UserID]  = @UserID)
+		  AND (M.[PortalID] = @PortalID)
+		  AND (ISNull(M.[ExpirationDate], GETUTCDATE()) >= GETUTCDATE())
+		  AND (M.[MessageID] > isNull(@AfterNotificationID, -1))
+		ORDER BY RowNumber ASC
+END
+GO
+

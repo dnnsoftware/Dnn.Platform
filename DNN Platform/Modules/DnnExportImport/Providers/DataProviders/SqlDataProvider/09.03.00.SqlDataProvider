@@ -1,0 +1,163 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Implement cookie consent */
+/*******************************************/
+UPDATE {databaseOwner}[{objectQualifier}ExportImportSettings] 
+SET [SettingValue]=[SettingValue]+',ShowCookieConsent,CookieMoreLink'
+WHERE [SettingName] = 'PortalSettingExportList';
+GO
+
+/***** DNN-26546: check the deleted mark for exported modules. *****/
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetActiveTabModules]', 'TF') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_GetActiveTabModules]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Export_GetActiveTabModules]
+(
+	@TabID int,
+    @IncludeDeleted BIT
+)
+RETURNS @ModuleIds TABLE
+(
+	ModuleId INT
+)
+AS
+BEGIN 
+	DECLARE @StateId int;
+	SELECT @StateId=StateID FROM  {databaseOwner}[{objectQualifier}ContentItems] WHERE TabID=@TabID AND ModuleID=-1;
+	--IF there is versioninig with the tab
+	IF(@StateId IS NOT NULL)
+	BEGIN
+		-- Get all distinct module ids which belong to any published version of the tab
+		INSERT INTO @ModuleIds (ModuleId)
+		SELECT DISTINCT TM.ModuleId From {databaseOwner}[{objectQualifier}TabModules] TM
+		LEFT JOIN {databaseOwner}[{objectQualifier}TabVersions] TV ON TM.TabID=TV.TabId
+		LEFT JOIN {databaseOwner}[{objectQualifier}TabVersionDetails] TVD ON TV.TabVersionId=TVD.TabVersionId 
+		WHERE TM.TabId=@TabID AND (TV.IsPublished=1 OR TV.IsPublished IS NULL) AND (@IncludeDeleted = 1 OR TM.IsDeleted = 0)
+	END
+	ELSE
+	BEGIN
+		INSERT INTO @ModuleIds (ModuleId) SELECT DISTINCT ModuleId FROM {databaseOwner}[{objectQualifier}TabModules] 
+            WHERE TabID=@TabID AND (@IncludeDeleted = 1 OR IsDeleted = 0)
+	END
+
+	RETURN;
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+	@TabID          int,
+	@IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+	SELECT ModuleId INTO #ActiveModuleIds FROM {databaseOwner}[{objectQualifier}Export_GetActiveTabModules](@TabID, @IncludeDeleted)
+
+	SELECT
+		tm.*, md.FriendlyName,m.InheritViewPermissions,m.IsShareable,m.IsShareableViewOnly, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabModules AS tm
+			INNER JOIN {databaseOwner}{objectQualifier}Tabs              AS t  ON tm.TabID = t.TabID
+			INNER JOIN {databaseOwner}{objectQualifier}Modules           AS m  ON tm.ModuleID = m.ModuleID 
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = m.ModuleDefID 
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		tm.TabID = @TabID AND tm.ModuleID IN (SELECT ModuleId FROM #ActiveModuleIds)
+	AND
+		(@IncludeDeleted = 1 OR tm.IsDeleted = 0)
+	AND
+		COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate)
+	
+	DROP TABLE #ActiveModuleIds
+END
+GO
+
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
+	@TabID          int,
+    @IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+	SELECT ModuleId INTO #ActiveModuleIds FROM {databaseOwner}[{objectQualifier}Export_GetActiveTabModules](@TabID, @IncludeDeleted)
+
+	SELECT
+		tms.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabModuleSettings AS tms
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON tm.TabModuleID = tms.TabModuleID
+			INNER JOIN {databaseOwner}{objectQualifier}Tabs       AS t  ON tm.TabID = t.TabID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		t.TabID = @TabID AND tm.ModuleID IN (SELECT ModuleId FROM #ActiveModuleIds)
+	AND
+		COALESCE(tms.LastModifiedOnDate, tms.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tms.LastModifiedOnDate, tms.CreatedOnDate) >= @FromDate)
+
+	DROP TABLE #ActiveModuleIds
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Modules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
+	@TabID          int,
+	@IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+	SELECT ModuleId INTO #ActiveModuleIds FROM {databaseOwner}[{objectQualifier}Export_GetActiveTabModules](@TabID, @IncludeDeleted)
+
+	SELECT DISTINCT
+		m.*, md.FriendlyName, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Modules AS m
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules        AS tm ON tm.ModuleID = m.ModuleID
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = m.ModuleDefID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		tm.TabID = @TabID AND tm.ModuleID IN (SELECT ModuleId FROM #ActiveModuleIds)
+	AND
+		(@IncludeDeleted = 1 OR m.IsDeleted = 0)
+	AND (
+			COALESCE(m.LastModifiedOnDate, m.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(m.LastModifiedOnDate, m.CreatedOnDate) >= @FromDate)
+		OR
+			COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate)
+		)
+	DROP TABLE #ActiveModuleIds
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

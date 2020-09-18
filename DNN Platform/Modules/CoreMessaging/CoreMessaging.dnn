@@ -1,0 +1,84 @@
+<dotnetnuke type="Package" version="6.0">
+  <packages>
+    <package name="DotNetNuke.Modules.CoreMessaging" type="Module" isSystem="true" version="09.07.02">
+      <friendlyName>Message Center</friendlyName>      
+      <description>Core Messaging module allows users to message each other.</description>
+      <iconFile>~/DesktopModules/CoreMessaging/Images/messaging_32X32.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DotNetNuke.Modules.CoreMessaging</moduleName>
+            <foldername>CoreMessaging</foldername>
+            <businessControllerClass>DotNetNuke.Modules.CoreMessaging.Components.CoreMessagingBusinessController, DotNetNuke.Modules.CoreMessaging</businessControllerClass>
+            <supportedFeatures/>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Message Center</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/CoreMessaging/View.ascx</controlSrc>
+                    <supportsPopUps>True</supportsPopUps>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle>Core Messaging View</controlTitle>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>DotNetNuke.Modules.CoreMessaging.Components.CoreMessagingBusinessController, DotNetNuke.Modules.CoreMessaging</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>06.02.00</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Modules.CoreMessaging.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules/CoreMessaging</basePath>
+            <file>
+              <name>View.ascx</name>
+              <sourceFileName>View.ascx</sourceFileName>
+            </file>
+          </files>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/CoreMessaging</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

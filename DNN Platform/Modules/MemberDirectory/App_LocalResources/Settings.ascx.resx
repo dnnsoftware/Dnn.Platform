@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="alternateItemTemplateLabel.Help" xml:space="preserve">
+    <value>The alternate item template is used to render the details for each alternate (even) member.  </value>
+  </data>
+  <data name="alternateItemTemplateLabel.Text" xml:space="preserve">
+    <value>Alternate Item Template</value>
+  </data>
+  <data name="itemTemplateLabel.Help" xml:space="preserve">
+    <value>The item template is used to render the details about the each alternate (odd) member.</value>
+  </data>
+  <data name="itemTemplateLabel.Text" xml:space="preserve">
+    <value>Item Template:</value>
+  </data>
+  <data name="Templates.Text" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="popUpTemplateLabel.Help" xml:space="preserve">
+    <value>The popup template is used to render an individual member's details inside a popup window.</value>
+  </data>
+  <data name="popUpTemplateLabel.Text" xml:space="preserve">
+    <value>PopUp Template:</value>
+  </data>
+  <data name="filterBySelectorLabel.Help" xml:space="preserve">
+    <value>Optionally filter the list of members displayed by selecting the type of filter and then choosing a role, relationship or profile property.</value>
+  </data>
+  <data name="filterBySelectorLabel.Text" xml:space="preserve">
+    <value>Filter By:</value>
+  </data>
+  <data name="Filters.Text" xml:space="preserve">
+    <value>Filters and Sorting</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>No Filter</value>
+  </data>
+  <data name="ProfileProperty.Text" xml:space="preserve">
+    <value>Profile Property</value>
+  </data>
+  <data name="Relationship.Text" xml:space="preserve">
+    <value>Relationship</value>
+  </data>
+  <data name="Group.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search Settings</value>
+  </data>
+  <data name="searchField1Label.Help" xml:space="preserve">
+    <value>Select the first field to display in the advanced search.</value>
+  </data>
+  <data name="searchField1Label.Text" xml:space="preserve">
+    <value>Search Field 1:</value>
+  </data>
+  <data name="searchField2Label.Help" xml:space="preserve">
+    <value>Select the second field to display in the advanced search.</value>
+  </data>
+  <data name="searchField2Label.Text" xml:space="preserve">
+    <value>Search Field 2:</value>
+  </data>
+  <data name="searchField3Label.Help" xml:space="preserve">
+    <value>Select the third field to display in the advanced search.</value>
+  </data>
+  <data name="searchField3Label.Text" xml:space="preserve">
+    <value>Search Field 3:</value>
+  </data>
+  <data name="searchField4Label.Help" xml:space="preserve">
+    <value>Select the fourth field to display in the advanced search.</value>
+  </data>
+  <data name="searchField4Label.Text" xml:space="preserve">
+    <value>Search Field 4:</value>
+  </data>
+  <data name="displaySearchLabel.Help" xml:space="preserve">
+    <value>Choose "Simple" to only display the simple search option; "Simple and Advanced Search" to display both search options; or "None" to remove searching.</value>
+  </data>
+  <data name="displaySearchLabel.Text" xml:space="preserve">
+    <value>Display Search:</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="enablePopUpLabel.Help" xml:space="preserve">
+    <value>Check this box to enable the popup template.</value>
+  </data>
+  <data name="enablePopUpLabel.Text" xml:space="preserve">
+    <value>Enable PopUp:</value>
+  </data>
+  <data name="sortFieldListLabel.Help" xml:space="preserve">
+    <value>Select the field to sort member records by.</value>
+  </data>
+  <data name="sortFieldListLabel.Text" xml:space="preserve">
+    <value>Sort Field:</value>
+  </data>
+  <data name="sortOrderListLabel.Help" xml:space="preserve">
+    <value>Select the sort direction of member records.</value>
+  </data>
+  <data name="sortOrderListLabel.Text" xml:space="preserve">
+    <value>Sort Order:</value>
+  </data>
+  <data name="Ascending.Text" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="Descending.Text" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Member Directory Settings</value>
+  </data>
+  <data name="DateCreated.Text" xml:space="preserve">
+    <value>Date Created</value>
+  </data>
+  <data name="UserId.Text" xml:space="preserve">
+    <value>User Id</value>
+  </data>
+  <data name="Paging.Text" xml:space="preserve">
+    <value>Paging Options</value>
+  </data>
+  <data name="disablePagerLabel.Help" xml:space="preserve">
+    <value>Check this box to disable the "Load More" button.  Only the first page of results will be displayed.</value>
+  </data>
+  <data name="disablePagerLabel.Text" xml:space="preserve">
+    <value>Disable Paging:</value>
+  </data>
+  <data name="pageSize.Error" xml:space="preserve">
+    <value>The page size must be between 1 and 100.</value>
+  </data>
+  <data name="pageSizeLabel.Help" xml:space="preserve">
+    <value>Set the size of each page by entering a number between 1 and 100.</value>
+  </data>
+  <data name="pageSizeLabel.Text" xml:space="preserve">
+    <value>Page Size:</value>
+  </data>
+  <data name="DisplaySearch_Both.Text" xml:space="preserve">
+    <value>Simple and Advanced Search</value>
+  </data>
+  <data name="DisplaySearch_None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="DisplaySearch_Simple.Text" xml:space="preserve">
+    <value>Simple Search</value>
+  </data>
+  <data name="ExcludeHostUsersLabel.Help" xml:space="preserve">
+    <value>Check this box to exclude Super Users from search results.</value>
+  </data>
+  <data name="ExcludeHostUsersLabel.Text" xml:space="preserve">
+    <value>Exclude Host Users:</value>
+  </data>
+  <data name="Prefix.Text" xml:space="preserve">
+    <value>Prefix</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="MiddleName.Text" xml:space="preserve">
+    <value>Middle Name</value>
+  </data>
+  <data name="Suffix.Text" xml:space="preserve">
+    <value>Suffix</value>
+  </data>
+  <data name="Unit.Text" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="Street.Text" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="City.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Region.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="Country.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="PostalCode.Text" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Telephone.Text" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="Cell.Text" xml:space="preserve">
+    <value>Cell</value>
+  </data>
+  <data name="Fax.Text" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="IM.Text" xml:space="preserve">
+    <value>IM</value>
+  </data>
+  <data name="Website.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="Biography.Text" xml:space="preserve">
+    <value>Biography</value>
+  </data>
+  <data name="TimeZone.Text" xml:space="preserve">
+    <value>Time Zone</value>
+  </data>
+  <data name="PreferredLocale.Text" xml:space="preserve">
+    <value>Preferred Locale</value>
+  </data>
+</root>

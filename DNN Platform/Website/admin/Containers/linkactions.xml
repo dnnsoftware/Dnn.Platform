@@ -1,0 +1,8 @@
+<Settings>
+  <Setting>
+    <Name>ItemSeparator</Name>
+    <Type>String</Type>
+    <Help>Sets the separator between the links</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

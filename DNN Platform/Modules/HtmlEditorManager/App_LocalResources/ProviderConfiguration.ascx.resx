@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AutoResizeHeight.Help" xml:space="preserve">
+    <value>The value of the AutoResizeHeight property indicates whether the RadEditor will auto-resize its height to match content height.
+
+This property is similar to the Overflow property of the DIV element, which is not supported by the IFRAME elements.
+
+When the AutoResizeHeight property is set to true, then the editor's content area is resizing to match content heigh and no scrollbars will appear.</value>
+  </data>
+  <data name="AutoResizeHeight.Text" xml:space="preserve">
+    <value>Auto Resize Height:</value>
+  </data>
+  <data name="BorderWidth.Help" xml:space="preserve">
+    <value>Sets the border in pixels around the control</value>
+  </data>
+  <data name="BorderWidth.Text" xml:space="preserve">
+    <value>Border Width:</value>
+  </data>
+  <data name="btnEditToolsFile.Text" xml:space="preserve">
+    <value>Configure Editor Toolbars</value>
+  </data>
+  <data name="btnEnable.Text" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="btnUpdateConfig.Text" xml:space="preserve">
+    <value>Update Configuration</value>
+  </data>
+  <data name="Client Script Settings.Title" xml:space="preserve">
+    <value>Client Script Settings</value>
+  </data>
+  <data name="cmdCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="cmdCreate.Text" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Common Settings.Title" xml:space="preserve">
+    <value>Common Settings</value>
+  </data>
+  <data name="ContentAreaMode.Help" xml:space="preserve">
+    <value>Choose between editing in a seperate document in an Iframe (default), or inline in a Div in the current page.</value>
+  </data>
+  <data name="ContentAreaMode.Text" xml:space="preserve">
+    <value>Content Area Mode</value>
+  </data>
+  <data name="ContentFilters.Help" xml:space="preserve">
+    <value>Filters in RadEditor for ASP.NET AJAX are small code snippets, which are called in a sequence to process the editor content, when the mode (html / design / preview) is switched or when the page is submitted. Each filter is described here: &lt;a href="http://www.telerik.com/help/aspnet-ajax/contentfilters.html" target="_blank"&gt;Telerik Onlinehelp&lt;/a&gt;</value>
+  </data>
+  <data name="ContentFilters.Text" xml:space="preserve">
+    <value>Content Filters:</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Html Editor Management</value>
+  </data>
+  <data name="ControlTitle_.Text1" xml:space="preserve">
+    <value>HTML Editor Manager</value>
+  </data>
+  <data name="CssFile.Help" xml:space="preserve">
+    <value>The css file to be used by the editor in wysiwyg mode. This file must reside either in the theme directory or in the website directory. The path set here is relative to its parent (e.g. /editor.css is a file in the root of your Theme)</value>
+  </data>
+  <data name="CssFile.Text" xml:space="preserve">
+    <value>CSS File:</value>
+  </data>
+  <data name="Developer Settings.Title" xml:space="preserve">
+    <value>Developer Settings</value>
+  </data>
+  <data name="Document Manager Settings.Title" xml:space="preserve">
+    <value>Document Manager Settings</value>
+  </data>
+  <data name="DocumentsFilters.Help" xml:space="preserve">
+    <value>A semicolon separated list of possible extensions to be used in the document manager.  The extensions must also be in the host settings list of allowed extensions.  Use the following format: *.extensionname</value>
+  </data>
+  <data name="DocumentsFilters.Text" xml:space="preserve">
+    <value>Filters:</value>
+  </data>
+  <data name="DocumentsPath.Help" xml:space="preserve">
+    <value>The folder that the document manager starts with when loading the dialog</value>
+  </data>
+  <data name="DocumentsPath.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="EditConfigTab.Text" xml:space="preserve">
+    <value>Editor Configuration</value>
+  </data>
+  <data name="EditModes.Help" xml:space="preserve">
+    <value>RadEditor offers three different edit modes Design, Html and Preview:
+
+&lt;ul&gt;&lt;li&gt;Design: In the Design mode you can edit and format the content by using the RadEditor toolbar buttons, dropdowns and dialogs. &lt;/li&gt;&lt;li&gt;Html: HTML mode provides direct access to the content HTML . This mode is used most often by advanced users.&lt;/li&gt;&lt;li&gt;Preview: Shows how the content will look like before updating the page.&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="EditModes.Text" xml:space="preserve">
+    <value>Edit Modes:</value>
+  </data>
+  <data name="EnableResize.Help" xml:space="preserve">
+    <value>Gets or sets the value indicating whether the users will be able to resize the RadEditor control on the client.</value>
+  </data>
+  <data name="EnableResize.Text" xml:space="preserve">
+    <value>Enable Resize:</value>
+  </data>
+  <data name="FileBrowserContentProviderTypeName.Help" xml:space="preserve">
+    <value>The content provider is a class that handles how files and folders in the file mananger dialogs are handled. Override this setting if you have another content provider in place. </value>
+  </data>
+  <data name="FileBrowserContentProviderTypeName.Text" xml:space="preserve">
+    <value>File Browser Provider:</value>
+  </data>
+  <data name="Flash Manager Settings.Title" xml:space="preserve">
+    <value>Flash Manager Settings</value>
+  </data>
+  <data name="FlashFilters.Help" xml:space="preserve">
+    <value>A semicolon separated list of possible extensions to be used in the flash manager.  The extensions must also be in the host settings list of allowed extensions.  Use the following format: *.extensionname</value>
+  </data>
+  <data name="FlashFilters.Text" xml:space="preserve">
+    <value>Filters:</value>
+  </data>
+  <data name="FlashPath.Help" xml:space="preserve">
+    <value>The folder that the flash manager starts with when loading the dialog</value>
+  </data>
+  <data name="FlashPath.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="Height.Help" xml:space="preserve">
+    <value>The overall height of the editor control</value>
+  </data>
+  <data name="Height.Text" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="HTMLEditorPageDescription.Text" xml:space="preserve">
+    <value>Provides configuration options for HTML Editor Provider.</value>
+  </data>
+  <data name="HTMLEditorPageName.Text" xml:space="preserve">
+    <value>HTML Editor Manager</value>
+  </data>
+  <data name="Image Manager Settings.Title" xml:space="preserve">
+    <value>Image Manager Settings</value>
+  </data>
+  <data name="ImagesFilters.Help" xml:space="preserve">
+    <value>A semicolon separated list of possible extensions to be used in the image manager.  The extensions must also be in the host settings list of allowed extensions.  Use the following format: *.extensionname</value>
+  </data>
+  <data name="ImagesFilters.Text" xml:space="preserve">
+    <value>Filters:</value>
+  </data>
+  <data name="ImagesPath.Help" xml:space="preserve">
+    <value>The folder that the image manager starts with when loading the dialog</value>
+  </data>
+  <data name="ImagesPath.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="Language.Help" xml:space="preserve">
+    <value>If set, this will override the language of the website context. The current locale is used by default, so in most cases you should leave this empty</value>
+  </data>
+  <data name="Language.Text" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="lblChangeProvider.Help" xml:space="preserve">
+    <value>Selecting a different provider from the drop down list, and then clicking 'Change', will change the set HTML Editor Provider for the entire installation.</value>
+  </data>
+  <data name="lblChangeProvider.Text" xml:space="preserve">
+    <value>Change Provider</value>
+  </data>
+  <data name="lblCurrentProvider.Help" xml:space="preserve">
+    <value>This is the HTML Editor Provider that is currently set for this installation. </value>
+  </data>
+  <data name="lblCurrentProvider.Text" xml:space="preserve">
+    <value>Current Provider</value>
+  </data>
+  <data name="lblEditorConfig.Text" xml:space="preserve">
+    <value>Editor Configuration</value>
+  </data>
+  <data name="lblEditorType.Text" xml:space="preserve">
+    <value>The current provider in this DNN installation is &lt;b&gt;{0}&lt;/b&gt;</value>
+  </data>
+  <data name="lblMode.Help" xml:space="preserve">
+    <value>The role you wish to associate this editor configuration with.</value>
+  </data>
+  <data name="lblMode.Text" xml:space="preserve">
+    <value>Bind to Role</value>
+  </data>
+  <data name="lblNotAuthorized.Text" xml:space="preserve">
+    <value>You are not authorized to use this module.</value>
+  </data>
+  <data name="lblNote.Text" xml:space="preserve">
+    <value>The purpose of this module is to register and configure the Rad Editor Provider. It helps host users to set the HTML provider in the web.config and maintain its configuration.</value>
+  </data>
+  <data name="lblOnlyHost.Text" xml:space="preserve">
+    <value>Only host users are allowed to use this module.</value>
+  </data>
+  <data name="lblPortal.Help" xml:space="preserve">
+    <value>If checked, the current website will be associated with this editor configuration. </value>
+  </data>
+  <data name="lblPortal.Text" xml:space="preserve">
+    <value>Bind to Website</value>
+  </data>
+  <data name="lblSelectedProvider.Text" xml:space="preserve">
+    <value>Current Provider</value>
+  </data>
+  <data name="lblTabs.Help" xml:space="preserve">
+    <value>Selecting a page from the treeview will associate this editor configuration with the selected page.</value>
+  </data>
+  <data name="lblTabs.Text" xml:space="preserve">
+    <value>Bind to Tab</value>
+  </data>
+  <data name="LinksType.Help" xml:space="preserve">
+    <value>"Use Page Name":a link to a website page is built like this: default.aspx?TabName=Home;&lt;br /&gt;"Use Page Id":a link to a website page is built like this: default.aspx?TabId=100;&lt;br /&gt;"Normal": a link to a website page is built as a normal link.</value>
+  </data>
+  <data name="LinksType.Text" xml:space="preserve">
+    <value>Page Links Type:</value>
+  </data>
+  <data name="LinksType_Normal.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="LinksType_UseTabId.Text" xml:space="preserve">
+    <value>Use Page Id in URL</value>
+  </data>
+  <data name="LinksType_UseTabName.Text" xml:space="preserve">
+    <value>Use Page Name in URL</value>
+  </data>
+  <data name="LinksUseRelativeUrls.Help" xml:space="preserve">
+    <value>If set to false, links are created absolute</value>
+  </data>
+  <data name="LinksUseRelativeUrls.Text" xml:space="preserve">
+    <value>Enable Relative URL Links:</value>
+  </data>
+  <data name="MaxDocumentSize.Help" xml:space="preserve">
+    <value>Maximum document upload size in bytes</value>
+  </data>
+  <data name="MaxDocumentSize.Text" xml:space="preserve">
+    <value>Max File Size:</value>
+  </data>
+  <data name="MaxFlashSize.Help" xml:space="preserve">
+    <value>Maximum flash upload size in bytes</value>
+  </data>
+  <data name="MaxFlashSize.Text" xml:space="preserve">
+    <value>Max File Size:</value>
+  </data>
+  <data name="MaxImageSize.Help" xml:space="preserve">
+    <value>Maximum image upload size in bytes</value>
+  </data>
+  <data name="MaxImageSize.Text" xml:space="preserve">
+    <value>Max File Size:</value>
+  </data>
+  <data name="MaxMediaSize.Help" xml:space="preserve">
+    <value>Maximum movie upload size in bytes</value>
+  </data>
+  <data name="MaxMediaSize.Text" xml:space="preserve">
+    <value>Max File Size:</value>
+  </data>
+  <data name="MaxSilverlightSize.Help" xml:space="preserve">
+    <value>Maximum silverlight upload size in bytes</value>
+  </data>
+  <data name="MaxSilverlightSize.Text" xml:space="preserve">
+    <value>Max File Size:</value>
+  </data>
+  <data name="MaxTemplateSize.Help" xml:space="preserve">
+    <value>Maximum template upload size in bytes</value>
+  </data>
+  <data name="MaxTemplateSize.Text" xml:space="preserve">
+    <value>Max File Size:</value>
+  </data>
+  <data name="Media Manager Settings.Title" xml:space="preserve">
+    <value>Media Manager Settings</value>
+  </data>
+  <data name="MediaFilters.Help" xml:space="preserve">
+    <value>A semicolon separated list of possible extensions to be used in the media manager.  The extensions must also be in the host settings list of allowed extensions.  Use the following format: *.extensionname</value>
+  </data>
+  <data name="MediaFilters.Text" xml:space="preserve">
+    <value>Filters:</value>
+  </data>
+  <data name="MediaPath.Help" xml:space="preserve">
+    <value>The folder that the media manager starts with when loading the dialog</value>
+  </data>
+  <data name="MediaPath.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="NewLineBr.Help" xml:space="preserve">
+    <value>The NewLineBr property specifies whether the editor should insert a new line (&lt;BR&gt; tag) or a new paragraph (&lt;P&gt; tag) when the Enter key is pressed. The default value is true (&lt;BR&gt; tag) in order to closely reflect the behavior of desktop word-processors. In this case you can insert paragraph tags by pressing Ctrl+M or the New Paragraph button.
+
+If you set the NewLineBr property to false, a paragraph tag will be entered on every carriage return (pressing Enter). Here, pressing Shift+Enter will insert a &lt;BR&gt; tag.
+
+Working with bulleted/ numbered lists in Telerik RadEditor
+Lists are types of paragraphs and they accept the same attributes as paragraph tags. This means that whenever you insert a list in your HTML, you insert a new paragraph. Since Telerik RadEditor v5.05 the NewLineBr mechanism has been improved. However this makes it impossible for example to start bulleted/numbered list with the line being blank. &lt;a href="http://www.telerik.com/help/aspnet-ajax/usingthenewlinebrproperty.html" target="_blank"&gt;Read the onlinehelp for more information&lt;/a&gt;</value>
+  </data>
+  <data name="NewLineBr.Text" xml:space="preserve">
+    <value>Render New Lines As Breaks:</value>
+  </data>
+  <data name="NotCurrentProvider.Text" xml:space="preserve">
+    <value>RadEditorProvider is not default html editor provider now, any changes will not apply to current editor provider. If you want to make configuration take effect please update default provider to 'DotNetNuke.RadEditorProvider' in left drop down list.</value>
+  </data>
+  <data name="OnClientCommandExecuting.Help" xml:space="preserve">
+    <value>Set a function name to be called when the editor fires the OnExecute event on the client (fired just before a command is executed). The funtion can be placed in the js file defined in the ScriptToLoad setting. This event comes in handy if you want to add smily support for example. (Read &lt;a href="http://radeditor.codeplex.com/Thread/View.aspx?ThreadId=231612" target="_blank"&gt;this forum post&lt;/a&gt; for more information)</value>
+  </data>
+  <data name="OnClientCommandExecuting.Text" xml:space="preserve">
+    <value>Command Executing:</value>
+  </data>
+  <data name="OnClientPasteHtml.Help" xml:space="preserve">
+    <value>Set a function name to be called when the editor fires the OnPaste event (every time something is being pasted into the html code of the editors html editing area). The funtion can be placed in the js file defined in the ScriptToLoad setting.
+
+&lt;a href="http://radeditor.codeplex.com/wikipage?title=OnClientPasteExample" target="_blank"&gt;See this example for a detailed example&lt;/a&gt;</value>
+  </data>
+  <data name="OnClientPasteHtml.Text" xml:space="preserve">
+    <value>Paste HTML:</value>
+  </data>
+  <data name="PortalRoot.Text" xml:space="preserve">
+    <value>[PortalRoot]</value>
+  </data>
+  <data name="ScriptToLoad.Help" xml:space="preserve">
+    <value>If set the provider will load the javascript file specified here. This must be a relative path to the current theme directory.
+
+&lt;a href="http://radeditor.codeplex.com/wikipage?title=OnClientPasteExample" target="_blank"&gt;See this example for a detailed example&lt;/a&gt;</value>
+  </data>
+  <data name="ScriptToLoad.Text" xml:space="preserve">
+    <value>Script to Load:</value>
+  </data>
+  <data name="ShowPortalLinks.Help" xml:space="preserve">
+    <value>If set to true a dropdownlist will appear in the toolbar that renders a tree of website pages. When this feature is active, you can mark a textblock and select a page from that tree to cause the editor to link the text to a certain page.
+
+You must set the CustomLinks tool in your toolbar configuratioon in order to make this work!</value>
+  </data>
+  <data name="ShowPortalLinks.Text" xml:space="preserve">
+    <value>Show Website Links:</value>
+  </data>
+  <data name="Silverlight Manager Settings.Title" xml:space="preserve">
+    <value>Silverlight Manager Settings</value>
+  </data>
+  <data name="SilverlightFilters.Help" xml:space="preserve">
+    <value>A semicolon separated list of possible extensions to be used in the silverlight manager.  The extensions must also be in the host settings list of allowed extensions.  Use the following format: *.extensionname</value>
+  </data>
+  <data name="SilverlightFilters.Text" xml:space="preserve">
+    <value>Filters:</value>
+  </data>
+  <data name="SilverlightPath.Help" xml:space="preserve">
+    <value>The folder that the silverlight manager starts with when loading the dialog</value>
+  </data>
+  <data name="SilverlightPath.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="Skin.Help" xml:space="preserve">
+    <value>The theme to used by the editor control</value>
+  </data>
+  <data name="Skin.Text" xml:space="preserve">
+    <value>Theme:</value>
+  </data>
+  <data name="SpellAllowAddCustom.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellAllowAddCustom.Text" xml:space="preserve">
+    <value>Allow Custom Spelling:</value>
+  </data>
+  <data name="SpellCheckProvider.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellCheckProvider.Text" xml:space="preserve">
+    <value>Spell Check Provider Name:</value>
+  </data>
+  <data name="SpellCustomDictionarySourceTypeName.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellCustomDictionarySourceTypeName.Text" xml:space="preserve">
+    <value>Custom Spell Dictionary Name:</value>
+  </data>
+  <data name="SpellCustomDictionarySuffix.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellCustomDictionarySuffix.Text" xml:space="preserve">
+    <value>Custom Spell Dictionary Suffix:</value>
+  </data>
+  <data name="SpellDictionaryLanguage.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellDictionaryLanguage.Text" xml:space="preserve">
+    <value>Spell Dictionary Language:</value>
+  </data>
+  <data name="SpellDictionaryPath.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellDictionaryPath.Text" xml:space="preserve">
+    <value>Spell Dictionary Path:</value>
+  </data>
+  <data name="SpellEditDistance.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellEditDistance.Text" xml:space="preserve">
+    <value>Spell Edit Distance:</value>
+  </data>
+  <data name="SpellFragmentIgnoreOptions.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellFragmentIgnoreOptions.Text" xml:space="preserve">
+    <value>Spell Fragment Ignore Options:</value>
+  </data>
+  <data name="SpellWordIgnoreOptions.Help" xml:space="preserve">
+    <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
+  </data>
+  <data name="SpellWordIgnoreOptions.Text" xml:space="preserve">
+    <value>Spell Word Ignore Options:</value>
+  </data>
+  <data name="StripFormattingOptions.Help" xml:space="preserve">
+    <value>Developers can enforce content formatting using the StripFormattingOptions property. As a result, format stripping will be applied to all content that users are trying to paste. The EditorStripFormattingOptions setting can have any or a combination of the following values:
+&lt;ul&gt;
+&lt;li&gt;None: pastes the clipboard content as is. &lt;/li&gt;
+&lt;li&gt;NoneSupressCleanMessage: Doesn't strip anything on paste and does not ask questions. &lt;/li&gt;
+&lt;li&gt;MSWord: strips Word-specific tags on Paste, preserving fonts and text sizes. &lt;/li&gt;
+&lt;li&gt;MSWordNoFonts: strips Word-specific tags on Paste, preserving text sizes only. &lt;/li&gt;
+&lt;li&gt;MSWordRemoveAll: strips Word-specific tag on Paste, removing both fonts and text sizes. &lt;/li&gt;
+&lt;li&gt;Css: strips CSS styles on Paste. &lt;/li&gt;
+&lt;li&gt;Font: strips Font tags on Paste. &lt;/li&gt;
+&lt;li&gt;Span: strips Span tags on Paste. &lt;/li&gt;
+&lt;li&gt;All: strips all HTML formatting and pastes plain text. &lt;/li&gt;
+&lt;li&gt;AllExceptNewLines: Clears all tags except "br" and new lines (\n) on paste.&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="StripFormattingOptions.Text" xml:space="preserve">
+    <value>Strip Formatting Options:</value>
+  </data>
+  <data name="Template Manager Settings.Title" xml:space="preserve">
+    <value>Template Manager Settings</value>
+  </data>
+  <data name="TemplateFilters.Help" xml:space="preserve">
+    <value>A semicolon separated list of possible extensions to be used in the template manager.  The extensions must also be in the host settings list of allowed extensions.  Use the following format: *.extensionname</value>
+  </data>
+  <data name="TemplateFilters.Text" xml:space="preserve">
+    <value>Filters:</value>
+  </data>
+  <data name="TemplatePath.Help" xml:space="preserve">
+    <value>The folder that the template manager starts with when loading the dialog</value>
+  </data>
+  <data name="TemplatePath.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="Toolbar Settings.Title" xml:space="preserve">
+    <value>Toolbar Settings</value>
+  </data>
+  <data name="ToolbarConfigTab.Text" xml:space="preserve">
+    <value>Toolbar Configuration</value>
+  </data>
+  <data name="ToolbarMode.Help" xml:space="preserve">
+    <value>RadEditor for ASP.NET AJAX introduces a property named ToolbarMode, which specifies the behavior of the toolbar. Here are the different options for setting the ToolbarMode:&lt;ul&gt;&lt;li&gt;Default - the toolbar is static and positioned over the content area
+&lt;/li&gt;&lt;li&gt;PageTop - in this mode, when a particular editor gets the focus its toolbar will appear docked at the top of the page
+&lt;/li&gt;&lt;li&gt;ShowOnFocus - here the toolbar will appear right above the editor when it gets focus.
+&lt;/li&gt;&lt;li&gt;Floating - the toolbar will pop up in a window and will allow the user to move it over the page
+&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="ToolbarMode.Text" xml:space="preserve">
+    <value>Mode:</value>
+  </data>
+  <data name="ToolsWidth.Help" xml:space="preserve">
+    <value>Sets the width of the editor's toolbar, this should only be used when Toolbar mode is set to anything else than Default!</value>
+  </data>
+  <data name="ToolsWidth.Text" xml:space="preserve">
+    <value>Width:</value>
+  </data>
+  <data name="UserFolder.Text" xml:space="preserve">
+    <value>[UserFolder]</value>
+  </data>
+  <data name="Width.Help" xml:space="preserve">
+    <value>The overall width of the editor control. </value>
+  </data>
+  <data name="Width.Text" xml:space="preserve">
+    <value>Width:</value>
+  </data>
+  <data name="CannotManageHTMLEditorProviders.Text" xml:space="preserve">
+    <value>You cannot manage HTML Editor providers</value>
+  </data>
+</root>

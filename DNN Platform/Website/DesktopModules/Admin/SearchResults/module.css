@@ -1,0 +1,335 @@
+﻿.dnnSearchBoxPanel {
+    width: 100%;
+    padding: 10px 5px;
+    background-color: #ddd;
+}
+
+    .dnnSearchBoxPanel .dnnSearchBox {
+        margin-left: 0;
+        margin-right: 105px;
+        display: block;
+        padding-right: 10px;
+    }
+
+    .dnnSearchBoxPanel > div {
+        margin-left: 10px;
+    }
+
+.dnnSearchResultAdvancedTip {
+    float: right;
+    display: block;
+    margin: 10px 0 0 0;
+    width: 90px;
+}
+
+.dnnSearchResultPanel {
+    width: 100%;
+    margin: 10px 0 0 0;
+    padding: 10px 0 7px 0;
+    background-color: #ddd;
+}
+
+    .dnnSearchResultPanel .selectize-control {
+        width: 100px;
+    }
+
+    .dnnSearchResultPanel .dnnRight {
+        margin-right: 10px;
+    }
+
+    .dnnSearchResultPanel .dnnSearchResultSortOptions {
+        margin: 0 0 0 0;
+        padding: 0 5px 0 0;
+        list-style-type: none;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+    }
+
+        .dnnSearchResultPanel .dnnSearchResultSortOptions > li {
+            list-style: none;
+            display: inline-block;
+            margin: 0 -5px 0 0;
+            padding: 0;
+            border-left: 1px solid #ccc;
+        }
+
+            .dnnSearchResultPanel .dnnSearchResultSortOptions > li:first-child {
+                border-left: none;
+            }
+
+            .dnnSearchResultPanel .dnnSearchResultSortOptions > li > a {
+                display: block;
+                padding: 7px 15px 7px 15px;
+                margin: 0;
+                color: #666;
+                background: #fff;
+                background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+                background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+            }
+
+            .dnnSearchResultPanel .dnnSearchResultSortOptions > li.active > a,
+            .dnnSearchResultPanel .dnnSearchResultSortOptions > li.active > a:hover {
+                background-color: #e8f1fa;
+                background: -moz-linear-gradient(top, #ccc 0%, #fff 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ccc), color-stop(100%,#fff)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #ccc 0%,#fff 100%); /* Chrome10+,Safari5.1+ */
+                background: linear-gradient(top, #ccc 0%,#fff 100%); /* W3C */
+                color: #333;
+            }
+
+    .dnnSearchResultPanel > .dnnRight > span.dnnSearchResultCountPerPage, .dnnSearchResultPanel > .dnnLeft > span.dnnSearchResultCountPerPage {
+        display: inline-block;
+        margin: 10px 5px 0 10px;
+        color: #666;
+        vertical-align: top;
+    }
+
+.dnnSearchResultContainer {
+    margin: 30px 0 0 0;
+}
+
+.dnnSearchLoading {
+    position: absolute;
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.7);
+    background-image: url(../../../images/loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 30px 0 0 0;
+}
+
+
+.dnnSearchResultContainer > .dnnSearchResultItem {
+    width: 100%;
+    margin: 0 0 30px 0;
+}
+
+    .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Title {
+        font-size: 17px;
+        font-weight: bold;
+        margin: 0 0 6px 0;
+    }
+
+        .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Title b {
+            font-style: italic;
+        }
+
+    .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Description {
+        color: #666;
+        margin: 0 0 6px 0;
+    }
+
+        .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Description b {
+            color: #000;
+        }
+
+    .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others span {
+        font-weight: bold;
+        color: #777;
+    }
+
+        .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others span + label {
+            font-weight: normal;
+        }
+
+    .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others a {
+        display: inline-block;
+        margin: 0 2px 0 0;
+        vertical-align: top;
+    }
+
+.dnnSearchResultContainer > .dnnSearchResultItem-Subset {
+    margin: -10px 10px 30px 30px;
+}
+
+    .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Title {
+        font-weight: bold;
+        margin: 0 0 3px 0;
+    }
+
+    .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Description {
+        color: #666;
+        margin: 0 0 6px 0;
+    }
+
+        .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Description b {
+            color: #000;
+        }
+
+    .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others span {
+        font-weight: bold;
+        color: #777;
+    }
+
+        .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others span + label {
+            font-weight: normal;
+        }
+
+    .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others a {
+        display: inline-block;
+        margin: 0 2px 0 0;
+        vertical-align: top;
+    }
+
+
+.dnnSearchResultPager {
+    margin: 30px 0 0 0;
+    padding: 15px 0 15px 0;
+    border-top: 1px solid #ccc;
+}
+
+    .dnnSearchResultPager.dnnSearchResultPagerTop {
+        border-top: none;
+        border-bottom: 1px solid #ccc;
+        margin: 10px 0 30px 0;
+    }
+
+    .dnnSearchResultPager span {
+        display: inline-block;
+        color: #666;
+        margin: 6px 3px 0 0;
+        vertical-align: top;
+    }
+
+        .dnnSearchResultPager span.dnnPager-current {
+            margin: 6px 20px 0 0;
+        }
+
+    .dnnSearchResultPager a {
+        -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 1);
+        background: #fff; /* Old browsers */
+        background: -moz-linear-gradient(top, #fff 0%, #eee6e5 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #eee6e5)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #fff 0%, #eee6e5 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #fff 0%, #eee6e5 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #fff 0%,#eee6e5 100%); /* IE10+ */
+        background: linear-gradient(top, #fff 0%,#eee6e5 100%); /* W3C */
+        border: 1px solid #dddddd;
+        box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+        color: #555;
+        display: inline-block;
+        height: 32px;
+        margin-top: -6px;
+        text-shadow: 0 1px 0 #ffffff;
+        width: 25px;
+        vertical-align: top;
+    }
+
+        .dnnSearchResultPager a.dnnPager-next {
+            -webkit-border-bottom-right-radius: 3px;
+            -webkit-border-top-right-radius: 3px;
+            background-image: url("../../../icons/sigma/right.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            border-bottom-right-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        .dnnSearchResultPager a.dnnPager-prev {
+            -webkit-border-bottom-left-radius: 3px;
+            -webkit-border-top-left-radius: 3px;
+            background-image: url("../../../icons/sigma/left.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            border-bottom-left-radius: 3px;
+            border-right: none;
+            border-top-left-radius: 3px;
+        }
+
+        .dnnSearchResultPager a.dnnPager-disable {
+            opacity: 0.65;
+        }
+
+#dnnSearchResultAdvancedForm {
+    margin: 20px 0 0 0;
+    width: 450px;
+}
+
+    #dnnSearchResultAdvancedForm .dnnFormItem {
+        margin-bottom: 5px;
+    }
+
+    #dnnSearchResultAdvancedForm.dnnForm .dnnFormItem > .selectize-control {
+        width: 235px;
+        margin-bottom: 0;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnActions {
+        margin: 10px 0 5px 20px;
+        padding: 0;
+    }
+
+#dnnSearchResult-advancedTipContainer {
+    margin-right: 10px;
+    display: none;
+}
+
+.dnnSearchResult-hint-tbl {
+    margin: 20px 0 10px 0;
+    width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+}
+
+@media only screen and (max-width: 715px) {
+    .dnnSearchBox_advanced_dropdown {
+        width: 420px;
+        left: -254px;
+    }
+}
+
+@media only screen and (max-width: 580px) {
+
+    #dnnSearchResultAdvancedForm {
+        width: 250px;
+    }
+
+    .dnnSearchBox_advanced_dropdown {
+        left: -150px !important;
+        width: 250px;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnLabel {
+        white-space: nowrap;
+        margin-right: 1em;
+        text-align: left;
+        float: none;
+        display: block;
+        width: 100%;
+    }
+
+        #dnnSearchResultAdvancedForm .dnnLabel label {
+            margin-right: .3em;
+        }
+
+    #dnnSearchResultAdvancedForm .dnnFormHelp {
+        position: relative !important;
+        width: 20px;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnTooltip {
+        left: 30% !important;
+        white-space: normal;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnCheckbox {
+        position: absolute;
+        top: -8px;
+        left: 135px;
+    }
+}
+
+@media only screen and (max-width: 475px) {
+    .dnnSearchBox_advanced_dropdown {
+        left: -48px !important;
+    }
+}
+
+
+@media only screen and (max-width: 390px) {
+    .dnnSearchBox_advanced_dropdown {
+        left: -5px !important;
+    }
+}

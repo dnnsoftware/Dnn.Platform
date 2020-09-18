@@ -1,0 +1,9 @@
+﻿Test,					DoNotRedirect,		UseBaseFriendlyUrls,	Scheme,		Page Name,		Test Url,																								Expected Url,						Status,		Final Url,						RedirectReason
+Default,				False,				False,					http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},																{defaultPage}?TabId={tabId},		301,		http://{alias}/About-Us,		Unfriendly_Url_2
+DoNotRedirect,			True,				False,					http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},																{defaultPage}?TabId={tabId},		200
+UseBaseFriendlyUrls,	False,				/AboutUs;,				http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},																{defaultPage}?TabId={tabId},		200
+Both,					True,				/AboutUs;,				http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},																{defaultPage}?TabId={tabId},		200
+Install,				False,				False,					http://,	About Us,		http://{alias}/Install/Install.aspx,																	,									200
+Install Wizard,			False,				False,					http://,	About Us,		http://{alias}/Install/InstallWizard.aspx,																,									200
+Keep Alive,				False,				False,					http://,	About Us,		http://{alias}/KeepAlive.aspx,																			,									200
+Synchronize Cache,		False,				False,					http://,	About Us,		http://{alias}/SynchronizeCache.aspx?message=2fedSg0v8D0%3d&data=KEjj6-3tY8uiuML3Bv1WejjhzhgSm2px,		,									200

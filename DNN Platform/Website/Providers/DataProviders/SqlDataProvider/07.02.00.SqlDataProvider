@@ -1,0 +1,1536 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {databaseOwner}{objectQualifier}ModuleControls 
+set   ControlSrc = 'DesktopModules/Admin/ModuleCreator/viewsource.ascx', 
+      ControlTitle = 'Develop Module',
+      SupportsPartialRendering = 0 
+where controlsrc = 'admin/Modules/viewsource.ascx'
+GO
+
+/* Story DNN-3116: Add SendToast Column to Messaging Table. */
+/************************************************************/
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}CoreMessaging_MessageRecipients' 
+           AND  COLUMN_NAME = 'SendToast')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients ADD
+            SendToast bit NOT NULL DEFAULT ((0))
+    END 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_IsToastPending]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsToastPending]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsToastPending]	
+    @NotificationId int
+AS
+BEGIN
+    SELECT Sendtoast 
+    FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+    WHERE MessageId = @NotificationId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_MarkReadyForToast]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkReadyForToast]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkReadyForToast]	
+    @MessageId int,
+    @UserId int
+AS
+BEGIN	
+    UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+    SET Sendtoast = 1,
+    [LastModifiedOnDate] = GETDATE()
+    WHERE MessageId = @MessageId
+    AND UserId = @UserId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_MarkToastSent]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkToastSent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_MarkToastSent]	
+    @MessageId int,
+	@UserId INT
+AS
+BEGIN	
+    UPDATE {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients
+    SET Sendtoast = 0,
+    [LastModifiedOnDate] = GETDATE()
+    WHERE MessageId = @MessageId
+	AND UserId = @UserId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]	
+    @UserId int,
+    @PortalId int
+AS
+BEGIN	
+    SELECT DISTINCT m.*
+    FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients mr 
+        INNER JOIN {databaseOwner}{objectQualifier}CoreMessaging_Messages m
+    ON mr.MessageID = m.MessageID	
+    WHERE mr.UserID = @UserID
+    AND   m.PortalID = @PortalID
+    AND   mr.SendToast = 1
+END
+GO
+
+DECLARE @PackageID INT, @SkinControlID INT
+SELECT @PackageID = MAX(PackageID) + 1 FROM {databaseOwner}[{objectQualifier}Packages]
+SELECT @SkinControlID = MAX(SkinControlID) + 1 FROM {databaseOwner}[{objectQualifier}SkinControls]
+
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] ON
+INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PackageID], [PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (@PackageID, NULL, N'DotNetNuke.ToastSkinObject', N'Toast SkinObject', N'', N'SkinObject', N'07.02.00', N'', N'', N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', N'', 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL)
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] OFF
+
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] ON
+INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([SkinControlID], [PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (@SkinControlID, @PackageID, N'Toast', N'Admin/Skins/Toast.ascx', NULL, NULL, 1, NULL, GETDATE(), NULL, GETDATE())
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] OFF
+GO
+
+/** DNN-3498 - Support side by side INstallation **/
+/**************************************************/
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}PackageTypes ' AND COLUMN_NAME = 'SupportsSideBySideInstallation')
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}PackageTypes] 
+			ADD SupportsSideBySideInstallation bit NOT NULL DEFAULT(0)
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageTypes]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPackageTypes]
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}PackageTypes
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Packages]') AND name = N'IX_{objectQualifier}Packages')
+    DROP INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
+GO
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
+	(
+		Owner,
+		Name,
+		PackageType,
+		PortalID,
+		Version
+	)
+GO
+
+/* Story DNN-3497: Create a new Javascript Extension Type. */
+/***********************************************************/
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PackageTypes] WHERE [PackageType] = 'JavaScript_Library')
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes]
+			(
+			   [PackageType],
+			   [Description],
+			   [SecurityAccessLevel],
+			   [EditorControlSrc],
+			   [SupportsSideBySideInstallation]
+			)
+		 VALUES
+			(
+				'JavaScript_Library',
+				'JavaScript Library',
+				'3',
+				'DesktopModules/Admin/Extensions/Editors/JavaScriptLibraryEditor.ascx',
+				1
+			)
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}JavaScriptLibraries') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries](
+			[JavaScriptLibraryID] [int] IDENTITY(1,1) NOT NULL,
+			[PackageID] [int] NOT NULL,
+			[LibraryName] [nvarchar](200) NOT NULL,
+			[Version] [nvarchar](10) NOT NULL,
+			[FileName] [nvarchar](100) NOT NULL,
+			[ObjectName] [nvarchar](100) NOT NULL,
+			[PreferredScriptLocation] [int] NOT NULL,
+			[CDNPath] [nvarchar](250) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}JavaScriptLIbraries] PRIMARY KEY CLUSTERED 
+			(
+				[JavaScriptLibraryID] ASC
+			)
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages] FOREIGN KEY([PackageID])
+				REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteJavaScriptLibrary]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteJavaScriptLibrary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteJavaScriptLibrary]
+	@JavaScriptLibraryID INT
+AS
+	DELETE FROM {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+	WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetJavaScriptLibraries]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetJavaScriptLibraries]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetJavaScriptLibraries]
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}JavaScriptLibraries
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+	@JavaScriptLibraryID INT,
+	@PackageID INT,
+	@LibraryName NVARCHAR(200),
+	@Version NVARCHAR(10),
+	@FileName NVARCHAR(100),
+	@ObjectName NVARCHAR(100),
+	@PreferredScriptLocation int,
+	@CDNPath NVARCHAR(250)
+AS
+
+	IF EXISTS (SELECT JavaScriptLibraryID FROM {objectQualifier}JavaScriptLibraries WHERE JavaScriptLibraryID = @JavaScriptLibraryID)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+			   SET [PackageID] = @PackageID,
+					[LibraryName] = @LibraryName,
+					[Version] = @Version,
+					[FileName] = @FileName,
+					[ObjectName] = @ObjectName,
+					[PreferredScriptLocation] = @PreferredScriptLocation,
+					[CDNPath] = @CDNPath
+			 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+	 	END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}[{objectQualifier}JavaScriptLibraries] (
+				[PackageID],
+				[LibraryName],
+				[Version],
+				[FileName],
+				[ObjectName],
+				[PreferredScriptLocation],
+				[CDNPath]
+			)
+			VALUES (
+				@PackageID,
+				@LibraryName,
+				@Version,
+				@FileName,
+				@ObjectName,
+				@PreferredScriptLocation,
+				@CDNPath
+			)
+			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
+		END
+		
+	SELECT @JavaScriptLibraryID
+GO
+
+/** DNN-3493 - Build a dependency graph of extensions **/
+/*******************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageByName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageByName]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackage]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackage]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackagesByType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackagesByType]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageType]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PackageDependencies') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}PackageDependencies](
+			[PackageDependencyID] [int] IDENTITY(1,1) NOT NULL,
+			[PackageID] [int] NOT NULL,
+			[PackageName] [nvarchar](128) NOT NULL,
+			[Version] [nvarchar](50) NOT NULL,
+			 CONSTRAINT [PK_{objectQualifier}PackageDependencies] PRIMARY KEY CLUSTERED
+			(
+				[PackageDependencyID] ASC
+			)
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}PackageDependencies]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}PackageDependencies_{objectQualifier}Packages] FOREIGN KEY([PackageID]) 
+				REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE
+
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPackageDependencies]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPackageDependencies]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPackageDependencies]
+AS
+	SELECT * FROM {databaseOwner}[{objectQualifier}PackageDependencies] 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+	@PackageDependencyID INT,
+	@PackageID INT,
+	@PackageName NVARCHAR(128),
+	@Version NVARCHAR(10)
+AS
+	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageID = @PackageID AND PackageName = @PackageName AND Version = @Version)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
+			   SET [PackageID] = @PackageID,
+					[PackageName] = @PackageName,
+					[Version] = @Version
+			 WHERE PackageDependencyID = @PackageDependencyID
+		END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] (
+				[PackageID],
+				[PackageName],
+				[Version]
+			)
+			VALUES (
+				@PackageID,
+				@PackageName,
+				@Version
+			)
+			SET @PackageDependencyID = (SELECT @@IDENTITY)
+		END
+
+	SELECT @PackageDependencyID
+GO
+
+/** DNN-2995 - SI: Performance improvement in dbo.GetUsersByEmail **/
+/*******************************************************************/
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}Users ' AND COLUMN_NAME = 'LowerEmail')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Users
+		  ADD LowerEmail AS LOWER(Email) PERSISTED
+
+		CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}{objectQualifier}Users(Email)
+	END
+GO
+
+
+GO
+
+/** DNN 3133 Search User Profile Crawler **/
+/******************************************/
+
+INSERT INTO {databaseOwner}{objectQualifier}SearchTypes
+           ([SearchTypeName]
+           ,[SearchResultClass]
+           ,[IsPrivate])
+     VALUES
+           ('user', 'DotNetNuke.Services.Search.Controllers.UserResultController', 0)
+GO
+
+/***** Fix bug DNN-3702: Add log type LIBRARY_UPDATED *****/
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'LIBRARY_UPDATED', N'LIBRARY_UPDATED', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'LIBRARY_UPDATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+GO
+
+/** CONTENT-1801 - Subscription > Remove Schedule Subscription and use instead Messaging Dispach **/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}CoreMessaging_UserPreferences') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}CoreMessaging_UserPreferences]
+	(
+		[UserPreferenceId] [int] IDENTITY(1,1) NOT NULL,		
+		[PortalId] [int] NOT NULL,
+		[UserId] [int] NOT NULL,
+		[MessagesEmailFrequency] [int] NOT NULL,
+		[NotificationsEmailFrequency] [int] NOT NULL,
+	)
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences
+			WITH NOCHECK
+	ADD CONSTRAINT PK_{objectQualifier}CoreMessaging_UserPreferences PRIMARY KEY CLUSTERED ( [UserPreferenceId] )
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}vw_MessagesForDispatch') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}{objectQualifier}vw_MessagesForDispatch
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_MessagesForDispatch]
+AS
+	SELECT CMR.RecipientID
+	,CMR.MessageID
+	,CMR.UserID
+	,CMR.[Read]
+	,CMR.Archived
+	,CMR.EmailSent
+	,CMR.EmailSentDate
+	,CMR.EmailSchedulerInstance
+	,CMR.CreatedByUserID
+	,CMR.CreatedOnDate
+	,CMR.LastModifiedByUserID
+	,CMR.LastModifiedOnDate
+	,CMR.SendToast
+	,CM.NotificationTypeID	
+    ,CASE 
+		WHEN CM.NotificationTypeID IS NULL		
+		THEN				
+			ISNULL ((SELECT UP.[MessagesEmailFrequency] AS Expr1
+					FROM          {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences UP
+					WHERE      (UP.UserId = CMR.UserID) AND (UP.PortalId = CM.PortalID)), 0)
+		ELSE			
+			ISNULL ((SELECT UP.[NotificationsEmailFrequency] AS Expr1
+					FROM          {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences UP
+					WHERE      (UP.UserId = CMR.UserID) AND (UP.PortalId = CM.PortalID)), 2)
+	END EmailFrequency
+FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients AS CMR 
+	INNER JOIN
+    {databaseOwner}{objectQualifier}CoreMessaging_Messages AS CM 
+		ON CMR.MessageID = CM.MessageID
+GO
+
+/** Core Messaging instant and digest notifications **/
+/*****************************************************/
+
+/* Ensure we do not have a stacked up queue */
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+	SET EmailSentDate = GETUTCDATE(),
+	EmailSent = 1
+	WHERE EmailSentDate IS NULL
+	AND CreatedOnDate < DATEADD(d, -1, GETUTCDATE())
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]
+	@SchedulerInstance UNIQUEIDENTIFIER ,
+	@BatchSize INT
+AS 
+	BEGIN
+		UPDATE  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+		SET     EmailSchedulerInstance = @SchedulerInstance
+		WHERE   RecipientID IN (
+				SELECT TOP ( @BatchSize )
+						RecipientID 
+				FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
+				WHERE   EmailSent = 0
+						AND [Read] = 0
+						AND Archived = 0
+						AND EmailFrequency = 0
+						AND ( ( EmailSchedulerInstance IS NULL
+								AND EmailSentDate IS NULL
+							  )
+							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+							)
+				ORDER BY MFD.CreatedOnDate DESC ,
+						UserID )
+
+		SELECT  *
+		FROM    {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] CMR
+				INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] CMM ON CMR.MessageID = CMM.MessageID
+		WHERE   EmailSent = 0
+				AND EmailSentDate IS NULL
+				AND [Read] = 0
+				AND Archived = 0
+				AND ( EmailSchedulerInstance = @SchedulerInstance )
+		ORDER BY UserID ,
+				CMM.CreatedOnDate DESC	
+	END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]
+	@Frequency INT ,
+	@SchedulerInstance UNIQUEIDENTIFIER ,
+	@BatchSize INT
+AS 
+	BEGIN
+		UPDATE  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+		SET     EmailSchedulerInstance = @SchedulerInstance
+		WHERE   RecipientID IN (
+				SELECT 
+						RecipientID
+				FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
+				WHERE UserID IN (
+							SELECT TOP ( @BatchSize  )
+									UserID
+							FROM    {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] MFD
+							WHERE   EmailSent = 0
+									AND [Read] = 0
+									AND Archived = 0
+									AND EmailFrequency = @Frequency
+									AND ( ( EmailSchedulerInstance IS NULL
+											AND EmailSentDate IS NULL
+										  )
+										  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+										)        
+							GROUP BY UserID
+							ORDER BY UserID      
+						)  
+						AND EmailSent = 0
+						AND [Read] = 0
+						AND Archived = 0
+						AND EmailFrequency = @Frequency
+						AND ( ( EmailSchedulerInstance IS NULL
+								AND EmailSentDate IS NULL
+							  )
+							  OR EmailSchedulerInstance = '00000000-0000-0000-0000-000000000000'
+							))
+
+		SELECT  *
+		FROM    {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] CMR
+				INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] CMM ON CMR.MessageID = CMM.MessageID
+		WHERE   EmailSent = 0
+				AND EmailSentDate IS NULL
+				AND [Read] = 0
+				AND Archived = 0
+				AND ( EmailSchedulerInstance = @SchedulerInstance )
+		ORDER BY UserID ,
+				CMM.CreatedOnDate DESC                      
+	END
+
+GO
+
+/** Subscription **/
+/******************/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+	(
+		[SubscriptionTypeId] [int] IDENTITY(1,1) NOT NULL,
+		[SubscriptionName] [nvarchar](50) NOT NULL,
+		[FriendlyName] [nvarchar](50) NOT NULL,
+		[DesktopModuleId] [int] NULL,
+		CONSTRAINT [PK_{objectQualifier}CoreMessaging_SubscriptionTypes] PRIMARY KEY CLUSTERED 
+			(
+				[SubscriptionTypeId]
+			)
+	)
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}CoreMessaging_Subscriptions') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	(
+		[SubscriptionId] [int] IDENTITY(1,1) NOT NULL,
+		[UserId] [int] NOT NULL,
+		[PortalId] [int] NULL,
+		[SubscriptionTypeId] [int] NOT NULL,
+		[ObjectKey] [nvarchar](255) NULL,
+		[ObjectData] [nvarchar](MAX) NULL,
+		[Description] [nvarchar] (255) NOT NULL,
+		[CreatedOnDate] [datetime] NOT NULL,
+		[ModuleId] [int] NULL,
+		[TabId] [int] NULL,
+		CONSTRAINT [PK_{objectQualifier}CoreMessaging_Subscriptions] PRIMARY KEY CLUSTERED 
+			(
+				[SubscriptionId]
+			)
+	)
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Portals FOREIGN KEY ( [PortalId] ) 
+		REFERENCES {databaseOwner}{objectQualifier}Portals ( [PortalID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Subscriptions_Type FOREIGN KEY ( [SubscriptionTypeId] ) 
+		REFERENCES {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes ( [SubscriptionTypeId] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Users FOREIGN KEY ( [UserId] ) REFERENCES {databaseOwner}{objectQualifier}Users ( [UserID] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+				
+	ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Modules FOREIGN KEY ( [ModuleId] ) REFERENCES {databaseOwner}{objectQualifier}Modules ( [ModuleId] ) 
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]
+	@SubscriptionName NVARCHAR(50) ,
+	@FriendlyName NVARCHAR(50) ,
+	@DesktopModuleId INT
+AS 
+	INSERT  {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+			( SubscriptionName ,
+			  FriendlyName ,
+			  DesktopModuleId
+			)
+	VALUES  ( @SubscriptionName ,
+			  @FriendlyName ,
+			  @DesktopModuleId 
+			)
+	SELECT  SCOPE_IDENTITY()
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionTypes]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionTypes]
+AS 
+	SELECT  *
+	FROM    {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscriptionType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscriptionType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscriptionType]
+	@SubscriptionTypeId int
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] WHERE [SubscriptionTypeId] = @SubscriptionTypeId
+
+	IF @@ROWCOUNT <> 0
+		SELECT 0 AS [ResultStatus]
+	ELSE
+		SELECT -1 AS [ResultStatus]
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteSubscription]
+	@SubscriptionId int
+AS 
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions] WHERE [SubscriptionId] = @SubscriptionId
+
+	IF @@ROWCOUNT <> 0
+		SELECT 0 AS [ResultStatus]
+	ELSE
+		SELECT -1 AS [ResultStatus]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+	@PortalId int,
+	@UserId int,
+	@SubscriptionTypeID int
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+			ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+			AND UserId = @UserId
+			AND (@SubscriptionTypeID IS NULL OR SubscriptionTypeID = @SubscriptionTypeID)
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+	@PortalId int,
+	@SubscriptionTypeID int,
+	@ObjectKey NVARCHAR(255)
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+	WHERE 
+			ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+		AND SubscriptionTypeID = @SubscriptionTypeID
+		AND ObjectKey = @ObjectKey
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+	@UserId INT ,
+	@PortalId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@Description NVARCHAR(255),
+	@ModuleId INT ,
+	@TabId INT,
+	@ObjectData NVARCHAR(MAX)
+AS 
+	BEGIN
+        DECLARE @SubscriptionId INT = NULL   
+        
+        SELECT  TOP 1 @SubscriptionId = SubscriptionId
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ISNULL(@ModuleId, -1) = ISNULL(ModuleId, -1)				
+				AND ISNULL(@TabId, -1) = ISNULL(TabId, -1)
+		      
+        IF (@SubscriptionId IS NULL) 
+			BEGIN
+				INSERT  INTO {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+						( UserId ,
+							PortalId ,
+							SubscriptionTypeId ,
+							ObjectKey ,
+							Description,
+							CreatedOnDate ,
+							ModuleId ,
+							TabId,
+							ObjectData
+						)
+				VALUES  ( @UserId ,
+							@PortalId ,
+							@SubscriptionTypeId ,
+							@ObjectKey ,
+							@Description,
+							GETUTCDATE() ,
+							@ModuleId ,
+							@TabId,
+							@ObjectData
+						)
+
+				SELECT  SCOPE_IDENTITY() AS [SubscriptionId]
+			END
+		ELSE 
+			BEGIN
+				UPDATE  {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+				SET     UserId = @UserId ,
+						PortalId = @PortalId ,
+						SubscriptionTypeId = @SubscriptionTypeId ,
+						ObjectKey = @ObjectKey ,
+						Description = @Description ,
+						ModuleId = @ModuleId ,
+						TabId = @TabId,
+						ObjectData = @ObjectData
+				WHERE   SubscriptionId = @SubscriptionId
+
+				SELECT  @SubscriptionId AS [SubscriptionId]
+			END
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+	@PortalId INT ,
+	@UserId INT ,
+	@SubscriptionTypeId INT ,
+	@ObjectKey NVARCHAR(255) ,
+	@ModuleId INT ,
+	@TabId INT
+AS 
+	BEGIN
+		SELECT  TOP 1 *
+		FROM    {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		WHERE   UserId = @UserId
+				AND ISNULL(@PortalId, -1) = ISNULL(PortalId, -1)
+				AND SubscriptionTypeId = @SubscriptionTypeID
+				AND ObjectKey = @ObjectKey
+				AND ISNULL(@ModuleId, -1) = ISNULL(ModuleId, -1)				
+				AND ISNULL(@TabId, -1) = ISNULL(TabId, -1)
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetUserPreference]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetUserPreference]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetUserPreference]
+	@PortalId INT ,	
+	@UserId INT
+AS 
+BEGIN
+	SELECT PortalId, UserId, MessagesEmailFrequency, NotificationsEmailFrequency
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences UP
+	WHERE	UP.PortalId = @PortalId
+		AND
+			UP.UserId = @UserId	
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_SetUserPreference]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_SetUserPreference]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_SetUserPreference]
+	@PortalId INT ,	
+	@UserId INT,
+	@MessagesEmailFrequency INT,
+	@NotificationsEmailFrequency INT
+AS 
+BEGIN	
+	UPDATE {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences
+	SET MessagesEmailFrequency = @MessagesEmailFrequency
+		,NotificationsEmailFrequency = @NotificationsEmailFrequency
+	WHERE PortalId = @PortalId
+	AND UserId = @UserId
+
+	IF @@ROWCOUNT = 0 BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_UserPreferences (PortalId, UserId, MessagesEmailFrequency, NotificationsEmailFrequency)
+		VALUES (@PortalId, @UserId, @MessagesEmailFrequency, @NotificationsEmailFrequency)
+	END	
+END
+GO
+
+/** DNN-3191 Enhancements to the SQL Module	**/
+/*********************************************/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SQLQueries') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}SQLQueries(
+		[QueryId] [int] IDENTITY(1,1) NOT NULL,
+		[Name] [nvarchar](200) NOT NULL,
+		[Query] [nvarchar](max) NOT NULL,
+		[ConnectionStringName] [nvarchar](50) NOT NULL,
+		[CreatedByUserId] [int] NOT NULL,
+		[CreatedOnDate] [datetime] NOT NULL,
+		[LastModifiedByUserId] [int] NOT NULL,
+		[LastModifiedOnDate] [datetime] NOT NULL,
+		 CONSTRAINT [PK_{objectQualifier}SavedQueries] PRIMARY KEY CLUSTERED 
+		(
+			[QueryId] ASC
+		)
+	)
+END
+
+GO
+
+/***** Fix bug DNN-3767: check whether old parent id equals new parent id include NUll condition. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}MoveTabToParent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}MoveTabToParent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}MoveTabToParent] 
+	@TabId					int,
+	@NewParentId			int,
+	@LastModifiedByUserID	int
+AS
+	BEGIN
+		DECLARE @OldParentId int
+		SET @OldParentId = (SELECT ParentId FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		
+		DECLARE @TabOrder int
+		SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @TabId)
+		
+		-- Get New TabOrder
+		DECLARE @NewTabOrder int
+		SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {objectQualifier}Tabs WHERE (ParentId = @NewParentId OR (ParentId IS NULL AND @NewParentId IS NULL)))
+		IF @NewTabOrder IS NULL 
+			SET @NewTabOrder = 1
+		ELSE
+			SET @NewTabOrder = @NewTabOrder + 2			
+				
+		BEGIN
+			-- update TabOrder of Tabs with same original Parent
+			UPDATE {objectQualifier}Tabs
+				SET TabOrder = TabOrder - 2
+				WHERE (ParentId = @OldParentId OR (ParentId IS NULL AND @OldParentId IS NULL)) 
+					AND TabOrder > @TabOrder
+
+			-- Update Tab with new TabOrder
+			UPDATE {objectQualifier}Tabs
+				SET 
+					ParentId				= @NewParentId,
+					TabOrder				= @NewTabOrder,
+					LastModifiedByUserID	= @LastModifiedByUserID,
+					LastModifiedOnDate		= GETDATE()					
+				WHERE TabID = @TabId
+		END
+		IF (@OldParentId <> @NewParentId) OR (@OldParentId IS NULL AND @NewParentId IS NOT NULL) OR (@OldParentId IS NOT NULL AND @NewParentId IS NULL)
+			BEGIN
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+			END
+		ELSE
+			BEGIN
+				EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+			END
+	END
+
+GO
+
+/***** Fix issue CONTENT-1926: removed obsolete CoreMessaging_GetNextMessagesForDispatch Stored Procedure *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDispatch]
+GO
+
+
+/***** Story DNN-3133: Add sp GetAvailableUsersForIndex to get users who need update index. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+	@startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS 
+    BEGIN
+        WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     ),
+                  ValidUsers AS 
+                  (
+				      SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                         FROM ( SELECT DISTINCT
+                                            ( u.UserID )
+                                  FROM      {databaseOwner}[{objectQualifier}Users] u
+                                            INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                                            INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                  WHERE     up.PortalId = @PortalId
+                                            AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
+                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
+                                ) AS T WHERE UserID > @startUserId) AS T
+                                WHERE rownumber <= @numberOfUsers
+                     ),
+                     FirstName AS (
+						SELECT UserID, PropertyValue FROM {databaseOwner}[{objectQualifier}UserProfile] p
+						INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+						WHERE pd.PropertyName = 'FirstName' AND pd.PortalID = @PortalID
+					 )
+
+            SELECT  DISTINCT u.UserID ,
+					u.DisplayName,
+                    fn.PropertyValue AS FirstName,
+                    pd.PropertyName ,
+                    CASE WHEN (p.PropertyValue IS NULL) THEN p.PropertyText ELSE p.PropertyValue END AS PropertyValue,
+                    p.Visibility,
+                    p.ExtendedVisibility,
+					CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
+            FROM    {databaseOwner}[{objectQualifier}Users] u
+                    INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
+                    INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                    INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                    INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                    LEFT JOIN FirstName fn ON fn.UserID = u.UserID
+            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
+    END
+GO
+
+--insert the reindex flag for all portals when upgrade to 7.2.0
+
+INSERT INTO {databaseOwner}[{objectQualifier}PortalSettings]
+        ( PortalID ,
+          SettingName ,
+          SettingValue ,
+          CreatedByUserID ,
+          CreatedOnDate ,
+          LastModifiedByUserID ,
+          LastModifiedOnDate ,
+          CultureCode
+        )
+		SELECT PortalID, 'UserIndexer_ReIndex', 'true', -1, GETDATE(), -1, GETDATE(), '' FROM {databaseOwner}[{objectQualifier}Portals]
+GO
+
+/*   Fix DNN-3914 Add new SQL functions */
+/****************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FilePath]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}FilePath]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}FilePath]
+(
+    @StrMayContainFileId nVarChar(255)
+)
+	RETURNS 			 nVarChar(500)
+AS
+	BEGIN
+		DECLARE @Path AS nVarChar(500);
+
+		IF ISNULL(@StrMayContainFileId,'') = ''
+			SET @Path = ''
+		 ELSE IF Lower(@StrMayContainFileId) LIKE 'fileid=%'
+			SELECT @Path = IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(@StrMayContainFileId, 8, 10) AS Int)
+		 ELSE
+			SET @Path = @StrMayContainFileId
+		RETURN @Path -- never Null!
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SuperuserTabID]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}SuperUserTabID]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}SuperUserTabID]
+() 
+	RETURNS Int
+AS
+BEGIN
+    DECLARE @HostTabId Int = Null
+    SELECT  TOP (1) @HostTabId = TabID
+		FROM  {databaseOwner}{objectQualifier}Tabs
+		WHERE (PortalID IS NULL) AND (ParentId IS NULL)
+		ORDER BY TabID
+    RETURN @HostTabId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HasChildTab]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}HasChildTab]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}HasChildTab]
+(
+   @TabId   Int
+) 
+	RETURNS Bit
+AS
+BEGIN
+    RETURN CASE WHEN EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}Tabs WHERE ParentId = @TabId) THEN 1 ELSE 0 END
+END
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+-- updated view to use new function
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+    SELECT
+        P.PortalID,
+        P.PortalGroupID,
+        PL.PortalName,
+        {databaseOwner}{objectQualifier}FilePath(PL.LogoFile) AS LogoFile,
+        PL.FooterText,
+        P.ExpiryDate,
+        P.UserRegistration,
+        P.BannerAdvertising,
+        P.AdministratorId,
+        P.Currency,
+        P.HostFee,
+        P.HostSpace,
+        P.PageQuota,
+        P.UserQuota,
+        P.AdministratorRoleId,
+        P.RegisteredRoleId,
+        PL.Description,
+        PL.KeyWords,
+        {databaseOwner}{objectQualifier}FilePath(PL.BackgroundFile) AS BackgroundFile,
+        P.GUID,
+        P.PaymentProcessor,
+        P.ProcessorUserId,
+        P.ProcessorPassword,
+        P.SiteLogHistory,
+        U.Email,
+        P.DefaultLanguage,
+        P.TimezoneOffset,
+        PL.AdminTabId,
+        P.HomeDirectory,
+        PL.SplashTabId,
+        PL.HomeTabId,
+        PL.LoginTabId,
+        PL.RegisterTabId,
+        PL.UserTabId,
+        PL.SearchTabId,
+        {databaseOwner}{objectQualifier}SuperUserTabID() AS SuperTabId,
+        P.CreatedByUserID,
+        P.CreatedOnDate,
+        P.LastModifiedByUserID,
+        P.LastModifiedOnDate,
+        PL.CultureCode
+    FROM       {databaseOwner}{objectQualifier}Portals            AS P
+    INNER JOIN {databaseOwner}{objectQualifier}PortalLocalization AS PL ON P.PortalID = PL.PortalID
+    LEFT  JOIN {databaseOwner}{objectQualifier}Users              AS U  ON P.AdministratorId = U.UserID
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+AS
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Portals] WHERE CultureCode = DefaultLanguage
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_TabModules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_TabModules
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+        {databaseOwner}{objectQualifier}FilePath(TM.IconFile) AS IconFile,
+        M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        TM.CreatedByUserID,
+        TM.CreatedOnDate,
+        TM.LastModifiedByUserID,
+        TM.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM {databaseOwner}{objectQualifier}ModuleDefinitions     AS MD
+     INNER JOIN {databaseOwner}{objectQualifier}Modules        AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}ModuleControls AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}DesktopModules AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems   AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}{objectQualifier}TabModules     AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}Tabs           AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Modules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+GO
+
+-- updated view to use new function
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Modules
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+        {databaseOwner}{objectQualifier}FilePath(TM.IconFile) AS IconFile,
+        M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        M.CreatedByUserID,
+        M.CreatedOnDate,
+        M.LastModifiedByUserID,
+        M.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM        {databaseOwner}{objectQualifier}ModuleDefinitions AS MD
+     INNER JOIN {databaseOwner}{objectQualifier}Modules           AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}ModuleControls    AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}{objectQualifier}DesktopModules    AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems      AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}{objectQualifier}TabModules        AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}{objectQualifier}Tabs              AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+-- updated view to use new function
+-- note comment regarding signature modification
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFile)      AS IconFile,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFileLarge) AS IconFileLarge,
+        T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate
+    FROM       {databaseOwner}{objectQualifier}Tabs         AS T
+    LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+    @ModuleId Int -- Null: settings from all modules
+AS
+	BEGIN
+		SELECT
+			MS.SettingName,
+			CASE WHEN Lower(MS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
+				 ELSE MS.SettingValue END           AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}ModuleSettings] MS
+		WHERE  ModuleID = @ModuleId or IsNull(@ModuleId, -1) = -1
+		OPTION (OPTIMIZE FOR (@ModuleId UNKNOWN))
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+    @ModuleId      Int,          -- not null!
+    @SettingName   nVarChar(50)  -- not null or empty!
+AS
+	BEGIN
+		SELECT
+			MS.SettingName,
+			CASE WHEN Lower(MS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
+				 ELSE MS.SettingValue  END AS SettingValue
+		FROM {databaseOwner}[{objectQualifier}ModuleSettings] MS
+		WHERE  ModuleID = @ModuleId AND SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+    @TabModuleId Int -- Null: all tabmodules
+AS
+	BEGIN
+		SELECT
+			TMS.SettingName,
+			CASE WHEN Lower(TMS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TMS.SettingValue)
+				 ELSE TMS.SettingValue END           AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabModuleSettings] TMS
+		WHERE  TabModuleID = @TabModuleId OR IsNull(@TabModuleId, -1) = -1
+		OPTION (OPTIMIZE FOR (@TabModuleId UNKNOWN))
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+    @TabModuleId   Int,              -- not null!
+    @SettingName   nVarChar(50)      -- not null or empty!
+AS
+	BEGIN
+		SELECT
+			TMS.SettingName,
+			CASE WHEN TMS.SettingValue LIKE 'fileid%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TMS.SettingValue)
+				 ELSE TMS.SettingValue  END AS SettingValue
+		FROM {databaseOwner}[{objectQualifier}TabModuleSettings] TMS
+		WHERE  TabModuleID = @TabModuleId AND SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+    @TabId Int -- Null for all tabs
+AS
+	BEGIN
+		SELECT
+			TS.SettingName,
+			CASE WHEN Lower(TS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
+				 ELSE TS.SettingValue END           AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabSettings] TS
+		WHERE  (TabID = @TabId OR IsNull(@TabId, -1) = -1)
+		OPTION (OPTIMIZE FOR (@TabId UNKNOWN))
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+
+    @TabId         Int,         -- not null!
+    @SettingName   nVarChar(50) -- not null or empty!
+
+AS
+	BEGIN
+		SELECT
+			TS.SettingName,
+			CASE WHEN TS.SettingValue LIKE 'fileid%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
+				 ELSE TS.SettingValue  END AS SettingValue
+		FROM {databaseOwner}[{objectQualifier}TabSettings] TS
+		WHERE  TabID = @TabId AND SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID INT ,
+    @SettingName NVARCHAR(50) ,
+    @CultureCode NVARCHAR(50)
+AS
+	BEGIN
+		SELECT
+			PS.SettingName,
+			CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
+			 THEN {databaseOwner}{objectQualifier}FilePath(PS.SettingValue)
+			 ELSE PS.SettingValue END   AS SettingValue,
+			PS.CreatedByUserID,
+			PS.CreatedOnDate,
+			PS.LastModifiedByUserID,
+			PS.LastModifiedOnDate,
+			PS.CultureCode
+		FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+		WHERE PS.PortalID = @PortalID
+            AND PS.SettingName = @SettingName
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not null!
+    @CultureCode nVarChar(20)    -- totally ignored
+AS
+	BEGIN
+		SELECT
+			PS.SettingName,
+			CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
+			 THEN {databaseOwner}{objectQualifier}FilePath(PS.SettingValue)
+			 ELSE PS.SettingValue END   AS SettingValue,
+			PS.CreatedByUserID,
+			PS.CreatedOnDate,
+			PS.LastModifiedByUserID,
+			PS.LastModifiedOnDate,
+			PS.CultureCode
+			FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+		WHERE PortalID = @PortalId -- AND (ISNull(PS.CultureCode,@CultureCode) = @CultureCode OR @CultureCode Is Null) // multiple languages are currently not supported by API
+	END
+GO
+
+/***** Fix bug DNN-3018: Add the notification type for mention. *****/
+IF NOT EXISTS (SELECT NotificationTypeID FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes WHERE Name = 'JournalMention' )
+BEGIN
+    DECLARE @NotificationTypeId INT
+    INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes(
+	    [Name]
+          ,[Description]
+          ,[CreatedByUserID]
+          ,[CreatedOnDate]
+          ,[LastModifiedByUserID]
+          ,[LastModifiedOnDate]
+    ) VALUES (
+	    'JournalMention',
+	    'Journal Mention Notification',
+	    -1,
+	    GETDATE(),
+	    -1,
+	    GETDATE()
+    )
+
+    SELECT @NotificationTypeId = SCOPE_IDENTITY()
+    INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+        [NotificationTypeID],
+        [NameResourceKey],
+        [DescriptionResourceKey],
+        [ConfirmResourceKey],
+        [Order],
+        [APICall],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate])
+    VALUES(
+        @NotificationTypeId,
+        'ViewJournal',
+        'ViewJournal',
+        NULL,
+        1,
+        'DesktopModules/Journal/API/NotificationServices/ViewJournal',
+        -1,
+        GETDATE(),
+        -1,
+        GETDATE()
+        )
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

@@ -1,0 +1,32 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+/* DNNPRO-15529 - GetFolders stored procedure doesn't return anything when PortalID is null */
+/********************************************************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFolders]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+	@PortalID int
+AS
+BEGIN
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}Folders
+	WHERE (PortalID = @PortalID) OR (PortalID is null AND @PortalID is null)
+	ORDER BY FolderPath
+END
+GO

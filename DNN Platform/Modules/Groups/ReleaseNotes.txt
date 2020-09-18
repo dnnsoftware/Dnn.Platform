@@ -1,0 +1,14 @@
+﻿<h3>Social Groups</h3>
+<div class="License">
+	<h3>About Social Groups</h3>
+	<p class="Owner">
+		<b>Version 6.2</b><br /><br />
+	</p>
+	<p>This is the initial release of the Social Groups Module</p>
+	
+	<h4>Bug Fixes</h4>
+	<ul>
+			<li>None</li>
+	</ul>
+	
+</div>

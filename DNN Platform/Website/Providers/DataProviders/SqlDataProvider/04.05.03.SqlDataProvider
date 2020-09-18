@@ -1,0 +1,193 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+declare @DesktopModuleID int
+
+select @DesktopModuleID = null
+
+select @DesktopModuleID = DesktopModuleID
+from   {databaseOwner}{objectQualifier}DesktopModules
+where  FriendlyName = 'Feed Explorer'
+
+if @DesktopModuleID is null
+begin
+insert into {databaseOwner}{objectQualifier}DesktopModules (
+  FriendlyName,
+  Description,
+  Version,
+  IsPremium,
+  IsAdmin,
+  FolderName,
+  ModuleName
+)
+values (
+  'Feed Explorer',
+  'Allows users to browse RSS feeds using a tabbed user interface',
+  '01.00.00',
+  0,
+  0,
+  'FeedExplorer',
+  'FeedExplorer'
+)
+
+SET @DesktopModuleID = @@IDENTITY
+
+DECLARE @ModuleDefID int
+
+insert into {databaseOwner}{objectQualifier}ModuleDefinitions (
+  FriendlyName,
+  DesktopModuleId,
+  DefaultCacheTime
+)
+values (
+  'Feed Explorer',
+  @DesktopModuleID,
+  -1
+)
+
+SET @ModuleDefID = @@IDENTITY
+
+insert into {databaseOwner}{objectQualifier}ModuleControls (
+  ControlKey,
+  ControlTitle,
+  ModuleDefID, 
+  ControlSrc, 
+  IconFile,
+  ControlType,
+  ViewOrder
+)
+values (
+  null,
+  null,
+  @ModuleDefID ,
+  'Admin/Syndication/FeedExplorer.ascx',
+  null,
+  0,
+  null
+)
+
+insert into {databaseOwner}{objectQualifier}ModuleControls (
+  ControlKey,
+  ControlTitle,
+  ModuleDefID, 
+  ControlSrc, 
+  IconFile,
+  ControlType,
+  ViewOrder
+)
+values (
+  'Settings',
+  'Feed Explorer Settings',
+  @ModuleDefID ,
+  'Admin/Syndication/FeedExplorerSettings.ascx',
+  null,
+  1,
+  null
+)
+end
+GO
+
+delete
+from   {databaseOwner}{objectQualifier}Tabs
+where  PortalID is null
+and    TabName = 'Solutions'
+GO
+
+delete
+from   {databaseOwner}{objectQualifier}Modules
+where  PortalID is null
+and    ModuleTitle = 'Solutions'
+GO
+
+delete
+from   {databaseOwner}{objectQualifier}DesktopModules
+where  FriendlyName = 'Solutions'
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByTabID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}GetPermissionsByTabID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByTabID
+	@TabID int
+AS
+
+SELECT  PermissionID,
+	PermissionCode,
+	PermissionKey,
+	ModuleDefID,
+	PermissionName
+FROM    {databaseOwner}{objectQualifier}Permission
+WHERE   PermissionCode = 'SYSTEM_TAB'
+ORDER BY PermissionID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByModuleID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}GetPermissionsByModuleID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByModuleID
+	@ModuleID int
+AS
+
+SELECT  PermissionID,
+	PermissionCode,
+	ModuleDefID,
+	PermissionKey,
+	PermissionName
+FROM    {databaseOwner}{objectQualifier}Permission
+WHERE   ModuleDefID = (SELECT ModuleDefID FROM {databaseOwner}{objectQualifier}Modules WHERE ModuleID = @ModuleID)
+OR 	PermissionCode = 'SYSTEM_MODULE_DEFINITION'
+ORDER BY PermissionID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByModuleDefID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}GetPermissionsByModuleDefID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByModuleDefID
+	@ModuleDefID int
+AS
+
+SELECT  PermissionID,
+	PermissionCode,
+	ModuleDefID,
+	PermissionKey,
+	PermissionName
+FROM    {databaseOwner}{objectQualifier}Permission
+WHERE   ModuleDefID = @ModuleDefID
+ORDER BY PermissionID
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByFolderPath]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}GetPermissionsByFolderPath
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByFolderPath
+	@PortalID int,
+	@FolderPath varchar(300)
+AS
+
+SELECT  PermissionID,
+	PermissionCode,
+	PermissionKey,
+	PermissionName
+FROM    {databaseOwner}{objectQualifier}Permission P
+WHERE   PermissionCode = 'SYSTEM_FOLDER'
+ORDER BY PermissionID
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

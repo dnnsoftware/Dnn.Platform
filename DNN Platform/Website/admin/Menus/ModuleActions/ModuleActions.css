@@ -1,0 +1,195 @@
+﻿.dnnEditState .DnnModule:hover {
+  opacity: 1;
+}
+.dnnEditState.dnnOpacityDisabled .DnnModule {
+  opacity: 1;
+}
+div.actionMenu ul {
+  z-index: 1000 !important;
+}
+div.actionMenu ul:hover,
+div.actionMenu ul.showhover {
+  z-index: 1003 !important;
+}
+div.actionMenu ul.dnn_mact {
+  margin-bottom: 0;
+  margin-left: 0;
+}
+div.actionMenu ul.dnn_mact li {
+  position: relative;
+  list-style: none;
+}
+div.actionMenu ul.dnn_mact > li {
+  width: 20px;
+  height: 20px;
+  float: left;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+}
+div.actionMenu ul.dnn_mact > li:hover {
+  border: 1px solid #cccccc;
+  border-bottom: 1px solid #ffffff;
+  background: #ffffff;
+}
+div.actionMenu ul.dnn_mact > li > a {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  text-decoration: none;
+}
+div.actionMenu ul.dnn_mact > li:hover > a {
+  background-color: #ffffff;
+  color: #000000;
+}
+div.actionMenu ul.dnn_mact > li > a > i {
+  vertical-align: baseline;
+}
+/* Secondary level */
+div.actionMenu ul.dnn_mact > li ul {
+  /* Styles for all sub levels */
+  display: none;
+  position: absolute;
+  top: 20px;
+  width: 220px;
+  padding: 0;
+  margin: 0;
+  margin-right: -1px;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  list-style-type: none;
+  -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+div.actionMenu ul.dnn_mact > li > ul {
+  /* styles specific to secondary level */
+  right: 0;
+}
+div.actionMenu ul.dnn_mact > li > ul > li {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #cccccc;
+  white-space: nowrap;
+}
+div.actionMenu ul.dnn_mact > li > ul > li:first-child {
+  border: none;
+}
+div.actionMenu ul.dnn_mact > li > ul li:hover {
+  background-color: #e8f1fa;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings > ul li:hover {
+  background-color: #ffffff;
+}
+div.actionMenu ul.dnn_mact > li ul a {
+  display: block;
+  padding: 5px 12px;
+  color: #666;
+  text-decoration: none;
+  overflow: hidden;
+  font-size: 11px;
+}
+div.actionMenu ul.dnn_mact > li ul a > * {
+  display: inline-block;
+  margin-right: 5px;
+}
+div.actionMenu ul.dnn_mact > li > ul > li:hover a {
+  color: #333;
+}
+div.actionMenu ul.dnn_mact > li.actionMenuMove > ul {
+  max-height: 220px;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+}
+div.actionMenu ul.dnn_mact > li.actionMenuMove > ul li {
+  padding: 8px 0 5px 10px;
+  height: 20px;
+  margin: 0;
+  border-bottom: 1px solid #cccccc;
+  border-top: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: Arial;
+  line-height: 18px;
+  text-shadow: none;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings > ul {
+  width: auto;
+  min-height: 250px;
+  overflow: auto;
+  cursor: default;
+  z-index: 1000;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsHeader {
+  margin-top: 9px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #cccccc;
+  font-size: 20px;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsContainer {
+  margin-left: 10px;
+  margin-right: 10px;
+  min-height: 150px;
+  border-bottom: 1px solid #cccccc;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter {
+  margin-top: 6px;
+  padding-bottom: 6px;
+  clear: both;
+  width: 100%;
+  padding-top: 10px;
+  text-align: center;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.primarybtn {
+  background: #0087c6;
+  color: #ffffff !important;
+  display: inline-block;
+  padding: 9px 9px;
+  cursor: pointer;
+  min-width: 75px;
+  border-radius: 3px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+}
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.secondarybtn {
+  background: #e4e4e4;
+  color: #333333 !important;
+  display: inline-block;
+  padding: 9px 9px;
+  cursor: pointer;
+  min-width: 75px;
+  border-radius: 3px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+}
+div.actionMenu ul.dnn_mact li.dnn_menu_label {
+  display: inline-block;
+  pointer-events: none;
+}
+div.actionMenu ul.dnn_mact li.dnn_menu_label > div {
+  display: inline-block;
+  padding: 0.5em 0;
+  -webkit-writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  color: white;
+  background-color: #000;
+  background-image: none !important;
+}

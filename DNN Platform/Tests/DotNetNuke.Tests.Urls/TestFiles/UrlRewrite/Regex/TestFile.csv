@@ -1,0 +1,11 @@
+﻿Test,								Setting,						Value,				Scheme,		Page Name,		Test Url,									Expected Url,										Status
+Ignore Empty,						IgnoreRegex,					,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+DoNotRewriteRegex Empty,			DoNotRewriteRegex,				,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+UseSiteUrlsRegex Empty,				UseSiteUrlsRegex,				,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+DoNotRedirectRegex Empty,			DoNotRedirectRegex,				,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+DoNotRedirectSecureRegex Empty,		DoNotRedirectSecureRegex,		,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+ForceLowerCaseRegex Empty,			ForceLowerCaseRegex,			,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+NoFriendlyUrlRegex Empty,			NoFriendlyUrlRegex,				,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+DoNotIncludeInPathRegex Empty,		DoNotIncludeInPathRegex,		,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+ValidExtensionlessUrlsRegex Empty,	ValidExtensionlessUrlsRegex,	,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200
+RegexMatch Empty,					RegexMatch,						,					http://,	About Us,		http://{alias}/About-Us,						{defaultPage}?TabId={tabId},						200

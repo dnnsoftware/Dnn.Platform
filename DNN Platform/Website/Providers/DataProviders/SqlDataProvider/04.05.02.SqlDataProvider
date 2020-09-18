@@ -1,0 +1,469 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddModuleControl]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  drop procedure {databaseOwner}{objectQualifier}AddModuleControl
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddModuleControl
+	
+	@ModuleDefID                int,
+	@ControlKey                 nvarchar(50),
+	@ControlTitle               nvarchar(50),
+	@ControlSrc                 nvarchar(256),
+	@IconFile                   nvarchar(100),
+	@ControlType                int,
+	@ViewOrder                  int,
+	@HelpUrl                    nvarchar(200),
+	@SupportsPartialRendering   bit
+
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}ModuleControls (
+	  ModuleDefID,
+	  ControlKey,
+	  ControlTitle,
+	  ControlSrc,
+	  IconFile,
+	  ControlType,
+	  ViewOrder,
+	  HelpUrl,
+          SupportsPartialRendering
+	)
+	VALUES (
+	  @ModuleDefID,
+	  @ControlKey,
+	  @ControlTitle,
+	  @ControlSrc,
+	  @IconFile,
+	  @ControlType,
+	  @ViewOrder,
+	  @HelpUrl,
+          @SupportsPartialRendering
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+update {databaseOwner}{objectQualifier}ModuleSettings
+set    SettingValue = '\b[a-zA-Z0-9._%\-+'']+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,4}\b'
+where  SettingName = 'Security_EmailVaidation'
+and    SettingValue = '\b[a-zA-Z0-9._%-+'']+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b'
+GO
+
+insert into {databaseOwner}{objectQualifier}ModuleControls ( ModuleDefID, ControlKey, ControlTitle, ControlSrc, IconFile, ControlType, ViewOrder, HelpUrl, SupportsPartialRendering )
+values ( NULL, 'Adsense', 'Google Adsense', 'Admin/Vendors/Adsense.ascx', NULL, 2, NULL, NULL, 0 )
+GO
+
+declare @ModulePermissionID int
+declare @ModuleID int
+declare @PermissionID int
+declare @RoleID int
+declare @UserID int
+
+select @ModulePermissionID = min(ModulePermissionID)
+from {databaseOwner}{objectQualifier}ModulePermission
+where UserID is not null
+while @ModulePermissionID is not NULL
+begin  
+  /* we are only dealing with records which have a UserID specified */ 
+  select @ModuleID = ModuleID, @PermissionID = PermissionID, @RoleID = RoleID, @UserID = UserID
+  from {databaseOwner}{objectQualifier}ModulePermission
+  where ModulePermissionID = @ModulePermissionID
+
+  /* we are only concerned with records which have a RoleID = -1 */
+  if @RoleID = -1
+  begin
+    /* if permission record already exists for the module/permission/user/role combination */
+    if exists ( select 1 from {databaseOwner}{objectQualifier}ModulePermission where ModuleID = @ModuleID and PermissionID = @PermissionID and UserID = @UserID and RoleID is NULL ) 
+      begin
+        /* delete the record */
+        delete from {databaseOwner}{objectQualifier}ModulePermission where ModulePermissionID = @ModulePermissionID
+      end
+    else
+      begin
+        /* remove the RoleID assignment */
+        update {databaseOwner}{objectQualifier}ModulePermission set RoleID = NULL where ModulePermissionID = @ModulePermissionID
+      end
+    end 
+  
+  select @ModulePermissionID = min(ModulePermissionID)
+  from {databaseOwner}{objectQualifier}ModulePermission
+  where UserID is not NULL
+  and ModulePermissionID > @ModulePermissionID
+end
+GO
+
+/* remove any duplicates */
+declare @ModulePermissionID int
+declare @ModuleID int
+declare @PermissionID int
+declare @RoleID int
+declare @UserID int
+declare @Count int
+
+select @ModulePermissionID = min(ModulePermissionID)
+from {databaseOwner}{objectQualifier}ModulePermission
+while @ModulePermissionID is not NULL
+begin  
+  select @ModuleID = ModuleID, @PermissionID = PermissionID, @RoleID = RoleID, @UserID = UserID
+  from {databaseOwner}{objectQualifier}ModulePermission
+  where ModulePermissionID = @ModulePermissionID
+
+  select @Count = count(*) from {databaseOwner}{objectQualifier}ModulePermission where ModuleID = @ModuleID and PermissionID = @PermissionID and ((RoleID = @RoleID) or (RoleID is null and @RoleID is null)) and ((UserID = @UserID) or (UserID is null and @UserID is null))
+  if @Count > 1
+  begin
+    delete from {databaseOwner}{objectQualifier}ModulePermission
+    where ModuleID = @ModuleID and PermissionID = @PermissionID and ((RoleID = @RoleID) or (RoleID is null and @RoleID is null)) and ((UserID = @UserID) or (UserID is null and @UserID is null))
+    and ModulePermissionID <> @ModulePermissionID
+  end
+
+  select @ModulePermissionID = min(ModulePermissionID)
+  from {databaseOwner}{objectQualifier}ModulePermission
+  where ModulePermissionID > @ModulePermissionID
+end
+GO
+
+/* add unique constraint */
+ALTER TABLE {databaseOwner}{objectQualifier}ModulePermission ADD CONSTRAINT
+  IX_{objectQualifier}ModulePermission UNIQUE NONCLUSTERED 
+  (
+    ModuleID,
+    PermissionID,
+    RoleID,
+    UserID
+  ) ON [PRIMARY]
+GO
+
+declare @TabPermissionID int
+declare @TabID int
+declare @PermissionID int
+declare @RoleID int
+declare @UserID int
+
+select @TabPermissionID = min(TabPermissionID)
+from {databaseOwner}{objectQualifier}TabPermission
+where UserID is not null
+while @TabPermissionID is not NULL
+begin  
+  /* we are only dealing with records which have a UserID specified */ 
+  select @TabID = TabID, @PermissionID = PermissionID, @RoleID = RoleID, @UserID = UserID
+  from {databaseOwner}{objectQualifier}TabPermission
+  where TabPermissionID = @TabPermissionID
+
+  /* we are only concerned with records which have a RoleID = -1 */
+  if @RoleID = -1
+  begin
+    /* if permission record already exists for the tab/permission/user/role combination */
+    if exists ( select 1 from {databaseOwner}{objectQualifier}TabPermission where TabID = @TabID and PermissionID = @PermissionID and UserID = @UserID and RoleID is NULL ) 
+      begin
+        /* delete the record */
+        delete from {databaseOwner}{objectQualifier}TabPermission where TabPermissionID = @TabPermissionID
+      end
+    else
+      begin
+        /* remove the RoleID assignment */
+        update {databaseOwner}{objectQualifier}TabPermission set RoleID = NULL where TabPermissionID = @TabPermissionID
+      end
+    end 
+  
+  select @TabPermissionID = min(TabPermissionID)
+  from {databaseOwner}{objectQualifier}TabPermission
+  where UserID is not NULL
+  and TabPermissionID > @TabPermissionID
+end
+GO
+
+/* remove any duplicates */
+declare @TabPermissionID int
+declare @TabID int
+declare @PermissionID int
+declare @RoleID int
+declare @UserID int
+declare @Count int
+
+select @TabPermissionID = min(TabPermissionID)
+from {databaseOwner}{objectQualifier}TabPermission
+while @TabPermissionID is not NULL
+begin  
+  select @TabID = TabID, @PermissionID = PermissionID, @RoleID = RoleID, @UserID = UserID
+  from {databaseOwner}{objectQualifier}TabPermission
+  where TabPermissionID = @TabPermissionID
+
+  select @Count = count(*) from {databaseOwner}{objectQualifier}TabPermission where TabID = @TabID and PermissionID = @PermissionID and ((RoleID = @RoleID) or (RoleID is null and @RoleID is null)) and ((UserID = @UserID) or (UserID is null and @UserID is null))
+  if @Count > 1
+  begin
+    delete from {databaseOwner}{objectQualifier}TabPermission
+    where TabID = @TabID and PermissionID = @PermissionID and ((RoleID = @RoleID) or (RoleID is null and @RoleID is null)) and ((UserID = @UserID) or (UserID is null and @UserID is null))
+    and TabPermissionID <> @TabPermissionID
+  end
+
+  select @TabPermissionID = min(TabPermissionID)
+  from {databaseOwner}{objectQualifier}TabPermission
+  where TabPermissionID > @TabPermissionID
+end
+GO
+
+/* add unique constraint */
+ALTER TABLE {databaseOwner}{objectQualifier}TabPermission ADD CONSTRAINT
+  IX_{objectQualifier}TabPermission UNIQUE NONCLUSTERED 
+  (
+    TabID,
+    PermissionID,
+    RoleID,
+    UserID
+  ) ON [PRIMARY]
+GO
+
+declare @FolderPermissionID int
+declare @FolderID int
+declare @PermissionID int
+declare @RoleID int
+declare @UserID int
+
+select @FolderPermissionID = min(FolderPermissionID)
+from {databaseOwner}{objectQualifier}FolderPermission
+where UserID is not null
+while @FolderPermissionID is not NULL
+begin  
+  /* we are only dealing with records which have a UserID specified */ 
+  select @FolderID = FolderID, @PermissionID = PermissionID, @RoleID = RoleID, @UserID = UserID
+  from {databaseOwner}{objectQualifier}FolderPermission
+  where FolderPermissionID = @FolderPermissionID
+
+  /* we are only concerned with records which have a RoleID = -1 */
+  if @RoleID = -1
+  begin
+    /* if permission record already exists for the tab/permission/user/role combination */
+    if exists ( select 1 from {databaseOwner}{objectQualifier}FolderPermission where FolderID = @FolderID and PermissionID = @PermissionID and UserID = @UserID and RoleID is NULL ) 
+      begin
+        /* delete the record */
+        delete from {databaseOwner}{objectQualifier}FolderPermission where FolderPermissionID = @FolderPermissionID
+      end
+    else
+      begin
+        /* remove the RoleID assignment */
+        update {databaseOwner}{objectQualifier}FolderPermission set RoleID = NULL where FolderPermissionID = @FolderPermissionID
+      end
+    end 
+  
+  select @FolderPermissionID = min(FolderPermissionID)
+  from {databaseOwner}{objectQualifier}FolderPermission
+  where UserID is not NULL
+  and FolderPermissionID > @FolderPermissionID
+end
+GO
+
+/* remove any duplicates */
+declare @FolderPermissionID int
+declare @FolderID int
+declare @PermissionID int
+declare @RoleID int
+declare @UserID int
+declare @Count int
+
+select @FolderPermissionID = min(FolderPermissionID)
+from {databaseOwner}{objectQualifier}FolderPermission
+while @FolderPermissionID is not NULL
+begin  
+  select @FolderID = FolderID, @PermissionID = PermissionID, @RoleID = RoleID, @UserID = UserID
+  from {databaseOwner}{objectQualifier}FolderPermission
+  where FolderPermissionID = @FolderPermissionID
+
+  select @Count = count(*) from {databaseOwner}{objectQualifier}FolderPermission where FolderID = @FolderID and PermissionID = @PermissionID and ((RoleID = @RoleID) or (RoleID is null and @RoleID is null)) and ((UserID = @UserID) or (UserID is null and @UserID is null))
+  if @Count > 1
+  begin
+    delete from {databaseOwner}{objectQualifier}FolderPermission
+    where FolderID = @FolderID and PermissionID = @PermissionID and ((RoleID = @RoleID) or (RoleID is null and @RoleID is null)) and ((UserID = @UserID) or (UserID is null and @UserID is null))
+    and FolderPermissionID <> @FolderPermissionID
+  end
+
+  select @FolderPermissionID = min(FolderPermissionID)
+  from {databaseOwner}{objectQualifier}FolderPermission
+  where FolderPermissionID > @FolderPermissionID
+end
+GO
+
+/* add unique constraint */
+ALTER TABLE {databaseOwner}{objectQualifier}FolderPermission ADD CONSTRAINT
+  IX_{objectQualifier}FolderPermission UNIQUE NONCLUSTERED 
+  (
+    FolderID,
+    PermissionID,
+    RoleID,
+    UserID
+  ) ON [PRIMARY]
+GO
+
+/* remove any duplicates */
+declare @PermissionID int
+declare @PermissionCode varchar(50)
+declare @ModuleDefID int
+declare @PermissionKey varchar(20)
+declare @Count int
+
+select @PermissionID = min(PermissionID)
+from {databaseOwner}{objectQualifier}Permission
+while @PermissionID is not NULL
+begin  
+  select @PermissionCode = PermissionCode, @ModuleDefID = ModuleDefID, @PermissionKey = PermissionKey
+  from {databaseOwner}{objectQualifier}Permission
+  where PermissionID = @PermissionID
+
+  select @Count = count(*) from {databaseOwner}{objectQualifier}Permission where PermissionCode = @PermissionCode and ModuleDefID = @ModuleDefID and PermissionKey = @PermissionKey
+  if @Count > 1
+  begin
+    delete from {databaseOwner}{objectQualifier}Permission
+    where PermissionCode = @PermissionCode and ModuleDefID = @ModuleDefID and PermissionKey = @PermissionKey
+    and PermissionID <> @PermissionID
+  end
+
+  select @PermissionID = min(PermissionID)
+  from {databaseOwner}{objectQualifier}Permission
+  where PermissionID > @PermissionID
+end
+GO
+
+/* add unique constraint */
+ALTER TABLE {databaseOwner}{objectQualifier}Permission ADD CONSTRAINT
+  IX_{objectQualifier}Permission UNIQUE NONCLUSTERED 
+  (
+    PermissionCode,
+    ModuleDefID,
+    PermissionKey
+  ) ON [PRIMARY]
+GO
+
+/* add Date DatatType */
+
+IF (SELECT [Value] FROM {databaseOwner}{objectQualifier}Lists WHERE [Value] = 'Date') IS NULL
+BEGIN
+  INSERT INTO {databaseOwner}{objectQualifier}Lists ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description] ) 
+  VALUES ( N'DataType', N'Date', N'DotNetNuke.UI.WebControls.DateEditControl, DotNetNuke', 0, 0, 0, -1, NULL)
+END
+GO
+
+/* add Date DatatType */
+
+IF (SELECT [Value] FROM {databaseOwner}{objectQualifier}Lists WHERE [Value] = 'DateTime') IS NULL
+BEGIN
+  INSERT INTO {databaseOwner}{objectQualifier}Lists ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description] ) 
+  VALUES ( N'DataType', N'DateTime', N'DotNetNuke.UI.WebControls.DateTimeEditControl, DotNetNuke', 0, 0, 0, -1, NULL)
+END
+GO
+
+/************************************************************/
+/*           script below added after RC1                   */
+/************************************************************/
+
+delete 
+from   {databaseOwner}{objectQualifier}ModuleControls
+where  ModuleDefID is null
+and    ControlKey = 'Adsense'
+and    ControlSrc = 'Admin/Vendors/Adsense.ascx'
+GO
+
+declare @DesktopModuleID int
+
+insert into {databaseOwner}{objectQualifier}DesktopModules (
+  FriendlyName,
+  Description,
+  Version,
+  IsPremium,
+  IsAdmin,
+  FolderName,
+  ModuleName
+)
+values (
+  'Feed Explorer',
+  'Allows users to browse RSS feeds using a tabbed user interface',
+  '01.00.00',
+  0,
+  0,
+  'FeedExplorer',
+  'FeedExplorer'
+)
+
+SET @DesktopModuleID = @@IDENTITY
+
+DECLARE @ModuleDefID int
+
+insert into {databaseOwner}{objectQualifier}ModuleDefinitions (
+  FriendlyName,
+  DesktopModuleId,
+  DefaultCacheTime
+)
+values (
+  'Feed Explorer',
+  @DesktopModuleID,
+  -1
+)
+
+SET @ModuleDefID = @@IDENTITY
+
+insert into {databaseOwner}{objectQualifier}ModuleControls (
+  ControlKey,
+  ControlTitle,
+  ModuleDefID, 
+  ControlSrc, 
+  IconFile,
+  ControlType,
+  ViewOrder
+)
+values (
+  null,
+  null,
+  @ModuleDefID ,
+  'Admin/Syndication/FeedExplorer.ascx',
+  null,
+  0,
+  null
+)
+
+insert into {databaseOwner}{objectQualifier}ModuleControls (
+  ControlKey,
+  ControlTitle,
+  ModuleDefID, 
+  ControlSrc, 
+  IconFile,
+  ControlType,
+  ViewOrder
+)
+values (
+  'Settings',
+  'Feed Explorer Settings',
+  @ModuleDefID ,
+  'Admin/Syndication/FeedExplorerSettings.ascx',
+  null,
+  1,
+  null
+)
+GO
+
+delete
+from   {databaseOwner}{objectQualifier}Tabs
+where  PortalID is null
+and    TabName = 'Solutions'
+GO
+
+delete
+from   {databaseOwner}{objectQualifier}Modules
+where  PortalID is null
+and    ModuleTitle = 'Solutions'
+GO
+
+delete
+from   {databaseOwner}{objectQualifier}DesktopModules
+where  FriendlyName = 'Solutions'
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

@@ -1,0 +1,9 @@
+﻿Test,									TestPageName,		ReplaceChars,	Scheme,		Page Name,		Test Url,											Expected Url,										Status
+Page Single,							Abou?t Us,			,				http://,	About Us,		http://{alias}/AboutUs.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page About Us Single,				Abou?t Us,			,				http://,	About Us,		http://{alias}/AboutUs/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		200
+Page Multiple,							Ab#out? Us,			,				http://,	About Us,		http://{alias}/AboutUs.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page About Us Multiple,			Ab#out? Us,			,				http://,	About Us,		http://{alias}/AboutUs/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		200
+Page Replace Single,					Abou?t Us,			?:_,			http://,	About Us,		http://{alias}/Abou_tUs.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page About Us Replace Single,		Abou?t Us,			?:_,			http://,	About Us,		http://{alias}/Abou_tUs/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		200
+Page Replace Multiple,					Ab#out?Us,			#:-;?:!,		http://,	About Us,		http://{alias}/Ab-out!Us.aspx,						{defaultPage}?TabId={tabId},						200
+Edit Page About Us Replace Multiple,	Ab#out?Us,			#:-;?:!,		http://,	About Us,		http://{alias}/Ab-out!Us/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		200

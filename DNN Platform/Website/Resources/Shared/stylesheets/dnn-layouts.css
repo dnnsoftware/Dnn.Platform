@@ -1,0 +1,510 @@
+﻿/************************************************************************************************************/
+/*                                                                                                          */
+/* DotNetNuke Layouts Stylesheet                                                                            */
+/* Created:     May 25, 2008                                                                                */
+/* Modified by:                                                                                             */
+/* Author:      Nik Kalyani                                                                                 */
+/* Credits:     This stylesheet is based on the superb work of Matthew James Taylor.                        */
+/*              It has been highly customized to accommodate DotNetNuke skin-specific use-cases.            */
+/*              Five layouts are supported with three sidebar widths:                                       */
+/*                                                                                                          */
+/*              threecol-portal: Narrow sidebar columns on left and right, with middle wide content column  */
+/*              threecol-blog: Wide content column on left, with two narrow sidebar columns on right        */
+/*              twocol-contentR: Narrow sidebar column on left, with wide content column on right           */
+/*              twocol-contenrL: Wide content column on left, with narrow sidebar column on right           */
+/*              onecol: One column, full width                                                              */
+/*                                                                                                          */
+/*              Widths are expressed in "ems" so automatic column sizing occurs when the user changes text  */
+/*              size in their browser. Sidebar widths are 14em, 16em and 18em.                              */
+/*                                                                                                          */
+/*              The original is available at:                                                               */
+/*              http://matthewjamestaylor.com/blog/ultimate-multi-column-liquid-layouts-em-and-pixel-widths */
+/*                                                                                                          */
+/************************************************************************************************************/
+
+
+/**************************************************************************************************/
+/* Structure                                                                                      */
+/**************************************************************************************************/
+.threecol-portal,
+.threecol-blog,
+.twocol-contentR,
+.twocol-contentL,
+.onecol
+{
+    position: relative; 
+    clear: both;
+    float: left;
+    width: 100%;
+    text-align: left;
+    overflow: hidden; 
+}
+
+.threecol-portal .dnn-mid
+{
+    float: left;
+    width: 200%;
+    position: relative;
+    right: 100%;
+}
+
+.threecol-portal .dnn-side
+{
+    float: left;
+    margin-left: -50%;
+    width: 100%;
+    position: relative;
+}
+
+.threecol-portal .dnn-main
+{
+    float: left;
+    width: 50%;
+    position: relative;
+}
+
+.threecol-portal .dnn-a
+{
+    position: relative;
+    left: 200%;
+    overflow: hidden;
+}
+
+.threecol-portal .dnn-b
+{
+    float: right;
+    position: relative;
+    overflow: hidden;
+    width: 100px;
+}
+
+.threecol-portal .dnn-c
+{
+    float: right;
+    position: relative;
+    left: 50%;
+    overflow: hidden;
+}
+
+.threecol-blog .dnn-mid
+{
+    float: left;
+    width: 200%;
+    position: relative;
+    right: 100%;
+}
+
+.threecol-blog .dnn-side
+{
+    float: left;
+    width: 100%;
+}
+
+.threecol-blog .dnn-main
+{
+    float: left;
+    width: 50%;
+}
+
+.threecol-blog .dnn-a
+{
+    position: relative;
+    left: 100%;
+    overflow: hidden;
+}
+
+.threecol-blog .dnn-b
+{
+    float: right;
+    position: relative;
+    overflow: hidden;
+}
+
+.threecol-blog .dnn-c
+{
+    float: right;
+    position: relative;
+    overflow: hidden;
+}
+
+.twocol-contentR .dnn-side
+{
+    float: left;
+    width: 200%;
+    position: relative;
+}
+
+.twocol-contentR .dnn-main
+{
+    float: right;
+    width: 50%;
+    position: relative;
+}
+
+.twocol-contentR .dnn-a
+{
+    position: relative;
+    right: 100%;
+    overflow: hidden;
+}
+
+.twocol-contentR .dnn-b
+{
+    float: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.twocol-contentL .dnn-side
+{
+    float: left;
+    width: 200%;
+    position: relative;
+    right: 100%;
+}
+
+.twocol-contentL .dnn-main
+{
+    float: left;
+    width: 50%;
+    position: relative;
+    left: 50%;
+}
+
+.twocol-contentL .dnn-a
+{
+    overflow: hidden;
+}
+
+.twocol-contentL .dnn-c
+{
+    float: right;
+    position: relative;
+    overflow: hidden;
+}
+
+.twocol-contentL .dnn-b,
+.twocol-contentR .dnn-c,
+.onecol .dnn-b,
+.onecol .dnn-c
+{
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}
+
+/**************************************************************************************************/
+/* SIZING                                                                                         */
+/**************************************************************************************************/
+
+/* If YUI reset is in use, 1em = 13px */
+
+/**************************************************************************************************/
+/* em14 = 14em (182px) side bars; default */
+/**************************************************************************************************/
+
+.em14 .threecol-portal .dnn-mid,
+.em14 .threecol-blog .dnn-mid,
+.em14 .threecol-blog .dnn-side,
+.em14 .twocol-contentL .dnn-side
+{
+    margin-left: -14em;
+}
+
+.em14 .threecol-portal .dnn-main,
+.em14 .twocol-contentR .dnn-main
+{
+    right: 14em; 
+}
+
+.em14 .twocol-contentR .dnn-side
+{
+    left: 14em;
+}
+
+.em14 .threecol-portal .dnn-side
+{
+    left: 28em; 
+}
+
+.em14 .threecol-portal .dnn-a
+{
+    margin-right: 15em;
+}
+
+.em14 .threecol-portal .dnn-b,
+.em14 .threecol-portal .dnn-c,
+.em14 .threecol-blog .dnn-b,
+.em14 .threecol-blog .dnn-c,
+.em14 .twocol-contentR .dnn-b,
+.em14 .twocol-contentL .dnn-c
+{
+    width: 12em;
+}
+
+.em14 .threecol-portal .dnn-b
+{
+    right: 1em;
+}
+
+.em14 .threecol-portal .dnn-c
+{
+    margin-right: 3em;
+}
+
+.em14 .threecol-blog .dnn-a
+{
+    margin-left: 29em;
+}
+
+.em14 .threecol-blog .dnn-b,
+.em14 .twocol-contentL .dnn-c
+{
+    left: 13em;
+}
+
+.em14 .threecol-blog .dnn-c
+{
+    left: 39em;
+}
+
+.em14 .threecol-portal .dnn-a,
+.em14 .twocol-contentR .dnn-a,
+.em14 .twocol-contentL .dnn-a
+{
+    margin-left: 15em;
+}
+
+.em14 .threecol-blog .dnn-a,
+.em14 .twocol-contentR .dnn-a,
+.em14 .twocol-contentL .dnn-a,
+.em14 .onecol .dnn-a
+{
+    margin-right: 1em;
+}
+
+.em14 .twocol-contentR .dnn-b
+{
+    right: 13em;
+}
+
+.em14 .onecol .dnn-a
+{
+    margin-left: 1em;
+}
+
+/**************************************************************************************************/
+/* em16 = 16em (208px) side bars */
+/**************************************************************************************************/
+
+.em16 .threecol-portal .dnn-mid,
+.em16 .threecol-blog .dnn-mid,
+.em16 .threecol-blog .dnn-side,
+.em16 .twocol-contentL .dnn-side
+{
+    margin-left: -16em;
+}
+
+.em16 .threecol-portal .dnn-main,
+.em16 .twocol-contentR .dnn-main
+{
+    right: 16em; 
+}
+
+.em16 .twocol-contentR .dnn-side
+{
+    left: 16em;
+}
+
+.em16 .threecol-portal .dnn-side
+{
+    left: 32em; 
+}
+
+.em16 .threecol-portal .dnn-a
+{
+    margin-right: 17em;
+}
+
+.em16 .threecol-portal .dnn-b,
+.em16 .threecol-portal .dnn-c,
+.em16 .threecol-blog .dnn-b,
+.em16 .threecol-blog .dnn-c,
+.em16 .twocol-contentR .dnn-b,
+.em16 .twocol-contentL .dnn-c
+{
+    width: 14em;
+}
+
+.em16 .threecol-portal .dnn-b
+{
+    right: 1em;
+}
+
+.em16 .threecol-portal .dnn-c
+{
+    margin-right: 3em;
+}
+
+.em16 .threecol-blog .dnn-a
+{
+    margin-left: 33em;
+}
+
+.em16 .threecol-blog .dnn-b,
+.em16 .twocol-contentL .dnn-c
+{
+    left: 15em;
+}
+
+.em16 .threecol-blog .dnn-c
+{
+    left: 45em;
+}
+
+.em16 .threecol-portal .dnn-a,
+.em16 .twocol-contentR .dnn-a,
+.em16 .twocol-contentL .dnn-a
+{
+    margin-left: 17em;
+}
+
+.em16 .threecol-blog .dnn-a,
+.em16 .twocol-contentR .dnn-a,
+.em16 .twocol-contentL .dnn-a,
+.em16 .onecol .dnn-a
+{
+    margin-right: 1em;
+}
+
+.em16 .twocol-contentR .dnn-b
+{
+    right: 15em;
+}
+
+.em16 .onecol .dnn-a
+{
+    margin-left: 1em;
+}
+
+
+/**************************************************************************************************/
+/* em18 = 18em (234px) side bars */
+/**************************************************************************************************/
+.em18 .threecol-portal .dnn-mid,
+.em18 .threecol-blog .dnn-mid,
+.em18 .threecol-blog .dnn-side,
+.em18 .twocol-contentL .dnn-side
+{
+    margin-left: -18em;
+}
+
+.em18 .threecol-portal .dnn-main,
+.em18 .twocol-contentR .dnn-main
+{
+    right: 18em; 
+}
+
+.em18 .twocol-contentR .dnn-side
+{
+    left: 18em;
+}
+
+.em18 .threecol-portal .dnn-side
+{
+    left: 36em; 
+}
+
+.em18 .threecol-portal .dnn-a
+{
+    margin-right: 19em;
+}
+
+.em18 .threecol-portal .dnn-b,
+.em18 .threecol-portal .dnn-c,
+.em18 .threecol-blog .dnn-b,
+.em18 .threecol-blog .dnn-c,
+.em18 .twocol-contentR .dnn-b,
+.em18 .twocol-contentL .dnn-c
+{
+    width: 16em;
+}
+
+.em18 .threecol-portal .dnn-b
+{
+    right: 1em;
+}
+
+.em18 .threecol-portal .dnn-c
+{
+    margin-right: 3em;
+}
+
+.em18 .threecol-blog .dnn-a
+{
+    margin-left: 37em;
+}
+
+.em18 .threecol-blog .dnn-b,
+.em18 .twocol-contentL .dnn-c
+{
+    left: 17em;
+}
+
+.em18 .threecol-blog .dnn-c
+{
+    left: 51em;
+}
+
+.em18 .threecol-portal .dnn-a,
+.em18 .twocol-contentR .dnn-a,
+.em18 .twocol-contentL .dnn-a
+{
+    margin-left: 19em;
+}
+
+.em18 .threecol-blog .dnn-a,
+.em18 .twocol-contentR .dnn-a,
+.em18 .twocol-contentL .dnn-a,
+.em18 .onecol .dnn-a
+{
+    margin-right: 1em;
+}
+
+.em18 .twocol-contentR .dnn-b
+{
+    right: 17em;
+}
+
+.em18 .onecol .dnn-a
+{
+    margin-left: 1em;
+}
+
+
+/**************************************************************************************************/
+/* Background                                                                                     */
+/**************************************************************************************************/
+
+.threecol-portal .dnn-side,
+.threecol-blog .dnn-mid,
+.twocol-contentR
+{
+    /* Left sidebar background */
+}
+
+.threecol-portal .dnn-mid,
+.threecol-blog .dnn-side,
+.twocol-contentR .dnn-side,
+.twocol-contentL .dnn-side,
+.onecol
+{
+    /* Content column background */
+}
+
+.threecol-portal,
+.threecol-blog,
+.twocol-contentL
+{
+    /* Right sidebar background */
+}

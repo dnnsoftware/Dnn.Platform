@@ -1,0 +1,99 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.sitesHeader) {
+    padding: 0px 30px;
+    z-index: 99999;
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    box-sizing: border-box;
+    height: 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .site-selection {
+        width: 50%;
+        float: left;
+        .dnn-ui-common-input-group {
+            width: auto;
+            float: left;
+            .dnn-label {
+                margin-right: 0;
+                padding-top: 10px;
+                label {
+                    font-weight: bolder;
+                    float: left;
+                    font-size: 11px;
+                }
+            }
+            .dnn-dropdown {
+                width: auto;
+                border: none;
+                .language-flag {
+                    float: left;
+                    height: 16px;
+                    width: 16px;
+                    overflow: hidden;
+                }
+                .language-name {
+                    float: left;
+                    margin-left: 10px;
+                }
+                .collapsible-label {
+                    padding-top: 10px;
+                    width: 100%;
+                    text-align: right;
+                    padding-left: 0;
+                    font-size: 11px;
+                    text-transform: uppercase;
+                    font-weight: 900;
+                    color: @curiousBlue;
+                    max-width: 300px;
+                    .language-name {
+                        width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+                .collapsible-content {
+                    width: 430px;
+                    left: -84px;
+                }
+                .open {
+                    border: none;
+                    margin-left: 1px;
+                    box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.2);
+                    >div>ul {
+                        display: none;
+                    }
+                }
+                li {
+                    float: left;
+                    width: 100%;
+                    word-break: break-all;
+                }
+            }
+        }
+    }
+    .language-selection {
+        width: 50%;
+        float: right;
+        .language-flag {
+            float: right;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 5px;
+            opacity: 0.4;
+            &.selected, &:hover{
+                opacity: 1;
+            }
+            > img {
+                width: 22px;
+                height: auto;
+            }
+            &:first-child {
+                margin-right: 0;
+            }
+        }
+    }
+}

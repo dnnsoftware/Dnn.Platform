@@ -1,0 +1,1 @@
+This is the initial release of the Google Authentication provider.  

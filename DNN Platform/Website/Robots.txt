@@ -1,0 +1,25 @@
+# Begin robots.txt file
+#/-----------------------------------------------\
+#| In single portal/domain situations, uncomment the sitmap line and enter domain name
+#\-----------------------------------------------/
+#Sitemap: http://www.DomainNamehere.com/sitemap.aspx
+
+User-agent: *
+Disallow: /*/ctl/		# Googlebot permits *
+Disallow: /admin/
+Disallow: /App_Browsers/
+Disallow: /App_Code/
+Disallow: /App_Data/
+Disallow: /App_GlobalResources/
+Disallow: /bin/
+Disallow: /Components/
+Disallow: /Config/
+Disallow: /contest/
+Disallow: /controls/
+Disallow: /Documentation/
+Disallow: /HttpModules/
+Disallow: /Install/
+Disallow: /Providers/
+Disallow: /Activity-Feed/userId/	# Do not index user profiles
+
+# End of robots.txt file

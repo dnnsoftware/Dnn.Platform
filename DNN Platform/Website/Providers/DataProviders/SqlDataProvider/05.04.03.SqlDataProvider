@@ -1,0 +1,117 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddEventLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddEventLog
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}AddEventLog
+	@LogGUID varchar(36),
+	@LogTypeKey nvarchar(35),
+	@LogUserID int,
+	@LogUserName nvarchar(50),
+	@LogPortalID int,
+	@LogPortalName nvarchar(100),
+	@LogCreateDate datetime,
+	@LogServerName nvarchar(50),
+	@LogProperties ntext,
+	@LogConfigID int
+AS
+	IF NOT EXISTS (SELECT * FROM  {databaseOwner}[{objectQualifier}EventLogTypes] WHERE LogTypeKey = @LogTypeKey)
+		BEGIN
+		-- Add new Event Type
+			EXEC  {databaseOwner}[{objectQualifier}AddEventLogType] @LogTypeKey, @LogTypeKey, N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation'
+
+		-- Add new Event Type Config
+			EXEC  {databaseOwner}[{objectQualifier}AddEventLogConfig] @LogTypeKey, NULL, 0, -1, 0, 1, 1, 1, N'', N''
+		-- As the new log config is unlogged, exit without logging
+			Return
+		END
+
+	INSERT INTO  {databaseOwner}[{objectQualifier}EventLog]
+		(LogGUID,
+		LogTypeKey,
+		LogUserID,
+		LogUserName,
+		LogPortalID,
+		LogPortalName,
+		LogCreateDate,
+		LogServerName,
+		LogProperties,
+		LogConfigID)
+	VALUES
+		(@LogGUID,
+		@LogTypeKey,
+		@LogUserID,
+		@LogUserName,
+		@LogPortalID,
+		@LogPortalName,
+		@LogCreateDate,
+		@LogServerName,
+		@LogProperties,
+		@LogConfigID)
+
+	DECLARE @NotificationActive bit
+	DECLARE @NotificationThreshold bit
+	DECLARE @ThresholdQueue int
+	DECLARE @NotificationThresholdTime int
+	DECLARE @NotificationThresholdTimeType int
+	DECLARE @MinDateTime smalldatetime
+	DECLARE @CurrentDateTime smalldatetime
+
+	SET @CurrentDateTime = getDate()
+
+
+	SELECT TOP 1 @NotificationActive = EmailNotificationIsActive,
+		@NotificationThreshold = NotificationThreshold,
+		@NotificationThresholdTime = NotificationThresholdTime,
+		@NotificationThresholdTimeType = NotificationThresholdTimeType,
+		@MinDateTime = 
+			CASE
+				 --seconds
+				WHEN NotificationThresholdTimeType=1 THEN DateAdd(second, NotificationThresholdTime * -1, @CurrentDateTime)
+				--minutes
+				WHEN NotificationThresholdTimeType=2  THEN DateAdd(minute, NotificationThresholdTime * -1, @CurrentDateTime)
+				--hours
+				WHEN NotificationThresholdTimeType=3  THEN DateAdd(Hour, NotificationThresholdTime * -1, @CurrentDateTime)
+				--days
+				WHEN NotificationThresholdTimeType=4  THEN DateAdd(Day, NotificationThresholdTime * -1, @CurrentDateTime)
+			END
+	FROM  {databaseOwner}[{objectQualifier}EventLogConfig]
+	WHERE ID = @LogConfigID
+
+	IF @NotificationActive=1
+	BEGIN
+		
+		SELECT @ThresholdQueue = COUNT(*)
+		FROM  {databaseOwner}[{objectQualifier}EventLog] el
+			INNER JOIN  {databaseOwner}[{objectQualifier}EventLogConfig] elc
+				ON  el.LogConfigID =  elc.ID
+		WHERE LogCreateDate > @MinDateTime
+
+		IF @ThresholdQueue >= @NotificationThreshold
+
+		BEGIN
+			UPDATE  {databaseOwner}[{objectQualifier}EventLog]
+			SET LogNotificationPending = 1 
+			WHERE LogConfigID = @LogConfigID
+				AND LogNotificationPending IS NULL		
+				AND LogCreateDate > @MinDateTime
+		END
+
+	END
+    
+
+GO

@@ -1,0 +1,7 @@
+﻿Key,									Value
+UrlFormat,								advanced
+FriendlyAdminHostUrls,					true
+PageExtensionUsageType,					AlwaysUse
+ForceLowerCase,							true
+RedirectWrongCase,						true
+ForcePortalDefaultLanguage,				false

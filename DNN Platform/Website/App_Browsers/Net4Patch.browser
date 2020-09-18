@@ -1,0 +1,322 @@
+﻿<browsers>
+  <browser id="Gecko" parentID="Mozilla">
+    <identification>
+      <userAgent match="Gecko" />
+    </identification>
+
+    <capabilities>
+      <capability name="browser"                 value="Mozilla" />
+      <capability name="css1"                    value="true" />
+      <capability name="css2"                    value="true" />
+      <capability name="cookies"                 value="true" />
+      <capability name="ecmascriptversion"       value="1.5" />
+      <capability name="frames"                  value="true" />
+      <capability name="isColor"                 value="true" />
+      <capability name="javaapplets"             value="true" />
+      <capability name="javascript"              value="true" />
+      <capability name="maximumRenderedPageSize" value="20000" />
+      <capability name="preferredImageMime"      value="image/jpeg" />
+      <capability name="screenBitDepth"          value="32" />
+      <capability name="supportsDivNoWrap"       value="false" />
+      <capability name="supportsFileUpload"      value="true" />
+      <capability name="tables"                  value="true" />
+      <capability name="type"                    value="desktop" />
+      <capability name="version"                 value="${version}" />
+      <capability name="w3cdomversion"           value="1.0" />
+    </capabilities>
+  </browser>
+
+  <browser id="MozillaRV" parentID="Gecko">
+    <identification>
+      <userAgent match="rv\:(?'version'(?'major'\d+)(?'minor'\.[.\d]*))" />
+      <userAgent nonMatch="Netscape" />
+    </identification>
+
+    <capabilities>
+      <capability name="ecmascriptversion"       value="1.4" />
+      <capability name="majorversion"            value="${major}" />
+      <capability name="maximumRenderedPageSize" value="300000" />
+      <capability name="minorversion"            value="${minor}" />
+      <capability name="preferredImageMime"      value="image/gif" />
+      <capability name="supportsCallback"        value="true" />
+      <capability name="supportsDivNoWrap"       value="false" />
+      <capability name="supportsMaintainScrollPositionOnPostback" value="true" />
+      <capability name="tagwriter"               value="System.Web.UI.HtmlTextWriter" />
+      <capability name="type"                    value="Mozilla${major}" />
+      <capability name="version"                 value="${version}" />
+      <capability name="w3cdomversion"           value="1.0" />
+    </capabilities>
+  </browser>
+
+  <browser id="Safari" parentID="Gecko">
+    <identification>
+      <userAgent match="AppleWebKit/(?'webversion'\d+)" />
+    </identification>
+
+    <capture>
+    </capture>
+
+    <capabilities>
+      <capability name="appleWebTechnologyVersion"   value="${webversion}" />
+      <capability name="backgroundsounds"            value="true" />
+      <capability name="browser"                     value="AppleMAC-Safari" />
+      <capability name="css1"                        value="true" />
+      <capability name="css2"                        value="true" />
+      <capability name="ecmascriptversion"           value="0.0" />
+      <capability name="futureBrowser"               value="Apple Safari" />
+      <capability name="screenBitDepth"              value="24" />
+      <capability name="tables"                      value="true" />
+      <capability name="tagwriter"                   value="System.Web.UI.HtmlTextWriter" />
+      <capability name="type"                        value="Desktop" />
+    </capabilities>
+
+    <controlAdapters>
+      <adapter controlType="System.Web.UI.WebControls.Menu"
+               adapterType="System.Web.UI.WebControls.Adapters.MenuAdapter" />
+    </controlAdapters>
+  </browser>
+
+  <browser id="Safari1Plus" parentID="Safari">
+    <identification>
+      <capability name="appleWebTechnologyVersion" match="\d\d\d" />
+    </identification>
+
+    <capture>
+    </capture>
+
+    <capabilities>
+      <capability name="ecmascriptversion"       value="1.4" />
+      <capability name="w3cdomversion"           value="1.0" />
+      <capability name="supportsCallback"        value="true" />
+    </capabilities>
+  </browser>
+
+  <browser id="Docomo" parentID="Default">
+    <identification>
+      <userAgent match="^DoCoMo/" />
+    </identification>
+
+    <capture>
+      <userAgent match="^DoCoMo/(?'httpVersion'[^/ ]*)[/ ](?'deviceID'[^/\x28]*)" />
+    </capture>
+
+    <capabilities>
+      <capability name="browser"                             value="i-mode" />
+      <capability name="canInitiateVoiceCall"                value="true" />
+      <capability name="cookies"                             value="false" />
+      <capability name="defaultScreenCharactersHeight"       value="6" />
+      <capability name="defaultScreenCharactersWidth"        value="16" />
+      <capability name="defaultScreenPixelsHeight"           value="70" />
+      <capability name="defaultScreenPixelsWidth"            value="90" />
+      <capability name="deviceID"                            value="${deviceID}" />
+      <capability name="inputType"                           value="telephoneKeypad" />
+      <capability name="isColor"                             value="false" />
+      <capability name="isMobileDevice"                      value="true" />
+      <capability name="javaapplets"                         value="false" />
+      <capability name="javascript"                          value="false" />
+      <capability name="maximumHrefLength"                   value="524" />
+      <capability name="maximumRenderedPageSize"             value="5120" />
+      <capability name="mobileDeviceModel"                   value="${deviceID}" />
+      <capability name="optimumPageWeight"                   value="700" />
+      <capability name="preferredRenderingType"              value="chtml10" />
+      <capability name="preferredRequestEncoding"            value="shift_jis" />
+      <capability name="preferredResponseEncoding"           value="shift_jis" />
+      <capability name="requiresAdaptiveErrorReporting"      value="true" />
+      <capability name="requiresFullyQualifiedRedirectUrl"   value="true" />
+      <capability name="requiresHtmlAdaptiveErrorReporting"  value="true" />
+      <capability name="requiresOutputOptimization"          value="true" />
+      <capability name="screenBitDepth"                      value="1" />
+      <capability name="supportsAccesskeyAttribute"          value="true" />
+      <capability name="supportsCharacterEntityEncoding"     value="false" />
+      <capability name="supportsEmptyStringInCookieValue"    value="false" />
+      <capability name="supportsIModeSymbols"                value="true" />
+      <capability name="supportsInputIStyle"                 value="true" />
+      <capability name="supportsRedirectWithCookie"          value="false" />
+      <capability name="tables"                              value="false" />
+      <capability name="type"                                value="i-mode" />
+      <capability name="vbscript"                            value="false" />
+    </capabilities>
+
+    <controlAdapters markupTextWriterType="System.Web.UI.ChtmlTextWriter" />
+  </browser>
+
+  <browser id="DocomoN505i" parentID="Docomo">
+    <identification>
+      <capability name="deviceID" match="N505i" />
+    </identification>
+
+    <capture>
+    </capture>
+
+    <capabilities>
+      <capability name="mobileDeviceManufacturer"            value="NEC" />
+    </capabilities>
+  </browser>
+
+  <browser id="Nokia" parentID="Default">
+    <identification>
+      <userAgent match="Nokia" />
+    </identification>
+
+    <capture>
+    </capture>
+
+    <capabilities>
+      <capability name="browser"                                 value="Nokia" />
+      <capability name="cookies"                                 value="false" />
+      <capability name="canInitiateVoiceCall"                    value="true" />
+      <capability name="canRenderOneventAndPrevElementsTogether" value="false" />
+      <capability name="canRenderPostBackCards"                  value="false" />
+      <capability name="canSendMail"                             value="false" />
+      <capability name="defaultScreenCharactersHeight"           value="4" />
+      <capability name="defaultScreenCharactersWidth"            value="20" />
+      <capability name="defaultScreenPixelsHeight"               value="40" />
+      <capability name="defaultScreenPixelsWidth"                value="90" />
+      <capability name="hasBackButton"                           value="false" />
+      <capability name="inputType"                               value="telephoneKeypad" />
+      <capability name="isColor"                                 value="false" />
+      <capability name="isMobileDevice"                          value="true" />
+      <capability name="maximumRenderedPageSize"                 value="1397" />
+      <capability name="mobileDeviceManufacturer"                value="Nokia" />
+      <capability name="numberOfSoftkeys"                        value="2" />
+      <capability name="preferredImageMime"                      value="image/vnd.wap.wbmp" />
+      <capability name="preferredRenderingMime"                  value="text/vnd.wap.wml" />
+      <capability name="preferredRenderingType"                  value="wml11" />
+      <capability name="rendersBreaksAfterWmlAnchor"             value="true" />
+      <capability name="rendersBreaksAfterWmlInput"              value="true" />
+      <capability name="rendersWmlDoAcceptsInline"               value="false" />
+      <capability name="requiresAdaptiveErrorReporting"          value="true" />
+      <capability name="requiresPhoneNumbersAsPlainText"         value="true" />
+      <capability name="requiresUniqueFilePathSuffix"            value="true" />
+      <capability name="screenBitDepth"                          value="1" />
+      <capability name="type"                                    value="Nokia" />
+    </capabilities>
+
+    <controlAdapters />
+  </browser>
+
+  <browser id="Netscape4" parentID="Mozilla">
+    <identification>
+      <userAgent match="^Mozilla/4" />
+      <userAgent nonMatch="Opera" />
+      <userAgent nonMatch="MSIE" />
+    </identification>
+
+    <capabilities>
+      <capability name="browser"             value="Netscape" />
+      <capability name="cookies"             value="true" />
+      <capability name="css1"                value="true" />
+      <capability name="ecmascriptversion"   value="1.3" />
+      <capability name="frames"              value="true" />
+      <capability name="isColor"             value="true" />
+      <capability name="javaapplets"         value="true" />
+      <capability name="javascript"          value="true" />
+      <capability name="screenBitDepth"      value="8" />
+      <capability name="supportsCss"         value="false" />
+      <capability name="supportsFileUpload"  value="true" />
+      <capability name="supportsMultilineTextBoxDisplay" value="true" />
+      <capability name="tables"              value="true" />
+      <capability name="type"                value="Netscape4" />
+    </capabilities>
+
+    <controlAdapters>
+      <adapter controlType="System.Web.UI.WebControls.Menu"
+                   adapterType="System.Web.UI.WebControls.Adapters.MenuAdapter" />
+    </controlAdapters>
+  </browser>
+
+  <browser id="NetFront" parentID="Netscape4">
+    <identification>
+      <userAgent match="\((?'deviceID'.*)\) NetFront\/(?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*).*"  />
+    </identification>
+
+    <capabilities>
+      <capability name="breaksOnInlineElements"                  value="false" />
+      <capability name="browser"                                 value="Compact NetFront" />
+      <capability name="canInitiateVoiceCall"                    value="true" />
+      <capability name="canSendMail"                             value="false" />
+      <capability name="inputType"                               value="telephoneKeypad" />
+      <capability name="isMobileDevice"                          value="true" />
+      <capability name="javascript"                              value="false" />
+      <capability name="maximumRenderedPageSize"                 value="10000" />
+      <capability name="majorVersion"                            value="${browserMajorVersion}" />
+      <capability name="minorVersion"                            value="${browserMinorVersion}" />
+      <capability name="version"                                 value="${browserMajorVersion}${browserMinorVersion}" />
+      <capability name="preferredImageMime"                      value="image/jpeg" />
+      <capability name="preferredRenderingMime"                  value="application/xhtml+xml" />
+      <capability name="preferredRenderingType"                  value="xhtml-mp" />
+      <capability name="requiresAbsolutePostbackUrl"             value="false" />
+      <capability name="requiresCommentInStyleElement"           value="false" />
+      <capability name="requiresFullyQualifiedRedirectUrl"       value="true" />
+      <capability name="requiresHiddenFieldValues"               value="false" />
+      <capability name="requiresOnEnterForwardForCheckboxLists"  value="false" />
+      <capability name="requiresXhtmlCssSuppression"             value="false" />
+      <capability name="supportsAccessKeyAttribute"              value="true" />
+      <capability name="supportsBodyClassAttribute"              value="true" />
+      <capability name="supportsDivNoWrap"                       value="false" />
+      <capability name="supportsFileUpload"                      value="false" />
+      <capability name="supportsFontName"                        value="false" />
+      <capability name="supportsImageSubmit"                     value="false" />
+      <capability name="supportsItalic"                          value="false" />
+      <capability name="supportsSelectFollowingTable"            value="true" />
+      <capability name="supportsStyleElement"                    value="true" />
+      <capability name="supportsUrlAttributeEncoding"            value="true" />
+      <capability name="type"                                    value="Compact NetFront ${browserMajorVersion}" />
+    </capabilities>
+    <controlAdapters />
+  </browser>
+
+  <browser id="MozillaFirefox" parentID="MozillaRV">
+    <identification>
+      <userAgent match="Gecko\/\d+ Firefox\/(?'version'(?'major'\d+)(?'minor'\.[.\d]*))" />
+    </identification>
+
+    <capabilities>
+      <capability name="browser"                         value="Firefox" />
+      <capability name="majorversion"                    value="${major}" />
+      <capability name="minorversion"                    value="${minor}" />
+      <capability name="version"                         value="${version}" />
+      <capability name="type"                            value="Firefox${version}" />
+    </capabilities>
+  </browser>
+
+  <browser id="Up" parentID="Default">
+    <identification>
+      <userAgent match="(UP\.Browser)|(UP/)" />
+      <userAgent nonMatch="Go\.Web" />
+    </identification>
+
+    <capture>
+      <userAgent match="((?'deviceID'\S*) UP/\S* UP\.Browser/((?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*)\S*) UP\.Link/)|((?'deviceID'\S*)/\S* UP(\.Browser)*/((?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*)\S*))|(UP\.Browser/((?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*)\S*)-(?'deviceID'\S*) UP\.Link/)|((?'deviceID'\S*) UP\.Browser/((?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*)\S*) UP\.Link/)|((?'deviceID'\S*)/(?'DeviceVersion'\S*) UP/((?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*)\S*))|((?'deviceID'\S*)/(?'DeviceVersion'\S*) UP.Browser/((?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*)\S*))|((?'deviceID'\S*) UP.Browser/((?'browserMajorVersion'\d*)(?'browserMinorVersion'\.\d*)\S*))" />
+    </capture>
+
+    <capabilities>
+      <capability name="browser"                             value="Phone.com" />
+      <capability name="canInitiateVoiceCall"                value="true" />
+      <capability name="canSendMail"                         value="false" />
+      <capability name="deviceID"                            value="${deviceID}" />
+      <capability name="deviceVersion"                       value="${deviceVersion}" />
+      <capability name="inputType"                           value="telephoneKeypad" />
+      <capability name="isMobileDevice"                      value="true" />
+      <capability name="majorVersion"                        value="${browserMajorVersion}" />
+      <capability name="maximumRenderedPageSize"             value="1492" />
+      <capability name="minorVersion"                        value="${browserMinorVersion}" />
+      <capability name="numberOfSoftkeys"                    value="2" />
+      <capability name="optimumPageWeight"                   value="700" />
+      <capability name="preferredImageMime"                  value="image/vnd.wap.wbmp" />
+      <capability name="preferredRenderingMime"              value="text/vnd.wap.wml" />
+      <capability name="preferredRenderingType"              value="wml11" />
+      <capability name="requiresAdaptiveErrorReporting"      value="true" />
+      <capability name="rendersBreakBeforeWmlSelectAndInput" value="true" />
+      <capability name="rendersWmlDoAcceptsInline"           value="false" />
+      <capability name="rendersWmlSelectsAsMenuCards"        value="true" />
+      <capability name="requiresFullyQualifiedRedirectUrl"   value="true" />
+      <capability name="requiresNoescapedPostUrl"            value="true" />
+      <capability name="requiresPostRedirectionHandling"     value="true" />
+      <capability name="supportsRedirectWithCookie"          value="false" />
+      <capability name="type"                                value="Phone.com${browserMajorVersion}" />
+      <capability name="version"                             value="${browserMajorVersion}${browserMinorVersion}" />
+    </capabilities>
+  </browser>
+  
+</browsers>

@@ -1,0 +1,69 @@
+﻿/*-------------------------------------*/
+/* POPUP */
+/*-------------------------------------*/
+
+.ui-widget-overlay {
+	background: transparent url(../../images/overlay_bg_ie.png) repeat;
+}
+
+/*-------------------------------------*/
+/* MESSAGE STYLES */
+/*-------------------------------------*/
+.dnnFormMessage{
+	border:1px solid #357ec7;/* blue */
+	background:#addfff;/* blue */
+}
+.dnnFormMessage.dnnFormError,
+.dnnFormMessage.dnnFormValidationSummary{
+	background-color:#ffd9d9; /* red */
+	border:1px solid #ffadad; /* red */
+}
+.dnnFormMessage.dnnFormWarning{
+	background-color:#ffffd9; /* yellow */
+	border:1px solid #eaeaa4; /* yellow */
+}
+.dnnFormMessage.dnnFormSuccess{
+	background-color:#d9ffd9; /* green */
+	border:1px solid #95c46f; /* green */
+}
+
+/*-------------------------------------*/
+/* HELPER TOOLTIP */
+/*-------------------------------------*/
+.dnnTooltip .dnnFormHelpContent,
+.dnnHelperTip .dnnFormHelpContent{
+	background: transparent url(../../images/overlay_bg_ie.png) repeat;
+}
+.dnnTooltip .dnnFormHelpContent span:after,
+.dnnHelperTip .dnnFormHelpContent span:after{
+	border-top: 7px solid #505050;
+}
+.dnnDragdropTip {
+    background: transparent url(../../images/overlay_bg_ie.png) repeat;
+}
+
+/*-------------------------------------*/
+/* RADCOMBOBOX LEFT ARROW */
+/*-------------------------------------*/
+.RadComboBox_Default td.rcbArrowCellRight a {  
+    width: 5px;
+}
+
+/*-------------------------------------*/
+/* RED ERROR INFO */
+/*-------------------------------------*/
+.dnnFormItem span.dnnFormMessage.dnnFormError{ 
+    background: transparent url(../../images/error_tooltip_ie.png) repeat;
+}
+.dnnFormItem span.dnnFormMessage.dnnFormError:after{
+    border-top: 7px solid #ff4444;
+}
+
+#mainContent > .columns{
+    display: block !important;
+}
+
+/*-------------------------------------*/
+/* Control Bar Module Panel */
+/*-------------------------------------*/
+.ControlModulePanel{background:#333;}

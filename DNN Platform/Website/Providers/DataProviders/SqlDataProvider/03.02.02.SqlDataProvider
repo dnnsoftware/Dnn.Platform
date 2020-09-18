@@ -1,0 +1,54 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FindBanners]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}FindBanners]
+GO
+
+create procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+AS
+
+SELECT  BannerId,
+        {objectQualifier}Banners.VendorId,
+        BannerName,
+        URL,
+        'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder +{objectQualifier}Files.FileName end,
+        Impressions,
+        CPM,
+        {objectQualifier}Banners.Views,
+        {objectQualifier}Banners.ClickThroughs,
+        StartDate,
+        EndDate,
+        BannerTypeId,
+        Description,
+        GroupName,
+        Criteria,
+        {objectQualifier}Banners.Width,
+        {objectQualifier}Banners.Height
+FROM    {objectQualifier}Banners
+INNER JOIN {objectQualifier}Vendors ON {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+LEFT OUTER JOIN {objectQualifier}Files ON {objectQualifier}Banners.ImageFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+WHERE   ({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+AND     ({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+AND     (({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+AND     {objectQualifier}Vendors.Authorized = 1 
+ORDER BY BannerId
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

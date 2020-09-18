@@ -1,0 +1,35 @@
+'remove App_code files
+App_Code\HTML\CompareWorkflowStatePermissions.vb
+App_Code\HTML\DataProvider.vb
+App_Code\HTML\HtmlTextController.vb
+App_Code\HTML\HtmlTextInfo.vb
+App_Code\HTML\HtmlTextLogController.vb
+App_Code\HTML\HtmlTextLogInfo.vb
+App_Code\HTML\HtmlTextUserController.vb
+App_Code\HTML\HtmlTextUserInfo.vb
+App_Code\HTML\WorkflowStateController.vb
+App_Code\HTML\WorkflowStateInfo.vb
+App_Code\HTML\WorkflowStatePermissionCollection.vb
+App_Code\HTML\WorkflowStatePermissionController.vb
+App_Code\HTML\WorkflowStatePermissionInfo.vb
+App_Code\HTML\Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb
+App_Code\HTML\Providers\DataProviders\SqlDataProvider\
+App_Code\HTML\Providers\DataProviders\
+App_Code\HTML\Providers\
+
+'remove code behind files
+DesktopModules\HTML\EditHtml.ascx.vb
+DesktopModules\HTML\HtmlModule.ascx.vb
+DesktopModules\HTML\MyWork.ascx.vb
+DesktopModules\HTML\Settings.ascx.vb
+
+' remove previous package
+Install\Module\HTML_Community_05.01.00_Install.zip
+
+'remove cleanup files
+04.05.00.txt
+04.06.00.txt
+04.06.01.txt
+04.07.00.txt
+04.08.01.txt
+05.01.02.txt

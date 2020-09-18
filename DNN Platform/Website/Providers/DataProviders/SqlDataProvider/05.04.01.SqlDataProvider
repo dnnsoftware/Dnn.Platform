@@ -1,0 +1,124 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/* Add EnsureLocalizationExists Procedure */
+/*********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}EnsureLocalizationExists
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}EnsureLocalizationExists
+	@PortalId       int,
+	@CultureCode	nvarchar(10)
+AS
+	IF NOT EXISTS (select * from {databaseOwner}{objectQualifier}PortalLocalization where culturecode=@CultureCode and portalid=@PortalId)
+		BEGIN
+			DECLARE @PortalName nvarchar(128)
+			DECLARE @LogoFile nvarchar(50)
+			DECLARE @FooterText nvarchar(100)
+			DECLARE @Description nvarchar(500)
+			DECLARE @KeyWords nvarchar(500)
+			DECLARE @BackgroundFile nvarchar(50)
+			DECLARE @HomeTabId int
+			DECLARE @LoginTabId int
+			DECLARE @UserTabId int
+			DECLARE @AdminTabId int
+			DECLARE @RegisterTabId int
+			
+			--cannot select by particular culturecode as its currently possible to delete any
+			SELECT TOP 1 
+				@PortalName = PortalName,
+				@LogoFile = LogoFile,
+				@FooterText = FooterText,
+				@Description = Description,
+				@KeyWords = KeyWords,
+				@BackgroundFile = BackgroundFile,
+				@HomeTabId = HomeTabId,
+				@LoginTabId=LoginTabId,
+				@UserTabId=UserTabId,
+				@AdminTabId=AdminTabId,
+				@RegisterTabId=RegisterTabId 
+			FROM {databaseOwner}{objectQualifier}PortalLocalization
+			WHERE PortalId = @PortalId
+			INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+				PortalId,
+				CultureCode,
+				PortalName,
+				LogoFile,
+				FooterText,
+				Description,
+				KeyWords,
+				BackgroundFile, 
+				HomeTabId,
+				LoginTabId,
+				UserTabId,
+				AdminTabId,
+				RegisterTabId,
+				CreatedByUserID,
+				CreatedOnDate,
+				LastModifiedByUserID,
+				LastModifiedOnDate
+			) 
+			VALUES	(
+				@PortalId,
+				@CultureCode,
+				@PortalName,
+				@LogoFile,
+				@FooterText,
+				@Description,
+				@KeyWords,
+				@BackgroundFile,
+				@HomeTabId,
+				@LoginTabId,
+				@UserTabId,
+				@AdminTabId,
+				@RegisterTabId,
+				-1,
+				getdate(),
+				-1,
+				getdate()
+			)
+		END
+GO
+
+
+/* ensure existing portal default languages have valid localization records */
+DECLARE @PortalID int
+DECLARE @DefaultLanguage nvarchar(10)
+
+--Iterate through each portal
+DECLARE Portals_Cursor CURSOR FOR
+SELECT PortalID, DefaultLanguage
+FROM         {databaseOwner}{objectQualifier}Portals
+
+OPEN Portals_Cursor
+--get first
+FETCH NEXT FROM Portals_Cursor
+into @PortalID,  @DefaultLanguage
+WHILE @@FETCH_STATUS = 0
+   BEGIN
+       exec {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID,@DefaultLanguage
+
+       FETCH NEXT FROM Portals_Cursor
+       into @PortalID,  @DefaultLanguage
+
+   END
+CLOSE Portals_Cursor
+DEALLOCATE Portals_Cursor
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+

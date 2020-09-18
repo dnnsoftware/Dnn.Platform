@@ -1,0 +1,14 @@
+<Settings>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render this skin object</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>Text</Name>
+    <Type>String</Type>
+    <Help>Overides the default text for the Terms link</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

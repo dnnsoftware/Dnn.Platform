@@ -1,0 +1,14 @@
+<h3>Module Creator</h3>
+<div class="License">
+	<h3>About Module Creator</h3>
+	<p class="Owner">
+		<b>Version 8.0</b><br /><br />
+	</p>
+	<p>This is the initial release of the Module Creator Module</p>
+	
+	<h4>Bug Fixes</h4>
+	<ul>
+		<li>None</li>
+	</ul>
+	
+</div>

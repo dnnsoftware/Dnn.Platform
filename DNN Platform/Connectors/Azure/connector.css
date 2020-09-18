@@ -1,0 +1,29 @@
+﻿#connector-Azure>div.edit-fields>div>div, .connector-Azure>div.edit-fields>div>div {
+    width: 100% !important;
+}
+
+#connector-Azure>div.edit-fields>div>div label, .connector-Azure>div.edit-fields>div>div label {
+    width: 25% !important;
+}
+
+#connector-Azure>div.edit-fields>div>div input[type='text'], .connector-Azure>div.edit-fields>div>div input[type='text'] {
+    width: 65% !important;
+}
+
+#connector-Azure>div.edit-fields>div>div .pb-dropdown {
+    width: 65% !important;
+}
+
+#connector-Azure>div.edit-fields>div>div input[type='password'], .connector-Azure>div.edit-fields>div>div input[type='password'] {
+    width: 65% !important;
+    box-sizing: border-box !important;
+    padding: 8px !important;
+}
+
+
+
+@media only screen and (min-device-width:320px) and (max-device-width:480px) {
+    #header-mobi {
+        z-index: 99999 !important
+    }
+}

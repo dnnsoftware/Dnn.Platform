@@ -1,0 +1,33 @@
+<div id="dnnMenu">
+	<ul class="nav navbar-nav topLevel">
+		[*>NODE-TOP]
+	</ul>
+</div>
+    [>NODE-TOP]
+        <li class="menuItem [?NODE]dropdown [/?][?SELECTED]active[/?]">
+        [?ENABLED]
+            <a href="[=URL]" [?TARGET]target="[=TARGET]"[/?]><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
+        [?ELSE]
+            <a href="#"><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
+        [/?]
+        [?NODE]
+            <ul class="dropdown-menu subLevel">
+            [*>NODE]
+            </ul>
+        [/?]
+        </li>
+    [/>]
+	[>NODE]
+        <li class="[?NODE]dropdown [/?][?SELECTED]active[/?]">
+        [?ENABLED]
+            <a href="[=URL]" [?TARGET]target="[=TARGET]"[/?]><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
+        [?ELSE]
+            <a href="#"><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
+        [/?]
+        [?NODE]
+            <ul class="dropdown-menu subLevelRight">
+            [*>NODE]
+            </ul>
+        [/?]
+        </li>
+    [/>]

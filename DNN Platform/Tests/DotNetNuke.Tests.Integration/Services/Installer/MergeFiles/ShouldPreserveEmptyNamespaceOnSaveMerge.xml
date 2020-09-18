@@ -1,0 +1,17 @@
+﻿<configuration>
+  <nodes configfile="Web.config">
+    <!-- NOTE: dependentAssembly _should_ have xmlns="urn:schemas-microsoft-com:asm.v1" on it. -->
+    <!-- NOTE: this is a test to verify that an incorrect merge file is correctly treated as incorrect. -->
+    <node path="/configuration/runtime/ab:assemblyBinding"
+          action="update"
+          collision="save"
+          targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='System.Web.Extensions'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35'][ab:bindingRedirect]"
+          nameSpace="urn:schemas-microsoft-com:asm.v1"
+          nameSpacePrefix="ab">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Extensions" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="4.1.0.0"/>
+      </dependentAssembly>
+    </node>
+  </nodes>
+</configuration>

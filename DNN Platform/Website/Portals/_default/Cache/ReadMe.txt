@@ -1,0 +1,1 @@
+This directory is used for file-based cache synchronization on a web farm.  It is also used for serialized cache objects that are persisted to disk.

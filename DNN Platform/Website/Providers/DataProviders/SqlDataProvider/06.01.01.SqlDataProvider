@@ -1,0 +1,47 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Add RemoveUser Procedure */
+/****************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}RemoveUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}RemoveUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}RemoveUser] 
+	@UserID		int,
+	@PortalID   int
+AS
+	IF @PortalID IS NULL
+		BEGIN
+			-- Delete SuperUser
+			DELETE FROM dbo.dnn_Users
+				WHERE  UserId = @UserID
+		END
+	ELSE
+		BEGIN
+			-- Remove User from Portal			
+			DELETE FROM {databaseOwner}{objectQualifier}UserPortals
+				WHERE  UserId = @UserID
+                 AND PortalId = @PortalID
+			IF NOT EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}UserPortals WHERE  UserId = @UserID) 
+				-- Delete User (but not if SuperUser)
+				BEGIN
+					DELETE FROM {databaseOwner}{objectQualifier}Users
+						WHERE  UserId = @UserID
+							AND IsSuperUser = 0
+				END								
+		END
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

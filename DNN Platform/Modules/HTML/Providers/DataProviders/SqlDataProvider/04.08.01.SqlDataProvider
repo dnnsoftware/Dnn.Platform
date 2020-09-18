@@ -1,0 +1,31 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+update {databaseOwner}{objectQualifier}ModuleSettings
+set    SettingValue = 'False'
+where  SettingName = 'TEXTHTML_ReplaceTokens'
+and    SettingValue = '0'
+GO
+
+update {databaseOwner}{objectQualifier}ModuleSettings
+set    SettingValue = 'False'
+where  SettingName = 'TEXTHTML_ReplaceTokens'
+and    SettingValue = '1'
+GO
+
+update {databaseOwner}{objectQualifier}ModuleSettings
+set    SettingValue = 'True'
+where  SettingName = 'TEXTHTML_ReplaceTokens'
+and    SettingValue = '2'
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

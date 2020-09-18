@@ -1,0 +1,2465 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Add RoleGroups Table */
+/************************/
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}RoleGroups]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}RoleGroups
+		(
+			[RoleGroupID] int IDENTITY(0,1) NOT NULL,
+			[PortalID] int NOT NULL,
+			[RoleGroupName] nvarchar(50) NOT NULL,
+			[Description] nvarchar(1000) NULL
+		)
+
+		ALTER TABLE {databaseOwner}{objectQualifier}RoleGroups
+			ADD CONSTRAINT [PK_{objectQualifier}RoleGroups] PRIMARY KEY NONCLUSTERED ([RoleGroupID])
+
+		ALTER TABLE {databaseOwner}{objectQualifier}RoleGroups
+			ADD CONSTRAINT [IX_{objectQualifier}RoleGroupName] UNIQUE NONCLUSTERED ([PortalID] ASC, [RoleGroupName] ASC)
+
+		ALTER TABLE {databaseOwner}{objectQualifier}RoleGroups  WITH NOCHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}RoleGroups_{objectQualifier}Portals] FOREIGN KEY([PortalID]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE
+
+		ALTER TABLE {databaseOwner}{objectQualifier}Roles 
+			ADD RoleGroupID int NULL
+
+		ALTER TABLE {databaseOwner}{objectQualifier}Roles 
+			ADD CONSTRAINT FK_{objectQualifier}Roles_{objectQualifier}RoleGroups FOREIGN KEY (RoleGroupID) REFERENCES {databaseOwner}{objectQualifier}RoleGroups (RoleGroupID)
+	END
+GO
+
+/* Update Role Table */
+/*********************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Roles 
+	ADD RSVPCode nvarchar(50) NULL, IconFile nvarchar(100) NULL
+
+
+/* Add Role Group Stored Procedures */
+/************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddRoleGroup]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddRoleGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddRoleGroup]
+
+	@PortalId         int,
+	@RoleGroupName    nvarchar(50),
+	@Description      nvarchar(1000)
+
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}RoleGroups (
+  PortalId,
+  RoleGroupName,
+  Description
+)
+VALUES (
+  @PortalId,
+  @RoleGroupName,
+  @Description
+)
+
+SELECT SCOPE_IDENTITY()
+
+GO
+
+/* Add Delete Role Group Stored Procedures */
+/*******************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteRoleGroup]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteRoleGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteRoleGroup]
+
+	@RoleGroupId      int
+	
+AS
+
+DELETE  
+FROM {databaseOwner}{objectQualifier}RoleGroups
+WHERE  RoleGroupId = @RoleGroupId
+
+GO
+
+/* Add Get Role Group Stored Procedures */
+/****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleGroup]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoleGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoleGroup]
+
+	@PortalId		int,
+	@RoleGroupId    int
+	
+AS
+
+SELECT
+	RoleGroupId,
+	PortalId,
+	RoleGroupName,
+	Description
+FROM {databaseOwner}{objectQualifier}RoleGroups
+WHERE  (RoleGroupId = @RoleGroupId OR RoleGroupId IS NULL AND @RoleGroupId IS NULL)
+	AND    PortalId = @PortalId
+
+GO
+
+/* Add Get Role Groups Stored Procedures */
+/*****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleGroups]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoleGroups]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoleGroups]
+
+	@PortalId		int
+	
+AS
+
+SELECT
+	RoleGroupId,
+	PortalId,
+	RoleGroupName,
+	Description
+FROM {databaseOwner}{objectQualifier}RoleGroups
+WHERE  PortalId = @PortalId
+
+GO
+
+/* Add Update Role Group Stored Procedures */
+/*******************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateRoleGroup]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateRoleGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateRoleGroup]
+
+	@RoleGroupId      int,
+	@RoleGroupName	  nvarchar(50),
+	@Description      nvarchar(1000)
+
+AS
+
+UPDATE {databaseOwner}{objectQualifier}RoleGroups
+SET    RoleGroupName = @RoleGroupName,
+	   Description = @Description
+WHERE  RoleGroupId = @RoleGroupId
+
+GO
+
+
+/* Update Add Role Stored Procedures */
+/*************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddRole]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddRole]
+
+	@PortalId         int,
+	@RoleGroupId      int,
+	@RoleName         nvarchar(50),
+	@Description      nvarchar(1000),
+	@ServiceFee       money,
+	@BillingPeriod    int,
+	@BillingFrequency char(1),
+	@TrialFee         money,
+	@TrialPeriod      int,
+	@TrialFrequency   char(1),
+	@IsPublic         bit,
+	@AutoAssignment   bit,
+	@RSVPCode         nvarchar(50),
+	@IconFile         nvarchar(100)
+
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}Roles (
+  PortalId,
+  RoleGroupId,
+  RoleName,
+  Description,
+  ServiceFee,
+  BillingPeriod,
+  BillingFrequency,
+  TrialFee,
+  TrialPeriod,
+  TrialFrequency,
+  IsPublic,
+  AutoAssignment,
+  RSVPCode,
+  IconFile
+)
+VALUES (
+  @PortalId,
+  @RoleGroupId,
+  @RoleName,
+  @Description,
+  @ServiceFee,
+  @BillingPeriod,
+  @BillingFrequency,
+  @TrialFee,
+  @TrialPeriod,
+  @TrialFrequency,
+  @IsPublic,
+  @AutoAssignment,
+  @RSVPCode,
+  @IconFile
+)
+
+SELECT SCOPE_IDENTITY()
+
+GO
+
+/* Update Get Portal Roles Stored Procedures */
+/*********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+
+	@PortalId     int
+
+AS
+
+SELECT R.RoleId,
+       R.PortalId,
+       R.RoleGroupId,
+       R.RoleName,
+       R.Description,
+       'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+       'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+       'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+       'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+       'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+       'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+       'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+       'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+       RSVPCode,
+       IconFile
+FROM {databaseOwner}{objectQualifier}Roles R
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 on R.BillingFrequency = L1.Value
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 on R.TrialFrequency = L2.Value
+WHERE  PortalId = @PortalId
+	OR     PortalId is null
+ORDER BY R.RoleName
+
+GO
+
+/* Update Get Role Stored Procedures */
+/*************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetRole]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRole]
+
+	@RoleId   int,
+	@PortalId int
+
+AS
+
+SELECT RoleId,
+       PortalId,
+       RoleGroupId,
+       RoleName,
+       Description,
+       ServiceFee,
+       BillingPeriod,
+       BillingFrequency,
+       TrialFee,
+       TrialPeriod,
+       TrialFrequency,
+       IsPublic,
+       AutoAssignment,
+       RSVPCode,
+       IconFile
+FROM   {objectQualifier}Roles
+WHERE  RoleId = @RoleId
+	AND    PortalId = @PortalId
+
+GO
+
+/* Update Get Role By Name Stored Procedures */
+/*********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoleByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoleByName]
+
+	@PortalId int,
+	@RoleName nvarchar(50)
+
+AS
+
+SELECT RoleId,
+       PortalId,
+       RoleGroupId,
+       RoleName,
+       Description,
+       ServiceFee,
+       BillingPeriod,
+       BillingFrequency,
+       TrialFee,
+       TrialPeriod,
+       TrialFrequency,
+       IsPublic,
+       AutoAssignment,
+       RSVPCode,
+       IconFile
+FROM   {objectQualifier}Roles
+WHERE  PortalId = @PortalId 
+	AND RoleName = @RoleName
+
+GO
+
+/* Add Get Roles By Group Stored Procedures */
+/********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetRolesByGroup]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByGroup]
+
+	@RoleGroupId     int,
+	@PortalId		 int
+
+AS
+
+SELECT R.RoleId,
+       R.PortalId,
+       R.RoleGroupId,
+       R.RoleName,
+       R.Description,
+       'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+       'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+       'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then L1.Text else '' end,
+       'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+       'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+       'TrialFrequency' = case when R.TrialFrequency <> 'N' then L2.Text else '' end,
+       'IsPublic' = case when R.IsPublic = 1 then 'True' else 'False' end,
+       'AutoAssignment' = case when R.AutoAssignment = 1 then 'True' else 'False' end,
+       R.RSVPCode,
+       R.IconFile
+FROM {databaseOwner}{objectQualifier}Roles R
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L1 on R.BillingFrequency = L1.Value
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Lists L2 on R.TrialFrequency = L2.Value
+WHERE  (RoleGroupId = @RoleGroupId OR (RoleGroupId IS NULL AND @RoleGroupId IS NULL))
+	AND PortalId = @PortalId
+ORDER BY R.RoleName
+
+GO
+
+/* Update UserRole Table */
+/*************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}UserRoles 
+	ADD EffectiveDate datetime NULL
+
+GO
+
+/* Update Get Roles By User Stored Procedures */
+/**********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetRolesByUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByUser]
+    
+	@UserId        int,
+	@PortalId      int
+
+AS
+
+SELECT {objectQualifier}Roles.RoleName,
+       {objectQualifier}Roles.RoleId
+	FROM {objectQualifier}UserRoles
+		INNER JOIN {objectQualifier}Users on {objectQualifier}UserRoles.UserId = {objectQualifier}Users.UserId
+		INNER JOIN {objectQualifier}Roles on {objectQualifier}UserRoles.RoleId = {objectQualifier}Roles.RoleId
+	WHERE  {objectQualifier}Users.UserId = @UserId
+		AND    {objectQualifier}Roles.PortalId = @PortalId
+		AND    (EffectiveDate <= getdate() or EffectiveDate is null)
+		AND    (ExpiryDate >= getdate() or ExpiryDate is null)
+GO
+
+/* Update Update Role Stored Procedures */
+/****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateRole]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateRole]
+
+	@RoleId           int,
+	@RoleGroupId      int,
+	@Description      nvarchar(1000),
+	@ServiceFee       money,
+	@BillingPeriod    int,
+	@BillingFrequency char(1),
+	@TrialFee         money,
+	@TrialPeriod      int,
+	@TrialFrequency   char(1),
+	@IsPublic         bit,
+	@AutoAssignment   bit,
+	@RSVPCode         nvarchar(50),
+	@IconFile         nvarchar(100)
+
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Roles
+SET    RoleGroupId = @RoleGroupId,
+       Description = @Description,
+       ServiceFee = @ServiceFee,
+       BillingPeriod = @BillingPeriod,
+       BillingFrequency = @BillingFrequency,
+       TrialFee = @TrialFee,
+       TrialPeriod = @TrialPeriod,
+       TrialFrequency = @TrialFrequency,
+       IsPublic = @IsPublic,
+       AutoAssignment = @AutoAssignment,
+       RSVPCode = @RSVPCode,
+       IconFile = @IconFile
+WHERE  RoleId = @RoleId
+
+GO
+
+/* Update Add User Role Stored Procedure */
+/*****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddUserRole]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddUserRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddUserRole]
+
+	@PortalId		int,
+	@UserId			int,
+	@RoleId			int,
+	@EffectiveDate	datetime = null,
+	@ExpiryDate		datetime = null
+
+AS
+DECLARE @UserRoleId int
+
+SELECT @UserRoleId = null
+
+SELECT @UserRoleId = UserRoleId
+	FROM   {objectQualifier}UserRoles
+	WHERE  UserId = @UserId AND RoleId = @RoleId
+ 
+IF @UserRoleId IS NOT NULL
+	BEGIN
+		UPDATE {objectQualifier}UserRoles
+			SET ExpiryDate = @ExpiryDate,
+				EffectiveDate = @EffectiveDate	
+			WHERE  UserRoleId = @UserRoleId
+		SELECT @UserRoleId
+	END
+ELSE
+	BEGIN
+		INSERT INTO {objectQualifier}UserRoles (
+			UserId,
+			RoleId,
+			EffectiveDate,
+			ExpiryDate
+		  )
+		VALUES (
+			@UserId,
+			@RoleId,
+			@EffectiveDate,
+			@ExpiryDate
+		  )
+
+	SELECT SCOPE_IDENTITY()
+END
+
+GO
+
+/* Update Get UserRole Stored Procedures */
+/*****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUserRole]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserRole]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetUserRole]
+
+	@PortalId int, 
+	@UserId int, 
+	@RoleId int
+
+AS
+SELECT	r.*, 
+        ur.UserRoleID, 
+        ur.UserID, 
+        ur.EffectiveDate, 
+        ur.ExpiryDate, 
+        ur.IsTrialUsed
+	FROM	{objectQualifier}UserRoles ur
+		INNER JOIN {objectQualifier}UserPortals up on ur.UserId = up.UserId
+		INNER JOIN {objectQualifier}Roles r on r.RoleID = ur.RoleID
+	WHERE   up.UserId = @UserId
+		AND     up.PortalId = @PortalId
+		AND     ur.RoleId = @RoleId
+GO
+
+/* Update Get UserRoles By Name Stored Procedures */
+/**************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUserRolesByUsername]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserRolesByUsername]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetUserRolesByUsername]
+
+@PortalId int, 
+@Username nvarchar(100), 
+@Rolename nvarchar(50)
+
+AS
+SELECT	R.*,        
+        'FullName' = U.FirstName + ' ' + U.LastName,
+        UR.UserRoleID,
+        UR.UserID,
+		UR.EffectiveDate,
+        UR.ExpiryDate,
+        UR.IsTrialUsed
+	FROM	{objectQualifier}UserRoles UR
+		INNER JOIN {objectQualifier}Users U ON UR.UserID = U.UserID
+		INNER JOIN {objectQualifier}Roles R ON R.RoleID = UR.RoleID
+	WHERE  R.PortalId = @PortalId
+		AND    (U.Username = @Username or @Username is NULL)
+		AND    (R.Rolename = @Rolename or @RoleName is NULL)
+GO
+
+/* Update Update UserRole Stored Procedures */
+/********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateUserRole]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserRole] 
+    @UserRoleId int, 
+	@EffectiveDate	datetime = null,
+	@ExpiryDate		datetime = null
+AS
+
+UPDATE {objectQualifier}UserRoles 
+	SET ExpiryDate = @ExpiryDate,
+		EffectiveDate = @EffectiveDate	
+	WHERE  UserRoleId = @UserRoleId
+GO
+
+/* Update Find Banners Stored Procedures */
+/*****************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FindBanners]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}FindBanners]
+GO
+
+create procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+AS
+
+SELECT  BannerId,
+        {objectQualifier}Banners.VendorId,
+        BannerName,
+        URL,
+        'ImageFile' = case when {objectQualifier}Files.FileName is null 
+			then {objectQualifier}Banners.ImageFile 
+			else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+        Impressions,
+        CPM,
+        {objectQualifier}Banners.Views,
+        {objectQualifier}Banners.ClickThroughs,
+        StartDate,
+        EndDate,
+        BannerTypeId,
+        Description,
+        GroupName,
+        Criteria,
+        {objectQualifier}Banners.Width,
+        {objectQualifier}Banners.Height
+FROM    {objectQualifier}Banners
+INNER JOIN {objectQualifier}Vendors ON {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+LEFT OUTER JOIN {objectQualifier}Files ON {objectQualifier}Banners.ImageFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+WHERE   ({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+AND     ({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+AND     (({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+AND     {objectQualifier}Vendors.Authorized = 1 
+AND     (getdate() <= {objectQualifier}Banners.EndDate or {objectQualifier}Banners.EndDate is null)
+ORDER BY BannerId
+
+GO
+
+/* Add Fields to Users Table */
+/*****************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Users 
+	ADD 
+		DisplayName nvarchar(128) NOT NULL CONSTRAINT DF_{objectQualifier}Users_DisplayName DEFAULT '',
+		UpdatePassword bit NOT NULL CONSTRAINT DF_{objectQualifier}Users_UpdatePassword DEFAULT 0
+GO
+
+/* Update the User Portals Table */
+/*********************************/
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UserPortals]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		ALTER TABLE {objectQualifier}UserPortals 
+			ADD Authorised bit NOT NULL CONSTRAINT DF_{objectQualifier}UserPortals_Authorised DEFAULT 1
+	END
+GO
+
+/* Update Add User Stored Procedures */
+/*************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}AddUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddUser]
+
+	@PortalID		int,
+	@Username		nvarchar(100),
+	@FirstName		nvarchar(50),
+	@LastName		nvarchar(50),
+	@AffiliateId    int,
+	@IsSuperUser    bit,
+	@Email          nvarchar(256),
+	@DisplayName    nvarchar(100),
+	@UpdatePassword	bit,
+	@Authorised		bit
+
+AS
+
+DECLARE @UserID int
+
+SELECT @UserID = UserID
+	FROM   {objectQualifier}Users
+	WHERE  Username = @Username
+
+IF @UserID is null
+	BEGIN
+		INSERT INTO {objectQualifier}Users (
+			Username,
+			FirstName, 
+			LastName, 
+			AffiliateId,
+			IsSuperUser,
+			Email,
+			DisplayName,
+			UpdatePassword
+		  )
+		VALUES (
+			@Username,
+			@FirstName, 
+			@LastName, 
+			@AffiliateId,
+			@IsSuperUser,
+			@Email,
+			@DisplayName,
+			@UpdatePassword
+		)
+
+		SELECT @UserID = SCOPE_IDENTITY()
+	END
+
+IF @IsSuperUser = 0
+	BEGIN
+		IF not exists ( SELECT 1 FROM {objectQualifier}UserPortals WHERE UserID = @UserID AND PortalID = @PortalID )
+			BEGIN
+				INSERT INTO {objectQualifier}UserPortals (
+					UserID,
+					PortalID,
+					Authorised
+				)
+				VALUES (
+					@UserID,
+					@PortalID,
+					@Authorised
+				)
+			END
+	END
+
+SELECT @UserID
+
+GO
+
+/* Add Users View */
+/******************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Users]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}vw_Users]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+AS
+SELECT 
+	U.UserId,
+    UP.PortalId,
+    U.Username,
+    U.FirstName,
+    U.LastName,
+    U.DisplayName,
+	U.IsSuperUser,
+	U.Email,
+    U.AffiliateId,
+    U.UpdatePassword,
+    UP.Authorised
+FROM {objectQualifier}Users U
+	LEFT OUTER JOIN {objectQualifier}UserPortals UP On U.UserId = UP.UserId
+GO
+
+/* Update Get User Stored Procedures */
+/*************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUser]
+
+	@PortalId int,
+	@UserId int
+
+AS
+SELECT * FROM {objectQualifier}vw_Users U
+WHERE  UserId = @UserId
+	AND    (PortalId = @PortalId or IsSuperUser = 1)
+GO
+
+/* Add Get All Users Stored Procedures */
+/***************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+
+    @PortalId		int,
+    @PageIndex      int,
+    @PageSize       int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForUsers (UserId)
+        SELECT UserId FROM	{objectQualifier}vw_Users 
+		WHERE ( PortalId = @PortalId or @PortalId is null )
+		ORDER BY FirstName + ' ' + LastName
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId 
+		AND (PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+        AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+	ORDER BY FirstName + ' ' + LastName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+
+END
+
+GO
+
+/* Add Get Users By Email Stored Procedures */
+/********************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersByEmail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetUsersByEmail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByEmail]
+    @PortalId		int,
+    @EmailToMatch   nvarchar(256),
+    @PageIndex      int,
+    @PageSize       int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    IF( @EmailToMatch IS NULL )
+        INSERT INTO #PageIndexForUsers (UserId)
+            SELECT UserId FROM	{objectQualifier}vw_Users 
+            WHERE  Email IS NULL
+				AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+            ORDER BY Email
+    ELSE
+        INSERT INTO #PageIndexForUsers (UserId)
+            SELECT UserId FROM	{objectQualifier}vw_Users 
+            WHERE  LOWER(Email) LIKE LOWER(@EmailToMatch)
+				AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+            ORDER BY Email
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId
+			AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+    ORDER BY LOWER(u.Email)
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+
+END
+
+
+GO
+
+/* Add Get Users By Profile Property Stored Procedures */
+/*******************************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersByProfileProperty]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+    @PortalId		int,
+    @PropertyName   nvarchar(256),
+    @PropertyValue  nvarchar(256),
+    @PageIndex      int,
+    @PageSize       int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForUsers (UserId)
+        SELECT U.UserId 
+		FROM   {objectQualifier}ProfilePropertyDefinition P
+			INNER JOIN {objectQualifier}UserProfile UP ON P.PropertyDefinitionID = UP.PropertyDefinitionID 
+			INNER JOIN {objectQualifier}vw_Users U ON UP.UserID = U.UserID
+		WHERE (PropertyName = @PropertyName) AND (PropertyValue LIKE @PropertyValue OR PropertyText LIKE @PropertyValue )
+			AND U.Portalid = @PortalId OR (U.PortalId Is Null AND @PortalId is null )
+		ORDER BY U.DisplayName
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId
+			AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+		ORDER BY U.DisplayName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+    
+END
+
+GO
+
+/* Add Get User By RoleName Stored Procedures */
+/**********************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersByRolename]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetUsersByRolename]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByRolename]
+
+	@PortalId	int,
+	@Rolename	nvarchar(50)
+
+AS
+SELECT     
+		U.UserID, 
+		UP.PortalId, 
+		U.Username, 
+		U.FirstName, 
+		U.LastName, 
+		U.DisplayName, 
+		U.IsSuperUser, 
+		U.Email, 
+		U.AffiliateId, 
+		U.UpdatePassword
+	FROM {objectQualifier}UserPortals AS UP 
+			RIGHT OUTER JOIN {objectQualifier}UserRoles  UR 
+			INNER JOIN {objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+			RIGHT OUTER JOIN {objectQualifier}Users AS U ON UR.UserID = U.UserID 
+		ON UP.UserId = U.UserID	
+	WHERE ( UP.PortalId = @PortalId OR @PortalId IS null )
+		AND (R.RoleName = @Rolename)
+	ORDER BY U.FirstName + ' ' + U.LastName
+GO
+
+/* Add Get Users By User Name Stored Procedures */
+/************************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersByUserName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetUsersByUserName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByUserName]
+    @PortalId			int,
+    @UserNameToMatch	nvarchar(256),
+    @PageIndex			int,
+    @PageSize			int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForUsers (UserId)
+        SELECT UserId FROM	{objectQualifier}vw_Users 
+        WHERE  Username LIKE @UserNameToMatch
+			AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+	    ORDER BY UserName
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId
+			AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+    ORDER BY u.UserName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+END
+
+GO
+
+/* Update Get User By Name Stored Procedures */
+/*********************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUserByUsername]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetUserByUsername]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserByUsername]
+
+	@PortalId int,
+	@Username nvarchar(100)
+
+AS
+SELECT * FROM {objectQualifier}vw_Users
+WHERE  Username = @Username
+	AND    (PortalId = @PortalId OR IsSuperUser = 1 OR @PortalId is null)
+GO
+
+/* Update Update User Stored Procedures */
+/****************************************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}UpdateUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
+
+	@UserId         int,
+	@PortalId		int,
+	@FirstName		nvarchar(50),
+	@LastName		nvarchar(50),
+	@Email          nvarchar(256),
+	@DisplayName    nvarchar(100),
+	@UpdatePassword	bit,
+	@Authorised		bit
+
+AS
+UPDATE {objectQualifier}Users
+SET
+	FirstName = @FirstName,
+    LastName = @LastName,
+    Email = @Email,
+	DisplayName = @DisplayName,
+	UpdatePassword = @UpdatePassword
+WHERE  UserId = @UserId
+
+UPDATE {objectQualifier}UserPortals
+SET
+	Authorised = @Authorised
+WHERE  UserId = @UserId
+	AND PortalId = @PortalId
+
+GO
+
+
+/* Add Profile Property Definition Table */
+/*****************************************/
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}ProfilePropertyDefinition]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+			(
+				PropertyDefinitionID int IDENTITY(1,1) NOT NULL,
+				PortalID int NOT NULL,
+				ModuleDefID int NULL,
+				Deleted bit NOT NULL,
+				DataType int NOT NULL,
+				DefaultValue nvarchar(50) NULL,
+				PropertyCategory nvarchar(50) NOT NULL,
+				PropertyName nvarchar(50) NOT NULL,
+				Length int NOT NULL CONSTRAINT DF_{objectQualifier}ProfilePropertyDefinition_Length DEFAULT 0,
+				Required bit NOT NULL,
+				ValidationExpression nvarchar(100) NULL,
+				ViewOrder int NOT NULL,
+				Visible bit NOT NULL
+			)
+
+		ALTER TABLE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+			ADD CONSTRAINT PK_{objectQualifier}ProfilePropertyDefinition PRIMARY KEY CLUSTERED (PropertyDefinitionID)
+
+		CREATE UNIQUE INDEX IX_{objectQualifier}ProfilePropertyDefinition ON {objectQualifier}ProfilePropertyDefinition(PortalID ASC, ModuleDefID ASC, PropertyName ASC) 
+		CREATE INDEX IX_{objectQualifier}ProfilePropertyDefinition_PropertyName ON {objectQualifier}ProfilePropertyDefinition(PropertyName ASC) 
+
+	END	
+GO
+
+/* Add Add Property Definition Stored Procedures */
+/*************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddPropertyDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddPropertyDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPropertyDefinition]
+	@PortalId int,
+	@ModuleDefId int,
+	@DataType int,
+	@DefaultValue nvarchar(50),
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(100),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int
+
+as
+
+INSERT {databaseOwner}{objectQualifier}ProfilePropertyDefinition	(
+		PortalId,
+		ModuleDefId,
+		Deleted,
+		DataType,
+		DefaultValue,
+		PropertyCategory,
+		PropertyName,
+		Required,
+		ValidationExpression,
+		ViewOrder,
+		Visible,
+        Length
+	)
+	VALUES	(
+		@PortalId,
+		@ModuleDefId,
+		0,
+		@DataType,
+		@DefaultValue,
+		@PropertyCategory,
+		@PropertyName,
+		@Required,
+		@ValidationExpression,
+		@ViewOrder,
+		@Visible,
+        @Length
+	) 
+	
+SELECT SCOPE_IDENTITY()
+
+GO
+
+/* Add Delete Property Definition Stored Procedures */
+/****************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeletePropertyDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePropertyDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePropertyDefinition]
+
+	@PropertyDefinitionId int
+
+AS
+
+UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+	SET Deleted = 1
+	WHERE  PropertyDefinitionId = @PropertyDefinitionId
+GO
+
+/* Add Get Property Definition Stored Procedures */
+/*************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPropertyDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPropertyDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPropertyDefinition]
+
+	@PropertyDefinitionID	int
+
+AS
+SELECT	{databaseOwner}{objectQualifier}ProfilePropertyDefinition.*
+FROM	{databaseOwner}{objectQualifier}ProfilePropertyDefinition
+WHERE PropertyDefinitionID = @PropertyDefinitionID
+	AND Deleted = 0
+GO
+
+/* Add Get Property Definitions By Portal Stored Procedures */
+/************************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPropertyDefinitionsByPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPropertyDefinitionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPropertyDefinitionsByPortal]
+
+	@PortalID	int
+
+AS
+
+SELECT	{databaseOwner}{objectQualifier}ProfilePropertyDefinition.*
+FROM	{databaseOwner}{objectQualifier}ProfilePropertyDefinition
+WHERE PortalID = @PortalID
+	AND Deleted = 0
+ORDER BY ViewOrder
+
+GO
+
+/* Add Update Property Definition Stored Procedures */
+/****************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePropertyDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePropertyDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePropertyDefinition]
+	@PropertyDefinitionId int,
+	@DataType int,
+	@DefaultValue nvarchar(50),
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(100),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int
+
+as
+
+UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+	SET DataType = @DataType,
+		DefaultValue = @DefaultValue,
+		PropertyCategory = @PropertyCategory,
+		PropertyName = @PropertyName,
+		Required = @Required,
+		ValidationExpression = @ValidationExpression,
+		ViewOrder = @ViewOrder,
+		Visible = @Visible,
+        Length = @Length
+	WHERE PropertyDefinitionId = @PropertyDefinitionId	
+
+GO
+
+/* Add Add Default Property Definitions Stored Procedure */
+/**********************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddDefaultPropertyDefinitions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddDefaultPropertyDefinitions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddDefaultPropertyDefinitions]
+	@PortalId int
+
+AS
+	DECLARE @TextDataType as int
+	SELECT @TextDataType = (SELECT EntryID FROM {objectQualifier}Lists WHERE ListName = 'DataType' AND Value = 'Text')
+	DECLARE @CountryDataType as int
+	SELECT @CountryDataType = (SELECT EntryID FROM {objectQualifier}Lists WHERE ListName = 'DataType' AND Value = 'Country')
+	DECLARE @RegionDataType as int
+	SELECT @RegionDataType = (SELECT EntryID FROM {objectQualifier}Lists WHERE ListName = 'DataType' AND Value = 'Region')
+	DECLARE @TimeZoneDataType as int
+	SELECT @TimeZoneDataType = (SELECT EntryID FROM {objectQualifier}Lists WHERE ListName = 'DataType' AND Value = 'TimeZone')
+	DECLARE @LocaleDataType as int
+	SELECT @LocaleDataType = (SELECT EntryID FROM {objectQualifier}Lists WHERE ListName = 'DataType' AND Value = 'Locale')
+	DECLARE @RichTextDataType as int
+	SELECT @RichTextDataType = (SELECT EntryID FROM {objectQualifier}Lists WHERE ListName = 'DataType' AND Value = 'RichText')
+	
+	DECLARE @RC int
+
+	--Add Name Properties
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Name','Prefix', 0, '', 1, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Name','FirstName' ,0, '', 3, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Name','MiddleName' ,0, '', 5, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Name','LastName' ,0, '', 7, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Name','Suffix' ,0, '', 9, 1, 50
+	
+	--Add Address Properties
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Address','Unit' ,0, '', 11, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Address','Street' ,0, '', 13, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Address','City' ,0, '', 15, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @RegionDataType, '', 'Address','Region' ,0, '', 17, 1, 0
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @CountryDataType, '', 'Address','Country' ,0, '', 19, 1, 0
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Address','PostalCode' ,0, '', 21, 1, 50
+
+	--Add Contact Info Properties
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Contact Info','Telephone' ,0, '', 23, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Contact Info','Cell' ,0, '', 25, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Contact Info','Fax' ,0, '', 27, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Contact Info','Website' ,0, '', 29, 1, 50
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TextDataType, '', 'Contact Info','IM' ,0, '', 31, 1, 50
+
+	--Add Preferences Properties
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @RichTextDataType, '', 'Preferences','Biography' ,0, '', 33, 1, 0
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @TimeZoneDataType, '', 'Preferences','TimeZone' ,0, '', 35, 1, 0
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddPropertyDefinition] @PortalId, -1, @LocaleDataType, '', 'Preferences','PreferredLocale' ,0, '', 37, 1, 0
+
+
+GO
+
+Grant EXECUTE on {databaseOwner}[{objectQualifier}AddDefaultPropertyDefinitions] to public
+GO
+
+/* Update Get Permissions By Tab Stored Procedures */
+/***************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByTabID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPermissionsByTabID]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByTabID
+	@TabID int
+AS
+
+SELECT
+	P.[PermissionID],
+	P.[PermissionCode],
+	P.[PermissionKey],
+	P.[ModuleDefID],
+	P.[PermissionName]
+FROM
+	{databaseOwner}{objectQualifier}Permission P
+WHERE
+	P.PermissionCode = 'SYSTEM_TAB'
+
+GO
+
+/* Add Get Online User Stored Procedures */
+/*****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}[GetOnlineUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}GetOnlineUser
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetOnlineUser	@UserID int
+
+AS
+
+SELECT
+		{objectQualifier}UsersOnline.UserID,
+		{objectQualifier}Users.UserName
+	FROM   {objectQualifier}UsersOnline
+	INNER JOIN {objectQualifier}Users ON {objectQualifier}UsersOnline.UserID = {objectQualifier}Users.UserID
+	WHERE  {objectQualifier}UsersOnline.UserID = @UserID
+
+GO
+
+/* Add Get Online Users Stored Procedures */
+/******************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}[GetOnlineUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}GetOnlineUsers
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetOnlineUsers	@PortalID int
+
+AS
+
+SELECT 
+	UO.UserID, 
+	U.Username
+	FROM {objectQualifier}UsersOnline UO
+		INNER JOIN {objectQualifier}Users U ON UO.UserID = U.UserID 
+		INNER JOIN {objectQualifier}UserPortals UP ON U.UserID = UP.UserId
+	WHERE  UP.PortalID = @PortalID
+	
+GO
+
+/* Add UserProfile Table */
+/*************************/
+
+IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UserProfile]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}UserProfile
+		(
+			[ProfileID] int IDENTITY(1,1) NOT NULL,
+			[UserID] int NOT NULL,
+			[PropertyDefinitionID] int NOT NULL,
+			[PropertyValue] nvarchar(3750) NULL,
+			[PropertyText] ntext NULL,
+			[Visibility] int NOT NULL DEFAULT 0,
+			[LastUpdatedDate] datetime NOT NULL
+		)
+
+		ALTER TABLE {databaseOwner}{objectQualifier}UserProfile
+			ADD CONSTRAINT [PK_{objectQualifier}UserProfile] PRIMARY KEY NONCLUSTERED ([ProfileID])
+
+		ALTER TABLE {databaseOwner}{objectQualifier}UserProfile  WITH NOCHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}UserProfile_{objectQualifier}Users] FOREIGN KEY([UserID]) REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID]) ON DELETE CASCADE
+
+		ALTER TABLE {databaseOwner}{objectQualifier}UserProfile  WITH NOCHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}UserProfile_{objectQualifier}ProfilePropertyDefinition] FOREIGN KEY([PropertyDefinitionID]) REFERENCES {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] ([PropertyDefinitionID]) ON DELETE CASCADE
+
+	END
+GO
+
+/* Add GetProfilePropertyDefinitionID Function */
+/***********************************************/
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID]
+(
+	@PortalID				int,
+	@PropertyName			nvarchar(50)
+)
+RETURNS int
+
+AS
+BEGIN
+	DECLARE @DefinitionID int
+	SELECT @DefinitionID = -1
+
+	IF  @PropertyName IS NULL
+		OR LEN(@PropertyName) = 0
+		RETURN -1
+
+	IF @PortalID IS NULL
+		SET @POrtalID = -1
+
+	SET @DefinitionID = (SELECT PropertyDefinitionID 
+							FROM {objectQualifier}ProfilePropertyDefinition
+							WHERE PortalID = @PortalID
+								AND PropertyName = @PropertyName
+						)
+	
+	RETURN @DefinitionID
+END
+
+GO
+
+Grant EXECUTE on {databaseOwner}[{objectQualifier}GetProfilePropertyDefinitionID] to public
+GO
+
+/* Add GetProfileElement Function */
+/**********************************/
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetProfileElement]
+(
+	@fieldName AS NVARCHAR(100),
+	@fields AS NVARCHAR(4000),
+	@values AS NVARCHAR(4000)
+)
+
+RETURNS NVARCHAR(4000)
+
+AS
+
+BEGIN
+
+	-- If input is invalid, return null.
+	IF  @fieldName IS NULL
+		OR LEN(@fieldName) = 0
+		OR @fields IS NULL
+		OR LEN(@fields) = 0
+		OR @values IS NULL
+		OR LEN(@values) = 0
+		RETURN NULL
+
+	-- locate FieldName in Fields
+	DECLARE @fieldNameToken AS NVARCHAR(20)
+	DECLARE @fieldNameStart AS INTEGER, @valueStart AS INTEGER, @valueLength AS INTEGER
+
+	-- Only handle string type fields (:S:)
+	SET @fieldNameStart = CHARINDEX(@fieldName + ':S',@Fields,0)
+
+	-- If field is not found, return null
+	IF @fieldNameStart = 0 RETURN NULL
+	SET @fieldNameStart = @fieldNameStart + LEN(@fieldName) + 3
+
+	-- Get the field token which I've defined as the start of the field offset to the end of the length
+	SET @fieldNameToken =
+	SUBSTRING(@Fields,@fieldNameStart,LEN(@Fields)-@fieldNameStart)
+
+	-- Get the values for the offset and length
+	SET @valueStart = {databaseOwner}{objectQualifier}getelement(1,@fieldNameToken,':')
+	SET @valueLength = {databaseOwner}{objectQualifier}getelement(2,@fieldNameToken,':')
+
+	-- Check for sane values, 0 length means the profile item was stored, just no data
+	IF @valueLength = 0 RETURN ''
+
+	-- Return the string
+	RETURN SUBSTRING(@values, @valueStart+1, @valueLength)
+END
+
+GO
+
+Grant EXECUTE on {databaseOwner}[{objectQualifier}GetProfileElement] to public
+GO
+
+/* Add GetElement Function */
+/***************************/
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}GetElement]
+(
+	@ord AS INT,
+	@str AS VARCHAR(8000),
+	@delim AS VARCHAR(1) 
+)
+RETURNS INT
+
+AS
+
+BEGIN
+	-- If input is invalid, return null.
+	IF  @str IS NULL
+		OR LEN(@str) = 0
+		OR @ord IS NULL
+		OR @ord < 1
+		-- @ord > [is the] expression that calculates the number of elements.
+		OR @ord > LEN(@str) - LEN(REPLACE(@str, @delim, '')) + 1
+		RETURN NULL
+ 
+	DECLARE @pos AS INT, @curord AS INT
+	SELECT @pos = 1, @curord = 1
+	-- Find next element's start position and increment index.
+	WHILE @curord < @ord
+		SELECT
+			@pos = CHARINDEX(@delim, @str, @pos) + 1,
+			@curord = @curord + 1
+	RETURN    CAST(SUBSTRING(@str, @pos, CHARINDEX(@delim, @str + @delim, @pos) - @pos) AS INT)
+END
+
+GO
+
+Grant EXECUTE on {databaseOwner}[{objectQualifier}GetElement] to public
+GO
+
+/* Add GetUserProfile Procedure */
+/********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}[GetUserProfile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}GetUserProfile
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetUserProfile
+
+	@UserId int
+
+AS
+SELECT
+	ProfileID,
+	UserID,
+	PropertyDefinitionID,
+	'PropertyValue' = case when (PropertyValue Is Null) then PropertyText else PropertyValue end,
+	Visibility,
+	LastUpdatedDate
+	FROM	{objectQualifier}UserProfile
+	WHERE   UserId = @UserId
+GO
+
+/* Add UpdateUserProfileProperty Procedure */
+/*******************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}[UpdateUserProfileProperty]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}UpdateUserProfileProperty
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserProfileProperty]
+
+	@ProfileID				int,
+	@UserID					int,
+	@PropertyDefinitionID	int,
+	@PropertyValue			ntext,
+	@Visibility				int,
+	@LastUpdatedDate		datetime
+
+AS
+IF @ProfileID IS NULL OR @ProfileID = -1
+	-- Try the UserID/PropertyDefinitionID to see if the Profile property exists
+	SELECT @ProfileID = ProfileID
+		FROM   {objectQualifier}UserProfile
+		WHERE  UserID = @UserID AND PropertyDefinitionID = @PropertyDefinitionID
+ 
+IF @ProfileID IS NOT NULL
+	-- Update Property
+	BEGIN
+		UPDATE {objectQualifier}UserProfile
+			SET PropertyValue = case when (DATALENGTH(@PropertyValue) > 7500) then NULL else @PropertyValue end,
+				PropertyText = case when (DATALENGTH(@PropertyValue) > 7500) then @PropertyValue else NULL end,
+				Visibility = @Visibility,
+				LastUpdatedDate = @LastUpdatedDate
+			WHERE  ProfileID = @ProfileID
+		SELECT @ProfileID
+	END
+ELSE
+	-- Insert New Property
+	BEGIN
+		INSERT INTO {objectQualifier}UserProfile (
+			UserID,
+			PropertyDefinitionID,
+			PropertyValue,
+			PropertyText,
+			Visibility,
+			LastUpdatedDate
+		  )
+		VALUES (
+			@UserID,
+			@PropertyDefinitionID,
+			case when (DATALENGTH(@PropertyValue) > 7500) then NULL else @PropertyValue end,
+			case when (DATALENGTH(@PropertyValue) > 7500) then @PropertyValue else NULL end,
+			@Visibility,
+			@LastUpdatedDate
+		  )
+
+	SELECT SCOPE_IDENTITY()
+END
+GO
+
+/* Update AddModule Procedure */
+/******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddModule]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}AddModule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddModule
+    
+@PortalId                      int,
+@ModuleDefId                   int,
+@ModuleTitle                   nvarchar(256),
+@AllTabs                       bit,
+@Header                        ntext,
+@Footer                        ntext,
+@StartDate                     datetime,
+@EndDate                       datetime,
+@InheritViewPermissions        bit,
+@IsDeleted                     bit
+
+AS
+
+INSERT INTO {objectQualifier}Modules ( 
+  PortalId,
+  ModuleDefId,
+  ModuleTitle,
+  AllTabs,
+  Header,
+  Footer, 
+  StartDate,
+  EndDate,
+  InheritViewPermissions,
+  IsDeleted
+)
+values (
+  @PortalId,
+  @ModuleDefId,
+  @ModuleTitle,
+  @AllTabs,
+  @Header,
+  @Footer, 
+  @StartDate,
+  @EndDate,
+  @InheritViewPermissions,
+  @IsDeleted
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+/* Update UpdateModule Procedure */
+/*********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateModule]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}UpdateModule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateModule
+
+@ModuleId               int,
+@ModuleTitle            nvarchar(256),
+@AllTabs                bit, 
+@Header                 ntext,
+@Footer                 ntext,
+@StartDate              datetime,
+@EndDate                datetime,
+@InheritViewPermissions	bit,
+@IsDeleted              bit
+
+AS
+
+UPDATE {objectQualifier}Modules
+SET    ModuleTitle = @ModuleTitle,
+       AllTabs = @AllTabs,
+       Header = @Header,
+       Footer = @Footer, 
+       StartDate = @StartDate,
+       EndDate = @EndDate,
+       InheritViewPermissions = @InheritViewPermissions,
+       IsDeleted = @IsDeleted
+WHERE  ModuleId = @ModuleId
+
+GO
+
+
+/* Secure File Storage */
+/***********************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Files ADD
+	FolderID int NOT NULL CONSTRAINT DF_{objectQualifier}Files_FolderID DEFAULT 0,
+        Content image NULL
+GO
+
+/* make FolderPath values consistent with Files table Folder column */
+UPDATE {objectQualifier}Folders
+	SET    FolderPath = FolderPath + '/'
+WHERE  FolderPath <> '' AND RIGHT(FolderPath, 1) <> '/'
+GO
+
+/* Handle Updating Files table with new FolderID column based on Folders table */
+UPDATE {objectQualifier}Files
+	SET    FolderID = FO.FolderID
+FROM   {objectQualifier}Files F, {objectQualifier}Folders FO
+WHERE F.Folder = FO.FolderPath
+	AND ( ( F.PortalID = FO.PortalID ) OR ( F.PortalID is NULL AND  FO.PortalID is NULL ) )
+GO
+
+/* This deletes the files with no valid folder Ids */
+/***************************************************/
+
+DELETE {objectQualifier}Files
+	WHERE FolderID Is NULL
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Files
+	DROP CONSTRAINT DF_{objectQualifier}Files_FolderID
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Files ADD CONSTRAINT
+	FK_{objectQualifier}Files_{objectQualifier}Folders FOREIGN KEY
+	(
+	FolderID
+	) REFERENCES {databaseOwner}{objectQualifier}Folders
+	(
+	FolderID
+	) 
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Folders ADD
+	StorageLocation int NOT NULL CONSTRAINT DF_{objectQualifier}Folders_StorageLocation DEFAULT 0,
+	IsProtected bit NOT NULL CONSTRAINT DF_{objectQualifier}Folders_IsProtected DEFAULT 0,
+	IsCached bit NOT NULL CONSTRAINT DF_{objectQualifier}Folders_IsCached DEFAULT 0
+GO
+
+/* This sets all portal root folders to protected */
+update {objectQualifier}Folders
+Set     IsProtected = 1
+WHERE
+	FolderPath = ''
+GO
+
+/* This sets all containers root folders to protected */
+update {objectQualifier}Folders
+Set     IsProtected = 1
+WHERE
+	FolderPath = 'Containers/'
+GO
+
+/* This sets all skins root folders to protected */
+update {objectQualifier}Folders
+Set     IsProtected = 1
+WHERE
+	FolderPath = 'Skins/'
+GO
+
+/* This sets all cache root folders to protected */
+UPDATE {objectQualifier}Folders
+	SET     IsProtected = 1
+WHERE
+	FolderPath = 'Cache/'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}AddFile
+
+@PortalId    int,
+@FileName    nvarchar(100),
+@Extension   nvarchar(100),
+@Size        int,
+@WIdth       int,
+@Height      int,
+@ContentType nvarchar(200),
+@Folder      nvarchar(200),
+@FolderID    int
+
+as
+
+insert into {objectQualifier}Files ( 
+  PortalId,
+  FileName,
+  Extension,
+  Size,
+  WIdth,
+  Height,
+  ContentType,
+  Folder,
+  FolderID
+)
+values (
+  @PortalId,
+  @FileName,
+  @Extension,
+  @Size,
+  @WIdth,
+  @Height,
+  @ContentType,
+  @Folder,
+  @FolderID
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllFiles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}GetAllFiles]
+
+AS
+
+SELECT
+	FileId,
+             FO.PortalId,
+             FileName,
+             Extension,
+             Size,
+             Width,
+             Height,
+             ContentType,
+             F.FolderID,
+             'Folder' = FolderPath,
+	     StorageLocation,
+             IsCached
+FROM 
+	{objectQualifier}Files F
+
+INNER JOIN 
+	{objectQualifier}Folders FO on F.FolderID = FO.FolderID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetFile
+
+@FileName  nvarchar(100),
+@PortalId  int,
+@FolderID  int
+
+as
+
+select FileId,
+       {objectQualifier}Folders.PortalId,
+       FileName,
+       Extension,
+       Size,
+       Width,
+       Height,
+       ContentType,
+       {objectQualifier}Files.FolderID,
+       'Folder' = FolderPath,
+       StorageLocation,
+       IsCached
+from {objectQualifier}Files
+inner join {objectQualifier}Folders on {objectQualifier}Files.FolderID = {objectQualifier}Folders.FolderID
+where  FileName = @FileName 
+and    {objectQualifier}Files.FolderID = @FolderID
+and    (({objectQualifier}Folders.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Folders.PortalId is null))
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFiles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+
+@PortalId   int,
+@FolderID   int
+
+AS
+
+SELECT 
+	FileId,
+             FO.PortalId,
+             FileName,
+             Extension,
+             Size,
+             Width,
+             Height,
+             ContentType,
+             F.FolderID,
+	     'Folder' = FolderPath,
+             StorageLocation,
+             IsCached
+FROM 
+	{objectQualifier}Files F
+INNER JOIN 
+	{objectQualifier}Folders FO on F.FolderID = FO.FolderID
+WHERE   
+	F.FolderID = @FolderID
+AND     
+	((FO.PortalId = @PortalId) or (@PortalId is NULL AND FO.PortalId is NULL))
+ORDER BY FileName
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFileById]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetFileById
+
+@FileId   int,
+@PortalId int
+
+as
+
+select FileId,
+       {objectQualifier}Folders.PortalId,
+       FileName,
+       Extension,
+       Size,
+       Width,
+       Height,
+       ContentType,
+       {objectQualifier}Files.FolderID,
+       'Folder' = FolderPath,
+       StorageLocation,
+       IsCached
+from   {objectQualifier}Files
+inner join {objectQualifier}Folders on {objectQualifier}Files.FolderID = {objectQualifier}Folders.FolderID
+where  FileId = @FileId
+and    (({objectQualifier}Folders.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Folders.PortalId is null))
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdateFile
+
+@FileId      int,
+@FileName    nvarchar(100),
+@Extension   nvarchar(100),
+@Size        int,
+@WIdth       int,
+@Height      int,
+@ContentType nvarchar(200),
+@Folder      nvarchar(200),
+@FolderID    int
+
+as
+
+update {objectQualifier}Files
+set    FileName = @FileName,
+       Extension = @Extension,
+       Size = @Size,
+       WIdth = @WIdth,
+       Height = @Height,
+       ContentType = @ContentType,
+       Folder = @Folder,
+       FolderID = @FolderID
+where  FileId = @FileId
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeleteFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFile]
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteFile
+
+@PortalId int,
+@FileName nvarchar(100),
+@FolderID int
+
+AS
+
+delete 
+from   {objectQualifier}Files
+where  FileName = @FileName
+and    FolderID = @FolderID
+and    ((PortalId = @PortalId) or (@PortalId is null and PortalId is null))
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFileContent]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileContent]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}UpdateFileContent
+
+@FileId      int,
+@Content     image
+
+as
+
+update {objectQualifier}Files
+set    Content = @Content
+where  FileId = @FileId
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFileContent]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileContent]
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetFileContent
+
+@FileId   int,
+@PortalId int
+
+as
+
+select Content
+from   {objectQualifier}Files
+where  FileId = @FileId
+and    (({objectQualifier}Files.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Files.PortalId is null))
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFolders]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolders]
+	@PortalID int,
+	@FolderID int,
+	@FolderPath nvarchar(300)
+AS
+SELECT *
+	FROM {objectQualifier}Folders
+	WHERE ((PortalID = @PortalID) or (PortalID is null and @PortalID is null))
+		AND (FolderID = @FolderID or @FolderID = -1)
+		AND (FolderPath = @FolderPath or @FolderPath = '')
+	ORDER BY FolderPath
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddFolder]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFolder]
+	@PortalID int,
+	@FolderPath varchar(300),
+	@StorageLocation int,
+	@IsProtected bit,
+    @IsCached bit
+AS
+	IF NOT EXISTS (SELECT 1 FROM {objectQualifier}Folders WHERE PortalID = @PortalID and FolderPath = @FolderPath)
+	BEGIN
+		INSERT INTO {objectQualifier}Folders
+		(PortalID, FolderPath, StorageLocation, IsProtected, IsCached)
+		VALUES
+		(@PortalID, @FolderPath, @StorageLocation, @IsProtected, @IsCached)
+		
+		SELECT SCOPE_IDENTITY()
+	END
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFolder]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateFolder
+	@PortalID int,
+	@FolderID int,
+	@FolderPath varchar(300),
+	@StorageLocation int,
+	@IsProtected bit,
+    @IsCached bit
+AS
+	UPDATE {objectQualifier}Folders
+	SET FolderPath = @FolderPath,
+	        StorageLocation = @StorageLocation,
+	        IsProtected = @IsProtected,
+            IsCached = @IsCached
+	WHERE ((PortalID = @PortalID) or (PortalID is null and @PortalID is null))
+	AND FolderID = @FolderID
+
+GO
+
+/* Add Transfer Profile Support Procedure */
+/******************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}TransferUsersFromFlatProfile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}TransferUsersFromFlatProfile
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}TransferUsersFromFlatProfile]
+
+	@PropertyName	nvarchar(100)
+
+AS
+DECLARE @sql varchar(8000)
+	SELECT @sql = 'INSERT INTO {objectQualifier}UserProfile (UserID, PropertyDefinitionID, PropertyValue, LastUpdatedDate) '
+	SELECT @sql = @sql + 
+				'SELECT fp.UserID, 
+					pd.PropertyDefinitionID, 
+					Convert(varchar(50),' + column_name + ') AS PropertyValue, 
+					fp.LastUpdatedDate 
+				FROM {objectQualifier}FlatProfile fp 
+					INNER JOIN {objectQualifier}ProfilePropertyDefinition pd 
+						ON fp.PortalID = pd.PortalID 
+						AND pd.PropertyName = ''' + column_name + '''
+				WHERE fp.' + column_name + ' IS NOT NULL 
+				UNION '
+	FROM information_schema.columns
+	WHERE table_name='{objectQualifier}FlatProfile' AND column_name = @PropertyName 
+	SELECT @sql = Left(@sql,Len(@sql)-5)
+
+	EXEC (@sql)
+GO
+
+Grant EXECUTE on {databaseOwner}[{objectQualifier}TransferUsersFromFlatProfile] to public
+GO
+
+
+/* Update ModuleControl definition for Register */
+/************************************************/
+
+UPDATE {objectQualifier}ModuleControls
+	SET ControlSrc = 'Admin/Users/ManageUsers.ascx'
+	WHERE ControlKey = 'Register'
+GO
+	
+/* Update DisplayName value in Users */
+/*************************************/
+
+UPDATE {objectQualifier}Users
+	SET DisplayName = FirstName + ' ' + LastName
+
+GO
+
+/* Add New Data Types to Lists */
+/*******************************/
+
+DECLARE @RC int
+
+--Add Data Types
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'Unknown', 'UseSystemType', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'Text', 'DotNetNuke.UI.WebControls.TextEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'Integer', 'DotNetNuke.UI.WebControls.IntegerEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'TrueFalse', 'DotNetNuke.UI.WebControls.CheckEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'TimeZone', 'DotNetNuke.UI.WebControls.DNNTimeZoneEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'Locale', 'DotNetNuke.UI.WebControls.DNNLocaleEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'Page', 'DotNetNuke.UI.WebControls.DNNPageEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'RichText', 'DotNetNuke.UI.WebControls.DNNRichTextEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'Country', 'DotNetNuke.UI.WebControls.DNNCountryEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'Region', 'DotNetNuke.UI.WebControls.DNNRegionEditControl, DotNetNuke', '', 0, 0, NULL
+		EXECUTE @RC = {databaseOwner}[{objectQualifier}AddListEntry] 'DataType', 'List', 'DotNetNuke.UI.WebControls.DNNListEditControl, DotNetNuke', '', 0, 0, NULL
+
+GO
+
+/* Add Default Profile Properties */
+/**********************************/
+
+DECLARE @RC int
+DECLARE @PortalID int
+
+--Add Host Properties
+EXECUTE @RC = {databaseOwner}[{objectQualifier}AddDefaultPropertyDefinitions] -1
+
+--Iterate through each portal
+SELECT @PortalID = min(PortalID)
+FROM   {databaseOwner}{objectQualifier}Portals
+WHILE @PortalID is not null
+BEGIN
+
+	-- Add Portal Properties
+	EXECUTE @RC = {databaseOwner}[{objectQualifier}AddDefaultPropertyDefinitions] @PortalId
+
+  SELECT @PortalID = min(PortalID)
+  FROM   {databaseOwner}{objectQualifier}Portals
+  WHERE  PortalID > @PortalID
+END
+
+GO
+
+/* Transfer Profile  */
+/*********************/
+
+--Create Temp Table
+CREATE TABLE {databaseOwner}{objectQualifier}FlatProfile (
+     [UserID] [int] ,
+     [PortalID] [int],
+     [Username] [nvarchar] (256) NULL ,
+     [FirstName] [nvarchar] (256) NULL ,
+     [LastName] [nvarchar] (256) NULL ,
+     [Street] [nvarchar] (256) NULL ,
+     [Unit] [nvarchar] (128) NULL ,
+     [City] [nvarchar] (256) NULL ,
+     [Country] [nvarchar] (256) NULL ,
+     [Region] [nvarchar] (256) NULL ,
+     [PostalCode] [nvarchar] (128) NULL ,
+     [Telephone] [nvarchar] (128) NULL ,
+     [Cell] [nvarchar] (128) NULL ,
+     [Fax] [nvarchar] (128) NULL ,
+     [Website] [nvarchar] (256) NULL ,
+     [IM] [nvarchar] (256) NULL,
+     [PreferredLocale] [nvarchar] (128) NULL ,
+     [TimeZone] [nvarchar] (256) NULL,
+	 [LastUpdatedDate] [datetime]
+	
+) 
+GO
+
+--Extract from Profile Blob to Temp Table
+INSERT INTO {objectQualifier}FlatProfile
+	SELECT 
+		{objectQualifier}users.userid,
+		{objectQualifier}userportals.portalid,
+		{objectQualifier}users.username,
+		{objectQualifier}users.firstname,
+		{objectQualifier}users.lastname,
+		{databaseOwner}{objectQualifier}GetProfileElement('Street',PropertyNames,PropertyValuesString) Street,  
+		{databaseOwner}{objectQualifier}GetProfileElement('Unit',PropertyNames,PropertyValuesString) Unit,  
+		{databaseOwner}{objectQualifier}GetProfileElement('City',PropertyNames,PropertyValuesString) City,
+		{databaseOwner}{objectQualifier}GetProfileElement('Country',PropertyNames,PropertyValuesString) Country,
+		{databaseOwner}{objectQualifier}GetProfileElement('Region',PropertyNames,PropertyValuesString) Region,
+		{databaseOwner}{objectQualifier}GetProfileElement('PostalCode',PropertyNames,PropertyValuesString) PostalCode,
+		{databaseOwner}{objectQualifier}GetProfileElement('Telephone',PropertyNames,PropertyValuesString) Telephone,
+		{databaseOwner}{objectQualifier}GetProfileElement('Cell',PropertyNames,PropertyValuesString) Cell, 
+		{databaseOwner}{objectQualifier}GetProfileElement('Fax',PropertyNames,PropertyValuesString) Fax,
+		{databaseOwner}{objectQualifier}GetProfileElement('Website',PropertyNames,PropertyValuesString) Website,  
+		{databaseOwner}{objectQualifier}GetProfileElement('IM',PropertyNames,PropertyValuesString) IM,
+		{databaseOwner}{objectQualifier}GetProfileElement('PreferredLocale',PropertyNames,PropertyValuesString) PreferredLocale,
+		{databaseOwner}{objectQualifier}GetProfileElement('TimeZone',PropertyNames,PropertyValuesString) TimeZone,
+		aspnet_profile.LastUpdatedDate
+                from {databaseOwner}{objectQualifier}userportals
+                inner join {databaseOwner}{objectQualifier}users on {databaseOwner}{objectQualifier}users.userid = {databaseOwner}{objectQualifier}userportals.userid
+                inner join aspnet_users on aspnet_users.username = {databaseOwner}{objectQualifier}users.username
+                inner join aspnet_profile on aspnet_profile.userid = aspnet_users.userid
+                inner join aspnet_applications on aspnet_applications.applicationid = aspnet_users.applicationid and aspnet_applications.applicationname = N'{objectQualifier}' + cast({databaseOwner}{objectQualifier}userportals.portalid as nvarchar)
+
+GO
+
+--Move to UserProfile Table
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'FirstName'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'LastName'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Unit'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Street'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'City'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Region'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'PostalCode'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Country'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Telephone'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Fax'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Cell'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'Website'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'IM'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'TimeZone'
+EXECUTE {objectQualifier}TransferUsersFromFlatProfile N'PreferredLocale'
+
+GO
+
+--Drop temp objects
+DROP TABLE {databaseOwner}{objectQualifier}FlatProfile
+DROP PROCEDURE {databaseOwner}{objectQualifier}TransferUsersFromFlatProfile
+
+GO
+
+/* Add Transfer Users Support Procedure */
+/****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}TransferUsersToSameContext]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}TransferUsersToSameContext]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TransferUsersToSameContext
+
+	@ApplicationName nvarchar(256),
+	@PortalID int
+
+AS
+
+	-- Declare Variables
+	DECLARE @ApplicationId nvarchar(256)
+
+	-- First Check that the Application exists and if not create it
+	IF (SELECT ApplicationName FROM aspnet_Applications WHERE ApplicationName = @ApplicationName) IS NULL 
+		BEGIN
+			INSERT INTO aspnet_Applications  (
+				ApplicationName,
+				LoweredApplicationName)
+				VALUES (
+				@ApplicationName,
+				LOWER(@ApplicationName))
+		END
+
+	-- Next Get the ApplicationId that corresponds to the ApplicationName
+	SET @ApplicationId = (SELECT ApplicationId FROM aspnet_Applications WHERE ApplicationName = @ApplicationName)
+
+	IF @PortalID IS NOT NULL
+		BEGIN
+			-- Update Authorised Flag before Transferring Users
+			UPDATE {objectQualifier}UserPortals
+				SET {objectQualifier}UserPortals.Authorised = AM.IsApproved
+				FROM aspnet_Applications A
+					INNER JOIN aspnet_Users AU ON A.ApplicationId = AU.ApplicationId 
+					INNER JOIN aspnet_Membership AM ON A.ApplicationId = AM.ApplicationId 
+						AND AU.UserId = AM.UserId 
+					LEFT OUTER JOIN {objectQualifier}Users U
+						INNER JOIN {objectQualifier}UserPortals UP ON U.UserID = UP.UserId 
+						ON AU.UserName = U.Username 
+							AND A.ApplicationName = N'{objectQualifier}' + CAST(UP.PortalId AS nvarchar)
+				
+			-- Update Membership
+			UPDATE aspnet_Membership
+				SET ApplicationId = @ApplicationId
+				FROM aspnet_Applications A
+					INNER JOIN aspnet_Users AU ON A.ApplicationId = AU.ApplicationId 
+					INNER JOIN aspnet_Membership AM ON A.ApplicationId = AM.ApplicationId 
+						AND AU.UserId = AM.UserId 
+					LEFT OUTER JOIN {objectQualifier}TransferredUsers TU ON AU.UserName = TU.Username 
+					LEFT OUTER JOIN {objectQualifier}Users U
+						INNER JOIN {objectQualifier}UserPortals UP ON U.UserID = UP.UserId 
+						ON AU.UserName = U.Username 
+							AND A.ApplicationName = N'{objectQualifier}' + CAST(UP.PortalId AS nvarchar)
+				WHERE  (TU.TransferredAppId IS NULL) AND (UP.PortalId = @PortalID)
+
+			-- Update Users
+			UPDATE aspnet_Users
+				SET ApplicationId = @ApplicationId
+				FROM aspnet_Applications A
+					INNER JOIN aspnet_Users AU ON A.ApplicationId = AU.ApplicationId 
+					LEFT OUTER JOIN {objectQualifier}TransferredUsers TU ON AU.UserName = TU.Username 
+					LEFT OUTER JOIN {objectQualifier}Users U
+						INNER JOIN {objectQualifier}UserPortals UP ON U.UserID = UP.UserId 
+						ON AU.UserName = U.Username 
+							AND A.ApplicationName = N'{objectQualifier}' + CAST(UP.PortalId AS nvarchar)
+				WHERE  (TU.TransferredAppId IS NULL) AND (UP.PortalId = @PortalID)
+
+			--Add Users transferred to Transferred Users Table
+			INSERT INTO {objectQualifier}TransferredUsers
+				SELECT 
+					A.ApplicationId, 
+					AU.UserName
+				FROM  aspnet_Applications A
+					INNER JOIN aspnet_Users AU ON A.ApplicationId = AU.ApplicationId 
+					LEFT OUTER JOIN {objectQualifier}TransferredUsers TU ON AU.UserName = TU.Username 
+					LEFT OUTER JOIN {objectQualifier}Users U 
+						INNER JOIN {objectQualifier}UserPortals UP ON U.UserID = UP.UserId 
+					ON AU.UserName = U.Username
+				WHERE     (TU.TransferredAppId IS NULL) AND (A.ApplicationName = @ApplicationName) AND (UP.PortalId = @PortalID)
+		END
+	ELSE
+		BEGIN
+			-- Update Membership
+			UPDATE aspnet_Membership
+				SET ApplicationId = @ApplicationId
+				FROM aspnet_Applications A
+					INNER JOIN aspnet_Membership M ON A.ApplicationId = M.ApplicationId
+				WHERE     (A.ApplicationName = N'{objectQualifier}-1')
+				
+			-- Update Users
+			UPDATE aspnet_Users
+				SET ApplicationId = @ApplicationId
+				FROM aspnet_Users AU 
+					INNER JOIN aspnet_Applications A ON AU.ApplicationId = A.ApplicationId
+				WHERE     (A.ApplicationName = N'{objectQualifier}-1')
+
+			--Add Users transferred to Transferred Users Table
+			INSERT INTO {objectQualifier}TransferredUsers
+				SELECT 
+					A.ApplicationId, 
+					AU.UserName
+				FROM  aspnet_Applications A
+					INNER JOIN aspnet_Users AU ON A.ApplicationId = AU.ApplicationId 
+					LEFT OUTER JOIN {objectQualifier}TransferredUsers TU ON AU.UserName = TU.Username 
+					LEFT OUTER JOIN {objectQualifier}Users U ON AU.UserName = U.Username
+				WHERE     (TU.TransferredAppId IS NULL) AND (A.ApplicationName = @ApplicationName) AND (U.IsSuperUser = 1)
+		END
+		
+GO
+
+Grant EXECUTE on {databaseOwner}{objectQualifier}TransferUsersToSameContext to public
+GO
+
+/* Transfer Users  */
+/*******************/
+
+--Create Temp Table to hold users
+CREATE TABLE {databaseOwner}{objectQualifier}TransferredUsers (
+     [TransferredAppId] [uniqueidentifier] ,
+     [Username] [nvarchar] (256) NULL
+)
+ 
+GO
+
+--Declare Variables
+DECLARE @PortalID int
+
+-- Transfer Super Users
+EXECUTE {objectQualifier}TransferUsersToSameContext N'DotNetNuke', NULL
+
+--Iterate through Portals to transfer users
+SELECT @PortalID = min(PortalID)
+FROM   {databaseOwner}{objectQualifier}Portals
+WHILE @PortalID IS NOT NULL
+BEGIN
+
+	-- Transfer Portal Users
+	EXECUTE {objectQualifier}TransferUsersToSameContext N'DotNetNuke', @PortalID
+
+	SELECT @PortalID = min(PortalID)
+	FROM   {databaseOwner}{objectQualifier}Portals
+	WHERE  PortalID > @PortalID
+END
+
+GO
+
+--Drop temp objects
+DROP TABLE {databaseOwner}{objectQualifier}TransferredUsers
+DROP PROCEDURE {databaseOwner}{objectQualifier}TransferUsersToSameContext
+
+GO
+
+/* Add New LogTypes  */
+/*********************/
+
+INSERT INTO {databaseOwner}{objectQualifier}EventLogTypes (
+		LogTypeKey,
+		LogTypeFriendlyName,
+		LogTypeDescription,
+		LogTypeOwner,
+		LogTypeCSSClass)
+	VALUES (
+		'LOGIN_USERLOCKEDOUT',
+		'User Locked Out',
+		'',
+		'DotNetNuke.Logging.EventLogType',
+		'OperationFailure'
+	)
+	
+INSERT INTO {databaseOwner}{objectQualifier}EventLogTypes (
+		LogTypeKey,
+		LogTypeFriendlyName,
+		LogTypeDescription,
+		LogTypeOwner,
+		LogTypeCSSClass)
+	VALUES (
+		'LOGIN_USERNOTAPPROVED',
+		'User Not Approved',
+		'',
+		'DotNetNuke.Logging.EventLogType',
+		'OperationFailure'  
+	)
+
+GO
+
+/* New setting for banners */
+/***************************/
+
+INSERT INTO {databaseOwner}{objectQualifier}ModuleSettings
+	(moduleid,settingname,settingvalue)
+	SELECT m.ModuleID , 'padding','4'
+	FROM {databaseOwner}{objectQualifier}Modules m
+		INNER JOIN {objectQualifier}ModuleDefinitions md ON m.ModuleDefID = md.ModuleDefID
+	WHERE FriendlyName='Banners'
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

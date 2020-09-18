@@ -1,0 +1,10 @@
+﻿Test,				Scheme,		SpaceEncoding,		Page Name,		Params,						Expected Url,	
+Default About Us,	http://,	,					About Us,		,							http://{alias}/AboutUs.aspx
+Plus About Us,		http://,	+,					About Us,		,							http://{alias}/AboutUs.aspx
+Unicode About Us,	http://,	%20,				About Us,		,							http://{alias}/AboutUs.aspx
+Default 1QS,		http://,	,					Home,			&view=Show Code,			http://{alias}/Home/view/Show%20Code.aspx
+Plus 1QS,			http://,	+,					Home,			&view=Show Code,			http://{alias}/Home/view/Show+Code.aspx
+Unicode 1QS,		http://,	%20,				Home,			&view=Show Code,			http://{alias}/Home/view/Show%20Code.aspx
+Default 2QS,		http://,	,					Home,			&ctl=Add Item&mid=100,		http://{alias}/Home/ctl/Add%20Item/mid/100.aspx
+Plus 2QS,			http://,	+,					Home,			&ctl=Add Item&mid=100,		http://{alias}/Home/ctl/Add+Item/mid/100.aspx
+Unicode 2QS,		http://,	%20,				Home,			&ctl=Add Item&mid=100,		http://{alias}/Home/ctl/Add%20Item/mid/100.aspx

@@ -1,0 +1,2 @@
+﻿For a list of fixes included in this release go to this url
+<a href="http://support.dotnetnuke.com/Issues.aspx?PROJID=40&m=1&c=2&v=442">http://support.dotnetnuke.com/Issues.aspx?PROJID=40&m=1&c=2&v=442</a>

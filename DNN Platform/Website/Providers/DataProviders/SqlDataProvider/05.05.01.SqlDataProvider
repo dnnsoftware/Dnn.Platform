@@ -1,0 +1,45 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/*  script to fix issue with errorneous administratorroleid values - replayed here due to 5.5.0 issue */
+
+DECLARE @PortalID int
+DECLARE @AdministratorRoleId int
+
+--Iterate through each portal
+DECLARE Portals_Cursor CURSOR FOR
+SELECT PortalID,AdministratorRoleId
+FROM         {databaseOwner}{objectQualifier}Portals
+
+OPEN Portals_Cursor
+--get first
+FETCH NEXT FROM Portals_Cursor
+into @PortalID,@AdministratorRoleId
+WHILE @@FETCH_STATUS = 0
+   BEGIN
+   if @AdministratorRoleId=-1 or @AdministratorRoleId not in (select roleid from {databaseOwner}{objectQualifier}userroles as ur inner join {databaseOwner}{objectQualifier}userportals as up on ur.userid=up.userid where up.portalid=@portalid)
+   
+   update {databaseOwner}{objectQualifier}portals set AdministratorRoleId = 
+(select roleid from {databaseOwner}{objectQualifier}Roles as r where 
+r.PortalID ={databaseOwner}{objectQualifier}Portals.PortalID and RoleName = 'Administrators' and {databaseOwner}{objectQualifier}Portals.portalid=@portalid) where portalid=@portalid
+
+       FETCH NEXT FROM Portals_Cursor
+       into @PortalID, @AdministratorRoleId 
+
+   END
+CLOSE Portals_Cursor
+DEALLOCATE Portals_Cursor
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

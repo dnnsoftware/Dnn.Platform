@@ -1,0 +1,1522 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_PreviewProfiles]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Mobile_PreviewProfiles]
+		(
+			[Id] [int] IDENTITY(1,1) NOT NULL,
+			[PortalId] [int] NOT NULL,
+			[Name] [nvarchar](50) NOT NULL,
+			[Width] [int] NOT NULL,
+			[Height] [int] NOT NULL,
+			[UserAgent] [nvarchar](260) NOT NULL,
+			[SortOrder] [int] CONSTRAINT [DF_{objectQualifier}Mobile_PreviewProfiles_SortOrder]  DEFAULT ((0)) NOT NULL,
+			[CreatedByUserID] [int] NOT NULL,
+			[CreatedOnDate] [datetime] CONSTRAINT [DF_{objectQualifier}Mobile_PreviewProfiles_CreatedOnDate]  DEFAULT (getdate()) NOT NULL ,
+			[LastModifiedByUserID] [int] NOT NULL,
+			[LastModifiedOnDate] [datetime] CONSTRAINT [DF_{objectQualifier}Mobile_PreviewProfiles_LastModifiedOnDate]  DEFAULT (getdate()) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}Mobile_PreviewProfiles] PRIMARY KEY CLUSTERED ( [Id] ASC )
+		)
+		ALTER TABLE {databaseOwner}[{objectQualifier}Mobile_PreviewProfiles]  
+			ADD CONSTRAINT [FK_{objectQualifier}Mobile_PreviewProfiles_{objectQualifier}Portals] FOREIGN KEY([PortalId]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE
+		CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Mobile_PreviewProfiles_SortOrder] ON {databaseOwner}[{objectQualifier}Mobile_PreviewProfiles] ([SortOrder] ASC)
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_Redirections]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Mobile_Redirections]
+		(
+			[Id] [int] IDENTITY(1,1) NOT NULL,
+			[PortalId] [int] NOT NULL,
+			[Name] [nvarchar](50) NOT NULL,
+			[Type] [int] NOT NULL,
+			[SortOrder] [int] CONSTRAINT [DF_{objectQualifier}Mobile_Redirections_SortOrder]  DEFAULT ((0)) NOT NULL,
+			[SourceTabId] [int] NOT NULL,
+			[IncludeChildTabs] [BIT] NOT NULL,
+			[TargetType] [int] NOT NULL,
+			[TargetValue] [nvarchar](260) NOT NULL,
+			[Enabled] BIT NOT NULL,
+			[CreatedByUserID] [int] NOT NULL,
+			[CreatedOnDate] [datetime] CONSTRAINT [DF_{objectQualifier}Mobile_Redirections_CreatedOnDate]  DEFAULT (getdate()) NOT NULL ,
+			[LastModifiedByUserID] [int] NOT NULL,
+			[LastModifiedOnDate] [datetime] CONSTRAINT [DF_{objectQualifier}Mobile_Redirections_LastModifiedOnDate]  DEFAULT (getdate()) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}Mobile_Redirections] PRIMARY KEY CLUSTERED ([Id] ASC)
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Mobile_Redirections]  
+			ADD CONSTRAINT [FK_{objectQualifier}Mobile_Redirections_{objectQualifier}Portals] FOREIGN KEY([PortalId]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalID]) ON DELETE CASCADE
+		
+		CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Mobile_Redirections_SortOrder] ON {databaseOwner}[{objectQualifier}Mobile_Redirections] ([SortOrder] ASC)
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_RedirectionRules]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Mobile_RedirectionRules]
+		(
+			[Id] [int] IDENTITY(1,1) NOT NULL,
+			[RedirectionId] [int] NOT NULL,
+			[Capability] [nvarchar](50) NOT NULL,
+			[Expression] [nvarchar](50) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}Mobile_RedirectionRules] PRIMARY KEY CLUSTERED ([Id] ASC)
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Mobile_RedirectionRules]  
+			ADD CONSTRAINT [FK_{objectQualifier}Mobile_RedirectionRules_{objectQualifier}Mobile_Redirections] FOREIGN KEY([RedirectionId]) REFERENCES {databaseOwner}[{objectQualifier}Mobile_Redirections] ([Id]) ON DELETE CASCADE
+
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_DeletePreviewProfile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_DeletePreviewProfile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_DeletePreviewProfile] @Id INT
+AS 
+		
+    DELETE  FROM {databaseOwner}{objectQualifier}Mobile_PreviewProfiles
+    WHERE   Id = @Id
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_DeleteRedirection]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_DeleteRedirection]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_DeleteRedirection] @Id INT
+AS 
+    DELETE  FROM {databaseOwner}{objectQualifier}Mobile_RedirectionRules
+    WHERE   RedirectionId = @id
+		
+    DELETE  FROM {databaseOwner}{objectQualifier}Mobile_Redirections
+    WHERE   Id = @Id
+
+GO
+	
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_DeleteRedirectionRule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_DeleteRedirectionRule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_DeleteRedirectionRule] @Id INT
+AS 
+    DELETE  FROM {databaseOwner}{objectQualifier}Mobile_RedirectionRules
+    WHERE   Id = @id
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_GetPreviewProfiles]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetPreviewProfiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetPreviewProfiles] @PortalId INT
+AS 
+    SELECT  Id, PortalId, Name, Width, Height, UserAgent, SortOrder, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate
+    FROM    {databaseOwner}{objectQualifier}Mobile_PreviewProfiles
+    WHERE   PortalId = @PortalId
+	ORDER BY SortOrder ASC
+
+GO
+	
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_GetRedirectionRules]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetRedirectionRules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetRedirectionRules] @RedirectionId INT
+AS 
+    SELECT  Id ,
+            RedirectionId ,
+            Capability ,
+            Expression
+    FROM    {objectQualifier}Mobile_RedirectionRules
+    WHERE RedirectionId = @RedirectionId
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_GetRedirections]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetRedirections]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetRedirections] @PortalId INT
+AS 
+    SELECT  Id ,
+            PortalId ,
+            Name ,
+            [Type] ,
+            SortOrder ,
+            SourceTabId ,
+			IncludeChildTabs ,
+            TargetType ,
+            TargetValue ,
+			Enabled ,
+            CreatedByUserID ,
+            CreatedOnDate ,
+            LastModifiedByUserID ,
+            LastModifiedOnDate
+    FROM    {databaseOwner}{objectQualifier}Mobile_Redirections
+    WHERE   PortalId = @PortalId
+	ORDER BY SortOrder ASC
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_GetAllRedirections]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetAllRedirections]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_GetAllRedirections]
+AS 
+    SELECT  Id ,
+            PortalId ,
+            Name ,
+            [Type] ,
+            SortOrder ,
+            SourceTabId ,
+			IncludeChildTabs ,
+            TargetType ,
+            TargetValue ,
+			Enabled ,
+            CreatedByUserID ,
+            CreatedOnDate ,
+            LastModifiedByUserID ,
+            LastModifiedOnDate
+    FROM    {databaseOwner}{objectQualifier}Mobile_Redirections    
+	ORDER BY PortalId ASC, SortOrder ASC
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_SavePreviewProfile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_SavePreviewProfile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_SavePreviewProfile]
+    @Id INT ,
+    @PortalId INT ,
+    @Name NVARCHAR(50) ,
+    @Width INT ,
+    @Height INT ,
+	@UserAgent NVARCHAR(260) ,
+	@SortOrder INT ,
+    @UserId INT
+AS 
+    IF ( @Id = -1 ) 
+        BEGIN
+            INSERT  {databaseOwner}{objectQualifier}Mobile_PreviewProfiles
+                    ( PortalId ,
+                      Name ,
+                      Width ,
+                      Height ,
+					  UserAgent ,
+					  SortOrder ,
+                      CreatedByUserID ,
+                      CreatedOnDate ,
+                      LastModifiedByUserID ,
+                      LastModifiedOnDate
+			        
+                    )
+            VALUES  ( @PortalId , -- PortalId - int
+                      @Name , -- Name - nvarchar(50)
+                      @Width , -- Width - int
+                      @Height , -- Height - int
+					  @UserAgent ,
+					  @SortOrder ,
+                      @UserId , -- CreatedBy - int
+                      GETDATE() , -- CreatedOn - datetime
+                      @UserId , -- LastModifiedBy - int
+                      GETDATE() -- LastModifiedOn - datetime
+			        
+                    )
+                    
+            SELECT  @Id = SCOPE_IDENTITY()
+        END
+    ELSE 
+        BEGIN
+            UPDATE  {databaseOwner}{objectQualifier}Mobile_PreviewProfiles
+            SET     Name = @Name ,
+                    Width = @Width ,
+                    Height = @Height ,
+					UserAgent = @UserAgent ,
+					SortOrder = @SortOrder ,
+                    LastModifiedByUserID = @UserId ,
+                    LastModifiedOnDate = GETDATE()
+            WHERE   Id = @Id
+        END
+        
+    SELECT  @Id
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_SaveRedirection]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_SaveRedirection]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mobile_SaveRedirection]
+    @Id INT ,
+    @PortalId INT ,
+    @Name NVARCHAR(50) ,
+    @Type INT ,
+    @SortOrder INT ,
+    @SourceTabId INT ,
+	@IncludeChildTabs BIT ,
+    @TargetType INT ,
+    @TargetValue NVARCHAR(260) ,
+	@Enabled BIT,
+    @UserId INT
+AS 
+    IF ( @Id = -1 ) 
+        BEGIN
+            INSERT  {databaseOwner}{objectQualifier}Mobile_Redirections
+                    ( PortalId ,
+                      Name ,
+                      Type ,
+                      SortOrder ,
+                      SourceTabId ,
+					  IncludeChildTabs ,
+                      TargetType ,
+                      TargetValue ,
+					  Enabled ,
+                      CreatedByUserID ,
+                      CreatedOnDate ,
+                      LastModifiedByUserID ,
+                      LastModifiedOnDate
+			        
+                    )
+            VALUES  ( @PortalId , -- PortalId - int
+                      @Name , -- Name - nvarchar(50)
+                      @Type , -- Type - int
+                      @SortOrder , -- SortOrder - int
+                      @SourceTabId , -- SourceTabId - int
+					  @IncludeChildTabs ,
+                      @TargetType ,
+                      @TargetValue ,
+					  @Enabled ,
+                      @UserId , -- CreatedBy - int
+                      GETDATE() , -- CreatedOn - datetime
+                      @UserId , -- LastModifiedBy - int
+                      GETDATE() -- LastModifiedOn - datetime
+			        
+                    )
+		SELECT  SCOPE_IDENTITY()
+        END
+    ELSE 
+        BEGIN
+            UPDATE  {databaseOwner}{objectQualifier}Mobile_Redirections
+            SET     Name = @Name ,
+                    [Type] = @Type ,
+                    SortOrder = @SortOrder ,
+                    SourceTabId = @SourceTabId ,
+					IncludeChildTabs = @IncludeChildTabs ,
+                    TargetType = @TargetType ,
+                    TargetValue = @TargetValue ,
+					Enabled = @Enabled ,
+                    LastModifiedByUserID = @UserId ,
+                    LastModifiedOnDate = GETDATE()
+            WHERE   Id = @Id
+			SELECT @Id
+        END
+	
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mobile_SaveRedirectionRule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mobile_SaveRedirectionRule]
+GO
+
+CREATE PROC {databaseOwner}[{objectQualifier}Mobile_SaveRedirectionRule]
+    @Id INT ,
+    @RedirectionId INT ,
+    @Capbility NVARCHAR(50) ,
+    @Expression NVARCHAR(50)
+AS 
+    IF @Id = -1 
+        BEGIN
+            INSERT  INTO {databaseOwner}{objectQualifier}Mobile_RedirectionRules
+                    ( RedirectionId ,
+                      Capability ,
+                      Expression
+		        )
+            VALUES  ( @RedirectionId , -- RedirectionId - int
+                      @Capbility , -- Capability - nvarchar(50)
+                      @Expression  -- Expression - nvarchar(50)
+		        )
+        END
+    ELSE 
+        BEGIN
+            UPDATE  {databaseOwner}{objectQualifier}Mobile_RedirectionRules
+            SET     Capability = @Capbility ,
+                    Expression = @Expression
+            WHERE   Id = @Id
+        END
+
+GO
+
+/* Add PortalGroups Table */
+/**************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalGroups]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}PortalGroups]
+		(
+			[PortalGroupID] [int] IDENTITY(1,1) NOT NULL,
+			[MasterPortalID] [int] NULL,
+			[PortalGroupName] [nvarchar](100) NULL,
+			[PortalGroupDescription] [nvarchar](2000) NULL,
+			[AuthenticationDomain] [nvarchar](200) NULL,
+			[CreatedByUserID] [int] NULL,
+			[CreatedOnDate] [datetime] NULL,
+			[LastModifiedByUserID] [int] NULL,
+			[LastModifiedOnDate] [datetime] NULL,
+			CONSTRAINT [PK_{objectQualifier}PortalGroup] PRIMARY KEY CLUSTERED  ([PortalGroupID] ASC)
+		)
+	END
+GO
+
+/* Add AddPortalGroup Procedure */
+/********************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddPortalGroup]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddPortalGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalGroup]
+	@PortalGroupName			nvarchar(100),
+	@PortalGroupDescription		nvarchar(2000),
+	@MasterPortalID				int,
+	@AuthenticationDomain		nvarchar(200),
+	@CreatedByUserID			int
+AS 
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}PortalGroups  
+		( 
+			PortalGroupName  , 
+			PortalGroupDescription  ,
+			MasterPortalID,
+			AuthenticationDomain, 
+			CreatedByUserID , 
+			CreatedOnDate , 
+			LastModifiedByUserID , 
+			LastModifiedOnDate  
+		)  
+		VALUES  
+		( 
+			@PortalGroupName , 
+			@PortalGroupDescription , 
+			@MasterPortalID,
+			@AuthenticationDomain, 
+			@CreatedByUserID , 
+			getdate() , 
+			@CreatedByUserID , 
+			getdate() 
+		) 
+		 
+		SELECT SCOPE_IDENTITY()
+	END
+GO
+
+/* Add DeletePortalGroup Procedure */
+/***********************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalGroup]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalGroup]
+	@PortalGroupID	int
+AS 
+	BEGIN
+		DELETE FROM {databaseOwner}{objectQualifier}PortalGroups  
+			WHERE PortalGroupID = @PortalGroupID
+	END
+GO
+
+/* Add GetPortalGroups Procedure */
+/*********************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalGroups]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalGroups]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalGroups]
+
+AS 
+	SELECT * FROM {databaseOwner}{objectQualifier}PortalGroups 
+GO
+
+/* Add UpdatePortalGroup Procedure */
+/***********************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalGroup]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalGroup]
+	@PortalGroupID				int,
+	@PortalGroupName			nvarchar(100),
+	@PortalGroupDescription		nvarchar(2000),
+	@AuthenticationDomain		nvarchar(200),
+	@LastModifiedByUserID		int
+AS 
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}PortalGroups 
+			SET 
+				PortalGroupName = @PortalGroupName,
+				PortalGroupDescription = @PortalGroupDescription,
+				AuthenticationDomain = @AuthenticationDomain,
+				LastModifiedByUserID = @LastModifiedByUserID,
+				LastModifiedOnDate = getdate()
+			WHERE PortalGroupID = @PortalGroupID
+	END
+GO
+
+/* Add PortalGroupID Column To Portals Table */
+/*********************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Portals' AND COLUMN_NAME='PortalGroupID')
+	BEGIN
+		-- Add new Column
+		ALTER TABLE {databaseOwner}{objectQualifier}Portals
+			ADD PortalGroupID int NULL
+	END
+GO
+
+/* Update Portals View */
+/***********************/
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+	SELECT DISTINCT 
+		P.PortalID,
+		P.PortalGroupID, 
+		PL.PortalName, 
+		CASE WHEN LEFT(LOWER(PL.LogoFile), 7) = 'fileid=' THEN
+				(SELECT Folder + FileName FROM {databaseOwner}{objectQualifier}Files WHERE fileid = CAST((RIGHT(LOWER(PL.LogoFile), Len(PL.LogoFile) - 7)) AS int)) 
+			ELSE 
+				PL.LogoFile 
+			END AS LogoFile, 
+		PL.FooterText, 
+		P.ExpiryDate, 
+		P.UserRegistration, 
+		P.BannerAdvertising, 
+		P.AdministratorId, 
+		P.Currency, 
+		P.HostFee, 
+		P.HostSpace, 
+		P.PageQuota, 
+		P.UserQuota, 
+		P.AdministratorRoleId, 
+		P.RegisteredRoleId, 
+		PL.Description, 
+		PL.KeyWords, 
+		CASE WHEN LEFT(LOWER(PL.BackgroundFile), 7) = 'fileid=' THEN
+				(SELECT Folder + FileName FROM {databaseOwner}{objectQualifier}Files WHERE fileid = CAST((RIGHT(LOWER(PL.BackgroundFile), Len(PL.BackgroundFile) - 7)) AS int)) 
+			ELSE 
+				PL.BackgroundFile 
+			END AS BackgroundFile, 
+		P.GUID, 
+		P.PaymentProcessor, 
+		P.ProcessorUserId, 
+		P.ProcessorPassword, 
+		P.SiteLogHistory, 
+		U.Email, 
+		P.DefaultLanguage, 
+		P.TimezoneOffset, 
+		PL.AdminTabId, 
+		P.HomeDirectory, 
+		PL.SplashTabId, 
+		PL.HomeTabId, 
+		PL.LoginTabId, 
+		PL.RegisterTabId, 
+		PL.UserTabId, 
+		PL.SearchTabId,
+		(SELECT  TOP (1) TabID
+			FROM   {databaseOwner}{objectQualifier}Tabs
+				WHERE      (PortalID IS NULL) AND (ParentId IS NULL))
+			AS SuperTabId, 
+		P.CreatedByUserID, 
+		P.CreatedOnDate, 
+		P.LastModifiedByUserID, 
+		P.LastModifiedOnDate, 
+		PL.CultureCode
+	FROM {databaseOwner}{objectQualifier}Portals AS P 
+		INNER JOIN {databaseOwner}{objectQualifier}PortalLocalization AS PL ON P.PortalID = PL.PortalID 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON P.AdministratorId = U.UserID
+GO
+
+/* Update PortalsDefaultLanguage View */
+/**************************************/
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+AS
+	SELECT DISTINCT 
+        P.PortalID, 
+		P.PortalGroupID, 
+		PL.PortalName, 
+		PL.LogoFile, 
+		PL.FooterText, 
+		P.ExpiryDate, 
+		P.UserRegistration, 
+		P.BannerAdvertising, 
+		P.AdministratorId, 
+		P.Currency, 
+		P.HostFee, 
+        P.HostSpace, 
+		P.PageQuota, 
+		P.UserQuota, 
+		P.AdministratorRoleId, 
+		P.RegisteredRoleId, 
+		PL.Description, 
+		PL.KeyWords, 
+		PL.BackgroundFile, 
+		P.GUID, 
+		P.PaymentProcessor,
+        P.ProcessorUserId, 
+		P.ProcessorPassword, 
+		P.SiteLogHistory, 
+		U.Email, 
+		P.DefaultLanguage, 
+		P.TimezoneOffset, 
+		PL.AdminTabId, 
+		P.HomeDirectory, 
+		PL.SplashTabId, 
+        PL.HomeTabId, 
+		PL.LoginTabId, 
+		PL.RegisterTabId, 
+		PL.UserTabId, 
+		PL.SearchTabId,
+        (SELECT     TOP (1) TabID
+			FROM          {databaseOwner}{objectQualifier}Tabs
+				WHERE      (PortalID IS NULL) AND (ParentId IS NULL))
+			AS SuperTabId, 
+		P.CreatedByUserID, 
+		P.CreatedOnDate, 
+		P.LastModifiedByUserID, 
+		P.LastModifiedOnDate, 
+        PL.CultureCode
+	FROM	{databaseOwner}{objectQualifier}Portals AS P 
+		INNER JOIN (SELECT  
+						PortalID, 
+						PortalName, 
+						CASE WHEN LEFT(LOWER(LogoFile), 7) = 'fileid=' THEN
+								(SELECT Folder + FileName
+									FROM {databaseOwner}{objectQualifier}Files
+									WHERE fileid = CAST((RIGHT(LOWER(LogoFile), LEN(LogoFile) - 7)) AS INT)) 
+							ELSE 
+								LogoFile
+							END AS LogoFile,
+						FooterText, 
+						Description, 
+						KeyWords, 
+                        CASE WHEN LEFT(LOWER(BackgroundFile), 7) = 'fileid=' THEN
+								(SELECT Folder + FileName
+									FROM {databaseOwner}{objectQualifier}Files
+									WHERE fileid = CAST((RIGHT(LOWER(BackgroundFile), LEN(BackgroundFile) - 7)) AS INT)) 
+							ELSE 
+								BackgroundFile 
+							END AS BackgroundFile, 
+						AdminTabId, 
+						SplashTabId, 
+						HomeTabId, 
+						LoginTabId, 
+						RegisterTabId, 
+						UserTabId, 
+						SearchTabId, 
+						CultureCode
+				FROM    {databaseOwner}{objectQualifier}PortalLocalization) 
+			AS PL ON P.PortalID = PL.PortalID AND PL.CultureCode = P.DefaultLanguage 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON P.AdministratorId = U.UserID
+GO
+
+/* Add UpdatePortalInfo Procedure */
+/***********************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+	@PortalID				int,
+	@PortalGroupID			int,
+	@PortalName				nvarchar(128),
+	@LogoFile				nvarchar(50),
+	@FooterText				nvarchar(100),
+	@ExpiryDate				datetime,
+	@UserRegistration		int,
+	@BannerAdvertising		int,
+	@Currency				char(3),
+	@AdministratorId		int,
+	@HostFee				money,
+	@HostSpace				int,
+	@PageQuota				int,
+	@UserQuota				int,
+	@PaymentProcessor		nvarchar(50),
+	@ProcessorUserId		nvarchar(50),
+	@ProcessorPassword		nvarchar(50),
+	@Description			nvarchar(500),
+	@KeyWords				nvarchar(500),
+	@BackgroundFile			nvarchar(50),
+	@SiteLogHistory			int,
+	@SplashTabId			int,
+	@HomeTabId				int,
+	@LoginTabId				int,
+	@RegisterTabId			int,
+	@UserTabId				int,
+	@SearchTabId			int,
+	@DefaultLanguage		nvarchar(10),
+	@HomeDirectory			varchar(100),
+	@LastModifiedByUserID	int,
+	@CultureCode			nvarchar(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+		   PortalGroupID		= @PortalGroupID,
+		   ExpiryDate			= @ExpiryDate,
+		   UserRegistration		= @UserRegistration,
+		   BannerAdvertising	= @BannerAdvertising,
+		   Currency				= @Currency,
+		   AdministratorId		= @AdministratorId,
+		   HostFee				= @HostFee,
+		   HostSpace			= @HostSpace,
+		   PageQuota			= @PageQuota,
+		   UserQuota			= @UserQuota,
+		   PaymentProcessor		= @PaymentProcessor,
+		   ProcessorUserId		= @ProcessorUserId,
+		   ProcessorPassword	= @ProcessorPassword,
+		   SiteLogHistory		= @SiteLogHistory,
+		   DefaultLanguage		= @DefaultLanguage,
+		   HomeDirectory		= @HomeDirectory,
+		   LastModifiedByUserID = @LastModifiedByUserID,
+		   LastModifiedOnDate	= getdate()
+	WHERE  PortalId = @PortalID
+
+IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE PortalId = @PortalID AND CultureCode = @CultureCode)
+	BEGIN 
+		UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+			SET
+				PortalName				= @PortalName,
+				LogoFile				= @LogoFile,
+				FooterText				= @FooterText,
+				Description				= @Description,
+				KeyWords				= @KeyWords,
+				BackgroundFile			= @BackgroundFile,
+				HomeTabId				= @HomeTabId,
+				LoginTabId				= @LoginTabId,
+				RegisterTabId			= @RegisterTabId,
+				UserTabId				= @UserTabId,
+				SplashTabId				= @SplashTabId,
+				SearchTabId				= @SearchTabId,
+				LastModifiedByUserID	= @LastModifiedByUserID,
+				LastModifiedOnDate		= getdate()
+		WHERE	PortalId = @PortalID 
+			AND CultureCode = @CultureCode
+	END 
+ELSE
+	BEGIN 
+		DECLARE @AdminTabId int
+		SET @AdminTabId = (SELECT AdminTabId 
+								FROM {databaseOwner}{objectQualifier}PortalLocalization 
+								WHERE PortalID = @PortalID AND CultureCode='en-US')
+
+		INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+			[PortalID],
+			[CultureCode],
+			[PortalName],
+			[LogoFile],
+			[FooterText],
+			[Description],
+			[KeyWords],
+			[BackgroundFile],
+			[HomeTabId],
+			[LoginTabId],
+			[UserTabId],
+			[AdminTabId],
+			[SplashTabId],
+			[SearchTabId],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate]
+		)
+		VALUES (
+			@PortalID,
+			@CultureCode,
+			@PortalName,
+			@LogoFile, 
+			@FooterText,
+			@Description,
+			@KeyWords,
+			@BackgroundFile,
+			@HomeTabId ,
+			@LoginTabId ,
+			@UserTabId,
+			@AdminTabid,
+			@SplashTabId  ,
+			@SearchTabId,
+			-1,
+			getdate(),
+			-1,
+			getdate()
+		)
+	END
+GO
+
+/* Update UpdateUser Procedure */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
+	@UserID         int,
+	@PortalID		int,
+	@FirstName		nvarchar(50),
+	@LastName		nvarchar(50),
+	@IsSuperUser    bit,
+	@Email          nvarchar(256),
+	@DisplayName    nvarchar(100),
+	@UpdatePassword	bit,
+	@Authorised		bit,
+	@RefreshRoles	bit,
+	@LastIPAddress	nvarchar(50),
+	@IsDeleted		bit,
+	@LastModifiedByUserID int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Users
+		SET
+			FirstName = @FirstName,
+			LastName = @LastName,
+			IsSuperUser = @IsSuperUser,
+			Email = @Email,
+			DisplayName = @DisplayName,
+			UpdatePassword = @UpdatePassword,
+			LastIPAddress = @LastIPAddress,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+		WHERE  UserId = @UserID
+	
+	IF @PortalID IS NULL
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Users
+				SET
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+		END
+	ELSE
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}UserPortals
+				SET
+					Authorised = @Authorised,
+					RefreshRoles = @RefreshRoles,
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+					AND PortalId = @PortalID
+		END
+GO
+
+/* Update GetAllUsers Procedure */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllUsers]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+	@PortalID        int,
+	@PageIndex       int,
+	@PageSize        INT,
+	@IncludeDeleted  bit,
+	@SuperUsersOnly  bit	
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE 
+			@PageLowerBound INT, 
+			@PageUpperBound INT, 
+			@RowsToReturn int
+
+		exec {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
+
+		if @PortalID is null
+			begin
+				with [tmpUsers] as (
+					select U.*, row_number() over (order by U.UserName) AS rowid
+						FROM {databaseOwner}{objectQualifier}vw_Users u
+						WHERE U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+							  AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				)
+				select * from [tmpUsers]
+					where rowid > @PageLowerBound and rowid < @PageUpperBound
+					order by rowid
+			end 
+		else 
+			begin
+				with [tmpUsers] as (
+					select U.*, row_number() over (order by U.UserName) AS rowid
+						FROM {databaseOwner}{objectQualifier}vw_Users u
+						WHERE U.PortalID = @PortalID AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						  AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				)
+				select * from [tmpUsers]
+					where rowid > @PageLowerBound and rowid < @PageUpperBound
+					order by rowid
+			end
+
+		set rowcount 0
+ 
+		if @PortalId is null
+			begin
+				SELECT COUNT(*) as TotalRecords
+					FROM   {databaseOwner}{objectQualifier}Users as U
+					WHERE U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+				               AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+						AND NOT EXISTS (
+							select 1 from {databaseOwner}{objectQualifier}UserPortals UP where U.UserId = UP.UserId
+						)
+			end 
+		else 
+			begin
+				SELECT COUNT(*) as TotalRecords
+					FROM   {databaseOwner}{objectQualifier}Users U
+					INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON U.UserId = UP.UserId
+						WHERE UP.PortalId = @PortalId
+							AND UP.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			end
+	END
+GO
+
+/* Update GetUsersByEmail Procedure */
+/************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByEmail]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByEmail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByEmail]
+	@PortalID  int,
+	@EmailToMatch   nvarchar(256),
+	@PageIndex      int,
+	@PageSize       INT,
+	@IncludeDeleted bit,
+	@SuperUsersOnly bit		
+AS
+BEGIN
+		-- Set the page bounds
+		DECLARE 
+			@PageLowerBound INT, 
+			@PageUpperBound INT, 
+			@RowsToReturn int, 
+			@TotalRecords int
+
+		exec {databaseOwner}{objectQualifier}CalculatePagingInformation @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
+
+		declare @tblPageIndex table (
+			IndexId int IDENTITY (0, 1) NOT NULL primary key,
+			UserId int
+		 )
+
+		if @PortalId is null and @EmailToMatch IS NULL
+			begin
+				with [UsersByEmail] as (
+					SELECT U.*, ROW_NUMBER() OVER (ORDER BY Email ASC) AS ROWID
+						FROM    {databaseOwner}{objectQualifier}vw_Users U
+						WHERE U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+							AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				)
+				select *, ROWID - 1 AS IndexID, UserID 
+					from [UsersByEmail]
+					where ROWID > @PageLowerBound AND ROWID < @PageUpperBound
+			end
+		else if @PortalId is null and @EmailToMatch IS NOT NULL 
+			begin
+				with [UsersByEmail] as (
+					SELECT U.*, ROW_NUMBER() OVER (ORDER BY Email ASC) AS ROWID
+						FROM    {databaseOwner}{objectQualifier}vw_Users U
+						WHERE LOWER(U.Email) LIKE LOWER(@EmailToMatch)
+							AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+					)
+					select *, ROWID - 1 AS IndexID, UserID 
+						from [UsersByEmail]
+						where ROWID > @PageLowerBound AND ROWID < @PageUpperBound
+			end
+		else if @EmailToMatch IS NULL 
+			begin
+				with [UsersByEmail] as (
+					SELECT U.*, ROW_NUMBER() OVER (ORDER BY Email ASC) AS ROWID
+						FROM    {databaseOwner}{objectQualifier}vw_Users U
+						WHERE U.PortalId = @PortalID
+							AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				)
+				select *, ROWID - 1 AS IndexID, UserID 
+					from [UsersByEmail]
+					where ROWID > @PageLowerBound AND ROWID < @PageUpperBound
+		  end
+		else
+			begin
+				with [UsersByEmail] as (
+					SELECT U.*, ROW_NUMBER() OVER (ORDER BY Email ASC) AS ROWID
+						FROM    {databaseOwner}{objectQualifier}vw_Users U
+						WHERE U.PortalId = @PortalID
+							AND LOWER(U.Email) LIKE LOWER(@EmailToMatch)
+							AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				)
+				select *, ROWID - 1 AS IndexID, UserID 
+					from [UsersByEmail]
+					where ROWID > @PageLowerBound AND ROWID < @PageUpperBound
+			end
+	 
+		if @PortalId is null and @EmailToMatch IS NULL
+			begin
+				SELECT count(*) as TotalRecords
+					FROM    {databaseOwner}{objectQualifier}vw_Users U
+					WHERE U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			end 
+		else if @PortalId is null and @EmailToMatch IS NOT NULL 
+			begin
+				SELECT count(*) as TotalRecords
+					FROM    {databaseOwner}{objectQualifier}vw_Users U
+					WHERE LOWER(U.Email) LIKE LOWER(@EmailToMatch)
+						AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			end 
+		else if @EmailToMatch IS NULL 
+			begin
+				SELECT count(*) as TotalRecords
+					FROM    {databaseOwner}{objectQualifier}vw_Users U
+					WHERE U.PortalId = @PortalID
+						AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			end 
+		else 
+			begin
+				SELECT count(*) as TotalRecords
+					FROM    {databaseOwner}{objectQualifier}vw_Users U
+					WHERE U.PortalId = @PortalID
+						AND LOWER(U.Email) LIKE LOWER(@EmailToMatch)
+						AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						AND U.IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+		end
+	END
+GO
+
+/* Update GetUsersByUserName Procedure */
+/***************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByUserName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByUserName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByUserName]
+    @PortalID		int,
+    @UserNameToMatch	nvarchar(256),
+    @PageIndex		int,
+    @PageSize		INT,
+    @IncludeDeleted     bit,
+    @SuperUsersOnly     bit		
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE @PageLowerBound INT
+		DECLARE @PageUpperBound INT
+		SET @PageLowerBound = @PageSize * @PageIndex
+		SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+		-- Create a temp table TO store the select results
+		CREATE TABLE #PageIndexForUsers
+		(
+			IndexId int IDENTITY (0, 1) NOT NULL,
+			UserId int
+		)
+
+		-- Insert into our temp table
+		INSERT INTO #PageIndexForUsers (UserId)
+			SELECT UserId FROM	{databaseOwner}{objectQualifier}vw_Users 
+			WHERE  Username LIKE @UserNameToMatch
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+			        AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND ( PortalId = @PortalID OR (@PortalID is null ))
+			ORDER BY UserName
+
+		SELECT  *
+		FROM	{databaseOwner}{objectQualifier}vw_Users u, 
+				#PageIndexForUsers p
+		WHERE  u.UserId = p.UserId
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+			        AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND ( PortalId = @PortalID OR (@PortalID is null ))
+				AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+		ORDER BY u.UserName
+
+		SELECT  TotalRecords = COUNT(*)
+		FROM    #PageIndexForUsers
+	END
+
+GO
+
+/* Update GetUsersByProfileProperty Procedure */
+/**********************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByProfileProperty]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+     @PortalID		int,
+    @PropertyName   nvarchar(256),
+    @PropertyValue  nvarchar(256),
+    @PageIndex      int,
+    @PageSize       INT,
+    @IncludeDeleted bit,
+    @SuperUsersOnly bit	
+AS
+	BEGIN
+		-- Set the page bounds
+		DECLARE @PageLowerBound INT
+		DECLARE @PageUpperBound INT
+		SET @PageLowerBound = @PageSize * @PageIndex
+		SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+		-- Create a temp table TO store the select results
+		CREATE TABLE #PageIndexForUsers
+		(
+			IndexId int IDENTITY (0, 1) NOT NULL,
+			UserId int,
+			DisplayName varchar(512)
+		)
+
+		-- Insert into our temp table
+		INSERT INTO #PageIndexForUsers (UserId,DisplayName)
+			SELECT DISTINCT U.UserId, U.DisplayName 
+			FROM   {databaseOwner}{objectQualifier}ProfilePropertyDefinition P
+				INNER JOIN {databaseOwner}{objectQualifier}UserProfile UP ON P.PropertyDefinitionID = UP.PropertyDefinitionID 
+				INNER JOIN {databaseOwner}{objectQualifier}vw_Users U ON UP.UserID = U.UserID
+			WHERE (PropertyName = @PropertyName) AND (PropertyValue LIKE @PropertyValue OR PropertyText LIKE @PropertyValue )
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+				AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND (P.Portalid = @PortalID OR (@PortalID is null ))
+			ORDER BY U.DisplayName
+
+		SELECT  *
+		FROM	{databaseOwner}{objectQualifier}vw_Users u, 
+				#PageIndexForUsers p
+		WHERE  u.UserId = p.UserId
+				AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+							--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				     OR IsDeleted Is NULL)
+				AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+				AND ( PortalId = @PortalID OR (@PortalID is null ))
+				AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+			ORDER BY U.DisplayName
+
+		SELECT  TotalRecords = COUNT(*)
+		FROM    #PageIndexForUsers
+	END
+
+GO
+
+/* Update AddUser Procedure */
+/****************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddUser]
+
+	@PortalID		int,
+	@Username		nvarchar(100),
+	@FirstName		nvarchar(50),
+	@LastName		nvarchar(50),
+	@AffiliateId    int,
+	@IsSuperUser    bit,
+	@Email          nvarchar(256),
+	@DisplayName    nvarchar(100),
+	@UpdatePassword	bit,
+	@Authorised		bit,
+	@CreatedByUserID int
+AS
+
+DECLARE @UserID int
+
+SELECT @UserID = UserID
+	FROM {databaseOwner}{objectQualifier}Users
+	WHERE  Username = @Username
+
+IF @UserID is null
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}Users (
+			Username,
+			FirstName, 
+			LastName, 
+			AffiliateId,
+			IsSuperUser,
+			Email,
+			DisplayName,
+			UpdatePassword,
+			CreatedByUserID,
+			CreatedOnDate,
+			LastModifiedByUserID,
+			LastModifiedOnDate
+		  )
+		VALUES (
+			@Username,
+			@FirstName, 
+			@LastName, 
+			@AffiliateId,
+			@IsSuperUser,
+			@Email,
+			@DisplayName,
+			@UpdatePassword,
+			@CreatedByUserID,
+			getdate(),
+			@CreatedByUserID,
+			getdate()
+		)
+
+		SELECT @UserID = SCOPE_IDENTITY()
+	END
+
+	IF not exists ( SELECT 1 FROM {databaseOwner}{objectQualifier}UserPortals WHERE UserID = @UserID AND PortalID = @PortalID ) AND @PortalID > -1
+		BEGIN
+			INSERT INTO {databaseOwner}{objectQualifier}UserPortals (
+				UserID,
+				PortalID,
+				Authorised,
+				CreatedDate
+			)
+			VALUES (
+				@UserID,
+				@PortalID,
+				@Authorised,
+				getdate()
+			)
+		END
+
+SELECT @UserID
+
+GO
+
+/* DNNPRO-14326 - SI: Search results page does not work for languages */
+/**********************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+	@PortalId       int,
+	@CultureCode	nvarchar(10)
+AS
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode=@CultureCode AND Portalid=@PortalId)
+		BEGIN
+			DECLARE @PortalName nvarchar(128)
+			DECLARE @LogoFile nvarchar(50)
+			DECLARE @FooterText nvarchar(100)
+			DECLARE @Description nvarchar(500)
+			DECLARE @KeyWords nvarchar(500)
+			DECLARE @BackgroundFile nvarchar(50)
+			DECLARE @HomeTabId int
+			DECLARE @LoginTabId int
+			DECLARE @UserTabId int
+			DECLARE @AdminTabId int
+			DECLARE @RegisterTabId int
+			DECLARE @SearchTabId int
+	
+			DECLARE @defaultlanguage nvarchar(10)
+			
+			SELECT @defaultlanguage= DefaultLanguage FROM {databaseOwner}{objectQualifier}Portals WHERE Portalid=@PortalId
+
+			IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode=@defaultlanguage AND Portalid=@PortalId)
+					AND EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Languages l INNER JOIN {databaseOwner}{objectQualifier}PortalLanguages pl ON l.LanguageID = pl.LanguageID WHERE pl.PortalID = @PortalID AND l.CultureCode = @CultureCode )
+				BEGIN
+					--clone the default language
+					SELECT 
+						@PortalName = PortalName,
+						@LogoFile = LogoFile,
+						@FooterText = FooterText,
+						@Description = Description,
+						@KeyWords = KeyWords,
+						@BackgroundFile = BackgroundFile,
+						@HomeTabId = HomeTabId,
+						@LoginTabId = LoginTabId,
+						@UserTabId = UserTabId,
+						@AdminTabId = AdminTabId,
+						@SearchTabId = SearchTabId,
+						@RegisterTabId = RegisterTabId 
+					FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode=@defaultlanguage AND Portalid=@PortalId
+						
+					INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+						PortalId,
+						CultureCode,
+						PortalName,
+						LogoFile,
+						FooterText,
+						Description,
+						KeyWords,
+						BackgroundFile, 
+						HomeTabId,
+						LoginTabId,
+						UserTabId,
+						AdminTabId,
+						RegisterTabId,
+						SearchTabId,
+						CreatedByUserID,
+						CreatedOnDate,
+						LastModifiedByUserID,
+						LastModifiedOnDate
+						) 
+						VALUES	(
+							@PortalId,
+							@CultureCode,
+							@PortalName,
+							@LogoFile,
+							@FooterText,
+							@Description,
+							@KeyWords,
+							@BackgroundFile,
+							@HomeTabId,
+							@LoginTabId,
+							@UserTabId,
+							@AdminTabId,
+							@RegisterTabId,
+							@SearchTabId,
+							-1,
+							getdate(),
+							-1,
+							getdate()
+						)
+				END
+			ELSE
+				BEGIN
+					IF EXISTS (select * from {databaseOwner}{objectQualifier}PortalLocalization where CultureCode='en-us' and Portalid=@PortalId)
+						BEGIN
+							--if defaultlanguage is missing clone en-us if available
+							SELECT 
+								@PortalName = PortalName,
+								@LogoFile = LogoFile,
+								@FooterText = FooterText,
+								@Description = Description,
+								@KeyWords = KeyWords,
+								@BackgroundFile = BackgroundFile,
+								@HomeTabId = HomeTabId,
+								@LoginTabId=LoginTabId,
+								@UserTabId=UserTabId,
+								@AdminTabId=AdminTabId,
+								@SearchTabId=SearchTabId,
+								@RegisterTabId=RegisterTabId 
+							FROM {databaseOwner}{objectQualifier}PortalLocalization where CultureCode='en-us' and Portalid=@PortalId
+							
+							INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+								PortalId,
+								CultureCode,
+								PortalName,
+								LogoFile,
+								FooterText,
+								Description,
+								KeyWords,
+								BackgroundFile, 
+								HomeTabId,
+								LoginTabId,
+								UserTabId,
+								AdminTabId,
+								RegisterTabId,
+								SearchTabId,
+								CreatedByUserID,
+								CreatedOnDate,
+								LastModifiedByUserID,
+								LastModifiedOnDate
+							) 
+							VALUES	(
+								@PortalId,
+								@CultureCode,
+								@PortalName,
+								@LogoFile,
+								@FooterText,
+								@Description,
+								@KeyWords,
+								@BackgroundFile,
+								@HomeTabId,
+								@LoginTabId,
+								@UserTabId,
+								@AdminTabId,
+								@RegisterTabId,
+								@SearchTabId,
+								-1,
+								getdate(),
+								-1,
+								getdate()
+							)
+						END
+					ELSE
+						BEGIN
+							IF EXISTS (select top 1 * from {databaseOwner}{objectQualifier}PortalLocalization where  Portalid=@PortalId)
+								BEGIN
+									--cannot select by particular culturecode as defaultlanguage has been deleted (possible in early versions of DotNetNuke)
+									SELECT TOP 1 
+										@PortalName = PortalName,
+										@LogoFile = LogoFile,
+										@FooterText = FooterText,
+										@Description = Description,
+										@KeyWords = KeyWords,
+										@BackgroundFile = BackgroundFile,
+										@HomeTabId = HomeTabId,
+										@LoginTabId=LoginTabId,
+										@UserTabId=UserTabId,
+										@AdminTabId=AdminTabId,
+										@SearchTabId=SearchTabId,
+										@RegisterTabId=RegisterTabId 
+									FROM {databaseOwner}{objectQualifier}PortalLocalization where portalid=@PortalId
+									
+									INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+										PortalId,
+										CultureCode,
+										PortalName,
+										LogoFile,
+										FooterText,
+										Description,
+										KeyWords,
+										BackgroundFile, 
+										HomeTabId,
+										LoginTabId,
+										UserTabId,
+										AdminTabId,
+										RegisterTabId,
+										SearchTabId,
+										CreatedByUserID,
+										CreatedOnDate,
+										LastModifiedByUserID,
+										LastModifiedOnDate
+									) 
+									VALUES	(
+										@PortalId,
+										@CultureCode,
+										@PortalName,
+										@LogoFile,
+										@FooterText,
+										@Description,
+										@KeyWords,
+										@BackgroundFile,
+										@HomeTabId,
+										@LoginTabId,
+										@UserTabId,
+										@AdminTabId,
+										@RegisterTabId,
+										@SearchTabId,
+										-1,
+										getdate(),
+										-1,
+										getdate()
+									)
+								END
+						END	
+				END
+		END
+GO
+
+/* Update GetPortals Procedure */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortals]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+	@CultureCode	nvarchar(50)
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_Portals
+	WHERE CultureCode = @CultureCode
+	ORDER BY PortalName
+GO
+
+/* Update Tabs View to return original icon file */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') AND OBJECTPROPERTY(id, N'IsVIEW') = 1)
+  DROP VIEW {databaseOwner}{objectQualifier}vw_Tabs
+GO
+    
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Tabs
+AS
+    SELECT     
+        T.TabID,
+        T.UniqueId, 
+        T.VersionGuid, 
+        T.DefaultLanguageGuid, 
+        T.LocalizedVersionGuid, 
+        T.TabOrder, 
+        T.PortalID, 
+        T.TabName, 
+        T.IsVisible, 
+        T.ParentId, 
+        T.[Level], 
+        T.IconFile, 
+        T.IconFileLarge, 
+        T.DisableLink, 
+        T.Title, 
+        T.Description, 
+        T.KeyWords, 
+        T.IsDeleted, 
+        T.SkinSrc, 
+        T.ContainerSrc, 
+        T.TabPath, 
+        T.StartDate, 
+        T.EndDate, 
+        T.Url, 
+        CASE WHEN EXISTS (SELECT  1 FROM {databaseOwner}{objectQualifier}Tabs T2 WHERE T2.ParentId = T.TabId) THEN 'true' ELSE 'false' END AS HasChildren, 
+        T.RefreshInterval, 
+        T.PageHeadText, 
+        T.IsSecure, 
+        T.PermanentRedirect, 
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID, 
+        CI.ModuleID, 
+        CI.ContentKey,
+        CI.Indexed,
+        T.CultureCode,
+        T.CreatedByUserID, 
+        T.CreatedOnDate, 
+        T.LastModifiedByUserID, 
+        T.LastModifiedOnDate
+    FROM {databaseOwner}{objectQualifier}Tabs AS T
+        LEFT OUTER JOIN  {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

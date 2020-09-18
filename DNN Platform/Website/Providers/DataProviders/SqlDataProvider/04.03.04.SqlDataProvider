@@ -1,0 +1,34 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update GetPropertyDefinitionsByCategory */
+/*******************************************/
+
+IF EXISTS ( SELECT * FROM sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetOnlineUsers') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}GetOnlineUsers
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetOnlineUsers
+	@PortalID int
+
+AS
+SELECT 
+	*
+	FROM {databaseOwner}{objectQualifier}UsersOnline UO
+		INNER JOIN {databaseOwner}{objectQualifier}vw_Users U ON UO.UserID = U.UserID 
+		INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON U.UserID = UP.UserId
+	WHERE  UP.PortalID = @PortalID
+GO
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

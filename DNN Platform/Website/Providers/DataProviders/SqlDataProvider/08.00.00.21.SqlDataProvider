@@ -1,0 +1,341 @@
+/* DNN-7164 */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_ModuleDefId')
+	DROP INDEX [IX_{objectQualifier}Modules_ModuleDefId] ON {databaseOwner}[{objectQualifier}Modules] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Modules_ModuleDefId] ON {databaseOwner}[{objectQualifier}Modules]
+(
+	[ModuleDefID] ASC,
+	[ModuleID] ASC
+)
+	INCLUDE ( [AllTabs],
+	[InheritViewPermissions],
+	[StartDate],
+	[EndDate],
+	[PortalID],
+	[CreatedByUserID],
+	[CreatedOnDate],
+	[LastModifiedByUserID],
+	[LastModifiedOnDate],
+	[LastContentModifiedOnDate],
+	[IsShareable],
+	[IsShareableViewOnly]) 
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabModules]') AND name = N'IX_{objectQualifier}TabModules_ModuleID')
+	DROP INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules]
+(
+	[ModuleID] ASC,
+	[TabID] ASC
+)
+INCLUDE ( [IsDeleted],
+	[CultureCode],
+	[ModuleTitle],
+	[Visibility],
+	[ContainerSrc],
+	[DisplayTitle],
+	[DisplayPrint],
+	[DisplaySyndicate],
+	[IsWebSlice],
+	[WebSliceTitle],
+	[WebSliceExpiryDate],
+	[WebSliceTTL],
+	[Header],
+	[Footer],
+	[UniqueId],
+	[VersionGuid],
+	[DefaultLanguageGuid],
+	[LocalizedVersionGuid],
+	[TabModuleID],
+	[PaneName],
+	[ModuleOrder],
+	[CacheTime],
+	[Alignment],
+	[Color],
+	[Border],
+	[IconFile],
+	[CacheMethod]) 
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Modules]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+        Case when tm.IconFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(tm.IconFile, 8, 10) AS Int))
+			 else Coalesce(tm.IconFile,'')
+			 end as IconFile,
+        M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        M.CreatedByUserID,
+        M.CreatedOnDate,
+        M.LastModifiedByUserID,
+        M.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM        {databaseOwner}[{objectQualifier}ModuleDefinitions] AS MD
+     INNER JOIN {databaseOwner}[{objectQualifier}Modules]           AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}ModuleControls]    AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules]    AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems]      AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}TabModules]       AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}Tabs]              AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Portals]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+    SELECT
+        P.PortalID,
+        P.PortalGroupID,
+        PL.PortalName,
+		 Case when PL.LogoFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(PL.LogoFile, 8, 10) AS Int))
+			 else Coalesce(PL.LogoFile,'')
+			 end as LogoFile,
+        PL.FooterText,
+        P.ExpiryDate,
+        P.UserRegistration,
+        P.BannerAdvertising,
+        P.AdministratorId,
+        P.Currency,
+        P.HostFee,
+        P.HostSpace,
+        P.PageQuota,
+        P.UserQuota,
+        P.AdministratorRoleId,
+        P.RegisteredRoleId,
+        PL.Description,
+        PL.KeyWords,
+         Case when PL.BackgroundFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(PL.BackgroundFile, 8, 10) AS Int))
+			 else Coalesce(PL.BackgroundFile,'')
+			 end as BackgroundFile
+		,
+        P.GUID,
+        P.PaymentProcessor,
+        P.ProcessorUserId,
+        P.ProcessorPassword,
+        P.SiteLogHistory,
+        U.Email,
+        P.DefaultLanguage,
+        P.TimezoneOffset,
+        PL.AdminTabId,
+        P.HomeDirectory,
+        PL.SplashTabId,
+       PL.HomeTabId,
+        PL.LoginTabId,
+        PL.RegisterTabId,
+        PL.UserTabId,
+        PL.SearchTabId,
+        PL.Custom404TabId,
+        PL.Custom500TabId,
+        {databaseOwner}{objectQualifier}SuperUserTabID() AS SuperTabId,
+        P.CreatedByUserID,
+        P.CreatedOnDate,
+        P.LastModifiedByUserID,
+        P.LastModifiedOnDate,
+        PL.CultureCode
+    FROM       {databaseOwner}[{objectQualifier}Portals]            AS P
+    INNER JOIN {databaseOwner}[{objectQualifier}PortalLocalization] AS PL ON P.PortalID = PL.PortalID
+    LEFT  JOIN {databaseOwner}[{objectQualifier}Users]              AS U  ON P.AdministratorId = U.UserID
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_TabModules]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+         Case when tm.IconFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(tm.IconFile, 8, 10) AS Int))
+			 else Coalesce(tm.IconFile,'')
+			 end as IconFile
+		,M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        TM.CreatedByUserID,
+        TM.CreatedOnDate,
+        TM.LastModifiedByUserID,
+        TM.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM {databaseOwner}[{objectQualifier}ModuleDefinitions]     AS MD
+     INNER JOIN {databaseOwner}[{objectQualifier}Modules]        AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}ModuleControls] AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems]   AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}TabModules]     AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}Tabs]           AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Tabs]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+		T.HasBeenPublished,
+		 Case when t.IconFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(t.IconFile, 8, 10) AS Int))
+			 else Coalesce(t.IconFile,'')
+			 end as IconFile
+		,
+         Case when t.IconFileLarge LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(t.IconFileLarge, 8, 10) AS Int))
+			 else Coalesce(t.IconFileLarge,'')
+			 end as IconFileLarge
+		,T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate,
+		T.IsSystem
+    FROM       {databaseOwner}[{objectQualifier}Tabs]         AS T
+    LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems] AS CI ON T.ContentItemID = CI.ContentItemID
+GO

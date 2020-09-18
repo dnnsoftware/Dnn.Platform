@@ -1,0 +1,464 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/* RESET STYLES
+----------------------------------------------- */
+/* GENERAL STYLES
+----------------------------------------------- */
+#smMainContent{
+	position:relative;
+	margin:0 auto; padding:25px 25px 15px 0;
+}
+
+.dnnFormMessage{-moz-border-radius:3px;border-radius:3px;padding:10px 10px 10px 40px;line-height:1.4;margin:0.5em 1em;}
+.dnnFormSuccess{background:#ecffeb url(../../../images/success-icn.png) no-repeat 10px center;border:2px #64b657 solid;color:#358927}
+
+/* ----- LINKS ----- */
+
+.DnnModule-Messaging-Notifications a, .DnnModule-Messaging-Details a, .smListings li ul * {
+	-webkit-transition: all .15s ease;
+	   -moz-transition: all .15s ease;  
+   	     -o-transition: all .15s ease;  
+        	transition: all .15s ease; 
+}
+
+.DnnModule-Messaging-Notifications p a,
+.DnnModule-Messaging-Details p a { border-bottom: 1px dashed #E5E5E5; }
+.DnnModule-Messaging-Notifications p a:hover,
+.DnnModule-Messaging-Details p a:hover {text-decoration:underline;}
+
+/* BUTTONS */
+
+	/*
+	-  Messages / Notification Specific Button Styles
+	------------------------------------------------------------------*/
+	
+	
+		/* Select Drop Down with button style */
+		.DnnModule-Messaging-Notifications .selectDrop {position:relative;z-index:1; width:auto;}
+		.DnnModule-Messaging-Notifications .selectDrop  > a span{padding-right:5px;}
+		
+		/* Select Drop Down Arrow for regular, active, and disabled state */
+		.selectDrop > a:after{
+			display:none;
+			content:'';
+			position:relative;
+			display:inline-block; width:7px; height:9px;
+			background: url(images/icons.png) 0 3px no-repeat;	
+			margin: 0 0 0 6px;
+		}
+		.selectDrop > a:hover:after{background: url(images/icons.png) -250px 3px no-repeat;}
+		.selectDrop > a.disabled:hover:after{background: url(images/icons.png) 0 3px no-repeat;}
+		
+		.selectDrop > a:active span{color:#ddd;}
+		.selectDrop > a:active:after{background: url(images/icons.png) -250px 3px no-repeat;}
+		.active > a:after{background: url(images/icons.png) -250px 3px no-repeat!important;} 
+		.selectDrop > a.disabled:active:after{background: url(images/icons.png) 0 3px no-repeat;}
+		
+		/* Styles for select drop*/
+		.DnnModule .selectDrop ul{
+			display:none;
+			position:absolute; left:0; top:31px;
+			padding:15px!important;
+			min-width:150px;
+			border:1px solid #ccc; background:#fff;
+			
+			/*CSS3*/
+			-moz-border-radius-bottomright: 3px;
+			-moz-border-radius-bottomleft:	3px;
+			-webkit-border-radius: 			0px 0px 3px 3px;
+			border-radius: 					0px 0px 3px 3px; 
+			
+			-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+			-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+			box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+		}
+		/* Styles for select button on active state*/
+		.selectDrop.active {z-index:2; border:none;}
+		.selectDrop.active .dnnTertiaryAction{
+			position:relative; z-index:3;
+			background:#666;
+			color:#ddd;
+			text-shadow:none;
+			
+			-webkit-box-shadow: 	inset 0px 0px 5px 0px #555;
+			-moz-box-shadow: 		inset 0px 0px 5px 0px #555;
+			box-shadow: 			inset 0px 0px 5px 0px #555; 
+		}
+		.selectDrop.active > a:after{background: url(../images/icons.png) -250px 3px no-repeat;}
+		
+		/* Prevent default .select dropdown hoverstate when dropdown is open*/
+		.selectDrop.active > a:active:after{background: url(../images/icons.png) 0 3px no-repeat;}
+		
+		/* when select drop down button is clicked toggle active class to show*/
+		.selectDrop.active ul{display:block;}
+		.selectDrop ul li{margin-bottom:5px;}
+		
+		.clear{clear:both;}
+		
+		ul.token-input-list-facebook { width: 45% !important; margin-bottom: 18px !important; }
+
+
+button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPrimaryAction, .dnnSecondaryAction, .dnnTertiaryAction, ul.dnnAdminTabNav li a, .dnnLogin .LoginTabGroup span{ 
+		min-width:55px;
+	}	
+
+/* MODULE STRUCTURE
+----------------------------------------------- */
+.DnnModule-Messaging-Notifications,
+.DnnModule-Messaging-Details{position:relative;}
+
+.dnnForm{min-width:inherit; width:100%;}
+.dnnCoreMessagingContent, .dnnMessagingHeader, .dnnCoreMessagingFooter{position:relative;z-index:0;} /* z-index needs to be set for header controls */
+.dnnCoreMessagingContent{z-index:1;}
+
+/* HEADER */
+
+#composeMsgButton, #composeMsgButtonDetails{position:absolute;right:0;bottom:15px;text-decoration:underline;}
+.dnnAdminTabNav a span{
+	display:inline;
+	min-height:12px;
+	padding: 0.3em 7px;
+	margin-right:5px;
+	background: rgb(31,152,241); /* Old browsers */
+	font-weight:normal;
+	font-size:11px;
+	
+	/*CSS3*/	
+	background: -moz-linear-gradient(top, rgba(31,152,241,1) 0%, rgba(2,111,196,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(31,152,241,1)), color-stop(100%,rgba(2,111,196,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* Opera 11.10+ */
+	background: linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* W3C */
+	
+	-webkit-border-radius: 	3px;
+	-moz-border-radius: 	3px;
+	border-radius: 			3px; 
+	
+	-webkit-box-shadow: 0px 1px 0px 0px #222222;
+	-moz-box-shadow: 0px 1px 0px 0px #222222;
+	box-shadow: 0px 1px 0px 0px #222222; 
+}
+
+/* CONTENT */
+.dnnCoreMessagingContent{padding-top:15px;}
+
+	.messageControls{margin-bottom:15px; padding:15px 0; border-bottom:1px solid #ddd; }
+	.messageControls ul, .messageControls li{list-style:none;padding:0;margin:0;}
+	.messageControls a:hover{text-decoration:none;}
+	.DnnModule .messageControls .buttonGroup {margin-right:7px; padding-left:0;}
+	
+	/* Float Control Groups */
+	.messageControls div{position:relative;float:left;z-index:1;} /*fix z-indexing issue between controls*/
+	.messageControls div:hover{z-index:2;}
+	
+	.messageControls .messageFolders{float:right;}
+	.messageControls .messageSelect{margin-right:25px;}
+	.messageControls div.clear{float:none;}
+	
+	/*Group Contents */
+	.messageControls div > ul {float:left;}
+	.messageControls div > ul > li{float:left; position:relative;}
+	
+			
+	/* Message Folder Specific Styles*/
+	.messageFolders p{float:left; display:inline-block; padding: 8px 15px; color:#666;}
+	.messageFolders p strong{color:#444; font-weight:bold;}
+	
+	/* Message Group Selection Styles */
+	/* .dnnTertiaryAction.ArchiveItems {padding: 8px 12px; overflow:hidden;}
+	.dnnTertiaryAction.ArchiveItems span{
+		display:inline-block; 
+		overflow:hidden; 
+		width:10px;
+		background:url(images/icons.png) no-repeat -49px 2px;
+		text-indent:-9999px;
+	}
+	.dnnTertiaryAction.ArchiveItems:active span{background-position:-99px 2px;} */
+	/* Message Order Styles */
+	.messageActions > a.dnnTertiaryAction{float:left;}
+	.dnnTertiaryAction.ToggleOrder {padding: 9px 12px;}
+	.dnnTertiaryAction.ToggleOrder span{
+		display:inline-block; 
+		overflow:hidden; 
+		width:10px;
+		background:url(images/icons.png) no-repeat -150px 3px;
+		text-indent:-9999px; 
+	}
+	.dnnTertiaryAction.ToggleOrder:active span{background-position:-300px 3px;}
+	.dnnTertiaryAction.ToggleOrder.ascend span{background-position: -200px 3px;}
+	.dnnTertiaryAction.ToggleOrder.ascend:active span{background-position: -350px 3px;}
+	.dnnPrimaryAction.ComposeMessage { margin-bottom: 0; }
+
+	/* AJAX load styles */
+	#loadingMessages, #loadingNotifications {
+		text-align:center;
+		color:#999;
+		background:#f4f4f4;
+		padding:15px;
+	}
+	#loadingMessages img, #loadingNotifications img{margin-right:5px;}
+
+	/* Message Header (subject and back button) */
+	.messageHeader{padding:12px 0 20px 0;}
+	.messageHeader p{ font-size:18px; color:#444;float:left;}
+	.messageHeader p strong{ font-weight:bold; color:#333;}
+	.messageHeader .returnLink{float:right; font-weight:bold;}
+	
+	/* Message Header (subject and back button) */
+	.morePrevMsgButton{
+		padding:17px 15px 15px 15px; margin-bottom:15px;
+		display:block;
+		background:#F4F4F4 url(images/list-Icon.png) no-repeat 15px 18px;
+		border-bottom:1px solid #ddd;
+		text-align:center;
+	}
+	.morePrevMsgButton .replyView{
+		display:block;
+        font-weight:bold;
+        margin:0 auto;
+    }
+
+	/* Listing Styles */
+	.smListings{width:100%; clear:both; margin-bottom:15px;}
+	
+	.DnnModule .smListings ul{ padding-left:0!important;}
+	.smListings > ul > li{overflow: auto; width:100%; background:#eee; border-bottom:1px solid #eee;  }
+	.smListings > ul > li.active{background:none;}
+
+
+	.ListCol-1 dd, .ListCol-2 dd, .ListCol-3 dd, .ListCol-4 dd,
+	.ListCol-1 dt, .ListCol-2 dt, .ListCol-3 dt, .ListCol-4 dt,
+	.ListCol-1 dl, .ListCol-2 dl, .ListCol-3 dl, .ListCol-4 dl{margin:0;padding:0;font-family:inherit;}
+		
+	
+	.smListings [class^="ListCol-"]{
+		display:block; float:left;
+		padding:2% 2% 2% 0;
+		overflow:hidden;
+		word-wrap: break-word;
+	}
+	
+	.DnnModule-Messaging-Notifications .previousMessages .smListings [class^="ListCol-"]{ height:auto; }
+	
+	.DnnModule-Messaging-Notifications .smListings .ListCol-1{width:1%; padding-left:2%; min-width:25px;}
+	.DnnModule-Messaging-Notifications .smListings .ListCol-2{width:8%; min-width:65px;}
+	.DnnModule-Messaging-Notifications .smListings .ListCol-3{width:56%;}
+	.DnnModule-Messaging-Notifications .smListings .ListCol-4{width:25%; max-width:160px;float:right;}
+	
+	.DnnModule-Messaging-Details .smListings .ListCol-1{width:6%; padding-left:2%;}
+	.DnnModule-Messaging-Details .smListings .ListCol-2{width:61%;}
+	.DnnModule-Messaging-Details .smListings .ListCol-3{width:25%;}
+	
+	
+	/*Column 1 Styles*/
+	.DnnModule-Messaging-Notifications .smListings .ListCol-1 input[type="checkbox"]{float:left;}
+	.DnnModule-Messaging-Notifications .smListings .ListCol-1 label{text-indent:-99999px;}
+
+	.DnnModule-Messaging-Details .smListings .profileImg{
+		display:block;
+		width:40px; height:40px;
+		background:#ddd;
+		border:3px solid #ddd;
+	}
+	.DnnModule-Messaging-Details .smListings .profileImg span{display:inline-block; width:40px; height:40px; overflow:hidden; border: transparent; text-decoration: none;}
+	.DnnModule-Messaging-Details .smListings .profileImg span em { display: table-cell; width: 40px; height: 40px; vertical-align: middle; } 
+	.DnnModule-Messaging-Details .smListings .profileImg img{display: inline-block; border: none; width: 100%; -ms-interpolation-mode: bicubic;	}
+	/*Column 2 Styles*/
+	.DnnModule-Messaging-Notifications .smListings .profileImg{
+		display:block;
+		width:40px; height:40px;
+		background:#ddd;
+		border:3px solid #ddd;
+	}
+	.DnnModule-Messaging-Notifications .smListings .profileImg span{display:inline-block; width:40px; height:40px; overflow:hidden; border: transparent; text-decoration: none;}
+	.DnnModule-Messaging-Notifications .smListings .profileImg span em { display: table-cell; width: 40px; height: 40px; vertical-align: middle; } 
+	.DnnModule-Messaging-Notifications .smListings .profileImg img{display: inline-block; border: none; width: 100%; -ms-interpolation-mode: bicubic;	}
+	.DnnModule-Messaging-Details .smListings .active .subject{font-weight:bold;}
+	.DnnModule-Messaging-Details .smListings .meta{margin-bottom:10px;}
+	.DnnModule-Messaging-Details .smListings .meta em{font-style:italic;}
+	.DnnModule-Messaging-Details .smListings .meta a{font-weight:bold;}
+	.DnnModule-Messaging-Details .smListings .message{color:#888; margin-bottom:15px;white-space: pre-wrap;}
+	.DnnModule-Messaging-Details .smListings .attatchements{margin-bottom:15px;}
+	.DnnModule-Messaging-Details .smListings .attatchements strong{
+		display:block;
+		margin-bottom:15px;
+		font-weight:bold;
+	}
+	.DnnModule-Messaging-Details .smListings .attatchements li{
+		background:url(images/page-Icon.png) no-repeat 0 2px; 
+		padding:4px 20px;
+	}
+
+	/*Column 3 Styles*/
+	.DnnModule-Messaging-Notifications .smListings .active .subject{font-weight:bold;}
+	.DnnModule-Messaging-Notifications .smListings .meta{margin-bottom:10px;}
+	.DnnModule-Messaging-Notifications .smListings .meta em{font-style:italic;}
+	.DnnModule-Messaging-Notifications .smListings .meta a{}
+	.DnnModule-Messaging-Notifications .smListings .meta a:hover{/*baby blue*/}
+	.DnnModule-Messaging-Notifications .smListings .message{color:#888;white-space: pre-wrap;}
+
+	.DnnModule-Messaging-Details .smListings .ListCol-3 ul{float:right;} 
+	.DnnModule-Messaging-Details .smListings .ListCol-3 ul li{text-align:right; margin-bottom:8px; height:18px; list-style:none;}
+	.DnnModule-Messaging-Details .smListings .ListCol-3 ul li:first-child{color:#888;}
+	.DnnModule-Messaging-Details .smListings .active .ActiveToggle, .smListings .ActiveToggle:hover {
+		display:inline-block;
+		width:16px; height:16px;
+		margin-left:5px;
+		background: rgb(31,152,241); /* Old browsers */
+		overflow:hidden;
+		text-indent:9999px;
+		
+		/*CSS3*/	
+		background: -moz-linear-gradient(top, rgba(31,152,241,1) 0%, rgba(2,111,196,1) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(31,152,241,1)), color-stop(100%,rgba(2,111,196,1))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* Opera 11.10+ */
+		background: linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* W3C */
+		
+		-webkit-border-radius: 	3px;
+		-moz-border-radius: 	3px;
+		border-radius: 			3px; 
+		
+		-webkit-box-shadow: 0px 1px 0px 0px #222222;
+		-moz-box-shadow: 0px 1px 0px 0px #222222;
+		box-shadow: 0px 1px 0px 0px #222222; 
+	}
+	.DnnModule-Messaging-Details .smListings .active .ActiveToggle:hover, .smListings .ActiveToggle{
+		display:inline-block;
+		width:16px; height:16px;
+		margin-left:5px;
+		background: rgb(227,227,227); /* Old browsers */
+		overflow:hidden;
+		text-indent:9999px;
+		
+		/*CSS3*/
+		
+		background: -moz-linear-gradient(top, rgba(227,227,227,1) 0%, rgba(199,200,202,1) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(227,227,227,1)), color-stop(100%,rgba(199,200,202,1))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, rgba(227,227,227,1) 0%,rgba(199,200,202,1) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, rgba(227,227,227,1) 0%,rgba(199,200,202,1) 100%); /* Opera 11.10+ */
+		background: linear-gradient(top, rgba(227,227,227,1) 0%,rgba(199,200,202,1) 100%); /* W3C */
+		
+		-webkit-border-radius: 	3px;
+		-moz-border-radius: 	3px;
+		border-radius: 			3px; 
+		
+		-webkit-box-shadow: 0px 1px 0px 0px #222222;
+		-moz-box-shadow: 0px 1px 0px 0px #222222;
+		box-shadow: 0px 1px 0px 0px #222222; 
+	}
+
+	/*Column 4 Styles*/
+	.DnnModule-Messaging-Notifications .smListings .ListCol-4 ul{float:right;} 
+	.DnnModule-Messaging-Notifications .smListings .ListCol-4 ul li{
+		display:block;
+		line-height:20px;
+		margin-bottom:8px; 
+		height:20px; 
+		list-style:none;
+		text-align:right;
+	}
+	.DnnModule-Messaging-Notifications .smListings .ListCol-4 ul li:first-child{color:#888;}
+	.DnnModule-Messaging-Notifications .smListings li ul .hoverControls div{display:none; padding-top:5px;}
+	.DnnModule-Messaging-Notifications .smListings li:hover ul  > .hoverControls div{display:block; margin-top: 15px; }
+	    
+	.DnnModule-Messaging-Notifications .smListings .active .ActiveToggle, .smListings .ActiveToggle:hover {
+		display:inline-block;
+		width:16px; height:16px;
+		margin-left:5px;
+		background: rgb(31,152,241); /* Old browsers */
+		overflow:hidden;
+		text-indent:9999px;
+		
+		/*CSS3*/	
+		background: -moz-linear-gradient(top, rgba(31,152,241,1) 0%, rgba(2,111,196,1) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(31,152,241,1)), color-stop(100%,rgba(2,111,196,1))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* Opera 11.10+ */
+		background: linear-gradient(top, rgba(31,152,241,1) 0%,rgba(2,111,196,1) 100%); /* W3C */
+		
+		-webkit-border-radius: 	3px;
+		-moz-border-radius: 	3px;
+		border-radius: 			3px; 
+		
+		-webkit-box-shadow: 0px 1px 0px 0px #222222;
+		-moz-box-shadow: 0px 1px 0px 0px #222222;
+		box-shadow: 0px 1px 0px 0px #222222; 
+	}
+	.DnnModule-Messaging-Notifications .smListings .active .ActiveToggle:hover, .smListings .ActiveToggle{
+		display:inline-block;
+		width:16px; height:16px;
+		margin-left:5px;
+		background: rgb(227,227,227); /* Old browsers */
+		overflow:hidden;
+		text-indent:9999px;
+		
+		/*CSS3*/
+		
+		background: -moz-linear-gradient(top, rgba(227,227,227,1) 0%, rgba(199,200,202,1) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(227,227,227,1)), color-stop(100%,rgba(199,200,202,1))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, rgba(227,227,227,1) 0%,rgba(199,200,202,1) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, rgba(227,227,227,1) 0%,rgba(199,200,202,1) 100%); /* Opera 11.10+ */
+		background: linear-gradient(top, rgba(227,227,227,1) 0%,rgba(199,200,202,1) 100%); /* W3C */
+		
+		-webkit-border-radius: 	3px;
+		-moz-border-radius: 	3px;
+		border-radius: 			3px; 
+		
+		-webkit-box-shadow: 0px 1px 0px 0px #222222;
+		-moz-box-shadow: 0px 1px 0px 0px #222222;
+		box-shadow: 0px 1px 0px 0px #222222; 
+	}
+	
+	.DnnModule-Messaging-Notifications .notificationControls{margin-top:10px;}
+	
+
+/* FOOTER */
+	.dnnCoreMessagingFooter{ width:100%; }
+	.DnnModule-Messaging-Notifications .footer a.dnnPrimaryAction{float:right;}
+	.DnnModule-Messaging-Details .footer a.dnnPrimaryAction{float:left; clear:left;}
+	
+	textarea#replyMessage{
+		display:block;
+		width:70%; height:75px;
+		margin-bottom:15px;
+		margin-right:15px;
+		padding:15px;
+		
+		border:1px solid #BDB58E;
+		font-family:Arial, Helvetica, sans-serif;
+		color:#777;
+		
+		background:#F7F6E8;
+		
+		/*CSS3*/
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px; 
+	}
+	textarea#replyMessage:focus, textarea#replyMessage:active{
+		background:#F9F8D2;
+		color:#333;
+	}
+	.notificationControls .dnnPrimaryAction{margin-right:5px;} 
+    .troubleshoot{border:1px solid red;}
+    
+    /*composeMessageDialog*/
+    .composeMessageDialog.dnnForm{
+        padding-top: 18px;
+    }
+	.composeMessageDialog .fileUploadArea{ display: inline-block;vertical-align: top;}
+    .composeMessageDialog .dnnTertiaryAction{ margin: 0 10px 0 0;padding: 6px 6px;height: 32px;}
+	/*Attachments*/
+	.composeMessageDialog .messageAttachments{ margin-top: 5px;}
+	/* File Upload */
+	.composeMessageDialog .itemUpload{ clear: both;}
+    .composeMessageDialog .itemUpload .progress_bar_wrapper{ width: 500px;overflow: hidden;}
+    .composeMessageDialog .itemUpload .progress-bar div{ background-image: url('Images/progress.gif');position:relative;padding:0 !important;}
+	
+/* ISSUE DNN-5754 */
+ul.messages dd.message img {
+    max-width: 100% !important;
+    height: auto !important;
+}

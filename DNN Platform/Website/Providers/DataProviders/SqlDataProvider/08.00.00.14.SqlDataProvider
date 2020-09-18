@@ -1,0 +1,66 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts] 
+ 	@UserId INT
+	,@PortalId INT
+AS
+BEGIN
+	SELECT DISTINCT m.*
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr
+		INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m 
+			ON (mr.MessageID = m.MessageID)
+	WHERE mr.UserID = @UserID
+		AND m.PortalID = @PortalID
+		--Added to allow a single index to cover both this and the other two messaging procs:
+		--dbo.[CoreMessaging_CountNotifications]
+		--CoreMessaging_CountNewThreads
+		AND mr.[Read] in (0,1)
+		AND mr.SendToast = 1
+END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}CoreMessaging_MessageRecipients_UserID_MessageID_Read_SendToast' AND object_id = OBJECT_ID('{objectQualifier}CoreMessaging_MessageRecipients'))
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_MessageRecipients_UserID_MessageID_Read_SendToast] ON {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+	(
+		[MessageID] ASC,
+		[UserID] ASC,
+		[Read] ASC,
+		[SendToast] ASC
+	)WITH (STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}CoreMessaging_Messages_Send_MessageID_PortalID_NotificationTypeID_ExpirationDate' AND object_id = OBJECT_ID('{objectQualifier}CoreMessaging_Messages'))
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_Messages_Send_MessageID_PortalID_NotificationTypeID_ExpirationDate] ON {databaseOwner}[{objectQualifier}CoreMessaging_Messages]
+	(
+		[MessageID] ASC,
+		[PortalID] ASC,
+		[NotificationTypeID] ASC,
+		[ExpirationDate] Desc
+	)
+	INCLUDE ( [To],
+			[From],
+			[Subject],
+			[Body],
+			[ConversationID],
+			[ReplyAllAllowed],
+			[SenderUserID],
+			[Context],
+			[IncludeDismissAction],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate]
+		) WITH (STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO

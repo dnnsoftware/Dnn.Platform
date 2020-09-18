@@ -1,0 +1,169 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update Add Portal Procedure */
+/*******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalInfo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddPortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalInfo]
+	@PortalName         nvarchar(128),
+	@Currency           char(3),
+	@ExpiryDate         datetime,
+	@HostFee            money,
+	@HostSpace          int,
+	@SiteLogHistory     int,
+	@HomeDirectory		varchar(100)
+
+as
+DECLARE @PortalID int
+
+insert into {objectQualifier}Portals (
+  PortalName,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  HostFee,
+  HostSpace,
+  Description,
+  KeyWords,
+  SiteLogHistory,
+  HomeDirectory
+)
+values (
+  @PortalName,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  @HostFee,
+  @HostSpace,
+  @PortalName,
+  @PortalName,
+  @SiteLogHistory,
+  @HomeDirectory
+)
+
+SET @PortalID = SCOPE_IDENTITY()
+
+IF @HomeDirectory = ''
+BEGIN
+	UPDATE {objectQualifier}Portals SET HomeDirectory = 'Portals/' + convert(varchar(10), @PortalID) WHERE PortalID = @PortalID
+END
+
+SELECT @PortalID
+GO
+
+/* Update Get All Users Procedure */
+/**********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllUsers]
+
+    @PortalId		int,
+    @PageIndex      int,
+    @PageSize       int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForUsers (UserId)
+        SELECT UserId FROM	{objectQualifier}vw_Users 
+		WHERE ( PortalId = @PortalId or (PortalId Is Null AND @PortalId is null ) )
+		ORDER BY FirstName + ' ' + LastName
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId 
+		AND (PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+        AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+	ORDER BY FirstName + ' ' + LastName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+
+END
+GO
+
+/* Update Get Users By Profile Property Procedure */
+/**************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersByProfileProperty]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+    @PortalId		int,
+    @PropertyName   nvarchar(256),
+    @PropertyValue  nvarchar(256),
+    @PageIndex      int,
+    @PageSize       int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForUsers
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        UserId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForUsers (UserId)
+        SELECT U.UserId 
+		FROM   {objectQualifier}ProfilePropertyDefinition P
+			INNER JOIN {objectQualifier}UserProfile UP ON P.PropertyDefinitionID = UP.PropertyDefinitionID 
+			INNER JOIN {objectQualifier}vw_Users U ON UP.UserID = U.UserID
+		WHERE (PropertyName = @PropertyName) AND (PropertyValue LIKE @PropertyValue)
+			AND U.Portalid = @PortalId OR (U.PortalId Is Null AND @PortalId is null )
+		ORDER BY U.FirstName + ' ' + U.LastName
+
+    SELECT  *
+    FROM	{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+    WHERE  u.UserId = p.UserId
+			AND ( PortalId = @PortalId OR (PortalId Is Null AND @PortalId is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+	ORDER BY U.FirstName + ' ' + U.LastName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForUsers
+
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

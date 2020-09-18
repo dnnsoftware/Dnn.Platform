@@ -1,0 +1,1260 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Fix Supported Features column in DesktopModules */
+/***************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules
+SET SupportedFeatures = 0
+WHERE (SupportedFeatures = -1) or (SupportedFeatures is Null)
+GO
+
+/* Add new LogOff control to ModuleControls */
+/********************************************/
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ModuleDefID IS NULL AND ControlKey = 'Logoff') = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}ModuleControls
+			( ControlKey, ControlTitle, ControlSrc, ControlType )
+			VALUES ( 'Logoff', 'Account Logout', 'Admin/Authentication/Logoff.ascx', -1 )
+	END
+GO
+
+/* Update ControlSrc for Authentication ModuleControl */
+/******************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET ControlSrc = 'Admin/Authentication/Authentication.ascx'
+	WHERE ControlSrc = 'Admin/Security/AuthenticationSettings.ascx'
+GO
+
+/* Update ControlSrc for SignIn ModuleControl */
+/******************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET ControlSrc = 'Admin/Authentication/Login.ascx'
+	WHERE ControlSrc = 'Admin/Security/Signin.ascx'
+GO
+
+/* Update FriendlyName for Authentication Module */
+/************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleDefinitions
+	SET FriendlyName = 'Authentication'
+	WHERE FriendlyName = 'Windows Authentication'
+GO
+
+/* Update WindowsAuth Settings to use the Authentication Module instead of Site Settings */
+/*****************************************************************************************/
+
+BEGIN
+	CREATE TABLE #AuthModules
+	(
+		ModuleID int,
+		PortalID int,
+		AuthModuleID int
+	)
+
+	-- Insert into our temp table
+    INSERT INTO #AuthModules (ModuleID, PortalID, AuthModuleID )
+		SELECT     
+			m.ModuleID,
+			m.PortalID,
+			(SELECT ModuleID 
+				FROM {databaseOwner}{objectQualifier}Modules MI
+				INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions MDef ON MI.ModuleDefID = MDef.ModuleDefID
+				WHERE (MI.PortalID = m.PortalID) AND (MDef.FriendlyName = 'Authentication')) 
+			AS AuthModuleID
+		FROM {databaseOwner}{objectQualifier}Modules m 
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID = md.ModuleDefID
+		WHERE (md.FriendlyName = N'Site Settings') 
+
+	UPDATE {databaseOwner}{objectQualifier}ModuleSettings
+		SET ModuleID = a.AuthModuleID
+	FROM {databaseOwner}{objectQualifier}ModuleSettings s
+		INNER JOIN #AuthModules a ON a.ModuleID = s.ModuleID
+	WHERE (s.SettingName IN ('ProviderTypeName', 'RootDomain', 'SynchronizePassword', 'SynchronizeRole', 'UserName', 'WindowsAuthentication', 'AuthenticationType', 'EmailDomain'))
+
+	-- Drop temp table
+	DROP TABLE #AuthModules
+
+END
+
+GO
+
+/* Update WindowsAuth Settings to use a prefix so alternate systems can coexist */
+/********************************************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleSettings
+	SET SettingName = 'AD_' + SettingName
+FROM {databaseOwner}{objectQualifier}ModuleSettings s
+	INNER JOIN {objectQualifier}Modules m ON s.ModuleID = m.ModuleID
+WHERE (m.ModuleTitle = 'Authentication')
+
+GO
+
+/* Update UseCaptcha Settings to use the Authentication Module instead of User Accounts */
+/****************************************************************************************/
+
+BEGIN
+	CREATE TABLE #AuthModules
+	(
+		ModuleID int,
+		PortalID int,
+		AuthModuleID int
+	)
+
+	-- Insert into our temp table
+    INSERT INTO #AuthModules (ModuleID, PortalID, AuthModuleID )
+		SELECT     
+			m.ModuleID,
+			m.PortalID,
+			(SELECT ModuleID 
+				FROM {databaseOwner}{objectQualifier}Modules MI
+					INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions MDef ON MI.ModuleDefID = Mdef.ModuleDefID
+				WHERE (MI.PortalID = m.PortalID) AND (MDef.FriendlyName = 'Authentication')) 
+			AS AuthModuleID
+		FROM {databaseOwner}{objectQualifier}Modules AS m 
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON m.ModuleDefID = md.ModuleDefID
+		WHERE (md.FriendlyName = N'User Accounts') 
+			AND PortalID IS NOT NULL
+
+	UPDATE {databaseOwner}{objectQualifier}ModuleSettings
+		SET ModuleID = a.AuthModuleID,
+			SettingName = 'DNN_UseCaptcha'
+	FROM {databaseOwner}{objectQualifier}ModuleSettings s
+		LEFT JOIN #AuthModules a ON a.ModuleID = s.ModuleID
+	WHERE SettingName = 'Security_CaptchaLogin'
+		AND a.PortalID IS NOT NULL
+
+	-- Drop temp table
+	DROP TABLE #AuthModules
+
+END
+
+GO
+
+/* Create Authentication Table */
+/*******************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Authentication]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Authentication]
+			(
+				[AuthenticationID] [int] IDENTITY(1,1) NOT NULL,
+				[PackageID] [int] NOT NULL DEFAULT ((-1)),
+				[AuthenticationType] [nvarchar](100) NOT NULL,
+				[IsEnabled] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}Authentication_IsEnabled]  DEFAULT ((0)),
+				[SettingsControlSrc] [nvarchar](250) NOT NULL,
+				[LoginControlSrc] [nvarchar](250) NOT NULL,
+				[LogoffControlSrc] [nvarchar](250) NOT NULL,
+				CONSTRAINT [PK_{objectQualifier}Authentication] PRIMARY KEY CLUSTERED ([AuthenticationID] ASC )
+			)
+
+		/* Insert Row for the core (DNN) Authentication Type */
+		INSERT INTO {databaseOwner}{objectQualifier}Authentication
+			( AuthenticationType, IsEnabled, SettingsControlSrc, LoginControlSrc,  LogoffControlSrc )
+			VALUES ( 'DNN', 1, 'DesktopModules/AuthenticationServices/DNN//Settings.ascx', 'DesktopModules/AuthenticationServices/DNN//Login.ascx', '' )
+	END
+GO
+
+/* Create UserAuthentication Table */
+/***********************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UserAuthentication]') AND OBJECTPROPERTY(id, N'IsTABLE') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}UserAuthentication](
+			[UserAuthenticationID] [int] IDENTITY(1,1) NOT NULL,
+			[UserID] [int] NOT NULL,
+			[AuthenticationType] [nvarchar](100) NOT NULL,
+			[AuthenticationToken] [nvarchar](1000) NOT NULL,
+		 CONSTRAINT [PK_{objectQualifier}UserAuthentication] PRIMARY KEY CLUSTERED ( [UserAuthenticationID] ASC )
+		)
+
+		CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserAuthentication] ON {databaseOwner}[{objectQualifier}UserAuthentication] ( [UserID] ASC, [AuthenticationType] ASC )
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}UserAuthentication]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}UserAuthentication_{objectQualifier}Users] FOREIGN KEY([UserID]) REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID]) ON DELETE CASCADE
+	END
+GO
+
+/* Create AddAuthentication Procedure */
+/**************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddAuthentication]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddAuthentication
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddAuthentication
+	@PackageID				int,
+	@AuthenticationType     nvarchar(100),
+	@IsEnabled				bit,
+	@SettingsControlSrc     nvarchar(250),
+	@LoginControlSrc		nvarchar(250),
+	@LogoffControlSrc		nvarchar(250)
+AS
+	INSERT INTO {objectQualifier}Authentication (
+		PackageID,
+		AuthenticationType,
+		IsEnabled,
+		SettingsControlSrc,
+		LoginControlSrc,
+		LogoffControlSrc
+	)
+	VALUES (
+		@PackageID,
+		@AuthenticationType,
+		@IsEnabled,
+		@SettingsControlSrc,
+		@LoginControlSrc,
+		@LogoffControlSrc
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Create DeleteAuthentication Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteAuthentication]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteAuthentication
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteAuthentication
+	@AuthenticationID int
+AS
+	DELETE 
+		FROM   {objectQualifier}Authentication
+		WHERE AuthenticationID = @AuthenticationID
+GO
+
+/* Create GetAuthenticationService Procedure */
+/*********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAuthenticationService]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationService
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationService
+
+	@AuthenticationID int
+
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Authentication
+		WHERE AuthenticationID = @AuthenticationID
+GO
+
+/* Create GetAuthenticationServiceByPackageID Procedure */
+/********************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAuthenticationServiceByPackageID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationServiceByPackageID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationServiceByPackageID
+
+	@PackageID int
+
+AS
+	SELECT *
+		FROM  {databaseOwner}{objectQualifier}Authentication
+		WHERE PackageID = @PackageID
+GO
+
+/* Create GetAuthenticationServiceByType Procedure */
+/***************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAuthenticationServiceByType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationServiceByType
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationServiceByType
+
+	@AuthenticationType nvarchar(100)
+
+AS
+	SELECT *
+		FROM  {databaseOwner}{objectQualifier}Authentication
+		WHERE AuthenticationType = @AuthenticationType
+GO
+
+/* Create GetAuthenticationServices Procedure */
+/*****************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAuthenticationServices]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationServices
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAuthenticationServices
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Authentication
+GO
+
+/* Create GetEnabledAuthenticationServices Procedure */
+/*****************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetEnabledAuthenticationServices]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetEnabledAuthenticationServices
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetEnabledAuthenticationServices
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Authentication
+		WHERE  IsEnabled = 1
+GO
+
+
+/* Create UpdateAuthentication Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateAuthentication]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateAuthentication
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateAuthentication
+	@AuthenticationID       int,
+	@PackageID				int,
+	@AuthenticationType     nvarchar(100),
+	@IsEnabled				bit,
+	@SettingsControlSrc     nvarchar(250),
+	@LoginControlSrc		nvarchar(250),
+	@LogoffControlSrc		nvarchar(250)
+AS
+	UPDATE {databaseOwner}{objectQualifier}Authentication
+	SET    PackageID = @PackageID,
+		   AuthenticationType = @AuthenticationType,
+		   IsEnabled = @IsEnabled,
+		   SettingsControlSrc = @SettingsControlSrc,
+		   LoginControlSrc = @LoginControlSrc,
+		   LogoffControlSrc = @LogoffControlSrc
+	WHERE  AuthenticationID = @AuthenticationID
+
+GO
+
+/* Create GetUserByAuthToken Procedure */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUserByAuthToken]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetUserByAuthToken
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUserByAuthToken
+
+	@PortalId	int,
+	@UserToken	nvarchar(1000),
+	@AuthType	nvarchar(100)
+
+AS
+	SELECT u.* 
+		FROM {databaseOwner}{objectQualifier}vw_Users u
+			INNER JOIN {databaseOwner}{objectQualifier}UserAuthentication ua ON u.UserID = ua.UserID
+	WHERE  ua.AuthenticationToken = @UserToken
+		AND ua.AuthenticationType = @AuthType
+		AND    (PortalId = @PortalId OR IsSuperUser = 1 OR @PortalId is null)
+GO
+
+/* Create AddUserAuthentication Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddUserAuthentication]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddUserAuthentication
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddUserAuthentication
+	@UserID					int,
+	@AuthenticationType     nvarchar(100),
+	@AuthenticationToken    nvarchar(1000)
+
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}UserAuthentication (
+		UserID,
+		AuthenticationType,
+		AuthenticationToken
+	)
+	values (
+		@UserID,
+		@AuthenticationType,
+		@AuthenticationToken
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/******************************************/
+/* enlarge permission key field			  */
+/******************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Permission
+	ALTER COLUMN PermissionKey varchar(50) not null
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPermission]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddPermission
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPermission
+	@ModuleDefID int,
+	@PermissionCode varchar(50),
+	@PermissionKey varchar(50),
+	@PermissionName varchar(50)
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}Permission (
+	[ModuleDefID],
+	[PermissionCode],
+	[PermissionKey],
+	[PermissionName]
+) VALUES (
+	@ModuleDefID,
+	@PermissionCode,
+	@PermissionKey,
+	@PermissionName
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePermission]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePermission
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePermission
+	@PermissionID int, 
+	@PermissionCode varchar(50),
+	@ModuleDefID int, 
+	@PermissionKey varchar(50), 
+	@PermissionName varchar(50) 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}Permission SET
+	[ModuleDefID] = @ModuleDefID,
+	[PermissionCode] = @PermissionCode,
+	[PermissionKey] = @PermissionKey,
+	[PermissionName] = @PermissionName
+WHERE
+	[PermissionID] = @PermissionID
+GO
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionByCodeAndKey]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionByCodeAndKey
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPermissionByCodeAndKey
+	@PermissionCode varchar(50),
+	@PermissionKey varchar(50)
+AS
+
+SELECT
+	P.[PermissionID],
+	P.[PermissionCode],
+	P.[ModuleDefID],
+	P.[PermissionKey],
+	P.[PermissionName]
+FROM
+	{databaseOwner}{objectQualifier}Permission P
+WHERE
+	(P.PermissionCode = @PermissionCode or @PermissionCode IS NULL)
+	AND
+	(P.PermissionKey = @PermissionKey or @PermissionKey IS NULL)
+
+GO
+
+/*************************************************/
+/* remove orphans records from permissions table */
+/*************************************************/
+DELETE FROM {databaseOwner}{objectQualifier}Permission
+WHERE 
+	moduledefid <> -1 AND
+	moduledefid not in (SELECT moduledefid 
+						FROM {databaseOwner}{objectQualifier}Moduledefinitions)
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteDesktopModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteDesktopModule
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteDesktopModule
+	@DesktopModuleId int
+AS
+-- delete custom permissions
+DELETE FROM {databaseOwner}{objectQualifier}Permission
+WHERE moduledefid in 
+	(SELECT moduledefid 
+	FROM {databaseOwner}{objectQualifier}ModuleDefinitions
+	WHERE desktopmoduleid = @DesktopModuleId)
+	
+DELETE FROM {databaseOwner}{objectQualifier}DesktopModules 
+WHERE DesktopModuleId = @DesktopModuleId
+
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModuleDefinition]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteModuleDefinition
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteModuleDefinition
+	@ModuleDefId int
+AS
+
+-- delete custom permissions
+DELETE FROM {databaseOwner}{objectQualifier}Permission
+WHERE moduledefid = @ModuleDefId
+	
+DELETE FROM {databaseOwner}{objectQualifier}ModuleDefinitions
+WHERE  ModuleDefId = @ModuleDefId
+
+GO
+
+/* Create Packages Table */
+/*************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Packages]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Packages](
+			[PackageID]		[int] IDENTITY(1,1) NOT NULL,
+			[Name]			[nvarchar](50) NOT NULL,
+			[FriendlyName]	[nvarchar](250) NOT NULL,
+			[Description]	[nvarchar](2000) NOT NULL,
+			[PackageType]	[nvarchar](50) NOT NULL,
+			[Version]		[nvarchar](50) NOT NULL,
+			[License]		[ntext] NOT NULL,
+			[Manifest]		[ntext] NOT NULL,
+		 CONSTRAINT [PK_{objectQualifier}Packages] PRIMARY KEY CLUSTERED ([PackageID] ASC)
+		)
+
+		CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Packages] ON {databaseOwner}[{objectQualifier}Packages] ([Name] ASC)
+	END
+GO
+
+/* Create AddPackage Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPackage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddPackage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPackage
+	@Name			nvarchar(50),
+	@FriendlyName	nvarchar(250),
+	@Description	nvarchar(2000),
+	@PackageType	nvarchar(50),
+	@Version		nvarchar(50),
+	@License		ntext,
+	@Manifest		ntext
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Packages (
+		[Name],
+		FriendlyName,
+		Description,
+		PackageType,
+		Version,
+		License,
+		Manifest
+	)
+	VALUES (
+		@Name,
+		@FriendlyName,
+		@Description,
+		@PackageType,
+		@Version,
+		@License,
+		@Manifest
+	)
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Create UpdatePackage Procedure */
+/**********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePackage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePackage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePackage
+	@Name			nvarchar(50),
+	@FriendlyName	nvarchar(250),
+	@Description	nvarchar(2000),
+	@PackageType	nvarchar(50),
+	@Version		nvarchar(50),
+	@License		ntext,
+	@Manifest		ntext
+AS
+	UPDATE {databaseOwner}{objectQualifier}Packages
+		SET	FriendlyName = @FriendlyName,
+			Description = @Description,
+			PackageType = @PackageType,
+			Version = @Version,
+			License = @License,
+			Manifest = @Manifest
+		WHERE  [Name] = @Name
+GO
+
+/* Create DeletePackage Procedure */
+/**********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeletePackage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePackage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeletePackage
+	@PackageID		int
+AS
+	DELETE 
+		FROM   {databaseOwner}{objectQualifier}Packages
+		WHERE  [PackageID] = @PackageID
+GO
+
+/* Create GetPackageByName Procedure */
+/*************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPackageByName]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPackageByName
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPackageByName
+	@Name		nvarchar(250)
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Packages
+		WHERE  [Name] = @Name
+GO
+
+/* Create GetPackagesByType Procedure */
+/**************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPackagesByType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPackagesByType
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPackagesByType
+	@PackageType		nvarchar(50)
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Packages
+		WHERE  PackageType = @PackageType
+GO
+
+/* Create GetPackages Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPackages]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPackages
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPackages
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Packages
+GO
+
+/* Create GetPackage Procedure */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPackage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPackage
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPackage
+	@PackageID		int
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}Packages
+		WHERE  PackageID = @PackageID
+GO
+
+
+/* Add new Install/UnInstall controls to ModuleControls */
+/********************************************************/
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ModuleDefID IS NULL AND ControlKey = 'Install') = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}ModuleControls
+			( ControlKey, ControlTitle, ControlSrc, ControlType )
+			VALUES ( 'Install', 'Package Installer', 'Admin/Packages/Install.ascx', -1 )
+	END
+GO
+
+IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ModuleDefID IS NULL AND ControlKey = 'UnInstall') = 0
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}ModuleControls
+			( ControlKey, ControlTitle, ControlSrc, ControlType )
+			VALUES ( 'UnInstall', 'Package UnInstaller', 'Admin/Packages/UnInstall.ascx', -1 )
+	END
+GO
+/* Create Assemblies Table */
+/***************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Assemblies]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Assemblies](
+			[AssemblyID]	[int] IDENTITY(1,1) NOT NULL,
+			[PackageID]		[int] NOT NULL,
+			[AssemblyName]	[nvarchar](250) NOT NULL,
+			[Version]		[nvarchar](20) NOT NULL,
+		 CONSTRAINT [PK_{objectQualifier}PackageAssemblies] PRIMARY KEY CLUSTERED ([AssemblyID] ASC)
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Assemblies] 
+			ADD CONSTRAINT [FK_{objectQualifier}PackageAssemblies_PackageAssemblies] FOREIGN KEY([PackageID]) REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID])	
+	END
+GO
+
+/* Create RegisterAssembly Procedure */
+/*************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}RegisterAssembly]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}RegisterAssembly
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}RegisterAssembly
+	@PackageID      int,
+	@AssemblyName   nvarchar(250),
+	@Version		nvarchar(20)
+As
+	DECLARE @AssemblyID int
+	DECLARE @CurrentVersion nvarchar(20)
+	/*	@ReturnCode Values
+		0 - Assembly Does not Exist
+		1 - Older Version of Assembly Exists
+		2 - Assembly Already Registered
+	*/
+	DECLARE @ReturnCode int
+
+	-- First check if this assembly is registered to this package
+	SET @AssemblyID = (SELECT AssemblyID 
+							FROM {databaseOwner}{objectQualifier}Assemblies
+							WHERE PackageID = @PAckageID
+								AND AssemblyName = @AssemblyName)
+
+	IF @AssemblyID IS NULL
+		BEGIN
+			-- AssemblyID is null (not registered) 
+			-- but assembly may be registerd by other packages so check for Max unstalled version
+			SET @CurrentVersion  = (SELECT Max(Version )
+										FROM {databaseOwner}{objectQualifier}Assemblies
+										WHERE AssemblyName = @AssemblyName)
+
+			IF @CurrentVersion IS NULL
+				-- Assembly Not Regsitered -  Set ReturnCode = 0, so assembly is copied
+				SET @ReturnCode = 0
+			ELSE
+				IF @Version > @CurrentVersion
+					-- Newer version - Set ReturnCode = 1, so assembly is copied
+					SET @ReturnCode = 1
+				ELSE
+					-- Older or Same Version - Set ReturnCode = 2, so assembly is not copied
+					SET @ReturnCode = 2
+			
+			-- Add an assembly regsitration for this package
+			INSERT INTO {databaseOwner}{objectQualifier}Assemblies (
+				PackageID,
+				AssemblyName,
+				Version
+			)
+			VALUES (
+				@PackageID,
+				@AssemblyName,
+				@Version
+			)
+		END
+	ELSE
+		BEGIN
+			-- AssemblyID is not null - Assembly is registered - test for version
+			SET @CurrentVersion  = (SELECT Version 
+										FROM {databaseOwner}{objectQualifier}Assemblies
+										WHERE AssemblyID = @AssemblyID)
+			
+			IF @Version > @CurrentVersion
+				BEGIN
+					-- Newer version - Update Assembly registration
+					UPDATE {databaseOwner}{objectQualifier}Assemblies
+					SET    Version = @Version
+					WHERE  AssemblyID = @AssemblyID
+
+					-- Set ReturnCode = 1, so assembly is copied
+					SET @ReturnCode = 1
+				END
+			ELSE
+				-- Older or Same Version - Set ReturnCode = 2, so assembly is not copied
+				SET @ReturnCode = 2
+		END
+
+	SELECT @ReturnCode
+GO
+
+/* Create UnRegisterAssembly Procedure */
+/**************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UnRegisterAssembly]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UnRegisterAssembly
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UnRegisterAssembly
+	@PackageID     int,
+	@AssemblyName   nvarchar(250)
+AS
+	DECLARE @ReturnCode bit
+	SET @ReturnCode = 1 -- 1 = Can Delete Assembly, 0 = Cannot Delete Assembly
+
+	-- First remove the Assembly Reference for this Package
+	DELETE FROM {databaseOwner}{objectQualifier}Assemblies
+		WHERE PackageID = @PackageID
+			AND AssemblyName = @AssemblyName
+
+	-- Next check if any other Package is using this assembly
+	SET @PackageID = (SELECT TOP 1 PackageID 
+							FROM {databaseOwner}{objectQualifier}Assemblies
+							WHERE AssemblyName = @AssemblyName)
+
+	IF @PackageID IS NOT NULL
+		-- Set ReturnCode = 0, so assembly is not deleted
+		SET @ReturnCode = 0
+
+	SELECT @ReturnCode
+GO
+
+/* Update ModuleControls for SKIN Objects */
+/******************************************/
+
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/SolPartMenu.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Login.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Banner.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/BreadCrumb.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Copyright.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/CurrentDate.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/DotNetNuke.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Help.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/HostName.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Links.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Logo.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Privacy.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Authentication/Login.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Terms.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/User.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/TreeViewMenu.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Search.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Language.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'SKIN' where ControlSrc = 'Admin/Skins/Nav.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/SolPartActions.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/Icon.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/Title.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/Visibility.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/PrintModule.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/SolPartActions.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/DropDownActions.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/LinkActions.ascx'
+GO
+update {databaseOwner}{objectQualifier}ModuleControls set ControlTitle = 'CONTAINER' where ControlSrc = 'Admin/Containers/ActionButton.ascx'
+GO
+
+/* Remove Unsuported Payment Processors */
+/****************************************/
+
+DELETE FROM {databaseOwner}{objectQualifier}Lists
+	WHERE ListName = 'Processor'
+		AND Value <> 'PayPal'
+
+/* Update AddPropertyDefinition Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPropertyDefinition]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+	@PortalId int,
+	@ModuleDefId int,
+	@DataType int,
+	@DefaultValue ntext,
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(2000),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int
+
+AS
+	DECLARE @PropertyDefinitionId int
+
+	SELECT @PropertyDefinitionId = PropertyDefinitionId
+		FROM   {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+		WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+			AND PropertyName = @PropertyName
+
+	IF @PropertyDefinitionId is null
+		BEGIN
+			INSERT {databaseOwner}{objectQualifier}ProfilePropertyDefinition	(
+					PortalId,
+					ModuleDefId,
+					Deleted,
+					DataType,
+					DefaultValue,
+					PropertyCategory,
+					PropertyName,
+					Required,
+					ValidationExpression,
+					ViewOrder,
+					Visible,
+					Length
+				)
+				VALUES	(
+					@PortalId,
+					@ModuleDefId,
+					0,
+					@DataType,
+					@DefaultValue,
+					@PropertyCategory,
+					@PropertyName,
+					@Required,
+					@ValidationExpression,
+					@ViewOrder,
+					@Visible,
+					@Length
+				)
+
+			SELECT @PropertyDefinitionId = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+				SET DataType = @DataType,
+					ModuleDefId = @ModuleDefId,
+					DefaultValue = @DefaultValue,
+					PropertyCategory = @PropertyCategory,
+					Required = @Required,
+					ValidationExpression = @ValidationExpression,
+					ViewOrder = @ViewOrder,
+					Deleted = 0,
+					Visible = @Visible,
+					Length = @Length
+				WHERE PropertyDefinitionId = @PropertyDefinitionId
+		END
+		
+	SELECT @PropertyDefinitionId
+GO
+
+/* Update Displayprint fro SQL Module */
+/**************************************/
+
+UPDATE {databaseOwner}{objectQualifier}TabModules
+	SET DisplayPrint = 0
+FROM         {databaseOwner}{objectQualifier}TabModules TM 
+	INNER JOIN {databaseOwner}{objectQualifier}Modules M ON TM.ModuleID = M.ModuleID
+WHERE     (M.ModuleTitle = N'SQL') AND (M.PortalID IS NULL)
+
+GO
+
+/* Update GetServices Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetServices]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetServices
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetServices
+	@PortalId  int,
+	@UserId    int = null
+
+	AS
+	SELECT R.RoleId,
+		   R.PortalId,
+		   R.RoleGroupId,
+		   R.RoleName,
+		   R.Description,
+		   'ServiceFee' = case when convert(int,R.ServiceFee) <> 0 then R.ServiceFee else null end,
+		   'BillingPeriod' = case when convert(int,R.ServiceFee) <> 0 then R.BillingPeriod else null end,
+		   'BillingFrequency' = case when convert(int,R.ServiceFee) <> 0 then R.BillingFrequency else '' end,
+		   'TrialFee' = case when R.TrialFrequency <> 'N' then R.TrialFee else null end,
+		   'TrialPeriod' = case when R.TrialFrequency <> 'N' then R.TrialPeriod else null end,
+		   'TrialFrequency' = case when R.TrialFrequency <> 'N' then R.TrialFrequency else '' end,
+		   'ExpiryDate' = ( select ExpiryDate from {databaseOwner}{objectQualifier}UserRoles where {databaseOwner}{objectQualifier}UserRoles.RoleId = R.RoleId and {databaseOwner}{objectQualifier}UserRoles.UserId = @UserId ),
+		   'Subscribed' = ( select UserRoleId from {databaseOwner}{objectQualifier}UserRoles where {databaseOwner}{objectQualifier}UserRoles.RoleId = R.RoleId and {databaseOwner}{objectQualifier}UserRoles.UserId = @UserId )
+	from {databaseOwner}{objectQualifier}Roles R
+	where  R.PortalId = @PortalId
+	and    R.IsPublic = 1
+GO
+
+/* Update GetUserRoles Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUserRoles]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetUserRoles
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetUserRoles  
+@PortalId  int,
+@UserId    int
+
+AS
+
+SELECT     
+    R.*,
+    UR.UserRoleID, 
+    U.UserID, 
+    U.DisplayName, 
+    U.Email, 
+    UR.EffectiveDate, 
+    UR.ExpiryDate, 
+    UR.IsTrialUsed
+FROM {databaseOwner}{objectQualifier}UserRoles UR
+    INNER JOIN {databaseOwner}{objectQualifier}Users U ON UR.UserID = U.UserID 
+    INNER JOIN {databaseOwner}{objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+WHERE
+    U.UserID = @UserId AND R.PortalID = @PortalId 
+    
+GO
+
+declare @ModuleDefID int
+
+select @ModuleDefID = ModuleDefID
+from   {databaseOwner}{objectQualifier}ModuleDefinitions
+where  FriendlyName = 'Module Definitions'
+IF NOT EXISTS (SELECT ModuleControlID FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ModuleDefID = @ModuleDefID AND ControlKey = N'Import')
+BEGIN
+insert into {databaseOwner}{objectQualifier}ModuleControls ( ModuleDefID, ControlKey, ControlTitle, ControlSrc, IconFile, ControlType, ViewOrder, HelpUrl, SupportsPartialRendering )
+values ( @ModuleDefID, 'Import', 'Import Module Definition', 'Admin/ModuleDefinitions/ImportModuleDefinition.ascx', NULL, 3, NULL, NULL, 0 )
+END
+GO
+
+/* Create PackageTypes Table */
+/*****************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}PackageTypes]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}PackageTypes]
+			(
+				[PackageType] [nvarchar](100) NOT NULL,
+				[Description] [nvarchar](500) NOT NULL,
+				[SecurityAccessLevel] [int] NOT NULL,
+				CONSTRAINT [PK_{objectQualifier}PackageTypes_1] PRIMARY KEY CLUSTERED ( [PackageType] ASC )			
+			)
+
+		/* Add Auth_System Package Type */
+		INSERT INTO {databaseOwner}{objectQualifier}PackageTypes
+			( PackageType, Description, SecurityAccessLevel )
+			VALUES ( 'Auth_System', 'Authentication System', 3 )
+	END
+GO
+
+/* Add GetPackageType Procedure */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPackageType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPackageType
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPackageType  
+	@PackageType		nvarchar(50)
+AS
+	SELECT *
+		FROM   {databaseOwner}{objectQualifier}PackageTypes
+		WHERE  PackageType = @PackageType
+    
+GO
+
+/* Update AddPropertyDefinition Procedure */
+/******************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPropertyDefinition]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPropertyDefinition
+	@PortalId int,
+	@ModuleDefId int,
+	@DataType int,
+	@DefaultValue ntext,
+	@PropertyCategory nvarchar(50),
+	@PropertyName nvarchar(50),
+	@Required bit,
+	@ValidationExpression nvarchar(2000),
+	@ViewOrder int,
+	@Visible bit,
+    @Length int
+
+AS
+	DECLARE @PropertyDefinitionId int
+
+	SELECT @PropertyDefinitionId = PropertyDefinitionId
+		FROM   {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+		WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+			AND PropertyName = @PropertyName
+			
+	IF @vieworder=-1
+		BEGIN
+			SELECT         @vieworder = MAX(ViewOrder) + 1 
+			FROM           {databaseOwner}{objectQualifier}ProfilePropertyDefinition
+		END
+
+	IF @PropertyDefinitionId is null
+		BEGIN
+			INSERT {databaseOwner}{objectQualifier}ProfilePropertyDefinition	(
+					PortalId,
+					ModuleDefId,
+					Deleted,
+					DataType,
+					DefaultValue,
+					PropertyCategory,
+					PropertyName,
+					Required,
+					ValidationExpression,
+					ViewOrder,
+					Visible,
+					Length
+				)
+				VALUES	(
+					@PortalId,
+					@ModuleDefId,
+					0,
+					@DataType,
+					@DefaultValue,
+					@PropertyCategory,
+					@PropertyName,
+					@Required,
+					@ValidationExpression,
+					@ViewOrder,
+					@Visible,
+					@Length
+				)
+
+			SELECT @PropertyDefinitionId = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}ProfilePropertyDefinition 
+				SET DataType = @DataType,
+					ModuleDefId = @ModuleDefId,
+					DefaultValue = @DefaultValue,
+					PropertyCategory = @PropertyCategory,
+					Required = @Required,
+					ValidationExpression = @ValidationExpression,
+					ViewOrder = @ViewOrder,
+					Deleted = 0,
+					Visible = @Visible,
+					Length = @Length
+				WHERE PropertyDefinitionId = @PropertyDefinitionId
+		END
+		
+	SELECT @PropertyDefinitionId
+GO
+
+/* add indexes to TabPermissions table for foreign keys */
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}TabPermission_Permission')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Permission ON {databaseOwner}{objectQualifier}TabPermission
+ (
+ PermissionID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}TabPermission_Tabs')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Tabs ON {databaseOwner}{objectQualifier}TabPermission
+ (
+ TabID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}TabPermission_Users')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Users ON {databaseOwner}{objectQualifier}TabPermission
+ (
+ UserID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}TabPermission_Roles')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Roles ON {databaseOwner}{objectQualifier}TabPermission
+ (
+ RoleID
+ ) ON [PRIMARY]
+GO
+
+/* add indexes to ModulePermissions table for foreign keys */
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}ModulePermission_Permission')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Permission ON {databaseOwner}{objectQualifier}ModulePermission
+ (
+ PermissionID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}ModulePermission_Modules')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Modules ON {databaseOwner}{objectQualifier}ModulePermission
+ (
+ ModuleID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}ModulePermission_Users')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Users ON {databaseOwner}{objectQualifier}ModulePermission
+ (
+ UserID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}ModulePermission_Roles')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {databaseOwner}{objectQualifier}ModulePermission
+ (
+ RoleID
+ ) ON [PRIMARY]
+GO
+
+/* add indexes to FolderPermissions table for foreign keys */
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}FolderPermission_Permission')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Permission ON {databaseOwner}{objectQualifier}FolderPermission
+ (
+ PermissionID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}FolderPermission_Modules')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Modules ON {databaseOwner}{objectQualifier}FolderPermission
+ (
+ FolderID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}FolderPermission_Users')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Users ON {databaseOwner}{objectQualifier}FolderPermission
+ (
+ UserID
+ ) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE name = N'IX_{objectQualifier}FolderPermission_Roles')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Roles ON {databaseOwner}{objectQualifier}FolderPermission
+ (
+ RoleID
+ ) ON [PRIMARY]
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

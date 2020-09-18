@@ -1,0 +1,392 @@
+﻿/* standalone style */
+.dnnDropDownList {
+    width: 250px;
+    display: inline-block;
+    position: relative;
+}
+
+.dnnDropDownList .selected-item {
+    border: 1px solid #c9c9c9;
+    -webkit-box-shadow: 0 1px 0 0 #bbb;
+    box-shadow: 0 1px 0 0 #bbb;
+    padding: 0;
+    background: #fff;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #f0f2f1));
+    background: -webkit-linear-gradient(top, #fff 0%, #f0f2f1 100%);
+    background: -o-linear-gradient(top, #fff 1%, #f0f2f1 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #f0f2f1 100%);
+    background: linear-gradient(top, #fff 0%, #f0f2f1 100%);
+    color: #999;
+    text-decoration: none;
+    margin: 0;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    position: relative;
+}
+
+.dnnDropDownList .selected-item a,
+.dnnDropDownList .selected-item a:link,
+.dnnDropDownList .selected-item a:visited,
+.dnnDropDownList .selected-item a:hover,
+.dnnDropDownList .selected-item a:active {
+    padding: 7px;
+    display: block;
+    height: 18px;
+    margin: 0;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    background: url("../../../../Images/dnnSpinnerDownArrow.png") no-repeat center right transparent;
+    text-decoration: none;
+    white-space: nowrap;
+    border-left: 5px solid transparent;
+    border-right: 14px solid transparent;
+    text-overflow: ellipsis;
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+}
+
+.dnnDropDownList .selected-item a.opened,
+.dnnDropDownList .selected-item a.opened:link,
+.dnnDropDownList .selected-item a.opened:visited,
+.dnnDropDownList .selected-item a.opened:hover,
+.dnnDropDownList .selected-item a.opened:active {
+    background: url("../../../../Images/dnnSpinnerUpArrow.png") no-repeat center right transparent;
+}
+
+.dnnDropDownList .dt-container {
+    position: absolute;
+    top: 100%;
+    width: 250px;
+    height: 200px;
+    border: 1px solid #c9c9c9;
+    background-color: #fff;
+    -webkit-box-shadow: 0 1px 0 0 #bbb;
+    box-shadow: 0 1px 0 0 #bbb;
+    display: none;
+    z-index: 9;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.dnnDropDownList .dt-container .dt-header {
+    margin: 0;
+    height: 38px;
+    background: #eee;
+    padding: 4px 0 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border: none;
+    border-bottom: 1px solid #bbb;
+    -moz-box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.dnnDropDownList .dt-container .dt-content {
+    position: relative;
+    margin: 0;
+    height: 177px;
+    overflow: hidden;
+    width: 100%;
+    margin: 42px 0 0 0;
+}
+
+.dnnDropDownList .dt-container .dt-footer {
+    margin: 0;
+    height: 30px;
+    background-color: #eee;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 1px solid #c9c9c9;
+    padding: 0;
+}
+
+.dnnDropDownList .dt-container .dt-footer span {
+    display: block;
+    float: left;
+    color: #999;
+    margin: 6px 0 0 10px;
+}
+
+.dnnDropDownList .dt-container .dt-footer span b {
+    color: #333;
+    font-weight: bold;
+}
+
+.dnnDropDownList .dt-container .dt-footer .resizer {
+    float: right;
+    width: 24px;
+    height: 24px;
+    background: url("../../../../Images/modal-resize-icn.png") no-repeat bottom;
+    margin: 3px;
+    cursor: nw-resize;
+}
+
+.dnnDropDownList .dt-container .search-container {
+    margin: 0 72px 0 15px;
+    position: relative;
+}
+
+.dnnDropDownList .dt-container .search-container .search-input-container {
+    position: relative;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 0 66px 1px 0;
+    background-color: #fff;
+    border: 1px solid #c9c9c9;
+    margin: 0;
+}
+
+.dnnDropDownList .dt-container .search-container input.search-input {
+    width: 100%;
+    max-width: none;
+    display: block;
+    background-color: #fff;
+    border: none;
+    margin: 0;
+    box-shadow: none !important;
+}
+
+.dnnDropDownList .dt-container .search-container input.search-input:focus {
+    outline: none;
+}
+
+.dnnDropDownList .dt-container .search-container input.search-input::-ms-clear {
+    display: none;
+}
+
+.dnnDropDownList .dt-container .search-container a.clear-button,
+.dnnDropDownList .dt-container .search-container a.search-button {
+    display: block;
+    position: absolute;
+    width: 22px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    right: 8px;
+    top: 8px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.dnnDropDownList .dt-container .search-container a.clear-button {
+    background-image: url("../../../../Images/search/clearText.png");
+    right: 26px;
+    border-right: 1px #ccc solid;
+}
+
+.dnnDropDownList .dt-container .search-container a.search-button {
+    background-image: url("../../../../Images/search/searchButton.png");
+    right: 4px;
+}
+
+.dnnDropDownList .dt-container .sort-button {
+    display: block;
+    float: right;
+    color: #666;
+    background: #eee;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#eee6e5));
+    background: -webkit-linear-gradient(top, #fff 0%,#eee6e5 100%);
+    background: -moz-linear-gradient(top, #fff 0%, #eee6e5 100%);
+    background: -ms-linear-gradient(top, #fff 0%,#eee6e5 100%);
+    background: -o-linear-gradient(top, #fff 0%,#eee6e5 100%);
+    background: linear-gradient(top, #fff 0%,#eee6e5 100%);
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    margin: 0 15px 0 0;
+    -webkit-box-shadow: 0 1px 0 0 #bbb;
+    box-shadow: 0 1px 0 0 #bbb;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: bold;
+    min-width: 20px;
+    padding: 6px 6px 6px 8px;
+}
+
+.dnnDropDownList .dt-container .sort-button span {
+    display: inline-block;
+    background: url("../../../../Images/sort-sprite.png") 100% 20px no-repeat;
+    padding: 0 10px 0 0;
+    text-shadow: 0 1px 0 #FFF;
+}
+
+.dnnDropDownList .dt-container .sort-button.asc span {
+    background-position: 100% -12px;
+}
+
+.dnnDropDownList .dt-container .sort-button.desc span {
+    background-position: 100% 7px;
+}
+
+.dnnDropDownList .dt-container .search-container.searchOn .search-input-container,
+.dnnDropDownList .dt-container .search-container.searchOn input.search-input,
+.dnnDropDownList .dt-container .search-container.searchOn a {
+    background-color: #ffff66;
+}
+
+/* unselectable style */
+*.dnn-unselectable {
+    user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none; /*  Introduced in IE 10 */
+    user-select: none;
+}
+
+/* in form style */
+.dnnFormItem .dnnDropDownList {
+    width: 47%;
+    max-width: 445px;
+    margin-bottom: 18px;
+}
+
+.dnnFormItem .dnnDropDownList .selected-item .drop-down-button {
+    margin-top: 15px;
+}
+
+.dnnFormItem .dnnDropDownList .dt-container {
+    width: 100%;
+    min-width: 250px;
+}
+
+.dnnDropDownList .dt-container ul li {
+    padding: 0;
+    margin: 0
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes {
+    font-family: Verdana, sans-serif;
+    font-size: 11px;
+    line-height: 18px;
+    padding: 0;
+    margin: 0 0 0 2px;
+}
+
+.dnnDropDownList .dt-container ul.tv-root {
+    margin: 4px 4px 0 -10px;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes li {
+    list-style: none;
+    padding: 0 0 0 16px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 4px solid transparent;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes a.text {
+    color: #222;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0 8px 0 24px;
+    line-height: 20px;
+    background: url("Images/page.png") no-repeat 6px center;
+    border: 1px solid transparent;
+    margin: 0 0 0 6px;
+    font-family: Arial, ​Helvetica​, sans-serif;
+    font-size: 13px;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes a.text:focus {
+    border: 1px solid #aaa;
+}
+
+.page .dt-container ul.tv-nodes a.text {
+    background: url("Images/page.png") no-repeat 6px center;
+}
+
+.folder .dt-container ul.tv-nodes a.text {
+    background: url("../../../../icons/sigma/FolderStandard_16x16_Standard.png") no-repeat 2px center;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes a.text:hover {
+    background-color: #666;
+    color: #ddd;
+    text-decoration: underline;
+    padding-bottom: -1px;
+    border: 1px solid #666;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes a.text.unselectable:hover {
+    color: #222;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: default;
+    padding-bottom: 0;
+    border: 1px solid transparent;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes a.selected:hover {
+    color: #222;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes a.icon,
+.dnnDropDownList .dt-container ul.tv-nodes a.icon:link,
+.dnnDropDownList .dt-container ul.tv-nodes a.icon:visited,
+.dnnDropDownList .dt-container ul.tv-nodes a.icon:hover,
+.dnnDropDownList .dt-container ul.tv-nodes a.icon:active {
+    text-decoration: none;
+    display: inline-block;
+    padding: 0;
+    height: 16px;
+    width: 16px;
+    border: 1px solid transparent;
+    outline: none;
+    vertical-align: middle;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes li a.text.selected {
+    background-color: rgb(204, 204, 204);
+    border: 1px solid #bbb;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes li a.text.selected:focus {
+    border: 1px solid #aaa;
+}
+
+.dnnDropDownList .dt-container ul.tv-nodes li a.text.first-item {
+    font-weight: bold;
+}
+
+.dnnDropDownList .dt-container .tv-nodes li a.collapsed {
+    background: url(Images/tree-sprite.png) no-repeat 0 -2px;
+}
+
+.dnnDropDownList .dt-container .tv-nodes li a.expanded {
+    background: url(Images/tree-sprite.png) no-repeat 0 -18px;
+}
+
+.dnnDropDownList .dt-container .tv-nodes li a.empty {
+    visibility: hidden;
+}
+
+.dnnDropDownList .dt-container .tv-nodes li a.expanding,
+.dnnDropDownList .dt-container .tv-nodes li a:hover.expanding {
+    background: url("../../../../Images/dnnanim.gif") no-repeat 0 0;
+}
+
+.dnnDropDownList .result {
+}
+
+.loading-items {
+    background-image: url("../../../../Images/icon_wait.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.50;
+}
+
+.disabled {
+   pointer-events: none;
+   cursor: default;
+}
+

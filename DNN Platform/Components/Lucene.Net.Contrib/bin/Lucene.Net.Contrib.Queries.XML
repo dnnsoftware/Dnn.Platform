@@ -1,0 +1,657 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lucene.Net.Contrib.Queries</name>
+    </assembly>
+    <members>
+        <member name="F:Lucene.Net.Search.BooleanFilter.shouldFilters">
+            <summary>
+            The filters that are optional clauses.
+            </summary>
+        </member>
+        <member name="F:Lucene.Net.Search.BooleanFilter.notFilters">
+            <summary>
+            The filters that are used for exclusion.
+            </summary>
+        </member>
+        <member name="F:Lucene.Net.Search.BooleanFilter.mustFilters">
+            <summary>
+            The filters that must be met.
+            </summary>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.GetDISI(System.Collections.Generic.List{Lucene.Net.Search.Filter},System.Int32,Lucene.Net.Index.IndexReader)">
+            <summary>
+            Get the iterator for a specific filter.
+            </summary>
+            <param name="filters">The list of filters</param>
+            <param name="index">The index of the iterator to get.</param>
+            <param name="reader">The reader for the index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.GetDocIdSet(Lucene.Net.Index.IndexReader)">
+            <summary>
+            Get the id set for the filter.
+            </summary>
+            <param name="reader">The reader.</param>
+            <returns>The filter set to use.</returns>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.Add(Lucene.Net.Search.FilterClause)">
+            <summary>
+            Add a filter clause.
+            </summary>
+            <param name="filterClause">The clause to add.</param>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.EqualFilters(System.Collections.Generic.List{Lucene.Net.Search.Filter},System.Collections.Generic.List{Lucene.Net.Search.Filter})">
+            <summary>
+            Determine equality between two lists.
+            </summary>
+            <param name="filters1"></param>
+            <param name="filters2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.Equals(System.Object)">
+            <summary>
+            Equality
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.GetHashCode">
+            <summary>
+            Hash code.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.ToString">
+            <summary>
+            String representation.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lucene.Net.Search.BooleanFilter.AppendFilters(System.Collections.Generic.List{Lucene.Net.Search.Filter},System.String,System.Text.StringBuilder)">
+            <summary>
+            Append individual filters.
+            </summary>
+            <param name="filters"></param>
+            <param name="occurString"></param>
+            <param name="buffer"></param>
+        </member>
+        <member name="T:Lucene.Net.Search.BoostingQuery">
+            <summary>
+             The BoostingQuery class can be used to effectively demote results that match a given query. 
+             Unlike the "NOT" clause, this still selects documents that contain undesirable terms, 
+             but reduces their overall score:
+             <pre>
+                 Query balancedQuery = new BoostingQuery(positiveQuery, negativeQuery, 0.01f);
+             </pre>
+             In this scenario the positiveQuery contains the mandatory, desirable criteria which is used to 
+             select all matching documents, and the negativeQuery contains the undesirable elements which 
+             are simply used to lessen the scores. Documents that match the negativeQuery have their score 
+             multiplied by the supplied "boost" parameter, so this should be less than 1 to achieve a 
+             demoting effect
+             
+             This code was originally made available here:
+             <a href="http://marc.theaimsgroup.com/?l=lucene-user&amp;m=108058407130459&amp;w=2">mailing list</a>
+             and is documented here: <a href="http://wiki.apache.org/lucene-java/CommunityContributions">Documentation</a>
+            </summary>
+        </member>
+        <member name="T:Lucene.Net.Search.FuzzyLikeThisQuery">
+            <summary>
+            Fuzzifies ALL terms provided as strings and then picks the best n differentiating terms.
+            In effect this mixes the behaviour of FuzzyQuery and MoreLikeThis but with special consideration
+            of fuzzy scoring factors.
+            This generally produces good results for queries where users may provide details in a number of 
+            fields and have no knowledge of boolean query syntax and also want a degree of fuzzy matching and
+            a fast query.
+            
+            For each source term the fuzzy variants are held in a BooleanQuery with no coord factor (because
+            we are not looking for matches on multiple variants in any one doc). Additionally, a specialized
+            TermQuery is used for variants and does not use that variant term's IDF because this would favour rarer 
+            terms eg misspellings. Instead, all variants use the same IDF ranking (the one for the source query 
+            term) and this is factored into the variant's boost. If the source query term does not exist in the
+            index the average IDF of the variants is used.
+            </summary>
+        </member>
+        <member name="T:Lucene.Net.Search.Similar.MoreLikeThis">
+            <summary> Generate "more like this" similarity queries. 
+            Based on this mail:
+            <pre>
+            Lucene does let you access the document frequency of terms, with IndexReader.DocFreq().
+            Term frequencies can be computed by re-tokenizing the text, which, for a single document,
+            is usually fast enough.  But looking up the DocFreq() of every term in the document is
+            probably too slow.
+            
+            You can use some heuristics to prune the set of terms, to avoid calling DocFreq() too much,
+            or at all.  Since you're trying to maximize a tf*idf score, you're probably most interested
+            in terms with a high tf. Choosing a tf threshold even as low as two or three will radically
+            reduce the number of terms under consideration.  Another heuristic is that terms with a
+            high idf (i.e., a low df) tend to be longer.  So you could threshold the terms by the
+            number of characters, not selecting anything less than, e.g., six or seven characters.
+            With these sorts of heuristics you can usually find small set of, e.g., ten or fewer terms
+            that do a pretty good job of characterizing a document.
+            
+            It all depends on what you're trying to do.  If you're trying to eek out that last percent
+            of precision and recall regardless of computational difficulty so that you can win a TREC
+            competition, then the techniques I mention above are useless.  But if you're trying to
+            provide a "more like this" button on a search results page that does a decent job and has
+            good performance, such techniques might be useful.
+            
+            An efficient, effective "more-like-this" query generator would be a great contribution, if
+            anyone's interested.  I'd imagine that it would take a Reader or a String (the document's
+            text), analyzer Analyzer, and return a set of representative terms using heuristics like those
+            above.  The frequency and length thresholds could be parameters, etc.
+            
+            Doug
+            </pre>
+            
+            
+            <p/>
+            <h3>Initial Usage</h3>
+            
+            This class has lots of options to try to make it efficient and flexible.
+            See the body of <see cref="M:Lucene.Net.Search.Similar.MoreLikeThis.Main(System.String[])"/> below in the source for real code, or
+            if you want pseudo code, the simpliest possible usage is as follows. The bold
+            fragment is specific to this class.
+            
+            <pre>
+            
+            IndexReader ir = ...
+            IndexSearcher is = ...
+            <b>
+            MoreLikeThis mlt = new MoreLikeThis(ir);
+            Reader target = ... </b><em>// orig source of doc you want to find similarities to</em><b>
+            Query query = mlt.Like( target);
+            </b>
+            Hits hits = is.Search(query);
+            <em>// now the usual iteration thru 'hits' - the only thing to watch for is to make sure
+            you ignore the doc if it matches your 'target' document, as it should be similar to itself </em>
+            
+            </pre>
+            
+            Thus you:
+            <ol>
+            <li> do your normal, Lucene setup for searching,</li>
+            <li> create a MoreLikeThis,</li>
+            <li> get the text of the doc you want to find similaries to</li>
+            <li> then call one of the Like() calls to generate a similarity query</li>
+            <li> call the searcher to find the similar docs</li>
+            </ol>
+            
+            <h3>More Advanced Usage</h3>
+            
+            You may want to use <see cref="M:Lucene.Net.Search.Similar.MoreLikeThis.SetFieldNames(System.String[])"/> so you can examine
+            multiple fields (e.g. body and title) for similarity.
+            <p/>
+            
+            Depending on the size of your index and the size and makeup of your documents you
+            may want to call the other set methods to control how the similarity queries are
+            generated:
+            <ul>
+            <li> <see cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinTermFreq"/> </li>
+            <li> <see cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinDocFreq"/> </li>
+            <li> <see cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxDocFreq"/></li>
+            <li> <see cref="M:Lucene.Net.Search.Similar.MoreLikeThis.SetMaxDocFreqPct(System.Int32)"/></li>
+            <li> <see cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinWordLen"/> </li>
+            <li> <see cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxWordLen"/></li>
+            <li> <see cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxQueryTerms"/></li>
+            <li> <see cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxNumTokensParsed"/></li>
+            <li> <see cref="M:Lucene.Net.Search.Similar.MoreLikeThis.SetStopWords(System.Collections.Generic.ISet{System.String})"/> </li>
+            </ul> 
+            
+            <hr/>
+            <pre>
+            Changes: Mark Harwood 29/02/04
+            Some bugfixing, some refactoring, some optimisation.
+            - bugfix: retrieveTerms(int docNum) was not working for indexes without a termvector -added missing code
+            - bugfix: No significant terms being created for fields with a termvector - because 
+            was only counting one occurence per term/field pair in calculations(ie not including frequency info from TermVector) 
+            - refactor: moved common code into isNoiseWord()
+            - optimise: when no termvector support available - used maxNumTermsParsed to limit amount of tokenization
+            </pre>
+            </summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_NUM_TOKENS_PARSED">
+            <summary> Default maximum number of tokens to parse in each example doc field that is not stored with TermVector support.</summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxNumTokensParsed">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MIN_TERM_FREQ">
+            <summary> Ignore terms with less than this frequency in the source doc.</summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinTermFreq">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinTermFreq">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MIN_DOC_FREQ">
+            <summary> Ignore words which do not occur in at least this many docs.</summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinDocFreq">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinDocFreq">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_DOC_FREQ">
+            <summary>
+            Ignore words wich occur in more than this many docs
+            </summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxDocFreq"/>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxDocFreq"/>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_BOOST">
+            <summary> Boost terms in query based on score.</summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.Boost">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.Boost">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MIN_WORD_LENGTH">
+            <summary> Ignore words less than this length or if 0 then this has no effect.</summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinWordLen">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MinWordLen">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_WORD_LENGTH">
+            <summary> Ignore words greater than this length or if 0 then this has no effect.</summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxWordLen">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxWordLen">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_QUERY_TERMS">
+            <summary> Return a Query with no more than this many terms.
+            
+            </summary>
+            <seealso cref="P:Lucene.Net.Search.BooleanQuery.MaxClauseCount">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxQueryTerms">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxQueryTerms">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_ANALYZER">
+            <summary> Default analyzer to parse source doc with.</summary>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.Analyzer">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_FIELD_NAMES">
+            <summary> Default field names. Null is used to specify that the field names should be looked
+            up at runtime from the provided reader.
+            </summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_STOP_WORDS">
+            <summary> Default set of stopwords.
+            If null means to allow stop words.
+            
+            </summary>
+            <seealso cref="M:Lucene.Net.Search.Similar.MoreLikeThis.SetStopWords(System.Collections.Generic.ISet{System.String})">
+            </seealso>
+            <seealso cref="M:Lucene.Net.Search.Similar.MoreLikeThis.GetStopWords">
+            </seealso>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.stopWords">
+            <summary> Current set of stop words.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.analyzer">
+            <summary> Analyzer that will be used to parse the doc.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.minTermFreq">
+            <summary> Ignore words less freqent that this.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.minDocFreq">
+            <summary> Ignore words which do not occur in at least this many docs.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.maxDocfreq">
+            <summary>
+            Ignore words which occur in more than this many docs.
+            </summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.boost">
+            <summary> Should we apply a boost to the Query based on the scores?</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.fieldNames">
+            <summary> Field name we'll analyze.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.maxNumTokensParsed">
+            <summary> The maximum number of tokens to parse in each example doc field that is not stored with TermVector support</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.minWordLen">
+            <summary> Ignore words if less than this len.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.maxWordLen">
+            <summary> Ignore words if greater than this len.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.maxQueryTerms">
+            <summary> Don't return a query longer than this.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.similarity">
+            <summary> For idf() calculations.</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.ir">
+            <summary> IndexReader to use</summary>
+        </member>
+        <member name="F:Lucene.Net.Search.Similar.MoreLikeThis.boostFactor">
+            <summary> Boost factor to use when boosting the terms </summary>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.#ctor(Lucene.Net.Index.IndexReader)">
+            <summary> Constructor requiring an IndexReader.</summary>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.SetMaxDocFreqPct(System.Int32)">
+            <summary>
+            Set the maximum percentage in which words may still appear. Words that appear
+            in more than this many percent of all docs will be ignored.
+            </summary>
+            <param name="maxPercentage">
+            the maximum percentage of documents (0-100) that a term may appear 
+            in to be still considered relevant
+            </param>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.GetFieldNames">
+            <summary> Returns the field names that will be used when generating the 'More Like This' query.
+            The default field names that will be used is <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_FIELD_NAMES"/>.
+            
+            </summary>
+            <returns> the field names that will be used when generating the 'More Like This' query.
+            </returns>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.SetFieldNames(System.String[])">
+            <summary> Sets the field names that will be used when generating the 'More Like This' query.
+            Set this to null for the field names to be determined at runtime from the IndexReader
+            provided in the constructor.
+            
+            </summary>
+            <param name="fieldNames">the field names that will be used when generating the 'More Like This'
+            query.
+            </param>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.SetStopWords(System.Collections.Generic.ISet{System.String})">
+            <summary> Set the set of stopwords.
+            Any word in this set is considered "uninteresting" and ignored.
+            Even if your Analyzer allows stopwords, you might want to tell the MoreLikeThis code to ignore them, as
+            for the purposes of document similarity it seems reasonable to assume that "a stop word is never interesting".
+            
+            </summary>
+            <param name="stopWords">set of stopwords, if null it means to allow stop words
+            
+            </param>
+            <seealso cref="M:Lucene.Net.Analysis.StopFilter.MakeStopSet(System.String[])">
+            </seealso>
+            <seealso cref="M:Lucene.Net.Search.Similar.MoreLikeThis.GetStopWords">
+            </seealso>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.GetStopWords">
+            <summary> Get the current stop words being used.</summary>
+            <seealso cref="M:Lucene.Net.Search.Similar.MoreLikeThis.SetStopWords(System.Collections.Generic.ISet{System.String})">
+            </seealso>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.Like(System.Int32)">
+            <summary>Return a query that will return docs like the passed lucene document ID.</summary>
+            <param name="docNum">the documentID of the lucene doc to generate the 'More Like This" query for.</param>
+            <returns> a query that will return docs like the passed lucene document ID.</returns>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.Like(System.IO.FileInfo)">
+            <summary> Return a query that will return docs like the passed file.
+            
+            </summary>
+            <returns> a query that will return docs like the passed file.
+            </returns>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.Like(System.Uri)">
+            <summary> Return a query that will return docs like the passed URL.
+            
+            </summary>
+            <returns> a query that will return docs like the passed URL.
+            </returns>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.Like(System.IO.Stream)">
+            <summary> Return a query that will return docs like the passed stream.
+            
+            </summary>
+            <returns> a query that will return docs like the passed stream.
+            </returns>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.Like(System.IO.TextReader)">
+            <summary> Return a query that will return docs like the passed Reader.
+            
+            </summary>
+            <returns> a query that will return docs like the passed Reader.
+            </returns>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.CreateQuery(Lucene.Net.Util.PriorityQueue{System.Object[]})">
+            <summary> Create the More like query from a PriorityQueue</summary>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.CreateQueue(System.Collections.Generic.IDictionary{System.String,Lucene.Net.Search.Similar.MoreLikeThis.Int})">
+            <summary> Create a PriorityQueue from a word->tf map.
+            
+            </summary>
+            <param name="words">a map of words keyed on the word(String) with Int objects as the values.
+            </param>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.DescribeParams">
+            <summary> Describe the parameters that control how the "more like this" query is formed.</summary>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.Main(System.String[])">
+            <summary> Test driver.
+            Pass in "-i INDEX" and then either "-fn FILE" or "-url URL".
+            </summary>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.RetrieveTerms(System.Int32)">
+            <summary> Find words for a more-like-this query former.
+            
+            </summary>
+            <param name="docNum">the id of the lucene document from which to find terms
+            </param>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.AddTermFrequencies(System.Collections.Generic.IDictionary{System.String,Lucene.Net.Search.Similar.MoreLikeThis.Int},Lucene.Net.Index.ITermFreqVector)">
+            <summary> Adds terms and frequencies found in vector into the Map termFreqMap</summary>
+            <param name="termFreqMap">a Map of terms and their frequencies
+            </param>
+            <param name="vector">List of terms and their frequencies for a doc/field
+            </param>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.AddTermFrequencies(System.IO.TextReader,System.Collections.Generic.IDictionary{System.String,Lucene.Net.Search.Similar.MoreLikeThis.Int},System.String)">
+            <summary> Adds term frequencies found by tokenizing text from reader into the Map words</summary>
+            <param name="r">a source of text to be tokenized
+            </param>
+            <param name="termFreqMap">a Map of terms and their frequencies
+            </param>
+            <param name="fieldName">Used by analyzer for any special per-field analysis
+            </param>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.IsNoiseWord(System.String)">
+            <summary>determines if the passed term is likely to be of interest in "more like" comparisons 
+            
+            </summary>
+            <param name="term">The word being considered
+            </param>
+            <returns> true if should be ignored, false if should be used in further analysis
+            </returns>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.RetrieveTerms(System.IO.TextReader)">
+            <summary> Find words for a more-like-this query former.
+            The result is a priority queue of arrays with one entry for <b>every word</b> in the document.
+            Each array has 6 elements.
+            The elements are:
+            <ol>
+            <li> The word (String)</li>
+            <li> The top field that this word comes from (String)</li>
+            <li> The score for this word (Float)</li>
+            <li> The IDF value (Float)</li>
+            <li> The frequency of this word in the index (Integer)</li>
+            <li> The frequency of this word in the source document (Integer)</li>
+            </ol>
+            This is a somewhat "advanced" routine, and in general only the 1st entry in the array is of interest.
+            This method is exposed so that you can identify the "interesting words" in a document.
+            For an easier method to call see <see cref="M:Lucene.Net.Search.Similar.MoreLikeThis.RetrieveInterestingTerms(System.IO.TextReader)"/>.
+            
+            </summary>
+            <param name="r">the reader that has the content of the document
+            </param>
+            <returns> the most intresting words in the document ordered by score, with the highest scoring, or best entry, first
+            
+            </returns>
+            <seealso cref="M:Lucene.Net.Search.Similar.MoreLikeThis.RetrieveInterestingTerms(System.IO.TextReader)">
+            </seealso>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.MoreLikeThis.RetrieveInterestingTerms(System.IO.TextReader)">
+            <summary> Convenience routine to make it easy to return the most interesting words in a document.
+            More advanced users will call <see cref="M:Lucene.Net.Search.Similar.MoreLikeThis.RetrieveTerms(System.IO.TextReader)"/> directly.
+            </summary>
+            <param name="r">the source document
+            </param>
+            <returns> the most interesting words in the document
+            
+            </returns>
+            <seealso cref="M:Lucene.Net.Search.Similar.MoreLikeThis.RetrieveTerms(System.IO.TextReader)">
+            </seealso>
+            <seealso cref="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxQueryTerms">
+            </seealso>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.BoostFactor">
+            <summary>
+            Gets or sets the boost factor used when boosting terms
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.Analyzer">
+            <summary> Gets or sets the analyzer used to parse source doc with. The default analyzer
+            is the <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_ANALYZER"/>.
+            <para/>
+            An analyzer is not required for generating a query with the
+            <see cref="M:Lucene.Net.Search.Similar.MoreLikeThis.Like(System.Int32)"/> method, all other 'like' methods require an analyzer.
+            </summary>
+            <value> the analyzer that will be used to parse source doc with. </value>
+            <seealso cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_ANALYZER">
+            </seealso>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.MinTermFreq">
+            <summary>
+            Gets or sets the frequency below which terms will be ignored in the source doc. The default
+            frequency is the <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MIN_TERM_FREQ"/>.
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.MinDocFreq">
+            <summary>
+            Gets or sets the frequency at which words will be ignored which do not occur in at least this
+            many docs. The default frequency is <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MIN_DOC_FREQ"/>.
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxDocFreq">
+            <summary>
+            Gets or sets the maximum frequency in which words may still appear. 
+            Words that appear in more than this many docs will be ignored. The default frequency is 
+            <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_DOC_FREQ"/>
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.Boost">
+            <summary> Gets or sets a boolean indicating whether to boost terms in query based 
+            on "score" or not. The default is <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_BOOST"/>.
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.MinWordLen">
+            <summary>
+            Gets or sets the minimum word length below which words will be ignored. 
+            Set this to 0 for no minimum word length. The default is <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MIN_WORD_LENGTH"/>.
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxWordLen">
+            <summary>
+            Gets or sets the maximum word length above which words will be ignored. Set this to 0 for no
+            maximum word length. The default is <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_WORD_LENGTH"/>.
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxQueryTerms">
+            <summary>
+            Gets or sets the maximum number of query terms that will be included in any generated query.
+            The default is <see cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_QUERY_TERMS"/>.
+            </summary>
+        </member>
+        <member name="P:Lucene.Net.Search.Similar.MoreLikeThis.MaxNumTokensParsed">
+            <summary>
+            Gets or sets the maximum number of tokens to parse in each example doc
+            field that is not stored with TermVector support
+            </summary>
+            <seealso cref="F:Lucene.Net.Search.Similar.MoreLikeThis.DEFAULT_MAX_NUM_TOKENS_PARSED"/>
+        </member>
+        <member name="T:Lucene.Net.Search.Similar.MoreLikeThis.FreqQ">
+            <summary> PriorityQueue that orders words by score.</summary>
+        </member>
+        <member name="T:Lucene.Net.Search.Similar.MoreLikeThis.Int">
+            <summary> Use for frequencies and to avoid renewing Integers.</summary>
+        </member>
+        <member name="T:Lucene.Net.Search.Similar.SimilarityQueries">
+            <summary> Simple similarity measures.
+            
+            
+            </summary>
+            <seealso cref="T:Lucene.Net.Search.Similar.MoreLikeThis">
+            </seealso>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.SimilarityQueries.#ctor">
+            <summary> </summary>
+        </member>
+        <member name="M:Lucene.Net.Search.Similar.SimilarityQueries.FormSimilarQuery(System.String,Lucene.Net.Analysis.Analyzer,System.String,System.Collections.Generic.ISet{System.String})">
+            <summary> Simple similarity query generators.
+            Takes every unique word and forms a boolean query where all words are optional.
+            After you get this you'll use to to query your <see cref="T:Lucene.Net.Search.IndexSearcher"/> for similar docs.
+            The only caveat is the first hit returned <b>should be</b> your source document - you'll
+            need to then ignore that.
+            
+            <p/>
+            
+            So, if you have a code fragment like this:
+            <br/>
+            <code>
+            Query q = formSimilaryQuery( "I use Lucene to search fast. Fast searchers are good", new StandardAnalyzer(), "contents", null);
+            </code>
+            
+            <p/>
+            
+             The query returned, in string form, will be <c>'(i use lucene to search fast searchers are good')</c>.
+            
+            <p/>
+            The philosophy behind this method is "two documents are similar if they share lots of words".
+            Note that behind the scenes, Lucenes scoring algorithm will tend to give two documents a higher similarity score if the share more uncommon words.
+            
+            <P/>
+            This method is fail-safe in that if a long 'body' is passed in and
+            <see cref="M:Lucene.Net.Search.BooleanQuery.Add(Lucene.Net.Search.Query,Lucene.Net.Search.Occur)"/> (used internally)
+            throws
+            <see cref="T:Lucene.Net.Search.BooleanQuery.TooManyClauses"/>, the
+            query as it is will be returned.
+            </summary>
+            <param name="body">the body of the document you want to find similar documents to
+            </param>
+            <param name="a">the analyzer to use to parse the body
+            </param>
+            <param name="field">the field you want to search on, probably something like "contents" or "body"
+            </param>
+            <param name="stop">optional set of stop words to ignore
+            </param>
+            <returns> a query with all unique words in 'body'
+            </returns>
+            <throws>  IOException this can't happen... </throws>
+        </member>
+        <member name="T:Lucene.Net.Search.TermsFilter">
+            <summary>
+            A filter that contains multiple terms.
+            </summary>
+        </member>
+        <member name="F:Lucene.Net.Search.TermsFilter.terms">
+            <summary>
+            The set of terms for this filter.
+            </summary>
+        </member>
+        <member name="M:Lucene.Net.Search.TermsFilter.AddTerm(Lucene.Net.Index.Term)">
+            <summary>
+            Add a term to the set.
+            </summary>
+            <param name="term">The term to add.</param>
+        </member>
+        <member name="M:Lucene.Net.Search.TermsFilter.GetDocIdSet(Lucene.Net.Index.IndexReader)">
+            <summary>
+            Get the DocIdSet.
+            </summary>
+            <param name="reader">Applcible reader.</param>
+            <returns>The set.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,2829 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** DNN-6159: update database compatibility to sql 2008 when its below than 2008. *****/
+DECLARE @ProductEdition INT
+SET @ProductEdition = CAST(ServerProperty('EngineEdition') as INT)
+
+IF (@ProductEdition <> 5)
+BEGIN
+    DECLARE @Name NVARCHAR(260), @CompatibilityLevel INT
+    SELECT @Name = DB_NAME()
+    SELECT @CompatibilityLevel = compatibility_level FROM sys.databases WHERE name = @Name
+
+    IF @CompatibilityLevel <= 100
+    BEGIN
+	    DECLARE @sql NVARCHAR(max)
+	    SELECT @sql = N'ALTER DATABASE [' + @Name + '] SET COMPATIBILITY_LEVEL = 100'
+	    EXECUTE sp_executesql @sql
+    END
+END
+GO
+
+/***** Tab Versioning table and Sprocs *****/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersions]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}TabVersions](
+	    [TabVersionId] [INT] IDENTITY(1,1) NOT NULL,
+        [TabId] [INT] NOT NULL,
+		[Version] [INT] NOT NULL,
+		[TimeStamp] [DATETIME] NOT NULL,
+		[IsPublished] [BIT] NOT NULL,
+	    [CreatedByUserID] [INT] NOT NULL,
+		[CreatedOnDate] [DATETIME] NOT NULL,
+		[LastModifiedByUserID] [INT] NOT NULL,
+		[LastModifiedOnDate] [DATETIME] NOT NULL,
+        CONSTRAINT [PK_{objectQualifier}TabVersions] PRIMARY KEY CLUSTERED ([TabVersionId] ASC),
+		CONSTRAINT [IX_{objectQualifier}TabVersions] UNIQUE NONCLUSTERED ( [TabId] ASC, [Version] DESC )
+    ) ON [PRIMARY]
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}TabVersions] 
+        WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}TabVersions_{objectQualifier}TabId] FOREIGN KEY([TabId])
+        REFERENCES {databaseOwner}[{objectQualifier}Tabs] ([TabID])
+    ON DELETE CASCADE
+
+    CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabVersions_TabId ON {databaseOwner}[{objectQualifier}TabVersions](TabId) 
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabVersions]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersions]
+	@TabId INT
+AS
+BEGIN
+	SELECT   
+		[TabVersionId],
+		[TabId],
+		[Version],
+		[TimeStamp],
+		[IsPublished],
+	    [CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+	FROM {databaseOwner}[{objectQualifier}TabVersions]
+	WHERE [TabId] = @TabId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveTabVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersion]
+    @Id INT,
+    @TabId INT,
+    @TimeStamp DATETIME,
+    @Version INT,
+	@IsPublished BIT,
+    @CreatedByUserID [INT] = -1,
+	@LastModifiedByUserID [INT] = -1
+AS
+BEGIN
+    IF ISNULL(@Id, 0) = 0
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}TabVersions](            
+            [TabId],
+            [TimeStamp],
+            [Version],
+			[IsPublished],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+        ) VALUES (
+            @TabId,
+            @TimeStamp,
+            @Version,      
+			@IsPublished,      
+            @CreatedByUserID,
+            GETDATE(),
+            @LastModifiedByUserID,
+            GETDATE()
+        )
+
+        SELECT @Id = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}TabVersions] SET            
+            [TabId] = @TabId,
+            [Version] = @Version,
+            [TimeStamp] = @TimeStamp,
+			[IsPublished] = @IsPublished,
+            [LastModifiedByUserID] = @LastModifiedByUserID,
+            [LastModifiedOnDate] = GETDATE()
+        WHERE TabVersionId = @Id
+    END
+	SELECT @Id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTabVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersion]
+    @Id INT
+AS
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}TabVersions] WHERE TabVersionId = @Id
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersionDetails]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}TabVersionDetails](
+	    [TabVersionDetailId] [INT] IDENTITY(1,1) NOT NULL,
+        [TabVersionId] [INT] NOT NULL,
+		[ModuleId] [INT] NOT NULL,
+		[ModuleVersion] [INT] NOT NULL,
+		[PaneName] NVARCHAR(50) NOT NULL,
+		[ModuleOrder] [INT] NOT NULL,
+		[Action] [INT] NOT NULL,
+	    [CreatedByUserID] [INT] NOT NULL,
+		[CreatedOnDate] [DATETIME] NOT NULL,
+		[LastModifiedByUserID] [INT] NOT NULL,
+		[LastModifiedOnDate] [DATETIME] NOT NULL,
+        CONSTRAINT [PK_{objectQualifier}TabVersionDetails] PRIMARY KEY CLUSTERED ([TabVersionDetailId] ASC)
+    ) ON [PRIMARY]
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] 
+        WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}TabVersionId] FOREIGN KEY([TabVersionId])
+        REFERENCES {databaseOwner}[{objectQualifier}TabVersions] ([TabVersionId])
+    ON DELETE CASCADE
+
+    CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabVersionDetails_TabVersionId ON {databaseOwner}[{objectQualifier}TabVersionDetails](TabVersionId) 
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] ADD CONSTRAINT [IX_{objectQualifier}TabVersionDetails_Unique(TabVersionId_ModuleId)] UNIQUE NONCLUSTERED 
+	(
+		[TabVersionId] ASC,
+		[ModuleId] ASC
+	)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabVersionDetails]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetails]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetails]
+	@TabVersionId INT
+AS
+BEGIN
+	SELECT   
+		[TabVersionDetailId] ,
+        [TabVersionId] ,
+		[ModuleId] ,
+		[ModuleVersion] ,
+		[PaneName] ,
+		[ModuleOrder] ,
+		[Action],
+	    [CreatedByUserID] ,
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+	FROM {databaseOwner}[{objectQualifier}TabVersionDetails]
+	WHERE [TabVersionId] = @TabVersionId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveTabVersionDetail]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersionDetail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersionDetail]
+    @Id INT,
+    @TabVersionId INT,
+    @ModuleId INT,
+    @ModuleVersion INT,
+	@PaneName NVARCHAR(50),
+	@ModuleOrder INT,
+	@Action INT,
+    @CreatedByUserID [INT] = -1,
+	@LastModifiedByUserID [INT] = -1
+AS
+BEGIN
+    IF ISNULL(@Id, 0) = 0
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}TabVersionDetails](
+            [TabVersionId],
+            [ModuleId],
+            [ModuleVersion],
+			[PaneName],
+            [ModuleOrder],
+			[Action],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+        ) VALUES (
+            @TabVersionId,
+			@ModuleId,            
+            @ModuleVersion,            
+			@PaneName,
+			@ModuleOrder,
+			@Action,
+            @CreatedByUserID,
+            GETDATE(),
+            @LastModifiedByUserID,
+            GETDATE()
+        )
+
+        SELECT @Id = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}TabVersionDetails] SET            
+            [TabVersionId] = @TabVersionId,
+			[ModuleId] = @ModuleId,
+            [ModuleVersion] = @ModuleVersion,            
+            [PaneName] = @PaneName,
+			[ModuleOrder] = @ModuleOrder,
+			[Action] = @Action,
+            [LastModifiedByUserID] = @LastModifiedByUserID,
+            [LastModifiedOnDate] = GETDATE()
+        WHERE TabVersionDetailId = @Id
+    END
+	SELECT @Id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTabVersionDetail]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersionDetail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersionDetail]
+    @Id INT
+AS
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}TabVersionDetails] WHERE TabVersionDetailId = @Id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabVersionDetailsHistory]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetailsHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetailsHistory]
+	@TabID iNT,
+    @Version INT
+AS
+BEGIN    
+	SELECT tvd.[TabVersionDetailId]
+		  ,tvd.[TabVersionId]
+		  ,tvd.[ModuleId]
+		  ,tvd.[ModuleVersion]
+		  ,tvd.[PaneName]
+		  ,tvd.[ModuleOrder]
+		  ,tvd.[Action]
+		  ,tvd.[CreatedByUserID]
+		  ,tvd.[CreatedOnDate]
+		  ,tvd.[LastModifiedByUserID]
+		  ,tvd.[LastModifiedOnDate]
+	FROM {databaseOwner}[{objectQualifier}TabVersionDetails] tvd
+	INNER JOIN {databaseOwner}[{objectQualifier}TabVersions] tv ON tvd.TabVersionId = tv.TabVersionId
+	WHERE tv.Version <= @Version
+		AND tv.TabId = @TabID
+	ORDER BY tvd.CreatedOnDate 
+END
+GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns 
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}Tabs')
+           AND name = 'HasBeenPublished')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD [HasBeenPublished] [bit] NOT NULL CONSTRAINT [DF_Tabs_HasBeenPublished] DEFAULT (0)
+    END 
+GO
+
+
+UPDATE {databaseOwner}{objectQualifier}Tabs SET HasBeenPublished = 1
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+-- updated view to use new function
+-- note comment regarding signature modification
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+		T.HasBeenPublished,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFile)      AS IconFile,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFileLarge) AS IconFileLarge,
+        T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate
+    FROM       {databaseOwner}{objectQualifier}Tabs         AS T
+    LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PublishTab]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PublishTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PublishTab]
+	@TabID INT
+AS
+BEGIN 
+        UPDATE {databaseOwner}[{objectQualifier}Tabs] SET            
+            [HasBeenPublished] = 1
+        WHERE TabID = @TabID
+END
+GO
+
+/**************************/
+/** Workflow API Changes **/
+/**************************/
+
+/* Added IsSystem column to define System Workflows (i.e.: Default Workflows) */
+IF NOT EXISTS( SELECT * FROM sys.columns
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows')
+           AND name = 'IsSystem')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD [IsSystem] [bit] NOT NULL DEFAULT (0) 
+   END 
+GO
+
+/* Added a default value to IsDeleted column */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'IsDeleted'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_IsDeleted DEFAULT 0 FOR IsDeleted
+	END
+GO
+
+/* Added a default value to StartAfterCreating column */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'StartAfterCreating'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_StartAfterCreating DEFAULT 1 FOR StartAfterCreating
+	END
+GO
+
+/* Added a default value to StartAfterEditing column */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'StartAfterEditing'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_StartAfterEditing DEFAULT 1 FOR StartAfterEditing
+	END
+GO
+
+/* Added a default value to DispositionEnabled column */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'DispositionEnabled'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_DispositionEnabled DEFAULT 0 FOR DispositionEnabled
+	END
+GO
+
+/* Added WorkflowKey column to define Workflows string key (i.e.: Default Workflows keys) */
+IF NOT EXISTS( SELECT * FROM sys.columns
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows')
+           AND name = 'WorkflowKey')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD [WorkflowKey] NVARCHAR(40) NOT NULL DEFAULT (N'') 
+	END
+GO
+
+/* Added a default value to column IsActive */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'IsActive'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_IsActive DEFAULT 1 FOR IsActive
+	END
+GO
+
+/* Added a default value to column SendEmail */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'SendEmail'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_SendEmail DEFAULT 0 FOR SendEmail
+	END
+GO
+
+/* Added a default value to column SendMessage */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'SendMessage'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_SendMessage DEFAULT 0 FOR SendMessage
+	END
+GO
+
+/* Added a default value to column IsDisposalState */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'IsDisposalState'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_IsDisposalState DEFAULT 0 FOR IsDisposalState
+	END
+GO
+
+/* Added a default value to column OnCompleteMessageSubject */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnCompleteMessageSubject'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnCompleteMessageSubject DEFAULT N'' FOR OnCompleteMessageSubject
+	END
+GO
+
+/* Added a default value to column OnCompleteMessageBody */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnCompleteMessageBody'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnCompleteMessageBody DEFAULT N'' FOR OnCompleteMessageBody
+	END
+GO
+
+/* Added a default value to column OnDiscardMessageSubject */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnDiscardMessageSubject'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnDiscardMessageSubject DEFAULT N'' FOR OnDiscardMessageSubject
+	END
+GO
+
+/* Added a default value to column OnDiscardMessageBody */
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnDiscardMessageBody'))
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnDiscardMessageBody DEFAULT N'' FOR OnDiscardMessageBody
+	END
+GO
+
+/* Added IsSystem column to define System Workflow States (i.e.: Draft, Published) */
+IF NOT EXISTS( SELECT * FROM sys.columns
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates')
+           AND name = 'IsSystem')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [IsSystem] [bit] NOT NULL DEFAULT (0) 
+	END
+GO
+
+/* Added SendNotification column */
+IF NOT EXISTS( SELECT * FROM sys.columns
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates')
+           AND name = 'SendNotification')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotification] [bit] NOT NULL DEFAULT (1) 
+	END
+GO
+
+/* Added SendNotificationToAdministrators column */
+IF NOT EXISTS( SELECT * FROM sys.columns
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates')
+           AND name = 'SendNotificationToAdministrators')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotificationToAdministrators] [bit] NOT NULL DEFAULT (1) 
+	END
+GO
+
+/* Added WorkflowLogKey column */
+IF NOT EXISTS( SELECT * FROM sys.columns
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowLogs')
+           AND name = 'Type')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowLogs ADD [Type] [int] NOT NULL DEFAULT -1 
+	END
+GO
+
+/* Increased Workflow Log Comment field length to max */
+IF (SELECT max_length FROM sys.columns
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowLogs')
+           AND name = 'Comment') != -1
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowLogs ALTER COLUMN [Comment] NVARCHAR(MAX) NOT NULL
+	END
+GO
+
+
+/* Set is System Workflows */
+UPDATE {databaseOwner}[{objectQualifier}ContentWorkflows] SET IsSystem = 1 where IsSystem = 0
+GO
+
+/* Set is System States */
+UPDATE {databaseOwner}[{objectQualifier}ContentWorkflowStates] SET IsSystem = 1
+  WHERE StateID IN (  
+	  SELECT StateID
+	  FROM {databaseOwner}[{objectQualifier}ContentWorkflowStates] cf JOIN 
+	  (SELECT WorkflowId, MAX([order]) as 'LastState', MIN([Order]) as 'FirstState' 
+	  FROM {databaseOwner}[{objectQualifier}ContentWorkflowStates]
+	  GROUP BY WorkflowID) a ON cf.WorkflowID = a.WorkflowID
+	  WHERE [Order] = a.FirstState OR [Order] = a.LastState) 
+  AND IsSystem = 0;
+GO
+
+/* Get Workflow State Usage Count */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]
+	@StateId INT
+AS
+	SELECT COUNT(ci.ContentItemID)
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci 
+	WHERE ci.StateId = @StateId
+GO
+
+/* Add Content Workflow Notification with no action (only dismiss) */
+IF NOT EXISTS (SELECT NotificationTypeID FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes WHERE Name = 'ContentWorkflowNoActionNotification' )
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes(
+		[Name]
+		,[Description]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+	) VALUES (
+		'ContentWorkflowNoActionNotification',
+		'Content Workflow No Action Notification',
+		-1,
+		GETDATE(),
+		-1,
+		GETDATE()
+	)
+END
+GO
+
+/* Add Content Workflow Notification when Workflow Starts */
+IF NOT EXISTS (SELECT NotificationTypeID FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes WHERE Name = 'ContentWorkflowStartWorkflowNotification' )
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes(
+		[Name]
+		,[Description]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+	) VALUES (
+		'ContentWorkflowStartWorkflowNotification',
+		'Content Workflow Start Workflow Notification',
+		-1,
+		GETDATE(),
+		-1,
+		GETDATE()
+	)
+END
+GO
+
+/* Add ContentWorkflowActions table */
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentWorkflowActions]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}ContentWorkflowActions](
+	    [ActionId] [INT] IDENTITY(1,1) NOT NULL,
+        [ContentTypeId] [INT] NOT NULL,
+		[ActionType] NVARCHAR(50) NOT NULL,
+		[ActionSource] NVARCHAR(256) NOT NULL,
+        CONSTRAINT [PK_{objectQualifier}ContentWorkflowActions] PRIMARY KEY CLUSTERED ([ActionId] ASC)
+    ) ON [PRIMARY]
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowActions] 
+        WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}ContentWorkflowActions_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeId])
+        REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
+    ON DELETE CASCADE
+
+	CREATE UNIQUE NONCLUSTERED INDEX [ContentTypeId_ActionType] ON {databaseOwner}[{objectQualifier}ContentWorkflowActions] 
+	(
+		[ContentTypeId] ASC,
+		[ActionType] ASC
+	)
+END
+GO
+
+/* Remove Review action and add Approve, Reject */
+DECLARE @NotificationTypeId INT
+SELECT @NotificationTypeId = NotificationTypeId
+    FROM    {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes
+    WHERE   Name = 'ContentWorkflowNotification'
+IF @NotificationTypeId IS NOT NULL
+BEGIN
+	/* Delete Review notification action added int 7.3.0 */
+	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions WHERE NotificationTypeId = @NotificationTypeId AND NameResourceKey = 'Review'
+
+	/* Add Approve notification action */
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationTypeId 
+		AND ([Order] = 1 OR [NameResourceKey] = 'Approve'))
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationTypeId,
+			'Approve',
+			'Approve',
+			NULL,
+			1,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
+		
+	/* Add Reject notification action */
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationTypeId 
+		AND ([Order] = 2 OR [NameResourceKey] = 'Reject'))
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationTypeId,
+			'Reject',
+			'Reject',
+			NULL,
+			3,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
+
+END
+GO
+
+/* Add action to Start Workflow Notification */
+DECLARE @NotificationStartWorkflowTypeId INT
+SELECT @NotificationStartWorkflowTypeId = NotificationTypeId
+    FROM    {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes
+    WHERE   Name = 'ContentWorkflowStartWorkflowNotification'
+IF @NotificationStartWorkflowTypeId IS NOT NULL
+BEGIN
+	/* Add Submit notification action */
+	/* also uses the existing Approve method */
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationStartWorkflowTypeId 
+		AND ([Order] = 2 OR [NameResourceKey] = 'Submit'))   
+	BEGIN 
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationStartWorkflowTypeId,
+			'Submit',
+			'Submit',
+			NULL,
+			1,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
+
+	/* Add Discard notification action */
+	/* also uses the existing Reject method */
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationStartWorkflowTypeId 
+		AND ([Order] = 2 OR [NameResourceKey] = 'Discard'))
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationStartWorkflowTypeId,
+			'Discard',
+			'Discard',
+			NULL,
+			3,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]
+    @MessageID INT
+AS 
+	SELECT [MessageID], [PortalId], [NotificationTypeID], [To], [From], [Subject], [Body], [ConversationID], [ReplyAllAllowed], [SenderUserID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate] 
+	FROM   {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
+	WHERE  [MessageID] = @MessageID
+GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns
+            WHERE object_id = OBJECT_ID('{objectQualifier}CoreMessaging_NotificationTypes')
+           AND name = 'IsTask')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes ADD
+            IsTask bit NOT NULL DEFAULT ((0))
+    END 
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateNotificationType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateNotificationType]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateNotificationType]
+	@Name nvarchar(100),
+	@Description nvarchar(2000),
+	@TTL int,
+	@DesktopModuleId int,
+	@CreatedUpdatedUserID int,
+	@IsTask bit
+AS
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] (
+		[Name],
+		[Description],
+		[TTL],
+		[DesktopModuleId],
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		[IsTask]
+	) VALUES (
+		@Name,
+		@Description,
+		@TTL,
+		@DesktopModuleId,
+		@CreatedUpdatedUserID,
+		GETDATE(),
+		@CreatedUpdatedUserID,
+		GETDATE(),
+		@IsTask
+	)
+		
+	SELECT SCOPE_IDENTITY()	
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationType]
+	@NotificationTypeID int
+AS
+BEGIN
+	SELECT [NotificationTypeID], [Name], [Description], [TTL], [DesktopModuleId], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsTask]
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]
+	WHERE [NotificationTypeID] = @NotificationTypeID
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationTypeByName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationTypeByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationTypeByName]
+	@Name nvarchar(100)
+AS
+BEGIN
+	SELECT [NotificationTypeID], [Name], [Description], [TTL], [DesktopModuleId], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsTask]
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]
+	WHERE [Name] LIKE @Name
+END
+GO
+
+/********************************************************
+ * SPROC: CoreMessaging_DeleteUserNotifications
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]
+	@UserId int,
+	@PortalId int
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages
+	WHERE PortalId = @PortalId
+	  AND MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE UserID = @UserId)
+
+	SELECT @@ROWCOUNT
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDuplicateEmailCount]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
+    @PortalId INT
+AS 
+	SELECT ISNULL((SELECT COUNT(*) TotalCount FROM {databaseOwner}[{objectQualifier}Users] U Inner Join {databaseOwner}[{objectQualifier}UserPortals] UP on UP.[UserId] = U.[UserId] WHERE UP.PortalId = @PortalId  GROUP BY U.[Email] HAVING COUNT(*) > 1), 0)
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSingleUserByEmail]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSingleUserByEmail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSingleUserByEmail]
+    @PortalId INT,
+	@Email nvarchar(255)
+AS 
+	SELECT ISNULL((SELECT TOP 1 U.UserId from {databaseOwner}[{objectQualifier}Users] U Inner Join {databaseOwner}[{objectQualifier}UserPortals] UP on UP.[UserId] = U.[UserId] Where U.Email = @Email and UP.[PortalId] = @PortalId), -1)
+GO
+
+
+-- make sure we don't have any duplicate amail addresses on portals where Registration_UseEmailAsUserName is turned on
+-- if so we need to turn off the feature here
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings] 
+    SET  SettingValue = 'false'
+    FROM {databaseOwner}[{objectQualifier}PortalSettings] S
+    JOIN (SELECT DISTINCT PortalID FROM (SELECT PortalID, COUNT(*) UserCount 
+            FROM {databaseOwner}[{objectQualifier}vw_Users] 
+            GROUP BY PortalID, [Email] HAVING COUNT(*) > 1) X) F 
+    ON S.PortalID = F.PortalID AND S.SettingName = 'Registration_UseEmailAsUserName' AND S.SettingValue <> 'false'
+GO
+
+/********************************************************
+ * Table: PortalSettings (allow CultureCode Null, DNN-5743)
+ ********************************************************/
+
+--Drop Foreign Key
+IF EXISTS (
+	SELECT * 
+	FROM Sys.Foreign_Keys 
+	WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]')
+	AND name = N'FK_{objectQualifier}PortalSettings_{objectQualifier}Portals')
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings
+    DROP CONSTRAINT FK_{objectQualifier}PortalSettings_{objectQualifier}Portals
+END
+GO
+
+--Create Temp Table
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}PortalSettings
+    (
+        PortalSettingID int NOT NULL IDENTITY (1, 1),
+        PortalID int NOT NULL,
+        SettingName nvarchar(50) NOT NULL,
+        SettingValue nvarchar(2000) NULL,
+        CreatedByUserID int NULL,
+        CreatedOnDate datetime NULL,
+        LastModifiedByUserID int NULL,
+        LastModifiedOnDate datetime NULL,
+        CultureCode nvarchar(10) NULL,
+        CONSTRAINT [PK_Tmp_{objectQualifier}PortalSettings] PRIMARY KEY NONCLUSTERED ([PortalSettingID] ASC)
+    )  ON [PRIMARY]
+GO
+
+CREATE CLUSTERED INDEX IX_{objectQualifier}PortalSettings ON {databaseOwner}Tmp_{objectQualifier}PortalSettings
+    (
+       PortalID,
+       CultureCode,
+       SettingName
+    ) ON [PRIMARY]
+GO
+
+--Copy Data to Temp Table (updating CultureCode = '' to NULL)
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}PortalSettings)
+    INSERT INTO {databaseOwner}Tmp_{objectQualifier}PortalSettings 
+        (
+            PortalID, 
+            SettingName, 
+            SettingValue, 
+            CreatedByUserID, 
+            CreatedOnDate, 
+            LastModifiedByUserID, 
+            LastModifiedOnDate, 
+            CultureCode
+        )
+        SELECT PortalID, 
+            SettingName, 
+            SettingValue, 
+            CreatedByUserID, 
+            CreatedOnDate, 
+            LastModifiedByUserID, 
+            LastModifiedOnDate, 
+            CASE WHEN CultureCode = '' THEN NULL ELSE CultureCode END
+        FROM {databaseOwner}{objectQualifier}PortalSettings
+GO
+
+-- drop original table
+DROP TABLE {databaseOwner}{objectQualifier}PortalSettings
+GO
+
+-- rename table
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}PortalSettings', N'{objectQualifier}PortalSettings', 'OBJECT' 
+GO
+
+-- rename PK
+EXECUTE sp_rename N'PK_Tmp_{objectQualifier}PortalSettings', N'PK_{objectQualifier}PortalSettings', 'OBJECT' 
+GO
+
+-- add back foreign key
+ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings 
+    ADD CONSTRAINT  FK_{objectQualifier}PortalSettings_{objectQualifier}Portals FOREIGN KEY ( PortalID ) REFERENCES {databaseOwner}{objectQualifier}Portals ( PortalID ) ON UPDATE NO ACTION ON DELETE CASCADE 
+GO
+
+
+-- All current entries are supposed to be neutral:
+DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+ WHERE PortalSettingID NOT IN (SELECT Max(PortalSettingID) 
+                                FROM  {databaseOwner}[{objectQualifier}PortalSettings] 
+                                GROUP BY PortalID, SettingName)
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET CultureCode = Null;
+GO
+
+-- Consider site settings for skin and container to be language specific:
+INSERT INTO  {databaseOwner}[{objectQualifier}PortalSettings]  
+      (  PortalID,   CultureCode,   SettingName,   SettingValue,   CreatedByUserID,   CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT S.PortalID, L.CultureCode, S.SettingName, S.SettingValue, S.CreatedByUserID, S.CreatedOnDate, -1,                   GetDate()
+ FROM (SELECT PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+        WHERE SettingName IN ('DefaultAdminContainer', 'DefaultAdminSkin', 'DefaultPortalContainer', 'DefaultPortalSkin', 'DefaultIconLocation')) S
+ JOIN {databaseOwner}[{objectQualifier}PortalLocalization] L ON S.PortalID = L.PortalID;
+GO
+
+ DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+  WHERE SettingName IN ('DefaultAdminContainer', 'DefaultAdminSkin', 'DefaultPortalContainer', 'DefaultPortalSkin', 'DefaultIconLocation')
+    AND CultureCode Is Null;
+GO
+
+-- consider page after login and after logout to affect default language only (if content localization used):
+MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S 
+ USING {databaseOwner}[{objectQualifier}Portals] P ON (S.PortalID = P.PortalID)
+ WHEN MATCHED AND S.SettingName IN ('Redirect_AfterLogin', 'Redirect_AfterLogin') 
+ THEN UPDATE SET CultureCode = P.DefaultLanguage;
+GO
+
+
+/********************************************************
+ * SPROC: UpdatePortalSetting (improve robustness, documented)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+	@PortalID       Int,			-- Key, Not Null
+	@SettingName    nVarChar(  50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(2000), -- Not Null
+	@UserID			Int,			-- Not Null (editing user)
+	@CultureCode    nVarChar(  10)  -- Key, Null|'' for neutral language 
+AS
+BEGIN
+	IF IsNull(@SettingValue, '') = ''
+		DELETE FROM {databaseOwner}{objectQualifier}PortalSettings 
+		 WHERE PortalID    = @PortalID
+		   AND SettingName = @SettingName 
+		   AND IsNull(CultureCode, '') = IsNull(@CultureCode, '')
+	ELSE IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalSettings 
+	                    WHERE PortalID    = @PortalID
+						  AND SettingName = @SettingName 
+						  AND IsNull(CultureCode, '') = IsNull(@CultureCode, '')) 
+		UPDATE {databaseOwner}{objectQualifier}PortalSettings
+		 SET   [SettingValue]         = @SettingValue,
+			   [LastModifiedByUserID] = @UserID,
+			   [LastModifiedOnDate]   = GetDate()
+		 WHERE [PortalID]              = @PortalID
+		   AND [SettingName]           = @SettingName
+		   AND IsNull(CultureCode, '') = IsNull(@CultureCode, '') 		   
+	ELSE IF IsNull(@SettingName,'') != '' -- Add new record:
+		INSERT INTO {databaseOwner}{objectQualifier}PortalSettings 
+		           ( PortalID,  SettingName,  SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode) 
+			VALUES (@PortalID, @SettingName, @SettingValue, @UserID,         GetDate(),     @UserID ,             GetDate(),          CASE WHEN @CultureCode = '' THEN Null ELSE @CultureCode END)
+END
+GO
+
+/********************************************************
+Begin PR #144/#188
+*********************************************************/
+
+/********************************************************
+ * SPROC: GetPortalSetting (fixing CultureCode use, DNN-5742
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID    Int,		    -- Not Null
+    @SettingName nVarChar(50),	-- Not Null
+    @CultureCode nVarChar(50)	-- Null|-1 for neutral language
+AS
+BEGIN
+	SELECT TOP (1)
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE PortalID    = @PortalID
+	   AND SettingName = @SettingName
+	   AND COALESCE(CultureCode, @CultureCode,'') = IsNull(@CultureCode,'')
+	 ORDER BY IsNull(CultureCode,'') DESC
+END
+GO
+
+/********************************************************
+ * SPROC: GetPortalSettings (fixing CultureCode use, DNN-5742
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- Null|'' for neutral language
+AS
+BEGIN
+	DECLARE @DefaultLanguage nVarChar(20) = '';
+
+	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+					JOIN {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+					WHERE P.PortalID = @PortalID)
+		SELECT @DefaultLanguage = DefaultLanguage 
+		FROM {databaseOwner}[{objectQualifier}Portals] 
+		WHERE PortalID = @PortalID
+
+	SELECT
+		PS.SettingName,
+		CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
+			THEN {databaseOwner}{objectQualifier}FilePath(PS.SettingValue)
+			ELSE PS.SettingValue END   AS SettingValue,
+		PS.CreatedByUserID,
+		PS.CreatedOnDate,
+		PS.LastModifiedByUserID,
+		PS.LastModifiedOnDate,
+		PS.CultureCode
+		FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+	WHERE 
+		PortalID = @PortalId  AND 
+		COALESCE(CultureCode, @CultureCode, @DefaultLanguage) = IsNull(@CultureCode, @DefaultLanguage)
+END
+GO
+
+/********************************************************
+ * SPROC: DeletePortalSetting (use ignored param CultureCode, DNN-5758)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+	@PortalID      Int,          -- Not Null
+	@SettingName   nVarChar(50), -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (SettingName = @SettingName)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, '') = '')
+END	
+GO
+
+
+/********************************************************
+ * SPROC: DeletePortalSettings (add param CultureCode, DNN-5758)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+	@PortalID      Int,          -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, '') = '')
+END	
+GO
+
+/********************************************************
+ * SPROC: DeletePortalLanguages (delete PortalSettings and PortalLocalization, DNN-5759)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalLanguages]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalLanguages]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalLanguages]
+    @PortalId   Int, -- Null ignored (use referential integrity to delete from all Portals)
+    @LanguageId Int  -- Null ignored (use referential integrity to delete for all languages)
+AS
+BEGIN
+    IF @PortalId Is Not Null AND IsNull(@LanguageId, -1) != -1 BEGIN
+       DECLARE @CultureCode nVarchar(10);
+       SELECT @CultureCode = CultureCode FROM {databaseOwner}[{objectQualifier}Languages] WHERE LanguageId = @LanguageId;
+       DELETE FROM {databaseOwner}[{objectQualifier}PortalLanguages]    WHERE PortalId = @PortalId AND @LanguageId  = LanguageId;
+       DELETE FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE PortalId = @PortalId AND @CultureCode = CultureCode;
+       DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]     WHERE PortalId = @PortalId AND @CultureCode = CultureCode;
+    END
+    -- ELSE rely on referential integrity (portal or language will be deleted as well)
+END
+GO
+
+
+/********************************************************
+ * SPROC: DeleteLanguage (delete PortalSettings and PortalLocalization, DNN-5759)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteLanguage]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteLanguage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteLanguage]
+	@LanguageID		Int -- Not Null
+AS
+BEGIN
+    DECLARE @CultureCode AS nVarChar(10);
+    SELECT @CultureCode = CultureCode FROM {databaseOwner}[{objectQualifier}Languages] WHERE LanguageId = @LanguageId;
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE @CultureCode = CultureCode;
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]     WHERE @CultureCode = CultureCode;
+    DELETE FROM {databaseOwner}[{objectQualifier}Languages]          WHERE @LanguageID  = LanguageID;
+END
+GO
+
+/********************************************************
+ * SPROC: EnsureLocalizationExists (create localized settings, DNN-5759)
+ ********************************************************/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+	@PortalID       Int,
+	@CultureCode	nvarchar(10)
+AS
+BEGIN
+	DECLARE @MasterLanguage nvarchar(10) = Null;
+	DECLARE @LocalizationExists bit = 0;
+
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Languages] L 
+					JOIN {databaseOwner}[{objectQualifier}PortalLanguages] P ON L.LanguageID = P.LanguageID 
+					WHERE P.PortalID = @PortalID AND L.CultureCode = @CultureCode)
+		RETURN; -- language does not exist for this portal
+
+	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+				WHERE CultureCode = @CultureCode AND PortalID = @PortalID)
+		RETURN; -- already localized
+	
+	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+					JOIN {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+					WHERE P.PortalID = @PortalID)
+		SELECT @MasterLanguage = DefaultLanguage 
+		FROM {databaseOwner}[{objectQualifier}Portals] 
+		WHERE PortalID = @PortalID
+	ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+					WHERE CultureCode = 'en-US' and PortalID = @PortalID)
+		SET @MasterLanguage = 'en-US'
+	ELSE -- neither default nor system language available: take the language that was assigned first
+		SELECT TOP (1) CultureCode 
+		FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+		WHERE PortalID = @PortalID 
+		ORDER BY PortalID ASC;
+
+	IF NOT (@MasterLanguage Is Null OR @MasterLanguage LIKE @CultureCode) 
+	BEGIN  -- copy localized values from (existing and different) master language:					
+		INSERT INTO {databaseOwner}[{objectQualifier}PortalLocalization]
+		(	PortalId,
+			CultureCode,
+			PortalName,
+			LogoFile,
+			FooterText,
+			Description,
+			KeyWords,
+			BackgroundFile, 
+			HomeTabId,
+			LoginTabId,
+			UserTabId,
+			AdminTabId,
+			RegisterTabId,
+			SearchTabId,
+			CreatedByUserID,
+			CreatedOnDate,
+			LastModifiedByUserID,
+			LastModifiedOnDate
+		) SELECT
+			PortalId,
+			@CultureCode,
+			PortalName,
+			LogoFile,
+			FooterText,
+			Description,
+			KeyWords,
+			BackgroundFile, 
+			HomeTabId,
+			LoginTabId,
+			UserTabId,
+			AdminTabId,
+			RegisterTabId,
+			SearchTabId,
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+		 FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+		 WHERE PortalID = @PortalID AND CultureCode = @MasterLanguage;
+	
+		-- copy missing localized settings:
+		DECLARE	
+			@LocalPortalSettings TABLE(
+		    [PortalID]             INT             NOT NULL,
+		    [CultureCode]          NVARCHAR (10)   NOT NULL,
+		    [SettingName]          NVARCHAR (50)   NOT NULL,
+		    [SettingValue]         NVARCHAR (2000) NULL
+		);
+
+		INSERT INTO @LocalPortalSettings
+		(
+			PortalID,
+			CultureCode,
+			SettingName,
+			SettingValue
+		)
+		SELECT
+			PortalID,
+			CultureCode,
+			SettingName,
+			SettingValue
+		FROM {databaseOwner}[{objectQualifier}PortalSettings]
+		WHERE PortalID = @PortalID AND CultureCode = @CultureCode
+
+		MERGE INTO @LocalPortalSettings target
+		USING (SELECT * FROM {databaseOwner}[{objectQualifier}PortalSettings]
+				WHERE PortalId = @PortalID and CultureCode = @MasterLanguage) source 
+		ON (target.SettingName = source.SettingName)
+		WHEN NOT MATCHED THEN 
+			INSERT (  
+				PortalID,   
+				CultureCode,   
+				SettingName,   
+				SettingValue) 
+			VALUES (
+				source.PortalID, 
+				@CultureCode, 
+				source.SettingName, 
+				source.SettingValue
+			);
+
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings]  target
+		USING (SELECT * FROM @LocalPortalSettings) source 
+		ON (target.PortalID = source.PortalID AND 
+			target.CultureCode = source.CultureCode AND 
+			target.SettingName = source.SettingName)
+		WHEN NOT MATCHED THEN 
+			INSERT (  
+				PortalID,   
+				CultureCode,   
+				SettingName,   
+				SettingValue,
+				CreatedByUserID, 
+				CreatedOnDate, 
+				LastModifiedByUserID, 
+				LastModifiedOnDate) 
+			VALUES (
+				source.PortalID, 
+				@CultureCode, 
+				source.SettingName, 
+				source.SettingValue,
+				-1,
+				GETDATE(),
+				-1,
+				GETDATE()
+			);
+	END;
+END
+GO
+/********************************************************
+End PR #144/#188
+*********************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_SplitText]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+	DROP FUNCTION {databaseOwner}[{objectQualifier}Journal_SplitText]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Journal_SplitText](@text varchar(8000), @delimiter char(1))
+RETURNS @words TABLE (objectid smallint primary key, string varchar(1000), optionalid int)
+AS
+BEGIN
+	DECLARE @pos smallint,
+		@i smallint,
+		@j smallint,
+		@s varchar(255),
+        @o int
+
+	SET @pos = 1
+
+	WHILE @pos <= LEN(@text)
+	BEGIN
+		SET @i = CHARINDEX(' ', @text, @pos)
+		SET @j = CHARINDEX(@delimiter, @text, @pos)
+
+		IF @i > 0 OR @j > 0
+		BEGIN
+			IF @i = 0 OR (@j > 0 AND @j < @i)
+				SET @i = @j
+
+			IF @i > @pos
+			BEGIN
+				-- @i now holds the earliest delimiter in the string
+				SET @s = SUBSTRING(@text, @pos, @i - @pos)
+				SET @o = 0
+	            IF CHARINDEX('|',@s,0) > 0
+					BEGIN
+						SET @o = SUBSTRING(@s,0,CHARINDEX('|',@s,0))
+						SET @s = SUBSTRING(@s,CHARINDEX('|',@s,0)+1,LEN(@s))
+
+					END
+
+				IF NOT EXISTS (SELECT 1 FROM @words WHERE [string]=@s)
+				BEGIN
+					INSERT INTO @words
+					VALUES (@pos, @s, @o)
+				END
+			END
+
+			SET @pos = @i + 1
+			WHILE @pos < LEN(@text) AND SUBSTRING(@text, @pos, 1) IN (' ', ',')
+				SET @pos = @pos + 1
+		END
+		ELSE
+		BEGIN
+			SET @s = SUBSTRING(@text, @pos, LEN(@text) - @pos + 1)
+			IF CHARINDEX('|',@s,0) > 0
+			BEGIN
+				SET @o = SUBSTRING(@s,0,CHARINDEX('|',@s,0))
+				SET @s = SUBSTRING(@s,CHARINDEX('|',@s,0)+1,LEN(@s))
+
+			END
+
+			IF NOT EXISTS (SELECT 1 FROM @words WHERE [string]=@s)
+			BEGIN
+				INSERT INTO @words
+				VALUES (@pos, @s ,@o)
+			END
+
+			SET @pos = LEN(@text) + 1
+		END
+	END
+
+	RETURN
+END
+GO
+
+/****************************************************************
+ * SPROC: GetFoldersByPermission (improve performance) DNN-5909
+ ****************************************************************/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions] 
+	@PortalID int,
+	@Permissions nvarchar(300),
+	@UserID int,
+	@FolderID int,
+	@FolderPath nvarchar(300)
+
+AS
+	DECLARE @IsSuperUser BIT
+	DECLARE @Admin BIT
+	DECLARE @Read INT
+	DECLARE @Write INT
+	DECLARE @Browse INT
+	DECLARE @Add INT
+
+	--Determine Admin or SuperUser
+	IF @UserId IN (
+		SELECT UserId 
+		FROM {databaseOwner}[{objectQualifier}UserRoles] 
+		WHERE RoleId IN (
+			SELECT RoleId 
+			FROM {databaseOwner}[{objectQualifier}Roles] 
+			WHERE PortalId = @PortalId 
+			AND RoleName = 'Administrators')) 
+	BEGIN 
+		SET @Admin = 1 
+	END;
+	
+	SELECT @IsSuperUser = IsSuperUser 
+	FROM {databaseOwner}[{objectQualifier}Users] 
+	WHERE UserId = @UserId;
+
+	--Retrieve Permission Ids
+	IF @Permissions LIKE '%READ%' BEGIN SELECT TOP 1 @Read = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'READ' END;
+	IF @Permissions LIKE '%WRITE%' BEGIN SELECT TOP 1 @Write = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'WRITE' END;
+	IF @Permissions LIKE '%BROWSE%' BEGIN SELECT TOP 1 @Browse = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'BROWSE' END;
+	IF @Permissions LIKE '%ADD%' BEGIN SELECT TOP 1 @Add = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND PermissionKey = 'ADD' END;
+
+	IF @PortalID IS NULL
+		BEGIN
+			SELECT DISTINCT F.*
+			FROM {databaseOwner}[{objectQualifier}Folders] F
+			WHERE F.PortalID IS NULL
+				AND (F.FolderID = @FolderID OR @FolderID = -1)
+				AND (F.FolderPath = @FolderPath OR @FolderPath = '')
+		  
+			 ORDER BY F.FolderPath
+		END
+	ELSE
+		BEGIN
+			CREATE TABLE #Skip_Folders(folderid INT PRIMARY KEY(folderid))
+			INSERT INTO #Skip_Folders
+				 SELECT DISTINCT folderid FROM {databaseOwner}[{objectQualifier}FolderPermission] FP
+									JOIN {databaseOwner}[{objectQualifier}Permission] P ON FP.PermissionID = P.PermissionID
+									WHERE
+										((P.PermissionKey = 'WRITE' OR @IsSuperUser=1 OR @Admin=1) OR
+										FP.PermissionID = CASE WHEN @Read > 0 THEN @Read END OR
+										FP.PermissionID = CASE WHEN @Write > 0 THEN @Write END OR
+										FP.PermissionID = CASE WHEN @Browse > 0 THEN @Browse END OR
+										FP.PermissionID = CASE WHEN @Add > 0 THEN @Add END)
+										AND FP.FolderID NOT IN (SELECT DISTINCT folderid FROM {databaseOwner}[{objectQualifier}FolderPermission] WHERE allowaccess=0 AND (userid=@UserId OR roleid=-1 OR roleid IN (SELECT roleid FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserID=@UserId)))		
+
+			SELECT DISTINCT F.*
+			FROM {databaseOwner}[{objectQualifier}Folders] F
+				JOIN {databaseOwner}[{objectQualifier}FolderPermission] FP ON F.FolderId = FP.FolderID
+				JOIN {databaseOwner}[{objectQualifier}Permission] P ON FP.PermissionID = P.PermissionID
+				JOIN #Skip_Folders sf ON sf.folderid=f.folderid 
+			WHERE ((F.PortalID = @PortalID) OR (F.PortalID IS NULL AND @PortalID IS NULL))
+				AND (F.FolderID = @FolderID OR @FolderID = -1)
+				AND (F.FolderPath = @FolderPath OR @FolderPath = '')
+				AND 
+					((P.PermissionKey = 'WRITE' OR @IsSuperUser=1 OR @Admin=1) OR
+						FP.PermissionID = CASE WHEN @Read > 0 THEN @Read END OR
+						FP.PermissionID = CASE WHEN @Write > 0 THEN @Write END OR
+						FP.PermissionID = CASE WHEN @Browse > 0 THEN @Browse END OR
+						FP.PermissionID = CASE WHEN @Add > 0 THEN @Add END)
+				AND FP.AllowAccess = 1
+			 ORDER BY F.FolderPath
+
+			 DROP TABLE #Skip_Folders
+		END
+GO
+
+/***************************************************
+ * SPROC: add ordering to SearchDeletedItems_Select
+ ***************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems_Select]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+    @CutoffTime	DATETIME
+AS
+BEGIN
+	SELECT document
+	FROM {databaseOwner}{objectQualifier}SearchDeletedItems
+	WHERE [DateCreated] < @CutoffTime
+	ORDER BY [DateCreated]
+END
+GO
+
+/***************************************************
+ * New Exception Management in Event Log
+ ***************************************************/
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EventLog]') AND name = 'ExceptionHash')
+BEGIN
+  ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
+   ADD ExceptionHash varchar(100) NULL
+ END
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
+ ALTER COLUMN LogProperties XML
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddEventLog]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddEventLog
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}AddEventLog
+	@LogGUID varchar(36),
+	@LogTypeKey nvarchar(35),
+	@LogUserID int,
+	@LogUserName nvarchar(50),
+	@LogPortalID int,
+	@LogPortalName nvarchar(100),
+	@LogCreateDate datetime,
+	@LogServerName nvarchar(50),
+	@LogProperties ntext,
+	@LogConfigID int,
+	@ExceptionHash varchar(100) = NULL
+AS
+BEGIN
+	IF NOT EXISTS (SELECT * FROM  {databaseOwner}[{objectQualifier}EventLogTypes] WHERE LogTypeKey = @LogTypeKey)
+	BEGIN
+		-- Add new Event Type
+			EXEC  {databaseOwner}[{objectQualifier}AddEventLogType] @LogTypeKey, @LogTypeKey, N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation'
+
+		-- Add new Event Type Config
+			EXEC  {databaseOwner}[{objectQualifier}AddEventLogConfig] @LogTypeKey, NULL, 0, -1, 0, 1, 1, 1, N'', N''
+
+		-- As the new log config is unlogged, exit without logging
+			Return
+	END
+
+	DECLARE @LogEventID bigint
+
+	INSERT INTO  {databaseOwner}[{objectQualifier}EventLog]
+		(LogGUID,
+		LogTypeKey,
+		LogUserID,
+		LogUserName,
+		LogPortalID,
+		LogPortalName,
+		LogCreateDate,
+		LogServerName,
+		LogProperties,
+		LogConfigID,
+		ExceptionHash)
+	VALUES
+		(@LogGUID,
+		@LogTypeKey,
+		@LogUserID,
+		@LogUserName,
+		@LogPortalID,
+		@LogPortalName,
+		@LogCreateDate,
+		@LogServerName,
+		@LogProperties,
+		@LogConfigID,
+		@ExceptionHash)
+
+	SELECT @LogEventID = SCOPE_IDENTITY()
+
+	DECLARE @NotificationActive bit
+	DECLARE @NotificationThreshold bit
+	DECLARE @ThresholdQueue int
+	DECLARE @NotificationThresholdTime int
+	DECLARE @NotificationThresholdTimeType int
+	DECLARE @MinDateTime smalldatetime
+	DECLARE @CurrentDateTime smalldatetime
+
+	SET @CurrentDateTime = getDate()
+
+	SELECT TOP 1 @NotificationActive = EmailNotificationIsActive,
+		@NotificationThreshold = NotificationThreshold,
+		@NotificationThresholdTime = NotificationThresholdTime,
+		@NotificationThresholdTimeType = NotificationThresholdTimeType,
+		@MinDateTime = 
+			CASE
+				 --seconds
+				WHEN NotificationThresholdTimeType=1 THEN DateAdd(second, NotificationThresholdTime * -1, @CurrentDateTime)
+				--minutes
+				WHEN NotificationThresholdTimeType=2  THEN DateAdd(minute, NotificationThresholdTime * -1, @CurrentDateTime)
+				--hours
+				WHEN NotificationThresholdTimeType=3  THEN DateAdd(Hour, NotificationThresholdTime * -1, @CurrentDateTime)
+				--days
+				WHEN NotificationThresholdTimeType=4  THEN DateAdd(Day, NotificationThresholdTime * -1, @CurrentDateTime)
+			END
+	FROM  {databaseOwner}[{objectQualifier}EventLogConfig]
+	WHERE ID = @LogConfigID
+
+	IF @NotificationActive=1
+	BEGIN
+		
+		SELECT @ThresholdQueue = COUNT(*)
+		FROM  {databaseOwner}[{objectQualifier}EventLog] el
+			INNER JOIN  {databaseOwner}[{objectQualifier}EventLogConfig] elc
+				ON  el.LogConfigID =  elc.ID
+		WHERE LogCreateDate > @MinDateTime
+
+		IF @ThresholdQueue >= @NotificationThreshold
+		BEGIN
+			UPDATE  {databaseOwner}[{objectQualifier}EventLog]
+			SET LogNotificationPending = 1 
+			WHERE LogConfigID = @LogConfigID
+				AND LogNotificationPending IS NULL		
+				AND LogCreateDate > @MinDateTime
+		END
+
+	END
+ 
+	SELECT @LogEventID
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Exceptions]') AND type in (N'U'))
+BEGIN
+ CREATE TABLE {databaseOwner}[{objectQualifier}Exceptions](
+  [ExceptionHash] varchar(100) NOT NULL,
+  [Message] nvarchar(500) NOT NULL,
+  [StackTrace] nvarchar(max) NULL,
+  [InnerMessage] nvarchar(500) NULL,
+  [InnerStackTrace] nvarchar(max) NULL,
+  [Source] nvarchar(500) NULL,
+  CONSTRAINT [PK_{objectQualifier}Exceptions] PRIMARY KEY CLUSTERED ([ExceptionHash] ASC)
+  ) ON [PRIMARY]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddException]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddException
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddException
+	@ExceptionHash varchar(100),
+	@Message nvarchar(500),
+	@StackTrace nvarchar(max),
+	@InnerMessage nvarchar(500),
+	@InnerStackTrace nvarchar(max),
+	@Source nvarchar(500)
+AS
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Exceptions] WHERE ExceptionHash=@ExceptionHash)
+INSERT INTO {databaseOwner}[{objectQualifier}Exceptions]
+	(ExceptionHash,
+	Message,
+	StackTrace,
+	InnerMessage,
+	InnerStackTrace,
+	Source)
+VALUES
+	(@ExceptionHash,
+	@Message,
+	@StackTrace,
+	@InnerMessage,
+	@InnerStackTrace,
+	@Source)
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExceptionEvents]') AND type in (N'U'))
+BEGIN
+ CREATE TABLE {databaseOwner}[{objectQualifier}ExceptionEvents](
+  [LogEventID] bigint NOT NULL,
+  [AssemblyVersion] varchar(20) NOT NULL,
+  [PortalId] int NULL,
+  [UserId] int NULL,
+  [TabId] int NULL,
+  [RawUrl] nvarchar(260) NULL,
+  [Referrer] nvarchar(260) NULL,
+  [UserAgent] nvarchar(260) NULL,
+  CONSTRAINT [PK_{objectQualifier}ExceptionEvents] PRIMARY KEY CLUSTERED ([LogEventID] ASC)
+  ) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_{objectQualifier}ExceptionEvents_LogEventId' AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExceptionEvents]'))
+BEGIN
+ALTER TABLE {databaseOwner}[{objectQualifier}ExceptionEvents] 
+  WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}ExceptionEvents_LogEventId] FOREIGN KEY([LogEventID])
+  REFERENCES {databaseOwner}[{objectQualifier}EventLog] ([LogEventID])
+  ON DELETE CASCADE
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddExceptionEvent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddExceptionEvent
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddExceptionEvent
+  @LogEventID bigint,
+  @AssemblyVersion varchar(20),
+  @PortalId int,
+  @UserId int,
+  @TabId int,
+  @RawUrl nvarchar(260),
+  @Referrer nvarchar(260),
+  @UserAgent nvarchar(260)
+AS
+
+INSERT INTO {databaseOwner}[{objectQualifier}ExceptionEvents]
+	(LogEventID,
+	AssemblyVersion,
+	PortalId,
+	UserId,
+	TabId,
+	RawUrl,
+ Referrer,
+ UserAgent)
+VALUES
+	(@LogEventID,
+	@AssemblyVersion,
+	@PortalId,
+	@UserId,
+	@TabId,
+	@RawUrl,
+ @Referrer,
+ @UserAgent)
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_EventLog'))
+	DROP VIEW {databaseOwner}{objectQualifier}vw_EventLog
+GO
+
+CREATE VIEW {databaseOwner}{objectQualifier}vw_EventLog
+AS
+SELECT
+ el.*,
+ ee.AssemblyVersion,
+ ee.PortalId,
+ ee.UserId,
+ ee.TabId,
+ ee.RawUrl,
+ ee.Referrer,
+ ee.UserAgent,
+ e.Message,
+ e.StackTrace,
+ e.InnerMessage,
+ e.InnerStackTrace,
+ e.Source
+FROM {databaseOwner}{objectQualifier}EventLog el
+ LEFT JOIN {databaseOwner}{objectQualifier}ExceptionEvents ee ON el.LogEventID = ee.LogEventID
+ LEFT JOIN {databaseOwner}{objectQualifier}Exceptions e ON el.ExceptionHash = e.ExceptionHash
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetEventLog]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetEventLog]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetEventLog]
+    @PortalID   Int,            -- Might be Null for all sites
+    @LogTypeKey nVarChar(35),   -- Key of log type or Null for all
+    @PageSize   Int,            -- Number of items per page
+    @PageIndex  Int             -- Page number starting with 0
+AS
+BEGIN
+     WITH [eLog] AS (
+         SELECT ROW_NUMBER() OVER (ORDER BY E.LogCreateDate Desc) AS RowNumber, e.*
+          FROM {databaseOwner}{objectQualifier}vw_EventLog e
+          WHERE (e.LogPortalID = @PortalID     OR IsNull(@PortalID,   -1) = -1)
+            AND (e.LogTypeKey LIKE @LogTypeKey OR IsNull(@LogTypeKey, '') = '')
+     )
+     SELECT * FROM [eLog]
+      WHERE RowNumber >= {databaseOwner}{objectQualifier}PageLowerBound(@PageIndex, @PageSize)
+        AND RowNumber <= {databaseOwner}{objectQualifier}PageUpperBound(@PageIndex, @PageSize)
+      ORDER BY RowNumber
+
+    SELECT COUNT(1) AS TotalRecords
+     FROM {databaseOwner}{objectQualifier}vw_EventLog e
+     WHERE (e.LogPortalID = @PortalID     OR IsNull(@PortalID,   -1) = -1)
+       AND (e.LogTypeKey Like @LogTypeKey OR IsNull(@LogTypeKey, '') = '')
+
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetEventLogByLogGUID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetEventLogByLogGUID]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetEventLogByLogGUID
+	@LogGUID varchar(36)
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_EventLog
+WHERE (LogGUID = @LogGUID)
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetEventLogPendingNotif]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetEventLogPendingNotif]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetEventLogPendingNotif
+	@LogConfigID int
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_EventLog
+WHERE LogNotificationPending = 1
+AND LogConfigID = @LogConfigID
+
+GO
+
+/* DNN-5055: */
+/*************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+    @startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS 
+    BEGIN
+		DECLARE @PivotSql NVARCHAR(MAX)
+
+		SELECT @PivotSql = COALESCE(@PivotSql + ',','') + '[' + PropertyName + ']'
+		 FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd
+		 INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON ListName = 'DataType' AND SystemList = 1 AND Value IN ( 'Text', 'RichText' ) AND l.EntryID = pd.DataType
+		 WHERE ISNULL(pd.PortalID, -1) = ISNULL(@PortalId, -1)
+		   AND Deleted = 0
+		ORDER BY ViewOrder
+
+		DECLARE @Sql NVARCHAR(MAX)
+
+		SELECT @Sql = '
+        WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
+                       WHERE    ListName = ''DataType''
+                                AND SystemList = 1
+                                AND Value IN ( ''Text'', ''RichText'' )
+                     ),
+                  ValidUsers AS 
+                  (
+                                      SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                         FROM ( SELECT DISTINCT
+                                            ( u.UserID )
+                                  FROM      {databaseOwner}[{objectQualifier}Users] u
+                                            INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}vw_Profile] p ON p.UserID = u.UserID
+                                            INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalId
+                                            INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                  WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
+                                            AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
+                                            AND ((p.PropertyValue IS NOT NULL AND p.PropertyValue <> '''') OR u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                                ) AS T WHERE UserID > @startUserId) AS T
+                                WHERE rownumber <= @numberOfUsers
+                     )
+
+		SELECT * FROM (
+        SELECT u.UserID ,
+               u.DisplayName,
+               u.LastModifiedOnDate,
+			   u.Username,
+			   u.IsSuperUser,
+			   u.Email,
+			   u.CreatedOnDate,
+			   p.PropertyName,
+			   p.PropertyValue + ''$$$'' + 
+			   CAST(CASE WHEN (p.Visibility IS NULL) THEN 0 ELSE p.Visibility END AS VARCHAR(10)) + ''$$$'' +
+			   p.ExtendedVisibility + ''$$$'' +
+			   CONVERT(VARCHAR(20), CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate OR p.LastUpdatedDate IS NULL THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END, 20) AS [PropertyValue]
+		FROM
+			{databaseOwner}[{objectQualifier}Users] u
+			INNER JOIN ValidUsers vu on vu.UserId = u.UserID
+			INNER JOIN {databaseOwner}[{objectQualifier}vw_Profile] p ON p.UserID = u.UserID
+			INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+			INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType) AS T
+		PIVOT (MAX(PropertyValue) for PropertyName in (' + @PivotSql + ')) AS T
+		ORDER BY UserId
+		'
+		EXECUTE sp_executesql @Sql, 
+                              N'@PortalId INT ,
+                                @StartDate DATETIME ,
+                                @startUserId INT,
+                                @numberOfUsers INT', 
+                              @PortalId, @StartDate, @startUserId, @numberOfUsers
+    END
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}[{objectQualifier}Tabs]') AND name ='IsSystem')
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}Tabs]
+			ADD [IsSystem] BIT NOT NULL Default(0)
+	END
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Tabs SET HasBeenPublished = 1;
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+-- updated view to use new function
+-- note comment regarding signature modification
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+		T.HasBeenPublished,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFile)      AS IconFile,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFileLarge) AS IconFileLarge,
+        T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate,
+		T.IsSystem
+    FROM       {databaseOwner}{objectQualifier}Tabs         AS T
+    LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTab]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab] 
+    @TabId					int,
+    @ContentItemID			int,
+    @PortalId				int,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(200),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @IsDeleted				bit,
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @LastModifiedByUserID	int,
+    @CultureCode			nvarchar(50),
+	@IsSystem				bit
+AS
+	BEGIN
+		DECLARE @OldParentId int
+		SET @OldParentId = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+		DECLARE @TabOrder int
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+				
+		-- Get New TabOrder
+		DECLARE @NewTabOrder int
+		SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentId IS NULL)))
+		IF @NewTabOrder IS NULL 
+			SET @NewTabOrder = 1
+		ELSE
+			SET @NewTabOrder = @NewTabOrder + 2
+		
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+			SET
+				ContentItemID			= @ContentItemID,
+				PortalId				= @PortalId,
+				VersionGuid				= @VersionGuid,
+				DefaultLanguageGuid		= @DefaultLanguageGuid,
+				LocalizedVersionGuid	= @LocalizedVersionGuid,
+				TabName					= @TabName,
+				IsVisible				= @IsVisible,
+				DisableLink				= @DisableLink,
+				ParentId				= @ParentId,
+				IconFile				= @IconFile,
+				IconFileLarge			= @IconFileLarge,
+				Title					= @Title,
+				Description				= @Description,
+				KeyWords				= @KeyWords,
+				IsDeleted				= @IsDeleted,
+				Url						= @Url,
+				SkinSrc					= @SkinSrc,
+				ContainerSrc			= @ContainerSrc,
+				StartDate				= @StartDate,
+				EndDate					= @EndDate,
+				RefreshInterval			= @RefreshInterval,
+				PageHeadText			= @PageHeadText,
+				IsSecure				= @IsSecure,
+				PermanentRedirect		= @PermanentRedirect,
+				SiteMapPriority			= @SiteMapPriority,
+				LastModifiedByUserID	= @LastModifiedByUserID,
+				LastModifiedOnDate		= getdate(),
+				CultureCode				= @CultureCode,
+				IsSystem				= @IsSystem
+		WHERE  TabId = @TabId
+		
+		IF (@OldParentId <> @ParentId)
+			BEGIN
+				-- update TabOrder of Tabs with same original Parent
+				UPDATE {databaseOwner}[{objectQualifier}Tabs]
+					SET TabOrder = TabOrder - 2
+					WHERE (ParentId = @OldParentId) 
+						AND TabOrder > @TabOrder
+
+				-- Update Tab with new TabOrder
+				UPDATE {databaseOwner}[{objectQualifier}Tabs]
+					SET 
+						TabOrder = @NewTabOrder
+					WHERE TabID = @TabId
+			END
+		
+		EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+    END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTab]', N'P') IS NOT NULL
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTab] 
+    @ContentItemID			int,
+    @PortalID				int,
+    @TabOrder				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(200),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(Max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50),
+	@IsSystem				bit
+
+AS
+    INSERT INTO {databaseOwner}{objectQualifier}Tabs (
+        ContentItemID,
+        PortalID,
+        TabOrder,
+        UniqueId,
+        VersionGuid,
+        DefaultLanguageGuid,
+        LocalizedVersionGuid,
+        TabName,
+        IsVisible,
+        DisableLink,
+        ParentId,
+        IconFile,
+        IconFileLarge,
+        Title,
+        Description,
+        KeyWords,
+        IsDeleted,
+        Url,
+        SkinSrc,
+        ContainerSrc,
+        StartDate,
+        EndDate,
+        RefreshInterval,
+        PageHeadText,
+        IsSecure,
+        PermanentRedirect,
+        SiteMapPriority,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate,
+        CultureCode,
+		IsSystem
+    )
+    VALUES (
+        @ContentItemID,
+        @PortalID,
+        @TabOrder,
+        @UniqueId,
+        @VersionGuid,
+        @DefaultLanguageGuid,
+        @LocalizedVersionGuid,
+        @TabName,
+        @IsVisible,
+        @DisableLink,
+        @ParentId,
+        @IconFile,
+        @IconFileLarge,
+        @Title,
+        @Description,
+        @KeyWords,
+        0,
+        @Url,
+        @SkinSrc,
+        @ContainerSrc,
+        @StartDate,
+        @EndDate,
+        @RefreshInterval,
+        @PageHeadText,
+        @IsSecure,
+        @PermanentRedirect,
+        @SiteMapPriority,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate(),
+        @CultureCode,
+		@IsSystem
+    )
+	DECLARE @TabId INT
+    SELECT @TabId = SCOPE_IDENTITY()
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId
+	SELECT @TabId
+    RETURN @TabId
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTabBefore]', N'P') IS NOT NULL
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore] 
+	@BeforeTabID			int,
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(200),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50),
+	@IsSystem				bit
+
+AS
+
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder INT 
+		SELECT @TabOrder = TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @BeforeTabID
+		
+		-- Update TabOrders for all Tabs higher than @TabOrder
+		UPDATE {databaseOwner}{objectQualifier}Tabs
+			SET TabOrder = TabOrder + 2
+			WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL))
+				AND TabOrder >= @TabOrder
+				AND (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+		
+		-- Create Tab
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode,
+							@IsSystem;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTabAfter]', N'P') IS NOT NULL
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabAfter]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabAfter] 
+	@AfterTabID				int,
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(200),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50),
+	@IsSystem				bit
+
+AS
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder INT 
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @AfterTabID)
+		
+		-- Update TabOrders for all Tabs higher than @TabOrder
+		UPDATE {databaseOwner}{objectQualifier}Tabs
+			SET TabOrder = TabOrder + 2
+			WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL))
+				AND TabOrder > @TabOrder
+				AND (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+		
+		-- Create Tab
+		SET @TabOrder = @TabOrder + 2
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode,
+							@IsSystem;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTabBefore]', N'P') IS NOT NULL
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore] 
+	@BeforeTabID			int,
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(200),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50),
+	@IsSystem				bit
+
+AS
+
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder INT 
+		SELECT @TabOrder = TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @BeforeTabID
+		
+		-- Update TabOrders for all Tabs higher than @TabOrder
+		UPDATE {databaseOwner}{objectQualifier}Tabs
+			SET TabOrder = TabOrder + 2
+			WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL))
+				AND TabOrder >= @TabOrder
+				AND (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+		
+		-- Create Tab
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode,
+							@IsSystem;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTabToEnd]', N'P') IS NOT NULL
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabToEnd]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddTabToEnd
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(200),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50),
+	@IsSystem				bit
+
+AS
+
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder int 
+		SET @TabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}{objectQualifier}Tabs 
+						 WHERE (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL)) AND
+							   (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL))
+						)
+		IF @TabOrder IS NULL
+			SET @TabOrder = 1
+		ELSE
+			SET @TabOrder = @TabOrder + 2
+
+		-- Create Tab
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode,
+							@IsSystem;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+/* Get Workflow Usage */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+AS
+    SELECT ci.Content as 'ContentName', ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+	WHERE ct.ContentType != 'Tab' -- Tabs will be managed specifically
+		AND ct.ContentType != 'File' -- Exclude Files
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) not like '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) not like '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NOT NULL
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, 
+		(SELECT CAST(ps.SettingValue AS INT) value 
+			FROM {databaseOwner}[{objectQualifier}PortalSettings] ps
+			WHERE ps.SettingName = 'DefaultTabWorkflowKey' 
+			AND ps.PortalID = t.PortalID) as WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) NOT LIKE '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) NOT LIKE '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', f.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NOT NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', 
+		(SELECT wf.WorkflowID 
+			FROM {databaseOwner}[{objectQualifier}ContentWorkflows] wf
+			WHERE wf.WorkflowKey = 'DirectPublish' 
+			AND wf.PortalID = f.PortalID) AS WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NULL
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
+	@WorkflowId INT,
+	@PageIndex INT,
+	@PageSize INT
+AS
+	DECLARE @StartIndex INT = ((@PageIndex - 1) * @PageSize) + 1
+	DECLARE @EndIndex INT = (@PageIndex * @PageSize)
+	
+	;WITH ContenResourcesSet AS
+    (
+		SELECT wu.*, ROW_NUMBER() OVER (Order BY wu.ContentType, wu.ContentName) AS [Index]
+		FROM {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage] wu 		
+		WHERE wu.WorkflowID = @WorkflowId
+    )
+   SELECT * FROM ContenResourcesSet WHERE [Index] BETWEEN @StartIndex AND @EndIndex
+GO
+
+/* Get Workflow Usage Count */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
+	@WorkflowId INT
+AS
+	SELECT COUNT(*)
+	FROM {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage] wu 	
+	WHERE wu.WorkflowID = @WorkflowId
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+delete from {databaseOwner}{objectQualifier}schedulehistory where schedulehistoryid in (
+	select top 50000 ScheduleHistoryID from {databaseOwner}{objectQualifier}ScheduleHistory sh 
+		inner join {databaseOwner}{objectQualifier}schedule s on s.ScheduleID = sh.ScheduleID and s.Enabled = 1
+	where 
+		(select count(*) from {databaseOwner}{objectQualifier}ScheduleHistory sh where sh.ScheduleID = s.ScheduleID) > s.RetainHistoryNum
+		AND s.RetainHistoryNum <> -1
+		AND s.ScheduleID = sh.ScheduleID
+	order by ScheduleHistoryID
+)
+GO
+
+/* Update AddPortalInfo Stored Procedure */
+/****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalInfo]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddPortalInfo
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPortalInfo
+	@PortalName         nvarchar(128),
+	@Currency           char(3),
+	@ExpiryDate         datetime,
+	@HostFee            money,
+	@HostSpace          int,
+	@PageQuota          int,
+	@UserQuota          int,
+	@SiteLogHistory     int,
+	@HomeDirectory		varchar(100),
+	@CultureCode		nvarchar(50),
+	@CreatedByUserID	int
+AS
+
+DECLARE @PortalID int
+
+insert into {databaseOwner}{objectQualifier}Portals (
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  HostFee,
+  HostSpace,
+  PageQuota,
+  UserQuota,
+  SiteLogHistory,
+  DefaultLanguage,
+  HomeDirectory,
+  CreatedByUserID,
+  CreatedOnDate,
+  LastModifiedByUserID,
+  LastModifiedOnDate
+)
+values (
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  @HostFee,
+  @HostSpace,
+  @PageQuota,
+  @UserQuota,
+  @SiteLogHistory,
+  @CultureCode,
+  @HomeDirectory,
+  @CreatedByUserID,
+  getdate(),
+  @CreatedByUserID,
+  getdate()
+)
+
+SET @PortalID = SCOPE_IDENTITY()
+
+IF @HomeDirectory = ''
+BEGIN
+	UPDATE {databaseOwner}{objectQualifier}Portals SET HomeDirectory = 'Portals/' + convert(varchar(10), @PortalID) WHERE PortalID = @PortalID
+END
+
+insert into {databaseOwner}{objectQualifier}PortalLocalization (PortalID,CultureCode,PortalName,Description,KeyWords)
+			values (@PortalID,@CultureCode,@PortalName,@PortalName,@PortalName)
+           
+  
+SELECT @PortalID
+
+GO
+
+
+/* GetPortals Procedure */
+/************************/
+/* 
+   DNN-6518 - Changed GetPortals Stored Procedure to ensure that one entry per portal is always returned. 
+   The PortalController.GetPortals always calls with SProc with CultureCode 'en-US' by design. 
+   When the site is installed in other non-English language the vw_Portals does not have any entry for en-US.
+*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortals]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+    @CultureCode	nvarchar(50)
+AS
+
+SELECT * 
+FROM   {databaseOwner}[{objectQualifier}vw_Portals]
+WHERE CultureCode = 
+	CASE 
+		WHEN IsNull(@CultureCode, '') = '' THEN DefaultLanguage
+		WHEN @CultureCode = 'en-US' THEN DefaultLanguage
+		ELSE @CultureCode 
+	END 
+ORDER BY PortalName;
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

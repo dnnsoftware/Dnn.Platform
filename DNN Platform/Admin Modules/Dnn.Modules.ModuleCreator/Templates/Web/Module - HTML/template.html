@@ -1,0 +1,20 @@
+<div id="content">
+    Just a placeholder
+</div>
+<input type="button" value="Go" id="goButton"/>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var sf = $.ServicesFramework(-1);
+
+        $("#goButton").click(function() {
+            $.ajax({
+                type: "GET",
+                url: sf.getServiceRoot('_OWNER_._MODULE_') + "_MODULE_API/MyResponse"
+            }).done(function(data) {
+                if (data != undefined && data != null) {
+                    $("#content").text(data);
+                }
+            });
+        });
+    });
+</script>

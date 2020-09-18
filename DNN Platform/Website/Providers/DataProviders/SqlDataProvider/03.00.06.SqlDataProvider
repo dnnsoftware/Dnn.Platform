@@ -1,0 +1,204 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'ControlPanel')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'ControlPanel', N'Admin/ControlPanel/IconBar.ascx')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'Copyright')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'Copyright', N'Y')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'PerformanceSetting')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'PerformanceSetting', N'3')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'ProxyPassword')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'ProxyPassword', N'')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'ProxyUsername')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'ProxyUsername', N'')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'SiteLogBuffer')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'SiteLogBuffer', N'1')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'SiteLogStorage')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'SiteLogStorage', N'D')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'SkinUpload')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'SkinUpload', N'G')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'SMTPPassword')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'SMTPPassword', N'')
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE [SettingName] = N'SMTPUsername')
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ([SettingName], [SettingValue]) VALUES (N'SMTPUsername', N'')
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeleteSearchItems
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}DeleteSearchItems
+(
+	@ModuleID int
+)
+AS
+
+DELETE
+FROM	{objectQualifier}SearchItem
+WHERE	ModuleID = @ModuleID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetSearchResultModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}GetSearchResultModules
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchResultModules 
+(
+	@PortalID int
+)
+AS
+
+SELECT     
+	{objectQualifier}TabModules.TabID, 
+	{objectQualifier}Tabs.TabName  AS SearchTabName
+FROM	{objectQualifier}Modules INNER JOIN
+		{objectQualifier}ModuleDefinitions ON {objectQualifier}Modules.ModuleDefID = {objectQualifier}ModuleDefinitions.ModuleDefID INNER JOIN
+        {objectQualifier}TabModules ON {objectQualifier}Modules.ModuleID = {objectQualifier}TabModules.ModuleID INNER JOIN
+        {objectQualifier}Tabs ON {objectQualifier}TabModules.TabID = {objectQualifier}Tabs.TabID
+WHERE   {objectQualifier}ModuleDefinitions.FriendlyName = N'Search Results'
+	AND {objectQualifier}Tabs.PortalID = @PortalID
+GO
+
+drop procedure {databaseOwner}{objectQualifier}FindBanners
+GO
+
+create procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+as
+
+select BannerId,
+       {objectQualifier}Banners.VendorId,
+       BannerName,
+       URL,
+       'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       Impressions,
+       CPM,
+       {objectQualifier}Banners.Views,
+       {objectQualifier}Banners.ClickThroughs,
+       StartDate,
+       EndDate,
+       BannerTypeId,
+       Description,
+       GroupName,
+       Criteria
+from {objectQualifier}Banners
+inner join {objectQualifier}Vendors on {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+left outer join {objectQualifier}Files on {objectQualifier}Banners.ImageFile = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  ({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+and    ({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+and    (({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+and    ({objectQualifier}Banners.StartDate is null Or getdate() >= {objectQualifier}Banners.StartDate )
+and    (  ( Criteria = 1 /* OR */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views Or {objectQualifier}Banners.Impressions = 0)
+           and (getdate() <= {objectQualifier}Banners.EndDate or {objectQualifier}Banners.EndDate is null) )
+       or ( Criteria = 0 /* AND */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views and {objectQualifier}Banners.Impressions <> 0)
+           or  (getdate() <= {objectQualifier}Banners.EndDate and {objectQualifier}Banners.EndDate is not null) )  )
+order by BannerId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortal
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortal
+
+@PortalId  int
+
+as
+
+select {objectQualifier}Portals.PortalID,
+       {objectQualifier}Portals.PortalName,
+       'LogoFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Portals.LogoFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Portals.FooterText,
+       {objectQualifier}Portals.ExpiryDate,
+       {objectQualifier}Portals.UserRegistration,
+       {objectQualifier}Portals.BannerAdvertising,
+       {objectQualifier}Portals.AdministratorID,
+       {objectQualifier}Portals.Currency,
+       {objectQualifier}Portals.HostFee,
+       {objectQualifier}Portals.HostSpace,
+       {objectQualifier}Portals.AdministratorRoleID,
+       {objectQualifier}Portals.RegisteredRoleID,
+       {objectQualifier}Portals.Description,
+       {objectQualifier}Portals.KeyWords,
+       'BackGroundFile' = case when {objectQualifier}Files2.FileName is null then {objectQualifier}Portals.BackGroundFile else {objectQualifier}Files2.Folder + {objectQualifier}Files2.FileName end,
+       {objectQualifier}Portals.GUID,
+       {objectQualifier}Portals.PaymentProcessor,
+       {objectQualifier}Portals.ProcessorUserId,
+       {objectQualifier}Portals.ProcessorPassword,
+       {objectQualifier}Portals.SiteLogHistory,
+       {objectQualifier}Portals.SplashTabID,
+       {objectQualifier}Portals.HomeTabID,
+       {objectQualifier}Portals.LoginTabID,
+       {objectQualifier}Portals.UserTabID,
+       {objectQualifier}Portals.DefaultLanguage,
+       {objectQualifier}Portals.TimeZoneOffset,
+       {objectQualifier}Portals.AdminTabID,
+       {objectQualifier}Portals.HomeDirectory,
+       'SuperTabId' = ( select TabId from {objectQualifier}Tabs where PortalId is null and ParentId is null ),
+       'AdministratorRoleName' = ( select RoleName from {objectQualifier}Roles where RoleId = {objectQualifier}Portals.AdministratorRoleID ),
+       'RegisteredRoleName' = ( select RoleName from {objectQualifier}Roles where RoleId = {objectQualifier}Portals.RegisteredRoleID )
+from {objectQualifier}Portals
+left outer join {objectQualifier}Files on {objectQualifier}Portals.LogoFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}Files as {objectQualifier}Files2 on {objectQualifier}Portals.BackGroundFile = 'fileid=' +convert(varchar,{objectQualifier}Files2.FileID)
+where {objectQualifier}Portals.PortalId = @PortalId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeleteFile
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteFile
+
+@PortalId int,
+@FileName nvarchar(100),
+@Folder nvarchar(100)
+
+AS
+
+DELETE FROM {objectQualifier}Files
+WHERE	FileName = @FileName
+AND		Folder = @Folder
+AND		((PortalId = @PortalId) or (@PortalId is null and PortalId is null))
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}DeleteFolder
+GO
+
+create procedure {databaseOwner}{objectQualifier}DeleteFolder
+	@PortalID int,
+	@FolderPath varchar(300)
+AS
+	DELETE FROM {objectQualifier}Folders
+	WHERE ((PortalID = @PortalID) or (PortalID is null and @PortalID is null))
+	AND FolderPath = @FolderPath
+GO
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

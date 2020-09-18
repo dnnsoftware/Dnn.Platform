@@ -1,0 +1,44 @@
+Licenses\Anthem (Public Domain).txt
+Licenses\Brettle NeatUpload (LGPL).txt
+Licenses\Client Dependency Framework(Ms-PL).txt
+Licenses\CountryListBox (Public Domain).txt
+Licenses\DotNetOpenID (New BSD).txt
+Licenses\FCKEditor (LGPL).txt
+Licenses\GeoIP (Custom).txt
+Licenses\Highlighter (Perl).txt
+Licenses\hoverintent (MIT,GPL).txt
+Licenses\HtmlDiff (MIT).txt
+Licenses\jQuery (MIT).txt
+Licenses\jQuery Boxy Plugin (MIT).txt
+Licenses\jQuery Cycle (MIT,GPL).txt
+Licenses\jQuery FileUpload (MIT).txt
+Licenses\jQuery Iframe Transport (MIT).txt
+Licenses\jQuery Slides Plugin (Apache).txt
+Licenses\jQuery Templates (MIT,GPL).txt
+Licenses\jQuery Tokeninput (MIT,GPL).txt
+Licenses\jQuery UI (MIT).txt
+Licenses\jquery-history.license.txt
+Licenses\json2 (Public Domain).txt
+Licenses\Knockout (MIT).txt
+Licenses\Knockout Mapping (MIT).txt
+Licenses\Licenses.txt
+Licenses\LiteDB (MIT).txt
+Licenses\log4net (Apache).txt
+Licenses\Lucene.Net (Apache).txt
+Licenses\Lucene.Net.Contrib (Apache).txt
+Licenses\MbUnit (MIT).txt
+Licenses\MooTools (MIT).txt
+Licenses\Moq (BSD).txt
+Licenses\MSBuild Community Tasks Project (BSD).txt
+Licenses\OceanBrowserDetection (MIT).txt
+Licenses\SearchSpider (LGPL).txt
+Licenses\Selectize (Apache).txt
+Licenses\SharpZipLib (LGPL).txt
+Licenses\SwfObject (MIT).txt
+Licenses\Telerik RadControls for ASP.NET AJAX (Custom).pdf
+Licenses\VideoBox (MIT).txt
+Licenses\WatiN (Apache).txt
+Licenses\WebFormsMVP (MsPL).txt
+Licenses\YUI (BSD).txt
+Licenses\zClip (MIT).txt
+Licenses\ZeroClipboard (MIT).txt

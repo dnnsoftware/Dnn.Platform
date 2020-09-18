@@ -1,0 +1,32 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetHtmlTextUser') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    drop procedure {databaseOwner}{objectQualifier}GetHtmlTextUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetHtmlTextUser
+
+@UserID int
+
+as
+
+select {objectQualifier}HtmlTextUsers.*,
+       {objectQualifier}WorkflowStates.StateName
+from   {databaseOwner}{objectQualifier}HtmlTextUsers
+inner join {databaseOwner}{objectQualifier}WorkflowStates on {databaseOwner}{objectQualifier}HtmlTextUsers.StateID = {databaseOwner}{objectQualifier}WorkflowStates.StateID
+where  {objectQualifier}HtmlTextUsers.UserID = @UserID
+order by {objectQualifier}HtmlTextUsers.CreatedOnDate asc
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

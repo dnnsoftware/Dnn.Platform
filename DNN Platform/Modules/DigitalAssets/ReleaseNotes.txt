@@ -1,0 +1,14 @@
+﻿<h3>DigitalAssets</h3>
+<p class="Contributor">
+	DotNetNuke Corporation <br />
+	<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a><br />
+	<a href=https://www.dnnsoftware.com>www.dnnsoftware.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the DigitalAssets</h3>
+	<p class="Owner">
+		<b>Version 09.01.00</b><br /><br />
+	</p>
+	<p>This version is dependent now on the DotNetNuke.Web.Deprecated installable library.</p>
+</div>

@@ -1,0 +1,492 @@
+﻿.fu-container {
+    width: 100%;
+    background: #fff;
+    margin: 20px 0 0;
+}
+
+.fu-container .fu-dialog-header {
+    margin: 0;
+    font-weight: normal;
+}
+
+.fu-container .dnnFileUploadFooter span.dnnInputFileWrapper {
+    display: block;
+}
+
+.fu-container .fu-dialog-content {
+    background: #eaeaea;
+    padding: 10px;
+    margin: 15px 0 0 0;
+}
+
+.fu-container .dnnDropDownList .dt-container {
+    right: 0;
+}
+
+.fu-container .fu-dialog-content-header {
+    margin: 0 0 10px 0;
+}
+
+.fu-container .fu-dialog-content-header:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:first-child {
+    border-left: none;
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:first-child > a {
+    border-radius: 3px 0 0 3px;
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:last-child > a {
+    border-radius: 0 3px 3px 0;    
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.upload-file {
+    background-image: url('../../../../images/icon-upload-file.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.upload-file:hover {
+    background-image: url('../../../../images/icon-upload-file_hover.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.from-url {
+    background-image: url('../../../../images/icon-from-url.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.from-url:hover {
+    background-image: url('../../../../images/icon-from-url_hover.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup {
+    float: left;
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li a.active {
+    background-color: #f3f3f3;
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a {
+    padding: 7px 16px 6px 44px;
+    background-repeat: no-repeat;
+    background-position: 12px 7px;    
+}
+
+.fu-container .dnnDropDownList .selected-item {
+    background: none repeat scroll 0 0 #fff;
+    box-shadow: none;
+}
+
+.fu-container .fu-dialog-content-header > .dnnLeft > span {
+    float: left;
+    margin: 0 0 0 10px;
+    line-height: 36px;
+}
+
+.fu-container .fu-dialog-content-header > .dnnLeft > span > input[type="checkbox"] {
+    vertical-align: -2px;
+}
+.fu-container .fu-dialog-content-header > .dnnLeft > span > .fu-decompress-label {
+    font-weight: bold;
+    margin: 0 0 0 6px;
+}
+
+.fu-container .fu-dialog-content-header > .dnnRight > label {
+    font-weight: bold;
+    line-height: 36px;
+    float: left;
+    margin: 0 6px 0 0;
+}
+
+.fu-container .fu-dialog-content-header > .dnnRight > span {    
+    line-height: 36px;
+    float: left;
+    width: 200px;
+}
+
+.fu-container .fu-dialog-content-header > .dnnRight > .dnnDropDownList {
+    width: 200px;
+    float: left;
+}
+
+.fu-container .fu-dialog-content-fileupload-local {
+    background-color: #E8F0FB;
+    border-color: #CED4E0;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    padding: 20px;
+}
+
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area {
+    background-image: url("Images/dropZone.png");
+    background-position: center 10px;
+    background-repeat: no-repeat;
+    border-color: #CED4E0;
+    border-style: dashed;
+    border-width: 2px;
+    color: #333;
+    height: 65px;
+    position: relative;
+    transition: box-shadow 200ms ease-in-out 0s;
+    overflow: hidden;
+}
+
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area.dragover {
+    box-shadow: 0 0 13px 8px rgba(0, 0, 0, 0.1) inset;
+}
+
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area-message {
+    font-size: 11px;
+    text-align: center;
+    width: 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area-message span.dnnInputFileWrapper {
+    float: none !important;
+    text-transform: uppercase;
+    margin: 0;
+    padding-top: 39px;
+    padding-bottom: 10px;
+}
+
+.fu-container .fu-dialog-content-fileupload-web {
+    background-color: #E8F0FB;
+    border-color: #CED4E0;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    padding: 0 10px;
+}
+
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area{
+    width: 100%;
+}
+
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area {
+    width: 100%;
+    height: 109px;
+}
+
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area td:first-child {
+    width: 100%;
+}
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area div {
+    overflow: hidden;
+    width: 100%;
+}
+
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area div input {
+    width: 95%;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area div input.fu-dialog-url-error {
+    border: 1px solid #b97575;
+    background-color: #f2c9c9;
+}
+
+.fu-container .fu-dialog-content-fileupload-web a.dnnSecondaryAction {
+    display: block;
+    margin: 0;
+}
+
+.fu-container .fu-fileupload-statuses-container {
+    margin-top: 20px;
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.fu-container ul.fu-fileupload-statuses,
+.fu-container ul.fu-fileupload-statuses li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.fu-container ul.fu-fileupload-statuses {
+    margin: 0 30px 0 2px;
+}
+
+.fu-container ul.fu-fileupload-statuses li {
+    overflow: hidden;
+}
+
+.fu-container ul.fu-fileupload-statuses li .fu-fileupload-filename {
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 400px;
+}
+
+.fu-container ul.fu-fileupload-statuses li {
+    padding: 6px 0;
+    border-bottom: #fff solid 1px;
+}
+
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar-container {
+    float: right;
+    border: 1px solid #B6BAC2;
+    border-radius: 5px;
+    padding: 2px;
+    margin: 3px 0;
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0, 0, 0, 0.1)), color-stop(1, transparent));
+    background-image: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+    width: 200px;
+    height: 24px;
+    box-shadow: 0 1px white;
+}
+
+.fu-container .fu-fileupload-statuses .fu-fileupload-filename-container {
+    display: block;
+    float: left;
+    color: #777;
+    padding: 0;
+    margin: 0 0 0 10px
+}
+
+.fu-file-already-exists-prompt {
+    overflow: hidden;
+    font-style: italic;
+}
+
+.fu-file-already-exists-prompt .fu-status-message {
+    float: left;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 400px;
+    line-height: 12px;
+}
+
+.fu-status-error .fu-file-already-exists-prompt .fu-status-message {
+    color: #bd522c;
+}
+
+a.fu-fileupload-thumbnail,
+a.fu-fileupload-thumbnail:link,
+a.fu-fileupload-thumbnail:visited,
+a.fu-fileupload-thumbnail:hover,
+a.fu-fileupload-thumbnail:active {
+    float: left;
+    position: relative;
+    height: 76px;
+    width: 76px;
+    background: none repeat scroll 0 0 #E8F0FB;
+    border: 1px solid #aaa;
+    /*border-color: #ccc #aaa #aaa #ccc;*/
+    overflow: hidden;
+    border-color: #CED4E0;
+    border-radius: 4px;
+    opacity: 0.9;
+
+    -webkit-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+       -moz-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+         -o-transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+a.fu-fileupload-thumbnail:hover {
+    background-color: #fff;
+    opacity: 1;
+}
+
+a.fu-fileupload-thumbnail-inactive:hover {
+    background-color: #E8F0FB;
+    opacity: 0.9;
+    cursor: default;
+}
+
+.fu-status-error a.fu-fileupload-thumbnail:hover {
+    background: none repeat scroll 0 0 #E8F0FB;
+    cursor: default;
+}
+
+.fu-fileupload-thumbnail div {
+    padding: 0;
+    position: relative;
+    line-height: 76px;
+    text-align: center;
+}
+
+.fu-fileupload-thumbnail img {
+    border: none;
+}
+
+.fu-fileupload-thumbnail img.ls {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.fu-fileupload-thumbnail img.pt {
+    height: 100%;
+}
+
+.fu-status-uploaded .fu-file-already-exists-prompt .fu-status-message {
+    color: #2b7fda;
+}
+
+.fu-status-cancelled .fu-file-already-exists-prompt .fu-status-message {
+    color: #777;
+}
+
+.fu-container .fu-status-cancelled .ui-progressbar .ui-progressbar-value {
+    background: rgb(188,188,188); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2JjYmNiYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(left,  rgba(188,188,188,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(188,188,188,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(188,188,188,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bcbcbc', endColorstr='#ededed',GradientType=1 ); /* IE6-8 */
+}
+
+.fu-container .fu-status-error .ui-progressbar .ui-progressbar-value {
+    background: rgb(189,82,44); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2JkNTIyYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZTdmMjciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(left,  rgba(189,82,44,1) 0%, rgba(238,127,39,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(189,82,44,1)), color-stop(100%,rgba(238,127,39,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(189,82,44,1) 0%,rgba(238,127,39,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bd522c', endColorstr='#ee7f27',GradientType=1 ); /* IE6-8 */
+}
+
+.fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-keep,
+.fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {
+    float: right;
+    margin: 0 4px;
+    font-weight: bold;
+    line-height: 12px;
+
+    -webkit-transition: color 0.3s ease-in-out;
+       -moz-transition: color 0.3s ease-in-out;
+         -o-transition: color 0.3s ease-in-out;
+            transition: color 0.3s ease-in-out;
+}
+
+.fu-file-already-exists-prompt .fu-file-already-exists-prompt-button-replace {
+    margin-left: 10px;
+}
+
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar {
+    border: 1px solid #B6BAC2;
+    border-radius: 4px;
+    box-shadow: 0 1px white, 0 2px 3px #999999 inset;
+    margin: 6px 0 0 6px;
+    width: 165px;
+    height: 20px;
+    display: inline-block;
+}
+
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar .indeterminate-progress {
+    background-color: #3FBDFF;
+}
+
+.fu-container .fu-fileupload-statuses .fu-fileupload-progressbar .indeterminate-progress > div.ui-progressbar-value {
+    background-image: url("images/indeterminate.gif");
+    opacity: 0.15;
+}
+
+.fu-fileupload-progressbar-container a {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    float: right;
+    margin: 4px 6px 0 0;
+    background-color: transparent;
+    cursor: pointer;
+    background-image: url("../../../../icons/sigma/Cancel_16x16_Standard(dark).png");
+}
+
+.fu-status-uploaded .fu-fileupload-progressbar-container a {
+    background-image: url("../../../../icons/sigma/Checked_16x16_Standard(dark).png");
+    cursor: default;
+}
+
+.fu-status-error .fu-fileupload-progressbar-container a,
+.fu-status-cancelled .fu-fileupload-progressbar-container a {
+    background-image: url("../../../../icons/sigma/Cancel_16x16_Standard.png");
+    cursor: default;
+}
+
+.fu-container .dnnFileUploadFooter {
+    border-top: 1px solid #C0C0C0;
+    margin-top: 15px;
+    padding-top: 15px;
+}
+
+.fu-container a.dnnSecondaryAction {
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+    padding: 8px 20px;
+    background-color: #fff;
+    color: #555;
+    text-decoration: none;
+}
+
+.fu-container ul.dnnButtonGroup {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+    cursor: pointer;
+    list-style: none;
+    box-shadow: none;
+}
+
+    .fu-container ul.dnnButtonGroup > li {
+        display: block;
+        float: left;
+        border-left: 1px solid #c9c9c9;
+        margin: 0;
+    }
+
+        .fu-container ul.dnnButtonGroup > li:hover {
+            background-color: #e8f1fa;
+        }
+
+        .fu-container ul.dnnButtonGroup > li.dnnButtonGroup-first {
+            display: none;
+        }
+
+            .fu-container ul.dnnButtonGroup > li.dnnButtonGroup-first + li {
+                border-left: none;
+            }
+
+        .fu-container ul.dnnButtonGroup > li > a {
+            display: inline-block;
+            padding: 7px 7px 6px 7px;
+            text-decoration: none;
+            color: #555 !important;
+            font-size: 12px !important;
+        }
+
+    .fu-container ul.dnnButtonGroup span {
+        color: #333;
+    }

@@ -1,0 +1,134 @@
+/* ===========   Module Settings Styling   =========== */
+.dnnModuleSettings {
+    margin: 2em auto;
+}
+.dnnModuleSettings div.msModuleSettings, .dnnModuleSettings div.msPermissions, .dnnModuleSettings div.msPageSettings, .dnnModuleSettings div.msSpecificSettings {
+    padding: 0;
+}
+.dnnModuleSettings .dnnFormItem input[type="text"], .dnnModuleSettings .dnnFormItem .dnnFormInput, .dnnModuleSettings .dnnFormItem textarea, .dnnExport .dnnFormItem input[type="text"], .dnnExport .dnnFormItem .dnnFormInput, .dnnExport .dnnFormItem textarea {
+    
+}
+.dnnModuleSettings .urlControlLinkType .dnnFormLabel {
+    width: 100px;
+    float: left;
+    display: block;
+    margin-top: 0;
+    font-weight: normal;
+}
+.dnnModuleSettings .urlControlLinkType br, .dnnModuleSettings .dnnFormRadioButtons br {
+    display: none;
+}
+.dnnModuleSettings .urlControlLinkType .ucLinkTypeRadioButtons {
+    float: left;
+    display: block;
+    min-width: 350px;
+}
+.dnnModuleSettings .dnnFormRadioButtons {
+    min-width: 350px;
+    margin-top: 0 !important;
+}
+.dnnModuleSettings .urlControlLinkType label, .urlControlFileRow .dnnFormLabel {
+    margin-top: 0;
+    font-weight: normal;
+}
+.urlControl span.dnnFormLabel {
+    width: 100px;
+    text-align: right;
+    display: block;
+    float: left;
+    margin: 8px 14px 0 0;
+}
+.dnnModuleSettings div.dnnmsStat {
+    border-top: 1px #ccc solid;
+    padding: 1em 0 4em;
+    overflow: hidden;
+}
+.dnnmsStat p {
+    float: left;
+    padding-right: 2em;
+}
+p.dnnFormRequired span {
+    border-left: 5px #F00 solid;
+    padding-left: 0.5em;
+}
+.mspsContent .urlControl {
+    overflow: hidden;
+}
+.mspsContent .urlControlLinkType {
+    float: left;
+    width: 100%;
+}
+.mspsContent .urlControlLinkType .dnnFormLabel {
+    float: left;
+    width: auto;
+}
+.mspsContent .urlControlFileRow a.dnnSecondaryAction {
+    margin: 10px 10px 0 0;
+    float: left;
+}
+.mspsContent .urlControlLinkType input[type="radio"] {
+    width: auto;
+    margin-right: 5px;
+}
+.dnnModuleSettings .dnnFormItem input[type="text"].msCacheDuration {
+    width: 100px;
+    min-width: 50px;
+}
+
+/* adjust form item padding/spacing */
+.dnnFormItem label + input{
+    margin-left: 15px;
+}
+.dnnFormItem .dnnLeft{
+    width: 60%;
+    margin: 6px 0 15px 0;
+}
+.dnnFormItem > textarea{
+    margin-top:5px;   
+}
+
+span.labelCacheInherited{
+    display: block !important;
+    background-color: rgba(255, 0, 0, 0.15);
+    border-color: rgba(255, 0, 0, 0.2);
+    padding: 8px;
+    float: left;
+    width: 100px !important;  
+}
+.tabVisibilityRow span.dnnFormLabel {
+    width: 20%;
+    display: block;
+    float: left;
+    text-align: right;
+    margin:0 12px 0 0 ;
+    font-weight: normal;
+}
+.tabVisibilityRowItem{
+    width: 100%;
+    clear: both;
+    margin-bottom: 8px;
+}
+.dnnContainerPreview .dnnLabel{
+    float: left;
+}
+
+.dnnContainerPreview .selectize-control{
+    float: left;
+    margin-right: 15px;
+}
+
+.dnnContainerPreview .dnnSecondaryAction{
+    float: left;    
+}
+
+.dnnCacheSettings .dnnLabel{
+    float: left;
+}
+
+.dnnCacheSettings .RadComboBox_Default{
+    width: 200px !important;
+    float: left;
+    margin-right: 15px;
+}
+
+/* ===========   End Module Settings Styling   =========== */

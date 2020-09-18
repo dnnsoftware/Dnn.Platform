@@ -1,0 +1,327 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}TabModules ADD CONSTRAINT
+	IX_{objectQualifier}TabModules UNIQUE NONCLUSTERED 
+	(
+	TabID,
+	ModuleID
+	) ON [PRIMARY]
+
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}Referrer
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Schedule ADD CONSTRAINT
+	PK_{objectQualifier}Schedule PRIMARY KEY CLUSTERED 
+	(
+	ScheduleID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ScheduleItemSettings ADD CONSTRAINT
+	PK_{objectQualifier}ScheduleItemSettings PRIMARY KEY CLUSTERED 
+	(
+	ScheduleID,
+	SettingName
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ScheduleItemSettings WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}ScheduleItemSettings_{objectQualifier}Schedule FOREIGN KEY
+	(
+	ScheduleID
+	) REFERENCES {databaseOwner}{objectQualifier}Schedule
+	(
+	ScheduleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ScheduleHistory ADD CONSTRAINT
+	PK_{objectQualifier}ScheduleHistory PRIMARY KEY CLUSTERED 
+	(
+	ScheduleHistoryID
+	) ON [PRIMARY]
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ScheduleHistory WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}ScheduleHistory_{objectQualifier}Schedule FOREIGN KEY
+	(
+	ScheduleID
+	) REFERENCES {databaseOwner}{objectQualifier}Schedule
+	(
+	ScheduleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItem WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}SearchItem_{objectQualifier}Modules FOREIGN KEY
+	(
+	ModuleId
+	) REFERENCES {databaseOwner}{objectQualifier}Modules
+	(
+	ModuleID
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Affiliates WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Affiliates_{objectQualifier}Vendors FOREIGN KEY
+	(
+	VendorId
+	) REFERENCES {databaseOwner}{objectQualifier}Vendors
+	(
+	VendorId
+	) ON DELETE CASCADE
+	 NOT FOR REPLICATION
+
+GO
+
+update {objectQualifier}HostSettings
+set    SettingValue = 'Y'
+where  SettingName = 'UseFriendlyUrls'
+GO
+
+insert into {objectQualifier}HostSettings (
+  SettingName,
+  SettingValue
+)
+values (
+  'HostPortalId',
+  '0'
+)
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSiteLog10
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetSiteLog11
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetBanners
+
+@VendorId int
+
+as
+
+select BannerId,
+       BannerName,
+       URL,
+       Impressions,
+       CPM,
+       Views,
+       ClickThroughs,
+       StartDate,
+       EndDate,
+       BannerTypeId,
+       Description,
+       GroupName,
+       Criteria
+from   {objectQualifier}Banners
+where  VendorId = @VendorId
+order  by CreatedDate desc
+
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}AddDesktopModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}AddDesktopModule
+GO
+
+CREATE  procedure {databaseOwner}{objectQualifier}AddDesktopModule
+    
+@FriendlyName   nvarchar(128),
+@Description    nvarchar(2000),
+@Version        nvarchar(8),
+@IsPremium      bit,
+@IsAdmin        bit,
+@BusinessController nvarchar(200)
+
+as
+
+insert into {objectQualifier}DesktopModules (
+  FriendlyName,
+  Description,
+  Version,
+  IsPremium,
+  IsAdmin,
+  BusinessControllerClass
+)
+values (
+  @FriendlyName,
+  @Description,
+  @Version,
+  @IsPremium,
+  @IsAdmin,
+  @BusinessController
+)
+
+select SCOPE_IDENTITY()
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}UpdateDesktopModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}UpdateDesktopModule
+GO
+
+CREATE  procedure {databaseOwner}{objectQualifier}UpdateDesktopModule
+
+@DesktopModuleId int,    
+@FriendlyName    nvarchar(128),
+@Description     nvarchar(2000),
+@Version         nvarchar(8),
+@IsPremium       bit,
+@IsAdmin         bit,
+@BusinessController nvarchar(200)
+
+as
+
+update {objectQualifier}DesktopModules
+set    FriendlyName    = @FriendlyName,
+       Description     = @Description,
+       Version         = @Version,
+       IsPremium       = @IsPremium,
+       IsAdmin         = @IsAdmin,
+       BusinessControllerClass = @BusinessController
+where  DesktopModuleId = @DesktopModuleId
+GO
+
+/* Remove Maps and Weather Modules */
+delete from {objectQualifier}ModuleControls
+where ControlSrc = 'DesktopModules/Maps/MapQuest.ascx'
+GO
+
+delete from {objectQualifier}ModuleControls
+where ControlSrc = 'DesktopModules/Maps/EditMapQuest.ascx'
+GO
+
+delete from {objectQualifier}ModuleControls
+where ControlSrc = 'DesktopModules/Weather/WeatherNetwork.ascx'
+GO
+
+delete from {objectQualifier}ModuleControls
+where ControlSrc = 'DesktopModules/Weather/EditWeatherNetwork.ascx'
+GO
+
+delete from {objectQualifier}ModuleDefinitions
+where FriendlyName = 'Map Quest'
+GO
+
+delete from {objectQualifier}ModuleDefinitions
+where FriendlyName = 'Weather Network'
+GO
+
+delete from {objectQualifier}DesktopModules
+where FriendlyName = 'Map Quest'
+GO
+
+delete from {objectQualifier}DesktopModules
+where FriendlyName = 'Weather Network'
+GO
+
+/* End Remove Maps and Weather Modules */
+
+create procedure {databaseOwner}{objectQualifier}GetSearchItems
+
+@PortalId int,
+@TabId int,
+@ModuleId int
+
+as
+
+select si.*,
+       'Author' = u.FirstName + ' ' + u.LastName,
+       t.TabId
+from   {objectQualifier}SearchItem si
+left outer join {objectQualifier}Users u ON si.Author = u.UserID
+inner join {objectQualifier}Modules m ON si.ModuleId = m.ModuleID 
+inner join {objectQualifier}TabModules tm ON m.ModuleId = tm.ModuleID 
+inner join {objectQualifier}Tabs t ON tm.TabID = t.TabID
+inner join {objectQualifier}Portals p ON t.PortalID = p.PortalID
+where (p.PortalId = @PortalId or @PortalId is null)
+and   (t.TabId = @TabId or @TabId is null)
+and   (m.ModuleId = @ModuleId or @ModuleId is null)
+
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SearchItem
+	DROP COLUMN Link, Content
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddSearchItem
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddSearchItem
+
+@Title nvarchar(200),
+@Description nvarchar(2000),
+@Author int,
+@PubDate datetime,
+@ModuleId int,
+@SearchKey nvarchar(100)
+
+as
+
+insert into {objectQualifier}SearchItem (
+	Title,
+	Description,
+	Author,
+	PubDate,
+	ModuleId,
+ 	SearchKey,
+	Guid,
+	HitCount
+) 
+values (
+	@Title,
+	@Description,
+	@Author,
+	@PubDate,
+	@ModuleId,
+	@SearchKey,
+	convert(nvarchar(40), newid()),
+	0
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+DROP INDEX {databaseOwner}{objectQualifier}TabModuleSettings.IX_TabModuleSettings
+GO
+DROP INDEX {databaseOwner}{objectQualifier}Vendors.IX_Vendors_1
+GO
+DROP INDEX {databaseOwner}{objectQualifier}VendorClassification.IX_VendorClassification_2
+GO
+DROP INDEX {databaseOwner}{objectQualifier}Roles.IX_Roles_1  
+GO
+DROP INDEX {databaseOwner}{objectQualifier}ModuleSettings.IX_{objectQualifier}ModuleSettings
+GO
+ 
+ALTER TABLE {databaseOwner}{objectQualifier}HostSettings
+ DROP CONSTRAINT IX_{objectQualifier}HostSettings
+GO
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

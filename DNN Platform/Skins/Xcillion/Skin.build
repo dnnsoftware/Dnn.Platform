@@ -1,0 +1,14 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="AfterBuild" DependsOnTargets="GetFiles;DebugProject;Package">
+    </Target>
+    <Target Name="GetFiles">
+        <ItemGroup>
+            <ContainerFiles Include="Container\**\*.*" />
+            <SkinFiles Include="Skin\**\*.*" />
+        </ItemGroup>
+    </Target>
+    <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <Copy SourceFiles="@(ContainerFiles)" DestinationFolder="$(SkinFolderName)\Containers\$(SkinName)" />
+        <Copy SourceFiles="@(SkinFiles)" DestinationFolder="$(SkinFolderName)\Skins\$(SkinName)" />
+    </Target>
+</Project>

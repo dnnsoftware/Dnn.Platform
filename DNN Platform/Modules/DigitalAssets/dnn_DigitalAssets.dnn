@@ -1,0 +1,161 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DigitalAssetsManagement" type="Module" isSystem="true" version="09.07.02">
+      <friendlyName>Digital Asset Management</friendlyName>
+      <description>DotNetNuke Corporation Digital Asset Management module</description>
+      <iconFile>Images/Files_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">09.01.00</dependency>
+        <dependency type="ManagedPackage" version="09.01.00">DotNetNuke.Web.Deprecated</dependency>
+      </dependencies>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DotNetNuke.Modules.DigitalAssets</moduleName>
+            <foldername>DigitalAssets</foldername>
+            <businessControllerClass>DotNetNuke.Modules.DigitalAssets.Components.Controllers.DigitalAssetsController, DotNetNuke.Modules.DigitalAssets</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Upgradeable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Digital Asset Management</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/DigitalAssets/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle/>
+                    <controlType>View</controlType>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>                  
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/DigitalAssets/Settings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Digital Asset Management Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile/>
+                    <helpUrl/>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                    <moduleControl>
+                        <controlKey>FolderProperties</controlKey>
+                        <controlSrc>DesktopModules/DigitalAssets/FolderProperties.ascx</controlSrc>
+                        <supportsPartialRendering>False</supportsPartialRendering>
+                        <controlTitle>Folder Info</controlTitle>
+                        <controlType>View</controlType>
+                        <iconFile/>
+                        <helpUrl/>
+                        <viewOrder>0</viewOrder>
+                        <supportsPopUps>True</supportsPopUps>
+                    </moduleControl>
+                    <moduleControl>
+                        <controlKey>FileProperties</controlKey>
+                        <controlSrc>DesktopModules/DigitalAssets/FileProperties.ascx</controlSrc>
+                        <supportsPartialRendering>False</supportsPartialRendering>
+                        <controlTitle>File Info</controlTitle>
+                        <controlType>View</controlType>
+                        <iconFile/>
+                        <helpUrl/>
+                        <viewOrder>0</viewOrder>
+                        <supportsPopUps>True</supportsPopUps>
+                    </moduleControl>
+                    <moduleControl>
+                        <controlKey>FolderMappings</controlKey>
+                        <controlSrc>DesktopModules/DigitalAssets/FolderMappings.ascx</controlSrc>
+                        <supportsPartialRendering>False</supportsPartialRendering>
+                        <controlTitle>Folder Mappings</controlTitle>
+                        <controlType>Edit</controlType>
+                        <iconFile/>
+                        <helpUrl/>
+                        <viewOrder>0</viewOrder>
+                        <supportsPopUps>True</supportsPopUps>
+                    </moduleControl>
+                    <moduleControl>
+                        <controlKey>EditFolderMapping</controlKey>
+                        <controlSrc>DesktopModules/DigitalAssets/EditFolderMapping.ascx</controlSrc>
+                        <supportsPartialRendering>True</supportsPartialRendering>
+                        <controlTitle>Edit Folder Mapping</controlTitle>
+                        <controlType>Edit</controlType>
+                        <iconFile/>
+                        <helpUrl/>
+                        <viewOrder>0</viewOrder>
+                        <supportsPopUps>True</supportsPopUps>
+                    </moduleControl>                
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>DotNetNuke.Modules.DigitalAssets.Components.Controllers.DigitalAssetsController</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>07.01.00</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+          <component type="Assembly">
+              <assemblies>
+                  <assembly>
+                      <path>bin</path>
+                      <name>DotNetNuke.Modules.DigitalAssets.dll</name>
+                  </assembly>
+              </assemblies>
+          </component>
+          <component type="File">
+              <files>
+                  <basePath>DesktopModules/DigitalAssets</basePath>
+                  <file>
+                      <name>View.ascx</name>
+                      <sourceFileName>View.ascx</sourceFileName>
+                  </file>
+                  <file>
+                      <name>Settings.ascx</name>
+                      <sourceFileName>Settings.ascx</sourceFileName>
+                  </file>
+                  <file>
+                      <name>FolderProperties.ascx</name>
+                      <sourceFileName>FolderProperties.ascx</sourceFileName>
+                  </file>
+                  <file>
+                      <name>FileProperties.ascx</name>
+                      <sourceFileName>FileProperties.ascx</sourceFileName>
+                  </file>
+                  <file>
+                      <name>FolderMappings.ascx</name>
+                      <sourceFileName>FolderMappings.ascx</sourceFileName>
+                  </file>
+                  <file>
+                      <name>EditFolderMapping.ascx</name>
+                      <sourceFileName>EditFolderMapping.ascx</sourceFileName>
+                  </file>
+          </files>
+          </component>
+          <component type="ResourceFile">
+              <resourceFiles>
+                  <basePath>DesktopModules/DigitalAssets</basePath>
+                  <resourceFile>
+                      <name>Resources.zip</name>
+                  </resourceFile>
+              </resourceFiles>
+          </component>
+
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

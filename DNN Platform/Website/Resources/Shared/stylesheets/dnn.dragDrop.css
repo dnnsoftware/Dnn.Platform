@@ -1,0 +1,34 @@
+﻿.dnnSortable.ui-sortable, 
+.dnnSortable.ui-droppable {
+    padding: 0;
+}
+.dnnDragHint {
+    outline: 1px dashed #ccc;
+    height: 22px !important;
+    cursor: move;
+}
+.dnnDropTarget {
+    display:block;
+    visibility: visible !important;
+	border: 1px dashed #4577a2;
+	background: #d9eeff;
+    height: 110px !important;
+    width: 100%;
+}
+.dnnDropTarget > p {
+    color:#4577a2;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 45px;
+}
+.dnnSortable {
+    min-height: 110px !important;
+}
+.dnnDropEmptyPanes {
+    outline: 1px dashed #ccc !important;
+    min-width: 110px !important;
+}
+
+
+
+

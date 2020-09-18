@@ -1,0 +1,23 @@
+﻿<a href="" class="mdMemberImg" data-bind="attr: { title: DisplayName, href: ProfileUrl }">
+    <span><img data-bind="attr: { src: getProfilePicture(50,50), title: DisplayName, alt: DisplayName }" /></span>
+</a>
+<ul class="MdMemberInfo">
+    <li class="mdDisplayName">
+        <a href="" title="" class="mdMemberTitle" data-bind="attr: { title: DisplayName, href: ProfileUrl }">
+            <span data-bind="text: DisplayName"></span>
+        </a>
+    </li>  
+    <li class="mdTitle"><p><span data-bind="text: Title"></span></p></li>
+    <li class="mdPhone"><p><span data-bind="text: Phone"></span></p></li>
+    <li class="mdEmail"><a href="#"><span data-bind="text: Email"></span></a></li>
+</ul>
+<ul class="mdHoverActions" data-bind="visible: !IsUser() && IsAuthenticated">
+        <li class="mdFriendRequest" data-bind="visible: FriendStatus() == 0"><a href="" class="firstItem" data-bind="click: addFriend"><span data-bind="text: AddFriendText"></span></a></li>
+        <li class="mdFriendPending" data-bind="visible: IsPending()"><p><span class="firstItem"><span data-bind="text: FriendPendingText"></span></span></p></li>
+        <li class="mdFriendAccept" data-bind="visible: HasPendingRequest()"><a href="" class="firstItem" data-bind="click: acceptFriend"><span data-bind="text: AcceptFriendText"></span></a></li>
+        <li class="mdFriendRemove" data-bind="visible: IsFriend()"><a href="" class="firstItem" data-bind="click: removeFriend"><span data-bind="text: RemoveFriendText"></span></a></li>
+        <li class="mdFollow" data-bind="visible: !IsFollowing()"><a href="" title="" class="firstItem" data-bind="click: follow"><span data-bind="text: FollowText"></span></a></li>
+        <li class="mdUnfollow" data-bind="visible: IsFollowing()"><a href="" title="" class="firstItem" data-bind="click: unFollow"><span data-bind="text: UnFollowText"></span></a></li>
+        <li class="mdComposeMessage"><a href="" title="" class="ComposeMessage" data-bind="visible: !$parent.disablePrivateMessage()"><span data-bind="text: SendMessageText"></span></a></li>
+</ul>
+

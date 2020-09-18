@@ -1,0 +1,135 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}SetCorePackageVersions') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}SetCorePackageVersions
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SetCorePackageVersions
+AS
+DECLARE @Version VARCHAR(10)
+SET @Version = (SELECT TOP 1
+ CAST(v.Major AS VARCHAR) + '.'
+ + CAST(v.Minor AS VARCHAR) + '.'
+ + CAST(v.Build AS VARCHAR)
+FROM {databaseOwner}{objectQualifier}Version v
+ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC);
+UPDATE {databaseOwner}{objectQualifier}Packages
+SET Version=@Version
+WHERE [Name] IN ('DotNetNuke.Authentication',
+'DotNetNuke.SearchResults',
+'DotNetNuke.Security',
+'DotNetNuke.ACTIONBUTTONSkinObject',
+'DotNetNuke.ACTIONSSkinObject',
+'DotNetNuke.BANNERSkinObject',
+'DotNetNuke.BREADCRUMBSkinObject',
+'DotNetNuke.COPYRIGHTSkinObject',
+'DotNetNuke.CURRENTDATESkinObject',
+'DotNetNuke.DOTNETNUKESkinObject',
+'DotNetNuke.DROPDOWNACTIONSSkinObject',
+'DotNetNuke.HELPSkinObject',
+'DotNetNuke.HOSTNAMESkinObject',
+'DotNetNuke.ICONSkinObject',
+'DotNetNuke.LANGUAGESkinObject',
+'DotNetNuke.LINKACTIONSSkinObject',
+'DotNetNuke.LINKSSkinObject',
+'DotNetNuke.LOGINSkinObject',
+'DotNetNuke.LOGOSkinObject',
+'DotNetNuke.MENUSkinObject',
+'DotNetNuke.NAVSkinObject',
+'DotNetNuke.PRINTMODULESkinObject',
+'DotNetNuke.PRIVACYSkinObject',
+'DotNetNuke.SEARCHSkinObject',
+'DotNetNuke.SIGNINSkinObject',
+'DotNetNuke.TERMSSkinObject',
+'DotNetNuke.TITLESkinObject',
+'DotNetNuke.TREEVIEWSkinObject',
+'DotNetNuke.USERSkinObject',
+'DotNetNuke.VISIBILITYSkinObject',
+'DotNetNuke.TEXTSkinObject',
+'DotNetNuke.STYLESSkinObject',
+'DotNetNuke.LEFTMENUSkinObject',
+'DotNetNuke.JQUERYSkinObject',
+'DotNetNuke.CONTROLPANEL.SkinObject',
+'DotNetNuke.Console',
+'DefaultAuthentication',
+'DotNetNuke.ViewProfile',
+'DotNetNuke.TagsSkinObject',
+'DotNetNuke.Skin.Default',
+'DotNetNuke.Container.Default',
+'DotNetNuke.Registration',
+'DotNetNuke.ToastSkinObject',
+'DotNetNuke.DNNCSSINCLUDESkinObject',
+'DotNetNuke.DNNCSSEXCLUDESkinObject',
+'DotNetNuke.DNNJSINCLUDESkinObject',
+'DotNetNuke.DNNJSEXCLUDESkinObject',
+'DotNetNuke.Module Creator');
+UPDATE {databaseOwner}{objectQualifier}DesktopModules
+SET Version=@Version
+FROM {databaseOwner}{objectQualifier}DesktopModules dtm
+INNER JOIN {databaseOwner}{objectQualifier}Packages p ON p.PackageID=dtm.PackageID
+WHERE p.[Name] IN ('DotNetNuke.Authentication',
+'DotNetNuke.SearchResults',
+'DotNetNuke.Security',
+'DotNetNuke.ACTIONBUTTONSkinObject',
+'DotNetNuke.ACTIONSSkinObject',
+'DotNetNuke.BANNERSkinObject',
+'DotNetNuke.BREADCRUMBSkinObject',
+'DotNetNuke.COPYRIGHTSkinObject',
+'DotNetNuke.CURRENTDATESkinObject',
+'DotNetNuke.DOTNETNUKESkinObject',
+'DotNetNuke.DROPDOWNACTIONSSkinObject',
+'DotNetNuke.HELPSkinObject',
+'DotNetNuke.HOSTNAMESkinObject',
+'DotNetNuke.ICONSkinObject',
+'DotNetNuke.LANGUAGESkinObject',
+'DotNetNuke.LINKACTIONSSkinObject',
+'DotNetNuke.LINKSSkinObject',
+'DotNetNuke.LOGINSkinObject',
+'DotNetNuke.LOGOSkinObject',
+'DotNetNuke.MENUSkinObject',
+'DotNetNuke.NAVSkinObject',
+'DotNetNuke.PRINTMODULESkinObject',
+'DotNetNuke.PRIVACYSkinObject',
+'DotNetNuke.SEARCHSkinObject',
+'DotNetNuke.SIGNINSkinObject',
+'DotNetNuke.TERMSSkinObject',
+'DotNetNuke.TITLESkinObject',
+'DotNetNuke.TREEVIEWSkinObject',
+'DotNetNuke.USERSkinObject',
+'DotNetNuke.VISIBILITYSkinObject',
+'DotNetNuke.TEXTSkinObject',
+'DotNetNuke.STYLESSkinObject',
+'DotNetNuke.LEFTMENUSkinObject',
+'DotNetNuke.JQUERYSkinObject',
+'DotNetNuke.CONTROLPANEL.SkinObject',
+'DotNetNuke.Console',
+'DefaultAuthentication',
+'DotNetNuke.ViewProfile',
+'DotNetNuke.TagsSkinObject',
+'DotNetNuke.Skin.Default',
+'DotNetNuke.Container.Default',
+'DotNetNuke.Registration',
+'DotNetNuke.ToastSkinObject',
+'DotNetNuke.DNNCSSINCLUDESkinObject',
+'DotNetNuke.DNNCSSEXCLUDESkinObject',
+'DotNetNuke.DNNJSINCLUDESkinObject',
+'DotNetNuke.DNNJSEXCLUDESkinObject',
+'DotNetNuke.Module Creator');
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+/************************************************************/

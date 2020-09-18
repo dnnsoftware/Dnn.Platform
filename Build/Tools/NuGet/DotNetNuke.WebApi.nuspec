@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>DotNetNuke.WebApi</id>
+    <version>$version$</version>
+    <title>DNN Platform (ASP.NET Web API)</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <icon>images\logo-for-nuget.png</icon>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
+    <description>
+      This package contains components required for developing WebAPI based services for DNN Platform.
+    </description>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+      <dependency id="NewtonSoft.Json" version="10.0.3" />
+      <dependency id="DotNetNuke.Web" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".\*" exclude="**\*" />
+    <file src="logo-for-nuget.png" target="images\"/>
+  </files>
+</package>

@@ -1,0 +1,28 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.FileSystem.SynchronizeFileSystem, DOTNETNUKE', 1, 'h', 2, 'h', 10, '', 0, 1, 'FileSystemUtils')
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}PortalAlias ADD CONSTRAINT
+	IX_{objectQualifier}PortalAlias UNIQUE NONCLUSTERED 
+	(
+	HTTPAlias
+	) ON [PRIMARY]
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

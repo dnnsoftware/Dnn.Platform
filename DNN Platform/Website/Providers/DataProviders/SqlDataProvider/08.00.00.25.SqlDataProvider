@@ -1,0 +1,860 @@
+/* DNN-7141 PageOutputCache  */
+/*****************************/
+
+
+/* Add New OutputCache Table */
+/*****************************/
+
+IF  NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}OutputCache') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	CREATE TABLE {databaseOwner}{objectQualifier}OutputCache
+	(
+		[CacheKey]   VarChar (36)  NOT NULL,
+		[ItemId]     Int           NOT NULL,
+		[Data]       nVarChar(Max) NOT NULL,
+		[Expiration] DateTime      NOT NULL,
+		CONSTRAINT [PK_{objectQualifier}OutputCache] PRIMARY KEY CLUSTERED ([CacheKey] ASC)
+	)
+GO
+
+/* Add New OutputCacheGetItem  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItem]'))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItem
+GO
+	
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItem
+	@CacheKey VarChar (36)
+AS
+BEGIN
+    SELECT *
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE CacheKey = @CacheKey
+END
+GO
+
+/* Add New OutputCacheAddItem  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheAddItem]'))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
+	@ItemId     Int,
+	@CacheKey   VarChar ( 36),
+	@Data	    nVarChar(Max),
+	@Expiration DateTime
+AS
+BEGIN
+    INSERT INTO {databaseOwner}{objectQualifier}OutputCache
+    (	ItemId, 
+	CacheKey, 
+	Data, 
+	Expiration
+    ) VALUES 
+    (   @ItemId, 
+	@CacheKey, 
+	@Data, 
+	@Expiration
+    )
+END
+GO
+
+/* Add New OutputCacheGetItemCount  */
+/************************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItemCount]'))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItemCount
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItemCount
+	@ItemId int
+AS
+BEGIN
+    SELECT COUNT(*) N
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE ItemId = @ItemId
+END
+GO
+
+/* Add New OutputCachePurgeCache  */
+/**********************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeCache]'))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeCache
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeCache
+AS
+BEGIN
+    DELETE
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+END
+GO
+
+/* Add New OutputCachePurgeExpiredItems  */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeExpiredItems]'))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeExpiredItems
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeExpiredItems
+	@CurrentUtcDateTime DateTime
+AS
+BEGIN
+    DELETE
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE Expiration <= @CurrentUtcDateTime
+END
+GO
+
+/* Add New OutputCacheRemoveItem  */
+/**********************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheRemoveItem]'))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheRemoveItem
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheRemoveItem
+	@ItemId Int
+AS
+BEGIN
+    DELETE
+    FROM  {databaseOwner}{objectQualifier}OutputCache
+    WHERE ItemId = @ItemId
+END
+GO
+
+/* Add New OutputCacheGetKeys  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetKeys]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+	@ItemId Int
+AS
+BEGIN
+    DELETE
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE ItemId = @ItemId OR @ItemId IS NULL
+END
+GO
+
+/* Add PurgeOutputCache Schedule Job */
+/*************************************/
+IF NOT EXISTS(SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke')
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule
+	(   [TypeFullName]
+	   ,[TimeLapse]
+	   ,[TimeLapseMeasurement]
+	   ,[RetryTimeLapse]
+	   ,[RetryTimeLapseMeasurement]
+	   ,[RetainHistoryNum]
+	   ,[AttachToEvent]
+	   ,[CatchUpEnabled]
+	   ,[Enabled]
+	   ,[ObjectDependencies]
+	   ,[Servers]
+	   ,[CreatedByUserID]
+	   ,[CreatedOnDate]
+	   ,[LastModifiedByUserID]
+	   ,[LastModifiedOnDate]
+	   ,[FriendlyName]
+	) VALUES
+    (	'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke'
+	   ,1
+	   ,N'm'
+	   ,30
+	   ,N's'
+	   ,10
+	   ,N''
+	   ,0
+	   ,0
+	   ,N'OutputCache'
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,N'Purge Output Cache'
+	 )
+END
+GO
+
+
+/* DNN-6758 */
+/************/
+
+-- make sure, the column size has been increased (just in case):
+DECLARE @MaxLen SmallInt = 0;
+SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND Name = 'IconFile'
+IF @MaxLen > 0 AND @MaxLen < 255
+  ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFile      nVarChar(255);
+GO
+
+DECLARE @MaxLen SmallInt = 0;
+SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND Name = 'IconFileLarge'
+IF @MaxLen > 0 AND @MaxLen < 255
+   ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFileLarge nVarChar(255);
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @TabOrder               Int,
+    @UniqueId               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentId               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(Max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               bit
+AS
+BEGIN
+    INSERT INTO {databaseOwner}{objectQualifier}Tabs (
+        ContentItemID,
+        PortalID,
+        TabOrder,
+        UniqueId,
+        VersionGuid,
+        DefaultLanguageGuid,
+        LocalizedVersionGuid,
+        TabName,
+        IsVisible,
+        DisableLink,
+        ParentId,
+        IconFile,
+        IconFileLarge,
+        Title,
+        Description,
+        KeyWords,
+        IsDeleted,
+        Url,
+        SkinSrc,
+        ContainerSrc,
+        StartDate,
+        EndDate,
+        RefreshInterval,
+        PageHeadText,
+        IsSecure,
+        PermanentRedirect,
+        SiteMapPriority,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate,
+        CultureCode,
+        IsSystem
+    )
+    VALUES (
+        @ContentItemID,
+        @PortalID,
+        @TabOrder,
+        @UniqueId,
+        @VersionGuid,
+        @DefaultLanguageGuid,
+        @LocalizedVersionGuid,
+        @TabName,
+        @IsVisible,
+        @DisableLink,
+        @ParentId,
+        @IconFile,
+        @IconFileLarge,
+        @Title,
+        @Description,
+        @KeyWords,
+        0,
+        @Url,
+        @SkinSrc,
+        @ContainerSrc,
+        @StartDate,
+        @EndDate,
+        @RefreshInterval,
+        @PageHeadText,
+        @IsSecure,
+        @PermanentRedirect,
+        @SiteMapPriority,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate(),
+        @CultureCode,
+        @IsSystem
+    )
+    DECLARE @TabId Int = SCOPE_IDENTITY();
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId;
+    SELECT @TabId;
+    RETURN @TabId;
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+    @TabId                  Int,
+    @ContentItemID          Int,
+    @PortalId               Int,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentId               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @IsDeleted              Bit,
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @LastModifiedByUserID   Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @OldParentId Int
+    SET @OldParentId = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    DECLARE @TabOrder Int
+    SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    -- Get New TabOrder
+    DECLARE @NewTabOrder Int
+    SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentId IS NULL)))
+    IF @NewTabOrder IS NULL
+        SET @NewTabOrder = 1
+    ELSE
+        SET @NewTabOrder = @NewTabOrder + 2
+
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET
+            ContentItemID           = @ContentItemID,
+            PortalId                = @PortalId,
+            VersionGuid             = @VersionGuid,
+            DefaultLanguageGuid     = @DefaultLanguageGuid,
+            LocalizedVersionGuid    = @LocalizedVersionGuid,
+            TabName                 = @TabName,
+            IsVisible               = @IsVisible,
+            DisableLink             = @DisableLink,
+            ParentId                = @ParentId,
+            IconFile                = @IconFile,
+            IconFileLarge           = @IconFileLarge,
+            Title                   = @Title,
+            Description             = @Description,
+            KeyWords                = @KeyWords,
+            IsDeleted               = @IsDeleted,
+            Url                     = @Url,
+            SkinSrc                 = @SkinSrc,
+            ContainerSrc            = @ContainerSrc,
+            StartDate               = @StartDate,
+            EndDate                 = @EndDate,
+            RefreshInterval         = @RefreshInterval,
+            PageHeadText            = @PageHeadText,
+            IsSecure                = @IsSecure,
+            PermanentRedirect       = @PermanentRedirect,
+            SiteMapPriority         = @SiteMapPriority,
+            LastModifiedByUserID    = @LastModifiedByUserID,
+            LastModifiedOnDate      = getdate(),
+            CultureCode             = @CultureCode,
+            IsSystem                = @IsSystem
+    WHERE  TabId = @TabId;
+
+    IF (@OldParentId <> @ParentId) BEGIN
+        -- update TabOrder of Tabs with same original Parent
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = TabOrder - 2
+         WHERE (ParentId = @OldParentId)
+           AND TabOrder > @TabOrder
+
+        -- Update Tab with new TabOrder
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = @NewTabOrder
+         WHERE TabID = @TabId
+    END /* IF */
+
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabAfter]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabAfter]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabAfter]
+    @AfterTabID             Int,
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @UniqueID               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentID               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @TabId    Int
+    DECLARE @TabOrder Int = (SELECT TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @AfterTabID)
+
+    -- Update TabOrders for all Tabs higher than @TabOrder
+    UPDATE {databaseOwner}{objectQualifier}Tabs
+       SET TabOrder = TabOrder + 2
+     WHERE (ParentId = @ParentID OR (ParentId IS NULL AND @ParentID IS NULL))
+       AND TabOrder > @TabOrder
+       AND (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+
+    -- Create Tab
+    SET @TabOrder = @TabOrder + 2
+    EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab
+                        @ContentItemID,
+                        @PortalID,
+                        @TabOrder,
+                        @UniqueId,
+                        @VersionGuid,
+                        @DefaultLanguageGuid,
+                        @LocalizedVersionGuid,
+                        @TabName,
+                        @IsVisible,
+                        @DisableLink,
+                        @ParentID,
+                        @IconFile,
+                        @IconFileLarge,
+                        @Title,
+                        @Description,
+                        @KeyWords,
+                        @Url,
+                        @SkinSrc,
+                        @ContainerSrc,
+                        @StartDate,
+                        @EndDate,
+                        @RefreshInterval,
+                        @PageHeadText,
+                        @IsSecure,
+                        @PermanentRedirect,
+                        @SiteMapPriority,
+                        @CreatedByUserID,
+                        @CultureCode,
+                        @IsSystem;
+
+    -- Update Content Item
+    UPDATE {databaseOwner}{objectQualifier}ContentItems
+       SET TabID = @TabId
+     WHERE ContentItemID = @ContentItemID;
+
+    SELECT @TabId;
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabBefore]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore]
+    @BeforeTabID            Int,
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @UniqueID               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentID               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @TabID    Int
+    DECLARE @TabOrder Int = (SELECT TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @BeforeTabID);
+
+    -- Update TabOrders for all Tabs higher than @TabOrder
+    UPDATE {databaseOwner}{objectQualifier}Tabs
+       SET TabOrder = TabOrder + 2
+     WHERE (ParentId = @ParentId OR (ParentID IS NULL AND @ParentID IS NULL))
+       AND TabOrder >= @TabOrder
+       AND (PortalId = @PortalId OR (PortalID IS NULL AND @PortalID IS NULL))
+
+    -- Create Tab
+    EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab
+                        @ContentItemID,
+                        @PortalID,
+                        @TabOrder,
+                        @UniqueID,
+                        @VersionGuid,
+                        @DefaultLanguageGuid,
+                        @LocalizedVersionGuid,
+                        @TabName,
+                        @IsVisible,
+                        @DisableLink,
+                        @ParentID,
+                        @IconFile,
+                        @IconFileLarge,
+                        @Title,
+                        @Description,
+                        @KeyWords,
+                        @Url,
+                        @SkinSrc,
+                        @ContainerSrc,
+                        @StartDate,
+                        @EndDate,
+                        @RefreshInterval,
+                        @PageHeadText,
+                        @IsSecure,
+                        @PermanentRedirect,
+                        @SiteMapPriority,
+                        @CreatedByUserID,
+                        @CultureCode,
+                        @IsSystem;
+
+    -- Update Content Item
+    UPDATE {databaseOwner}{objectQualifier}ContentItems
+       SET TabID = @TabId
+     WHERE ContentItemID = @ContentItemID;
+
+    SELECT @TabId;
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabToEnd]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabToEnd]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddTabToEnd
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @UniqueID               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentID               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @TabId Int
+    DECLARE @TabOrder Int
+    SET @TabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}{objectQualifier}Tabs
+                     WHERE (PortalId = @PortalID OR (PortalID IS NULL AND @PortalID IS NULL))
+                       AND (ParentId = @ParentID OR (ParentID IS NULL AND @ParentID IS NULL))
+                    )
+    IF @TabOrder IS NULL
+        SET @TabOrder = 1
+    ELSE
+        SET @TabOrder = @TabOrder + 2
+
+    -- Create Tab
+    EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab
+                        @ContentItemID,
+                        @PortalID,
+                        @TabOrder,
+                        @UniqueId,
+                        @VersionGuid,
+                        @DefaultLanguageGuid,
+                        @LocalizedVersionGuid,
+                        @TabName,
+                        @IsVisible,
+                        @DisableLink,
+                        @ParentId,
+                        @IconFile,
+                        @IconFileLarge,
+                        @Title,
+                        @Description,
+                        @KeyWords,
+                        @Url,
+                        @SkinSrc,
+                        @ContainerSrc,
+                        @StartDate,
+                        @EndDate,
+                        @RefreshInterval,
+                        @PageHeadText,
+                        @IsSecure,
+                        @PermanentRedirect,
+                        @SiteMapPriority,
+                        @CreatedByUserID,
+                        @CultureCode,
+                        @IsSystem;
+
+    -- Update Content Item
+    UPDATE {databaseOwner}{objectQualifier}ContentItems
+       SET TabID = @TabId
+     WHERE ContentItemID = @ContentItemID;
+
+    SELECT @TabId;
+END /* Procedure */
+GO
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version NVARCHAR(8)
+SET @version = '08.00.00'
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Banners'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Registration'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ToastSkinObject'
+
+GO
+
+/*********************************************************************/
+/* DNN-8058 - Remove HMAC code from Platform */
+/*********************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserByHmacAppId]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserByHmacAppId]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]
+GO
+
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+AS
+	SELECT  U.UserId,
+        UP.PortalId,
+        U.Username,
+        U.FirstName,
+        U.LastName,
+        U.DisplayName,
+        U.IsSuperUser,
+        U.Email,
+        UP.VanityUrl,
+        U.AffiliateId,
+        IsNull(UP.IsDeleted, U.IsDeleted) AS IsDeleted,
+        UP.RefreshRoles,
+        U.LastIPAddress,
+        U.UpdatePassword,
+        U.PasswordResetToken,
+        U.PasswordResetExpiration,
+        UP.Authorised,
+        U.CreatedByUserId,
+        U.CreatedOnDate,
+        U.LastModifiedByUserId,
+        U.LastModifiedOnDate
+	FROM       {databaseOwner}[{objectQualifier}Users]       AS U
+		LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] AS UP 
+			ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
+	@UserID         int,
+	@PortalID		int,
+	@FirstName		nvarchar(50),
+	@LastName		nvarchar(50),
+	@IsSuperUser    bit,
+	@Email          nvarchar(256),
+	@DisplayName    nvarchar(100),
+	@VanityUrl		nvarchar(100),
+	@UpdatePassword	bit,
+	@Authorised		bit,
+	@RefreshRoles	bit,
+	@LastIPAddress	nvarchar(50),
+	@passwordResetToken uniqueidentifier,
+	@passwordResetExpiration datetime,
+	@IsDeleted		bit,
+	@LastModifiedByUserID int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Users
+		SET
+			FirstName = @FirstName,
+			LastName = @LastName,
+			IsSuperUser = @IsSuperUser,
+			Email = @Email,
+			DisplayName = @DisplayName,
+			UpdatePassword = @UpdatePassword,
+			PasswordResetToken=@passwordResetToken,
+			PasswordResetExpiration=@passwordResetExpiration,
+			LastIPAddress = @LastIPAddress,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+		WHERE  UserId = @UserID
+	
+	IF @PortalID IS NULL
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Users
+				SET
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+		END
+	ELSE
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}UserPortals
+				SET
+					Authorised = @Authorised,
+					RefreshRoles = @RefreshRoles,
+					VanityUrl = @VanityUrl,
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+					AND PortalId = @PortalID
+		END
+GO
+
+IF EXISTS (SELECT * FROM Sys.columns 
+			WHERE name = N'HmacAppId'
+			AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users]
+	DROP COLUMN HmacAppId
+GO
+
+IF EXISTS (SELECT * FROM Sys.columns 
+			WHERE name = N'HmacAppSecret'
+			AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users]
+	DROP COLUMN HmacAppSecret
+GO 
+/*********************************************************************/

@@ -1,0 +1,232 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.edit-language-panel {
+    * {
+        box-sizing: border-box;
+    }
+    &.dnn-persona-bar-page-body {
+        border: none;
+        .persona-bar-page-body {
+            background-color: transparent;
+            border: none;
+        }
+        .edit-language-info {
+            padding: 5px 25px;
+            border: 1px solid @cerulean;
+            .edit-language-top-bar {
+                border-bottom: 1px solid @alto;
+                margin-bottom: 15px;
+                .language-info {
+                    padding: 15px 0;
+                    .language-flag {
+                        float: left;
+                        margin-right: 25px;
+                        width: 35px;
+                    }
+                    p {
+                        margin-top: 3px;
+                    }
+                }
+                .mode-container {
+                    padding-top: 2px;
+                    .dnn-radio-buttons, .dnn-label {
+                        float: right;
+                        /* text-align: right; */
+                        width: auto;
+                        padding-top: 15px;
+                        > label {
+                            margin-top: 2px;
+                            font-weight: bold;
+                        }
+                        .dnn-ui-common-tooltip-info {
+                            margin-right: 25px;
+                        }
+                        ul {
+                            li {
+                                margin-left: 25px;
+                                label {
+                                    margin-top: 2px;
+                                }
+                            }
+                        }
+                    }
+                    .dnn-label {
+                        .dnn-ui-common-tooltip{
+                            float: right;
+                        }
+                    }
+                }
+            }
+            .edit-resource-files {
+                >.dnn-grid-cell {
+                    padding: 15px 0;
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                    &:last-child {
+                        padding-right: 0;
+                    }
+                }
+                .dnn-switch-container {
+                    width: 100%;
+                    .dnn-switch {
+                        float: right;
+                    }
+                }
+                .translation-action-buttons {
+                    text-align: right;
+                }
+                .dnn-ui-common-button {
+                    margin-left: 10px;
+                }
+                .dnn-dropdown-with-error {
+                    width: 100%;
+                }
+                .resource-file-tree-container {
+                    padding: 15px 0;
+                    .dnn-label {
+                        margin-top: 5px;
+                        margin-bottom: 15px;
+                        > label {
+                            font-weight: bold;
+                        }
+                    }
+                    .resource-file-dropdown {
+                        position: relative;
+                        display: inline-block;
+                        width: 100%;
+                        padding: 8px 40px 8px 15px;
+                        cursor: pointer;
+                        border: 1px solid @alto;
+                        background-color: white;
+                        .dropdown-icon {
+                            position: absolute;
+                            right: 10px;
+                            top: 10px;
+                            svg {
+                                width: 14px;
+                                height: 14px;
+                                fill: @rollingStone;
+                            }
+                        }
+                    }
+                    position: relative;
+                    .tree-container {
+                        position: absolute;
+                        width: 50%;
+                        z-index: 1000;
+                        height: 100%;
+                    }
+                    ul.root-level {
+                        list-style: none;
+                        padding: 5px 15px;
+                        min-height: 285px;
+                        margin-top: 5px;
+                        li {
+                            position: relative;
+                            cursor: pointer;
+                            font-size: 15px;
+                            svg {
+                                width: 14px;
+                                height: 14px;
+                                fill: @rollingStone;
+                                pointer-events: none;
+                                * {
+                                    pointer-events: none;
+                                }
+                            }
+                            .resource-type-icon {
+                                float: left;
+                                margin-right: 5px;
+                                position: relative;
+                                top: 1px;
+                            }
+                            .edit-svg {
+                                margin-right: 5px;
+                                position: absolute;
+                                left: -16px;
+                                top: 1px;
+                            }
+                            span.selected-resource {
+                                color: @cerulean;
+                                font-weight: bold;
+                            }
+                        }
+                        ul {
+                            padding: 0 15px;
+                            list-style: none;
+                        }
+                    }
+                    .resource-tree {
+                        padding: 0 15px;
+                        list-style: none;
+                        &.root-level {
+                            padding: 5px 25px;
+                        }
+                    }
+                }
+            }
+            .translation-action-buttons {}
+        }
+        .resource-list {
+            margin-top: 25px;
+            .resource-controls {
+                margin-bottom: 25px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid @alto;
+                .clear-pending-translations, .pending-translations {
+                    color: @cerulean;
+                    margin-top: 2px;
+                }
+                .search-box-container {
+                    float: right;
+                    border-left: 1px solid @alto;
+                    border-right: 1px solid @alto;
+                    height: 24px;
+                    .dnn-search-box {
+                        margin-top: -3px;
+                    }
+                    input::-webkit-search-cancel-button {
+                        margin-right: 25px;
+                    }
+                    input:focus {
+                        outline: none;
+                    }
+                }
+            }
+            .row-headers {
+                border: 1px solid @alto;
+                .row-header {
+                    background-color: white;
+                    padding: 15px;
+                }
+            }
+            .resource-rows {
+                .resource-row {
+                    border: 1px solid @alto;
+                    border-top: none;
+                    background-color: white;
+                    .row-detail {
+                        padding: 15px;
+                        .dnn-ui-common-single-line-input,
+                        .dnn-ui-common-multi-line-input {
+                            width: 100%;
+                            border-radius: 0;
+                            &.highlight {
+                                border: 1px solid @alizarinCrimson;
+                            }
+                        }
+                        .key-name {
+                            word-break: break-all;
+                            margin-top: 7px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .dnn-workspace-tray {
+        border: none;
+        margin-bottom: 0;
+        height: 24px;
+    }
+}

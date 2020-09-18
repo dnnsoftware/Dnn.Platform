@@ -1,0 +1,62 @@
+<Settings>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render this skin object</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>AddImageUrl</Name>
+    <Type>String</Type>
+    <Help>Path to the url to use for the Add Tags link</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>CancelImageUrl</Name>
+    <Type>String</Type>
+    <Help>Path to the url to use for the Cancel link</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>SaveImageUrl</Name>
+    <Type>String</Type>
+    <Help>Path to the url to use for the Save link</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>AllowTagging</Name>
+    <Type>Boolean</Type>
+    <Help>Flag to enable/disable user tagging</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ShowCategories</Name>
+    <Type>Boolean</Type>
+    <Help>Flag which determines whether the categories are displayed</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ShowTags</Name>
+    <Type>Boolean</Type>
+    <Help>Flag which determines whether the tags are displayed</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>Separator</Name>
+    <Type>String</Type>
+    <Help>The text to render between tags and categories</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ObjectType</Name>
+    <Type>String</Type>
+    <Help>The type of object that the skinobject should display tags/categories for. (Page/Module)</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>RepeatDirection</Name>
+    <Type>String</Type>
+    <Help>The direction of repreatig elements (Horizontal or Vertical)</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

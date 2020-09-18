@@ -1,0 +1,587 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+drop procedure {databaseOwner}{objectQualifier}GetModule
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetModule
+
+@ModuleId int,
+@TabId    int
+
+as
+
+select	{objectQualifier}Modules.ModuleID,
+		{objectQualifier}Modules.ModuleDefID,
+		{objectQualifier}Modules.ModuleTitle,
+		{objectQualifier}Modules.AllTabs,
+		{objectQualifier}Modules.IsDeleted,
+		{objectQualifier}Modules.InheritViewPermissions,
+		{objectQualifier}Modules.Header,
+		{objectQualifier}Modules.Footer,
+		{objectQualifier}Modules.StartDate,
+		{objectQualifier}Modules.EndDate,
+		{objectQualifier}Modules.PortalID,
+		{objectQualifier}TabModules.TabModuleID,
+		{objectQualifier}TabModules.TabID,
+        {objectQualifier}TabModules.PaneName,
+		{objectQualifier}TabModules.ModuleOrder,
+		{objectQualifier}TabModules.CacheTime,
+		{objectQualifier}TabModules.Alignment,
+		{objectQualifier}TabModules.Color,
+		{objectQualifier}TabModules.Border,
+		'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}TabModules.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+		{objectQualifier}TabModules.Visibility,
+		{objectQualifier}TabModules.ContainerSrc,
+        {objectQualifier}DesktopModules.DesktopModuleID,
+		{objectQualifier}DesktopModules.FriendlyName,
+		{objectQualifier}DesktopModules.Description,
+		{objectQualifier}DesktopModules.Version,
+		{objectQualifier}DesktopModules.IsPremium,
+		{objectQualifier}DesktopModules.IsAdmin,
+		{objectQualifier}DesktopModules.BusinessControllerClass
+from	{objectQualifier}Modules
+inner join {objectQualifier}ModuleDefinitions on {objectQualifier}Modules.ModuleDefID = {objectQualifier}ModuleDefinitions.ModuleDefID
+inner join {objectQualifier}DesktopModules on {objectQualifier}ModuleDefinitions.DesktopModuleID = {objectQualifier}DesktopModules.DesktopModuleID
+left outer join {objectQualifier}TabModules on {objectQualifier}Modules.ModuleId = {objectQualifier}TabModules.ModuleId
+left outer join {objectQualifier}Files on {objectQualifier}TabModules.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where   {objectQualifier}Modules.ModuleId = @ModuleId
+and     ({objectQualifier}TabModules.TabId = @TabId or @TabId is null)
+GO
+
+drop procedure {databaseOwner}{objectQualifier}FindBanners
+GO
+
+create procedure {databaseOwner}{objectQualifier}FindBanners
+
+@PortalId     int,
+@BannerTypeId int,
+@GroupName    nvarchar(100)
+
+as
+
+select BannerId,
+       BannerName,
+       URL,
+       'ImageFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Banners.ImageFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       Impressions,
+       CPM,
+       {objectQualifier}Banners.Views,
+       {objectQualifier}Banners.ClickThroughs,
+       StartDate,
+       EndDate,
+       BannerTypeId,
+       Description,
+       GroupName,
+       Criteria
+from {objectQualifier}Banners
+inner join {objectQualifier}Vendors on {objectQualifier}Banners.VendorId = {objectQualifier}Vendors.VendorId
+left outer join {objectQualifier}Files on {objectQualifier}Banners.ImageFile = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  ({objectQualifier}Banners.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+and    ({objectQualifier}Banners.GroupName = @GroupName or @GroupName is null)
+and    (({objectQualifier}Vendors.PortalId = @PortalId) or (@PortalId is null and {objectQualifier}Vendors.PortalId is null))
+and    ({objectQualifier}Banners.StartDate is null Or getdate() >= {objectQualifier}Banners.StartDate )
+and    (  ( Criteria = 1 /* OR */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views Or {objectQualifier}Banners.Impressions = 0)
+           and (getdate() <= {objectQualifier}Banners.EndDate or {objectQualifier}Banners.EndDate is null) )
+       or ( Criteria = 0 /* AND */
+           and ({objectQualifier}Banners.Impressions >= {objectQualifier}Banners.Views and {objectQualifier}Banners.Impressions <> 0)
+           or  (getdate() <= {objectQualifier}Banners.EndDate and {objectQualifier}Banners.EndDate is not null) )  )
+order by BannerId
+GO
+
+update {databaseOwner}{objectQualifier}Schedule
+
+	set TypeFullName = 'DotNetNuke.Services.Log.EventLog.PurgeLogBuffer, DOTNETNUKE',
+		ObjectDependencies = 'EventLog'
+where TypeFullName = 'DotNetNuke.Services.Log.EventLog.PurgeLogBuffer, DOTNETNUKE.XMLLOGGINGPROVIDER'
+GO
+
+update {databaseOwner}{objectQualifier}Schedule
+
+	set TypeFullName = 'DotNetNuke.Services.Log.EventLog.SendLogNotifications, DOTNETNUKE',
+		ObjectDependencies = 'EventLog'
+where TypeFullName = 'DotNetNuke.Services.Log.EventLog.SendLogNotifications, DOTNETNUKE.XMLLOGGINGPROVIDER'
+GO
+
+/* -------------------------------------------- */
+/** Rewrite module sprocs to return all fields **/
+/* -------------------------------------------- */
+
+drop procedure {databaseOwner}{objectQualifier}GetAnnouncement
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetAnnouncement
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select 
+		{objectQualifier}Announcements.ItemID,
+		{objectQualifier}Announcements.ModuleID,
+		{objectQualifier}Announcements.Title,
+        'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Announcements.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Announcements
+left outer join {objectQualifier}Users on {objectQualifier}Announcements.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Announcements.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Announcements.ItemId = @ItemId
+and    {objectQualifier}Announcements.ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetAnnouncements
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetAnnouncements
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Announcements.ItemId,
+		{objectQualifier}Announcements.ModuleID,
+       {objectQualifier}Announcements.CreatedByUser,
+       {objectQualifier}Announcements.CreatedDate,
+       {objectQualifier}Announcements.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Announcements.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Announcements.ExpireDate,
+       {objectQualifier}Announcements.Description,
+       {objectQualifier}Announcements.ViewOrder,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Announcements
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Announcements.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Announcements.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Announcements.ModuleId = @ModuleId
+and    ({objectQualifier}Announcements.ExpireDate > GetDate() or {objectQualifier}Announcements.ExpireDate is null)
+order by {objectQualifier}Announcements.ViewOrder asc, {objectQualifier}Announcements.CreatedDate desc
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetContact
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetContact
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select Itemid,
+	   ModuleId,
+	   Name,
+       Role,
+       {objectQualifier}Contacts.Email,
+       Contact1,
+       Contact2,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Contacts.CreatedDate
+from {objectQualifier}Contacts
+left outer join {objectQualifier}Users on {objectQualifier}Contacts.CreatedByUser = {objectQualifier}Users.UserId
+where  ItemId = @ItemId
+and    ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetContacts
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetContacts
+
+@ModuleId int
+
+as
+
+select ItemId,
+		ModuleId,
+       CreatedDate,
+       CreatedByUser,
+       Name,
+       Role,
+       Email,
+       Contact1,
+       Contact2
+from {objectQualifier}Contacts
+where  ModuleId = @ModuleId
+order by Name
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetTopLevelMessages
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}GetTopLevelMessages
+
+@ModuleId int
+
+as
+
+select ItemId,
+		ModuleId,
+       DisplayOrder,
+       'Parent' = LEFT(DisplayOrder, 19),    
+       'ChildCount' = (SELECT COUNT(*) -1  from {objectQualifier}Discussion Disc2 WHERE LEFT(Disc2.DisplayOrder,LEN(RTRIM({objectQualifier}Discussion.DisplayOrder))) = {objectQualifier}Discussion.DisplayOrder),
+       Title,  
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Discussion.CreatedDate
+from {objectQualifier}Discussion
+left outer join {objectQualifier}Users on {objectQualifier}Discussion.CreatedByUser = {objectQualifier}Users.UserId
+where  ModuleId = @ModuleId
+and    (LEN( DisplayOrder ) / 19 ) = 1
+order by DisplayOrder
+
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetThreadMessages
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetThreadMessages
+
+@Parent nvarchar(750)
+
+as
+
+select ItemId,
+		ModuleId,
+       DisplayOrder,
+       'Indent' = ((LEN( DisplayOrder ) / 19 ) - 1 ) * 5,
+       Title,  
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Discussion.CreatedDate,
+       Body
+from {objectQualifier}Discussion
+left outer join {objectQualifier}Users on {objectQualifier}Discussion.CreatedByUser = {objectQualifier}Users.UserId
+where  LEFT(DisplayOrder, 19) = @Parent
+and    (LEN( DisplayOrder ) / 19 ) > 1
+order by DisplayOrder
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetMessage
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetMessage
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select ItemId,
+		ModuleId,
+       Title,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Discussion.CreatedDate,
+       Body,
+       DisplayOrder
+from {objectQualifier}Discussion
+left outer join {objectQualifier}Users on {objectQualifier}Discussion.CreatedByUser = {objectQualifier}Users.UserId
+where  ItemId = @ItemId
+and    ModuleId = @ModuleId
+
+GO
+
+DROP procedure {databaseOwner}{objectQualifier}GetDocument
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetDocument
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Documents.Itemid,
+		{objectQualifier}Documents.Moduleid,
+		{objectQualifier}Documents.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Documents.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Documents.Category,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Files.Size,
+       {objectQualifier}Documents.CreatedDate,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Documents
+left outer join {objectQualifier}Users on {objectQualifier}Documents.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Documents.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+left outer join {objectQualifier}Files on {objectQualifier}Documents.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Documents.ItemId = @ItemId
+and    {objectQualifier}Documents.ModuleId = @ModuleId
+GO
+
+DROP procedure {databaseOwner}{objectQualifier}GetDocuments
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetDocuments
+
+@ModuleId int,
+@PortalId int
+
+as
+
+select {objectQualifier}Documents.ItemId,
+		{objectQualifier}Documents.Moduleid,
+       {objectQualifier}Documents.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Documents.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Documents.CreatedDate,
+       {objectQualifier}Documents.Category,
+       {objectQualifier}Files.Size,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Documents
+left outer join {objectQualifier}Users on {objectQualifier}Documents.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Documents.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Documents.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID
+where  {objectQualifier}Documents.ModuleId = @ModuleId
+order by {objectQualifier}Documents.Title
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetEventsByDate
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetEventsByDate
+
+@ModuleId int,
+@StartDate datetime,
+@EndDate datetime
+
+as
+
+select {objectQualifier}Events.ItemId,
+       {objectQualifier}Events.ModuleId,
+       {objectQualifier}Events.Description,
+       {objectQualifier}Events.DateTime,
+       {objectQualifier}Events.Title,
+       {objectQualifier}Events.ExpireDate,
+       {objectQualifier}Events.CreatedByUser,
+       {objectQualifier}Events.CreatedDate,
+       {objectQualifier}Events.Every,
+       {objectQualifier}Events.Period,
+       'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Events.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Events.AltText
+from   {objectQualifier}Events
+left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  ModuleId = @ModuleId
+and    ( (Period is null and (DateTime >= @StartDate and DateTime <= @EndDate)) or Period is not null )
+order by DateTime
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetEvents
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetEvents
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Events.ItemId,
+       {objectQualifier}Events.ModuleId,
+       {objectQualifier}Events.Description,
+       {objectQualifier}Events.DateTime,
+       {objectQualifier}Events.Title,
+       {objectQualifier}Events.ExpireDate,
+       {objectQualifier}Events.CreatedByUser,
+       {objectQualifier}Events.CreatedDate,
+       'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Events.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Events.AltText,
+       'MaxWIdth' = (select max(WIdth) from {objectQualifier}Events left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID) where ModuleId = @ModuleId and (ExpireDate > getdate() or ExpireDate is null))
+from   {objectQualifier}Events
+left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  ModuleId = @ModuleId
+and    (ExpireDate > getdate() or ExpireDate is null)
+order by DateTime
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetEvent
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetEvent
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Events.ItemId,
+		{objectQualifier}Events.ModuleId,
+       {objectQualifier}Events.Description,
+       {objectQualifier}Events.DateTime,
+       {objectQualifier}Events.Title,
+       {objectQualifier}Events.ExpireDate,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Events.CreatedDate,
+       {objectQualifier}Events.Every,
+       {objectQualifier}Events.Period,
+       'IconFile' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Events.IconFile else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Events.AltText
+from   {objectQualifier}Events
+left outer join {objectQualifier}Users on {objectQualifier}Events.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}Files on {objectQualifier}Events.IconFile = 'fileid=' + convert(varchar,{objectQualifier}Files.FileID)
+where  ItemId = @ItemId
+and    ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetLinks
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetLinks
+
+@ModuleId int
+
+as
+
+select {objectQualifier}Links.ItemId,
+		{objectQualifier}Links.ModuleId,
+       {objectQualifier}Links.CreatedByUser,
+       {objectQualifier}Links.CreatedDate,
+       {objectQualifier}Links.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Links.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Links.ViewOrder,
+       {objectQualifier}Links.Description,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Links
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Links.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Links.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Links.ModuleId = @ModuleId
+order by {objectQualifier}Links.ViewOrder, {objectQualifier}Links.Title
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetLink
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetLink
+
+@ItemId   int,
+@ModuleId int
+
+as
+
+select {objectQualifier}Links.ItemId,
+		{objectQualifier}Links.ModuleId,
+		{objectQualifier}Links.Title,
+       'URL' = case when {objectQualifier}Files.FileName is null then {objectQualifier}Links.URL else {objectQualifier}Files.Folder + {objectQualifier}Files.FileName end,
+       {objectQualifier}Links.ViewOrder,
+       {objectQualifier}Links.Description,
+       'CreatedByUser' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Links.CreatedDate,
+       {objectQualifier}UrlTracking.TrackClicks,
+       {objectQualifier}UrlTracking.NewWindow
+from {objectQualifier}Links
+left outer join {objectQualifier}Users on {objectQualifier}Links.CreatedByUser = {objectQualifier}Users.UserId
+left outer join {objectQualifier}UrlTracking on {objectQualifier}Links.URL = {objectQualifier}UrlTracking.Url and {objectQualifier}UrlTracking.ModuleId = @ModuleID left outer join {objectQualifier}Files on {objectQualifier}Links.URL = 'fileid=' +
+convert(varchar,{objectQualifier}Files.FileID)
+where  {objectQualifier}Links.ItemId = @ItemId
+and    {objectQualifier}Links.ModuleId = @ModuleId
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetFAQs
+GO
+
+
+create procedure {databaseOwner}{objectQualifier}GetFAQs
+
+@ModuleId int
+
+as
+
+select ItemId,
+		ModuleId,
+       CreatedDate,
+       CreatedByUser,
+       Question,
+       Answer
+from {objectQualifier}FAQs
+where  ModuleId = @ModuleId
+
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUserDefinedFields
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUserDefinedFields
+
+@ModuleId  int
+
+as
+
+select UserDefinedFieldId,
+		ModuleID,
+       FieldTitle,
+       Visible,
+       FieldOrder,
+       FieldType
+from {objectQualifier}UserDefinedFields
+where  ModuleId = @ModuleId
+order by FieldOrder
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUserDefinedField
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUserDefinedField
+
+@UserDefinedFieldId  int
+
+as
+
+select UserDefinedFieldId,
+		ModuleID,
+       FieldTitle,
+       Visible,
+       FieldOrder,
+       FieldType
+from {objectQualifier}UserDefinedFields
+where  UserDefinedFieldId = @UserDefinedFieldId
+
+
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetFileById
+
+@FileId   int,
+@PortalId int
+
+as
+
+select *
+from   {objectQualifier}Files
+where  FileId = @FileId
+and    ((PortalId = @PortalId) or (@PortalId is null and PortalId is null))
+
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Modules.Admin.ResourceInstaller.InstallResources, DOTNETNUKE', 1, 'm', 5, 'm', 60, '', 0, 1, 'ResourceInstaller')
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+
+

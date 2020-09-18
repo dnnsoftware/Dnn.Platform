@@ -1,0 +1,138 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+#siteSettings-container {
+    .dnn-persona-bar-page-body {
+        .react-tabs {
+            .synonyms-group-items {
+                width: 100%;
+                float: left;
+                padding: 30px;
+                box-sizing: border-box;
+                .synonyms-items-grid {
+                    border: solid 1px @alto;
+                    float: left;
+                    width: 100%;
+                    .row-new-item {
+                        border-bottom: none;
+                    }
+                }
+                .header-row {
+                    &:last-child {
+                        border-bottom: 0;
+                    }
+                    border-bottom: 1px solid @alto;
+                    padding: 10px 0 10px 0;
+                    width: 100%;
+                    float: left;
+                    overflow: hidden;
+                }
+                .header-row-no-border {
+                    .header-row;
+                    border-bottom: 0;
+                }
+                .header-Synonyms {
+                    width: 85%;
+                    float: left;
+                    font-weight: bolder;
+                    margin-left: 15px;
+                    text-transform: uppercase;
+                }
+                .collapsible-component {
+                    .collapsible-header {
+                        text-align: right;
+                        text-transform: none;
+                        padding-right: 40px;
+                        .collapse-icon {
+                            display: none;
+                            &.collapsed {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+                .AddItemRow {
+                    text-align: right;
+                    width: 100%;
+                    float: right;
+                    margin: 0 0 15px 0;
+                    padding: 0 0 5px 0;
+                    font-weight: bolder;
+                    border-bottom: 1px solid @alto;
+                    height: 25px;
+                    .sectionTitle {
+                        font-weight: bolder;
+                        float: left;
+                        text-transform: uppercase;
+                    }
+                    .synonyms-filter {
+                        height: 32px;
+                        float: right;
+                        margin: -7px 0 0 0;
+                        border-left: 1px solid @alto;
+                        border-right: 1px solid @alto;
+                        .dnn-dropdown {
+                            text-align: left;
+                            .collapsible-label {
+                                height: 16px;
+                                width: auto;
+                            }
+                            .collapsible-content {
+                                text-align: left;
+                                li {
+                                    float: left;
+                                    width: 100%;
+                                    box-sizing: border-box;
+                                }
+                            }
+                            .language-flag {
+                                float: left;
+                                vertical-align: top;
+                                height: 16px;
+                            }
+                            .language-name {
+                                float: left;
+                                margin-left: 10px;
+                            }
+                        }
+                    }
+                    .AddItemBox {
+                        width: auto;
+                        float: right;
+                        color: @thunder;
+                        cursor: pointer;
+                        .add-icon {
+                            margin-left: 20px;
+                            margin-right: 5px;
+                            float: left;
+                            cursor: pointer;
+                            svg {
+                                width: 16px;
+                                float: left;
+                                height: 16px;
+                                fill: @thunder;
+                            }
+                        }
+                    }
+                    .AddItemBox-active {
+                        width: auto;
+                        float: right;
+                        color: @curiousBlue;
+                        .add-icon {
+                            margin-left: 20px;
+                            margin-right: 5px;
+                            float: left;
+                            svg {
+                                width: 16px;
+                                float: left;
+                                height: 16px;
+                                fill: @curiousBlue;
+                            }
+                        }
+                    }
+                }
+                .alias-item {
+                    color: @thunder;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+﻿Test,							PropertyName,					SettingName,					IsHostDefault,		DefaultValue
+Cdf Version,					CdfVersion,						CdfVersion,						false,				-1
+DefaultAdminContainer,			DefaultAdminContainer,			DefaultAdminContainer,			true,
+DefaultAdminSkin,				DefaultAdminSkin,				DefaultAdminSkin,				true,
+DefaultIconLocation,			DefaultIconLocation,			DefaultIconLocation,			false,				icons/sigma
+DefaultModuleId,				DefaultModuleId,				defaultmoduleid,				false,				-1
+DefaultPortalContainer,			DefaultPortalContainer,			DefaultPortalContainer,			true,
+DefaultPortalSkin,				DefaultPortalSkin,				DefaultPortalSkin,				true,
+DefaultTabId,					DefaultTabId,					defaulttabid,					false,				-1
+EnableBrowserLanguage,			EnableBrowserLanguage,			EnableBrowserLanguage,			true,
+EnableCompositeFiles,			EnableCompositeFiles,			EnableCompositeFiles,			false,				false
+EnablePopUps,					EnablePopUps,					EnablePopUps,					false,				true
+HideLoginControl,				HideLoginControl,				HideLoginControl,				false,				false
+EnableSkinWidgets,				EnableSkinWidgets,				EnableSkinWidgets,				false,				true
+EnableUrlLanguage,				EnableUrlLanguage,				EnableUrlLanguage,				true,
+HideFoldersEnabled,				HideFoldersEnabled,				HideFoldersEnabled,				false,				true
+InlineEditorEnabled,			InlineEditorEnabled,			InlineEditorEnabled,			false,				true
+SearchIncludeCommon,			SearchIncludeCommon,			SearchIncludeCommon,			true,
+SearchIncludeNumeric,			SearchIncludeNumeric,			SearchIncludeNumeric,			true,
+SearchIncludedTagInfoFilter,	SearchIncludedTagInfoFilter,	SearchIncludedTagInfoFilter,	true,
+SearchMaxWordlLength,			SearchMaxWordlLength,			MaxSearchWordLength,			true,
+SearchMinWordlLength,			SearchMinWordlLength,			MinSearchWordLength,			true,
+SSLEnabled,						SSLEnabled,						SSLEnabled,						false,				false
+SSLEnforced,					SSLEnforced,					SSLEnforced,					false,				false
+SSLURL,							SSLURL,							SSLURL,							false,
+STDURL,							STDURL,							STDURL,							false,
+EnableRegisterNotification,		EnableRegisterNotification,		EnableRegisterNotification,		false,				true
+DefaultAuthProvider,			DefaultAuthProvider,			DefaultAuthProvider,			false,				DNN
+SMTPConnectionLimit,			SMTPConnectionLimit,			SMTPConnectionLimit,			false,				2
+SMTPMaxIdleTime,				SMTPMaxIdleTime,				SMTPMaxIdleTime,				false,				100000
+ControlPanelSecurity,			ControlPanelSecurity,			ControlPanelSecurity,			false,				ModuleEditor
+DefaultControlPanelMode,		DefaultControlPanelMode,		ControlPanelMode,				false,				View
+DefaultControlPanelVisibility,	DefaultControlPanelVisibility,	ControlPanelVisibility,			false,				true

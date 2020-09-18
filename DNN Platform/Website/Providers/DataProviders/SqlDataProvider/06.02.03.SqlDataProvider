@@ -1,0 +1,648 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** Fix bug 21806: Correct func Journal_User_Permissions to get correct relationships *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_User_Permissions]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Journal_User_Permissions]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Journal_User_Permissions]
+(
+	@PortalId int,
+	@UserId int,
+	@RegisteredRoleId int
+)
+RETURNS 
+@tmp TABLE (seckey nvarchar(200))
+
+AS
+BEGIN
+IF @UserId > 0
+		BEGIN
+			INSERT INTO @tmp (seckey) VALUES ('U' + Cast(@UserId as nvarchar(200)))
+			INSERT INTO @tmp (seckey) VALUES ('P' + Cast(@UserId as nvarchar(200)))
+			INSERT INTO @tmp (seckey) VALUES ('F' + Cast(@UserId as nvarchar(200)))
+			IF EXISTS(SELECT RoleId FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserID = @UserId AND RoleId = @RegisteredRoleId
+						AND    (EffectiveDate <= getdate() or EffectiveDate is null)
+						AND    (ExpiryDate >= getdate() or ExpiryDate is null))
+					INSERT INTO @tmp (seckey) VALUES ('C')
+			
+		END
+		
+	INSERT INTO @tmp (seckey) VALUES ('E')
+	
+	INSERT INTO @tmp (seckey)
+	SELECT 'R' + CAST(ur.RoleId as nvarchar(200)) 
+		FROM {databaseOwner}[{objectQualifier}UserRoles] as ur
+			INNER JOIN {databaseOwner}[{objectQualifier}Users] as u on ur.UserId = u.UserId
+			INNER JOIN {databaseOwner}[{objectQualifier}Roles] as r on ur.RoleId = r.RoleId
+		WHERE  u.UserId = @UserId
+			AND    r.PortalId = @PortalId
+			AND    (EffectiveDate <= getdate() or EffectiveDate is null)
+			AND    (ExpiryDate >= getdate() or ExpiryDate is null)
+	INSERT INTO @tmp (seckey)
+		SELECT (SELECT CASE WHEN @UserID = UserId 
+						THEN 'F' + CAST(RelatedUserID as nvarchar(200))
+						ELSE 'F' + CAST(UserId as nvarchar(200)) END) 
+		FROM {databaseOwner}[{objectQualifier}UserRelationships] WHERE (UserId = @UserId OR RelatedUserID = @UserId) AND Status = 2
+	RETURN 
+END
+
+GO
+
+
+/* GetTerm */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTerm]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTerm
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTerm] 
+	@TermId			int
+AS
+	SELECT TT.*,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			) AS TotalTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -30, GETDATE())
+		) AS MonthTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -7, GETDATE())
+		) AS WeekTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -1, GETDATE())
+		) AS DayTermUsage
+	FROM {databaseOwner}{objectQualifier}Taxonomy_Terms TT
+	WHERE TT.TermId = @TermId
+GO
+
+/* GetTermsByContent */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTermsByContent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTermsByContent
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTermsByContent] 
+	@ContentItemID			int
+AS
+	SELECT TT.*,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			) AS TotalTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -30, GETDATE())
+		) AS MonthTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -7, GETDATE())
+		) AS WeekTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -1, GETDATE())
+		) AS DayTermUsage
+	FROM {databaseOwner}{objectQualifier}ContentItems_Tags TG
+		INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms TT ON TG.TermID = TT.TermID
+	WHERE TG.ContentItemID = @ContentItemID
+GO
+
+/* GetTermsByVocabulary */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTermsByVocabulary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTermsByVocabulary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTermsByVocabulary] 
+	@VocabularyID			int
+AS
+	SELECT TT.*,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			) AS TotalTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -30, GETDATE())
+		) AS MonthTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -7, GETDATE())
+		) AS WeekTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = TT.TermID
+			  AND	    CI.CreatedOnDate > DATEADD(day, -1, GETDATE())
+		) AS DayTermUsage
+	FROM {databaseOwner}{objectQualifier}Taxonomy_Terms TT
+	WHERE VocabularyID = @VocabularyID
+	ORDER BY TT.TermLeft Asc, TT.Weight Asc, TT.Name Asc
+GO
+
+/***** Fix bug 22143: Remove space of PasswordExpiryReminder in host settings *****/
+UPDATE {databaseOwner}[{objectQualifier}HostSettings] SET SettingName = 'PasswordExpiryReminder' WHERE SettingName = 'PasswordExpiryReminder '
+GO
+
+/***** Fix bug 21970: Use CDATA to wrap the name value in xml, so that it can contains special characters *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForGroup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_ListForGroup
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+@PortalId int,
+@ModuleId int,
+@CurrentUserId int,
+@GroupId int,
+@RowIndex int,
+@MaxRows int
+AS
+DECLARE @EndRow int
+SET @EndRow = @RowIndex + @MaxRows;
+
+DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+				ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+				WHERE j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+		INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+ELSE
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+				ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+				WHERE j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+
+WITH journalItems  AS
+(
+	SELECT	j.JournalId,
+			ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+	FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+	WHERE j.PortalId = @PortalId
+)
+SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+			j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+			"JournalOwner" = '<entity><id>' + CAST(r.RoleId as nvarchar(150)) + '</id><name><![CDATA[' + r.RoleName + ']]></name></entity>',
+			"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+			"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+			 jt.Icon, jt.JournalType,
+			"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+			jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber
+FROM	journalItems as ji INNER JOIN 
+	{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+	{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId INNER JOIN
+	{databaseOwner}[{objectQualifier}Roles] as r ON j.GroupId = r.RoleId LEFT OUTER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+WHERE	RowNumber BETWEEN @RowIndex AND @EndRow
+ORDER BY RowNumber ASC;
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForSummary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_ListForSummary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
+@PortalId int,
+@ModuleId int,
+@CurrentUserId int,
+@RowIndex int,
+@MaxRows int
+AS
+DECLARE @EndRow int
+SET @EndRow = @RowIndex + @MaxRows;
+
+DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+			WHERE j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+		INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+ELSE
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+			WHERE j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+
+WITH journalItems  AS
+(
+	SELECT	j.JournalId,
+			ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+	FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+	WHERE j.PortalId = @PortalId
+)
+SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+			j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+			"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+			"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+			"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+			 jt.Icon, jt.JournalType,
+			"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+			jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber
+FROM	journalItems as ji INNER JOIN 
+	{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+WHERE	RowNumber BETWEEN @RowIndex AND @EndRow
+ORDER BY RowNumber ASC;
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForProfile]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_ListForProfile
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForProfile]
+@PortalId int,
+@ModuleId int,
+@CurrentUserId int,
+@ProfileId int,
+@RowIndex int,
+@MaxRows int
+AS
+DECLARE @EndRow int
+SET @EndRow = @RowIndex + @MaxRows;
+
+DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+			WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+		INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+ELSE
+INSERT INTO @j 
+	SELECT j.journalid, jt.datecreated from (
+		SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+			WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+		) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+		ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+
+
+WITH journalItems  AS
+(
+	SELECT	j.JournalId,
+			ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+	FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+	WHERE j.PortalId = @PortalId AND j.ProfileId = @ProfileId
+)
+SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+			j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+			"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+			"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+			"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+			 jt.Icon, jt.JournalType,
+			"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+			jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber
+FROM	journalItems as ji INNER JOIN 
+	{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+WHERE	RowNumber BETWEEN @RowIndex AND @EndRow
+ORDER BY RowNumber ASC;
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Get
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+@PortalId int,
+@CurrentUserId int,
+@JournalId int
+AS
+SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+			j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+			"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+			"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+			"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+			 jt.Icon, jt.JournalType,
+			"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+			jd.JournalXML, ContentItemId, j.ItemData			
+FROM       	{databaseOwner}[{objectQualifier}Journal] AS j INNER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+WHERE j.JournalId = @JournalId
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_GetByKey]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_GetByKey
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetByKey]
+@PortalId int,
+@ObjectKey nvarchar(255)
+AS
+SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+			j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+			"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+			"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+			"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+			 jt.Icon, jt.JournalType,
+			"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+			jd.JournalXML, ContentItemId, j.ItemData			
+FROM       	{databaseOwner}[{objectQualifier}Journal] AS j INNER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+			{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+            {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+WHERE j.ObjectKey = @ObjectKey AND j.ObjectKey IS NOT NULL AND @ObjectKey <> ''
+GO
+
+
+/***** Fix bug 22181: update parameter SecurityMode from bit to int *****/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddRole]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}AddRole]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddRole] 
+	@PortalID         int,
+	@RoleGroupId      int,
+	@RoleName         nvarchar(50),
+	@Description      nvarchar(1000),
+	@ServiceFee       money,
+	@BillingPeriod    int,
+	@BillingFrequency char(1),
+	@TrialFee         money,
+	@TrialPeriod      int,
+	@TrialFrequency   char(1),
+	@IsPublic         bit,
+	@AutoAssignment   bit,
+	@RSVPCode         nvarchar(50),
+	@IconFile         nvarchar(100),
+	@CreatedByUserID  int,
+	@Status			  int,
+	@SecurityMode   int
+AS
+
+	INSERT INTO {databaseOwner}{objectQualifier}Roles (
+	  PortalId,
+	  RoleGroupId,
+	  RoleName,
+	  Description,
+	  ServiceFee,
+	  BillingPeriod,
+	  BillingFrequency,
+	  TrialFee,
+	  TrialPeriod,
+	  TrialFrequency,
+	  IsPublic,
+	  AutoAssignment,
+	  RSVPCode,
+	  IconFile,
+	  CreatedByUserID,
+	  CreatedOnDate,
+	  LastModifiedByUserID,
+	  LastModifiedOnDate,
+	  Status,
+	  SecurityMode
+	)
+
+	VALUES (
+	  @PortalID,
+	  @RoleGroupId,
+	  @RoleName,
+	  @Description,
+	  @ServiceFee,
+	  @BillingPeriod,
+	  @BillingFrequency,
+	  @TrialFee,
+	  @TrialPeriod,
+	  @TrialFrequency,
+	  @IsPublic,
+	  @AutoAssignment,
+	  @RSVPCode,
+	  @IconFile,
+	  @CreatedByUserID,
+	  getdate(),
+	  @CreatedByUserID,
+	  getdate(),
+	  @Status,
+	  @SecurityMode
+	)
+
+	SELECT SCOPE_IDENTITY()
+
+GO
+
+/***** Fix bug 21595: Set Constraint as Delete cascade on NotificationTypes/NotificationTypeActions/CoreMessaging_Messages table. *****/
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}CoreMessaging_NotificationTypes_{objectQualifier}DesktopModules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] DROP CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypes_{objectQualifier}DesktopModules]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]
+	ADD CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypes_{objectQualifier}DesktopModules]
+	FOREIGN KEY([DesktopModuleID])
+	REFERENCES {databaseOwner}[{objectQualifier}DesktopModules] ([DesktopModuleID]) ON DELETE CASCADE	
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}CoreMessaging_NotificationTypeActions_{objectQualifier}CoreMessaging_NotificationTypes]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] DROP CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypeActions_{objectQualifier}CoreMessaging_NotificationTypes]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+	ADD CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypeActions_{objectQualifier}CoreMessaging_NotificationTypes]
+	FOREIGN KEY([NotificationTypeID])
+	REFERENCES {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] ([NotificationTypeID]) ON DELETE CASCADE	
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}CoreMessaging_Messages_{objectQualifier}CoreMessaging_NotificationTypes]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_Messages]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Messages] DROP CONSTRAINT [FK_{objectQualifier}CoreMessaging_Messages_{objectQualifier}CoreMessaging_NotificationTypes]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Messages]
+	ADD CONSTRAINT [FK_{objectQualifier}CoreMessaging_Messages_{objectQualifier}CoreMessaging_NotificationTypes]
+	FOREIGN KEY([NotificationTypeID])
+	REFERENCES {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] ([NotificationTypeID]) ON DELETE CASCADE	
+GO
+
+/*
+ * Content Items
+ */
+
+/* GetTermsByContent */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTermsByContent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTermsByContent
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTermsByContent] 
+	@ContentItemID			int
+AS
+	SELECT TT.*
+	FROM {databaseOwner}{objectQualifier}ContentItems_Tags TG
+		INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms TT ON TG.TermID = TT.TermID
+	WHERE TG.ContentItemID = @ContentItemID
+GO
+
+/* GetTermsByVocabulary */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTermsByVocabulary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTermsByVocabulary
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTermsByVocabulary] 
+	@VocabularyID			int
+AS
+	SELECT TT.*
+	FROM {databaseOwner}{objectQualifier}Taxonomy_Terms TT
+	WHERE VocabularyID = @VocabularyID
+	ORDER BY TT.TermLeft Asc, TT.Weight Asc, TT.Name Asc
+GO
+
+/* GetTermUsage */
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTermUsage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetTermUsage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTermUsage] 
+	@TermId int
+AS
+	SELECT
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = @TermId
+			) AS TotalTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = @TermId
+			  AND	    CI.CreatedOnDate > DATEADD(day, -30, GETDATE())
+		) AS MonthTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = @TermId
+			  AND	    CI.CreatedOnDate > DATEADD(day, -7, GETDATE())
+		) AS WeekTermUsage ,
+		(SELECT    COUNT(CI.ContentItemID)
+			  FROM      {databaseOwner}[{objectQualifier}ContentItems_Tags] T
+			  INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] CI ON CI.ContentItemID = T.ContentItemID
+			  WHERE     T.TermID = @TermId
+			  AND	    CI.CreatedOnDate > DATEADD(day, -1, GETDATE())
+		) AS DayTermUsage
+	FROM {databaseOwner}{objectQualifier}Taxonomy_Terms TT
+	WHERE TermID = @TermId
+GO
+
+/* GetContentItemsByContentType procedure */
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItemsByContentType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetContentItemsByContentType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByContentType] 
+	@ContentTypeId int
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}ContentItems WHERE ContentTypeID = @ContentTypeId
+GO
+
+/* GetContentItemsByModuleId procedure */
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItemsByModuleId]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetContentItemsByModuleId
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByModuleId] 
+	@ModuleId int
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}ContentItems WHERE ModuleID = @ModuleId
+GO
+
+/* GetContentItemsByTabId */
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItemsByTabId]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetContentItemsByTabId
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByTabId] 
+	@TabId int
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}ContentItems WHERE TabID = @TabId
+GO
+
+/* GetContentItemsByVocabularyId procedure */
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentItemsByVocabularyId]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetContentItemsByVocabularyId
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentItemsByVocabularyId] 
+	@VocabularyID int
+AS
+BEGIN
+	SELECT c.*
+	FROM {databaseOwner}{objectQualifier}ContentItems As c
+		INNER JOIN {databaseOwner}{objectQualifier}ContentItems_Tags ct ON ct.ContentItemID = c.ContentItemID
+		INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms t ON t.TermID = ct.TermID
+	WHERE t.VocabularyID = @VocabularyID
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

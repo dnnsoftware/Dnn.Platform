@@ -1,0 +1,669 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+Used to determine Browser Capabilities by the Browsers UserAgent String and related
+Browser supplied Headers.
+Copyright (C) 2002-Present  Owen Brady (Ocean at owenbrady dot net)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy 
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights 
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<browsers>
+	<browser id="GooglebotDocomon505i" parentID="docomon505i">
+		<identification>
+			<userAgent match="Googlebot-Mobile/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+		<capture></capture>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="Googlebot-Mobile" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+		</capabilities>
+	</browser>
+	<!-- 
+	Nokia6820/2.0 (4.83) Profile/MIDP-1.0 Configuration/CLDC-1.0 (compatible; Googlebot-Mobile/2.1;  http://www.google.com/bot.html)
+	-->
+	<browser id="GooglebotNokia" parentID="Nokia">
+		<sampleHeaders>
+			<header name="User-Agent" value="Nokia6820/2.0 (4.83) Profile/MIDP-1.0 Configuration/CLDC-1.0 (compatible; Googlebot-Mobile/2.1;  http://www.google.com/bot.html)" />
+		</sampleHeaders>
+		<identification>
+			<userAgent match="Googlebot-Mobile/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="Googlebot-Mobile" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+		</capabilities>
+	</browser>
+	<!--
+	Google has a few differnet vararity of Agents which it uses.
+	I am treating each different useragent as a different flavor
+	of browser. In that I think Google is trying to determine what
+	changes on pages if they actually treat the bot as what its trying
+	to mimic. Mozzila,a bot,Mobile phone etc..
+	-->
+	<!-- 
+	sample UA: "Googlebot/2.1 ( http://www.googlebot.com/bot.html)"
+	sample UA: "Googlebot/2.1 ( http://www.google.com/bot.html)"
+	-->
+	<browser id="Googlebot" parentID="OceanSpiders">
+		<identification>
+			<userAgent match="^Googlebot/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+			<userAgent nonMatch="Mozilla/" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="GoogleBot" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="xml" value="true" />
+			<capability name="crawler" value="true" />
+			<capability name="w3cdomversion" value="1.0" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+	<!-- For there Image search engine -->
+	<!-- 
+	sample UA: "Googlebot-Image/1.0"
+	sample UA: "Googlebot-Image/1.0 ( http://www.googlebot.com/bot.html)"
+	-->
+	<browser id="GooglebotImage" parentID="OceanSpiders">
+		<identification>
+			<userAgent match="Googlebot-Image/" />
+		</identification>
+
+		<capture>
+			<userAgent match="Googlebot-Image/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</capture>
+
+		<capabilities>
+			<capability name="browser" value="Googlebot-Image" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="xml" value="true" />
+			<capability name="crawler" value="true" />
+			<capability name="w3cdomversion" value="1.0" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+
+	<!-- Mozilla Compatible mode-->
+	<!-- 
+	sample UA: "Mozilla/5.0 (compatible; Googlebot/2.1;  http://www.google.com/bot.html)"
+	-->
+	<browser id="GooglebotCompatible" parentID="Mozilla">
+		<sampleHeaders>
+			<header name="Connection" value="Keep-alive" />
+			<header name="Accept" value="*/*" />
+			<header name="Accept-Encoding" value="gzip" />
+			<header name="From" value="googlebot(at)googlebot.com" />
+			<header name="User-Agent" value="Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" />
+		</sampleHeaders>
+		<identification>
+			<userAgent match="Googlebot/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="GoogleBot" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="xml" value="true" />
+			<capability name="crawler" value="true" />
+			<capability name="w3cdomversion" value="1.0" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+
+	<!-- 
+	sample UA: "Mediapartners-Google/2.1"
+	-->
+	<browser id="GooglebotMediapartners" parentID="Default">
+		<identification>
+			<userAgent match="^Mediapartners-Google/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Mediapartners-Google" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="xml" value="true" />
+			<capability name="crawler" value="true" />
+			<capability name="w3cdomversion" value="1.0" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+
+	<!-- 
+	sample UA: "Google-Sitemaps/1.0"
+	-->
+	<browser id="GoogleSitemaps" parentID="Default">
+		<identification>
+			<userAgent match="^Google-Sitemaps/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Google-Sitemaps" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="xml" value="true" />
+			<capability name="crawler" value="true" />
+			<capability name="w3cdomversion" value="1.0" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+
+	<!-- Mobile Phone mode-->
+	<!-- 
+	sample UA: "Mozilla/4.0 (MobilePhone SCP-5500/US/1.0) NetFront/3.0 MMP/2.0 FAKE (compatible; Googlebot/2.1;  http://www.google.com/bot.html)"
+	sample UA: "Mozilla/4.0 (MobilePhone SCP-5500/US/1.0) NetFront/3.0 MMP/2.0 (compatible; Googlebot/2.1;  http://www.google.com/bot.html)"
+	-->
+	<browser id="GooglebotNetFront" parentID="NetFront">
+		<identification>
+			<userAgent match="Googlebot/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Googlebot" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+		</capabilities>
+	</browser>
+	<!-- Mozilla Compatible mode-->
+	<!-- 
+	sample UA: "Mozilla/3.0 (Slurp/si; slurp@inktomi.com; http://www.inktomi.com/slurp.html)"
+    sample UA: "Mozilla/5.0 (Slurp.so/1.0; slurp@inktomi.com; http://www.inktomi.com/slurp.html)"
+    sample UA: "Mozilla/5.0 (Slurp/cat; slurp@inktomi.com; http://www.inktomi.com/slurp.html)"
+    sample UA: "Mozilla/5.0 (Slurp/si; slurp@inktomi.com; http://www.inktomi.com/slurp.html)"
+	-->
+	<browser id="SlurpMozilla" parentID="Mozilla">
+		<identification>
+			<userAgent match="Slurp" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Yahoo Slurp" />
+			<capability name="crawler" value="true" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+
+	<!-- Mozilla Compatible mode-->
+	<!-- 
+	sample UA: "Mozilla/5.0 (compatible; Yahoo! Slurp/si-emb; http://help.yahoo.com/help/us/ysearch/slurp)"
+    sample UA: "Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)"
+    sample UA: "Mozilla/5.0 (compatible; Yahoo! Slurp/si-emb; http://help.yahoo.com/help/us/ysearch/slurp)"
+    sample UA: "Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)"
+	-->
+	<browser id="SlurpMozillaYahoo" parentID="SlurpMozilla">
+		<sampleHeaders>
+			<header name="User-Agent" value="Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)" />
+		</sampleHeaders>
+
+		<identification>
+			<userAgent match="compatible; Yahoo! Slurp" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Yahoo Slurp" />
+		</capabilities>
+	</browser>
+
+	<browser id="SlurpMozillaYahooChina" parentID="SlurpMozillaYahoo">
+		<sampleHeaders>
+			<header name="User-Agent" value="Mozilla/5.0 (compatible; Yahoo! Slurp China; http://misc.yahoo.com.cn/help.html)" />
+		</sampleHeaders>
+
+		<identification>
+			<userAgent match="compatible; Yahoo! Slurp China" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Yahoo Slurp China" />
+		</capabilities>
+	</browser>
+
+	<browser id="SlurpMozillaYahooDE" parentID="SlurpMozilla">
+		<sampleHeaders>
+			<header name="User-Agent" value="Mozilla/5.0 (compatible; Yahoo! DE Slurp; http://help.yahoo.com/help/us/ysearch/slurp)" />
+		</sampleHeaders>
+
+		<identification>
+			<userAgent match="compatible; Yahoo! DE Slurp" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Yahoo DE Slurp" />
+		</capabilities>
+	</browser>
+
+	<!-- http://help.yahoo.com/l/us/yahoo/search/mobilecrawler/mobilecrawler-01.html -->
+	<browser id="YahooSeekerdocomon505i" parentID="docomon505i">
+		<identification>
+			<userAgent match="YahooSeeker/M1A1-R2D2" />
+		</identification>
+		<capture></capture>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="YahooSeeker" />
+			<capability name="version" value="0.0" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+		</capabilities>
+	</browser>
+
+	<!--Nokia6682/2.0 (3.01.1) SymbianOS/8.0 Series60/2.6 Profile/MIDP-2.0 configuration/CLDC-1.1 UP.Link/6.3.0.0.0 (compatible;YahooSeeker/M1A1-R2D2; http://help.yahoo.com/help/us/ysearch/crawling/crawling-01.html)-->
+	<browser id="YahooSeekernokia" parentID="nokia">
+		<identification>
+			<userAgent match="YahooSeeker/M1A1-R2D2" />
+		</identification>
+		<capture></capture>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="YahooSeeker" />
+			<capability name="version" value="0.0" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+		</capabilities>
+	</browser>
+
+	<!--MOT-V975/81.33.02I MIB/2.2.1 Profile/MIDP-2.0 Configuration/CLDC-1.1 (compatible;YahooSeeker/M1A1-R2D2;mobile-search-customer-care AT yahoo-inc dot com)-->
+	<browser id="YahooSeekerMotorola" parentID="Default">
+		<identification>
+			<userAgent match="YahooSeeker/M1A1-R2D2" />
+			<userAgent match="MOT-V975/81.33.02I" />
+		</identification>
+		<capture></capture>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="YahooSeeker" />
+			<capability name="version" value="0.0" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+		</capabilities>
+	</browser>
+
+	<!-- 
+	sample UA: "YahooFeedSeeker/2.0 (compatible; Mozilla 4.0; MSIE 5.5; http://publisher.yahoo.com/rssguide)"
+	-->
+	<browser id="YahooFeedSeeker" parentID="Mozilla">
+		<identification>
+			<userAgent match="^YahooFeedSeeker" />
+		</identification>
+		<capture>
+			<userAgent match="^YahooFeedSeeker/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+			<userAgent match="^YahooFeedSeeker\+Testing/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</capture>
+
+		<capabilities>
+			<capability name="browser" value="Yahoo Feed Seeker" />
+			<capability name="crawler" value="true" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="IsSyndicationReader" value="true" />
+		</capabilities>
+	</browser>
+
+	<!-- 
+	sample UA: "Yahoo-MMCrawler/3.x (mms dash mmcrawler dash support at yahoo dash inc dot com)"
+	-->
+	<browser id="YahooMMCrawler" parentID="Default">
+		<identification>
+			<userAgent match="Yahoo-MMCrawler/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+
+		<capabilities>
+			<capability name="browser" value="Yahoo MMCrawler" />
+			<capability name="crawler" value="true" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+		</capabilities>
+	</browser>
+
+	<browser id="Curl" parentID="Default">
+		<identification>
+			<userAgent match="curl/(?'version'(?'major'\d+)(?'minor'\.\d+)\.\d+)|curl/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="Curl" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+
+	<browser id="AskJeeves" parentID="Mozilla">
+		<sampleHeaders>
+			<header name="User-Agent" value="Mozilla/2.0 (compatible; Ask Jeeves)" />
+		</sampleHeaders>
+		<identification>
+			<userAgent match="Ask Jeeves" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="Ask Jeeves" />
+			<capability name="xml" value="true" />
+			<capability name="crawler" value="true" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+	<browser id="iaarchiver" parentID="OceanSpiders">
+		<identification>
+			<userAgent match="^ia_archiver" />
+		</identification>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="ia_archiver" />
+			<capability name="majorversion" value="1" />
+			<capability name="minorversion" value="0" />
+			<capability name="xml" value="true" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+	<browser id="MSWebServicesClientProtocol" parentID="DefaultCrawler">
+		<identification>
+			<userAgent match="MS Web Services Client Protocol (?'version'(?'major'\d+)(?'minor'\.\d+)\w*)" />
+		</identification>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="MS Web Services Client Protocol " />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+	<browser id="MicrosoftURLControl" parentID="DefaultCrawler">
+		<identification>
+			<userAgent match="Microsoft URL Control - (?'version'(?'major'\d+)(?'minor'\.\d+)\w*)" />
+		</identification>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="Microsoft URL Control" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+	<browser id="JakartaCommonsHttpClient" parentID="DefaultCrawler">
+		<identification>
+			<userAgent match="Jakarta Commons-HttpClient/(?'version'(?'major'\d+)(?'minor'\.\d+)\w*)" />
+		</identification>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="Jakarta Commons-HttpClient" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+	<!-- Starts Decting spiders -->
+	<browser id="DefaultCrawler" parentID="Default">
+		<identification>
+			<userAgent nonMatch="(?i-s:crawler|bot|spider|larbin|search|indexer|archiver|Nutch)" />
+			<capability name="isMobileDevice" nonMatch="(?i-s:true)" />
+			<userAgent match="(?'browser'[^/]*)/(?'version'(?'major'\d+)(?'minor'\.\d+)\w*)|(?'browser'^.*)[ /](?'version'(?'major'\d+)(?'minor'\.\d+)\w*)" />
+		</identification>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<!--<capability name="browser" value="${browser}" />-->
+			<capability name="browser" value="DefaultCrawler" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+
+	<!-- This is just ment to short Circute alot lookups when it can be detected as a spider. -->
+	<browser id="OceanSpiders" parentID="Default">
+		<identification>
+			<userAgent match="(?i-s:crawler|bot|spider|larbin|search|indexer|archiver|Nutch)" />
+		</identification>
+
+		<capture>
+			<userAgent match="^(?'browser'^.*)/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+			<userAgent match="^(?'browser'^.*)[ /\-](?'version'(?'major'\d+)(?'minor'\.\d+))" />
+			<userAgent match="(?'browser'java)(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</capture>
+
+		<capabilities>
+			<!--<capability name="browser" value="${browser}" />-->
+			<capability name="browser" value="OceanSpiders" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+			<capability name="IsSyndicationReader" value="false" />
+		</capabilities>
+	</browser>
+	<browser id="IRLbot" parentID="OceanSpiders">
+		<identification>
+			<userAgent match="^IRLbot/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="IRLbot" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+			<capability name="IsSyndicationReader" value="false" />
+		</capabilities>
+	</browser>
+	<browser id="MJ12bot" parentID="OceanSpiders">
+		<identification>
+			<userAgent match="MJ12bot/v(?'version'(?'major'\d+)(?'minor'\.\d+)\w*)" />
+		</identification>
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="MJ12bot" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+			<capability name="xml" value="true" />
+			<capability name="tagWriter" value="System.Web.UI.HtmlTextWriter" />
+		</capabilities>
+	</browser>
+
+	<browser id="netscape4spider" parentID="netscape4">
+		<identification>
+			<userAgent match="(?i-s:crawler|bot|spider|larbin|search|indexer|archiver|Nutch)" />
+		</identification>
+
+		<capture>
+			<userAgent match="^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+));|^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+))|^Mozilla[^(]*\(compatible; (?'browser'.+);|^Mozilla[^(]*\(compatible; (?'browser'.+)[ \)]" />
+		</capture>
+
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="${browser}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+
+	<browser id="MozillaSpider" parentID="Mozilla">
+		<identification>
+			<userAgent match="(?i-s:crawler|bot|spider|larbin|search|indexer|archiver|Nutch)" />
+		</identification>
+
+		<capture>
+			<!--
+		Some spiders use the Mozilla/5.0 prefix but don't use the '(compatible;' tag.  This causes the major and minor versions to misidentified
+		-->
+			<userAgent match="^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+));|^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+))|^Mozilla[^(]*\(compatible; (?'browser'.+);|^Mozilla[^(]*\(compatible; (?'browser'.+)[ \)];|^Mozilla/(?'version'(?'major'\d+)(?'minor'\.\d+)\w*)" />
+		</capture>
+
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="MozSpider-${browser}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+
+	<browser id="GeckoSpider" parentID="Gecko">
+		<identification>
+			<userAgent match="(?i-s:crawler|bot|spider|larbin|search|indexer|archiver|Nutch)" />
+		</identification>
+
+		<capture>
+			<userAgent match="^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+));|^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+))|^Mozilla[^(]*\(compatible; (?'browser'.+);|^Mozilla[^(]*\(compatible; (?'browser'.+)[ \)]" />
+		</capture>
+
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="${browser}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+
+	<browser id="FirefoxSpider" parentID="MozillaFirefox">
+		<identification>
+			<userAgent match="(?i-s:crawler|bot|spider|larbin|search|indexer|archiver|Nutch)" />
+		</identification>
+
+		<capture>
+			<userAgent match="^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+));|^Mozilla[^(]*\(compatible; (?'browser'.+)[ /](?'version'(?'major'\d+)(?'minor'\.\d+))|^Mozilla[^(]*\(compatible; (?'browser'.+);|^Mozilla[^(]*\(compatible; (?'browser'.+)[ \)]" />
+		</capture>
+
+		<capabilities>
+			<capability name="crawler" value="true" />
+			<capability name="browser" value="${browser}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+		</capabilities>
+	</browser>
+	<browser id="OceanOperaSpiders" parentID="opera8to9">
+		<identification>
+			<userAgent match="(?i-s:crawler|bot|spider|larbin|search|indexer|archiver|Nutch)" />
+		</identification>
+
+		<capture>
+			<userAgent match="^(?'browser'^.*)/(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+			<userAgent match="^(?'browser'^.*)[ /\-](?'version'(?'major'\d+)(?'minor'\.\d+))" />
+			<userAgent match="(?'browser'java)(?'version'(?'major'\d+)(?'minor'\.\d+))" />
+		</capture>
+
+		<capabilities>
+			<capability name="browser" value="${browser}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="version" value="${version}" />
+			<capability name="crawler" value="true" />
+			<capability name="isMobileDevice" value="false" />
+			<capability name="IsSyndicationReader" value="false" />
+		</capabilities>
+	</browser>
+
+	<!-- Some spiders do not have versions so we want to fall-through and reset the version info back to the defaults -->
+	<browser id="UnknownMozillaSpiders" parentID="MozillaSpider">
+		<identification>
+			<capability name="majorversion" nonMatch="^\d+" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="UnknownMozillaSpiders" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+		</capabilities>
+	</browser>
+
+	<browser id="UnknownNetscapeSpiders" parentID="netscape4spider">
+		<identification>
+			<capability name="majorversion" nonMatch="^\d+" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="UnknownNetscapeSpiders" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+		</capabilities>
+	</browser>
+
+	<browser id="UnknownGeckoSpiders" parentID="GeckoSpider">
+		<identification>
+			<capability name="majorversion" nonMatch="^\d+" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="UnknownGeckoSpiders" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+		</capabilities>
+	</browser>
+
+	<browser id="UnknownOceanSpiders" parentID="OceanSpiders">
+		<identification>
+			<capability name="majorversion" nonMatch="^\d+" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="UnknownOceanSpiders" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+		</capabilities>
+	</browser>
+
+	<browser id="UnknownUpPhones" parentID="Up">
+		<identification>
+			<capability name="majorversion" nonMatch="^\d+" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="UnknownUpPhones" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+		</capabilities>
+	</browser>
+
+	<browser id="UnknownMozilla" parentID="Mozilla">
+		<identification>
+			<capability name="majorversion" nonMatch="^\d+" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="UnknownMozilla" />
+			<capability name="majorversion" value="0" />
+			<capability name="minorversion" value="0" />
+		</capabilities>
+	</browser>
+
+</browsers>

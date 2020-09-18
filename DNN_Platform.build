@@ -1,0 +1,14 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <WebsitePath>$(RootDirectory)\Website</WebsitePath>
+  </PropertyGroup>
+  <Import Project=".\DNN_Platform.local.build" Condition="Exists('.\DNN_Platform.local.build')" />
+  <PropertyGroup>
+    <BuildScriptsPath>$(RootDirectory)\Build\BuildScripts</BuildScriptsPath>
+    <AEBuildScriptsPath>$(RootDirectory)\Dnn.AdminExperience\Build\BuildScripts</AEBuildScriptsPath>
+    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
+    <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
+    <WebsiteInstallPath>$(WebsitePath)\Install</WebsiteInstallPath>
+    <WebsiteSkinInstallPath>$(WebsitePath)\Install\Skin</WebsiteSkinInstallPath>
+  </PropertyGroup>
+</Project>

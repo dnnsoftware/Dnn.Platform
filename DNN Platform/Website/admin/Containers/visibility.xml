@@ -1,0 +1,26 @@
+<Settings>
+  <Setting>
+    <Name>BorderWidth</Name>
+    <Type>String</Type>
+    <Help>Sets the border width of the icon</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>minIcon</Name>
+    <Type>String</Type>
+    <Help>Override image for the default minimize icon. The expected folder of the image is the folder the containerfile resides in</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>MaxIcon</Name>
+    <Type>String</Type>
+    <Help>Override image for the default maximize icon. The expected folder of the image is the folder the containerfile resides in</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>AnimationFrames</Name>
+    <Type>Integer</Type>
+    <Help>Number of frames to use when animating the opening and closing of the container. The default number is 5</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

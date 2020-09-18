@@ -1,0 +1,20 @@
+﻿/***** DNN-6221: update API path to new format.  *****/
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/SocialGroups/ModerationService/ApproveGroup'
+    WHERE APICall = 'DesktopModules/SocialGroups/API/ModerationService/ApproveGroup'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/SocialGroups/ModerationService/RejectGroup'
+    WHERE APICall = 'DesktopModules/SocialGroups/API/ModerationService/RejectGroup'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/SocialGroups/ModerationService/ApproveMember'
+    WHERE APICall = 'DesktopModules/SocialGroups/API/ModerationService/ApproveMember'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/SocialGroups/ModerationService/RejectMember'
+    WHERE APICall = 'DesktopModules/SocialGroups/API/ModerationService/RejectMember'
+GO

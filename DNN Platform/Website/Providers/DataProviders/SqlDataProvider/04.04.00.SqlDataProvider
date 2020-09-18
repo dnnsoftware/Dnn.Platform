@@ -1,0 +1,1159 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Add PageQuota and UserQuota to Portals Table */
+/************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Portals ADD
+	PageQuota int NOT NULL CONSTRAINT DF_{objectQualifier}Portals_PageQuota DEFAULT 0,
+	UserQuota int NOT NULL CONSTRAINT DF_{objectQualifier}Portals_UserQuota DEFAULT 0
+GO
+
+/* Add Portals View */
+/********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+SELECT     
+	PortalID, 
+	PortalName, 
+	CASE WHEN LEFT(LOWER(LogoFile), 6) = 'fileid' 
+		THEN
+			(SELECT Folder + FileName  
+				FROM {databaseOwner}{objectQualifier}Files 
+				WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = LogoFile
+			) 
+		ELSE 
+			LogoFile  
+		END 
+	AS LogoFile,
+	FooterText, 
+	ExpiryDate, 
+	UserRegistration, 
+	BannerAdvertising, 
+	AdministratorId, 
+	Currency, 
+	HostFee, 
+	HostSpace, 
+	PageQuota, 
+	UserQuota, 
+	AdministratorRoleId, 
+	RegisteredRoleId, 
+	Description, 
+	KeyWords, 
+	CASE WHEN LEFT(LOWER(BackgroundFile), 6) = 'fileid' 
+		THEN
+			(SELECT Folder + FileName  
+				FROM {databaseOwner}{objectQualifier}Files 
+				WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = BackgroundFile
+			) 
+		ELSE 
+			BackgroundFile  
+		END 
+	AS BackgroundFile,
+    GUID, 
+    PaymentProcessor, 
+    ProcessorUserId, 
+    ProcessorPassword, 
+    SiteLogHistory,
+    Email, 
+    DefaultLanguage, 
+    TimezoneOffset, 
+    AdminTabId, 
+    HomeDirectory, 
+    SplashTabId, 
+    HomeTabId, 
+	LoginTabId, 
+	UserTabId,
+    (SELECT TabID FROM {databaseOwner}{objectQualifier}Tabs WHERE (PortalID IS NULL) AND (ParentId IS NULL)) AS SuperTabId,
+	(SELECT RoleName FROM {databaseOwner}{objectQualifier}Roles WHERE (RoleID = P.AdministratorRoleId)) AS AdministratorRoleName,
+	(SELECT RoleName FROM {databaseOwner}{objectQualifier}Roles WHERE (RoleID = P.RegisteredRoleId)) AS RegisteredRoleName
+FROM {databaseOwner}{objectQualifier}Portals AS P
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON P.AdministratorId = U.UserID
+GO
+
+/* Update AddPortalInfo */
+/************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalInfo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddPortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalInfo]
+	@PortalName         nvarchar(128),
+	@Currency           char(3),
+	@ExpiryDate         datetime,
+	@HostFee            money,
+	@HostSpace          int,
+	@PageQuota          int,
+	@UserQuota          int,
+	@SiteLogHistory     int,
+	@HomeDirectory		varchar(100)
+
+as
+DECLARE @PortalID int
+
+insert into {databaseOwner}{objectQualifier}Portals (
+  PortalName,
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  HostFee,
+  HostSpace,
+  PageQuota,
+  UserQuota,
+  Description,
+  KeyWords,
+  SiteLogHistory,
+  HomeDirectory
+)
+values (
+  @PortalName,
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  @HostFee,
+  @HostSpace,
+  @PageQuota,
+  @UserQuota,
+  @PortalName,
+  @PortalName,
+  @SiteLogHistory,
+  @HomeDirectory
+)
+
+SET @PortalID = SCOPE_IDENTITY()
+
+IF @HomeDirectory = ''
+BEGIN
+	UPDATE {databaseOwner}{objectQualifier}Portals SET HomeDirectory = 'Portals/' + convert(varchar(10), @PortalID) WHERE PortalID = @PortalID
+END
+
+SELECT @PortalID
+GO
+
+/* Update DeletePortalInfo */
+/***************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DeletePortalInfo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalInfo]
+	@PortalId int
+
+AS
+
+/* Delete all the Portal Modules */
+DELETE
+FROM {databaseOwner}{objectQualifier}Modules
+WHERE PortalId = @PortalId
+
+/* Delete all the Portal Search Items */
+DELETE {databaseOwner}{objectQualifier}Modules
+FROM  {databaseOwner}{objectQualifier}Modules 
+	INNER JOIN {databaseOwner}{objectQualifier}SearchItem ON {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}SearchItem.ModuleId
+WHERE	PortalId = @PortalId
+
+/* Delete Portal */
+DELETE
+FROM {databaseOwner}{objectQualifier}Portals
+WHERE  PortalId = @PortalId
+
+GO
+
+/* Add GetExpiredPortals */
+/*************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetExpiredPortals]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetExpiredPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetExpiredPortals]
+
+AS
+SELECT * FROM {databaseOwner}{objectQualifier}vw_Portals
+WHERE ExpiryDate < getDate()
+GO
+
+/* Update GetPortal */
+/********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortal]
+
+	@PortalId  int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_Portals
+WHERE PortalId = @PortalId
+GO
+
+/* Add GetPortalCount */
+/**********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalCount]
+
+AS
+SELECT COUNT(*)
+FROM {databaseOwner}{objectQualifier}Portals
+GO
+
+/* Update GetPortals */
+/*********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortals]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_Portals
+ORDER BY PortalName
+GO
+
+/* Add GetPortalsByName */
+/************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalsByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalsByName]
+    @NameToMatch	nvarchar(256),
+    @PageIndex			int,
+    @PageSize			int
+AS
+BEGIN
+    -- Set the page bounds
+    DECLARE @PageLowerBound INT
+    DECLARE @PageUpperBound INT
+    SET @PageLowerBound = @PageSize * @PageIndex
+    SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+    -- Create a temp table TO store the select results
+    CREATE TABLE #PageIndexForPortals
+    (
+        IndexId int IDENTITY (0, 1) NOT NULL,
+        PortalId int
+    )
+
+    -- Insert into our temp table
+    INSERT INTO #PageIndexForPortals (PortalId)
+        SELECT PortalId FROM	{databaseOwner}{objectQualifier}vw_Portals
+        WHERE  PortalName LIKE @NameToMatch
+	    ORDER BY PortalName
+
+    SELECT  *
+    FROM	{databaseOwner}{objectQualifier}vw_Portals p, 
+			#PageIndexForPortals i
+    WHERE  p.PortalId = i.PortalId
+			AND i.IndexId >= @PageLowerBound AND i.IndexId <= @PageUpperBound
+    ORDER BY p.PortalName
+
+    SELECT  TotalRecords = COUNT(*)
+    FROM    #PageIndexForPortals
+END
+
+GO
+
+/* Update GetPortalByPortalAliasID */
+/***********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalByPortalAliasID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalByPortalAliasID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalByPortalAliasID]
+
+	@PortalAliasId  int
+
+AS
+SELECT P.*
+FROM {databaseOwner}{objectQualifier}vw_Portals P
+	INNER JOIN {databaseOwner}{objectQualifier}PortalAlias PA ON P.PortalID = PA.PortalID
+WHERE PA.PortalAliasId = @PortalAliasId
+GO
+
+/* Update UpdatePortalInfo */
+/***************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+
+	@PortalId           int,
+	@PortalName         nvarchar(128),
+	@LogoFile           nvarchar(50),
+	@FooterText         nvarchar(100),
+	@ExpiryDate         datetime,
+	@UserRegistration   int,
+	@BannerAdvertising  int,
+	@Currency           char(3),
+	@AdministratorId    int,
+	@HostFee            money,
+	@HostSpace          int,
+	@PageQuota          int,
+	@UserQuota          int,
+	@PaymentProcessor   nvarchar(50),
+	@ProcessorUserId    nvarchar(50),
+	@ProcessorPassword  nvarchar(50),
+	@Description        nvarchar(500),
+	@KeyWords           nvarchar(500),
+	@BackgroundFile     nvarchar(50),
+	@SiteLogHistory     int,
+	@SplashTabId          int,
+	@HomeTabId          int,
+	@LoginTabId         int,
+	@UserTabId          int,
+	@DefaultLanguage    nvarchar(10),
+	@TimeZoneOffset	    int,
+	@HomeDirectory		varchar(100)
+
+as
+update {databaseOwner}{objectQualifier}Portals
+set    PortalName = @PortalName,
+       LogoFile = @LogoFile,
+       FooterText = @FooterText,
+       ExpiryDate = @ExpiryDate,
+       UserRegistration = @UserRegistration,
+       BannerAdvertising = @BannerAdvertising,
+       Currency = @Currency,
+       AdministratorId = @AdministratorId,
+       HostFee = @HostFee,
+       HostSpace = @HostSpace,
+       PageQuota = @PageQuota,
+       UserQuota = @UserQuota,
+       PaymentProcessor = @PaymentProcessor,
+       ProcessorUserId = @ProcessorUserId,
+       ProcessorPassword = @ProcessorPassword,
+       Description = @Description,
+       KeyWords = @KeyWords,
+       BackgroundFile = @BackgroundFile,
+       SiteLogHistory = @SiteLogHistory,
+       SplashTabId = @SplashTabId,
+       HomeTabId = @HomeTabId,
+       LoginTabId = @LoginTabId,
+       UserTabId = @UserTabId,
+       DefaultLanguage = @DefaultLanguage,
+       TimeZoneOffset = @TimeZoneOffset,
+       HomeDirectory = @HomeDirectory
+where  PortalId = @PortalId
+GO
+
+
+/* Add Tabs View */
+/*****************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+SELECT     
+	T.TabID, 
+	T.TabOrder, 
+	T.PortalID, 
+	T.TabName, 
+	T.IsVisible, 
+	T.ParentId, 
+	T.[Level],
+	CASE WHEN LEFT(LOWER(T.IconFile), 6) = 'fileid' 
+		THEN
+			(SELECT Folder + FileName  
+				FROM {databaseOwner}{objectQualifier}Files 
+				WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = T.IconFile
+			) 
+		ELSE 
+			T.IconFile  
+		END 
+	AS IconFile,
+	T.DisableLink, 
+	T.Title, 
+	T.Description, 
+	T.KeyWords, 
+	T.IsDeleted, 
+	T.SkinSrc, 
+    T.ContainerSrc, 
+    T.TabPath, 
+    T.StartDate, 
+    T.EndDate, 
+	T.URL, 
+    CASE WHEN EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}Tabs T2 WHERE T2.ParentId = T .TabId) THEN 'true' ELSE 'false' END AS 'HasChildren', 
+    T.RefreshInterval, 
+    T.PageHeadText
+FROM {databaseOwner}{objectQualifier}Tabs AS T 
+
+GO
+
+/* Update GetTabsByParentId */
+/****************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabsByParentId]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByParentId]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByParentId]
+
+@ParentId int
+
+AS
+SELECT *
+FROM   {databaseOwner}{objectQualifier}vw_Tabs
+WHERE  ParentId = @ParentId
+ORDER BY TabOrder
+GO
+
+/* Update GetTabs */
+/******************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabs]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabs]
+
+@PortalId int
+
+AS
+SELECT *
+FROM   {databaseOwner}{objectQualifier}vw_Tabs
+WHERE  PortalId = @PortalId OR (PortalID IS NULL AND @PortalID IS NULL)
+ORDER BY TabOrder, TabName
+GO
+
+/* Update GetTab */
+/*****************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTab]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTab]
+
+@TabId    int
+
+AS
+SELECT *
+FROM   {databaseOwner}{objectQualifier}vw_Tabs
+WHERE  TabId = @TabId
+GO
+
+/* Update GetAllTabs */
+/*********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllTabs]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllTabs]
+
+AS
+SELECT *
+FROM   {databaseOwner}{objectQualifier}vw_Tabs
+ORDER BY TabOrder, TabName
+GO
+
+/* Update GetTabByName */
+/***********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabByName]
+
+@TabName  nvarchar(50),
+@PortalId int
+
+as
+SELECT *
+FROM   {databaseOwner}{objectQualifier}vw_Tabs
+where  TabName = @TabName
+and    ((PortalId = @PortalId) or (@PortalId is null AND PortalId is null))
+order by TabID
+
+GO
+
+/* Add GetTabCount */
+/*******************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabCount]
+	
+	@PortalId	int
+
+AS
+
+DECLARE @AdminTabId int
+SET @AdminTabId = (SELECT AdminTabId 
+						FROM {databaseOwner}{objectQualifier}Portals 
+						WHERE PortalID = @PortalID)
+
+SELECT COUNT(*) - 1 
+FROM  {databaseOwner}{objectQualifier}Tabs
+WHERE (PortalID = @PortalID) 
+	AND (TabID <> @AdminTabId) 
+	AND (ParentId <> @AdminTabId OR ParentId IS NULL)
+GO
+
+
+/* Add Modules View */
+/********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Modules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+AS
+SELECT	
+	    M.PortalID,
+	    TM.TabId,
+        TM.TabModuleId,
+	    M.ModuleID,
+	    M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        M.ModuleTitle,
+        TM.CacheTime,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+		CASE WHEN LEFT(LOWER(TM.IconFile), 6) = 'fileid' 
+			THEN
+				(SELECT Folder + FileName  
+					FROM {databaseOwner}{objectQualifier}Files 
+					WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = TM.IconFile
+				) 
+			ELSE 
+				TM.IconFile  
+			END 
+		AS IconFile,
+       M.AllTabs,
+       TM.Visibility,
+       M.IsDeleted,
+       M.Header,
+       M.Footer,
+       M.StartDate,
+       M.EndDate,
+       TM.ContainerSrc,
+       TM.DisplayTitle,
+       TM.DisplayPrint,
+       TM.DisplaySyndicate,
+       M.InheritViewPermissions,
+       DM.*,
+       MC.ModuleControlId,
+       MC.ControlSrc,
+       MC.ControlType,
+       MC.ControlTitle,
+       MC.HelpURL
+FROM   {databaseOwner}{objectQualifier}ModuleDefinitions AS MD 
+	INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON MD.ModuleDefID = M.ModuleDefID 
+	INNER JOIN {databaseOwner}{objectQualifier}DesktopModules AS DM ON MD.DesktopModuleID = DM.DesktopModuleID 
+	INNER JOIN {databaseOwner}{objectQualifier}ModuleControls AS MC ON MD.ModuleDefID = MC.ModuleDefID 
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Tabs AS T 
+		INNER JOIN {databaseOwner}{objectQualifier}TabModules AS TM ON T.TabID = TM.TabID 
+	ON M.ModuleID = TM.ModuleID
+WHERE     (MC.ControlKey IS NULL)
+GO
+
+/* Update GetTabModules */
+/************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalTabModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalTabModules]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModules]
+
+	@TabId int
+
+AS
+SELECT	* 
+FROM {databaseOwner}{objectQualifier}vw_Modules
+WHERE  TabId = @TabId
+ORDER BY ModuleOrder
+
+GO
+
+/* Update GetModule */
+/********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModule]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModule]
+
+	@ModuleId int,
+	@TabId    int
+	
+AS
+SELECT	* 
+FROM {databaseOwner}{objectQualifier}vw_Modules
+WHERE   ModuleId = @ModuleId
+AND     (TabId = @TabId or @TabId is null)
+
+GO
+
+/* Update GetModuleByDefinition */
+/********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+
+	@PortalId int,
+	@FriendlyName nvarchar(128)
+	
+AS
+SELECT	* 
+FROM {databaseOwner}{objectQualifier}vw_Modules
+WHERE  ((PortalId = @PortalId) or (PortalId is null and @PortalID is null))
+	AND FriendlyName = @FriendlyName
+	AND IsDeleted = 0
+GO
+
+/* Update GetModules */
+/*********************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModules]
+
+	@PortalId int
+	
+AS
+SELECT	* 
+FROM {databaseOwner}{objectQualifier}vw_Modules
+WHERE  PortalId = @PortalId
+ORDER BY ModuleId
+
+GO
+
+/* Update GetAllModules */
+/************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllModules]
+
+AS
+SELECT	* 
+FROM {databaseOwner}{objectQualifier}vw_Modules
+
+GO
+
+/* Update GetAllTabsModules */
+/****************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetAllTabsModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllTabsModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllTabsModules]
+
+	@PortalId int,
+	@AllTabs bit
+
+AS
+SELECT	* 
+FROM {databaseOwner}{objectQualifier}vw_Modules M
+WHERE  M.PortalId = @PortalId 
+	AND M.AllTabs = @AllTabs
+	AND M.TabmoduleID =(SELECT min(tabmoduleID) 
+		FROM {databaseOwner}{objectQualifier}tabmodules
+		WHERE ModuleID = M.ModuleID)
+ORDER BY M.ModuleId
+
+GO
+
+/* Update GetModuleSettings */
+/****************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+
+@ModuleId int
+
+AS
+SELECT 
+	SettingName,
+	CASE WHEN LEFT(LOWER({databaseOwner}{objectQualifier}ModuleSettings.SettingValue), 6) = 'fileid' 
+		THEN
+			(SELECT Folder + FileName  
+				FROM {databaseOwner}{objectQualifier}Files 
+				WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = {databaseOwner}{objectQualifier}ModuleSettings.SettingValue
+			) 
+		ELSE 
+			{databaseOwner}{objectQualifier}ModuleSettings.SettingValue  
+		END 
+	AS SettingValue
+FROM {databaseOwner}{objectQualifier}ModuleSettings 
+WHERE  ModuleId = @ModuleId
+
+GO
+
+/* Update GetModuleSetting */
+/***************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleSetting]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+
+@ModuleId      int,
+@SettingName   nvarchar(50)
+
+AS
+SELECT 
+	CASE WHEN LEFT(LOWER({databaseOwner}{objectQualifier}ModuleSettings.SettingValue), 6) = 'fileid' 
+		THEN
+			(SELECT Folder + FileName  
+				FROM {databaseOwner}{objectQualifier}Files 
+				WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = {databaseOwner}{objectQualifier}ModuleSettings.SettingValue
+			) 
+		ELSE 
+			{databaseOwner}{objectQualifier}ModuleSettings.SettingValue  
+		END 
+	AS SettingValue
+FROM {databaseOwner}{objectQualifier}ModuleSettings 
+WHERE  ModuleId = @ModuleId AND SettingName = @SettingName
+
+GO
+
+/* Add GetSkins */
+/****************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetSkins]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSkins]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSkins]
+
+@PortalID		int
+
+AS
+SELECT *
+FROM	{databaseOwner}{objectQualifier}Skins
+WHERE   (PortalID = @PortalID) OR (PortalID is null And @PortalId Is Null)
+GO
+
+/* Add FolderPermissions View */
+/******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_FolderPermissions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+AS
+SELECT     
+	FP.FolderPermissionID, 
+	F.FolderID, 
+	F.FolderPath, 
+	P.PermissionID, 
+	FP.RoleID, 
+	CASE FP.RoleID WHEN - 1 THEN 'All Users' WHEN - 2 THEN 'Superuser' WHEN - 3 THEN 'Unauthenticated Users' ELSE R.RoleName END AS 'RoleName',
+	FP.AllowAccess, 
+	P.PermissionCode, 
+	P.PermissionKey, 
+	P.PermissionName, 
+	F.PortalID
+FROM {databaseOwner}{objectQualifier}FolderPermission AS FP 
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Folders AS F ON FP.FolderID = F.FolderID 
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Permission AS P ON FP.PermissionID = P.PermissionID 
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Roles AS R ON FP.RoleID = R.RoleID
+
+GO
+
+/* Update GetFolderPermissionsByFolderPath */
+/*****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFolderPermissionsByFolderPath]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByFolderPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByFolderPath]
+	
+	@PortalID int,
+	@FolderPath varchar(300), 
+	@PermissionID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_FolderPermissions
+
+WHERE	((FolderPath = @FolderPath 
+				AND ((PortalID = @PortalID) OR (PortalID IS NULL AND @PortalID IS NULL)))
+			OR (FolderPath IS NULL AND PermissionCode = 'SYSTEM_FOLDER'))
+	AND	(PermissionID = @PermissionID OR @PermissionID = -1)
+GO
+
+/* Update GetFolderPermission */
+/******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFolderPermission]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermission]
+	
+	@FolderPermissionID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_FolderPermissions
+WHERE FolderPermissionID = @FolderPermissionID
+GO
+
+/* Add ModulePermissions View */
+/******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_ModulePermissions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+AS
+SELECT     
+	MP.ModulePermissionID, 
+	MP.ModuleID, 
+	P.PermissionID, 
+	MP.RoleID, 
+    CASE MP.RoleID WHEN - 1 THEN 'All Users' WHEN - 2 THEN 'Superuser' WHEN - 3 THEN 'Unauthenticated Users' ELSE R.RoleName END AS 'RoleName',
+    MP.AllowAccess, 
+    P.PermissionCode, 
+    P.ModuleDefID, 
+    P.PermissionKey, 
+    P.PermissionName 
+FROM {databaseOwner}{objectQualifier}ModulePermission AS MP 
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Permission AS P ON MP.PermissionID = P.PermissionID 
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Roles AS R ON MP.RoleID = R.RoleID
+GO
+
+/* Update GetModulePermissionsByModuleID */
+/*****************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByModuleID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByModuleID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByModuleID]
+	
+	@ModuleID int, 
+	@PermissionID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_ModulePermissions
+WHERE (@ModuleID = -1 
+			OR ModuleID = @ModuleID
+			OR (ModuleID IS NULL AND PermissionCode = 'SYSTEM_MODULE_DEFINITION')
+		)
+	AND	(PermissionID = @PermissionID OR @PermissionID = -1)
+GO
+
+/* Update GetModulePermissionsByPortal */
+/***************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]
+	
+	@PortalID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_ModulePermissions MP
+	INNER JOIN {databaseOwner}{objectQualifier}Modules AS M ON MP.ModuleID = M.ModuleID 
+WHERE  M.PortalID = @PortalID
+GO
+
+/* Add GetModulePermissionsByTabID */
+/***********************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+	
+	@TabID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_ModulePermissions MP
+	INNER JOIN {databaseOwner}{objectQualifier}TabModules TM on MP.ModuleID = TM.ModuleID
+WHERE  TM.TabID = @TabID
+GO
+
+/* Update GetModulePermission */
+/******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePermission]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermission]
+	
+	@ModulePermissionID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_ModulePermissions
+WHERE ModulePermissionID = @ModulePermissionID
+GO
+
+/* Add TabPermissions View */
+/******************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_TabPermissions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_TabPermissions]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_TabPermissions]
+AS
+SELECT     
+	TP.TabPermissionID, 
+	TP.TabID, 
+	P.PermissionID, 
+	TP.RoleID, 
+    CASE TP.RoleID WHEN - 1 THEN 'All Users' WHEN - 2 THEN 'Superuser' WHEN - 3 THEN 'Unauthenticated Users' ELSE R.RoleName END AS 'RoleName',
+    TP.AllowAccess, 
+    P.PermissionCode, 
+    P.ModuleDefID, 
+    P.PermissionKey, 
+    P.PermissionName,
+    T.PortalId
+FROM {databaseOwner}{objectQualifier}TabPermission AS TP 
+	INNER JOIN {databaseOwner}{objectQualifier}Tabs AS T ON TP.TabID = T.TabID	
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Permission AS P ON TP.PermissionID = P.PermissionID 
+	LEFT OUTER JOIN {databaseOwner}{objectQualifier}Roles AS R ON TP.RoleID = R.RoleID
+GO
+
+/* Update GetTabPermissionsByPortal */
+/************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabPermissionsByPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabPermissionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabPermissionsByPortal]
+	
+	@PortalID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_TabPermissions TP
+WHERE 	PortalID = @PortalID OR (PortalId IS NULL AND @PortalId IS NULL)
+GO
+
+/* Update GetTabPermission */
+/***************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetTabPermission]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabPermission]
+
+	@TabPermissionID int
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_TabPermissions
+WHERE TabPermissionID = @TabPermissionID
+GO
+
+/* GetBannerGroups */
+/*******************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetBannerGroups]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetBannerGroups]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetBannerGroups]
+	@PortalId int
+AS
+
+SELECT  GroupName
+FROM {databaseOwner}{objectQualifier}Banners
+INNER JOIN {databaseOwner}{objectQualifier}Vendors ON 
+	{databaseOwner}{objectQualifier}Banners.VendorId = {databaseOwner}{objectQualifier}Vendors.VendorId
+WHERE ({databaseOwner}{objectQualifier}Vendors.PortalId = @PortalId) OR 
+	(@PortalId is null and {databaseOwner}{objectQualifier}Vendors.PortalId is null)
+GROUP BY GroupName
+ORDER BY GroupName
+
+GO
+
+/* Update FindBanners */
+/**********************/
+	
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FindBanners]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}FindBanners]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}FindBanners]
+	@PortalId     int,
+	@BannerTypeId int,
+	@GroupName    nvarchar(100)
+
+AS
+SELECT  B.BannerId,
+        B.VendorId,
+        BannerName,
+        URL,
+		CASE WHEN LEFT(LOWER(ImageFile), 6) = 'fileid' 
+			THEN
+				(SELECT Folder + FileName  
+					FROM {databaseOwner}{objectQualifier}Files 
+					WHERE 'fileid=' + convert(varchar,{databaseOwner}{objectQualifier}Files.FileID) = ImageFile
+				) 
+			ELSE 
+				ImageFile  
+			END 
+		AS ImageFile,
+        Impressions,
+        CPM,
+        B.Views,
+        B.ClickThroughs,
+        StartDate,
+        EndDate,
+        BannerTypeId,
+        Description,
+        GroupName,
+        Criteria,
+        B.Width,
+        B.Height
+FROM    {databaseOwner}{objectQualifier}Banners B
+INNER JOIN {databaseOwner}{objectQualifier}Vendors V ON B.VendorId = V.VendorId
+WHERE   (B.BannerTypeId = @BannerTypeId or @BannerTypeId is null)
+AND     (B.GroupName = @GroupName or @GroupName is null)
+AND     ((V.PortalId = @PortalId) or (@PortalId is null and V.PortalId is null))
+AND     V.Authorized = 1 
+AND     (getdate() <= B.EndDate or B.EndDate is null)
+ORDER BY BannerId
+GO
+
+/* GetEventLog */
+/***************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetEventLog]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}GetEventLog]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetEventLog
+	@PortalID int,
+	@LogTypeKey nvarchar(35),
+	@PageSize int,
+	@PageIndex int
+AS
+
+	DECLARE @PageLowerBound int
+	DECLARE @PageUpperBound int
+	-- Set the page bounds
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageLowerBound + @PageSize + 1
+
+	CREATE TABLE #PageIndex 
+	(
+		IndexID		int IDENTITY (1, 1) NOT NULL,
+		LogGUID	varchar(36) COLLATE database_default
+	)
+
+	INSERT INTO #PageIndex (LogGUID)
+	SELECT {databaseOwner}{objectQualifier}EventLog.LogGUID
+	FROM {databaseOwner}{objectQualifier}EventLog
+	INNER JOIN {databaseOwner}{objectQualifier}EventLogConfig
+		ON {databaseOwner}{objectQualifier}EventLog.LogConfigID = {databaseOwner}{objectQualifier}EventLogConfig.ID
+	WHERE (LogPortalID = @PortalID or @PortalID IS NULL)
+		AND ({databaseOwner}{objectQualifier}EventLog.LogTypeKey = @LogTypeKey or @LogTypeKey IS NULL)
+	ORDER BY LogCreateDate DESC
+
+
+	SELECT {databaseOwner}{objectQualifier}EventLog.*
+	FROM {databaseOwner}{objectQualifier}EventLog
+	INNER JOIN {databaseOwner}{objectQualifier}EventLogConfig
+		ON {databaseOwner}{objectQualifier}EventLog.LogConfigID = {databaseOwner}{objectQualifier}EventLogConfig.ID
+	INNER JOIN #PageIndex PageIndex
+		ON {databaseOwner}{objectQualifier}EventLog.LogGUID = PageIndex.LogGUID
+	WHERE PageIndex.IndexID			> @PageLowerBound	
+		AND	PageIndex.IndexID			< @PageUpperBound	
+	ORDER BY
+		PageIndex.IndexID	
+
+	SELECT COUNT(*) as TotalRecords
+	FROM #PageIndex
+GO
+
+
+/* Move Export Portal Template Module Control to be a "sub-control" of portals */
+/*******************************************************************************/
+
+DECLARE @PortalsModuleDefID int
+SET @PortalsModuleDefID = (SELECT ModuleDefID FROM {databaseOwner}{objectQualifier}ModuleDefinitions WHERE FriendlyName = 'Portals')
+
+DECLARE @TemplateModuleDefID int
+SET @TemplateModuleDefID = (SELECT ModuleDefID FROM {databaseOwner}{objectQualifier}ModuleDefinitions WHERE FriendlyName = 'Export Template')
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET ControlKey = 'Template',
+	    ModuleDefID = @PortalsModuleDefID
+	WHERE ModuleDefID = @TemplateModuleDefID
+	    
+DELETE {databaseOwner}{objectQualifier}DesktopModules
+    WHERE ModuleName = 'Template'
+    
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

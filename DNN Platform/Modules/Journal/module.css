@@ -1,0 +1,246 @@
+@charset "utf-8";
+/* CSS Document */
+
+#journalEditor, .jcmt .cmteditarea
+{
+        display:inline-block;
+		width:100%;
+		position:relative;
+		background: #fff url('Images/input-bg.png') left top no-repeat;
+        margin:10px 0 0; 
+        padding:5px 2%;
+        border: 1px solid #bbb;
+        border-radius:3px;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        -webkit-box-shadow: 0 1px 1px #fff;
+        text-shadow: 0 0 1px #fff;
+        position:relative;
+        z-index:2;
+		overflow:visible;
+		zoom:1;
+}
+.journalTools ul.jacmenu{display:none; position: absolute;z-index: 4; list-style-type:none;border:solid 1px #dcdcdc;background-color:#f5f5f5;}
+.journalTools ul.jacmenu li{padding:2px;list-style-type:none;border-bottom:1px solid #dcdcdc;background-color:#f3f3f3;}
+#journalEditor #journalContent{overflow:auto;outline:none;}
+#journalEditor #journalContent span{padding:0 2px 0 2px;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;}
+#journalEditor #journalContent .juser, .journalrow .juser{color:#000;border:1px solid #ccd5e4; background-color:#eff2f7;}
+#journalEditor #journalContent .jtag, .journalrow .jtag{border:1px solid #ccc; background-color:#f5f5f5}
+#journalEditor #journalClose{float:right;display:none;width:18px !important; height:18px !important; cursor:pointer; background-image:url('images/mini_del.gif'); background-repeat:no-repeat;}
+#linkClose, .miniclose, .minidel{float:right;visibility:hidden;width:18px !important; height:18px !important; cursor:pointer; background-image:url('images/mini_del.gif'); background-repeat:no-repeat;}
+#journalEditor .minidel{position:absolute;right:0px;}
+#journalEditor #journalClose{position:absolute; right:6px; top:6px;}
+#journalEditor #journalPlaceholder,.jcmt .cmteditarea .editorPlaceholder{font-size:14px;color:#999;height:24px;line-height:24px;padding-left:7px;}
+#journalEditor #journalContent{font-family:Arial, Helvetica; float:left; display:none;height:1px;margin-bottom:4px;padding: 2px 4px 6px 4px;font-size:14px; border: none; -webkit-box-shadow: none; box-shadow: none; line-height:1.3em;width:99%;resize:none;}
+#journalEditor .journalPlaceholder {width:100%;}
+#journalEditor .dnnClear{height:0;}
+#journalEditor #tbar{
+		position:absolute;
+		right:6px; bottom: 5px;
+		height:16px;width:78px; 
+		margin:6px 16px 4px;
+		min-width:80px;
+}
+#journalEditor #tbar > span{display:block;height:16px;width:24px;float:right;background-image:url('images/journal-tools.png'); border:1px solid transparent}
+.securityMenu > ul > li > span {display: inline-block; margin-right: 3px;}
+#journalEditor #tbar span#tbar-photo{background-position:0 0;}
+#journalEditor #tbar span#tbar-attach{background-position:-24px 0;}
+#journalEditor #tbar span#tbar-perm{background-position:-81px 0;}
+#journalEditor #tbar span#tbar-photo:hover,#journalEditor #tbar span#tbar-photo.selected{background-position:0 -16px;}
+#journalEditor #tbar span#tbar-attach:hover,#journalEditor #tbar span#tbar-attach.selected{background-position:-24px -16px;}
+#journalEditor #tbar span#tbar-attach:hover{background-position:-24px -16px;}
+#journalEditor #tbar span#tbar-perm:hover{background-position:-81px -16px;}
+.journalTools #journalOptionArea{background-color:#f5f5f5;display:none; border: 1px solid #bbb; border-top:0px none transparent;
+								-webkit-border-bottom-right-radius: 3px;
+								-webkit-border-bottom-left-radius: 3px;
+								-moz-border-radius-bottomright: 3px;
+								-moz-border-radius-bottomleft: 3px;
+								border-bottom-right-radius: 3px;
+								border-bottom-left-radius: 3px;
+									top: -10px;
+									position:relative;
+									width: 100%;
+}
+.journalTools #journalOptionArea div{font-size:12px;padding:6px;padding-top:12px;padding-bottom:12px;}
+.journalTools #journalOptionArea div span{font-weight:bold;color:#333;padding-right:12px;padding-left:12px;}
+.journalTools #journalOptionArea #itemUpload{margin:0;padding:0;}
+.journalTools #journalOptionArea .jpa{display:none;}
+.journalTools #journalOptionArea #linkArea #imagePreviewer{width:150px; float:left;margin-right:12px;}
+.journalTools #journalOptionArea #linkArea #imagePreviewer #image{width:140px; height:100px; overflow:hidden;}
+.journalTools #journalOptionArea #linkArea #imagePreviewer #imgPrev,.journalTools #journalOptionArea #linkArea #imagePreviewer #imgNext{cursor:pointer;}
+.journalTools #btnShare,.jcmt li.cmtbtn a{display: inline-block;display:none;outline: none;cursor: pointer;text-align: center;text-decoration: none;
+	padding: .7em 1.5em .77em;text-shadow: 0 1px 1px rgba(0,0,0,.3);-webkit-border-radius: .3em; -moz-border-radius: .3em;border-radius:.3em;-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);	box-shadow: 0 1px 2px rgba(0,0,0,.2);   color: #fef4e9;cursor:pointer;float:left;background: #005cb2;
+	background: -webkit-gradient(linear, left top, left bottom, from(#298fd0), to(#005cb2));
+	background: -moz-linear-gradient(top,  #298fd0,  #005cb2);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#298fd0', endColorstr='#005cb2');}
+
+   	.journalTools #btnShare:hover,.jcmt li.cmtbtn a:hover {text-decoration: none;background: #003465;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#156292), to(#003465));
+	    background: -moz-linear-gradient(top,  #156292,  #003465);
+	    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#156292', endColorstr='#003465');}
+	    
+    .journalTools #btnShare:active,.jcmt li.cmtbtn a:active {position: relative;top: 1px;color: #fff;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#005cb2), to(#298fd0));
+	    background: -moz-linear-gradient(top,  #005cb2,  #298fd0);
+	    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#005cb2', endColorstr='#298fd0');}			    
+.journalTools #btnShare.disabled,.jcmt li.cmtbtn a.disabled{background:#cdcdcd;color:#999;cursor:text;}
+.journalTools ul.jacmenu li.liselected{background-color:#ffffcc;}
+.journalrow {border-bottom:1px solid #e4e1e1;margin-bottom:20px;padding-bottom:10px;}
+.journalrow div.author{overflow:hidden;float:left;}
+.journalrow div.author img{width:32px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+.journalrow div.journalitem .jlink img {max-width: 25%;width: auto;}
+.journalrow div.journalitem{margin-left:44px;overflow: hidden;word-break: break-all;}
+.journalitem p{margin-bottom: 5px;word-break: break-word;}
+.journalrow div.journalitem p.journalfooter span{padding:0px 4px 0px 4px; font-weight:bold;}
+.journalrow div.journalitem .authorname{padding-right:6px;display:inline-flex;}
+.journalrow div.journalitem ul.jcmt,.journalrow div.journalitem .likes{width:100%;padding:0px;font-size:11px;}
+/*.journalrow div.journalitem ul.jcmt li{border-bottom: solid 1px #fff;}*/
+    .journalrow div.journalitem ul.jcmt {
+        margin-left: 0px;
+        margin-bottom: 0px;
+    }
+.journalrow div.journalitem ul.jcmt, .journalrow div.journalitem ul.jcmt li{list-style-type:none;}
+.journalrow div.journalitem ul.jcmt li textarea{border:solid 0px #ccc;font-family:tahoma,verdana,arial,sans-serif;font-size:12px;padding:0px;height:20px;margin-left:0px;margin-right:0px;width:100%;max-width:100%;word-break:break-word;}
+.journalrow div.journalitem ul.jcmt li .miniclose{margin:2px;}
+.journalrow div.journalitem ul.jcmt li:hover .miniclose, .journalrow:hover .minidel, .journalTools #journalOptionArea:hover #linkClose{visibility:visible;}
+.journalrow div.journalitem ul.jcmt li.cmtbtn a{display:none;} 
+.journalrow div.journalitem ul.jcmt li img{ float: left;
+    left: 0;
+    padding: 4px;
+    position: relative;
+    top: 0;}
+.journalrow div.journalitem ul.jcmt li p{padding:4px 0px 4px 5px; margin:3px 0px 5px 42px;}
+.journalrow div.journalitem ul.jcmt li p a{padding-right:6px;display:inline-flex;}                                         
+.journalrow div.journalitem ul.jcmt li p abbr{border-style: none;
+                                              display: block;
+                                              margin-bottom: 3px;
+                                              margin-top: 4px;
+                                              padding-left: 5px;
+                                              padding-top: 4px;}
+.journalrow div.journalitem .journalfooter abbr {border-style:none;}
+.journalrow div.journalitem .jlink a{font-weight:bold;display:block;word-break:break-word;}
+.journalrow div.journalitem .jlink img{float:left; margin-right:12px;max-width:150px;width:100%;height:auto;padding:5px;}
+.journalrow div.journalitem .jlink div{max-width:100%;word-break:break-word;}
+.journalrow div.journalitem .likes{padding:2px;}                                              
+.jcmt .cmteditor{max-width:100%;display:none;resize:none;outline:none;}
+.jcmt .cmteditarea{margin: 2px 4px 4px 2px;z-index:0;}
+/* Visibility and Security */
+.securityMenu{
+	position: absolute;
+	right:-7px;
+	display:none;
+	min-width:200px; height:300px;
+	margin-top: 24px;
+	background-color:#fff;
+	z-index:1000;
+}
+.securityMenu .handle{
+	z-index:1000;
+	position:absolute; right:2px; top:-28px;
+	width:26px; height:22px;
+	border:1px solid #ccc;
+	border-bottom:1px solid #fff;
+	
+	/*CSS3*/
+	-moz-border-radius-topright:    3px;
+	-moz-border-radius-topleft:	    3px;
+	-webkit-border-radius: 			3px 3px 0px 0px;
+	border-radius: 					3px 3px 0px 0px; 
+}
+.DnnModule .securityMenu ul{
+	position:absolute; top:-5px; right:2px;
+	padding:15px;
+	border:1px solid #ccc;
+	list-style:none;
+	background:#fff;
+	
+	-webkit-border-radius:  3px 0px 3px 3px;
+    border-radius:          3px 0px 3px 3px;
+	
+	-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+	-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+	box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+        
+}
+.securityMenu ul li{list-style:none; margin-bottom: 4px;}
+/* File Upload */
+.progress_bar_wrapper{ width: 500px;overflow: hidden;}
+.progress-bar div{ background-image: url('Images/progress.gif');position:relative;padding:0 !important;}
+#tbar-attach-Area input:not([type=file]){cursor:pointer; left: 0;top: 0;width: 150px;position:absolute; opacity:0; display:inline;height:18px;padding:4px;margin-bottom:9px;font-size:13px;line-height:18px;color:#555555;border:1px solid #ccc;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+.journalTools #journalOptionArea div span.browser-upload-btn{position:relative; font-weight: bold; padding-left:0px; cursor:pointer;display: block; }
+    .browser-upload-btn:hover{cursor:pointer;}
+div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.filePreviewArea {padding:0;margin:0}
+div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.progress_bar_wrapper{padding:0;margin:0;}
+.journalTools #journalOptionArea #itemUpload .filePreviewArea img {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E0EFF7;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 0 12px 12px;
+    padding: 6px;
+}   
+div#journalItems div.journalrow div.journalitem ul.jcmt li.cmteditarea{display:none;overflow:auto;max-width:99%;}
+.journalrow .juser{ cursor: pointer;}
+
+div#journalOptionArea > div.fileUploadArea {
+    background: #eff8ff; /* blue */		
+}
+div#journalOptionArea div.journal_onlineFileShare,
+div#journalOptionArea div.journal_localFileShare {
+    width: 50%;
+    float: left;
+    padding: 0;
+}
+div#journalOptionArea div.journal_onlineFileShare {
+    border-right: 1px solid #cce8ff;
+    margin-right: 25px;
+}
+div#journalOptionArea div.journal_localFileShare {
+    width: 40%;
+}
+div#journalOptionArea div.journal_onlineFileShare div {
+    margin: 0;
+    padding: 0;
+}
+div#journalOptionArea div.journal_onlineFileShare a.dnnSecondaryAction {
+    display: inline-block;
+    margin: 15px 0 0 15px;
+}
+div#journalOptionArea div.journal_localFileShare .dnnInputFileWrapper {
+    display: inline-block;
+    margin: 15px 0 0 0;
+}
+/* Search Suggest */
+ul.ui-autocomplete, 
+ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
+	ul.ui-autocomplete{
+		display:none;
+		position:absolute;top:46px;left:0;
+		width:auto;
+		border:1px solid #ccc; background:#fff;
+		z-index:5;
+		/*CSS3*/
+		-moz-border-radius-bottomright: 3px;
+		-moz-border-radius-bottomleft:	3px;
+		-webkit-border-radius: 			0px 0px 3px 3px;
+		border-radius: 					0px 0px 3px 3px; 
+		
+		-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+		-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+		box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+	}
+	ul.ui-autocomplete li{display:block;clear:both;overflow:hidden}
+	ul.ui-autocomplete li a{
+		display:block;
+		padding:10px;
+		border-bottom:1px #e8e8e8 solid;
+		clear:both;overflow:hidden
+	}
+	ul.ui-autocomplete li a:hover, ul.ui-autocomplete li a.ui-state-focus{
+		background:#FEFDDE;
+		cursor:pointer
+	}
+	ul.ui-autocomplete .ui-menu-item a img{width:24px;height:24px;}
+	ul.ui-autocomplete .ui-menu-item a span.dn{font-weight:bold;color: #000;margin: 0 4px;}
+	ul.ui-autocomplete .ui-menu-item a span.un{color: #ccc;margin: 0 4px;}
+.ui-helper-hidden-accessible{display:none;}

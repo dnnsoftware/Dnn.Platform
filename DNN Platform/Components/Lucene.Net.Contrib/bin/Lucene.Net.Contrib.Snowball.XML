@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lucene.Net.Contrib.Snowball</name>
+    </assembly>
+    <members>
+        <member name="T:Lucene.Net.Analysis.Snowball.SnowballAnalyzer">
+            <summary>Filters <see cref="T:Lucene.Net.Analysis.Standard.StandardTokenizer"/> with <see cref="T:Lucene.Net.Analysis.Standard.StandardFilter"/>, {@link
+            LowerCaseFilter}, <see cref="T:Lucene.Net.Analysis.StopFilter"/> and <see cref="T:Lucene.Net.Analysis.Snowball.SnowballFilter"/>.
+            
+            Available stemmers are listed in <see cref="N:SF.Snowball.Ext"/>.  The name of a
+            stemmer is the part of the class name before "Stemmer", e.g., the stemmer in
+            <see cref="T:SF.Snowball.Ext.EnglishStemmer"/> is named "English".
+            
+            <p><b>NOTE:</b> This class uses the same <see cref="T:Lucene.Net.Util.Version"/>
+            dependent settings as <see cref="T:Lucene.Net.Analysis.Standard.StandardAnalyzer"/></p>
+            </summary>
+        </member>
+        <member name="M:Lucene.Net.Analysis.Snowball.SnowballAnalyzer.#ctor(Lucene.Net.Util.Version,System.String)">
+            <summary>Builds the named analyzer with no stop words. </summary>
+        </member>
+        <member name="M:Lucene.Net.Analysis.Snowball.SnowballAnalyzer.#ctor(Lucene.Net.Util.Version,System.String,System.String[])">
+            <summary>Builds the named analyzer with the given stop words. </summary>
+        </member>
+        <member name="M:Lucene.Net.Analysis.Snowball.SnowballAnalyzer.#ctor(Lucene.Net.Util.Version,System.String,System.Collections.Generic.ISet{System.String})">
+            <summary>
+            Builds the named analyzer with the given stop words.
+            </summary>
+        </member>
+        <member name="M:Lucene.Net.Analysis.Snowball.SnowballAnalyzer.TokenStream(System.String,System.IO.TextReader)">
+            <summary>Constructs a <see cref="T:Lucene.Net.Analysis.Standard.StandardTokenizer"/> filtered by a {@link
+            StandardFilter}, a <see cref="T:Lucene.Net.Analysis.LowerCaseFilter"/> and a <see cref="T:Lucene.Net.Analysis.StopFilter"/>. 
+            </summary>
+        </member>
+        <member name="T:Lucene.Net.Analysis.Snowball.SnowballFilter">
+            <summary>A filter that stems words using a Snowball-generated stemmer.
+            
+            Available stemmers are listed in <see cref="N:SF.Snowball.Ext"/>.  The name of a
+            stemmer is the part of the class name before "Stemmer", e.g., the stemmer in
+            <see cref="T:SF.Snowball.Ext.EnglishStemmer"/> is named "English".
+            </summary>
+        </member>
+        <member name="M:Lucene.Net.Analysis.Snowball.SnowballFilter.#ctor(Lucene.Net.Analysis.TokenStream,System.String)">
+            <summary>Construct the named stemming filter.
+            
+            </summary>
+            <param name="input">the input tokens to stem
+            </param>
+            <param name="name">the name of a stemmer
+            </param>
+        </member>
+        <member name="M:Lucene.Net.Analysis.Snowball.SnowballFilter.IncrementToken">
+            <summary>Returns the next input Token, after being stemmed </summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.DanishStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.SnowballProgram">
+            <summary>
+            This is the rev 500 of the snowball SVN trunk,
+            but modified:
+            made abstract and introduced abstract method stem to avoid expensive reflection in filter class
+            </summary>
+        </member>
+        <member name="M:SF.Snowball.SnowballProgram.SetCurrent(System.String)">
+            <summary> Set the current string.</summary>
+        </member>
+        <member name="M:SF.Snowball.SnowballProgram.GetCurrent">
+            <summary> Get the current string.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.DutchStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.EnglishStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.FinnishStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.FrenchStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.German2Stemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.GermanStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.ItalianStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.KpStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.LovinsStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.NorwegianStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.PorterStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.RussianStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.SpanishStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+        <member name="T:SF.Snowball.Ext.SwedishStemmer">
+            <summary> Generated class implementing code defined by a snowball script.</summary>
+        </member>
+    </members>
+</doc>

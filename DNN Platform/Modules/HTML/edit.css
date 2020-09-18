@@ -1,0 +1,28 @@
+﻿.dnnHTMLSettings, .dnnMyWork {margin:2em auto;}
+.dnnEditHtml{margin: 0 auto;}
+.dnnFormItem input[type=checkbox], .dnnPageSettings .dnnFormItem input[type=radio]{width:auto;}
+.dnnFormItem .dnnHTMLSRadioButtons label, .dnnFormItem .dnnPSRadioButtons input, .dnnFormItem .dnnHTMLSRadioButtons label, .dnnFormItem .dnnHTMLSRadioButtons input{float:left;padding:0;width:2%;text-align:left;}
+.dnnFormItem .dnnHTMLSRadioButtons label{width:auto;padding:0 15px 0 6px;font-weight:normal}
+.dnnHTMLSRadioButtons br{display:none !important;font-size:0;line-height:0;border-collapse:collapse;}
+.ehmContent{overflow:auto;height:100px;}
+.divCurrentVersion{min-height:61px;}
+.ehActions {height:60px;}
+.ehccContent fieldset:last-child {margin-bottom:0;}
+.ehCurrentContent {overflow: scroll;}
+.dnnTextEditor {margin-bottom:0;}
+.dnnTextPanelView-basic {padding-right: 0 !important;border: 0 !important;}
+.ehActions .dnnFormItem select {width:auto;margin:0;}
+.ehActions .separator{display: inline-block;width: 20px;}
+.ehActions a.aspNetDisabled {
+    color: #ccc;
+    cursor: not-allowed;
+    padding: 6px 6px;    
+    display: inline-block;
+    margin-bottom: 9px;
+    min-width: 75px;
+    border: 1px solid #c2c2c2;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: normal;
+    text-align: center;
+}

@@ -1,0 +1,26 @@
+<Settings>
+  <Setting>
+    <Name>Text</Name>
+    <Type>String</Type>
+    <Help>Sets the unlocalized text</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render this skin object</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ResourceKey</Name>
+    <Type>String</Type>
+    <Help>Sets the resource key to be used for retrieving the localized text value</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ReplaceTokens</Name>
+    <Type>String</Type>
+    <Help>Specifies whether dynamic tokens should be processed</Help>
+    <Value>True, False</Value>
+  </Setting>
+</Settings>

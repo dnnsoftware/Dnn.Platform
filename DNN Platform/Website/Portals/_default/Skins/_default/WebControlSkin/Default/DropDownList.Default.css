@@ -1,0 +1,49 @@
+/*global*/
+
+.selectize-control {
+    font-size: 12px; /*font-family:Verdana, Arial, Helvetica, sans-serif;*/
+    color: #999; /*padding: 8px; 	border: 1px solid #c9c9c9;*/
+    display: inline-block !important;
+}
+.selectize-control.show-checkbox .items .item {
+    display: none;
+}
+.selectize-control.show-checkbox .items .summary {
+    display: inline-block;
+    margin: 0;
+    padding: 0 6px;
+    border: none;
+    color: #000;
+    background: none;
+}
+.selectize-control.show-checkbox .selectize-dropdown-content div.option {
+
+}
+.selectize-control.show-checkbox .selectize-dropdown-content div.option > span {
+    background: url('../../../../../../images/checkbox.png') no-repeat 0 center;
+    display: inline-block;
+    width: 20px;
+    height: 23px;
+    cursor: pointer;
+}
+.selectize-control.show-checkbox .selectize-dropdown-content div.option > label {
+    display: inline-block;
+    height: 23px;
+    line-height: 23px;
+    vertical-align: top;
+    margin-left: 4px;
+    cursor: pointer;
+}
+.selectize-control.show-checkbox .selectize-dropdown-content div.option.selected > span {
+    background-position: -51px center;
+}
+
+.selectize-control.multi .selectize-input.has-items {
+    padding: 8px !important;
+}
+
+.dnnFormItem > .selectize-control, .dnnFormItem select {
+    width: 47%;
+    margin-bottom: 18px;
+    max-width: 445px;
+}

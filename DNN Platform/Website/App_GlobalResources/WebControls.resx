@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ComboBox.EmptyMessage" xml:space="preserve">
+    <value>There are no items in the list.</value>
+  </data>
+  <data name="FieldSuffix.Text" xml:space="preserve">
+    <value>:</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Folder.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="MyFolder.Text" xml:space="preserve">
+    <value>My Folder</value>
+  </data>
+  <data name="NoPermission.Text" xml:space="preserve">
+    <value>You do not have permissions to view any files on the file system.</value>
+  </data>
+  <data name="Ok.Text" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="PortalRoot.Text" xml:space="preserve">
+    <value>Site Root</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save File</value>
+  </data>
+  <data name="Upload.Text" xml:space="preserve">
+    <value>Upload File</value>
+  </data>
+  <data name="UploadError.Text" xml:space="preserve">
+    <value>File type {1} is not valid in this context. Valid File Types Include: {0}</value>
+  </data>
+  <data name="PasswordStrengthFair.Text" xml:space="preserve">
+    <value>fair</value>
+  </data>
+  <data name="PasswordStrengthMinLength.Text" xml:space="preserve">
+    <value>-character minimum</value>
+  </data>
+  <data name="PasswordStrengthStrong.Text" xml:space="preserve">
+    <value>strong</value>
+  </data>
+  <data name="PasswordStrengthWeak.Text" xml:space="preserve">
+    <value>weak</value>
+  </data>
+  <data name="CriteriaValidationExpression.Text" xml:space="preserve">
+    <value>Validation Expression: {0}</value>
+  </data>
+  <data name="CriteriaAtLeastNSpecialChars.Text" xml:space="preserve">
+    <value>At least {0} non-alphanumeric characters</value>
+  </data>
+  <data name="CriteriaAtLeastNChars.Text" xml:space="preserve">
+    <value>At least {0} characters</value>
+  </data>
+  <data name="PasswordRulesHeadText.Text" xml:space="preserve">
+    <value>Password Policy:</value>
+  </data>
+  <data name="PasswordRulesBodyText.Text" xml:space="preserve">
+    <value>Contains at least {0} characters, 1 uppercase letter, 1 number and {1}.</value>
+  </data>
+  <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
+    <value>Password does not match</value>
+  </data>
+  <data name="FileUpload.Title.Text" xml:space="preserve">
+    <value>Upload Files</value>
+  </data>
+  <data name="FileUpload.DecompressLabel.Text" xml:space="preserve">
+    <value>Decompress Zip Files</value>
+  </data>
+  <data name="FileUpload.UploadToFolderLabel.Text" xml:space="preserve">
+    <value>Upload To:</value>
+  </data>
+  <data name="FileUpload.DragAndDropAreaTitle.Text" xml:space="preserve">
+    <value>Drag files here or click to browse</value>
+  </data>
+  <data name="FileUpload.UploadFileMethod.Text" xml:space="preserve">
+    <value>Upload File</value>
+  </data>
+  <data name="FileUpload.UploadFromWebMethod.Text" xml:space="preserve">
+    <value>From URL</value>
+  </data>
+  <data name="FileUpload.CloseButton.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="FileUpload.UploadFromWebButton.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="FileUpload.DecompressingFile.Text" xml:space="preserve">
+    <value>Decompressing File</value>
+  </data>
+  <data name="FileUpload.FileIsTooLarge.Error" xml:space="preserve">
+    <value>File size bigger than {0}.</value>
+  </data>
+  <data name="FileUpload.FileUploadCancelled.Error" xml:space="preserve">
+    <value>Upload cancelled</value>
+  </data>
+  <data name="FileUpload.FileUploadFailed.Error" xml:space="preserve">
+    <value>Upload failed</value>
+  </data>
+  <data name="FileUpload.FileUploaded.Text" xml:space="preserve">
+    <value>File uploaded</value>
+  </data>
+  <data name="FileUpload.EmptyFileUpload.Error" xml:space="preserve">
+    <value>Your browser does not support empty file uploads.</value>
+  </data>
+  <data name="FileUpload.FileAlreadyExists.Error" xml:space="preserve">
+    <value>The file you want to upload already exists in this folder.</value>
+  </data>
+  <data name="FileUpload.UploadStopped.Text" xml:space="preserve">
+    <value>File upload stopped</value>
+  </data>
+  <data name="FileUpload.UrlTooltip.Text" xml:space="preserve">
+    <value>Enter Resource URL like https://SomeWebSite.com/Images/About.png</value>
+  </data>
+  <data name="FileUpload.KeepButton.Text" xml:space="preserve">
+    <value>Keep</value>
+  </data>
+  <data name="FileUpload.ReplaceButton.Text" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="AllItemsCheckedString.Text" xml:space="preserve">
+    <value>All items checked</value>
+  </data>
+  <data name="CheckAllString.Text" xml:space="preserve">
+    <value>Check all</value>
+  </data>
+  <data name="ItemsCheckedString.Text" xml:space="preserve">
+    <value>items checked</value>
+  </data>
+  <data name="NoMatches.Text" xml:space="preserve">
+    <value>No matches</value>
+  </data>
+  <data name="ShowMoreFormatString.Text" xml:space="preserve">
+    <value>Items &lt;b&gt;1&lt;/b&gt;-&lt;b&gt;{0}&lt;/b&gt; out of &lt;b&gt;{1}&lt;/b&gt;</value>
+  </data>
+  <data name="FileUpload.TooManyFiles.Error" xml:space="preserve">
+    <value>You cannot upload more than {0} file(s) at once.</value>
+  </data>
+  <data name="FileUpload.InvalidFileExtensions.Error" xml:space="preserve">
+    <value>Some selected files with invalid extensions are excluded from upload.  You can only upload files with the following extensions: {0}.</value>
+  </data>
+  <data name="FileUpload.ErrorDialogTitle.Text" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ConfirmPasswordMatched.Text" xml:space="preserve">
+    <value>Password Matched</value>
+  </data>
+</root>

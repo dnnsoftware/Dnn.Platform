@@ -1,0 +1,68 @@
+<Settings>
+  <Setting>
+    <Name>CssClass</Name>
+    <Type>String</Type>
+    <Help>Sets the CSS class used to render the language menu. NB: this will not be used in Links mode</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ItemTemplate</Name>
+    <Type>String</Type>
+    <Help>The item template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>HeaderTemplate</Name>
+    <Type>String</Type>
+    <Help>The Header template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>FooterTemplate</Name>
+    <Type>String</Type>
+    <Help>The Footer template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>AlternateTemplate</Name>
+    <Type>String</Type>
+    <Help>The Alternate Template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>SeparatorTemplate</Name>
+    <Type>String</Type>
+    <Help>The Separator Template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>SeparatorTemplate</Name>
+    <Type>String</Type>
+    <Help>The Separator Template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>CommonHeaderTemplate</Name>
+    <Type>String</Type>
+    <Help>The Common Header Template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>CommonFooterTemplate</Name>
+    <Type>String</Type>
+    <Help>The Common Footer Template to be used for displaying languages</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>ShowMenu</Name>
+    <Type>Boolean</Type>
+    <Help>Defines whether to display the language dropdown menu</Help>
+    <Value>True,False</Value>
+  </Setting>
+  <Setting>
+    <Name>ShowLinks</Name>
+    <Type>Boolean</Type>
+    <Help>Defines whether to display the language links repeater</Help>
+    <Value>True,False</Value>
+  </Setting>
+</Settings>

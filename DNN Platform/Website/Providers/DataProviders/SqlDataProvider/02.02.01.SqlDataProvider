@@ -1,0 +1,494 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/************************************************************/
+/*****              Start MemberRole Fix                *****/
+/************************************************************/
+
+-- This query will update the CreateDate on the aspnet_Membership table
+-----------------------------------------------------------------------
+UPDATE aspnet_Membership
+SET CreateDate = UP.CreatedDate
+from {objectQualifier}Users U, {objectQualifier}UserPortals UP, aspnet_Membership aM, aspnet_Users aU
+where aU.UserName = U.UserName
+and aM.UserId = aU.UserId
+and U.UserId = UP.UserId
+and UP.CreatedDate IS NOT NULL
+
+-- This query will update the LastLoginDate on the aspnet_Membership table
+--------------------------------------------------------------------------
+UPDATE aspnet_Membership
+SET LastLoginDate = UP.LastLoginDate
+from {objectQualifier}Users U, {objectQualifier}UserPortals UP, aspnet_Membership aM, aspnet_Users aU
+where aU.UserName = U.UserName
+and aM.UserId = aU.UserId
+and U.UserId = UP.UserId
+and UP.LastLoginDate IS NOT NULL
+
+-- This query will update the LastPasswordDate on the aspnet_Membership table
+-----------------------------------------------------------------------------
+UPDATE aspnet_Membership
+SET LastPasswordChangedDate = P.CreatedDate
+from {objectQualifier}Users U, {objectQualifier}Profile P, aspnet_Membership aM, aspnet_Users aU
+where aU.UserName = U.UserName
+and aM.UserId = aU.UserId
+and U.UserId = P.UserId
+and P.CreatedDate IS NOT NULL
+
+/************************************************************/
+/*****              End MemberRole Fix                  *****/
+/************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Users
+	DROP COLUMN Street, City, Region, PostalCode, Country, Password, Email, Unit, Telephone
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}UserPortals
+	DROP COLUMN Authorized, CreatedDate, LastLoginDate
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddUser
+
+@PortalID	int,
+@Username	nvarchar(100),
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50),
+@AffiliateId    int
+
+as
+
+declare @UserID int
+
+select @UserID = UserID
+from   {objectQualifier}Users
+where  Username = @Username
+
+if @UserID is null
+begin
+  insert into {objectQualifier}Users (
+    Username,
+    FirstName, 
+    LastName, 
+    AffiliateId
+  )
+  values (
+    @Username,
+    @FirstName, 
+    @LastName, 
+    @AffiliateId
+  )
+
+  select @UserID = SCOPE_IDENTITY()
+end
+
+if not exists ( select 1 from {objectQualifier}UserPortals where UserID = @UserID and PortalID = @PortalID )
+begin
+  insert into {objectQualifier}UserPortals (
+    UserID,
+    PortalID
+  )
+  values (
+    @UserID,
+    @PortalID
+  )
+end
+
+select @UserID
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetRoleMembership
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUser
+
+@PortalId int,
+@UserId int
+
+as
+
+select {objectQualifier}Users.UserId,
+       {objectQualifier}UserPortals.PortalId,
+       {objectQualifier}Users.Username,
+       'FullName' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Users.FirstName,
+       {objectQualifier}Users.LastName,
+       {objectQualifier}Users.IsSuperUser
+from {objectQualifier}Users
+left outer join {databaseOwner}{objectQualifier}UserPortals On {objectQualifier}Users.UserId = {objectQualifier}UserPortals.UserId
+where  {objectQualifier}Users.UserId = @UserId
+and    ({objectQualifier}UserPortals.PortalId = @PortalId or {objectQualifier}Users.IsSuperUser = 1)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUserByUsername
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUserByUsername
+
+@PortalId int,
+@Username nvarchar(100)
+
+as
+ 
+select {objectQualifier}Users.UserId,
+       {objectQualifier}UserPortals.PortalID,
+       {objectQualifier}Users.Username,
+       'FullName' = {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName,
+       {objectQualifier}Users.FirstName,
+       {objectQualifier}Users.LastName,
+       {objectQualifier}Users.IsSuperUser
+from {objectQualifier}Users
+left outer join {databaseOwner}{objectQualifier}UserPortals On {objectQualifier}Users.UserId = {objectQualifier}UserPortals.UserId
+where  username = @Username
+and    ({objectQualifier}UserPortals.PortalId = @PortalId or {objectQualifier}Users.IsSuperUser = 1 or @PortalId is null)
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateUser
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateUser
+
+@UserId         int,
+@FirstName	nvarchar(50),
+@LastName	nvarchar(50)
+
+as
+
+update {objectQualifier}Users
+set    FirstName = @FirstName,
+       LastName	 = @LastName
+where  UserId = @UserId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUserRole
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUserRole
+
+@PortalId int, 
+@UserId int, 
+@RoleId int
+
+as
+
+select	r.*, 
+        ur.UserRoleID, 
+        ur.UserID, 
+        ur.ExpiryDate, 
+        ur.IsTrialUsed
+from	{databaseOwner}{objectQualifier}UserRoles ur
+inner join {databaseOwner}{objectQualifier}UserPortals up on ur.UserId = up.UserId
+inner join {databaseOwner}{objectQualifier}Roles r on r.RoleID = ur.RoleID
+where   up.UserId = @UserId
+and     up.PortalId = @PortalId
+and     ur.RoleId = @RoleId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortals
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetPortals
+
+as
+
+select P.*,
+       'Users' = ( select count(*) from {databaseOwner}{objectQualifier}UserPortals where {objectQualifier}UserPortals.PortalId = P.PortalId )
+from {databaseOwner}{objectQualifier}Portals P
+order by P.PortalName
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetUsers
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetUsers
+
+@PortalId int
+
+as
+
+select {objectQualifier}Users.*
+from {objectQualifier}Users 
+left join {databaseOwner}{objectQualifier}UserPortals on {objectQualifier}Users.UserId = {objectQualifier}UserPortals.UserId
+where ( {objectQualifier}UserPortals.PortalId = @PortalId or @PortalId is null )
+order by {objectQualifier}Users.FirstName + ' ' + {objectQualifier}Users.LastName   
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetPortal
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetPortal
+
+@PortalId  int
+
+as
+
+select P.*,
+       'SuperUserId' = ( select UserId from {objectQualifier}Users where IsSuperUser = 1 ),
+       'SuperTabId' = ( select TabId from {objectQualifier}Tabs where PortalId is null and ParentId is null ),
+       'AdministratorRoleName' = ( select RoleName from {databaseOwner}{objectQualifier}Roles where RoleId = P.AdministratorRoleID ),
+       'RegisteredRoleName' = ( select RoleName from {databaseOwner}{objectQualifier}Roles where RoleId = P.RegisteredRoleID )
+from {objectQualifier}Portals P
+where  PortalId = @PortalId
+
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddModule
+    
+@TabId                         int,
+@ModuleDefId                   int,
+@ModuleOrder                   int,
+@PaneName                      nvarchar(50),
+@ModuleTitle                   nvarchar(256),
+@CacheTime                     int,
+@Alignment                     nvarchar(10),
+@Color                         nvarchar(20),
+@Border                        nvarchar(1),
+@IconFile                      nvarchar(100),
+@AllTabs                       bit,
+@ShowTitle                     bit,
+@Personalize                   int,
+@Header                        text,
+@Footer                        text,
+@StartDate                     datetime,
+@EndDate                       datetime,
+@InheritViewPermissions		   bit
+as
+
+insert into {databaseOwner}{objectQualifier}Modules ( 
+  TabId,
+  ModuleDefId,
+  ModuleOrder,
+  PaneName,
+  ModuleTitle,
+  CacheTime,
+  Alignment,
+  Color,
+  Border,
+  IconFile,
+  AllTabs,
+  ShowTitle,
+  Personalize,
+  IsDeleted,
+  Header,
+  Footer, 
+  StartDate,
+  EndDate,
+  InheritViewPermissions
+)
+values (
+  @TabId,
+  @ModuleDefId,
+  @ModuleOrder,
+  @PaneName,
+  @ModuleTitle,
+  @CacheTime,
+  @Alignment,
+  @Color,
+  @Border,
+  @IconFile,
+  @AllTabs,
+  @ShowTitle,
+  @Personalize,
+  0,
+  @Header,
+  @Footer, 
+  @StartDate,
+  @EndDate,
+  @InheritViewPermissions
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}AddTab
+GO
+
+create procedure {databaseOwner}{objectQualifier}AddTab
+
+@PortalId           int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@Url                nvarchar(255)
+
+as
+
+insert into {databaseOwner}{objectQualifier}Tabs (
+    PortalId,
+    TabName,
+    IsVisible,
+    DisableLink,
+    ParentId,
+    IconFile,
+    Title,
+    Description,
+    KeyWords,
+    IsDeleted,
+    Url
+)
+values (
+    @PortalId,
+    @TabName,
+    @IsVisible,
+    @DisableLink,
+    @ParentId,
+    @IconFile,
+    @Title,
+    @Description,
+    @KeyWords,
+    0,
+    @Url
+)
+
+select SCOPE_IDENTITY()
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetAuthRoles
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}GetModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}GetModule
+
+@ModuleId int
+
+as
+
+select	M.*
+from	{databaseOwner}{objectQualifier}Modules M
+where	M.ModuleId = @ModuleId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateModule
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateModule
+
+@ModuleId            int,
+@ModuleOrder         int,
+@ModuleTitle         nvarchar(256),
+@Alignment           nvarchar(10),
+@Color               nvarchar(20),
+@Border              nvarchar(1),
+@IconFile            nvarchar(100),
+@CacheTime           int,
+@TabId               int,
+@AllTabs             bit, 
+@ShowTitle           bit,
+@Personalize         int,
+@IsDeleted           bit,
+@Header              text,
+@Footer              text,
+@StartDate           datetime,
+@EndDate             datetime,
+@InheritViewPermissions	bit
+
+as
+
+update {databaseOwner}{objectQualifier}Modules
+set    ModuleOrder = @ModuleOrder,
+       ModuleTitle = @ModuleTitle,
+       CacheTime   = @CacheTime,
+       Alignment = @Alignment,
+       Color = @Color,
+       Border = @Border,
+       IconFile = @IconFile,
+       TabId = @TabId,
+       AllTabs = @AllTabs,
+       ShowTitle = @ShowTitle,
+       Personalize = @Personalize,
+       IsDeleted = @IsDeleted,
+       Header = @Header,
+       Footer = @Footer, 
+       StartDate = @StartDate,
+       EndDate = @EndDate,
+	   InheritViewPermissions = @InheritViewPermissions
+where  ModuleId = @ModuleId
+
+GO
+
+drop procedure {databaseOwner}{objectQualifier}UpdateTab
+GO
+
+create procedure {databaseOwner}{objectQualifier}UpdateTab
+
+@TabId              int,
+@TabName            nvarchar(50),
+@IsVisible          bit,
+@DisableLink        bit,
+@ParentId           int,
+@IconFile           nvarchar(100),
+@Title              nvarchar(200),
+@Description        nvarchar(500),
+@KeyWords           nvarchar(500),
+@IsDeleted          bit,
+@Url                nvarchar(255)
+
+as
+
+update {databaseOwner}{objectQualifier}Tabs
+set    TabName            = @TabName,
+       IsVisible          = @IsVisible,
+       DisableLink        = @DisableLink,
+       ParentId           = @ParentId,
+       IconFile           = @IconFile,
+       Title              = @Title,
+       Description        = @Description,
+       KeyWords           = @KeyWords,
+       IsDeleted          = @IsDeleted,
+       Url                = @Url
+where  TabId = @TabId
+
+GO
+
+-- If controls does not exists, insert it again
+if not exists(select * from {databaseOwner}{objectQualifier}modulecontrols where controlkey='Access Denied' and moduleDefID is null)
+begin
+	insert into {databaseOwner}{objectQualifier}ModuleControls(ModuleDefID,ControlKey,ControlTitle,ControlSrc,IconFile,ControlType,ViewOrder,HelpUrl)
+		values(null,'Access Denied','Access Denied','Admin/Security/AccessDenied.ascx',null,-1,null,null)		
+end
+-- Remove unused control
+if exists(select * from {databaseOwner}{objectQualifier}modulecontrols where controlkey='Edit Access Denied' and moduleDefID is null)
+begin
+	delete from {databaseOwner}{objectQualifier}ModuleControls where controlkey='Edit Access Denied' and moduleDefID is null
+end
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
