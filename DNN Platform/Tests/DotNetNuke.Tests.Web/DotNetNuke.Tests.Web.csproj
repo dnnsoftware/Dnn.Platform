@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Api\BasicAuthMessageHandlerTests.cs" />
     <Compile Include="Api\Internals\DnnDependencyResolverTests.cs" />
+    <Compile Include="Api\Internals\RequestScopeServiceProviderTests.cs" />
     <Compile Include="Api\Internals\ServiceContainerTests.cs" />
     <Compile Include="Api\JwtAuthMessageHandlerTests.cs" />
     <Compile Include="Api\DigestAuthMessageHandlerTests.cs" />

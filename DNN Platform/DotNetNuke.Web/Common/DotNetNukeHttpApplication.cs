@@ -133,6 +133,7 @@ namespace DotNetNuke.Web.Common.Internal
             Globals.DependencyProvider = dependencyProvider;
             dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
             ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
+            HttpRuntime.WebObjectActivator = new RequestScopeServiceProvider();
 
             ComponentFactory.Container = new SimpleContainer();
 
