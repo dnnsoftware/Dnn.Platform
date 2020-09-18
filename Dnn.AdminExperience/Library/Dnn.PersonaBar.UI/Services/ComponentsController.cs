@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using DotNetNuke.Common;
+
 namespace Dnn.PersonaBar.UI.Services
 {
     using System;
@@ -104,17 +106,27 @@ namespace Dnn.PersonaBar.UI.Services
                     return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
                 }
 
-                var matchedRoles = RoleController.Instance.GetRoles(this.PortalId)
-                    .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
-                                && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
-                                   && r.Status == RoleStatus.Approved)
-                    .Select(r => new SuggestionDto()
+                var portalRoles = RoleController.Instance.GetRoles(this.PortalId);
+                
+
+                var matchedRoles = portalRoles.Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
+                                                          && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
+                                                          && r.SecurityMode != SecurityMode.SocialGroup
+                                                          && r.Status == RoleStatus.Approved).ToList();
+
+                if (roleGroupId <= Null.NullInteger
+                        && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)
+                {
+                    matchedRoles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
+                }
+
+                var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
                     {
                         Value = r.RoleID,
-                        Label = r.RoleName,
+                        Label = r.RoleName
                     });
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, matchedRoles);
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
             catch (Exception ex)
             {
