@@ -10,6 +10,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Web.Common;
     using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
 
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddSingleton<ITestService, TestService>();
+            serviceCollection.AddScoped<IScopedService, ScopedService>();
+            serviceCollection.AddSingleton<SingletonService>();
 
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
@@ -48,11 +50,11 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var provider = new RequestScopeServiceProvider();
 
             // Act
-            var instance = provider.GetService(typeof(ITestService));
+            var instance = provider.GetService(typeof(IScopedService));
 
             // Assert
             Assert.NotNull(instance);
-            Assert.AreEqual(scope.ServiceProvider.GetRequiredService<ITestService>(), instance);
+            Assert.AreEqual(scope.ServiceProvider.GetRequiredService<IScopedService>(), instance);
         }
 
         [Test]
@@ -74,10 +76,70 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             Assert.IsInstanceOf<PageHandlerFactory>(instance);
         }
 
-        private interface ITestService
+        [Test]
+        public void CreateModuleWithSingletonService()
+        {
+            // Arrange
+            var scope = Globals.DependencyProvider.CreateScope();
+
+            HttpContextHelper.RegisterMockHttpContext();
+            HttpContextSource.Current.SetScope(scope);
+
+            var provider = new RequestScopeServiceProvider();
+            var service = Globals.DependencyProvider.GetRequiredService<SingletonService>();
+
+            // Act
+            var module = provider.GetService<TestModule<SingletonService>>();
+
+            // Assert
+            Assert.NotNull(module);
+            Assert.AreEqual(module.ConstructorService, module.DependencyService);
+            Assert.AreEqual(module.ConstructorService, service);
+        }
+
+        [Test]
+        public void CreateModuleWithScopedService()
+        {
+            // Arrange
+            var scope = Globals.DependencyProvider.CreateScope();
+
+            HttpContextHelper.RegisterMockHttpContext();
+            HttpContextSource.Current.SetScope(scope);
+
+            var provider = new RequestScopeServiceProvider();
+            var serviceFromRequestScope = scope.ServiceProvider.GetRequiredService<IScopedService>();
+            var serviceFromGlobalScope = Globals.DependencyProvider.GetRequiredService<IScopedService>();
+
+            // Act
+            var module = provider.GetService<TestModule<IScopedService>>();
+
+            // Assert
+            Assert.NotNull(module);
+            Assert.AreEqual(module.ConstructorService, module.DependencyService);
+            Assert.AreEqual(module.ConstructorService, serviceFromRequestScope);
+            Assert.AreNotEqual(module.ConstructorService, serviceFromGlobalScope);
+        }
+
+        private interface IScopedService
         { }
 
-        private class TestService : ITestService
+        private class ScopedService : IScopedService
         { }
+
+        private class SingletonService
+        { }
+
+        public class TestModule<T> : PortalModuleBase
+        {
+            public TestModule(T service)
+            {
+                ConstructorService = service;
+                DependencyService = DependencyProvider.GetRequiredService<T>();
+            }
+
+            public T ConstructorService { get; }
+
+            public T DependencyService { get; }
+        }
     }
 }
