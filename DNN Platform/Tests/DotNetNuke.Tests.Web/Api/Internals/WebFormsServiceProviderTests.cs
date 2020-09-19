@@ -17,7 +17,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
     using Moq;
     using NUnit.Framework;
 
-    public class RequestScopeServiceProviderTests
+    public class WebFormsServiceProviderTests
     {
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -47,7 +47,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             HttpContextHelper.RegisterMockHttpContext();
             HttpContextSource.Current.SetScope(scope);
 
-            var provider = new RequestScopeServiceProvider();
+            var provider = new WebFormsServiceProvider();
 
             // Act
             var instance = provider.GetService(typeof(IScopedService));
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             HttpContextHelper.RegisterMockHttpContext();
             HttpContextSource.Current.SetScope(scope);
 
-            var provider = new RequestScopeServiceProvider();
+            var provider = new WebFormsServiceProvider();
 
             // Act
             var instance = provider.GetService(typeof(PageHandlerFactory));
@@ -85,7 +85,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             HttpContextHelper.RegisterMockHttpContext();
             HttpContextSource.Current.SetScope(scope);
 
-            var provider = new RequestScopeServiceProvider();
+            var provider = new WebFormsServiceProvider();
             var service = Globals.DependencyProvider.GetRequiredService<SingletonService>();
 
             // Act
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             HttpContextHelper.RegisterMockHttpContext();
             HttpContextSource.Current.SetScope(scope);
 
-            var provider = new RequestScopeServiceProvider();
+            var provider = new WebFormsServiceProvider();
             var serviceFromRequestScope = scope.ServiceProvider.GetRequiredService<IScopedService>();
             var serviceFromGlobalScope = Globals.DependencyProvider.GetRequiredService<IScopedService>();
 

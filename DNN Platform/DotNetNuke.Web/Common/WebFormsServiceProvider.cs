@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Common
     /// <summary>
     /// Service provider implementation for <see cref="HttpRuntime.WebObjectActivator"/>.
     /// </summary>
-    internal class RequestScopeServiceProvider : IServiceProvider
+    internal class WebFormsServiceProvider : IServiceProvider
     {
         private const BindingFlags ActivatorFlags =
             BindingFlags.Instance |
