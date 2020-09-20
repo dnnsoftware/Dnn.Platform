@@ -1,4 +1,4 @@
-import moment from "moment";
+import * as dayjs from "dayjs";
 import serviceFramework from "./serviceFramework";
 
 const getLogs = function () {
@@ -27,7 +27,7 @@ const getLogs = function () {
             
             return logList
                 .concat(upgradeLogList)
-                .sort((a, b) => moment(b.lastWriteTimeUtc) - moment(a.lastWriteTimeUtc));
+                .sort((a, b) => dayjs(b.lastWriteTimeUtc) - dayjs(a.lastWriteTimeUtc));
         });
 };
 
