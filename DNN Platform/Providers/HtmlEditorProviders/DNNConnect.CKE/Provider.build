@@ -14,11 +14,13 @@
   </Target>
     <Target Name="GetFiles">
     <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <Views Include="*.ascx" />
+      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt;*.Cleanup.txt" />
+      <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
+      <JsFiles Include="js\*.js;Browser\js\*.js;js\**\*.*" />
+      <ImagesFiles Include="Browser\images\**\*.*" />
       <ResourceFiles Include="App_LocalResources\*.resx" />
-      <Images Include="Browser\images\**\*.*" />
-      <Resources Include="@(ResourceFiles);@(Views);@(Images);@(TextFiles)" />
+      <CKEditor Include="CKEditor\**\*.*" />
+      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);@(ImagesFiles);" />
     </ItemGroup>
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
