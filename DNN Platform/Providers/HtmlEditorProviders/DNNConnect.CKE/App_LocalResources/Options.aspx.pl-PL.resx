@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddRowBreakLabel.Text" xml:space="preserve">
+    <value>Dodaj złamanie wiersza</value>
+  </data>
+  <data name="AddRowBreakTitle.Text" xml:space="preserve">
+    <value>Dodaj nowe złamanie wiersza do zestawu pasków narzędziowych</value>
+  </data>
+  <data name="AddToolbar.Text" xml:space="preserve">
+    <value>Dodaj nowy zestaw pasków narzędziowych</value>
+  </data>
+  <data name="BadImportXml.Text" xml:space="preserve">
+    <value>Niepoprawny plik XML!</value>
+  </data>
+  <data name="BlanktextTT.Text" xml:space="preserve">
+    <value>Domyślny tekst do wyświetlenia, gdy zawartość jest pusta podczas wczytywania zawartości modułu.</value>
+  </data>
+  <data name="BrowserRootFolder.Text" xml:space="preserve">
+    <value>Przeglądaj folder główny:</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="CancelToolbar.Text" xml:space="preserve">
+    <value>Anuluj edycję</value>
+  </data>
+  <data name="CodeMirrorLabel.Text" xml:space="preserve">
+    <value>Motyw CodeMirror (podkreślanie składni):</value>
+  </data>
+  <data name="CreateGroupLabel.Text" xml:space="preserve">
+    <value>Stwórz nową grupę</value>
+  </data>
+  <data name="CreateGroupTitle.Text" xml:space="preserve">
+    <value>Dodać nową grupę do zestawu pasków narzędziowych?</value>
+  </data>
+  <data name="DefaultLinkMode0.Text" xml:space="preserve">
+    <value>Względne adresy URL</value>
+  </data>
+  <data name="DefaultLinkMode1.Text" xml:space="preserve">
+    <value>Bezwzględne adresy URL</value>
+  </data>
+  <data name="DefaultLinkMode2.Text" xml:space="preserve">
+    <value>Względne bezpieczne adresy URL</value>
+  </data>
+  <data name="DefaultLinkMode3.Text" xml:space="preserve">
+    <value>Bezwzględne bezpieczne adresy URL</value>
+  </data>
+  <data name="DefaultLinkModeLabel.Text" xml:space="preserve">
+    <value>Domyślny tryb podłączania odnośników</value>
+  </data>
+  <data name="DeleteGroup.Text" xml:space="preserve">
+    <value>Usunąć tę grupę pasków narzędziowych?</value>
+  </data>
+  <data name="DeleteToolbar.Text" xml:space="preserve">
+    <value>Usuń wybrany zestaw paska narzędziowego</value>
+  </data>
+  <data name="DeleteToolbarButton.Text" xml:space="preserve">
+    <value>Usuń ten przycisk z paska narzędziowego?</value>
+  </data>
+  <data name="DetailView.Text" xml:space="preserve">
+    <value>Widok szczegółów</value>
+  </data>
+  <data name="EditGroupName.Text" xml:space="preserve">
+    <value>Kliknij, aby zmodyfikować nazwę grupy</value>
+  </data>
+  <data name="EditorConfigWarning.Text" xml:space="preserve">
+    <value>&lt;strong&gt;Informacje:&lt;/strong&gt; Ustawienia poniżej są tylko dla bardzo doświadczonych użytkowników, należy je zmieniać tylko wtedy, gdy naprawdę wiemy co robimy. Więcej informacji znajduje się na &lt;a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html"&gt;&lt;strong&gt;stronie dokumentacji API JavaScript CKEditor&lt;/strong&gt;&lt;/a&gt;. Ustawienia można zostawić puste, aby wczytać domyślny zestaw ustawień przy uruchomieniu edytora.</value>
+  </data>
+  <data name="EditToolbar.Text" xml:space="preserve">
+    <value>Edytuj wybrany zestaw paska narzędziowego</value>
+  </data>
+  <data name="Error1.Text" xml:space="preserve">
+    <value>Brak autoryzacji do wyświetlenia tej strony!</value>
+  </data>
+  <data name="Export.Text" xml:space="preserve">
+    <value>Wyeksportowano ustawienia bieżące</value>
+  </data>
+  <data name="ExportNow.Text" xml:space="preserve">
+    <value>Wyeksportuj teraz</value>
+  </data>
+  <data name="FileListPageSizeLabel.Text" xml:space="preserve">
+    <value>Rozmiar strony z listą plików (0 = bez stronicowania):</value>
+  </data>
+  <data name="FileListViewModeLabel.Text" xml:space="preserve">
+    <value>Domyślny tryb wyświetlania listy plików:</value>
+  </data>
+  <data name="IconLegendLabel.Text" xml:space="preserve">
+    <value>Legenda ikon</value>
+  </data>
+  <data name="IconsView.Text" xml:space="preserve">
+    <value>Widok ikon</value>
+  </data>
+  <data name="Imported.Text" xml:space="preserve">
+    <value>Zaimportowane ustawienia edytora dla</value>
+  </data>
+  <data name="ImportNow.Text" xml:space="preserve">
+    <value>Zaimportuj teraz</value>
+  </data>
+  <data name="lblAutoCreateFileThumbNails.Text" xml:space="preserve">
+    <value>Automatycznie twórz miniaturki do podglądu:</value>
+  </data>
+  <data name="lblBlanktext.Text" xml:space="preserve">
+    <value>Tekst, gdy pusto:</value>
+  </data>
+  <data name="lblBrowAllow.Text" xml:space="preserve">
+    <value>Zezwolone role:</value>
+  </data>
+  <data name="lblBrowser.Text" xml:space="preserve">
+    <value>Przeglądarka plików</value>
+  </data>
+  <data name="lblBrowserDirs.Text" xml:space="preserve">
+    <value>Używaj podfolderów dla nie-adminów (..\Portals\0\userfiles\nazwa_użytkownika)?</value>
+  </data>
+  <data name="lblBrowsSec.Text" xml:space="preserve">
+    <value>Ustawienia przeglądarki plików</value>
+  </data>
+  <data name="lblCSSURL.Text" xml:space="preserve">
+    <value>CSS edytora:</value>
+  </data>
+  <data name="lblCustomConfig.Text" xml:space="preserve">
+    <value>Własny plik konfiguracji</value>
+  </data>
+  <data name="lblCustomToolbars.Text" xml:space="preserve">
+    <value>Własne paski narzędziowe</value>
+  </data>
+  <data name="lblEditorConfig.Text" xml:space="preserve">
+    <value>Konfiguracja edytora</value>
+  </data>
+  <data name="lblHeader.Text" xml:space="preserve">
+    <value>Informacje</value>
+  </data>
+  <data name="lblHeight.Text" xml:space="preserve">
+    <value>Wysokość edytora (piksele lub procent)</value>
+  </data>
+  <data name="lblImExport.Text" xml:space="preserve">
+    <value>Zaimportuj/Wyeksportuj bieżące ustawienia...</value>
+  </data>
+  <data name="lblInfo.Text" xml:space="preserve">
+    <value>Ustawienia zapisane. Odśwież edytor lub wczytaj stronę ponownie, aby wyświetlić zmiany!</value>
+  </data>
+  <data name="lblInfoDel.Text" xml:space="preserve">
+    <value>Ustawienia usunięte</value>
+  </data>
+  <data name="lblInjectSyntaxJs.Text" xml:space="preserve">
+    <value>Dołączać odnośnik do SyntaxHighlighter Js?</value>
+  </data>
+  <data name="lblMainSet.Text" xml:space="preserve">
+    <value>Główne ustawienia</value>
+  </data>
+  <data name="lblModInst.Text" xml:space="preserve">
+    <value>Instancja modułu:</value>
+  </data>
+  <data name="lblModName.Text" xml:space="preserve">
+    <value>Nazwa modułu:</value>
+  </data>
+  <data name="lblModType.Text" xml:space="preserve">
+    <value>Typ modułu:</value>
+  </data>
+  <data name="lblPage.Text" xml:space="preserve">
+    <value>Strona:</value>
+  </data>
+  <data name="lblPortal.Text" xml:space="preserve">
+    <value>Nazwa witryny:</value>
+  </data>
+  <data name="lblResizeHeight.Text" xml:space="preserve">
+    <value>Domyślna wysokość obrazka po zmniejszeniu:</value>
+  </data>
+  <data name="lblResizeWidth.Text" xml:space="preserve">
+    <value>Domyślna szerokość obrazka po zmniejszeniu:</value>
+  </data>
+  <data name="lblRole.Text" xml:space="preserve">
+    <value>Rola</value>
+  </data>
+  <data name="lblSelToolb.Text" xml:space="preserve">
+    <value>Wybierz pasek narzędziowy</value>
+  </data>
+  <data name="lblSetFor.Text" xml:space="preserve">
+    <value>Zmień ustawienia dla...</value>
+  </data>
+  <data name="lblSettings.Text" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
+  <data name="lblShowPageLinksTabFirst.Text" xml:space="preserve">
+    <value>Wyświetl najpierw zakładkę z odnośnikami:</value>
+  </data>
+  <data name="lblSkin.Text" xml:space="preserve">
+    <value>Motyw</value>
+  </data>
+  <data name="lblStyles.Text" xml:space="preserve">
+    <value>Style edytora</value>
+  </data>
+  <data name="lblTemplates.Text" xml:space="preserve">
+    <value>Szablony edytora</value>
+  </data>
+  <data name="lblTemplFiles.Text" xml:space="preserve">
+    <value>Plik szablonu edytora:</value>
+  </data>
+  <data name="lblToolbarList.Text" xml:space="preserve">
+    <value>Lista własnych pasków narzędziowych:</value>
+  </data>
+  <data name="lblToolbarPriority.Text" xml:space="preserve">
+    <value>Priorytet zestawu pasków narzędziowych:</value>
+  </data>
+  <data name="lblToolbars.Text" xml:space="preserve">
+    <value>Paski narzędziowe:</value>
+  </data>
+  <data name="lblToolbName.Text" xml:space="preserve">
+    <value>Nazwa paska narzędziowego:</value>
+  </data>
+  <data name="lblToolbSet.Text" xml:space="preserve">
+    <value>Dostępne przyciski dla pasków:</value>
+  </data>
+  <data name="lblUName.Text" xml:space="preserve">
+    <value>Nazwa użytkownika:</value>
+  </data>
+  <data name="lblUseAnchorSelector.Text" xml:space="preserve">
+    <value>Użyj wybierania kotwicy (automatycznie odnajduje wszystkie kotwice na wybranej stronie):</value>
+  </data>
+  <data name="lblUseJquery.Text" xml:space="preserve">
+    <value>Użyć adaptera jQuery?</value>
+  </data>
+  <data name="lblWidth.Text" xml:space="preserve">
+    <value>Szerokość edytora (pikseli lub procent)</value>
+  </data>
+  <data name="ListView.Text" xml:space="preserve">
+    <value>Widok listy</value>
+  </data>
+  <data name="lnkExport.Text" xml:space="preserve">
+    <value>Eksportuj</value>
+  </data>
+  <data name="lnkImport.Text" xml:space="preserve">
+    <value>Importuj</value>
+  </data>
+  <data name="lnkRemove.Text" xml:space="preserve">
+    <value>Usuń ustawienia</value>
+  </data>
+  <data name="ModuleError.Text" xml:space="preserve">
+    <value>Ustawienia edytora dla instancji modułu mogą być wyświetlane i wczytywane tylko z tej instancji modułu!</value>
+  </data>
+  <data name="ModuleHasSettingLabel.Text" xml:space="preserve">
+    <value>Zawiera ustawienia modułu</value>
+  </data>
+  <data name="ModuleHeader.Text" xml:space="preserve">
+    <value>Menedżer konfiguracji dostawcy CKEditor</value>
+  </data>
+  <data name="ModuleInstance.Text" xml:space="preserve">
+    <value>Moduł</value>
+  </data>
+  <data name="ModuleNoSettingLabel.Text" xml:space="preserve">
+    <value>Nie zawiera ustawień dla modułu</value>
+  </data>
+  <data name="NewGroupName.Text" xml:space="preserve">
+    <value>Nowa grupa</value>
+  </data>
+  <data name="NewsArcticlesArticlesList.Text" xml:space="preserve">
+    <value>Wybierz artykuł:</value>
+  </data>
+  <data name="NewsArcticlesModuleList.Text" xml:space="preserve">
+    <value>Wybierz stronę i instancję modułu artykułów:</value>
+  </data>
+  <data name="NoJava.Text" xml:space="preserve">
+    <value>&lt;strong&gt;CKEditor wymaga obsługi JavaScript do działania&lt;/strong&gt;. W przypadku braku obsługi JavaScript nadal można przeglądać treść w postaci kodu HTML i można go modyfikować, ale bez zaawansowanego interfejsu.</value>
+  </data>
+  <data name="Options.Text" xml:space="preserve">
+    <value>Własne opcje edytora</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value>Strona</value>
+  </data>
+  <data name="PageHasSettingLabel.Text" xml:space="preserve">
+    <value>Zawiera ustawienia dla strony</value>
+  </data>
+  <data name="PageNoSettingLabel.Text" xml:space="preserve">
+    <value>Nie zawiera ustawień dla strony</value>
+  </data>
+  <data name="Portal.Text" xml:space="preserve">
+    <value>Witryna</value>
+  </data>
+  <data name="PortalHasSettingLabel.Text" xml:space="preserve">
+    <value>Zawiera ustawienia dla witryny</value>
+  </data>
+  <data name="PortalNoSettingLabel.Text" xml:space="preserve">
+    <value>Nie zawiera ustawień dla witryny</value>
+  </data>
+  <data name="PortalOnly.Text" xml:space="preserve">
+    <value>Tylko dla tej witryny</value>
+  </data>
+  <data name="PortalOnlyLabel.Text" xml:space="preserve">
+    <value>Wyświetlać tylko ustawienia dla tej witryny, czy dla wszystkich?</value>
+  </data>
+  <data name="Remove.Help" xml:space="preserve">
+    <value>Usuwa ustawienie tylko dla bieżącej {0}.</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Usuń ustawienia dla {0}</value>
+  </data>
+  <data name="RemoveAll.Help" xml:space="preserve">
+    <value>Usuwa ustawienia {0} z całej witryny</value>
+  </data>
+  <data name="RemoveAll.Text" xml:space="preserve">
+    <value>Usuwa wszystkie ustawienia dla {0}</value>
+  </data>
+  <data name="RemoveModuleChild.Help" xml:space="preserve">
+    <value>Usuwa wszystkie ustawienia dla modułów na bieżącej stronie</value>
+  </data>
+  <data name="RemoveModuleChild.Text" xml:space="preserve">
+    <value>Usuń wszystkie ustawienia dla modułów na stronie</value>
+  </data>
+  <data name="RemovePageChild.Help" xml:space="preserve">
+    <value>Usuwa wszystkie ustawienia dla stron podrzędnych strony bieżącej</value>
+  </data>
+  <data name="RemovePageChild.Text" xml:space="preserve">
+    <value>Usuń wszystkie ustawienia dla stron podrzędnych</value>
+  </data>
+  <data name="RowBreak.Text" xml:space="preserve">
+    <value>Złamanie wiersza</value>
+  </data>
+  <data name="SaveGroupName.Text" xml:space="preserve">
+    <value>Zapisz nazwę grupy</value>
+  </data>
+  <data name="SaveToolbar.Text" xml:space="preserve">
+    <value>Zapisz zestaw paska narzędziowego</value>
+  </data>
+  <data name="SettingsExportTitle.Text" xml:space="preserve">
+    <value>Eksporter ustawień</value>
+  </data>
+  <data name="SettingsImportTitle.Text" xml:space="preserve">
+    <value>Importer ustawień</value>
+  </data>
+  <data name="ToolbarGroupsLabel.Text" xml:space="preserve">
+    <value>Grupy pasków narzędziowych:</value>
+  </data>
+  <data name="UploadFolderLabel.Text" xml:space="preserve">
+    <value>Domyślny folder wysyłania:</value>
+  </data>
+  <data name="Wait.Text" xml:space="preserve">
+    <value>Proszę czekać...</value>
+  </data>
+  <data name="WaitMessage.Text" xml:space="preserve">
+    <value>Wczytywanie strony opcji.</value>
+  </data>
+  <data name="ToolbarNameMissing.Text" xml:space="preserve">
+    <value>Należy wprowadzić nazwę dla paska narzędziowego</value>
+  </data>
+  <data name="ToolbarSetCreated.Text" xml:space="preserve">
+    <value>Stworzono nowy zestaw pasków narzędziowych "{0}"!</value>
+  </data>
+  <data name="ToolbarSetDeleted.Text" xml:space="preserve">
+    <value>Wybrany zestaw pasków narzędziowych został usunięty!</value>
+  </data>
+  <data name="ToolbarSetSaved.Text" xml:space="preserve">
+    <value>Zestaw pasków narzędziowych zapisany!</value>
+  </data>
+  <data name="OverrideFileOnUploadLabel.Text" xml:space="preserve">
+    <value>Override File if exists on upload, otherwise a new File with underscore _1 will be created?</value>
+  </data>
+  <data name="CopyPageChild.Help" xml:space="preserve">
+    <value>Copy current Page Settings to all Child Pages</value>
+  </data>
+  <data name="CopyPageChild.Text" xml:space="preserve">
+    <value>Copy Settings to Child Pages</value>
+  </data>
+  <data name="lblInfoCopyAll.Text" xml:space="preserve">
+    <value>Settings copied to all Child Pages.</value>
+  </data>
+  <data name="SizeLimitLabel.Text" xml:space="preserve">
+    <value>Upload File Size Limit</value>
+  </data>
+  <data name="UploadFileLimitLabel.Text" xml:space="preserve">
+    <value>Upload File Limits:</value>
+  </data>
+  <data name="AllPortals.Text" xml:space="preserve">
+    <value>Wszystkie portale</value>
+  </data>
+  <data name="HostHasSettingLabel.Text" xml:space="preserve">
+    <value>Zawiera ustawienia hosta</value>
+  </data>
+  <data name="HostNoSettingLabel.Text" xml:space="preserve">
+    <value>Nie zawiera żadnych ustawień hosta</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+</root>

@@ -87,7 +87,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         var $personaBar = $('#personabar');
         var $showSiteButton = $('#showsite');
         var customModules = [];
-        
+        var disableEditBar = window.parent['personaBarSettings']['disableEditBar'] === true;
+
         window.requirejs.config({
             paths: {
                 'rootPath': utility.getApplicationRootPath()
@@ -686,6 +687,28 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             }
         }
 
+        function handleDisabledEditBar($btnEdit) {
+
+            $btnEdit.addClass('disabled');
+
+            var $tooltip = $('<div class="editmode-tooltip"><span class="tooltip-title"></span><span class="tooltip-message"></span></div>');
+            $tooltip.click(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+            $btnEdit.append($tooltip);
+            
+            var title = util.resx.PersonaBar["DisableEditBar"];
+            var message = util.resx.PersonaBar["DisableEditBar.Help"];
+
+            $btnEdit.find(".editmode-tooltip > span").fadeOut('fast', '', function () {
+                $btnEdit.find('.tooltip-title').html(title);
+                $btnEdit.find('.tooltip-message').html(message);
+
+                $btnEdit.find(".editmode-tooltip > span").fadeIn('fast');
+            });
+        }
+
         function handleLockEditState($btnEdit) {
             var $tooltip = $('<div class="editmode-tooltip"><span class="tooltip-title"></span><span class="tooltip-message"></span></div>');
             $tooltip.click(function(e) {
@@ -1040,6 +1063,11 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             (function setupEditButton() {
                                 var $btnEdit = $("#Edit.btn_panel");
                                 if (!config.visible) {
+                                    return;
+                                }
+
+                                if (disableEditBar) {
+                                    handleDisabledEditBar($btnEdit);
                                     return;
                                 }
 

@@ -1,0 +1,9 @@
+﻿IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllHostSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllHostSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllHostSettings
+	AS
+	SET NOCOUNT ON
+	delete from {databaseOwner}{objectQualifier}CKE_Settings where SettingName like 'DNNCKH#%'
+GO

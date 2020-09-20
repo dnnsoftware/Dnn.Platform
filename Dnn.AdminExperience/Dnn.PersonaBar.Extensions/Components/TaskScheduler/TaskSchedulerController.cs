@@ -8,15 +8,18 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Net;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Scheduling;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class TaskSchedulerController
     {
+        private static readonly string SchedulersToRunOnSameWebServerKey = "SchedulersToRunOnSameWebServer";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
 
         private string LocalResourcesFile
@@ -144,6 +147,41 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                 Logger.Error(exc);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets a list of servers to be recommended for a particular scheduler.
+        /// </summary>
+        /// <param name="schedulerId">Scheduler Id.</param>
+        /// <returns>List of recommended servers for specified <paramref name="schedulerId"/>.</returns>
+        public IEnumerable<string> GetRecommendedServers(int schedulerId)
+        {
+            var hostSettingsService = Globals.DependencyProvider.GetRequiredService<IHostSettingsService>();
+
+            var schedulerIds = hostSettingsService.GetString(SchedulersToRunOnSameWebServerKey, string.Empty)
+                .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(x => int.TryParse(x, out var id))
+                .Select(x => int.Parse(x))
+                .ToArray();
+
+            if (!schedulerIds.Contains(schedulerId))
+            {
+                return new string[0];
+            }
+
+            var servers = SchedulingProvider.Instance().GetSchedule()
+                .Cast<ScheduleItem>()
+                .Where(x => x.ScheduleID != schedulerId
+                    && x.Enabled
+                    && schedulerIds.Contains(x.ScheduleID)
+                    && !string.IsNullOrWhiteSpace(x.Servers))
+                .SelectMany(x => x.Servers
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim()))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x);
+
+            return servers;
         }
     }
 }

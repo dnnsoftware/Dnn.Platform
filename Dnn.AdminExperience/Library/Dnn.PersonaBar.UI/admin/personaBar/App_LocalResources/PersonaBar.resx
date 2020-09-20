@@ -303,6 +303,12 @@
   <data name="NormalUpdate.Text" xml:space="preserve">
     <value>[ New Update ]</value>
   </data>
+  <data name="DisableEditBar.Help" xml:space="preserve">
+    <value>This DNN installation is running an alternative edit bar. </value>
+  </data>
+  <data name="DisableEditBar.Text" xml:space="preserve">
+    <value>Edit Bar is disabled. </value>
+  </data>
   <data name="LockEditMode.Help" xml:space="preserve">
     <value>When locked, the icon will appear blue, and you will remain in Edit Mode even when navigating to other pages.</value>
   </data>
