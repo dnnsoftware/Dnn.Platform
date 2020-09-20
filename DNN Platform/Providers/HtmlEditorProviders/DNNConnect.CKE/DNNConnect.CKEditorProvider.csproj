@@ -71,12 +71,6 @@
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="mscorlib" />
-    <Reference Include="StyleCop.Analyzers">
-      <HintPath>..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll</HintPath>
-    </Reference>
-    <Reference Include="StyleCop.Analyzers.CodeFixes">
-      <HintPath>..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -292,6 +286,7 @@
     <Content Include="Tabs.ashx" />
     <Content Include="readme.md" />
     <Content Include="web.config" />
+    <Content Include="stylecop.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -320,6 +315,10 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

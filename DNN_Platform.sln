@@ -505,9 +505,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HtmlEditorProviders", "HtmlEditorProviders", "{682824D2-B21A-4460-AC66-67BFFDD5A559}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNNConnect.CKE", "DNNConnect.CKE", "{8BA6DD11-0CD5-4556-8853-282B3C1C3A06}"
-	ProjectSection(SolutionItems) = preProject
-		stylecop.json = stylecop.json
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNNConnect.CKEditorProvider", "DNN Platform\Providers\HtmlEditorProviders\DNNConnect.CKE\DNNConnect.CKEditorProvider.csproj", "{AE7E021E-7C7B-4003-9BD6-5A04C781C277}"
 EndProject
