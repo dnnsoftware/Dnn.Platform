@@ -16,6 +16,7 @@
     <ItemGroup>
       <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt;*.Cleanup.txt" />
       <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
+      <CssFiles Include="css\*.css;Browser\*.css" />
       <JsFiles Include="js\*.js;Browser\js\*.js;js\**\*.*" />
       <ImagesFiles Include="Browser\images\**\*.*" />
       <ResourceFiles Include="App_LocalResources\*.resx" />
