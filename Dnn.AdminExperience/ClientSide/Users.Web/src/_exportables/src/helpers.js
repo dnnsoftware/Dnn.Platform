@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 import utilities from "utils";
-import Moment from "moment";
+import * as dayjs from "dayjs";
 
 export function formatDate(dateValue, longformat) {
     if (!dateValue) {
@@ -12,7 +12,10 @@ export function formatDate(dateValue, longformat) {
         return "-";
     }
 
-    return Moment(dateValue).locale(utilities.getCulture()).format(longformat === true ? "LLL" : "L");
+    const localizedFormat = require('dayjs/plugin/localizedFormat');
+    dayjs.extend(localizedFormat);
+
+    return dayjs(dateValue).locale(utilities.getCulture()).format(longformat === true ? "LLL" : "L");
 }
 
 export function validateEmail(value) {
