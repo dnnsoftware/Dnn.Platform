@@ -48,10 +48,11 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
+    <DocumentationFile>bin\DNNConnect.CKEditorProvider.xml</DocumentationFile>
     <NOWARN>1591</NOWARN>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <ErrorReport>none</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -282,6 +283,9 @@
     </None>
     <Content Include="Tabs.ashx" />
     <Content Include="web.config" />
+    <Content Include="Provider.build">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -345,5 +349,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="$(MSBuildProjectDirectory)\BuildScripts\Package.Targets" />
+  <Import Project="$(MSBuildProjectDirectory)\Provider.build" />
 </Project>
