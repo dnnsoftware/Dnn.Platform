@@ -214,9 +214,6 @@
     <Content Include="Browser\js\jquery.ImageResizer.js" />
     <Content Include="Browser\js\jquery.ImageSlider.js" />
     <Content Include="Browser\js\jquery.pagemethod.js" />
-    <Content Include="BuildScripts\DotNetNuke.MSBuild.Tasks.dll" />
-    <Content Include="BuildScripts\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="BuildScripts\MSBuild.Community.Tasks.dll" />
     <Content Include="CKEditorConfig.png" />
     <Content Include="css\CKEditorOverride.css" />
     <Content Include="css\CkEditorContents.css" />
@@ -238,6 +235,7 @@
     <Content Include="Install\Dnn.CKToolbarSets.xml" />
     <Content Include="Install\license.txt" />
     <Content Include="Install\releaseNotes.txt" />
+    <Content Include="license.txt" />
     <Content Include="LogoCKEditor.png" />
     <Content Include="Module\EditorConfigManager.ascx" />
     <Content Include="Options.aspx">
@@ -271,20 +269,18 @@
     <Content Include="Browser\ProcessImage.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="releaseNotes.txt" />
     <Content Include="UrlControl.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Browser\FileUploader.ashx" />
     <Content Include="Browser\Browser.comb.css.bundle" />
     <Content Include="Install\01.00.00.SqlDataProvider" />
-    <Content Include="BuildScripts\MSBuild.Community.Tasks.Targets" />
-    <Content Include="BuildScripts\Package.targets" />
     <None Include="Install\Uninstall.SqlDataProvider" />
     <None Include="DNNConnect.CKEditorProvider.dnn">
       <SubType>Designer</SubType>
     </None>
     <Content Include="Tabs.ashx" />
-    <Content Include="readme.md" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
