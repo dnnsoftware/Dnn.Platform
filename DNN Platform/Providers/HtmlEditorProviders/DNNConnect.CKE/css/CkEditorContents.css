@@ -1,0 +1,33 @@
+/*
+DNN Custom Override Styles to fix issues with other modules, this is loaded inside the iframe for the editor. 
+*/
+
+body
+{
+	/* Remove the background color to make it transparent */
+    background-image: none;
+    background: none;
+	background-color: #fff;
+
+	margin: 20px;
+}
+
+.cke_editable
+{
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.cke_contents_ltr blockquote
+{
+	padding-left: 20px;
+	padding-right: 8px;
+	border-left-width: 5px;
+}
+
+.cke_contents_rtl blockquote
+{
+	padding-left: 8px;
+	padding-right: 20px;
+	border-right-width: 5px;
+}

@@ -1,0 +1,107 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="01.01.00">
+
+  <friendlyName>DNN Connect CKEditor Provider</friendlyName>
+  <description>CKEditor Provider by DNN Connect for DNN</description>
+  <iconFile>~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png</iconFile>
+  <azureCompatible>true</azureCompatible>
+  <owner>
+    <name></name>
+    <organization>DNN Connect</organization>
+    <url>http://dnn-connect.org/</url>
+    <email></email>
+  </owner>
+  <license src="license.txt" />
+  <releaseNotes src="releaseNotes.txt" />
+  <dependencies>
+    <dependency type="CoreVersion">07.04.00</dependency>
+  </dependencies>
+  <components>
+    <component type="Assembly">
+      <assemblies>
+        <assembly>
+          <path>bin</path>
+          <name>DNNConnect.CKEditorProvider.dll</name>
+        </assembly>
+      </assemblies>
+    </component>
+    <component type="ResourceFile">
+      <resourceFiles>
+        <basePath>Providers\HtmlEditorProviders\DNNConnect.CKE</basePath>
+        <resourceFile>
+          <name>Resources.zip</name>
+        </resourceFile>
+      </resourceFiles>
+    </component>
+    <component type="Script">
+      <scripts>
+        <basePath>Providers\HtmlEditorProviders\DNNConnect.CKE\</basePath>
+        <script type="Install">
+          <path>Install</path>
+          <name>01.00.00.SqlDataProvider</name>
+          <version>01.00.00</version>
+        </script>
+        <script type="Install">
+          <path>Install</path>
+          <name>01.00.02.SqlDataProvider</name>
+          <version>01.00.02</version>
+        </script>
+        <script type="UnInstall">
+          <path>Install</path>
+          <name>Uninstall.SqlDataProvider</name>
+        </script>
+      </scripts>
+    </component>
+    <component type="File">
+      <files>
+        <basePath>Portals\_default</basePath>
+        <file>
+          <path>Install</path>
+          <name>Dnn.CKEditorDefaultSettings.xml</name>
+        </file>
+        <file>
+          <path>Install</path>
+          <name>Dnn.CKToolbarButtons.xml</name>
+        </file>
+        <file>
+          <path>Install</path>
+          <name>Dnn.CKToolbarSets.xml</name>
+        </file>
+      </files>
+    </component>
+    <component type="File">
+      <files>
+        <basePath>Providers\HtmlEditorProviders\DNNConnect.CKE</basePath>
+        <file>
+          <name>LogoCKEditor.png</name>
+          <sourceFileName>LogoCKEditor.png</sourceFileName>
+        </file>
+      </files>
+    </component>
+    <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='' or @defaultProvider='DotNetNuke.RadEditorProvider']" action="updateattribute" name="defaultProvider" value="DNNConnect.CKE" />
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers" action="update" key="name" collision="ignore">
+                    <add name="DNNConnect.CKE" type="DNNConnect.CKEditorProvider.CKHtmlEditorProvider, DNNConnect.CKEditorProvider" providerPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/" settingsControlPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='DNNConnect.CKE']" action="updateattribute" name="defaultProvider" value="DotNetNuke.RadEditorProvider" />
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='DNNConnect.CKE']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+    </component>
+  </components>
+</package>
+</packages>
+</dotnetnuke>
