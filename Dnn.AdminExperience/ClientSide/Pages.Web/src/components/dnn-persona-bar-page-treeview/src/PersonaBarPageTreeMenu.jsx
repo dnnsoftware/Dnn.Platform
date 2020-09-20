@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import "./styles.less";
 import PersonaBarSelectionArrow from "./_PersonaBarSelectionArrow";
 import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
+import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeMenu extends Component {
 
@@ -47,11 +48,12 @@ export class PersonaBarPageTreeMenu extends Component {
 
         return listItems.map((item, index) => {
             return (
-                <li key={"pageTreeListItem" + index} className="list-item-menu">
+                <li key={"pageTreeListItem" + index} className="list-item-menu-right">
                     <div
                         className={(item.selected) ? "list-item-highlight" : null}
                         style={{ height: "28px", lineHeight: "35px" }}>
                         <div className="draft-pencil">
+                            <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
                             {item.canViewPage && <PersonaBarSelectionArrow
                                 CallCustomAction={this.props.CallCustomAction}
                                 onAddPage={this.props.onAddPage}

@@ -1,0 +1,151 @@
+/*
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
+
+/*
+menu.css (part of editor.css)
+===============================
+
+This file styles menus used in the editor UI. These menus are the list of
+options available inside some "floating panels", like menu buttons of the
+toolbar or the context menu.
+
+Note that the menu itself doesn't include the floating element that holds it.
+That element is styles in the panel.css file.
+
+The following is a visual representation of the main elements of a menu:
+
++-- .cke_menu -----------------+
+| +-- .cke_menuitem  --------+ |
+| | +-- .cke_menubutton ---+ | |
+| | |                      | | |
+| | +----------------------+ | |
+| +--------------------------+ |
+| +-- .cke_menuseparator ----+ |
+| ...                          |
++------------------------------+
+
+This is the .cke_menubutton structure:
+(Note that the menu button icon shares with toolbar button the common class .cke_button_icon to achieve the same outlook.)
+
++-- .cke_menubutton ------------------------------------------+
+| +-- .cke_menubutton_icon ---+ +-- .cke_menubutton_label --+ |
+| | +-- .cke_button_icon ---+ | |                           | |
+| | |                       | | |                           | |
+| | +-----------------------+ | |                           | |
+| +---------------------------+ +---------------------------+ |
++-------------------------------------------------------------+
+
+Special outer level classes used in this file:
+
+	.cke_hc: Available when the editor is rendered on "High Contrast".
+	.cke_rtl: Available when the editor UI is on RTL.
+*/
+
+/* .cke_menuitem is the element that holds the entire structure of each of the
+   menu items. */
+
+.cke_menubutton {
+	/* The "button" inside a menu item is a <a> element.
+	   Transforms it into a block. */
+	display:block;
+}
+
+.cke_menubutton {
+	border-top: 1px solid #d7d7d7;
+  box-shadow: inset 0 1px 0 0 #fff;
+}
+.cke_menuitem:first-child .cke_menubutton {
+	border: 0;
+  box-shadow: none;
+}
+
+.cke_menuitem span {
+	/* Avoid the text selection cursor inside menu items. */
+	cursor: default;
+}
+
+.cke_menubutton:hover,
+.cke_menubutton:focus,
+.cke_menubutton:active {
+	background-color: #d7d7d7;
+  box-shadow: inset 0 1px 1px #aaa;
+}
+
+.cke_menubutton_disabled:hover,
+.cke_menubutton_disabled:focus,
+.cke_menubutton_disabled:active {
+	background-color: transparent;
+  box-shadow: none;
+}
+
+/* The menu item icon. */
+.cke_menubutton_icon {
+	padding: 4px;
+	opacity: 0.70;
+	width: 16px;
+	height: 16px;
+	clear: both;
+}
+.cke_ltr .cke_menubutton_icon {
+	float: left;
+}
+.cke_rtl .cke_menubutton_icon {
+	float: right;
+}
+
+.cke_menubutton_disabled .cke_menubutton_icon {
+  opacity: 0.3;
+}
+
+/* The textual part of each menu item. */
+.cke_menubutton_label {
+	display:block;
+	height:19px;
+  text-shadow: 0 1px 0 #fff;
+}
+.cke_ltr .cke_menubutton_label {
+	padding: 5px 3px 0 4px;
+  margin-left: 24px;
+}
+.cke_rtl .cke_menubutton_label {
+	padding: 5px 4px 0 3px;
+  margin-right: 24px;
+}
+
+.cke_menubutton_disabled .cke_menubutton_label {
+	/*color: #ccc;*/
+  opacity: 0.3;
+}
+
+.cke_panel_frame .cke_menubutton_label {
+	display: none;
+}
+
+/* The separator used to separate menu item groups. */
+.cke_menuseparator {
+	height: 0;
+  box-shadow: 0 1px 0 0 #000;
+}
+
+/* The small arrow shown for item with sub-menus. */
+.cke_menuarrow {
+	height: 5px;
+	width: 3px;
+	margin-top: 5px;
+}
+.cke_ltr .cke_menuarrow {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUEyNjM5RTRGREI2MTFFMUJGOEJEMkFGNUIwNkQzODciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NUEyNjM5RTVGREI2MTFFMUJGOEJEMkFGNUIwNkQzODciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1QTI2MzlFMkZEQjYxMUUxQkY4QkQyQUY1QjA2RDM4NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1QTI2MzlFM0ZEQjYxMUUxQkY4QkQyQUY1QjA2RDM4NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PoxUdLIAAAAdSURBVHjaYmBgYPjPAAVMUBoswIhNBiaBkAEIMACVfQQDkwC5OQAAAABJRU5ErkJggg==") center center no-repeat;
+  float: right;
+  margin-right: 2px;
+}
+.cke_rtl .cke_menuarrow {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUEyNjM5RThGREI2MTFFMUJGOEJEMkFGNUIwNkQzODciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NUEyNjM5RTlGREI2MTFFMUJGOEJEMkFGNUIwNkQzODciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1QTI2MzlFNkZEQjYxMUUxQkY4QkQyQUY1QjA2RDM4NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1QTI2MzlFN0ZEQjYxMUUxQkY4QkQyQUY1QjA2RDM4NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsM4jPAAAAAdSURBVHjaYmBAgP+MMAaIYIQxYBwGZAG4HoAAAwCXHwT/RIIQZwAAAABJRU5ErkJggg==") center center no-repeat;
+	float: left;
+	margin-left: 2px;
+}
+
+.cke_menuarrow span {
+	display: none;
+}
