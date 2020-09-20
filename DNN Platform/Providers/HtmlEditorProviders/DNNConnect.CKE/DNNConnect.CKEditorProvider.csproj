@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,7 +19,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -51,6 +51,7 @@
     <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
     <NOWARN>1591</NOWARN>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -62,30 +63,23 @@
     <NOWARN>1591</NOWARN>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke">
-      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web">
-      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
-      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <HintPath>..\..\..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
@@ -290,10 +284,37 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Tabs.ashx" />
-    <Content Include="packages.config" />
     <Content Include="readme.md" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
+      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
+      <Name>DotNetNuke.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
