@@ -51,7 +51,6 @@ Task("CopyWebConfig")
 Task("CreateInstall")
 	.IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
-	.IsDependentOn("ExternalExtensions")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);
@@ -65,7 +64,6 @@ Task("CreateInstall")
 Task("CreateUpgrade")
 	.IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
-	.IsDependentOn("ExternalExtensions")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);
@@ -82,7 +80,6 @@ Task("CreateUpgrade")
 Task("CreateDeploy")
 	.IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
-	.IsDependentOn("ExternalExtensions")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);
@@ -100,7 +97,6 @@ Task("CreateDeploy")
 Task("CreateSymbols")
 	.IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
-	.IsDependentOn("ExternalExtensions")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);

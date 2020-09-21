@@ -14,7 +14,6 @@
 #load "local:?path=Build/Cake/create-database.cake"
 #load "local:?path=Build/Cake/database.cake"
 #load "local:?path=Build/Cake/devsite.cake"
-#load "local:?path=Build/Cake/external.cake"
 #load "local:?path=Build/Cake/nuget.cake"
 #load "local:?path=Build/Cake/packaging.cake"
 #load "local:?path=Build/Cake/settings.cake"
@@ -29,7 +28,6 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var targetBranchCk = Argument("CkBranch", "development");
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
