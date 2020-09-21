@@ -49,6 +49,8 @@ For proper management of pull requests the team will utilize the "Draft" option 
 ### On-Hold Tag
 The Approvers group will add the "On-Hold" tag to any pull request that is targeting a major or minor release until it is ready for merging.  This is done as an administrative process to prevent accidental merging and is not a reflection of rejection of the submitted code. The associated milestone will be updated when the "On-Hold" tag has been added for clear communication regarding expectations.
 
+Examples of requests of this nature include technology or dependency changes that could introduce major/minor breaking changes.
+
 ## Merging & Closing of Requests
 Once a pull request has been reviewed by two designated approvers it may be merged and the pull request closed.
 
@@ -67,10 +69,3 @@ We follow the process outlined in the [Versioning Policy](VERSIONING_POLICY.md) 
 The review team will work to respond to all pull requests in a timely fashion.  If changes or additional information is requested a pull request will remain open allowing the submitter to update their contribution accordingly.  If a request for additional information or changes is not completed with 90 days of request the Pull Request will be closed to keep the pipeline clear.  Once the needed information has been gathered the information can be re-submitted via a new Pull Request.  
 
 For expedited processing you may reference the prior Pull Request.
-
-### Items for Future Releases
-If an item was submitted that will be integrated into a future release that is not currently in the development pipeline it is possible that the Pull Request will remain open. 
-
-In this situation the reviewing team will approve the request, tag the request with a specific version milestone and add a comment noting when and why it will be included in the particularly identified release.
-
-This most often will apply to technology or dependency changes that require alignment with Major, Minor, Revision build inclusion.  
