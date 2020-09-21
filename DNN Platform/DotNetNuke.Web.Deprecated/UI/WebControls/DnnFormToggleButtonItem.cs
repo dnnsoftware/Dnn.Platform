@@ -7,8 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using Telerik.Web.UI;
-
+    [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  You will need to find an alternative solution")]
     public class DnnFormToggleButtonItem : DnnFormItemBase
     {
         // private DnnRadButton _checkBox;

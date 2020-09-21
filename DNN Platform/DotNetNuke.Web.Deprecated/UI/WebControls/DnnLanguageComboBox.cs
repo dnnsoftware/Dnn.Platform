@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.Personalization;
     using Telerik.Web.UI;
 
+    [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  You will need to find an alternative solution")]
     public class DnnLanguageComboBox : WebControl
     {
         private readonly string _viewTypePersonalizationKey;
