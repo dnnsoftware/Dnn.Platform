@@ -43,6 +43,12 @@ If a reviewer has suggestions for improvement, those should be noted in the pull
 
 *If you have questions about a pull request or an idea for a pull request, please reach out to one of the approvers before submitting to ensure a streamlined process.*
 
+### Draft PR's
+For proper management of pull requests the team will utilize the "Draft" option within a pull request to identify something that is being submitted for consideration and in need of review/comment or other special review from the team.  Individuals should coordinate with the Approvers group prior to submitting any Draft pull requests as they are special cases.
+
+### On-Hold Tag
+The Approvers group will add the "On-Hold" tag to any pull request that is targeting a major or minor release until it is ready for merging.  This is done as an administrative process to prevent accidental merging and is not a reflection of rejection of the submitted code. The associated milestone will be updated when the "On-Hold" tag has been added for clear communication regarding expectations.
+
 ## Merging & Closing of Requests
 Once a pull request has been reviewed by two designated approvers it may be merged and the pull request closed.
 
