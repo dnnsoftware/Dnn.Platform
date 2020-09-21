@@ -286,6 +286,7 @@
     <Content Include="Provider.build">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="packages.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
