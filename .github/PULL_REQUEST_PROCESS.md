@@ -25,18 +25,11 @@ Community review of submitted pull requests is encouraged, and all pull requests
 At the current time the following community members are designated approvers.
 
 * Mitchel Sellers ([mitchelsellers](https://github.com/mitchelsellers)) - Community Technology Advisory Group Lead
-* Oliver Hine ([ohine](https://github.com/ohine))
 * Brian Dukes ([bdukes](https://github.com/bdukes))
 * Peter Donker ([donker](https://github.com/donker)) - Community Developer Advisory Group Lead
 * Daniel Valadas ([valadas](https://github.com/valadas))
 * Matt Rutledge ([mtrutledge](https://github.com/mtrutledge))
-* Vicenç Masanas ([vmasanas](https://github.com/vmasanas))
-* Erik van Ballegoij ([erikvb](https://github.com/erikvb))
-
-Additionally, the following individuals from ESW/DNN Corp are approved reviewers.
-
-* Daniel Aguilera ([daguiler](https://github.com/daguiler)) - CTO
-* Ash Prasad ([ashishpd](https://github.com/ashishpd)) - VP of Engineering
+* David Poindexter ([david-poindexter](https://github.com/david-poindexter)) - Community Strategy Advisory Group Lead
 
 ### Review Minimums
 An individual performing the code review should validate at a minimum the following.
