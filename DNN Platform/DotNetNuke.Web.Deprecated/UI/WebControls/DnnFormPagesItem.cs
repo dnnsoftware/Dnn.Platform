@@ -4,10 +4,13 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
+    [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  You will need to find an alternative solution")]
     public class DnnFormPagesItem : DnnFormComboBoxItem
     {
         public DnnFormPagesItem()

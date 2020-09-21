@@ -166,7 +166,7 @@
     <Compile Include="UI\WebControls\DnnToolBarButton.cs" />
     <Compile Include="UI\WebControls\DnnToolBarDropDown.cs" />
     <Compile Include="UI\WebControls\DnnToolBarSplitButton.cs" />
-    <Compile Include="UI\WebControls\Core Wrappers\DnnRadTab.cs" />
+    <Compile Include="UI\WebControls\DnnRadTab.cs" />
     <Compile Include="UI\WebControls\DnnAsyncUpload.cs" />
     <Compile Include="UI\WebControls\DnnBinaryImage.cs" />
     <Compile Include="UI\WebControls\DnnCalendar.cs" />
@@ -307,6 +307,9 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\WebControls\Core Wrappers\" />
   </ItemGroup>
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
