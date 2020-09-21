@@ -4,46 +4,69 @@
 namespace DotNetNuke.Abstractions.Prompt
 {
     /// <summary>
-    /// This is used to return the results of the execution of a command to the client
+    /// This is used to return the results of the execution of a command to the client.
     /// </summary>
     public interface IConsoleResultModel
     {
         /// <summary>
-        /// The returned result - text or HTML 
+        /// Gets or sets the returned result - text or HTML.
         /// </summary>
         string Output { get; set; }
+
         /// <summary>
-        /// Is the output an error message?
+        /// Gets or sets a value indicating whether the output message is an error message.
         /// </summary>
         bool IsError { get; set; }
+
         /// <summary>
-        /// Let the client know if the output is HTML or not
+        /// Gets or sets a value indicating whether output is HTML.
         /// </summary>
+        /// <remarks>
+        /// Let the client know if the output is HTML or not.
+        /// </remarks>
         bool IsHtml { get; set; }
+
         /// <summary>
-        /// Should the client reload after processing the command
+        /// Gets or sets a value indicating whether the prompt must reload.
         /// </summary>
+        /// <remarks>
+        /// Should the client reload after processing the command.
+        /// </remarks>
         bool MustReload { get; set; }
+
         /// <summary>
-        /// The response contains data to be formatted by the client
+        /// Gets or sets if the response contains data to be formatted by the client.
         /// </summary>
         object Data { get; set; }
+
         /// <summary>
-        /// Optionally tell the client in what order the fields should be displayed
+        /// Gets or sets the field order.
         /// </summary>
+        /// <remarks>
+        /// Optionally tell the client in what order the fields should be displayed.
+        /// </remarks>
         string[] FieldOrder { get; set; }
+
         /// <summary>
+        /// Gets or sets the <see cref="IPagingInfo"/>.
+        /// </summary>
+        /// <remarks>
         /// Information about paging of data. This allows the client to prompt the user
         /// to load the next page of data.
-        /// </summary>
+        /// </remarks>
         IPagingInfo PagingInfo { get; set; }
+
         /// <summary>
+        /// Gets or sets the next page command.
+        /// </summary>
+        /// <remarks>
         /// Command to be used to display the next page of data. This is set in the
         /// WebAPI handler.
-        /// </summary>
+        /// </remarks>
         string NextPageCommand { get; set; }
+
         /// <summary>
-        /// Nr of records retrieved (for this page).
+        /// Gets or sets the number of records retrieved (for this page).
         /// </summary>
         int Records { get; set; }
     }

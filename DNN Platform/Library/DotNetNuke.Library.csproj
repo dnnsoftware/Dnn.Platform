@@ -195,6 +195,7 @@
     <Compile Include="Application\ApplicationStatusInfo.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\NavigationManager.cs" />
+    <Compile Include="Common\ServiceScopeContainer.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
     <Compile Include="Common\Utilities\FileSystemExtensions.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />

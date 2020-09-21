@@ -130,6 +130,8 @@ namespace Dnn.PersonaBar.Library.Containers
             var customModules = new List<string>() { "serversummary" };
             settings.Add("customModules", customModules);
 
+            settings.Add("disableEditBar", Host.DisableEditBar);
+
             return settings;
         }
     }
