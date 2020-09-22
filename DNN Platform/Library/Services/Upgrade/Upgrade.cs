@@ -1463,52 +1463,6 @@ namespace DotNetNuke.Services.Upgrade
             _startTime = DateTime.Now;
         }
 
-        public static void TryUpgradeNETFramework()
-        {
-            switch (Globals.NETFrameworkVersion.ToString(2))
-            {
-                case "3.5":
-                    if (!IsNETFrameworkCurrent("3.5"))
-                    {
-                        // Upgrade to .NET 3.5
-                        string upgradeFile = string.Format("{0}\\Config\\Net35.config", Globals.InstallMapPath);
-                        string message = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 3.5 Upgrade");
-                        if (string.IsNullOrEmpty(message))
-                        {
-                            // Remove old AJAX file
-                            FileSystemUtils.DeleteFile(Path.Combine(Globals.ApplicationMapPath, "bin\\System.Web.Extensions.dll"));
-
-                            // Log Upgrade
-                            EventLogController.Instance.AddLog("UpgradeNet", "Upgraded Site to .NET 3.5", PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
-                        }
-                        else
-                        {
-                            // Log Failed Upgrade
-                            EventLogController.Instance.AddLog("UpgradeNet", string.Format("Upgrade to .NET 3.5 failed. Error reported during attempt to update:{0}", message), PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
-                        }
-                    }
-
-                    break;
-                case "4.0":
-                    if (!IsNETFrameworkCurrent("4.0"))
-                    {
-                        // Upgrade to .NET 4.0
-                        string upgradeFile = string.Format("{0}\\Config\\Net40.config", Globals.InstallMapPath);
-                        string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.0 Upgrade");
-                        EventLogController.Instance.AddLog(
-                            "UpgradeNet",
-                            string.IsNullOrEmpty(strMessage)
-                                                      ? "Upgraded Site to .NET 4.0"
-                                                      : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
-                            PortalController.Instance.GetCurrentPortalSettings(),
-                            UserController.Instance.GetCurrentUserInfo().UserID,
-                            EventLogController.EventLogType.HOST_ALERT);
-                    }
-
-                    break;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///  UpgradeApplication - This overload is used for general application upgrade operations.
@@ -1527,9 +1481,6 @@ namespace DotNetNuke.Services.Upgrade
                 loginControl.SupportsPartialRendering = false;
 
                 ModuleControlController.SaveModuleControl(loginControl, true);
-
-                // Upgrade to .NET 3.5/4.0
-                TryUpgradeNETFramework();
 
                 // Update the version of the client resources - so the cache is cleared
                 DataCache.ClearHostCache(false);
