@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// Process legacy language package (that is based on manifest xml file).
         /// </summary>
-        
+        [Obsolete("Module package required, functionality removed.  Will be removed in 10.0.0.")]
         public static void ProcessLegacyLanguages()
         {
             string filePath = Globals.ApplicationMapPath + Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
@@ -273,6 +273,7 @@ namespace DotNetNuke.Services.Installer
         /// Process legacy module version 3 .dnn install file.
         /// </summary>
         /// <param name="desktopModule"></param>
+        [Obsolete("Version 3 package formats not supported, must use modern package format.  Will be removed in 10.0.0.")]
         public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)
         {
             // Get the Module folder
@@ -380,51 +381,6 @@ namespace DotNetNuke.Services.Installer
 
             // Writer package manifest fragment to writer
             skinWriter.WriteManifest(writer, true);
-        }
-
-        private static void ProcessLegacySkin(string skinFolder, string skinType)
-        {
-            string skinName = Path.GetFileName(skinFolder);
-            if (skinName != "_default")
-            {
-                var skin = new SkinPackageInfo();
-                skin.SkinName = skinName;
-                skin.SkinType = skinType;
-
-                // Create a Package
-                PackageInfo package = CreateSkinPackage(skin);
-
-                // Create a SkinPackageWriter
-                var skinWriter = new SkinPackageWriter(skin, package);
-                skinWriter.GetFiles(false);
-
-                // Save the manifest
-                package.Manifest = skinWriter.WriteManifest(true);
-
-                // Save Package
-                PackageController.Instance.SaveExtensionPackage(package);
-
-                // Update Skin Package with new PackageID
-                skin.PackageID = package.PackageID;
-
-                // Save Skin Package
-                skin.SkinPackageID = SkinController.AddSkinPackage(skin);
-
-                foreach (InstallFile skinFile in skinWriter.Files.Values)
-                {
-                    if (skinFile.Type == InstallFileType.Ascx)
-                    {
-                        if (skinType == "Skin")
-                        {
-                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootSkin, Path.Combine(skin.SkinName, skinFile.FullName)));
-                        }
-                        else
-                        {
-                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootContainer, Path.Combine(skin.SkinName, skinFile.FullName)));
-                        }
-                    }
-                }
-            }
         }
 
         private static void ParsePackageName(PackageInfo package, string separator)
