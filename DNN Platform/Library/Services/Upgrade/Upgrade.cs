@@ -1547,9 +1547,6 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     switch (version.ToString(3))
                     {
-                        case "4.7.0":
-                            UpgradeToVersion470();
-                            break;
                         case "4.8.2":
                             UpgradeToVersion482();
                             break;
@@ -3331,34 +3328,6 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
             var toAdd = new List<string> { ".ico" };
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
-        }
-
-        private static void UpgradeToVersion470()
-        {
-            string hostTemplateFile = Globals.HostMapPath + "Templates\\Default.page.template";
-            if (File.Exists(hostTemplateFile))
-            {
-                ArrayList portals = PortalController.Instance.GetPortals();
-                foreach (PortalInfo portal in portals)
-                {
-                    string portalTemplateFolder = portal.HomeDirectoryMapPath + "Templates\\";
-
-                    if (!Directory.Exists(portalTemplateFolder))
-                    {
-                        // Create Portal Templates folder
-                        Directory.CreateDirectory(portalTemplateFolder);
-                    }
-
-                    string portalTemplateFile = portalTemplateFolder + "Default.page.template";
-                    if (!File.Exists(portalTemplateFile))
-                    {
-                        File.Copy(hostTemplateFile, portalTemplateFile);
-
-                        // Synchronize the Templates folder to ensure the templates are accessible
-                        FolderManager.Instance.Synchronize(portal.PortalID, "Templates/", false, true);
-                    }
-                }
-            }
         }
 
         private static void UpgradeToVersion482()
