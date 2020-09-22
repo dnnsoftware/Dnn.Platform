@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Upgrade
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
     using System.IO;
@@ -15,9 +14,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using System.Web;
-    using System.Web.Configuration;
     using System.Xml;
     using System.Xml.XPath;
 
@@ -28,7 +25,6 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -40,22 +36,18 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Analytics;
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.EventQueue.Config;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Installer;
-    using DotNetNuke.Services.Installer.Dependencies;
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Localization.Internal;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search;
     using DotNetNuke.Services.Social.Messaging.Internal;
@@ -64,7 +56,6 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.UI.Internals;
-    using ICSharpCode.SharpZipLib.Zip;
 
     using Assembly = System.Reflection.Assembly;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
