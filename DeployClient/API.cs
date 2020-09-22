@@ -62,7 +62,7 @@ namespace DeployClient
                 var httpResponse = await client.GetAsync(endpoint);
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    string json = httpResponse.Content.ReadAsStringAsync().Result;
+                    string json = await httpResponse.Content.ReadAsStringAsync();
                     return (true, jsonSer.Deserialize<Dictionary<string, dynamic>>(json));
                 }
 
