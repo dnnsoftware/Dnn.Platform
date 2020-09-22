@@ -1547,9 +1547,6 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     switch (version.ToString(3))
                     {
-                        case "5.0.0":
-                            UpgradeToVersion500();
-                            break;
                         case "5.0.1":
                             UpgradeToVersion501();
                             break;
@@ -3325,129 +3322,6 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
             var toAdd = new List<string> { ".ico" };
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
-        }
-
-        private static void UpgradeToVersion500()
-        {
-            ArrayList portals = PortalController.Instance.GetPortals();
-
-            // Add Edit Permissions for Admin Tabs to legacy portals
-            var permissionController = new PermissionController();
-            ArrayList permissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT");
-            int permissionId = -1;
-            if (permissions.Count == 1)
-            {
-                var permission = permissions[0] as PermissionInfo;
-                if (permission != null)
-                {
-                    permissionId = permission.PermissionID;
-                }
-
-                foreach (PortalInfo portal in portals)
-                {
-                    var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, true);
-                    if (adminTab != null)
-                    {
-                        var tabPermission = new TabPermissionInfo { TabID = adminTab.TabID, PermissionID = permissionId, AllowAccess = true, RoleID = portal.AdministratorRoleId };
-                        if (!TabPermissionExists(tabPermission, portal.PortalID))
-                        {
-                            adminTab.TabPermissions.Add(tabPermission);
-                        }
-
-                        // Save Tab Permissions to Data Base
-                        TabPermissionController.SaveTabPermissions(adminTab);
-
-                        foreach (var childTab in TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID))
-                        {
-                            tabPermission = new TabPermissionInfo { TabID = childTab.TabID, PermissionID = permissionId, AllowAccess = true, RoleID = portal.AdministratorRoleId };
-                            if (!TabPermissionExists(tabPermission, portal.PortalID))
-                            {
-                                childTab.TabPermissions.Add(tabPermission);
-                            }
-
-                            // Save Tab Permissions to Data Base
-                            TabPermissionController.SaveTabPermissions(childTab);
-                        }
-                    }
-                }
-            }
-
-            // Update Host/Admin modules Visibility setting
-            bool superTabProcessed = Null.NullBoolean;
-            foreach (PortalInfo portal in portals)
-            {
-                if (!superTabProcessed)
-                {
-                    // Process Host Tabs
-                    foreach (TabInfo childTab in TabController.GetTabsByParent(portal.SuperTabId, Null.NullInteger))
-                    {
-                        foreach (ModuleInfo tabModule in ModuleController.Instance.GetTabModules(childTab.TabID).Values)
-                        {
-                            tabModule.Visibility = VisibilityState.None;
-                            ModuleController.Instance.UpdateModule(tabModule);
-                        }
-                    }
-                }
-
-                // Process Portal Tabs
-                foreach (TabInfo childTab in TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID))
-                {
-                    foreach (ModuleInfo tabModule in ModuleController.Instance.GetTabModules(childTab.TabID).Values)
-                    {
-                        tabModule.Visibility = VisibilityState.None;
-                        ModuleController.Instance.UpdateModule(tabModule);
-                    }
-                }
-            }
-
-            // Upgrade PortalDesktopModules to support new "model"
-            permissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_DESKTOPMODULE", "DEPLOY");
-            if (permissions.Count == 1)
-            {
-                var permission = permissions[0] as PermissionInfo;
-                if (permission != null)
-                {
-                    permissionId = permission.PermissionID;
-                }
-
-                foreach (PortalInfo portal in portals)
-                {
-                    foreach (DesktopModuleInfo desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values)
-                    {
-                        if (!desktopModule.IsPremium)
-                        {
-                            // Parse the permissions
-                            var deployPermissions = new DesktopModulePermissionCollection();
-                            DesktopModulePermissionInfo deployPermission;
-
-                            // if Not IsAdmin add Registered Users
-                            if (!desktopModule.IsAdmin)
-                            {
-                                deployPermission = new DesktopModulePermissionInfo { PermissionID = permissionId, AllowAccess = true, RoleID = portal.RegisteredRoleId };
-                                deployPermissions.Add(deployPermission);
-                            }
-
-                            // if Not a Host Module add Administrators
-                            const string hostModules = "Portals, SQL, HostSettings, Scheduler, SearchAdmin, Lists, SkinDesigner, Extensions";
-                            if (!hostModules.Contains(desktopModule.ModuleName))
-                            {
-                                deployPermission = new DesktopModulePermissionInfo { PermissionID = permissionId, AllowAccess = true, RoleID = portal.AdministratorRoleId };
-                                deployPermissions.Add(deployPermission);
-                            }
-
-                            // Add Portal/Module to PortalDesktopModules
-                            DesktopModuleController.AddDesktopModuleToPortal(portal.PortalID, desktopModule, deployPermissions, false);
-                        }
-                    }
-
-                    DataCache.ClearPortalCache(portal.PortalID, true);
-                }
-            }
-
-            LegacyUtil.ProcessLegacyModules();
-            LegacyUtil.ProcessLegacyLanguages();
-            LegacyUtil.ProcessLegacySkins();
-            LegacyUtil.ProcessLegacySkinControls();
         }
 
         private static void UpgradeToVersion501()
