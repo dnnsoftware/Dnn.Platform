@@ -146,6 +146,7 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// Process legacy language package (that is based on manifest xml file).
         /// </summary>
+        
         public static void ProcessLegacyLanguages()
         {
             string filePath = Globals.ApplicationMapPath + Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
