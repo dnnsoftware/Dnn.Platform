@@ -1547,9 +1547,6 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     switch (version.ToString(3))
                     {
-                        case "4.4.0":
-                            UpgradeToVersion440();
-                            break;
                         case "4.7.0":
                             UpgradeToVersion470();
                             break;
@@ -3334,23 +3331,6 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
             var toAdd = new List<string> { ".ico" };
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
-        }
-
-        private static void UpgradeToVersion440()
-        {
-            // remove module cache files with *.htm extension ( they are now securely named *.resources )
-            var portals = PortalController.Instance.GetPortals();
-            foreach (PortalInfo objPortal in portals)
-            {
-                if (Directory.Exists(Globals.ApplicationMapPath + "\\Portals\\" + objPortal.PortalID + "\\Cache\\"))
-                {
-                    string[] files = Directory.GetFiles(Globals.ApplicationMapPath + "\\Portals\\" + objPortal.PortalID + "\\Cache\\", "*.htm");
-                    foreach (string file in files)
-                    {
-                        File.Delete(file);
-                    }
-                }
-            }
         }
 
         private static void UpgradeToVersion470()
