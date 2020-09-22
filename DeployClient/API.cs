@@ -110,19 +110,11 @@ namespace DeployClient
         {
             string endpoint = string.Format("Remote/Install?sessionGuid={0}", sessionGuid);
 
-            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
-
             using (HttpClient client = BuildClient())
             {
                 try
                 {
-                    HttpResponseMessage httpResponse = await client.GetAsync(endpoint);
-
-                    if (httpResponse.StatusCode.Equals(HttpStatusCode.OK))
-                    {
-                        string json = await httpResponse.Content.ReadAsStringAsync();
-                        return (true, jsonSer.Deserialize<SortedList<string, dynamic>>(json));
-                    }
+                    await client.GetAsync(endpoint);
                 }
                 catch (Exception ex)
                 {
