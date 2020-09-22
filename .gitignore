@@ -307,7 +307,3 @@ __pycache__/
 
 # Compiled Docs
 docs_compiled/
-
-# Package lock
-package-lock.json
-

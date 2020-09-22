@@ -26,18 +26,14 @@ var gulp = require('gulp'),
     These tasks are to provide integration with Visual Studio through pre and
     post build events.
 */
-gulp.task('pre-build-Release', [
-    'clean-bin'
-]);
-gulp.task('post-build-Release', [
-    'build-release'
-]);
+gulp.task('pre-build-Release', cleanBin);
+gulp.task('post-build-Release', buildRelease);
 
-gulp.task('pre-build-Debug');
-gulp.task('post-build-Debug');
+gulp.task('pre-build-Debug', noOp);
+gulp.task('post-build-Debug', noOp);
 
-gulp.task('pre-build-Clients');
-gulp.task('post-build-Clients');
+gulp.task('pre-build-Clients', noOp);
+gulp.task('post-build-Clients', noOp);
 
 /*
     Clean Bin
@@ -45,32 +41,32 @@ gulp.task('post-build-Clients');
     for the project to be cleaned. This task cleans the bin.
     Doesn't bother reading the directory as that slows the task down.
 */
-gulp.task('clean-bin',
-    function () {
-        return gulp.src(
-            `${binDir}*`,
-            {
-                read: false
-            })
-            .pipe(clean());
-    }
-);
+function cleanBin() {
+    return gulp.src(
+        `${binDir}*`,
+        {
+            read: false
+        })
+        .pipe(clean());
+}
 
 /*
     Build Release
     Create a release zip.
 */
-gulp.task('build-release',
-    function () {
-        return gulp.src(
-            [
-                `${binDir}**`
-            ])
+function buildRelease() {
+    return gulp.src(
+        [
+            `${binDir}**`
+        ])
 
-            // Zip in to install zip.
-            .pipe(zip(`DeployClient_${CONFIG.MODULE_VERSION}.zip`))
+        // Zip in to install zip.
+        .pipe(zip(`DeployClient_${CONFIG.MODULE_VERSION}.zip`))
 
-            // Move to compiled modules folder.
-            .pipe(gulp.dest(compiledModulesDir));
-    }
-);
+        // Move to compiled modules folder.
+        .pipe(gulp.dest(compiledModulesDir));
+}
+
+function noOp(done) {
+    done();
+}
