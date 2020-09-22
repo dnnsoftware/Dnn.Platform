@@ -1404,24 +1404,6 @@
   <data name="TokenReplaceUnknownObject.Text" xml:space="preserve">
     <value>Error accessing [{0}:{1}], {0} is an unknown datasource.</value>
   </data>
-  <data name="DASHBOARD_KeyMissing.Text" xml:space="preserve">
-    <value>Required field Key is missing from Manifest.</value>
-  </data>
-  <data name="DASHBOARD_LocalResourcesMissing.Text" xml:space="preserve">
-    <value>Required field LocalResources is missing from Manifest.</value>
-  </data>
-  <data name="DASHBOARD_ReadSuccess.Text" xml:space="preserve">
-    <value>Parsed Dashboard Control Manifest successfully.</value>
-  </data>
-  <data name="DASHBOARD_Registered.Text" xml:space="preserve">
-    <value>Dashboard Control registered successfully.</value>
-  </data>
-  <data name="DASHBOARD_SrcMissing.Text" xml:space="preserve">
-    <value>Required field Src is missing from Manifest.</value>
-  </data>
-  <data name="DASHBOARD_UnRegistered.Text" xml:space="preserve">
-    <value>Dashboard Control unregistered successfully.</value>
-  </data>
   <data name="SKIN_Installed.Text" xml:space="preserve">
     <value>Theme already installed with a different Package Name.</value>
   </data>
