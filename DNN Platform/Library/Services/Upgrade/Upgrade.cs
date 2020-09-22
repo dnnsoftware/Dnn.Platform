@@ -1547,9 +1547,6 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     switch (version.ToString(3))
                     {
-                        case "3.2.3":
-                            UpgradeToVersion323();
-                            break;
                         case "4.4.0":
                             UpgradeToVersion440();
                             break;
@@ -3337,13 +3334,6 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
             var toAdd = new List<string> { ".ico" };
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
-        }
-
-        private static void UpgradeToVersion323()
-        {
-            // add new SecurityException
-            string configFile = Globals.HostMapPath + "Logs\\LogConfig\\SecurityExceptionTemplate.xml.resources";
-            LogController.Instance.AddLogType(configFile, Null.NullString);
         }
 
         private static void UpgradeToVersion440()
