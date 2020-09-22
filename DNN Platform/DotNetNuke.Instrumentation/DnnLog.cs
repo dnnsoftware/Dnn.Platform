@@ -12,6 +12,7 @@ namespace DotNetNuke.Instrumentation
 
     using log4net.Config;
 
+    /// <summary>Provides access to logging methods.  Obsolete, use <see cref="LoggerSource"/> instead.</summary>
     [Obsolete("Deprecated in 7.0.1 due to poor performance, use LoggerSource.Instance. Scheduled removal in v11.0.0.")]
     public static class DnnLog
     {
@@ -19,10 +20,9 @@ namespace DotNetNuke.Instrumentation
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(DnnLog));
 
         private static readonly object ConfigLock = new object();
-        private static bool _configured;
+        private static bool isConfigured;
 
         // use a single static logger to avoid the performance impact of type reflection on every call for logging
-
         private static StackFrame CallingFrame
         {
             get
@@ -68,9 +68,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        /// <summary>
-        ///   Standard method to use on method exit.
-        /// </summary>
+        /// <summary>Standard method to use on method exit.</summary>
+        /// <param name="returnObject">The return value of the method.</param>
         public static void MethodExit(object returnObject)
         {
             EnsureConfig();
@@ -99,6 +98,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Logs a message at the Trace log level.</summary>
+        /// <param name="message">The message to log.</param>
         public static void Trace(string message)
         {
             EnsureConfig();
@@ -109,6 +110,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Trace log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Trace(string format, params object[] args)
         {
             EnsureConfig();
@@ -119,6 +123,10 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Trace log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Trace(IFormatProvider provider, string format, params object[] args)
         {
             EnsureConfig();
@@ -129,6 +137,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Logs a message at the Debug log level.</summary>
+        /// <param name="message">The message to log.</param>
         public static void Debug(object message)
         {
             EnsureConfig();
@@ -139,6 +149,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Debug log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Debug(string format, params object[] args)
         {
             EnsureConfig();
@@ -156,6 +169,10 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Debug log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Debug(IFormatProvider provider, string format, params object[] args)
         {
             EnsureConfig();
@@ -166,6 +183,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Logs a message at the Info log level.</summary>
+        /// <param name="message">The message to log.</param>
         public static void Info(object message)
         {
             EnsureConfig();
@@ -175,6 +194,10 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Info log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Info(IFormatProvider provider, string format, params object[] args)
         {
             EnsureConfig();
@@ -184,6 +207,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Info log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Info(string format, params object[] args)
         {
             EnsureConfig();
@@ -200,6 +226,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message and exception details at the Warn log level.</summary>
+        /// <param name="message">An object to display as the message.</param>
+        /// <param name="exception">An exception to include in the log.</param>
         public static void Warn(string message, Exception exception)
         {
             EnsureConfig();
@@ -209,6 +238,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Logs a message at the Warn log level.</summary>
+        /// <param name="message">The message to log.</param>
         public static void Warn(object message)
         {
             EnsureConfig();
@@ -218,6 +249,10 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Warn log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Warn(IFormatProvider provider, string format, params object[] args)
         {
             EnsureConfig();
@@ -227,6 +262,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Warn log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Warn(string format, params object[] args)
         {
             EnsureConfig();
@@ -243,6 +281,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message and exception details at the Error log level.</summary>
+        /// <param name="message">An object to display as the message.</param>
+        /// <param name="exception">An exception to include in the log.</param>
         public static void Error(string message, Exception exception)
         {
             EnsureConfig();
@@ -253,6 +294,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Logs a message at the Error log level.</summary>
+        /// <param name="message">The message to log.</param>
         public static void Error(object message)
         {
             EnsureConfig();
@@ -262,6 +305,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log exception details at the Error log level.</summary>
+        /// <param name="exception">An exception to include in the log.</param>
         public static void Error(Exception exception)
         {
             EnsureConfig();
@@ -271,6 +316,10 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Error log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Error(IFormatProvider provider, string format, params object[] args)
         {
             EnsureConfig();
@@ -280,6 +329,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Error log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Error(string format, params object[] args)
         {
             EnsureConfig();
@@ -296,6 +348,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message and exception details at the Fatal log level.</summary>
+        /// <param name="message">An object to display as the message.</param>
+        /// <param name="exception">An exception to include in the log.</param>
         public static void Fatal(string message, Exception exception)
         {
             EnsureConfig();
@@ -305,6 +360,8 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Logs a message at the Fatal log level.</summary>
+        /// <param name="message">The message to log.</param>
         public static void Fatal(object message)
         {
             EnsureConfig();
@@ -314,6 +371,10 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Fatal log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Fatal(IFormatProvider provider, string format, params object[] args)
         {
             EnsureConfig();
@@ -323,6 +384,9 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
+        /// <summary>Log a message at the Fatal log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Fatal(string format, params object[] args)
         {
             EnsureConfig();
@@ -341,11 +405,11 @@ namespace DotNetNuke.Instrumentation
 
         private static void EnsureConfig()
         {
-            if (!_configured)
+            if (!isConfigured)
             {
                 lock (ConfigLock)
                 {
-                    if (!_configured)
+                    if (!isConfigured)
                     {
                         var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
                         var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
@@ -359,7 +423,7 @@ namespace DotNetNuke.Instrumentation
                             XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
                         }
 
-                        _configured = true;
+                        isConfigured = true;
                     }
                 }
             }

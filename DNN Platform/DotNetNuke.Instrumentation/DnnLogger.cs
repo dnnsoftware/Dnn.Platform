@@ -15,23 +15,15 @@ namespace DotNetNuke.Instrumentation
     using log4net.Repository;
     using log4net.Util;
 
-    /// <summary>
-    /// Please use LoggerSource.Instance as a more unit testable way to create loggers.
-    /// </summary>
+    /// <summary>Please use LoggerSource.Instance as a more unit testable way to create loggers.</summary>
     public sealed class DnnLogger : LoggerWrapperImpl
     {
-        internal static Level LevelTrace;
-        internal static Level LevelDebug;
-        internal static Level LevelInfo;
-        internal static Level LevelWarn;
-        internal static Level LevelError;
-        internal static Level LevelFatal;
-
         // add custom logging levels (below trace value of 20000)
-        internal static Level LevelLogInfo = new Level(10001, "LogInfo");
-        internal static Level LevelLogError = new Level(10002, "LogError");
-        private readonly Type _dnnExceptionType = BuildManager.GetType("DotNetNuke.Services.Exceptions.Exceptions", false);
-        private readonly Type _stackBoundary = typeof(DnnLogger);
+        private static Level levelLogInfo = new Level(10001, "LogInfo");
+        private static Level levelLogError = new Level(10002, "LogError");
+
+        private readonly Type dnnExceptionType = BuildManager.GetType("DotNetNuke.Services.Exceptions.Exceptions", false);
+        private readonly Type stackBoundary = typeof(DnnLogger);
 
         private DnnLogger(ILogger logger)
             : base(logger)
@@ -43,28 +35,52 @@ namespace DotNetNuke.Instrumentation
                 int frameDepth = 0;
                 Type methodType = stack[frameDepth].GetMethod().ReflectedType;
 #pragma warning disable 612, 618
-                while (methodType == this._dnnExceptionType || methodType == typeof(DnnLogger) || methodType == typeof(DnnLog) || methodType == typeof(Control))
+                while (methodType == this.dnnExceptionType || methodType == typeof(DnnLogger) || methodType == typeof(DnnLog) || methodType == typeof(Control))
 #pragma warning restore 612, 618
                 {
                     frameDepth++;
                     methodType = stack[frameDepth].GetMethod().ReflectedType;
                 }
 
-                this._stackBoundary = new StackTrace().GetFrame(frameDepth - 1).GetMethod().DeclaringType;
+                this.stackBoundary = new StackTrace().GetFrame(frameDepth - 1).GetMethod().DeclaringType;
             }
             else
             {
-                this._stackBoundary = typeof(DnnLogger);
+                this.stackBoundary = typeof(DnnLogger);
             }
 
             ReloadLevels(logger.Repository);
         }
 
+        /// <summary>Gets the trace log level.</summary>
+        internal static Level LevelTrace { get; private set; }
+
+        /// <summary>Gets the debug log level.</summary>
+        internal static Level LevelDebug { get; private set; }
+
+        /// <summary>Gets the info log level.</summary>
+        internal static Level LevelInfo { get; private set; }
+
+        /// <summary>Gets the warn log level.</summary>
+        internal static Level LevelWarn { get; private set; }
+
+        /// <summary>Gets the error log level.</summary>
+        internal static Level LevelError { get; private set; }
+
+        /// <summary>Gets the fatal log level.</summary>
+        internal static Level LevelFatal { get; private set; }
+
+        /// <summary>Gets the logger for the given <paramref name="type"/>.</summary>
+        /// <param name="type">The type for which to get a logger instance.</param>
+        /// <returns>A new <see cref="DnnLogger"/> instance.</returns>
         public static DnnLogger GetClassLogger(Type type)
         {
             return new DnnLogger(LogManager.GetLogger(Assembly.GetCallingAssembly(), type).Logger);
         }
 
+        /// <summary>Gets the logger for the given <paramref name="name"/>.</summary>
+        /// <param name="name">The name for the logger instance.</param>
+        /// <returns>A new <see cref="DnnLogger"/> instance.</returns>
         public static DnnLogger GetLogger(string name)
         {
             return new DnnLogger(LogManager.GetLogger(name).Logger);
@@ -95,7 +111,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Debug(object message)
         {
-            this.Logger.Log(this._stackBoundary, LevelDebug, message, null);
+            this.Logger.Log(this.stackBoundary, LevelDebug, message, null);
         }
 
         /// <summary>
@@ -122,7 +138,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void DebugFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -145,7 +161,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void DebugFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelDebug, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelDebug, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -173,7 +189,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Info(object message)
         {
-            this.Logger.Log(this._stackBoundary, LevelInfo, message, null);
+            this.Logger.Log(this.stackBoundary, LevelInfo, message, null);
         }
 
         /// <summary>
@@ -200,7 +216,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void InfoFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -223,7 +239,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void InfoFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelInfo, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelInfo, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -251,7 +267,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Warn(object message)
         {
-            this.Logger.Log(this._stackBoundary, LevelWarn, message, null);
+            this.Logger.Log(this.stackBoundary, LevelWarn, message, null);
         }
 
         /// <summary>
@@ -272,7 +288,7 @@ namespace DotNetNuke.Instrumentation
         /// <seealso cref = "Warn(object)" />
         public void Warn(object message, Exception exception)
         {
-            this.Logger.Log(this._stackBoundary, LevelWarn, message, exception);
+            this.Logger.Log(this.stackBoundary, LevelWarn, message, exception);
         }
 
         /// <summary>
@@ -299,7 +315,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void WarnFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -322,7 +338,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void WarnFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelWarn, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelWarn, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -350,7 +366,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Error(object message)
         {
-            this.Logger.Log(this._stackBoundary, LevelError, message, null);
+            this.Logger.Log(this.stackBoundary, LevelError, message, null);
         }
 
         /// <summary>
@@ -371,7 +387,7 @@ namespace DotNetNuke.Instrumentation
         /// <seealso cref = "Error(object)" />
         public void Error(object message, Exception exception)
         {
-            this.Logger.Log(this._stackBoundary, LevelError, message, exception);
+            this.Logger.Log(this.stackBoundary, LevelError, message, exception);
         }
 
         /// <summary>
@@ -398,7 +414,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void ErrorFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -421,7 +437,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelError, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelError, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -449,7 +465,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Fatal(object message)
         {
-            this.Logger.Log(this._stackBoundary, LevelFatal, message, null);
+            this.Logger.Log(this.stackBoundary, LevelFatal, message, null);
         }
 
         /// <summary>
@@ -470,7 +486,7 @@ namespace DotNetNuke.Instrumentation
         /// <seealso cref = "Fatal(object)" />
         public void Fatal(object message, Exception exception)
         {
-            this.Logger.Log(this._stackBoundary, LevelFatal, message, exception);
+            this.Logger.Log(this.stackBoundary, LevelFatal, message, exception);
         }
 
         /// <summary>
@@ -497,7 +513,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void FatalFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -520,68 +536,93 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void FatalFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelFatal, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelFatal, new SystemStringFormat(provider, format, args), null);
         }
 
+        /// <summary>Logs an install message at the Error log level.</summary>
+        /// <param name="message">The message to log.</param>
         public void InstallLogError(object message)
         {
-            this.Logger.Log(this._stackBoundary, LevelLogError, message, null);
+            this.Logger.Log(this.stackBoundary, levelLogError, message, null);
         }
 
+        /// <summary>Log an install message and exception details at the Error log level.</summary>
+        /// <param name="message">An object to display as the message.</param>
+        /// <param name="exception">An exception to include in the log.</param>
         public void InstallLogError(string message, Exception exception)
         {
-            this.Logger.Log(this._stackBoundary, LevelLogError, message, exception);
+            this.Logger.Log(this.stackBoundary, levelLogError, message, exception);
         }
 
+        /// <summary>Log an install message at the Error log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public void InstallLogErrorFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelLogError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, levelLogError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
+        /// <summary>Log an install message at the Error log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public void InstallLogErrorFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelLogError, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, levelLogError, new SystemStringFormat(provider, format, args), null);
         }
 
+        /// <summary>Logs an install message at the Info log level.</summary>
+        /// <param name="message">The message to log.</param>
         public void InstallLogInfo(object message)
         {
-            this.Logger.Log(this._stackBoundary, LevelLogInfo, message, null);
+            this.Logger.Log(this.stackBoundary, levelLogInfo, message, null);
         }
 
+        /// <summary>Log an install message at the Info log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public void InstallLogInfoFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelLogInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, levelLogInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
+        /// <summary>Log an install message at the Info log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         public void InstallLogInfoFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelLogInfo, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, levelLogInfo, new SystemStringFormat(provider, format, args), null);
         }
 
+        /// <summary>Log a message at the Trace log level.</summary>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         internal void TraceFormat(string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
+        /// <summary>Logs a message at the Trace log level.</summary>
+        /// <param name="message">The message to log.</param>
         internal void Trace(string message)
         {
-            this.Logger.Log(this._stackBoundary, LevelTrace, message, null);
+            this.Logger.Log(this.stackBoundary, LevelTrace, message, null);
         }
 
+        /// <summary>Log a message at the Trace log level.</summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
         internal void TraceFormat(IFormatProvider provider, string format, params object[] args)
         {
-            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this.stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
         ///   Virtual method called when the configuration of the repository changes.
         /// </summary>
         /// <param name = "repository">the repository holding the levels.</param>
-        /// <remarks>
-        ///   <para>
-        ///     Virtual method called when the configuration of the repository changes.
-        ///   </para>
-        /// </remarks>
         private static void ReloadLevels(ILoggerRepository repository)
         {
             LevelMap levelMap = repository.LevelMap;
@@ -592,12 +633,12 @@ namespace DotNetNuke.Instrumentation
             LevelWarn = levelMap.LookupWithDefault(Level.Warn);
             LevelError = levelMap.LookupWithDefault(Level.Error);
             LevelFatal = levelMap.LookupWithDefault(Level.Fatal);
-            LevelLogError = levelMap.LookupWithDefault(LevelLogError);
-            LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
+            levelLogError = levelMap.LookupWithDefault(levelLogError);
+            levelLogInfo = levelMap.LookupWithDefault(levelLogInfo);
 
-            //// Register custom logging levels with the default LoggerRepository
-            LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
-            LogManager.GetRepository().LevelMap.Add(LevelLogError);
+            // Register custom logging levels with the default LoggerRepository
+            LogManager.GetRepository().LevelMap.Add(levelLogInfo);
+            LogManager.GetRepository().LevelMap.Add(levelLogError);
         }
     }
 }

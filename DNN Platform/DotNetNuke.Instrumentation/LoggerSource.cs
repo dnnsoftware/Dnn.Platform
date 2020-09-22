@@ -4,18 +4,17 @@
 
 namespace DotNetNuke.Instrumentation
 {
+    /// <summary>Provides access to an <see cref="ILoggerSource"/> instance.</summary>
     public static class LoggerSource
     {
-        private static ILoggerSource _instance = new LoggerSourceImpl();
+        /// <summary>Gets the instance.</summary>
+        public static ILoggerSource Instance { get; private set; } = new LoggerSourceImpl();
 
-        public static ILoggerSource Instance
-        {
-            get { return _instance; }
-        }
-
+        /// <summary>Overrides the <see cref="Instance"/> for testing.</summary>
+        /// <param name="loggerSource">A test <see cref="ILoggerSource"/> instance.</param>
         public static void SetTestableInstance(ILoggerSource loggerSource)
         {
-            _instance = loggerSource;
+            Instance = loggerSource;
         }
     }
 }
