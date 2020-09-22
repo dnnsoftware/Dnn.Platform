@@ -1,4 +1,4 @@
-﻿/// <binding Clean='clean-bin' />
+﻿/// <binding Clean='cleanBin' />
 
 /*
     Configuration
@@ -29,7 +29,6 @@ var fs = require('fs'),
     clean = require('gulp-clean'),
     webpack = require('webpack-stream'),
     zip = require('gulp-zip'),
-    addsrc = require('gulp-add-src'),
     cheerio = require('cheerio');
 
 /*
@@ -171,24 +170,14 @@ function getCssEntryPoint(dir) {
     These tasks are to provide integration with Visual Studio through pre and
     post build events.
 */
-gulp.task('pre-build-Release', []);
-gulp.task('post-build-Release', [
-    'bundle',
-    'build-install'
-]);
+gulp.task('pre-build-Release', noOp);
+gulp.task('post-build-Release', gulp.series(cleanDist, bundle, buildInstall));
 
-gulp.task('pre-build-Debug', []);
-gulp.task('post-build-Debug', [
-    'bundle',
-    'copy-clients',
-    'copy-module'
-]);
+gulp.task('pre-build-Debug', noOp);
+gulp.task('post-build-Debug', gulp.series(cleanDist, bundle, copyClients, copyBin, copyModule));
 
-gulp.task('pre-build-Clients', []);
-gulp.task('post-build-Clients', [
-    'bundle',
-    'copy-clients'
-]);
+gulp.task('pre-build-Clients', noOp);
+gulp.task('post-build-Clients', gulp.series(cleanDist, bundle, copyClients));
 
 /*
     Clean Bin
@@ -196,125 +185,120 @@ gulp.task('post-build-Clients', [
     for the project to be cleaned. This task cleans the bin.
     Doesn't bother reading the directory as that slows the task down.
 */
-gulp.task('clean-bin',
-    function () {
-        return gulp.src(
-            binDir,
-            {
-                read: false
-            })
-            .pipe(clean());
-    }
-);
+function cleanBin() {
+    return gulp.src(
+        binDir,
+        {
+            read: false,
+            allowEmpty: true
+        })
+        .pipe(clean());
+}
+
+gulp.task(cleanBin);
 
 /*
     Clean Dist
     Empty the dist folder of each client.
     Doesn't bother reading the directory as that slows the task down.
 */
-gulp.task('clean-dist',
-    function () {
+function cleanDist(done) {
 
-        // Get list of clients we have to clean.
-        var clients = getClients(clientsDir);
+    // Get list of clients we have to clean.
+    var clients = getClients(clientsDir);
 
-        // Have clients to clean?
-        if (clients.length < 1) {
+    // Have clients to clean?
+    if (clients.length < 1) {
 
-            // No.
-            return true;
-        }
-
-        // Delete dist folder in each client.
-        var tasks = clients.map(function (folder) {
-            return gulp.src(
-                `${clientsDir}${folder}/${distDir}`,
-                {
-                    read: false
-                })
-                .pipe(clean());
-        });
-
-        return merge(tasks);
+        // No.
+        return done();
     }
-);
+
+    // Delete dist folder in each client.
+    var tasks = clients.map(function (folder) {
+        return gulp.src(
+            `${clientsDir}${folder}/${distDir}`,
+            {
+                read: false,
+                allowEmpty: true
+            })
+            .pipe(clean());
+    });
+
+    return merge(tasks);
+}
 
 /*
     Bundle
     Use webpack to bundle all of the resources for each client.
 
     Task Dependencies:
-    - clean-dist, empties the dist directory prior to bundling.
+    - cleanDist, empties the dist directory prior to bundling.
 */
-gulp.task('bundle',
-    [
-        'clean-dist'
-    ],
-    function () {
+function bundle(done) {
 
-        // Get list of clients we want to pass to webpack.
-        var clients = getClients(clientsDir);
+    // Get list of clients we want to pass to webpack.
+    var clients = getClients(clientsDir);
 
-        // Load the base config.
-        var wpConfig = require('./webpack.base.js')();
+    // Load the base config.
+    var wpConfig = require('./webpack.base.js')();
 
-        // Clear entry points.
-        wpConfig.entry = {};
+    // Clear entry points.
+    wpConfig.entry = {};
 
-        // Make sure we have at least one client.
-        var hasClient = false;
+    // Make sure we have at least one client.
+    var hasClient = false;
 
-        // Add each client.
-        clients.map(function (folder) {
+    // Add each client.
+    clients.map(function (folder) {
 
-            // Build our client relative paths.
-            var clientPath = `./${clientsDir}${folder}/`,
-                jsPath = `${clientPath}${srcDir}js/`,
-                cssPath = `${clientPath}${srcDir}css/`,
-                distPath = `${folder}/${distDir}`;
+        // Build our client relative paths.
+        var clientPath = `./${clientsDir}${folder}/`,
+            jsPath = `${clientPath}${srcDir}js/`,
+            cssPath = `${clientPath}${srcDir}css/`,
+            distPath = `${folder}/${distDir}`;
 
-            // Try find app entry point.
-            var appEntryPoint = getJsEntryPoint(jsPath);
+        // Try find app entry point.
+        var appEntryPoint = getJsEntryPoint(jsPath);
 
-            // Do we have one?
-            if (appEntryPoint) {
+        // Do we have one?
+        if (appEntryPoint) {
 
-                // Add it.
-                wpConfig.entry[`${distPath}${folder}.bundle`] = [
-                    'babel-polyfill',
-                    `${jsPath}${appEntryPoint}`
-                ];
-            }
-
-            // Try find css entry point.
-            var cssEntryPoint = getCssEntryPoint(cssPath);
-
-            // Do we have one?
-            if (cssEntryPoint) {
-
-                // Add it.
-                wpConfig.entry[`${distPath}${folder}.styles`] = [
-                    `${cssPath}${cssEntryPoint}`
-                ];
-
-                // Mark that we have a client.
-                hasClient = true;
-            }
-
-        });
-
-        // Do we have at least one client?
-        if (!hasClient) {
-
-            // No, don't run webpack.
-            return true;
+            // Add it.
+            wpConfig.entry[`${distPath}${folder}.bundle`] = [
+                'babel-polyfill',
+                `${jsPath}${appEntryPoint}`
+            ];
         }
 
-        // Run webpack.
-        return webpack(wpConfig)
-            .pipe(gulp.dest(clientsDir));
+        // Try find css entry point.
+        var cssEntryPoint = getCssEntryPoint(cssPath);
+
+        // Do we have one?
+        if (cssEntryPoint) {
+
+            // Add it.
+            wpConfig.entry[`${distPath}${folder}.styles`] = [
+                `${cssPath}${cssEntryPoint}`
+            ];
+
+            // Mark that we have a client.
+            hasClient = true;
+        }
+
+    });
+
+    // Do we have at least one client?
+    if (!hasClient) {
+
+        // No, don't run webpack.
+        return done();
     }
-);
+
+    // Run webpack.
+    return webpack(wpConfig)
+        .pipe(gulp.dest(clientsDir));
+}
 
 /*
     Copy Clients
@@ -325,26 +309,21 @@ gulp.task('bundle',
     Task Dependencies:
     - bundle, no point copying the front end clients if they doesn't exist.
 */
-gulp.task('copy-clients',
-    [
-        'bundle'
-    ],
-    function () {
-        return gulp.src(
-            [
-                // Include entire clients directory, except source, less and sass.
-                `${clientsDir}*/**`,
-                `!${clientsDir}**/${srcDir}**/*.js`,
-                `!${clientsDir}**/*.scss`,
-                `!${clientsDir}**/*.less`
-            ],
-            {
-                base: '.',
-                nodir: true
-            })
-            .pipe(gulp.dest(webModuleDir));
-    }
-);
+function copyClients() {
+    return gulp.src(
+        [
+            // Include entire clients directory, except source, less and sass.
+            `${clientsDir}*/**`,
+            `!${clientsDir}**/${srcDir}**/*.js`,
+            `!${clientsDir}**/*.scss`,
+            `!${clientsDir}**/*.less`
+        ],
+        {
+            base: '.',
+            nodir: true
+        })
+        .pipe(gulp.dest(webModuleDir));
+}
 
 /*
     Copy Module
@@ -352,47 +331,41 @@ gulp.task('copy-clients',
     website.
 
     Task Dependencies:
-    - copy-bin, we need to update the module dll too.
+    - copyBin, we need to update the module dll too.
 */
-gulp.task('copy-module',
-    [
-        'copy-bin'
-    ],
-    function () {
-        return gulp.src(
-            [
-                // Exclude package management.
-                '!node_modules/**',
-                '!package.json',
-                '!packages.config',
+function copyModule() {
+    return gulp.src(
+        [
+            // Include all the standard stuff.
+            '**/*.ascx',
+            '**/*.asmx',
+            '**/*.css',
+            '**/*.html',
+            '**/*.htm',
+            '**/*.resx',
+            '**/*.aspx',
+            '**/*.js',
+            'Images/*.*',
+            
+            // Exclude package management.
+            '!node_modules/**',
+            '!package.json',
+            '!packages.config',
 
-                // Exclude build chain.
-                '!gulpfile.js',
-                '!webpack.base.js',
-                '!.babelrc',
-                '!project.config.js',
+            // Exclude build chain.
+            '!gulpfile.js',
+            '!webpack.base.js',
+            '!.babelrc',
+            '!project.config.js',
 
-                // Exclude clients.
-                '!Clients/**',
-
-                // Include all the standard stuff.
-                '**/*.ascx',
-                '**/*.asmx',
-                '**/*.css',
-                '**/*.html',
-                '**/*.htm',
-                '**/*.resx',
-                '**/*.aspx',
-                '**/*.js',
-                'Images/*.*'
-            ],
-            {
-                base: '.',
-                nodir: true
-            })
-            .pipe(gulp.dest(webModuleDir));
-    }
-);
+            // Exclude clients.
+            '!Clients/**',        ],
+        {
+            base: '.',
+            nodir: true
+        })
+        .pipe(gulp.dest(webModuleDir));
+}
 
 /*
     Get Allowed Bin Files
@@ -473,25 +446,23 @@ function getManifestDlls() {
     Copy Bin
     Dll files need to be copied to the website bin folder.
 */
-gulp.task('copy-bin',
-    function () {
+function copyBin() {
 
-        // Get a list of bin files to be copied.
-        var filenames = getAllowedBinFiles('{dll,pdb,xml}');
+    // Get a list of bin files to be copied.
+    var filenames = getAllowedBinFiles('{dll,pdb,xml}');
 
-        // Map to correct path.
-        var sources = filenames.map(function (filename) {
-            return `${binDir}${filename}`;
-        });
+    // Map to correct path.
+    var sources = filenames.map(function (filename) {
+        return `${binDir}${filename}`;
+    });
 
-        return gulp.src(
-            sources,
-            {
-                base: 'bin'
-            })
-            .pipe(gulp.dest(webBinDir));
-    }
-);
+    return gulp.src(
+        sources,
+        {
+            base: 'bin'
+        })
+        .pipe(gulp.dest(webBinDir));
+}
 
 /*
     Get Root Install Files
@@ -518,62 +489,60 @@ function getRootInstallFiles() {
     Build Install
     Create a DNN install package for this module.
 */
-gulp.task('build-install',
-    [
-        'bundle'
-    ],
-    function () {
-        return gulp.src(
-            [
-                // Exclude package management.
-                '!node_modules/**',
-                '!package.json',
-                '!packages.config',
+function buildInstall() {
+    return gulp.src(
+        [
+            // Include all the standard stuff.
+            '**/*.ascx',
+            '**/*.asmx',
+            '**/*.css',
+            '**/*.html',
+            '**/*.htm',
+            '**/*.resx',
+            '**/*.aspx',
+            '**/*.js',
+            'Images/*.*',
+            
+            // Exclude package management.
+            '!node_modules/**',
+            '!package.json',
+            '!packages.config',
 
-                // Exclude build chain.
-                '!gulpfile.js',
-                '!webpack.base.js',
-                '!.babelrc',
-                '!project.config.js',
+            // Exclude build chain.
+            '!gulpfile.js',
+            '!webpack.base.js',
+            '!.babelrc',
+            '!project.config.js',
 
-                // Include entire clients directory, except source, less and sass.
-                `${clientsDir}*/**`,
-                `!${clientsDir}**/${srcDir}**/*.js`,
-                `!${clientsDir}**/*.scss`,
-                `!${clientsDir}**/*.less`,
+            // Include entire clients directory, except source, less and sass.
+            `${clientsDir}*/**`,
+            `!${clientsDir}**/${srcDir}**/*.js`,
+            `!${clientsDir}**/*.scss`,
+            `!${clientsDir}**/*.less`,        ],
+        {
+            base: '.',
+            nodir: true
+        })
 
-                // Include all the standard stuff.
-                '**/*.ascx',
-                '**/*.asmx',
-                '**/*.css',
-                '**/*.html',
-                '**/*.htm',
-                '**/*.resx',
-                '**/*.aspx',
-                '**/*.js',
-                'Images/*.*'
-            ],
+        // Zip in to resources zip.
+        .pipe(zip('Resources.zip'))
+
+        // Add additional install files to stream.
+        .pipe(gulp.src(
+            getRootInstallFiles(),
             {
                 base: '.',
                 nodir: true
             })
+        )
 
-            // Zip in to resources zip.
-            .pipe(zip('Resources.zip'))
+        // Zip in to install zip.
+        .pipe(zip(`Cantarus.${CONFIG.MODULE_DOMAIN}.${CONFIG.MODULE_NAME}_${CONFIG.MODULE_VERSION}_Install.zip`))
 
-            // Add additional install files to stream.
-            .pipe(addsrc(
-                getRootInstallFiles(),
-                {
-                    base: '.',
-                    nodir: true
-                })
-            )
+        // Move to compiled modules folder.
+        .pipe(gulp.dest(compiledModulesDir));
+}
 
-            // Zip in to install zip.
-            .pipe(zip(`Cantarus.${CONFIG.MODULE_DOMAIN}.${CONFIG.MODULE_NAME}_${CONFIG.MODULE_VERSION}_Install.zip`))
-
-            // Move to compiled modules folder.
-            .pipe(gulp.dest(compiledModulesDir));
-    }
-);
+function noOp(done) {
+    done();
+}
