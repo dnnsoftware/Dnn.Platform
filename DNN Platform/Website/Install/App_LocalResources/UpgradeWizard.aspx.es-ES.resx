@@ -44,15 +44,6 @@
   <data name="ExtensionsUpgrade.Text">
     <value xml:space="preserve">Actualizando extensiones</value>
   </data>
-  <data name="ImprovementProgramExplain.Text" lastModified="2016-11-29 16:19:57">
-    <value xml:space="preserve">El programa de mejoras del producto nos permite entender mejor como mejorar DNN para usted. Los datos enviados nos ayudarán a analizar el uso y lo que es más importante para los usuarios del producto. Todos los datos enviados son anónimos y para uso interno. Ver más información sobre el &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de Mejoras del Producto&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" lastModified="2016-11-29 16:19:57">
-    <value xml:space="preserve">Enviar información anónima de uso a DNN</value>
-  </data>
-  <data name="ImprovementsProgramTitle.Text" lastModified="2016-11-29 16:19:57">
-    <value xml:space="preserve">Programa de mejoras del producto</value>
-  </data>
   <data name="IntroDetail.Text">
     <value xml:space="preserve">&lt;p&gt;Bienvenido a la página de actualización de DotNetNuke.&lt;/p&gt;
 

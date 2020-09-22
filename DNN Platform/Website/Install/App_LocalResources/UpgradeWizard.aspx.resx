@@ -171,17 +171,6 @@
   <data name="Password.Text" xml:space="preserve">
     <value>Password:</value>
   </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Product Improvement Program</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>The product improvement program allows us to better understand how we can
-improve DNN for you. The data will help us analyze usage and what is important
-for people using the product. All of the data is anonymous and for internal use only. Learn more about the &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Product Improvement Program&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Send anonymous usage information to DNN</value>
-  </data>
   <data name="Retry.Text" xml:space="preserve">
     <value>Retry</value>
   </data>

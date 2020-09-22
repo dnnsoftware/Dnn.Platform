@@ -425,6 +425,7 @@ namespace DotNetNuke.Entities.Host
         ///   Gets a value indicating whether gets whether the installation participates in the improvements program.
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Improvement program functionality removed in 9.7.3.  API Scheduled for removal in 10.0.0.")]
         public static bool ParticipateInImprovementProg
         {
             get

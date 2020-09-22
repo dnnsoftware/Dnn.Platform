@@ -28,7 +28,6 @@ namespace DotNetNuke.UI.ControlPanels
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.ImprovementsProgram;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Utilities;
@@ -200,15 +199,6 @@ namespace DotNetNuke.UI.ControlPanels
                 }
 
                 return this._hostAdvancedTabs;
-            }
-        }
-
-        protected bool IsBeaconEnabled
-        {
-            get
-            {
-                var user = UserController.Instance.GetCurrentUserInfo();
-                return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
             }
         }
 
@@ -896,14 +886,6 @@ namespace DotNetNuke.UI.ControlPanels
         protected bool IsLanguageModuleInstalled()
         {
             return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
-        }
-
-        protected string GetBeaconUrl()
-        {
-            var beaconService = BeaconService.Instance;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var path = this.PortalSettings.ActiveTab.TabPath;
-            return beaconService.GetBeaconUrl(user, path);
         }
 
         private static IEnumerable<PortalInfo> GetCurrentPortalsGroup()

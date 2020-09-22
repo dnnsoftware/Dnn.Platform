@@ -35,7 +35,6 @@
     <DemoPeriod></DemoPeriod>
     <DemoSignup>N</DemoSignup>
     <DisplayBetaNotice>Y</DisplayBetaNotice>
-    <DnnImprovementProgram>Y</DnnImprovementProgram>
     <EnableFileAutoSync>Y</EnableFileAutoSync>
     <EnableContentLocalization>N</EnableContentLocalization>
     <EnableModuleOnLineHelp>Y</EnableModuleOnLineHelp>

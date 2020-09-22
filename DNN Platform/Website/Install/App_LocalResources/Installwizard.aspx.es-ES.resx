@@ -318,15 +318,6 @@ Utilice el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
   <data name="IISVerificationFail.Text" xml:space="preserve">
     <value>El grupo de aplicaciones de IIS tiene que ejecutarse en Modo Integrado</value>
   </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>El programa de mejoras del producto nos permite entender mejor como mejorar DNN para usted. Los datos enviados nos ayudarán a analizar el uso y lo que es más importante para los usuarios del producto. Todos los datos enviados son anónimos y para uso interno. Ver más información sobre el &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de Mejoras del Producto&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Enviar información anónima de uso a DNN</value>
-  </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Programa de mejoras del producto</value>
-  </data>
   <data name="InitHostSetting.Text" xml:space="preserve">
     <value>Inicializando configuración del sistema </value>
   </data>

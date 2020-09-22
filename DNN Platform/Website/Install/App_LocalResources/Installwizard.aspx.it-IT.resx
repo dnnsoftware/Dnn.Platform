@@ -249,15 +249,6 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>Definito dall'utente</value>
   </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Programma di miglioramento del prodotto</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Il programma di miglioramento del prodotto ci consente di capire meglio come possiamo migliorare DNN per te. I dati ci aiuteranno ad analizzare l'utilizzo e ciò che è importante per le persone che utilizzano il prodotto. Tutti i dati sono anonimi e solo per uso interno. Ulteriori informazioni sul &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;programma di miglioramento del prodotto&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Invia informazioni anonime sull'uso a DNN</value>
-  </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Eliminare i file più vecchi di</value>
   </data>
