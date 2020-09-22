@@ -1547,12 +1547,6 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     switch (version.ToString(3))
                     {
-                        case "5.2.0":
-                            UpgradeToVersion520();
-                            break;
-                        case "5.2.1":
-                            UpgradeToVersion521();
-                            break;
                         case "5.3.0":
                             UpgradeToVersion530();
                             break;
@@ -3310,34 +3304,6 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
             var toAdd = new List<string> { ".ico" };
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
-        }
-
-        private static void UpgradeToVersion520()
-        {
-            // Add new ViewSource control
-            AddModuleControl(Null.NullInteger, "ViewSource", "View Module Source", "Admin/Modules/ViewSource.ascx", "~/images/icon_source_32px.gif", SecurityAccessLevel.Host, 0, string.Empty, true);
-
-            // Add Marketplace module definition
-            int moduleDefId = AddModuleDefinition("Marketplace", "Search for DotNetNuke modules, extension and skins.", "Marketplace");
-            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Marketplace/Marketplace.ascx", "~/images/icon_marketplace_32px.gif", SecurityAccessLevel.Host, 0);
-
-            // Add marketplace Module To Page
-            TabInfo newPage = AddHostPage("Marketplace", "Search for DotNetNuke modules, extension and skins.", "~/images/icon_marketplace_16px.gif", "~/images/icon_marketplace_32px.gif", true);
-            moduleDefId = GetModuleDefinition("Marketplace", "Marketplace");
-            AddModuleToPage(newPage, moduleDefId, "Marketplace", "~/images/icon_marketplace_32px.gif");
-        }
-
-        private static void UpgradeToVersion521()
-        {
-            // UpgradeDefaultLanguages is a temporary procedure containing code that
-            // needed to execute after the 5.1.3 application upgrade code above
-            DataProvider.Instance().ExecuteNonQuery("UpgradeDefaultLanguages");
-
-            // This procedure is not intended to be part of the database schema
-            // and is therefore dropped once it has been executed.
-            using (DataProvider.Instance().ExecuteSQL("DROP PROCEDURE {databaseOwner}{objectQualifier}UpgradeDefaultLanguages"))
-            {
-            }
         }
 
         private static void UpgradeToVersion530()
