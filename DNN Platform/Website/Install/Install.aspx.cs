@@ -360,71 +360,38 @@ namespace DotNetNuke.Services.Install
                     this.Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
                     this.Response.Flush();
 
-                    string ignoreWarning = Null.NullString;
-                    string strWarning = Null.NullString;
-                    if ((databaseVersion.Major == 3 && databaseVersion.Minor < 3) || (databaseVersion.Major == 4 && databaseVersion.Minor < 3))
+                    this.Response.Write("<br><br>");
+                    this.Response.Write("<h2>Upgrade Status Report</h2>");
+                    this.Response.Flush();
+
+                    // stop scheduler
+                    SchedulingProvider.Instance().Halt("Stopped by Upgrade Process");
+
+                    Upgrade.Upgrade.UpgradeDNN(strProviderPath, databaseVersion);
+
+                    // Install optional resources if present
+                    var packages = Upgrade.Upgrade.GetInstallPackages();
+                    foreach (var package in packages)
                     {
-                        // Users and profile have not been transferred
-                        // Get the name of the data provider
-                        ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
-
-                        // Execute Special Script
-                        Upgrade.Upgrade.ExecuteScript(strProviderPath + "Upgrade." + objProviderConfiguration.DefaultProvider);
-
-                        if (this.Request.QueryString["ignoreWarning"] != null)
-                        {
-                            ignoreWarning = this.Request.QueryString["ignoreWarning"].ToLowerInvariant();
-                        }
-
-                        strWarning = Upgrade.Upgrade.CheckUpgrade();
-                    }
-                    else
-                    {
-                        ignoreWarning = "true";
+                        Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
                     }
 
-                    // Check whether Upgrade is ok
-                    if (strWarning == Null.NullString || ignoreWarning == "true")
+                    // calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
+                    var installVersion = DataProvider.Instance().GetInstallVersion();
+                    string strError = Config.UpdateInstallVersion(installVersion);
+
+                    // Adding FCN mode to web.config
+                    strError += Config.AddFCNMode(Config.FcnMode.Single);
+                    if (!string.IsNullOrEmpty(strError))
                     {
-                        this.Response.Write("<br><br>");
-                        this.Response.Write("<h2>Upgrade Status Report</h2>");
-                        this.Response.Flush();
-
-                        // stop scheduler
-                        SchedulingProvider.Instance().Halt("Stopped by Upgrade Process");
-
-                        Upgrade.Upgrade.UpgradeDNN(strProviderPath, databaseVersion);
-
-                        // Install optional resources if present
-                        var packages = Upgrade.Upgrade.GetInstallPackages();
-                        foreach (var package in packages)
-                        {
-                            Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
-                        }
-
-                        // calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
-                        var installVersion = DataProvider.Instance().GetInstallVersion();
-                        string strError = Config.UpdateInstallVersion(installVersion);
-
-                        // Adding FCN mode to web.config
-                        strError += Config.AddFCNMode(Config.FcnMode.Single);
-                        if (!string.IsNullOrEmpty(strError))
-                        {
-                            Logger.Error(strError);
-                        }
-
-                        this.Response.Write("<h2>Upgrade Complete</h2>");
-                        this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
-
-                        // remove installwizard files
-                        Upgrade.Upgrade.DeleteInstallerFiles();
+                        Logger.Error(strError);
                     }
-                    else
-                    {
-                        this.Response.Write("<h2>Warning:</h2>" + strWarning.Replace(Environment.NewLine, "<br />"));
 
-                        this.Response.Write("<br><br><a href='Install.aspx?mode=upgrade&ignoreWarning=true'>Click Here To Proceed With The Upgrade.</a>");
-                    }
+                    this.Response.Write("<h2>Upgrade Complete</h2>");
+                    this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+
+                    // remove installwizard files
+                    Upgrade.Upgrade.DeleteInstallerFiles();
 
                     this.Response.Flush();
                 }
