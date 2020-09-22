@@ -1547,9 +1547,6 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     switch (version.ToString(3))
                     {
-                        case "4.8.2":
-                            UpgradeToVersion482();
-                            break;
                         case "5.0.0":
                             UpgradeToVersion500();
                             break;
@@ -3328,13 +3325,6 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
             var toAdd = new List<string> { ".ico" };
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
-        }
-
-        private static void UpgradeToVersion482()
-        {
-            // checks for the very rare case where the default validationkey prior to 4.08.02
-            // is still being used and updates it
-            Config.UpdateValidationKey();
         }
 
         private static void UpgradeToVersion500()
