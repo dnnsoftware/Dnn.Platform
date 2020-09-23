@@ -454,7 +454,6 @@ namespace DotNetNuke.Common
                     Globals.NETFrameworkVersion = GetNETFrameworkVersion();
                     Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
 
-                    // Try and Upgrade to Current Framewok
                     Upgrade.CheckFipsCompilanceAssemblies();
 
                     // Log Server information
