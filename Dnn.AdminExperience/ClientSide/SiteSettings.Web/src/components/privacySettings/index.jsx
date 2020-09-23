@@ -209,7 +209,7 @@ class PrivacySettingsPanelBody extends Component {
         </InputGroup>
       </div>
     ) : (
-      <div key="column-one-right" className="right-column" />
+      <div key="column-one-left" className="left-column" />
     );
     const columnTwoLeft = state.privacySettings ? (
       <div key="column-two-left" className="left-column">
@@ -362,7 +362,7 @@ class PrivacySettingsPanelBody extends Component {
           {resx.get("PrivacyCommunicationSettings")}
         </div>
         <GridSystem numberOfColumns={2}>
-          {[columnOneLeft, columnOneRight]}
+          {[columnOneLeft]}
         </GridSystem>
       </div>
     ) : null;
