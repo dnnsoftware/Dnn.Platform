@@ -72,7 +72,7 @@ namespace Dnn.AuthServices.Jwt.Data
 
         public virtual void DeleteExpiredTokens()
         {
-            // don't worry aabout caching; these will already be invalidated by cache manager
+            // don't worry about caching; these will already be invalidated by cache manager
             this._dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteExpired");
         }
 
