@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System.Globalization;
 using DotNetNuke.Common;
 
 namespace Dnn.PersonaBar.UI.Services
@@ -34,6 +35,8 @@ namespace Dnn.PersonaBar.UI.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
 
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
+
+        private int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
 
         [HttpGet]
         public HttpResponseMessage GetRoleGroups(bool reload = false)
@@ -106,18 +109,15 @@ namespace Dnn.PersonaBar.UI.Services
                     return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
                 }
 
-                var portalRoles = RoleController.Instance.GetRoles(this.PortalId);
-                
-
-                var matchedRoles = portalRoles.Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
-                                                          && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
-                                                          && r.SecurityMode != SecurityMode.SocialGroup
+                var matchedRoles = RoleController.Instance.GetRoles(this.PortalId)
+                                                    .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
+                                                          && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
                                                           && r.Status == RoleStatus.Approved).ToList();
 
                 if (roleGroupId <= Null.NullInteger
                         && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)
                 {
-                    matchedRoles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
+                    matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
                 }
 
                 var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
