@@ -149,12 +149,14 @@ namespace Dnn.PersonaBar.Servers.Services
                     success,
                     errMessage,
                     confirmationMessage =
-                        string.Format(
-                            Localization.GetString(
-                                "EmailSentMessage",
-                                Components.Constants.ServersResourcersPath),
-                            mailFrom,
-                            mailTo),
+                        success
+                            ? string.Format(
+                                Localization.GetString(
+                                    "EmailSentMessage",
+                                    Components.Constants.ServersResourcersPath),
+                                mailFrom,
+                                mailTo)
+                            : Localization.GetString("errorMessageSendingTestEmail"),
                 });
             }
             catch (Exception exc)
