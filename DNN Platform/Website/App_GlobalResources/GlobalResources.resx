@@ -211,7 +211,7 @@
     <value>Browse Files in Folder</value>
   </data>
   <data name="EMAIL_SMTP_TEST_SUBJECT.Text" xml:space="preserve">
-    <value>[Host:HostTitle] SMTP Configuration Test</value>
+    <value>[Host:HostTitle] SMTP Configuration Test from [Portal:PortalName]</value>
   </data>
   <data name="MESSAGE_PORTAL_PRIVACY.Text" xml:space="preserve">
     <value>&lt;div align="left"&gt;
