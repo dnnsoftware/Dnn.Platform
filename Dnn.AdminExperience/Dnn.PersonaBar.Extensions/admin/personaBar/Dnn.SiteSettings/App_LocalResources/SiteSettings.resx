@@ -1149,12 +1149,6 @@
   <data name="PagesToTranslate.Text" xml:space="preserve">
     <value>Pages To Translate:</value>
   </data>
-  <data name="plImprovementProgram.Help" xml:space="preserve">
-    <value>Check this box to participate in the DNN Improvement Program. &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Learn More&lt;/a&gt;.</value>
-  </data>
-  <data name="plImprovementProgram.Text" xml:space="preserve">
-    <value>Participate in DNN Improvement Program:</value>
-  </data>
   <data name="plUpgrade.Text" xml:space="preserve">
     <value>Check for Software Upgrades</value>
   </data>

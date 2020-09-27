@@ -46,15 +46,6 @@ Voordat je verder gaat met het geautomatiseerde upgrade-proces moet je ervoor zo
   <data name="ExtensionsUpgrade.Text" xml:space="preserve">
     <value>Extensies bijwerken</value>
   </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Het productverbeteringsprogramma stelt ons in staat om te bepalen hoe we DNNPlatform kunnen verbeteren. De gegevens helpen ons om het gebruik te analyseren en laat ons inzien wat belangrijk is voor gebruikers van DNNPlatform. Alle gegevens zijn anoniem en alleen beschikbaar voor intern gebruik. Voor meer informatie, ga naar https://www.dnnsoftware.com/dnn-improvement-program.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Stuur anonieme gebruiksinformatie naar DNN</value>
-  </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Programma voor productverbetering</value>
-  </data>
   <data name="IntroDetail.Text" xml:space="preserve">
     <value>&lt;p&gt;Welkom op de DNNPlatform upgradepagina.&lt;/p&gt;De eerste stap is het kiezen van de taal die je wilt gebruiken voor de upgrade.&lt;/p&gt;</value>
   </data>

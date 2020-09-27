@@ -3,8 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Collapsible as Collapse } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import moment from "moment";
-import { log as LogActions } from "../../../actions";
+import * as dayjs from "dayjs";
 
 /*eslint-disable eqeqeq*/
 class LogFileRow extends Component {
@@ -17,6 +16,9 @@ class LogFileRow extends Component {
         };
         this.timeout = 0;
         this.handleClick = this.handleClick.bind(this);
+
+        const localizedFormat = require('dayjs/plugin/localizedFormat');
+        dayjs.extend(localizedFormat);
     }
 
     componentWillReceiveProps() {
@@ -100,7 +102,7 @@ class LogFileRow extends Component {
                         </div>
                         <div className="term-label-modifieddate">
                             <div className="term-label-wrapper">
-                                <span>{moment(this.props.lastWriteTimeUtc).format("LLL")}</span>
+                                <span>{dayjs(this.props.lastWriteTimeUtc).format("LLL")}</span>
                             </div>
                         </div>
                         <div className="term-label-size">

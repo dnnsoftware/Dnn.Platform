@@ -4,7 +4,6 @@ define(['jquery'], function ($) {
     return {
         init: function (config) {
             var loadTempl;
-            var injectBeacon;
             var setDialogClass;
 
             loadTempl = function (folder, template, wrapper, params, self, cb) {
@@ -43,14 +42,6 @@ define(['jquery'], function ($) {
                     } else {
                         moduleJs[loadMethod].call(moduleJs, params, cb);
                     }
-                }
-                injectBeacon(template);
-            };
-            // Beacon injection
-            injectBeacon = function (template) {
-                var beaconUrl = config.beaconUrl !== undefined ? config.beaconUrl : undefined;
-                if (beaconUrl != undefined && beaconUrl !== "" && template !== "tasks") {
-                    (new Image()).src = beaconUrl + "&f=" + encodeURI(template);
                 }
             };
 

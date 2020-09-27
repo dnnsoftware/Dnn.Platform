@@ -33,7 +33,7 @@ class App extends Component {
         const buttonVisible = utils.isHostUser();
         if (this.props.reloadPage) {
             window.top.location.reload();
-            return;
+            return null;
         }
         return (
             <div className="servers-app personaBar-mainContainer">

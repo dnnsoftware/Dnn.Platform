@@ -616,12 +616,6 @@ namespace DotNetNuke.Services.Installer
         public static string CONFIG_Committed = GetLocalizedString("CONFIG_Committed");
         public static string CONFIG_RolledBack = GetLocalizedString("CONFIG_RolledBack");
         public static string CONFIG_Updated = GetLocalizedString("CONFIG_Updated");
-        public static string DASHBOARD_ReadSuccess = GetLocalizedString("DASHBOARD_ReadSuccess");
-        public static string DASHBOARD_SrcMissing = GetLocalizedString("DASHBOARD_SrcMissing");
-        public static string DASHBOARD_Registered = GetLocalizedString("DASHBOARD_Registered");
-        public static string DASHBOARD_KeyMissing = GetLocalizedString("DASHBOARD_KeyMissing");
-        public static string DASHBOARD_LocalResourcesMissing = GetLocalizedString("DASHBOARD_LocalResourcesMissing");
-        public static string DASHBOARD_UnRegistered = GetLocalizedString("DASHBOARD_UnRegistered");
         public static string DNN_Reading = GetLocalizedString("DNN_Reading");
         public static string DNN_ReadingComponent = GetLocalizedString("DNN_ReadingComponent");
         public static string DNN_ReadingPackage = GetLocalizedString("DNN_ReadingPackage");

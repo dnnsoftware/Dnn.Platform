@@ -13,9 +13,6 @@
   </owner>
   <license src="license.txt" />
   <releaseNotes src="releaseNotes.txt" />
-  <dependencies>
-    <dependency type="CoreVersion">07.04.00</dependency>
-  </dependencies>
   <components>
     <component type="Assembly">
       <assemblies>

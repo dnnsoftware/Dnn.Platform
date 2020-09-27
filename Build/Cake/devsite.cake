@@ -7,7 +7,6 @@ Task("BuildToTempFolder")
     .IsDependentOn("ResetDatabase")
     .IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
-	.IsDependentOn("ExternalExtensions")
     .Does(() => 
     {
     });
