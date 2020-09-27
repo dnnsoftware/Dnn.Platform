@@ -45,7 +45,6 @@
     margin-left: 4px;
 }
 
-.customCssPanel .form-item textarea,
 .customCssPanel .form-item select {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -79,8 +78,8 @@
     background-color: #fff;
 }
 
-.customCssPanel .form-item textarea{ 
-	height: 220px;
+.customCssPanel .form-item #monaco-editor { 
+    height: 220px;
 }
 
 .customCssPanel .actions{
