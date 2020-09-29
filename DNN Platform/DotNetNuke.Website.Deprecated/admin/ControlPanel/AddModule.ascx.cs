@@ -821,13 +821,13 @@ namespace DotNetNuke.UI.ControlPanel
 
             if (this.PaneModulesLst.Items.Count <= 1)
             {
-                var listItem = this.PositionLst.FindItemByValue("ABOVE");
+                var listItem = this.PositionLst.Items.FindByValue("ABOVE");
                 if (listItem != null)
                 {
                     this.PositionLst.Items.Remove(listItem);
                 }
 
-                listItem = this.PositionLst.FindItemByValue("BELOW");
+                listItem = this.PositionLst.Items.FindByValue("BELOW");
                 if (listItem != null)
                 {
                     this.PositionLst.Items.Remove(listItem);

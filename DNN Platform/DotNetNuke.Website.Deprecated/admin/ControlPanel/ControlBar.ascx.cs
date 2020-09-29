@@ -940,7 +940,7 @@ namespace DotNetNuke.UI.ControlPanels
             this.CategoryList.DataBind();
             if (!this.IsPostBack)
             {
-                this.CategoryList.Select(!string.IsNullOrEmpty(this.BookmarkedModuleKeys) ? this.BookmarkModuleCategory : "All", false);
+                this.CategoryList.SelectedValue = !string.IsNullOrEmpty(this.BookmarkedModuleKeys) ? this.BookmarkModuleCategory : "All";
             }
         }
 
@@ -1040,7 +1040,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             foreach (var portal in this.LoadPortalsList())
             {
-                this.controlBar_SwitchSite.Items.Add(new DnnComboBoxItem(portal[0], portal[1]));
+                this.controlBar_SwitchSite.Items.Add(new ListItem(portal[0], portal[1]));
             }
         }
 
@@ -1051,8 +1051,9 @@ namespace DotNetNuke.UI.ControlPanels
                 const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
                 foreach (var lang in this.LoadLanguagesList())
                 {
-                    var item = new DnnComboBoxItem(lang[0], lang[1]);
-                    item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                    var item = new ListItem(lang[0], lang[1]);
+                    var imageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                    item.Text = $"<img src='{imageUrl}' alt='' /> {item.Text}";
                     if (lang[2] == "true")
                     {
                         item.Selected = true;

@@ -184,7 +184,7 @@ namespace DotNetNuke.UI.ControlPanel
             ArrayList templateFiles = Globals.GetFileList(PortalSettings.PortalId, "page.template", false, "Templates/");
             foreach (FileItem dnnFile in templateFiles)
             {
-                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", string.Empty), dnnFile.Value);
+                var item = new ListItem(dnnFile.Text.Replace(".page.template", string.Empty), dnnFile.Value);
                 this.TemplateLst.Items.Add(item);
                 if (item.Text == "Default")
                 {
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
             }
 
-            this.TemplateLst.InsertItem(0, this.GetString("NoTemplate"), string.Empty);
+            this.TemplateLst.Items.Insert(0, new ListItem(this.GetString("NoTemplate"), string.Empty));
         }
 
         private void LoadLocationList()
@@ -200,12 +200,9 @@ namespace DotNetNuke.UI.ControlPanel
             this.LocationLst.ClearSelection();
             this.LocationLst.Items.Clear();
 
-            // LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
-            // LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
-            // LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
-            this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
-            this.LocationLst.AddItem(this.GetString("After"), "AFTER");
-            this.LocationLst.AddItem(this.GetString("Child"), "CHILD");
+            this.LocationLst.Items.Add(new ListItem(this.GetString("Before"), "BEFORE"));
+            this.LocationLst.Items.Add(new ListItem(this.GetString("After"), "AFTER"));
+            this.LocationLst.Items.Add(new ListItem(this.GetString("Child"), "CHILD"));
 
             this.LocationLst.SelectedIndex = (!PortalSecurity.IsInRole("Administrators")) ? 2 : 1;
         }
@@ -220,7 +217,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.PageLst.DataSource = RibbonBarManager.GetPagesList();
             this.PageLst.DataBind();
 
-            var item = this.PageLst.FindItemByValue(PortalSettings.ActiveTab.TabID.ToString());
+            var item = this.PageLst.Items.FindByValue(PortalSettings.ActiveTab.TabID.ToString());
             if (item != null)
             {
                 item.Selected = true;
