@@ -30,7 +30,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            serviceCollection.AddTransient<ISerializationManager, SerializationController>();
+            serviceCollection.AddTransient<ISerializationManager, SerializationManager>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

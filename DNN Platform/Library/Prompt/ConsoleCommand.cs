@@ -1,11 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Abstractions.Prompt;
 using DotNetNuke.Abstractions.Users;
 using DotNetNuke.Collections;
 using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -13,6 +15,9 @@ namespace DotNetNuke.Prompt
 {
     public abstract class ConsoleCommand : IConsoleCommand
     {
+        internal static ISerializationManager SerializationManager =>
+    Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+
         public abstract string LocalResourceFile { get; }
         protected IPortalSettings PortalSettings { get; private set; }
         protected IUserInfo User { get; private set; }
@@ -43,7 +48,7 @@ namespace DotNetNuke.Prompt
                 if (settingValue != null && property.CanWrite)
                 {
                     var tp = property.PropertyType;
-                    Entities.Modules.Settings.SerializationController.DeserializeProperty(myCommand, property, settingValue);
+                    SerializationManager.DeserializeProperty(myCommand, property, settingValue);
                 }
             });
         }
