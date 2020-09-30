@@ -115,7 +115,7 @@ namespace Dnn.PersonaBar.UI.Services
                                                           && r.Status == RoleStatus.Approved).ToList();
 
                 if (roleGroupId <= Null.NullInteger
-                        && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)
+                        && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
                     matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
                 }
