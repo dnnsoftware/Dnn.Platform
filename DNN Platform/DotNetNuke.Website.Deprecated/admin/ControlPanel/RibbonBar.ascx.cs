@@ -191,10 +191,10 @@ namespace DotNetNuke.UI.ControlPanels
                                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, currentCulture, string.Empty, false);
                                 foreach (var cultureItem in cultureListItems)
                                 {
-                                    this.ddlUICulture.AddItem(cultureItem.Text, cultureItem.Value);
+                                    this.ddlUICulture.Items.Add(new ListItem(cultureItem.Text, cultureItem.Value));
                                 }
 
-                                var selectedCultureItem = this.ddlUICulture.FindItemByValue(currentCulture);
+                                var selectedCultureItem = this.ddlUICulture.Items.FindByValue(currentCulture);
                                 if (selectedCultureItem != null)
                                 {
                                     selectedCultureItem.Selected = true;
@@ -298,20 +298,20 @@ namespace DotNetNuke.UI.ControlPanels
             switch (this.UserMode)
             {
                 case PortalSettings.Mode.View:
-                    this.ddlMode.FindItemByValue("VIEW").Selected = true;
+                    this.ddlMode.Items.FindByValue("VIEW").Selected = true;
                     break;
                 case PortalSettings.Mode.Edit:
-                    this.ddlMode.FindItemByValue("EDIT").Selected = true;
+                    this.ddlMode.Items.FindByValue("EDIT").Selected = true;
                     break;
                 case PortalSettings.Mode.Layout:
-                    this.ddlMode.FindItemByValue("LAYOUT").Selected = true;
+                    this.ddlMode.Items.FindByValue("LAYOUT").Selected = true;
                     break;
             }
         }
 
         private void RemoveModeDropDownItem(string value)
         {
-            var item = this.ddlMode.FindItemByValue(value);
+            var item = this.ddlMode.Items.FindByValue(value);
             if (item != null)
             {
                 this.ddlMode.Items.Remove(item);

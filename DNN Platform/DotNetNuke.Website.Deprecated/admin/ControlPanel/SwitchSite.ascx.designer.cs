@@ -23,7 +23,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox SitesLst;
+        protected global::System.Web.UI.WebControls.DropDownList SitesLst;
         
         /// <summary>
         /// cmdSwitch control.
