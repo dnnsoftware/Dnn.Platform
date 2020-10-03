@@ -213,6 +213,7 @@
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
     <Compile Include="Entities\Modules\Prompt\ListModules.cs" />
     <Compile Include="Entities\Modules\Prompt\PromptModuleInfo.cs" />
+    <Compile Include="Entities\Modules\Settings\HostSettingAttribute.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
