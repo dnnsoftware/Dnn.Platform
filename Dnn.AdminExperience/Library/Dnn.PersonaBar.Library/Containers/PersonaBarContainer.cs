@@ -19,7 +19,6 @@ namespace Dnn.PersonaBar.Library.Containers
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.ImprovementsProgram;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json.Linq;
 
@@ -80,14 +79,7 @@ namespace Dnn.PersonaBar.Library.Containers
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
         }
-
-        private static string GetBeaconUrl()
-        {
-            var beaconService = BeaconService.Instance;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return beaconService.GetBeaconEndpoint() + beaconService.GetBeaconQuery(user);
-        }
-
+        
         private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)
         {
             var settings = new Dictionary<string, object>();
@@ -120,11 +112,6 @@ namespace Dnn.PersonaBar.Library.Containers
             if (!settings.ContainsKey("isHost"))
             {
                 settings.Add("isHost", user.IsSuperUser);
-            }
-
-            if (BeaconService.Instance.IsBeaconEnabledForPersonaBar())
-            {
-                settings.Add("beaconUrl", GetBeaconUrl());
             }
 
             var customModules = new List<string>() { "serversummary" };

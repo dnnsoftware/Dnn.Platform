@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.UI.Skins;
     using Telerik.Web.UI;
 
+    [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  You will need to find an alternative solution")]
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {

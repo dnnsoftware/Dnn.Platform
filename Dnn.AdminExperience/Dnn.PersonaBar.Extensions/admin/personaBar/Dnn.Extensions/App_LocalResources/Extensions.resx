@@ -249,9 +249,6 @@
   <data name="CoreLanguagePack.Type" xml:space="preserve">
     <value>Core Language Packs</value>
   </data>
-  <data name="DashboardControl.Type" xml:space="preserve">
-    <value>Dashboard Controls</value>
-  </data>
   <data name="ExtensionLanguagePack.Type" xml:space="preserve">
     <value>Extension Language Packs</value>
   </data>
