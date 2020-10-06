@@ -3183,6 +3183,7 @@
     <Content Include="Install\Config\09.07.02.config" />
     <Content Include="Install\Config\BindingRedirect.config" />
     <Content Include="Install\Config\RemoveBindingRedirect.config" />
+    <Content Include="Install\Config\09.07.03.config" />
     <None Include="Install\Template\UserProfile.page.template" />
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
