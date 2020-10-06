@@ -969,7 +969,9 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             var localExpModule = localExportModules.FirstOrDefault(
                                 m => m.ModuleID == local.ModuleID && m.FriendlyName == local.ModuleDefinition.FriendlyName);
-                            if (localExpModule == null)
+                            var hasPaneChanged = local.PaneName != other.PaneName;
+
+                            if (localExpModule == null || hasPaneChanged)
                             {
                                 local = new ModuleInfo
                                 {
