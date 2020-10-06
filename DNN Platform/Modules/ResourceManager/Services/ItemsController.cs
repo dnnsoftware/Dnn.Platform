@@ -471,6 +471,40 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, sortOptions);
         }
 
+        /// <summary>
+        /// Attempts to move a file into a folder.
+        /// </summary>
+        /// <param name="moveFileRequest">The file move request, <see cref="MoveFileRequest"/>.</param>
+        /// <returns>A 0 status code if succeeded.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage MoveFile(MoveFileRequest moveFileRequest)
+        {
+            var groupId = this.FindGroupId(this.Request);
+            var moduleId = this.Request.FindModuleId();
+            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+
+            ItemsManager.Instance.MoveFile(moveFileRequest.SourceFileId, moveFileRequest.DestinationFolderId,  moduleMode, groupId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+        }
+
+        /// <summary>
+        /// Attempts to move a folder into another folder.
+        /// </summary>
+        /// <param name="moveFolderRequest">The folder move request, <see cref="MoveFolderRequest"/>.</param>
+        /// <returns>A 0 status code if succeeded.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage MoveFolder(MoveFolderRequest moveFolderRequest)
+        {
+            var groupId = this.FindGroupId(this.Request);
+            var moduleId = this.Request.FindModuleId();
+            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+
+            ItemsManager.Instance.MoveFolder(moveFolderRequest.SourceFolderId, moveFolderRequest.DestinationFolderId, moduleMode, groupId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+        }
+
         private static string GetFileIconUrl(string extension)
         {
             if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))

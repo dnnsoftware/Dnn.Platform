@@ -12,7 +12,9 @@ class ManageFolderTypesPanelContainer extends React.Component {
     constructor(props) {
         super(props);
         this.props.loadFolderMappings();
-        this.props.getAddFolderTypeUrl();
+        if (props.isAdmin){
+            this.props.getAddFolderTypeUrl();
+        }
     }
 
     handleConfirmRemoveFolderType(e, folderTypeMappingId) {

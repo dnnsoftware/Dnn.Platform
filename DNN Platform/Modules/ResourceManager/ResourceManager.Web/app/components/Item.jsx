@@ -27,6 +27,7 @@ const Item = ({item, iconUrl, handlers, isHighlighted, isDetailed}) => (
                 { handlers.onEdit ? <div className="rm-edit" onClick={handlers.onEdit}></div> : "" }
                 { handlers.onCopyToClipboard ? <div className="rm-link" onClick={handlers.onCopyToClipboard}></div> : "" }
                 { handlers.onDownload ? <div className="rm-download" onClick={handlers.onDownload}></div> : "" }
+                { handlers.onMove ? <div className="rm-move" onClick={handlers.onMove}></div> : ""}
                 { handlers.onDelete ? <div className="rm-delete" onClick={handlers.onDelete}></div> : "" }
             </div>
         </div>

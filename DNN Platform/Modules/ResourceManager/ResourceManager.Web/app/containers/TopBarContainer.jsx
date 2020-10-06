@@ -98,11 +98,13 @@ class TopBarContainer extends React.Component {
                                 label=""
                                 prependWith={<span dangerouslySetInnerHTML={{__html: refreshSyncIcon}}></span>}
                                 withIcon={false} />
-                            <FolderPicker selectedFolder={{key: currentFolderId, value: currentFolderName}}
-                                    changeFolder={this.onChangeFolder.bind(this)} 
-                                    homeFolderId={homeFolderId}
-                                    noFolderSelectedValue={localizeService.getString("NoFolderSelected")} 
-                                    searchFolderPlaceHolder={localizeService.getString("SearchFolder")}/>
+                            <FolderPicker
+                                selectedFolder={{key: currentFolderId, value: currentFolderName}}
+                                changeFolder={this.onChangeFolder.bind(this)} 
+                                homeFolderId={homeFolderId}
+                                noFolderSelectedValue={localizeService.getString("NoFolderSelected")} 
+                                searchFolderPlaceHolder={localizeService.getString("SearchFolder")}
+                            />
                         </div> 
                         : <span>{localizeService.getString("DisabledForAnonymousUsersMessage")}</span>
                     }
