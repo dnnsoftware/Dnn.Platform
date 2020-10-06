@@ -2,6 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System.Globalization;
+using DotNetNuke.Common;
+
 namespace Dnn.PersonaBar.UI.Services
 {
     using System;
@@ -32,6 +35,8 @@ namespace Dnn.PersonaBar.UI.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
 
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
+
+        private int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
 
         [HttpGet]
         public HttpResponseMessage GetRoleGroups(bool reload = false)
@@ -105,16 +110,23 @@ namespace Dnn.PersonaBar.UI.Services
                 }
 
                 var matchedRoles = RoleController.Instance.GetRoles(this.PortalId)
-                    .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
-                                && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
-                                   && r.Status == RoleStatus.Approved)
-                    .Select(r => new SuggestionDto()
+                                                    .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
+                                                          && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
+                                                          && r.Status == RoleStatus.Approved).ToList();
+
+                if (roleGroupId <= Null.NullInteger
+                        && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
+                }
+
+                var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
                     {
                         Value = r.RoleID,
-                        Label = r.RoleName,
+                        Label = r.RoleName
                     });
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, matchedRoles);
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
             catch (Exception ex)
             {

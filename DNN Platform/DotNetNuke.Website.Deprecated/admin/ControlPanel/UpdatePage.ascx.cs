@@ -21,7 +21,6 @@ namespace DotNetNuke.UI.ControlPanel
     using DotNetNuke.Web.UI;
     using DotNetNuke.Web.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
-    using Telerik.Web.UI;
 
     public partial class UpdatePage : UserControl, IDnnRibbonBarTool
     {
@@ -213,10 +212,11 @@ namespace DotNetNuke.UI.ControlPanel
         {
             this.SkinLst.ClearSelection();
             this.SkinLst.Items.Clear();
-            this.SkinLst.Items.Add(new RadComboBoxItem(this.GetString("DefaultSkin"), string.Empty));
+            this.SkinLst.Items.Add(new ListItem(this.GetString("DefaultSkin"), string.Empty));
 
             // load portal skins
-            var portalSkinsHeader = new RadComboBoxItem(this.GetString("PortalSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader" };
+            var portalSkinsHeader = new ListItem(this.GetString("PortalSkins"), string.Empty) { Enabled = false, };
+            portalSkinsHeader.Attributes["class"] = "SkinListHeader";
             this.SkinLst.Items.Add(portalSkinsHeader);
 
             string[] arrFolders;
@@ -242,7 +242,7 @@ namespace DotNetNuke.UI.ControlPanel
                             strLastFolder = folder;
                         }
 
-                        this.SkinLst.Items.Add(new RadComboBoxItem(
+                        this.SkinLst.Items.Add(new ListItem(
                             FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
                             "[L]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                     }
@@ -252,11 +252,12 @@ namespace DotNetNuke.UI.ControlPanel
             // No portal skins added, remove the header
             if (this.SkinLst.Items.Count == 2)
             {
-                this.SkinLst.Items.Remove(1);
+                this.SkinLst.Items.RemoveAt(1);
             }
 
             // load host skins
-            var hostSkinsHeader = new RadComboBoxItem(this.GetString("HostSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader" };
+            var hostSkinsHeader = new ListItem(this.GetString("HostSkins"), string.Empty) { Enabled = false, };
+            hostSkinsHeader.Attributes["class"] = "SkinListHeader";
             this.SkinLst.Items.Add(hostSkinsHeader);
 
             strRoot = Globals.HostMapPath + SkinController.RootSkin;
@@ -281,7 +282,7 @@ namespace DotNetNuke.UI.ControlPanel
                                 strLastFolder = folder;
                             }
 
-                            this.SkinLst.Items.Add(new RadComboBoxItem(
+                            this.SkinLst.Items.Add(new ListItem(
                                 FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
                                 "[G]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                         }
@@ -293,7 +294,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.SkinLst.SelectedIndex = 0;
             if (!string.IsNullOrEmpty(this.CurrentTab.SkinSrc))
             {
-                RadComboBoxItem selectItem = this.SkinLst.FindItemByValue(this.CurrentTab.SkinSrc);
+                ListItem selectItem = this.SkinLst.Items.FindByValue(this.CurrentTab.SkinSrc);
                 if (selectItem != null)
                 {
                     selectItem.Selected = true;
@@ -301,9 +302,11 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        private RadComboBoxItem GetSeparatorItem()
+        private ListItem GetSeparatorItem()
         {
-            return new RadComboBoxItem(this.GetString("SkinLstSeparator"), string.Empty) { CssClass = "SkinLstSeparator", Enabled = false };
+            var separatorItem = new ListItem(this.GetString("SkinLstSeparator"), string.Empty) { Enabled = false };
+            separatorItem.Attributes["class"] = "SkinLstSeparator";
+            return separatorItem;
         }
 
         private void LoadLocationList()
@@ -311,14 +314,10 @@ namespace DotNetNuke.UI.ControlPanel
             this.LocationLst.ClearSelection();
             this.LocationLst.Items.Clear();
 
-            // LocationLst.Items.Add(new ListItem(GetString("NoLocationSelection"), ""));
-            // LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
-            // LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
-            // LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
-            this.LocationLst.AddItem(this.GetString("NoLocationSelection"), string.Empty);
-            this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
-            this.LocationLst.AddItem(this.GetString("After"), "AFTER");
-            this.LocationLst.AddItem(this.GetString("Child"), "CHILD");
+            this.LocationLst.Items.Add(new ListItem(this.GetString("NoLocationSelection"), string.Empty));
+            this.LocationLst.Items.Add(new ListItem(this.GetString("Before"), "BEFORE"));
+            this.LocationLst.Items.Add(new ListItem(this.GetString("After"), "AFTER"));
+            this.LocationLst.Items.Add(new ListItem(this.GetString("Child"), "CHILD"));
 
             this.LocationLst.SelectedIndex = 0;
         }
@@ -333,8 +332,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.PageLst.DataSource = RibbonBarManager.GetPagesList().Where(t => !this.IsParentTab(t, this.CurrentTab.TabID));
             this.PageLst.DataBind();
 
-            // PageLst.Items.Insert(0, new ListItem(GetString("NoPageSelection"), string.Empty));
-            this.PageLst.InsertItem(0, this.GetString("NoPageSelection"), string.Empty);
+            this.PageLst.Items.Insert(0, new ListItem(this.GetString("NoPageSelection"), string.Empty));
             this.PageLst.SelectedIndex = 0;
         }
 
