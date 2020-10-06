@@ -9,13 +9,19 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -25,9 +31,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private const int TabID = 99;
         private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
 
-        private Mock<ICBO> _mockCBO;
-        private Mock<IUserController> _mockUserController;
-        private Mock<IHostController> _mockHostController;
+        private Mock<ICBO> mockCBO;
+        private Mock<IUserController> mockUserController;
+        private Mock<IHostController> mockHostController;
 
         [SetUp]
         public void Setup()
@@ -35,6 +41,12 @@ namespace DotNetNuke.Tests.Web.InternalServices
             MockComponentProvider.ResetContainer();
             this.SetupCBO();
             this.SetupHostController();
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
         [Test]
@@ -59,17 +71,17 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private void SetupCBO()
         {
-            this._mockCBO = new Mock<ICBO>();
-            this._mockCBO.Setup(c => c.GetCachedObject<List<TabVersion>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
+            this.mockCBO = new Mock<ICBO>();
+            this.mockCBO.Setup(c => c.GetCachedObject<List<TabVersion>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
                 .Returns(this.GetMockedTabVersions);
-            CBO.SetTestableInstance(this._mockCBO.Object);
+            CBO.SetTestableInstance(this.mockCBO.Object);
         }
 
         private void SetupUserController(string timeZoneId)
         {
-            this._mockUserController = new Mock<IUserController>();
-            this._mockUserController.Setup<UserInfo>(userController => userController.GetCurrentUserInfo()).Returns(this.GetMockedUser(timeZoneId));
-            UserController.SetTestableInstance(this._mockUserController.Object);
+            this.mockUserController = new Mock<IUserController>();
+            this.mockUserController.Setup<UserInfo>(userController => userController.GetCurrentUserInfo()).Returns(this.GetMockedUser(timeZoneId));
+            UserController.SetTestableInstance(this.mockUserController.Object);
         }
 
         private UserInfo GetMockedUser(string timeZoneId)
@@ -127,9 +139,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private void SetupHostController()
         {
-            this._mockHostController = new Mock<IHostController>();
-            this._mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
-            HostController.RegisterInstance(this._mockHostController.Object);
+            this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
+            this.mockHostController.As<IHostSettingsService>();
         }
 
         private class TabVersionControllerTestable : TabVersionController

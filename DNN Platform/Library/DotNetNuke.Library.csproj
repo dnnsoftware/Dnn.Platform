@@ -203,8 +203,10 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Application\ApplicationStatusInfo.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\NavigationManager.cs" />
+    <Compile Include="Common\ServiceScopeContainer.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
     <Compile Include="Common\Utilities\FileSystemExtensions.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
@@ -222,6 +224,7 @@
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
     <Compile Include="Entities\Modules\Prompt\ListModules.cs" />
     <Compile Include="Entities\Modules\Prompt\PromptModuleInfo.cs" />
+    <Compile Include="Entities\Modules\Settings\HostSettingAttribute.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
@@ -261,6 +264,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
+    <Compile Include="Obsolete\HostController.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
     <Compile Include="Prompt\Command.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />
@@ -808,9 +812,6 @@
     <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\UserProfilePicTransform.cs" />
-    <Compile Include="Services\ImprovementsProgram\BeaconService.cs" />
-    <Compile Include="Services\ImprovementsProgram\IBeaconService.cs" />
-    <Compile Include="Services\ImprovementsProgram\RolesEnum.cs" />
     <Compile Include="Services\Installer\Blocker\IInstallBlocker.cs" />
     <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />

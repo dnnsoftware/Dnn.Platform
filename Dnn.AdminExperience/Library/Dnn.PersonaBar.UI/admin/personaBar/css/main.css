@@ -867,6 +867,9 @@ transform: rotate(180deg);
 .personabarnav > li#Edit.locked svg {
     fill: #79bfdb;
 }
+.personabarnav > li#Edit.disabled svg {
+    visibility: hidden;
+}
 .personabarnav > li#showsite {
     background: url('../images/close_thin.svg') no-repeat center center;
     position: absolute;

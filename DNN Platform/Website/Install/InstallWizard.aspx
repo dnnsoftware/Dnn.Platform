@@ -207,17 +207,6 @@
 
                     </div>
                 </div>
-                <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
-                    <dnn:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
-                    <div class="dnnFormItem">
-                        <div class="dnnLabel"></div>
-                        <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
-                    </div>
-                    <div class="dnnFormItem information-checkbox">
-                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="False" CssClass="dnnLabel"/>
-                        <asp:Label id="lblImprovementProgram" AssociatedControlID="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
-                    </div>
-                </div>
                 <hr/>
                 <ul class="dnnForm dnnActions dnnClear">
                     <li>
@@ -676,7 +665,6 @@
                             databaseUsername: "",
                             databasePassword: "",
                             databaseRunAsOwner: null,
-                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N",
                             acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
                         };
                         $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none');

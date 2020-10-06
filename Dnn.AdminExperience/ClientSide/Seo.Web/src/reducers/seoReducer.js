@@ -8,7 +8,8 @@ export default function seoSettings(state = {
                 generalSettings: action.data.generalSettings,
                 replacementCharacterList: action.data.replacementCharacterList,
                 deletedPageHandlingTypes: action.data.deletedPageHandlingTypes,
-                clientModified: action.data.clientModified
+                clientModified: action.data.clientModified,
+                adminRoleId: action.data.adminRoleId
             };
         case ActionTypes.SEO_GENERAL_SETTINS_CLIENT_MODIFIED:
             return { ...state,

@@ -112,6 +112,22 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets a value indicating whether the default Edit Bar is disabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to false.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static bool DisableEditBar
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("DisableEditBar", false);
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating whether setting to control where the control panel is loaded by the core and allowed to control it's own visibility.
         /// this is useful when the control panel needs to be visible for all users regardless of edit page/module permissions.
@@ -409,6 +425,7 @@ namespace DotNetNuke.Entities.Host
         ///   Gets a value indicating whether gets whether the installation participates in the improvements program.
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Improvement program functionality removed in 9.7.3.  API Scheduled for removal in 10.0.0.")]
         public static bool ParticipateInImprovementProg
         {
             get

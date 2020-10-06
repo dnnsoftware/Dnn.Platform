@@ -6,10 +6,23 @@ namespace DotNetNuke.Entities.Users
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Provides access to manage users.
+    /// </summary>
     public interface IUserController
     {
+        /// <summary>
+        /// Gets the current logged in user information.
+        /// </summary>
+        /// <returns>A <see cref="UserInfo"/> object.</returns>
         UserInfo GetCurrentUserInfo();
 
+        /// <summary>
+        /// Gets a specific user informaiton.
+        /// </summary>
+        /// <param name="portalId">The site (portal) id on which to get the user from.</param>
+        /// <param name="userId">The user id to get the information for.</param>
+        /// <returns>A <see cref="UserInfo"/> object.</returns>
         UserInfo GetUser(int portalId, int userId);
 
         /// <summary>
@@ -23,8 +36,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// GetUser retrieves a User from the DataStore.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
         /// <returns>The User as a UserInfo object.</returns>
@@ -46,9 +57,19 @@ namespace DotNetNuke.Entities.Users
         /// <param name="propertyNames">list of property names to filter.</param>
         /// <param name="propertyValues">list of property values to filter.</param>
         /// <returns>Users as a list of UserInfo objects.</returns>
-        IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
-            bool isAdmin, int pageIndex, int pageSize, string sortColumn,
-            bool sortAscending, string propertyNames, string propertyValues);
+        IList<UserInfo> GetUsersAdvancedSearch(
+            int portalId,
+            int userId,
+            int filterUserId,
+            int filterRoleId,
+            int relationTypeId,
+            bool isAdmin,
+            int pageIndex,
+            int pageSize,
+            string sortColumn,
+            bool sortAscending,
+            string propertyNames,
+            string propertyValues);
 
         /// <summary>
         /// Get a filtered list of users based on a set of simple filters - utilised for basic searches.
@@ -61,8 +82,14 @@ namespace DotNetNuke.Entities.Users
         /// <param name="propertyName">list of property names to filter.</param>
         /// <param name="propertyValue">list of property values to filter.</param>
         /// <returns>Users as a list of UserInfo objects.</returns>
-        IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
-            bool sortAscending, string propertyName, string propertyValue);
+        IList<UserInfo> GetUsersBasicSearch(
+            int portalId,
+            int pageIndex,
+            int pageSize,
+            string sortColumn,
+            bool sortAscending,
+            string propertyName,
+            string propertyValue);
 
         /// <summary>
         /// Return User Profile Picture relative Url.

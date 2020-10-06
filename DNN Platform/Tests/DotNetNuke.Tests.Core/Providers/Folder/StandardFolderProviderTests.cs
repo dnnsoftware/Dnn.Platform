@@ -10,6 +10,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -21,7 +22,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -42,10 +47,23 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
+            var serviceCollection = new ServiceCollection();
+
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+
             var navigationManagerMock = new Mock<INavigationManager>();
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
+
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INavigationManager>(container => navigationManagerMock.Object);
+
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        }
+
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            Globals.DependencyProvider = null;
         }
 
         [SetUp]

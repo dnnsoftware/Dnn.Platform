@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System" name="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+  <data name="$this.DefaultModifiers" type="System.CodeDom.MemberAttributes, System">
+    <value>Private</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+  <data name="$this.TrayLargeIcon" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="$this.TrayAutoArrange" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblHeader.Text" xml:space="preserve">
+    <value>Информация</value>
+  </data>
+  <data name="lblModType.Text" xml:space="preserve">
+    <value>Тип модуля:</value>
+  </data>
+  <data name="lblModName.Text" xml:space="preserve">
+    <value>Имя модуля:</value>
+  </data>
+  <data name="lblModInst.Text" xml:space="preserve">
+    <value>Экземпляр модуля:</value>
+  </data>
+  <data name="lblUName.Text" xml:space="preserve">
+    <value>Имя пользователя:</value>
+  </data>
+  <data name="lblSettings.Text" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Error1.Text" xml:space="preserve">
+    <value>У Вас недостаточно прав для просмотра этой страницы.</value>
+  </data>
+  <data name="lblPage.Text" xml:space="preserve">
+    <value>Страница:</value>
+  </data>
+  <data name="lblSetFor.Text" xml:space="preserve">
+    <value>Изменить настройки ...</value>
+  </data>
+  <data name="lblBrowAllow.Text" xml:space="preserve">
+    <value>Разрешенные роли:</value>
+  </data>
+  <data name="lblBrowser.Text" xml:space="preserve">
+    <value>Браузер файлов:</value>
+  </data>
+  <data name="lblBrowsSec.Text" xml:space="preserve">
+    <value>Настройки браузера файлов</value>
+  </data>
+  <data name="lblCSSURL.Text" xml:space="preserve">
+    <value>CSS области редактора:</value>
+  </data>
+  <data name="lblPortal.Text" xml:space="preserve">
+    <value>Название сайта:</value>
+  </data>
+  <data name="lblStyles.Text" xml:space="preserve">
+    <value>Стили редактора</value>
+  </data>
+  <data name="lblToolbars.Text" xml:space="preserve">
+    <value>Панели инструментов:</value>
+  </data>
+  <data name="lnkRemove.Text" xml:space="preserve">
+    <value>Удаление настроек</value>
+  </data>
+  <data name="lblInfo.Text" xml:space="preserve">
+    <value>Настройки сохранены. Обновите редактор или перезагрузите страницу, чтобы увидеть изменения.</value>
+  </data>
+  <data name="lblInfoDel.Text" xml:space="preserve">
+    <value>Настройки удалены</value>
+  </data>
+  <data name="lblBlanktext.Text" xml:space="preserve">
+    <value>Пустой текст:</value>
+  </data>
+  <data name="lblRole.Text" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="lblSelToolb.Text" xml:space="preserve">
+    <value>Выберите панель инструментов</value>
+  </data>
+  <data name="Options.Text" xml:space="preserve">
+    <value>Пользовательские настройки редактора</value>
+  </data>
+  <data name="lblMainSet.Text" xml:space="preserve">
+    <value>Главные настройки</value>
+  </data>
+  <data name="lblBrowserDirs.Text" xml:space="preserve">
+    <value>Использовать подпапки для не-администраторов (..\Portals\0\userfiles\username):</value>
+  </data>
+  <data name="lblTemplates.Text" xml:space="preserve">
+    <value>Шаблона редактора</value>
+  </data>
+  <data name="lblTemplFiles.Text" xml:space="preserve">
+    <value>Файл шаблонов редактора:</value>
+  </data>
+  <data name="lblCustomConfig.Text" xml:space="preserve">
+    <value>Пользовательский файл настроек:</value>
+  </data>
+  <data name="AddToolbar.Text" xml:space="preserve">
+    <value>Новый набор панелей инструментов</value>
+  </data>
+  <data name="CancelToolbar.Text" xml:space="preserve">
+    <value>Отменить редактирование</value>
+  </data>
+  <data name="DeleteToolbar.Text" xml:space="preserve">
+    <value>Удалить выбранный набор панелей инструментов</value>
+  </data>
+  <data name="EditToolbar.Text" xml:space="preserve">
+    <value>Редактировать набор панелей инструментов</value>
+  </data>
+  <data name="lblCustomToolbars.Text" xml:space="preserve">
+    <value>Пользовательские панели инструментов</value>
+  </data>
+  <data name="lblToolbarList.Text" xml:space="preserve">
+    <value>Список пользовательских панелей инструментов:</value>
+  </data>
+  <data name="lblToolbName.Text" xml:space="preserve">
+    <value>Название панели:</value>
+  </data>
+  <data name="lblToolbSet.Text" xml:space="preserve">
+    <value>Доступные кнопки</value>
+  </data>
+  <data name="SaveToolbar.Text" xml:space="preserve">
+    <value>Сохранить набор панелей</value>
+  </data>
+  <data name="lblUseJquery.Text" xml:space="preserve">
+    <value>Использовать адаптор jQuery?</value>
+  </data>
+  <data name="lblHeight.Text" xml:space="preserve">
+    <value>Высота редактора ('px' или '%') :</value>
+  </data>
+  <data name="lblWidth.Text" xml:space="preserve">
+    <value>Ширина редактора ('px' или '%') :</value>
+  </data>
+  <data name="lblImExport.Text" xml:space="preserve">
+    <value>Импорт/экспорт текущих настроек...</value>
+  </data>
+  <data name="lblResizeHeight.Text" xml:space="preserve">
+    <value>Высота изображений по-умолчанию:</value>
+  </data>
+  <data name="lblResizeWidth.Text" xml:space="preserve">
+    <value>Ширина изображений по-умолчанию:</value>
+  </data>
+  <data name="lnkExport.Text" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="lnkImport.Text" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="BadImportXml.Text" xml:space="preserve">
+    <value>Неверный или плохой файл XML.</value>
+  </data>
+  <data name="Export.Text" xml:space="preserve">
+    <value>Текущие настройки редактора экспортированы</value>
+  </data>
+  <data name="Imported.Text" xml:space="preserve">
+    <value>Настройки редактора импортированы для</value>
+  </data>
+  <data name="lblInjectSyntaxJs.Text" xml:space="preserve">
+    <value>Добавить ссылку на SyntaxHighlighter JS:</value>
+  </data>
+  <data name="UploadFolderLabel.Text" xml:space="preserve">
+    <value>Папка выгрузки по-умолчанию:</value>
+  </data>
+  <data name="BrowserRootFolder.Text" xml:space="preserve">
+    <value>Корневая папка браузера файлов:</value>
+  </data>
+  <data name="lblAutoCreateFileThumbNails.Text" xml:space="preserve">
+    <value>Создавать миниатюры изображений для предпросмотра:</value>
+  </data>
+  <data name="lblShowPageLinksTabFirst.Text" xml:space="preserve">
+    <value>Показывать вкладку ссылок на страницы первой:</value>
+  </data>
+  <data name="lblUseAnchorSelector.Text" xml:space="preserve">
+    <value>Использовать выбор якорей (автоматически находит все якоря на выбранной странице):</value>
+  </data>
+  <data name="FileListViewModeLabel.Text" xml:space="preserve">
+    <value>Режим списка файлов по-умолчанию:</value>
+  </data>
+  <data name="SettingsExportTitle.Text" xml:space="preserve">
+    <value>Экспорт настроек</value>
+  </data>
+  <data name="SettingsImportTitle.Text" xml:space="preserve">
+    <value>Импорт настроек</value>
+  </data>
+  <data name="ExportNow.Text" xml:space="preserve">
+    <value>Экспортировать сейчас</value>
+  </data>
+  <data name="ImportNow.Text" xml:space="preserve">
+    <value>Импортировать сейчас</value>
+  </data>
+  <data name="FileListPageSizeLabel.Text" xml:space="preserve">
+    <value>Размер страницы списка файлов (0=не разбивать на страницы):</value>
+  </data>
+  <data name="Remove.Help" xml:space="preserve">
+    <value>Настройки будут удалены только для текущего {0}.</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Удалить настройки {0}</value>
+  </data>
+  <data name="RemoveAll.Help" xml:space="preserve">
+    <value>Удалить настройки {0} для всего сайта.</value>
+  </data>
+  <data name="RemoveAll.Text" xml:space="preserve">
+    <value>Удалить настройки {0}</value>
+  </data>
+  <data name="CreateGroupLabel.Text" xml:space="preserve">
+    <value>Новая группа</value>
+  </data>
+  <data name="CreateGroupTitle.Text" xml:space="preserve">
+    <value>Добавить новую группу в набор панелей?</value>
+  </data>
+  <data name="DeleteGroup.Text" xml:space="preserve">
+    <value>Удалить эту группу панелей?</value>
+  </data>
+  <data name="DeleteToolbarButton.Text" xml:space="preserve">
+    <value>Удалить эту кнопку?</value>
+  </data>
+  <data name="EditGroupName.Text" xml:space="preserve">
+    <value>Нажмите для изменения названия группы</value>
+  </data>
+  <data name="NewGroupName.Text" xml:space="preserve">
+    <value>Новая группа</value>
+  </data>
+  <data name="SaveGroupName.Text" xml:space="preserve">
+    <value>Сохранить название группы</value>
+  </data>
+  <data name="lblToolbarPriority.Text" xml:space="preserve">
+    <value>Приоритет набора панелей:</value>
+  </data>
+  <data name="ToolbarGroupsLabel.Text" xml:space="preserve">
+    <value>Группы панелей</value>
+  </data>
+  <data name="CodeMirrorLabel.Text" xml:space="preserve">
+    <value>Тема CodeMirror (для подсветки исходного кода):</value>
+  </data>
+  <data name="lblSkin.Text" xml:space="preserve">
+    <value>Шаблон оформления:</value>
+  </data>
+  <data name="NoJava.Text" xml:space="preserve">
+    <value>&lt;strong&gt;Работа CKEditor требует использования JavaScript&lt;/strong&gt;. В браузере без поддержки или с выключенным JavaScript, как в Вашем случае, Вы должны видеть содержимое (в формате HTML), а также редактировать его - но без пользовательского интерфейса редактора.</value>
+  </data>
+  <data name="lblEditorConfig.Text" xml:space="preserve">
+    <value>Настройки редактора</value>
+  </data>
+  <data name="ModuleError.Text" xml:space="preserve">
+    <value>Настройки редактора для экземпляра модуля могут быть просмотрены и загружены только из этого экземпляра модуля.</value>
+  </data>
+  <data name="ModuleHeader.Text" xml:space="preserve">
+    <value>Настройки поставщика CKEditor</value>
+  </data>
+  <data name="PortalOnlyLabel.Text" xml:space="preserve">
+    <value>Показывать настройки только для этого сайта, или для всех сайтов?</value>
+  </data>
+  <data name="PortalOnly.Text" xml:space="preserve">
+    <value>Только сайт</value>
+  </data>
+  <data name="Wait.Text" xml:space="preserve">
+    <value>Подождите, пожалуйста...</value>
+  </data>
+  <data name="WaitMessage.Text" xml:space="preserve">
+    <value>Загружаю страницу настроек.</value>
+  </data>
+  <data name="ModuleHasSettingLabel.Text" xml:space="preserve">
+    <value>Содержит настройки модуля</value>
+  </data>
+  <data name="ModuleNoSettingLabel.Text" xml:space="preserve">
+    <value>Не содержит настроек модуля</value>
+  </data>
+  <data name="PageHasSettingLabel.Text" xml:space="preserve">
+    <value>Содержит настройки страницы</value>
+  </data>
+  <data name="PageNoSettingLabel.Text" xml:space="preserve">
+    <value>Не содержит настроек страницы</value>
+  </data>
+  <data name="PortalHasSettingLabel.Text" xml:space="preserve">
+    <value>Содержит настройки сайта</value>
+  </data>
+  <data name="PortalNoSettingLabel.Text" xml:space="preserve">
+    <value>Не содержит настроек сайта</value>
+  </data>
+  <data name="IconLegendLabel.Text" xml:space="preserve">
+    <value>Легенда</value>
+  </data>
+  <data name="EditorConfigWarning.Text" xml:space="preserve">
+    <value>&lt;strong&gt;Информация:&lt;/strong&gt; Расположенные ниже настройки предназначены только для очень опытных пользователей, так что меняйте что-нибудь в них только в том случае, если Вы точно знаете, что делаете. Для получения подробной информации об этих настройках, посетите &lt;a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html"&gt;&lt;strong&gt;страницу документации CKEditor JavaScript API&lt;/strong&gt;&lt;/a&gt;. Вы можете оставить эти настройки пустыми, чтобы загрузить настройки по-умолчанию тогда, когда редактор будет загружаться.</value>
+  </data>
+  <data name="ModuleInstance.Text" xml:space="preserve">
+    <value>Модуль</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value>Страница</value>
+  </data>
+  <data name="Portal.Text" xml:space="preserve">
+    <value>Сайт</value>
+  </data>
+  <data name="RemoveModuleChild.Help" xml:space="preserve">
+    <value>Удалить настройки всех модулей на текущей странице</value>
+  </data>
+  <data name="RemoveModuleChild.Text" xml:space="preserve">
+    <value>Удалить настройки всех модулей на странице</value>
+  </data>
+  <data name="RemovePageChild.Help" xml:space="preserve">
+    <value>Удаление всех настроек дочерних страниц текущей страницы.</value>
+  </data>
+  <data name="RemovePageChild.Text" xml:space="preserve">
+    <value>Удалить настройки дочерних страниц</value>
+  </data>
+  <data name="RowBreak.Text" xml:space="preserve">
+    <value>Разделитель строк</value>
+  </data>
+  <data name="AddRowBreakLabel.Text" xml:space="preserve">
+    <value>Добавить разделитель строк</value>
+  </data>
+  <data name="AddRowBreakTitle.Text" xml:space="preserve">
+    <value>Добавить новый разделитель строк в набор панелей</value>
+  </data>
+  <data name="DefaultLinkMode0.Text" xml:space="preserve">
+    <value>Относительный URL</value>
+  </data>
+  <data name="DefaultLinkMode1.Text" xml:space="preserve">
+    <value>Абсолютный URL</value>
+  </data>
+  <data name="DefaultLinkMode2.Text" xml:space="preserve">
+    <value>Относительный защищенный URL</value>
+  </data>
+  <data name="DefaultLinkMode3.Text" xml:space="preserve">
+    <value>Абсолютный защищенный URL</value>
+  </data>
+  <data name="DefaultLinkModeLabel.Text" xml:space="preserve">
+    <value>Режим ссылок по-умолчанию:</value>
+  </data>
+  <data name="DetailView.Text" xml:space="preserve">
+    <value>Подробно</value>
+  </data>
+  <data name="IconsView.Text" xml:space="preserve">
+    <value>Значки</value>
+  </data>
+  <data name="ListView.Text" xml:space="preserve">
+    <value>Список</value>
+  </data>
+  <data name="BlanktextTT.Text" xml:space="preserve">
+    <value>Это текст, отображаемый по-умолчанию, когда содержимое модуля отсутствует.</value>
+  </data>
+  <data name="NewsArcticlesArticlesList.Text" xml:space="preserve">
+    <value>Выберите статью:</value>
+  </data>
+  <data name="NewsArcticlesModuleList.Text" xml:space="preserve">
+    <value>Выберите страницу и экземпляр модуля News Articles:</value>
+  </data>
+  <data name="ToolbarNameMissing.Text" xml:space="preserve">
+    <value>Укажите название панели инструментов.</value>
+  </data>
+  <data name="ToolbarSetCreated.Text" xml:space="preserve">
+    <value>Создан набор панелей "{0}".</value>
+  </data>
+  <data name="ToolbarSetDeleted.Text" xml:space="preserve">
+    <value>Выбранный набор панелей удален.</value>
+  </data>
+  <data name="ToolbarSetSaved.Text" xml:space="preserve">
+    <value>Набор панелей сохранен.</value>
+  </data>
+  <data name="CustomJsFileLabel.Text" xml:space="preserve">
+    <value>Пользовательский файл JS:</value>
+  </data>
+  <data name="OverrideFileOnUploadLabel.Text" xml:space="preserve">
+    <value>Перезаписать файл при выгрузке, если он существует, или создать файл с именем, к которому будет добавлено _1:</value>
+  </data>
+  <data name="CopyPageChild.Help" xml:space="preserve">
+    <value>Копировать настройки текущей страницы для подчиненных.</value>
+  </data>
+  <data name="CopyPageChild.Text" xml:space="preserve">
+    <value>Копировать настройки для подчиненных</value>
+  </data>
+  <data name="lblInfoCopyAll.Text" xml:space="preserve">
+    <value>Настройки скопированы для всех подчиненных страниц.</value>
+  </data>
+  <data name="SizeLimitLabel.Text" xml:space="preserve">
+    <value>Максимальный размер файла для выгрузки</value>
+  </data>
+  <data name="UploadFileLimitLabel.Text" xml:space="preserve">
+    <value>Ограничения для выгружаемых файлов</value>
+  </data>
+  <data name="AllPortals.Text" xml:space="preserve">
+    <value>Все порталы</value>
+  </data>
+  <data name="HostHasSettingLabel.Text" xml:space="preserve">
+    <value>Содержит настройки хоста</value>
+  </data>
+  <data name="HostNoSettingLabel.Text" xml:space="preserve">
+    <value>Не содержит настроек хоста</value>
+  </data>
+</root>

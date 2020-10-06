@@ -6,17 +6,39 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Globalization;
 
-    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class ModuleSettingsTests : BaseSettingsTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Globals.DependencyProvider = null;
+        }
+
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ar-JO")]

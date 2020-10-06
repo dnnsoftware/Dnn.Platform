@@ -59,6 +59,14 @@ class Body extends Component {
         this.setState({ searchParameters });
     }
 
+    onSortChanged(columnName, ascending) {
+        let {searchParameters} = this.state;
+        searchParameters.sortColumn = columnName;
+        searchParameters.sortAscending = ascending;
+        this.props.dispatch(CommonUsersActions.getUsers(searchParameters));
+        this.setState({ searchParameters });
+    }
+
     getWorkSpaceTray() {
         return this.state.userFilters.length > 0 &&
             <GridCell className="users-workspace-tray">
@@ -111,7 +119,8 @@ class Body extends Component {
                     }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
-                    <UserTable ref={(node) => this.userTable = node} appSettings={appSettings} filter={state.searchParameters.filter}/>
+                    <UserTable ref={(node) => this.userTable = node} appSettings={appSettings} filter={state.searchParameters.filter} 
+                            changeSortOrder={(c, a) => this.onSortChanged(c, a)} currentSortAscending={state.searchParameters.sortAscending} currentSortColumn={state.searchParameters.sortColumn} />
                     {
                         <div className="users-paging">
                             <Pager pageSizeDropDownWithoutBorder={true} 

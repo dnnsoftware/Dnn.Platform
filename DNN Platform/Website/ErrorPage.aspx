@@ -16,7 +16,7 @@
 	        </tr>
 	        <tr style="height:100%;">
 		        <td valign="top" style="width:650px;">
-                    <h2>DNN Error</h2>
+                    <h2>Application Error</h2>
                     <hr />
                     <p><asp:PlaceHolder ID="ErrorPlaceHolder" runat="server" /></p>
                 </td>

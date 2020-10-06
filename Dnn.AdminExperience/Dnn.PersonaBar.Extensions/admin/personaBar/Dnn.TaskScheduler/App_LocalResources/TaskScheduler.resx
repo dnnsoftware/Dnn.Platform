@@ -510,6 +510,9 @@
   <data name="StopSchedule.Text" xml:space="preserve">
     <value>Stop Schedule</value>
   </data>
+  <data name="RecommendServers.Text" xml:space="preserve">
+    <value>To avoid failures, it is highly recommended to setup this scheduler to run on following web server(s):&lt;br/&gt;&lt;br/&gt;{0}&lt;br/&gt;&lt;br/&gt;Proceed anyway?</value>
+  </data>
   <data name="lblStartDelay.Text" xml:space="preserve">
     <value>Schedule Start Delay (mins):</value>
   </data>

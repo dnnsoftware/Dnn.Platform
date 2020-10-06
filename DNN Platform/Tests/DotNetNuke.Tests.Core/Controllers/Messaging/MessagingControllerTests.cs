@@ -10,12 +10,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Data;
     using System.Globalization;
     using System.Text;
-
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
@@ -28,7 +29,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -66,6 +71,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.Container = new SimpleContainer();
             this._mockDataService = new Mock<IDataService>();
             this._dataProvider = MockComponentProvider.CreateDataProvider();
@@ -109,6 +121,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
         }

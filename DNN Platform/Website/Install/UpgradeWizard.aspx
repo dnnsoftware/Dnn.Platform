@@ -83,17 +83,6 @@
                         <asp:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired dnnLabel" />
                         <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" />
                     </div>
-                    <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
-                        <asp:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
-                        <div class="dnnFormItem">
-                            <asp:Label ID="Label2" runat="server" CssClass="dnnLabel" />
-                            <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
-                        </div>
-                        <div class="dnnFormItem information-checkbox">
-                            <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="False" CssClass="dnnLabel"/>
-                            <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
-                        </div>
-                    </div>
                     <hr />
                     <ul class="dnnForm dnnActions dnnClear">
                         <li>
@@ -270,7 +259,6 @@
                     upgradeWizard.accountInfo = {
                         username: $('#<%= txtUsername.ClientID %>')[0].value,
                         password: $('#<%= txtPassword.ClientID %>')[0].value,
-                        dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N",
                         acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
                     };
 

@@ -1,0 +1,36 @@
+﻿<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+	.dnnLabel + span {white-space: normal}
+	div.dnnFormShort > div.dnnLabel  { display:none }
+	div.page-header { margin-top: 0; padding-top: 0 }
+	div.page-header h1 small { display: block }
+</style>
+<div class="container">
+    <div class="page-header">
+        <h1>DNN Connect CKEditor Provider v01.00.05 <small>For DNN® 07.04.00 (or higher)</small></h1>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <strong>Whats New</strong>
+        </div>
+        <div class="panel-body">
+            <ul>
+				<li>Forked from Ingo Herbote's <a href="http://dnnckeditor.codeplex.com/">CKEditor Provider for DNN</a></li>
+                <li>Updated Editor Options to follow DNN standards</li>
+				<li>Integrated with the HTML Editor Manager</li>
+				<li>Replaced Rad controls with Asp.net</li>
+            </ul>
+        </div>
+    </div>
+    <!-- <div class="panel panel-success">
+        <div class="panel-heading">
+            changes
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div> -->
+</div>

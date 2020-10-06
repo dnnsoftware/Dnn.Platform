@@ -1,10 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Data;
     using System.Globalization;
     using System.Linq;
@@ -30,9 +31,12 @@ namespace DotNetNuke.Entities.Urls
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
         // google uses the same name nomo=1 means do not redirect to mobile
-        private const string MobileViewSiteCookieName = "dnn_IsMobile";
-        private const string DisableMobileViewCookieName = "dnn_NoMobile";
+        // set the web.config AppSettings for the mobile view cookie name
+        private static readonly string MobileViewSiteCookieName = ConfigurationManager.AppSettings[name: "MobileViewSiteCookieName"] ?? "dnn_IsMobile";
+        private static readonly string DisableMobileViewCookieName = ConfigurationManager.AppSettings[name: "DisableMobileViewSiteCookieName"] ?? "dnn_NoMobile";
 
+
+        // <summary>Gets the Friendly URL Settings for the given portal.</summary>
         public static FriendlyUrlSettings GetCurrentSettings(int portalId)
         {
             return new FriendlyUrlSettings(portalId);
@@ -926,6 +930,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     // no, can't do it
                     canUseMobileDevice = false;
                     var cookie = new HttpCookie(DisableMobileViewCookieName)
+
                     {
                         Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                     };
@@ -935,10 +940,12 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 {
                     // check for disable mobile view cookie name
                     var cookie = request.Cookies[DisableMobileViewCookieName];
+
                     if (cookie != null)
                     {
                         // if exists, expire cookie to allow redirect
                         cookie = new HttpCookie(DisableMobileViewCookieName)
+
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
                             Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
@@ -959,6 +966,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 // look for disable mobile view cookie
                 var cookie = request.Cookies[DisableMobileViewCookieName];
+
                 if (cookie != null)
                 {
                     canUseMobileDevice = false;
@@ -1010,7 +1018,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 return;
             }
 
-            if (ch != " ") // if not replacing spaces, which are implied
+            // if not replacing spaces, which are implied
+            if (ch != " ")
             {
                 replacedUnwantedChars = true;
             }
@@ -1037,7 +1046,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 isUnique = tabId == -1 || tabId == validateUrlForTabId;
             }
 
-            if (isUnique) // check whether have a tab which use the url.
+            // check whether have a tab which use the url.
+            if (isUnique)
             {
                 var friendlyUrlSettings = GetCurrentSettings(settings.PortalId);
                 var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();

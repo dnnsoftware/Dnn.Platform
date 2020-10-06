@@ -1957,15 +1957,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static Regex WildcardToRegex(string pattern)
         {
-            if (!pattern.Contains("*") && !pattern.Contains("?"))
-            {
-                pattern = "^" + pattern + ".*$";
-            }
-            else
-            {
-                pattern = "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
-            }
-
+            pattern = Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".");
             return RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase);
         }
 

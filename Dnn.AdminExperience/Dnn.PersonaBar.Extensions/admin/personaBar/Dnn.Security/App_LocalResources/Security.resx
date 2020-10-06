@@ -667,7 +667,7 @@
     <value>Allowable File Extensions:</value>
   </data>
   <data name="OtherSettingsUpdateSuccess.Text" xml:space="preserve">
-    <value>Settings has been updated.</value>
+    <value>Settings have been updated.</value>
   </data>
   <data name="OtherSettingsError.Text" xml:space="preserve">
     <value>Could not update settings. Please try later.</value>
@@ -1146,5 +1146,8 @@
   </data>
   <data name="RedirectionMovedToSiteSettings.Text" xml:space="preserve">
     <value>Redirection has been moved to Site Settings</value>
+  </data>
+  <data name="IncorrectDisplayNameConfiguration.Text" xml:space="preserve">
+    <value>The Display Name configuration is not correct. Either provide Display Name Format or include Display Name in the list of fields.</value>
   </data>
 </root>

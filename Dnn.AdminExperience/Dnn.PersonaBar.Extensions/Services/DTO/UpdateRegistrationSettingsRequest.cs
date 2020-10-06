@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         [RegistrationFormTypeOption]
         public int RegistrationFormType { get; set; }
 
-        [RegistrationFields("RegistrationFormType", "RequireUniqueDisplayName")]
+        [RegistrationFields("RegistrationFormType", "RequireUniqueDisplayName", "DisplayNameFormat")]
         public string RegistrationFields { get; set; }
 
         public bool RequireUniqueDisplayName { get; set; }

@@ -11,21 +11,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Globalization;
     using System.Text;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Social.Messaging;
-    using DotNetNuke.Services.Social.Messaging.Exceptions;
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Social.Notifications.Data;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -48,6 +55,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.Container = new SimpleContainer();
 
             this._mockDataService = new Mock<IDataService>();
@@ -79,6 +94,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             ComponentFactory.Container = null;
             MessagingController.ClearInstance();
             PortalController.ClearInstance();

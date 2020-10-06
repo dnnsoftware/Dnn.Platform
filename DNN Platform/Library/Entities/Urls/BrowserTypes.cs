@@ -4,9 +4,12 @@
 
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+
+    [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Urls.BrowserTypes instead.")]
     public enum BrowserTypes
     {
-        Normal,
-        Mobile,
+        Normal = 0,
+        Mobile = 1,
     }
 }

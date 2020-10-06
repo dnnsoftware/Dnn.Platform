@@ -7,26 +7,25 @@ namespace DotNetNuke.Application
     using System.Diagnostics;
     using System.Reflection;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
 
-    /// <summary>
-    /// The Application class contains properties that describe the DotNetNuke Application.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    public class Application
-    {
-        private static ReleaseMode _status = ReleaseMode.None;
+    using NewReleaseMode = DotNetNuke.Abstractions.Application.ReleaseMode;
 
-        protected internal Application()
+    /// <inheritdoc />
+    public class Application : IApplicationInfo
+    {
+        private static NewReleaseMode status = NewReleaseMode.None;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Application"/> class.
+        /// </summary>
+        public Application()
         {
         }
 
-        /// <summary>
-        /// Gets the company to which the DotNetNuke application is related.
-        /// </summary>
-        /// <value>Fixed result: DotNetNuke Corporation.</value>
+        /// <inheritdoc />
         public string Company
         {
             get
@@ -35,11 +34,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the version of the currently installed DotNetNuke framework/application
-        /// Can be prior to Version, if the application is pending to be upgraded.
-        /// </summary>
-        /// <value>The version as retreieved from the database version table.</value>
+        /// <inheritdoc />
         public virtual Version CurrentVersion
         {
             get
@@ -48,10 +43,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the description of the application.
-        /// </summary>
-        /// <value>Fixed result: DNN Platform.</value>
+        /// <inheritdoc />
         public virtual string Description
         {
             get
@@ -60,10 +52,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the help URL related to the DotNetNuke application.
-        /// </summary>
-        /// <value>Fixed result: https://dnndocs.com/. </value>
+        /// <inheritdoc />
         public string HelpUrl
         {
             get
@@ -72,10 +61,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the legal copyright.
-        /// </summary>
-        /// <value>Dynamic: DNN Platform is copyright 2002-todays year by .NET Foundation".</value>
+        /// <inheritdoc />
         public string LegalCopyright
         {
             get
@@ -84,10 +70,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the name of the application.
-        /// </summary>
-        /// <value>Fixed result: DNNCORP.CE.</value>
+        /// <inheritdoc />
         public virtual string Name
         {
             get
@@ -96,10 +79,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the SKU (Stock Keeping Unit).
-        /// </summary>
-        /// <value>Fixed result: DNN.</value>
+        /// <inheritdoc />
         public virtual string SKU
         {
             get
@@ -117,11 +97,15 @@ namespace DotNetNuke.Application
         /// <value>
         /// The value can be: None, Alpha, Beta, RC, Stable.
         /// </value>
-        public ReleaseMode Status
+        [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
+        public ReleaseMode Status { get => (ReleaseMode)(this as IApplicationInfo).Status; }
+
+        /// <inheritdoc />
+        NewReleaseMode IApplicationInfo.Status
         {
             get
             {
-                if (_status == ReleaseMode.None)
+                if (status == NewReleaseMode.None)
                 {
                     Assembly assy = Assembly.GetExecutingAssembly();
                     if (Attribute.IsDefined(assy, typeof(AssemblyStatusAttribute)))
@@ -129,19 +113,16 @@ namespace DotNetNuke.Application
                         Attribute attr = Attribute.GetCustomAttribute(assy, typeof(AssemblyStatusAttribute));
                         if (attr != null)
                         {
-                            _status = ((AssemblyStatusAttribute)attr).Status;
+                            status = (NewReleaseMode)((AssemblyStatusAttribute)attr).Status;
                         }
                     }
                 }
 
-                return _status;
+                return status;
             }
         }
 
-        /// <summary>
-        /// Gets the title of the application.
-        /// </summary>
-        /// <value>Fixed value: DotNetNuke.</value>
+        /// <inheritdoc />
         public string Title
         {
             get
@@ -150,10 +131,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the trademark.
-        /// </summary>
-        /// <value>Fixed value: DotNetNuke,DNN.</value>
+        /// <inheritdoc />
         public string Trademark
         {
             get
@@ -162,10 +140,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the type of the application.
-        /// </summary>
-        /// <value>Fixed value: Framework.</value>
+        /// <inheritdoc />
         public string Type
         {
             get
@@ -174,10 +149,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the upgrade URL.
-        /// </summary>
-        /// <value>Fixed value: https://dnnplatform.io. </value>
+        /// <inheritdoc />
         public string UpgradeUrl
         {
             get
@@ -192,10 +164,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the URL of the application.
-        /// </summary>
-        /// <value>Fixed value: https://dnncommunity.org.</value>
+        /// <inheritdoc />
         public string Url
         {
             get
@@ -204,10 +173,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the version of the DotNetNuke framework/application.
-        /// </summary>
-        /// <value>The version as retreieved from the Executing assembly.</value>
+        /// <inheritdoc />
         public virtual Version Version
         {
             get
@@ -218,13 +184,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        ///   Determine whether a product specific change is to be applied.
-        /// </summary>
-        /// <param name = "productNames">list of product names.</param>
-        /// <returns>true if product is within list of names.</returns>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         public virtual bool ApplyToProduct(string productNames)
         {
             return productNames.Contains(this.Name);

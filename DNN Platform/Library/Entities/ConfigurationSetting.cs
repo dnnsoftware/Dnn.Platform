@@ -4,12 +4,18 @@
 
 namespace DotNetNuke.Entities
 {
-    public class ConfigurationSetting
+    using DotNetNuke.Abstractions.Settings;
+
+    /// <inheritdoc />
+    public class ConfigurationSetting : IConfigurationSetting
     {
+        /// <inheritdoc />
         public bool IsSecure { get; set; }
 
+        /// <inheritdoc />
         public string Key { get; set; }
 
+        /// <inheritdoc />
         public string Value { get; set; }
     }
 }

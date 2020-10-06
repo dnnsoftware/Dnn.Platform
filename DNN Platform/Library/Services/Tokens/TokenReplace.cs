@@ -134,6 +134,15 @@ namespace DotNetNuke.Services.Tokens
             set => TokenContext.Module = GetModule(value);
         }
 
+        /// <summary>
+        /// Load the module for the Module Token Provider
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <returns>The populated ModuleInfo or null</returns>
+        /// <remarks>
+        /// This method is called by the Setter of ModuleId.
+        /// Because of this, it may NOT access ModuleId itself (which will still be -1) but use moduleId (lower case)
+        /// </remarks>
         private ModuleInfo GetModule(int moduleId)
         {
             if (moduleId == TokenContext.Module?.ModuleID)
@@ -144,9 +153,9 @@ namespace DotNetNuke.Services.Tokens
 
             var tab = TokenContext.Tab ?? PortalSettings?.ActiveTab;
             if (tab != null && tab.TabID > 0)
-                return ModuleController.Instance.GetModule(ModuleId, tab.TabID, false);
+                return ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
 
-            return ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, true);
+            return ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
         }
 
         /// <summary>

@@ -10,20 +10,15 @@ import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 function findInChildren(list, parentTermId) {
     if (!list) {
-        return;
+        return null;
     }
-    let parentTerm = {};
-    list.forEach((_term) => {
-        if (_term.TermId === parentTermId) {
-            parentTerm = _term;
-            return parentTerm;
-        } else {
-            if (findInChildren(_term.ChildTerms, parentTermId)) {
-                parentTerm = findInChildren(_term.ChildTerms, parentTermId);
-                return parentTerm;
-            }
-        }
-    });
+    let parentTerm = null;
+    for (let i = 0; i < list.length && !parentTerm; i++) {
+        const term = list[i];
+        parentTerm = term.TermId === parentTermId
+            ? term
+            : findInChildren(term.ChildTerms, parentTermId);
+    }
     return parentTerm;
 }
 

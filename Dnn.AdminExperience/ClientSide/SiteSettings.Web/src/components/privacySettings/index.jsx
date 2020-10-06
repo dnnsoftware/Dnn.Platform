@@ -211,33 +211,6 @@ class PrivacySettingsPanelBody extends Component {
     ) : (
       <div key="column-one-left" className="left-column" />
     );
-    const columnOneRight = state.privacySettings ? (
-      <div key="column-one-right" className="right-column">
-        <InputGroup>
-          <Label
-            labelType="inline"
-            tooltipMessage={resx.get("plImprovementProgram.Help")}
-            label={resx.get("plImprovementProgram")}
-            extra={
-              <Tooltip
-                messages={[resx.get("GlobalSetting")]}
-                type="global"
-                style={{ float: "left", position: "static" }}
-              />
-            }
-            className="dnn-label-long"
-          />
-          <Switch
-            onText={resx.get("SwitchOn")}
-            offText={resx.get("SwitchOff")}
-            value={state.privacySettings.DnnImprovementProgram}
-            onChange={this.onSettingChange.bind(this, "DnnImprovementProgram")}
-          />
-        </InputGroup>
-      </div>
-    ) : (
-      <div key="column-one-right" className="right-column" />
-    );
     const columnTwoLeft = state.privacySettings ? (
       <div key="column-two-left" className="left-column">
         <InputGroup>
@@ -389,7 +362,7 @@ class PrivacySettingsPanelBody extends Component {
           {resx.get("PrivacyCommunicationSettings")}
         </div>
         <GridSystem numberOfColumns={2}>
-          {[columnOneLeft, columnOneRight]}
+          {[columnOneLeft]}
         </GridSystem>
       </div>
     ) : null;

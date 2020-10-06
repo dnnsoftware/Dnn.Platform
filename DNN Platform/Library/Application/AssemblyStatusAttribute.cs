@@ -26,27 +26,27 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Not asssigned
         /// </summary>
-        None,
+        None = 0,
 
         /// <summary>
         /// Alpha release
         /// </summary>
-        Alpha,
+        Alpha = 1,
 
         /// <summary>
         /// Beta release
         /// </summary>
-        Beta,
+        Beta = 2,
 
         /// <summary>
         /// Release candidate
         /// </summary>
-        RC,
+        RC = 3,
 
         /// <summary>
         /// Stable release version
         /// </summary>
-        Stable,
+        Stable = 4,
     }
 
     /// <summary>

@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
 
             this.UpdateButton.Text = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("Add") : Localization.GetString("Update", this.LocalResourceFile);
-            this.CancelHyperLink.NavigateUrl = this.EditUrl("FolderMappings");
+            this.CancelHyperLink.NavigateUrl = this._navigationManager.NavigateURL(this.TabId);
 
             var controlTitle = Localization.GetString("ControlTitle", this.LocalResourceFile);
             var controlTitlePrefix = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("New") : Localization.GetString("Edit");
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 if (!this.Response.IsRequestBeingRedirected)
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "FolderMappings", "mid=" + this.ModuleId, "popUp=true"));
+                    this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId));
                 }
             }
             catch (Exception exc)

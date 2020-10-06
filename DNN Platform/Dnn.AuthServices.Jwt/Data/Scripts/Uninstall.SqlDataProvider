@@ -42,6 +42,9 @@ IF OBJECT_ID(N'{databaseOwner}{objectQualifier}JsonWebTokens', N'U') IS NOT NULL
 	DROP TABLE {databaseOwner}[{objectQualifier}JsonWebTokens]
 GO
 
+DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'Dnn.AuthServices.Jwt.Components.Schedule.PurgeExpiredTokensTask, Dnn.AuthServices.Jwt'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

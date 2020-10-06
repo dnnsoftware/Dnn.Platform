@@ -7,14 +7,22 @@ namespace DotNetNuke.Tests.Content
     using System;
     using System.Linq;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Tests.Content.Mocks;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -28,6 +36,12 @@ namespace DotNetNuke.Tests.Content
         [SetUp]
         public void SetUp()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             // Register MockCachingProvider
             this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
@@ -36,6 +50,7 @@ namespace DotNetNuke.Tests.Content
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             MockComponentProvider.ResetContainer();
         }
 

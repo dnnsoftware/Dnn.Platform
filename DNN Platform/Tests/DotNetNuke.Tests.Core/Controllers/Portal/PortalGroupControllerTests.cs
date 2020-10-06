@@ -9,21 +9,29 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Data;
     using System.Linq;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Data;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [TestFixture]
     public class PortalGroupControllerTests
     {
-        private Mock<DataProvider> _mockData;
+        private Mock<DataProvider> mockData;
 #pragma warning disable 649
         private UserCopiedCallback userCopied;
 #pragma warning restore 649
@@ -31,7 +39,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [SetUp]
         public void SetUp()
         {
-            this._mockData = MockComponentProvider.CreateDataProvider();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
+            this.mockData = MockComponentProvider.CreateDataProvider();
             DataTable hostSettingsTable = new DataTable("HostSettings");
 
             var nameCol = hostSettingsTable.Columns.Add("SettingName");
@@ -40,12 +54,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             hostSettingsTable.PrimaryKey = new[] { nameCol };
 
             hostSettingsTable.Rows.Add("PerformanceSetting", "0", false);
-            this._mockData.Setup(c => c.GetHostSettings()).Returns(hostSettingsTable.CreateDataReader());
+            this.mockData.Setup(c => c.GetHostSettings()).Returns(hostSettingsTable.CreateDataReader());
         }
 
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             MockComponentProvider.ResetContainer();
         }
 
