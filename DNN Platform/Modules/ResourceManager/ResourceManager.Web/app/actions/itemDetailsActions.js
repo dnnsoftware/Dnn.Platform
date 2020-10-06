@@ -10,21 +10,73 @@ const itemDetailsActions = {
             : itemsService.getFileDetails(item.itemId);
         return dispatch => {
             getItemDetails()
-                .then(
-                    response => dispatch({
-                        type: actionTypes.EDIT_ITEM,
-                        data: {...response, ...itemData}
-                    }),
-                    reason => dispatch({
-                        type: actionTypes.EDIT_ITEM_ERROR,
-                        data: reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
-                    })
-                );
+            .then(
+                response => dispatch({
+                    type: actionTypes.EDIT_ITEM,
+                    data: {...response, ...itemData}
+                }),
+                reason => dispatch({
+                    type: actionTypes.EDIT_ITEM_ERROR,
+                    data: reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
+                })
+            );
         };
     },
     cancelEditItem() {
         return {
             type: actionTypes.CANCEL_EDIT_ITEM
+        };
+    },
+    moveItem(item) {
+        const itemData = {isFolder: item.isFolder, iconUrl: item.iconUrl, thumbnailAvailable: item.thumbnailAvailable, thumbnailUrl: item.thumbnailUrl};
+        let getItemDetails = () => item.isFolder
+            ? itemsService.getFolderDetails(item.itemId)
+            : itemsService.getFileDetails(item.itemId);
+        return dispatch => {
+            getItemDetails()
+            .then(
+                response => dispatch({
+                    type: actionTypes.MOVE_ITEM,
+                    data: {...response, ...itemData}
+                }),
+                reason => dispatch({
+                    type: actionTypes.SAVE_ITEM_ERROR,
+                    data: reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
+                })
+            );
+        };
+    },
+    moveFolder(sourceFolderId, destinationFolderId) {
+        return dispatch => {
+            itemsService.moveFolder(sourceFolderId, destinationFolderId)
+            .then(
+                () => {
+                    dispatch({
+                        type: actionTypes.ITEM_MOVED,
+                    });
+                },
+                reason => {
+                    reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
+                }
+            )
+        };
+    },
+    moveFile(sourceFileId, destinationFolderId) {
+        return dispatch => {
+            itemsService.moveFile(sourceFileId, destinationFolderId)
+            .then(
+                () => dispatch({
+                    type: actionTypes.ITEM_MOVED
+                }),
+                reason => {
+                    reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
+                }
+            )
+        }
+    },
+    cancelMoveItem() {
+        return {
+            type: actionTypes.CANCEL_MOVE_ITEM
         };
     },
     changeName(event) {

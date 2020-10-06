@@ -179,6 +179,59 @@ namespace Dnn.Modules.ResourceManager.Components
             AssetManager.Instance.DeleteFolder(folderId, unlinkAllowedStatus, nonDeletedSubfolders);
         }
 
+        /// <inheritdoc/>
+        public void MoveFile(int sourceFileId, int destinationFolderId, int moduleMode, int groupId)
+        {
+            var file = FileManager.Instance.GetFile(sourceFileId);
+            var destinationFolder = FolderManager.Instance.GetFolder(destinationFolderId);
+
+            if (file == null || destinationFolder == null)
+            {
+                return;
+            }
+
+            if (!this.permissionsManager.HasDeletePermission(moduleMode, file.FolderId))
+            {
+                throw new FolderPermissionNotMetException(LocalizationHelper.GetString("UserHasNoPermissionToDeleteFolder.Error"));
+            }
+
+            if (!this.permissionsManager.HasAddFilesPermission(moduleMode, destinationFolderId))
+            {
+                throw new FolderPermissionNotMetException(LocalizationHelper.GetString("UserHasNoPermissionToManageFolder.Error"));
+            }
+
+            FileManager.Instance.MoveFile(file, destinationFolder);
+        }
+
+        /// <inheritdoc/>
+        public void MoveFolder(int sourceFolderId, int destinationFolderId, int moduleMode, int groupId)
+        {
+            var sourceFolder = FolderManager.Instance.GetFolder(sourceFolderId);
+            var sourceFolderParent = FolderManager.Instance.GetFolder(sourceFolder.ParentID);
+            var destinationFolder = FolderManager.Instance.GetFolder(destinationFolderId);
+
+            if (sourceFolder == null || destinationFolder == null || sourceFolderParent == null)
+            {
+                return;
+            }
+
+            if (
+                !this.permissionsManager.HasDeletePermission(moduleMode, sourceFolderId) ||
+                !this.permissionsManager.HasDeletePermission(moduleMode, sourceFolderParent.FolderID))
+            {
+                throw new FolderPermissionNotMetException(LocalizationHelper.GetString("UserHasNoPermissionToDeleteFolder.Error"));
+            }
+
+            if (
+                !this.permissionsManager.HasAddFilesPermission(moduleMode, destinationFolderId) ||
+                !this.permissionsManager.HasAddFoldersPermission(moduleMode, destinationFolderId))
+            {
+                throw new FolderPermissionNotMetException(LocalizationHelper.GetString("UserHasNoPermissionToManageFolder.Error"));
+            }
+
+            FolderManager.Instance.MoveFolder(sourceFolder, destinationFolder);
+        }
+
         /// <inheritdoc />
         protected override Func<IItemsManager> GetFactory()
         {

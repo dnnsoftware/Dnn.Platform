@@ -10,6 +10,7 @@ import AddAssetPanelContainer from "../containers/AddAssetPanelContainer";
 import TopBarContainer from "./TopBarContainer";
 import Item from "../containers/ItemContainer";
 import ItemDetailsContainer from "../containers/ItemDetailsContainer";
+import ItemMoveContainer from "../containers/ItemMoveContainer";
 import localizeService from "../services/localizeService.js";
 import ReactCSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
@@ -46,6 +47,20 @@ class AssetsPanelContainer extends React.Component {
         );
     }
 
+    getMovePanel(showPanel, i) {
+        return (
+            <ReactCSSTransitionGroup
+                key={"item-move-" + i}
+                transitionName="dnn-slide-in-out"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}
+                transitionLeave={!showPanel}
+            >
+                {showPanel && <ItemMoveContainer />}
+            </ReactCSSTransitionGroup>
+        );
+    }
+
     handleScroll() {
         const { folderPanelState, loadContent, searchFiles } = this.props;
         const { totalCount, loadedItems, search, loading } = folderPanelState;
@@ -74,6 +89,7 @@ class AssetsPanelContainer extends React.Component {
         const {
             items,
             itemEditing,
+            itemMoving,
             search,
             itemContainerDisabled,
             loading,
@@ -86,18 +102,34 @@ class AssetsPanelContainer extends React.Component {
             const { itemId, itemName, isFolder } = item;
             result.push(<Item key={itemId + itemName} item={item} />);
 
-            if (
-                itemEditing &&
-        ((isFolder && itemEditing.folderId === itemId) ||
-          (!isFolder && itemEditing.fileId === itemId))
+            if ( itemEditing &&
+                (
+                    (isFolder && itemEditing.folderId === itemId) ||
+                    (!isFolder && itemEditing.fileId === itemId)
+                )
+            ) {
+                propsPosition = this.getDetailsPosition(i);
+            }
+
+            if ( itemMoving &&
+                (
+                    (isFolder && itemMoving.folderId === itemId) ||
+                    (!isFolder && itemMoving.fileId === itemId)
+                )
             ) {
                 propsPosition = this.getDetailsPosition(i);
             }
 
             let showPanel =
-        i === propsPosition ||
-        (propsPosition >= items.length && i === items.length - 1);
-            result.push(this.getDetailsPanel(showPanel, i));
+            i === propsPosition ||
+            (propsPosition >= items.length && i === items.length - 1);
+            if (itemEditing){
+                result.push(this.getDetailsPanel(showPanel, i));
+            }
+
+            if (itemMoving) {
+                result.push(this.getMovePanel(showPanel, i));
+            }
         }
 
         return (
@@ -149,6 +181,7 @@ AssetsPanelContainer.propTypes = {
     itemContainerDisabled: PropTypes.bool,
     loading: PropTypes.bool,
     itemEditing: PropTypes.object,
+    itemMoving: PropTypes.object,
     itemWidth: PropTypes.number,
     loadContent: PropTypes.func,
     searchFiles: PropTypes.func,
@@ -180,6 +213,7 @@ function mapStateToProps(state) {
       addFolderPanelState.expanded || addAssetPanelState.expanded,
         loading: folderPanelState.loading,
         itemEditing: itemDetailsState.itemEditing,
+        itemMoving: itemDetailsState.itemMoving,
         itemWidth: folderPanelState.itemWidth,
     };
 }

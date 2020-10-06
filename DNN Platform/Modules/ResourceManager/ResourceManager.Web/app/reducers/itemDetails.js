@@ -11,6 +11,9 @@ export default function itemDetailsReducer(state = initialState, action) {
         case itemDetailsActionsTypes.EDIT_ITEM: {
             return { ...state, itemEditing: data };
         }
+        case itemDetailsActionsTypes.MOVE_ITEM: {
+            return { ...state, itemMoving: data };
+        }
         case itemDetailsActionsTypes.CHANGE_NAME: {
             let itemEditing = { ...state.itemEditing, fileName: data, folderName: data};
             return { ...state, itemEditing };
@@ -34,6 +37,12 @@ export default function itemDetailsReducer(state = initialState, action) {
         case itemDetailsActionsTypes.CANCEL_EDIT_ITEM: {
             let res = { ...state };
             delete res.itemEditing;
+            return res;
+        }
+        case itemDetailsActionsTypes.ITEM_MOVED : 
+        case itemDetailsActionsTypes.CANCEL_MOVE_ITEM : {
+            let res = { ...state };
+            delete res.itemMoving;
             return res;
         }
     }

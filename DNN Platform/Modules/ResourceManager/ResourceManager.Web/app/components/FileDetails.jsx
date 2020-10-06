@@ -26,7 +26,6 @@ const FileDetails = ({file, handlers, validationErrors}) => (
                 <span className="details-label">{localizeService.getString("URL")}:</span>
                 <a target="_blank" rel="noopener noreferrer" href={itemService.getItemFullUrl(file.url)}>{itemService.getItemFullUrl(file.url)}</a>
             </div>
-            
         </div>
         <div className="separator"></div>
         <div>

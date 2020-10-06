@@ -845,6 +845,10 @@
             top: 96px;
             background-image: url(/DesktopModules/ResourceManager/Images/download.svg);
         }
+        &.rm-move {
+            top: 64px;
+            background-image: url(/DesktopModules/ResourceManager/Images/move.svg);
+        }
         &.rm-delete {
             background-image: url(/DesktopModules/ResourceManager/Images/delete.svg);
             background-color: #195774;
@@ -919,6 +923,12 @@
         padding: 25px 10px;
         box-sizing: border-box;
         overflow: hidden;
+        &.item-move{
+            overflow: visible;
+            .dnn-folder-selector{
+                border: 1px solid gray;
+            }
+        }
     }
     ul.tabControl {
         background-color: #FFF;

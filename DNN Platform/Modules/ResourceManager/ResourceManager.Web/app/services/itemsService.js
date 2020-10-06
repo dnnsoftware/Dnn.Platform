@@ -16,6 +16,8 @@ const SAVE_FILE_DETAILS_ENDPOINT = "Items/SaveFileDetails";
 const SAVE_FOLDER_DETAILS_ENDPOINT = "Items/SaveFolderDetails";
 const REMOVE_FOLDER_TYPE_ENDPOINT = "Items/RemoveFolderType";
 const ADD_FOLDER_TYPE_URL_ENDPOINT = "Items/GetAddFolderTypeUrl";
+const MOVE_FOLDER_URL_ENDPOINT = "Items/MoveFolder";
+const MOVE_FILE_URL_ENDPOINT = "Items/MoveFile";
 
 function getUrl(endpoint, ignoreCurrentModuleAPI=false) {
     return api.getServiceRoot(ignoreCurrentModuleAPI) + endpoint;
@@ -57,6 +59,16 @@ function deleteFolder(folderId) {
 
 function deleteFile(fileId) {
     return api.post(getUrl(DELETE_FILE_ENDPOINT), {fileId}, { "Content-Type":"application/json" });
+}
+
+function moveFolder(sourceFolderId, destinationFolderId) {
+    const data = { sourceFolderId, destinationFolderId }
+    return api.post(getUrl(MOVE_FOLDER_URL_ENDPOINT), data, { "Content-Type": "application/json" });
+}
+
+function moveFile(sourceFileId, destinationFolderId) {
+    const data = {sourceFileId, destinationFolderId};
+    return api.post(getUrl(MOVE_FILE_URL_ENDPOINT), data, {"Content-Type": "application/json"});
 }
 
 function getFileDetails(fileId) {
@@ -142,4 +154,6 @@ export default {
     saveFolderDetails,
     removeFolderType,
     getAddFolderTypeUrl,
+    moveFolder,
+    moveFile,
 };

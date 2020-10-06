@@ -65,7 +65,7 @@ namespace Dnn.Modules.ResourceManager.Components
         /// </summary>
         /// <param name="fileId">id of the file to delete.</param>
         /// <param name="moduleMode">Current mode of the module instance.</param>
-        /// <param name="groupId">Id of the group (For Group Mode).</param>
+        /// <param name="groupId">Id of the group (for group mode).</param>
         void DeleteFile(int fileId, int moduleMode, int groupId);
 
         /// <summary>
@@ -75,5 +75,23 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <param name="unlinkAllowedStatus">Unlink allowed status.</param>
         /// <param name="moduleMode">Current mode of the module instance.</param>
         void DeleteFolder(int folderId, bool unlinkAllowedStatus, int moduleMode);
+
+        /// <summary>
+        /// Moves a file into a folder.
+        /// </summary>
+        /// <param name="sourceFileId">The id of the file to move.</param>
+        /// <param name="destinationFolderId">The id of the folder to move the file into.</param>
+        /// <param name="moduleMode">Current mode of the module instance.</param>
+        /// <param name="groupId">Id of the group (gor group mode).</param>
+        void MoveFile(int sourceFileId, int destinationFolderId, int moduleMode, int groupId);
+
+        /// <summary>
+        /// Moves a folder into another folder.
+        /// </summary>
+        /// <param name="sourceFolderId">The id of the folder to move.</param>
+        /// <param name="destinationFolderId">The id of the folder into which to move the source folder.</param>
+        /// <param name="moduleMode">Current mode of the module instance.</param>
+        /// <param name="groupId">Id of the group (for group mode).</param>
+        void MoveFolder(int sourceFolderId, int destinationFolderId, int moduleMode, int groupId);
     }
 }

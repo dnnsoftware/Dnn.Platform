@@ -11,7 +11,7 @@ import localizeService from "../services/localizeService";
 
 class ItemContainer extends React.Component {
     render() {
-        const { item, itemEditing, loadContent, editItem, downloadFile, deleteFolder, 
+        const { item, itemEditing, loadContent, editItem, moveItem, downloadFile, deleteFolder, 
             deleteFile, copyFileUrlToClipboard, openDialog, closeDialog, 
             folderPanelState, uploadedFiles, newFolderId } = this.props;
         const isFolder = item.isFolder;
@@ -64,6 +64,24 @@ class ItemContainer extends React.Component {
             openDialog(dialogHeader, dialogMessage, yesFunction, noFunction);
         }
 
+        function onMoveFolder(item, event) {
+            event.stopPropagation();
+            if (!isFolder) {
+                return;
+            }
+
+            moveItem(item);
+        }
+
+        function onMoveFile(item, event) {
+            event.stopPropagation();
+            if(isFolder) {
+                return;
+            }
+
+            moveItem(item);
+        }
+
         function onDeleteFile(event) {
             event.stopPropagation();
             if (isFolder) {
@@ -98,6 +116,7 @@ class ItemContainer extends React.Component {
             onEdit:     hasManagePermission ? onEditItem.bind(this, item) : null,
             onCopyToClipboard: isFolder ? null : copyFileUrlToClipboard.bind(this, item),
             onDownload: isFolder ? null : downloadFile.bind(this, item.itemId),
+            onMove: (hasManagePermission && hasDeletePermission) ? isFolder ? onMoveFolder.bind(this, item) : onMoveFile.bind(this, item) : null,
             onDelete:   hasDeletePermission ? isFolder ? onDeleteFolder : onDeleteFile : null
         };
 
@@ -111,6 +130,7 @@ ItemContainer.propTypes = {
     item: PropTypes.object,
     loadContent: PropTypes.func,
     editItem: PropTypes.func,
+    moveItem: PropTypes.func,
     downloadFile: PropTypes.func,
     deleteFolder: PropTypes.func,
     deleteFile: PropTypes.func,
@@ -142,6 +162,7 @@ function mapDispatchToProps(dispatch) {
         ...bindActionCreators({
             loadContent: folderPanelActions.loadContent,
             editItem: itemDetailsActions.editItem,
+            moveItem: itemDetailsActions.moveItem,
             downloadFile: folderPanelActions.downloadFile,
             deleteFolder: folderPanelActions.deleteFolder,
             deleteFile: folderPanelActions.deleteFile,
