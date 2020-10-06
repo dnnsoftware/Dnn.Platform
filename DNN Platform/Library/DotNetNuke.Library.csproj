@@ -823,6 +823,7 @@
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
     <Compile Include="Services\Mail\CoreMailProvider.cs" />
     <Compile Include="Services\Mail\MailInfo.cs" />
+    <Compile Include="Services\Mail\MailAttachment.cs" />
     <Compile Include="Services\Mail\MailProvider.cs" />
     <Compile Include="Services\Mail\SmtpInfo.cs" />
     <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
