@@ -23,7 +23,8 @@
     "Dnn.AdminExperience/ClientSide/Themes.Web",
     "Dnn.AdminExperience/ClientSide/Users.Web",
     "Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables",
-    "Dnn.AdminExperience/ClientSide/Vocabularies.Web"
+    "Dnn.AdminExperience/ClientSide/Vocabularies.Web",
+    "Dnn Platform/Modules/ResourceManager/ResourceManager.Web"
   ],
   "devDependencies": {
     "lerna": "^3.16.4"
