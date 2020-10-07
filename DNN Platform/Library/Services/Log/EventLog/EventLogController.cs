@@ -19,12 +19,22 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Services.FileSystem;
 
     /// <inheritdoc />
-    public partial class EventLogController : IEventLoggingService
+    public partial class EventLogController : IEventLogger
     {
-        protected IEventLoggingService Service => (IEventLoggingService)this;
+        /// <summary>
+        /// Gets the local <see cref="IEventLogger"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is useful to de-couple the new abstractions implementation
+        /// from the controller. As the controller will have identical method
+        /// names and properties. When you implement an interface explicilty
+        /// you don't have access to other members of the interface. This
+        /// helpers provides that bridge.
+        /// </remarks>
+        private IEventLogger service => this;
 
         /// <inheritdoc />
-        void IEventLoggingService.AddSettingLog(Abstractions.Logging.EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
+        void IEventLogger.AddSettingLog(Abstractions.Logging.EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
         {
             var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
             log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
@@ -35,19 +45,19 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(string name, string value, Abstractions.Logging.EventLogType logType)
+        void IEventLogger.AddLog(string name, string value, Abstractions.Logging.EventLogType logType)
         {
-            this.Service.AddLog(name, value, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
+            this.service.AddLog(name, value, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(string name, string value, IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
+        void IEventLogger.AddLog(string name, string value, IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
         {
-            this.Service.AddLog(name, value, portalSettings, userID, logType.ToString());
+            this.service.AddLog(name, value, portalSettings, userID, logType.ToString());
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(string name, string value, IPortalSettings portalSettings, int userID, string logType)
+        void IEventLogger.AddLog(string name, string value, IPortalSettings portalSettings, int userID, string logType)
         {
             var properties = new LogProperties();
             var logDetailInfo = new LogDetailInfo { PropertyName = name, PropertyValue = value };
@@ -56,7 +66,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(ILogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
+        void IEventLogger.AddLog(ILogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
         {
             // supports adding a custom string for LogType
             var log = new LogInfo
@@ -77,19 +87,19 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
+        void IEventLogger.AddLog(IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
         {
-            this.Service.AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
+            this.service.AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, Abstractions.Logging.EventLogType logType)
+        void IEventLogger.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, Abstractions.Logging.EventLogType logType)
         {
             this.AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType)
+        void IEventLogger.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType)
         {
             var log = new LogInfo { LogUserID = userID, LogTypeKey = logType };
             if (portalSettings != null)
@@ -196,98 +206,98 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLog(ILogInfo logInfo)
+        void IEventLogger.AddLog(ILogInfo logInfo)
         {
             LogController.Instance.AddLog((LogInfo)logInfo);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLogType(string configFile, string fallbackConfigFile)
+        void IEventLogger.AddLogType(string configFile, string fallbackConfigFile)
         {
             LogController.Instance.AddLogType(configFile, fallbackConfigFile);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLogType(ILogTypeInfo logType)
+        void IEventLogger.AddLogType(ILogTypeInfo logType)
         {
             LogController.Instance.AddLogType((LogTypeInfo)logType);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.AddLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
+        void IEventLogger.AddLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
         {
             LogController.Instance.AddLogTypeConfigInfo((LogTypeConfigInfo)logTypeConfig);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.ClearLog()
+        void IEventLogger.ClearLog()
         {
             LogController.Instance.ClearLog();
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.DeleteLog(ILogInfo logInfo)
+        void IEventLogger.DeleteLog(ILogInfo logInfo)
         {
             LogController.Instance.DeleteLog((LogInfo)logInfo);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.DeleteLogType(ILogTypeInfo logType)
+        void IEventLogger.DeleteLogType(ILogTypeInfo logType)
         {
             LogController.Instance.DeleteLogType((LogTypeInfo)logType);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.DeleteLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
+        void IEventLogger.DeleteLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
         {
             LogController.Instance.DeleteLogTypeConfigInfo((LogTypeConfigInfo)logTypeConfig);
         }
 
         /// <inheritdoc />
-        IEnumerable<ILogInfo> IEventLoggingService.GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
+        IEnumerable<ILogInfo> IEventLogger.GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
         {
             return LogController.Instance.GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords);
         }
 
         /// <inheritdoc />
-        ArrayList IEventLoggingService.GetLogTypeConfigInfo()
+        ArrayList IEventLogger.GetLogTypeConfigInfo()
         {
             return LogController.Instance.GetLogTypeConfigInfo();
         }
 
         /// <inheritdoc />
-        ILogTypeConfigInfo IEventLoggingService.GetLogTypeConfigInfoByID(string id)
+        ILogTypeConfigInfo IEventLogger.GetLogTypeConfigInfoByID(string id)
         {
             return LogController.Instance.GetLogTypeConfigInfoByID(id);
         }
 
         /// <inheritdoc />
-        IDictionary<string, ILogTypeInfo> IEventLoggingService.GetLogTypeInfoDictionary()
+        IDictionary<string, ILogTypeInfo> IEventLogger.GetLogTypeInfoDictionary()
         {
             return LogController.Instance.GetLogTypeInfoDictionary()
                 .ToDictionary(key => key.Key, value => (ILogTypeInfo)value.Value);
         }
 
         /// <inheritdoc />
-        object IEventLoggingService.GetSingleLog(ILogInfo log, LoggingProviderReturnType returnType)
+        object IEventLogger.GetSingleLog(ILogInfo log, LoggingProviderReturnType returnType)
         {
             return LogController.Instance.GetSingleLog((LogInfo)log, (LoggingProvider.ReturnType)returnType);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.PurgeLogBuffer()
+        void IEventLogger.PurgeLogBuffer()
         {
             LogController.Instance.PurgeLogBuffer();
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.UpdateLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
+        void IEventLogger.UpdateLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
         {
             LogController.Instance.UpdateLogTypeConfigInfo((LogTypeConfigInfo)logTypeConfig);
         }
 
         /// <inheritdoc />
-        void IEventLoggingService.UpdateLogType(ILogTypeInfo logType)
+        void IEventLogger.UpdateLogType(ILogTypeInfo logType)
         {
             LogController.Instance.UpdateLogType((LogTypeInfo)logType);
         }

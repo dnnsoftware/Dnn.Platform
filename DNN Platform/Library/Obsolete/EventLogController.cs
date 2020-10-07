@@ -177,11 +177,11 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId) =>
-            Globals.DependencyProvider.GetRequiredService<IEventLoggingService>()
+            Globals.DependencyProvider.GetRequiredService<IEventLogger>()
                 .AddSettingLog((Abstractions.Logging.EventLogType)logTypeKey, idFieldName, idValue, settingName, settingValue, userId);
 
         public void AddLog(string propertyName, string propertyValue, EventLogType logType) =>
-            this.Service.AddLog(propertyName, propertyValue, (Abstractions.Logging.EventLogType)logType);
+            this.service.AddLog(propertyName, propertyValue, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType)
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         public void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, EventLogType logType) =>
-            this.Service.AddLog(propertyName, propertyValue, portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
+            this.service.AddLog(propertyName, propertyValue, portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
@@ -199,7 +199,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         public void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, string logType) =>
-            this.Service.AddLog(propertyName, propertyValue, portalSettings, userID, logType);
+            this.service.AddLog(propertyName, propertyValue, portalSettings, userID, logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
         public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         public void AddLog(LogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering) =>
-            this.Service.AddLog(properties, portalSettings, userID, logTypeKey, bypassBuffering);
+            this.service.AddLog(properties, portalSettings, userID, logTypeKey, bypassBuffering);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
         public void AddLog(PortalSettings portalSettings, int userID, EventLogType logType)
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         public void AddLog(IPortalSettings portalSettings, int userID, EventLogType logType) =>
-            this.Service.AddLog(portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
+            this.service.AddLog(portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
         public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, EventLogType logType)
@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         public void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, EventLogType logType) =>
-            this.Service.AddLog(businessObject, portalSettings, userID, userName, (Abstractions.Logging.EventLogType)logType);
+            this.service.AddLog(businessObject, portalSettings, userID, userName, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
         public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType)
@@ -235,57 +235,57 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         public void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType) =>
-            this.Service.AddLog(businessObject, portalSettings, userID, userName, logType);
+            this.service.AddLog(businessObject, portalSettings, userID, userName, logType);
 
         public void AddLog(LogInfo logInfo) =>
-            this.Service.AddLog(logInfo);
+            this.service.AddLog(logInfo);
 
         public void AddLogType(string configFile, string fallbackConfigFile) =>
-            this.Service.AddLogType(configFile, fallbackConfigFile);
+            this.service.AddLogType(configFile, fallbackConfigFile);
 
         public void AddLogType(LogTypeInfo logType) =>
-            this.Service.AddLogType(logType);
+            this.service.AddLogType(logType);
 
         public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig) =>
-            this.Service.AddLogTypeConfigInfo(logTypeConfig);
+            this.service.AddLogTypeConfigInfo(logTypeConfig);
 
         public void ClearLog() =>
-            this.Service.ClearLog();
+            this.service.ClearLog();
 
         public void DeleteLog(LogInfo logInfo) =>
-            this.Service.DeleteLog(logInfo);
+            this.service.DeleteLog(logInfo);
 
         public void DeleteLogType(LogTypeInfo logType) =>
-            this.Service.DeleteLogType(logType);
+            this.service.DeleteLogType(logType);
 
         public void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig) =>
-            this.Service.DeleteLogTypeConfigInfo(logTypeConfig);
+            this.service.DeleteLogTypeConfigInfo(logTypeConfig);
 
         public List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords) =>
-            this.Service.GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords).Cast<LogInfo>().ToList();
+            this.service.GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords).Cast<LogInfo>().ToList();
 
         public ArrayList GetLogTypeConfigInfo() =>
-            this.Service.GetLogTypeConfigInfo();
+            this.service.GetLogTypeConfigInfo();
 
         public LogTypeConfigInfo GetLogTypeConfigInfoByID(string id) =>
-            (LogTypeConfigInfo)this.Service.GetLogTypeConfigInfoByID(id);
+            (LogTypeConfigInfo)this.service.GetLogTypeConfigInfoByID(id);
 
         public Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary() =>
-            this.Service
+            this.service
                 .GetLogTypeInfoDictionary()
                 .ToDictionary(key => key.Key, value => (LogTypeInfo)value.Value);
 
         public object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType) =>
-            this.Service.GetSingleLog(log, (LoggingProviderReturnType)returnType);
+            this.service.GetSingleLog(log, (LoggingProviderReturnType)returnType);
 
         public void PurgeLogBuffer() =>
-            this.Service.PurgeLogBuffer();
+            this.service.PurgeLogBuffer();
 
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig) =>
-            this.Service.UpdateLogTypeConfigInfo(logTypeConfig);
+            this.service.UpdateLogTypeConfigInfo(logTypeConfig);
 
         public virtual void UpdateLogType(LogTypeInfo logType) =>
-            this.Service.UpdateLogType(logType);
+            this.service.UpdateLogType(logType);
 
         protected override Func<IEventLogController> GetFactory()
         {

@@ -9,9 +9,9 @@ namespace DotNetNuke.Abstractions.Logging
     using DotNetNuke.Abstractions.Portals;
 
     /// <summary>
-    /// Event Logging Service.
+    /// Event Logger.
     /// </summary>
-    public interface IEventLoggingService
+    public interface IEventLogger
     {
         /// <summary>
         /// Add setting log.
