@@ -6,12 +6,14 @@ namespace DotNetNuke
 {
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
 
@@ -27,6 +29,8 @@ namespace DotNetNuke
             services.AddSingleton<Html5ModuleControlFactory>();
             services.AddSingleton<ReflectedModuleControlFactory>();
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
+
+            services.AddScoped<IEventLogger, EventLogController>();
 
             services.AddTransient(x => PortalController.Instance);
             services.AddScoped<IHostSettingsService, HostController>();
