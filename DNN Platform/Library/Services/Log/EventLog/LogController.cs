@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             KeepMostRecent = "-1",
                             EmailNotificationIsActive = false,
                             NotificationThreshold = 1,
-                            NotificationThresholdTime = 1,
+                            NotificationThresholdTimeType = 1,
                             NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                             MailFromAddress = string.Empty,
                             MailToAddress = string.Empty,
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
                             MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
                             NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
-                            NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
+                            NotificationThresholdTimeType = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
                             NotificationThresholdTimeType =
                                                             (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
                         };
@@ -191,7 +191,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 logTypeConfig.LogFileName,
                 logTypeConfig.EmailNotificationIsActive,
                 Convert.ToString(logTypeConfig.NotificationThreshold),
-                Convert.ToString(logTypeConfig.NotificationThresholdTime),
+                Convert.ToString(logTypeConfig.NotificationThresholdTimeType),
                 Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
                 logTypeConfig.MailFromAddress,
                 logTypeConfig.MailToAddress);
@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 logTypeConfig.LogFileName,
                 logTypeConfig.EmailNotificationIsActive,
                 Convert.ToString(logTypeConfig.NotificationThreshold),
-                Convert.ToString(logTypeConfig.NotificationThresholdTime),
+                Convert.ToString(logTypeConfig.NotificationThresholdTimeType),
                 Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
                 logTypeConfig.MailFromAddress,
                 logTypeConfig.MailToAddress);

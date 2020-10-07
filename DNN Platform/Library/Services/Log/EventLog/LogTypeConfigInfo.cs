@@ -4,12 +4,12 @@
 namespace DotNetNuke.Services.Log.EventLog
 {
     using System;
-
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
 
     [Serializable]
-    public class LogTypeConfigInfo : LogTypeInfo
+    public class LogTypeConfigInfo : LogTypeInfo, ILogTypeConfigInfo
     {
         private string _mailFromAddress;
 
@@ -29,13 +29,13 @@ namespace DotNetNuke.Services.Log.EventLog
                 switch (this.NotificationThresholdTimeType)
                 {
                     case NotificationThresholdTimeTypes.Seconds:
-                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddSeconds(this.NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Minutes:
-                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddMinutes(this.NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Hours:
-                        return DateTime.Now.AddHours(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddHours(this.NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Days:
-                        return DateTime.Now.AddDays(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddDays(this.NotificationThresholdTimeType * -1);
                     default:
                         return Null.NullDate;
                 }
@@ -62,9 +62,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public int NotificationThreshold { get; set; }
 
-        public int NotificationThresholdTime { get; set; }
+        public int NotificationThresholdTimeTime { get; set; }
 
         public NotificationThresholdTimeTypes NotificationThresholdTimeType { get; set; }
+
+        NotificationThresholdTimeType ILogTypeConfigInfo.NotificationThresholdTimeType { get; set; }
 
         public string ID { get; set; }
 

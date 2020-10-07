@@ -8,10 +8,11 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Text;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Services.Exceptions;
 
     [Serializable]
-    public class LogInfo
+    public class LogInfo : ILogInfo
     {
         public LogInfo()
         {
@@ -54,6 +55,12 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public LogProperties LogProperties { get; set; }
 
+        ILogProperties ILogInfo.LogProperties
+        {
+            get => LogProperties;
+            set => LogProperties = (LogProperties)value;
+        }
+
         public bool BypassBuffering { get; set; }
 
         public string LogServerName { get; set; }
@@ -61,6 +68,12 @@ namespace DotNetNuke.Services.Log.EventLog
         public string LogConfigID { get; set; }
 
         public ExceptionInfo Exception { get; set; }
+
+        IExceptionInfo ILogInfo.Exception
+        {
+            get => Exception;
+            set => Exception = (ExceptionInfo)value;
+        }
 
         public static bool IsSystemType(string PropName)
         {

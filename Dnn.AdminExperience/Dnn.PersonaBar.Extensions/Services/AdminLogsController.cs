@@ -364,7 +364,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     configInfo.KeepMostRecent,
                     configInfo.EmailNotificationIsActive,
                     configInfo.NotificationThreshold,
-                    configInfo.NotificationThresholdTime,
+                    configInfo.NotificationThresholdTimeType,
                     configInfo.NotificationThresholdTimeType,
                     configInfo.MailFromAddress,
                     configInfo.MailToAddress
@@ -503,7 +503,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                         configInfo.KeepMostRecent,
                         configInfo.EmailNotificationIsActive,
                         configInfo.NotificationThreshold,
-                        configInfo.NotificationThresholdTime,
+                        configInfo.NotificationThresholdTimeType,
                         configInfo.NotificationThresholdTimeType,
                         configInfo.MailFromAddress,
                         configInfo.MailToAddress

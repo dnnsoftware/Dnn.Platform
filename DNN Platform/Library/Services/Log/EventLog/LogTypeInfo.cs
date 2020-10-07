@@ -5,8 +5,10 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     using System;
 
+    using DotNetNuke.Abstractions.Logging;
+
     [Serializable]
-    public class LogTypeInfo
+    public class LogTypeInfo : ILogTypeInfo
     {
         public string LogTypeCSSClass { get; set; }
 

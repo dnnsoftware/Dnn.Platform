@@ -3,15 +3,15 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
-    using System;
     using System.Collections;
     using System.IO;
     using System.Text;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
 
-    public class LogProperties : ArrayList
+    public class LogProperties : ArrayList, ILogProperties
     {
         public string Summary
         {

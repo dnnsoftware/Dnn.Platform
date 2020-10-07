@@ -9,8 +9,10 @@ namespace DotNetNuke.Services.Exceptions
     using System.Text;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
+
     [Serializable]
-    public class ExceptionInfo
+    public class ExceptionInfo : IExceptionInfo
     {
         public ExceptionInfo()
         {

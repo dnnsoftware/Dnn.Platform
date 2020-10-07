@@ -15,8 +15,8 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public enum ReturnType
         {
-            LogInfoObjects,
-            XML,
+            LogInfoObjects = 0,
+            XML = 1,
         }
 
         // return the provider
