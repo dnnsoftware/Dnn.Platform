@@ -65,16 +65,14 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc />
         public bool Remove(ILogDetailInfo item)
         {
-            try
+            var index = base.IndexOf(item);
+            if (index >= 0)
             {
-                base.Remove(item);
-            }
-            catch
-            {
-                return false;
+                this.RemoveAt(index);
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         public void Deserialize(string content)
