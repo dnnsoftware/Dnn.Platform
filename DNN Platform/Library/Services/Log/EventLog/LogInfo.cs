@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Services.Exceptions;
 
+    /// <inheritdoc />
     [Serializable]
     public class LogInfo : ILogInfo
     {
@@ -33,47 +34,62 @@ namespace DotNetNuke.Services.Log.EventLog
             this.Deserialize(content);
         }
 
+        /// <inheritdoc />
         public string LogGUID { get; set; }
 
+        /// <inheritdoc />
         public string LogFileID { get; set; }
 
+        /// <inheritdoc />
         public string LogTypeKey { get; set; }
 
+        /// <inheritdoc />
         public int LogUserID { get; set; }
 
+        /// <inheritdoc />
         public int LogEventID { get; set; }
 
+        /// <inheritdoc />
         public string LogUserName { get; set; }
 
+        /// <inheritdoc />
         public int LogPortalID { get; set; }
 
+        /// <inheritdoc />
         public string LogPortalName { get; set; }
 
+        /// <inheritdoc />
         public DateTime LogCreateDate { get; set; }
 
+        /// <inheritdoc />
         public long LogCreateDateNum { get; set; }
 
-        public LogProperties LogProperties { get; set; }
-
-        ILogProperties ILogInfo.LogProperties
+        public LogProperties LogProperties
         {
-            get => LogProperties;
-            set => LogProperties = (LogProperties)value;
+            get => (LogProperties)((ILogInfo)this).LogProperties;
+            set => ((ILogInfo)this).LogProperties = value;
         }
 
+        /// <inheritdoc />
+        ILogProperties ILogInfo.LogProperties { get; set; }
+
+        /// <inheritdoc />
         public bool BypassBuffering { get; set; }
 
+        /// <inheritdoc />
         public string LogServerName { get; set; }
 
+        /// <inheritdoc />
         public string LogConfigID { get; set; }
 
-        public ExceptionInfo Exception { get; set; }
-
-        IExceptionInfo ILogInfo.Exception
+        public ExceptionInfo Exception
         {
-            get => Exception;
-            set => Exception = (ExceptionInfo)value;
+            get => (ExceptionInfo)((ILogInfo)this).Exception;
+            set => ((ILogInfo)this).Exception = value;
         }
+
+        /// <inheritdoc />
+        IExceptionInfo ILogInfo.Exception { get; set; }
 
         public static bool IsSystemType(string PropName)
         {
@@ -96,6 +112,7 @@ namespace DotNetNuke.Services.Log.EventLog
             return false;
         }
 
+        /// <inheritdoc />
         public void AddProperty(string PropertyName, string PropertyValue)
         {
             try

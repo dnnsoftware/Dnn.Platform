@@ -1521,7 +1521,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
                     KeepMostRecent = "100",
                     NotificationThreshold = 1,
-                    NotificationThresholdTimeType = 1,
+                    NotificationThresholdTime = 1,
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,

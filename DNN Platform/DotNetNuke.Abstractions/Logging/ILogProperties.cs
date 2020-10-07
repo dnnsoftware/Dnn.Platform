@@ -16,29 +16,4 @@ namespace DotNetNuke.Abstractions.Logging
         /// Gets the Summary.
         /// </summary>
         string Summary { get; }
-
-        /// <summary>
-        /// Deserialize.
-        /// </summary>
-        /// <param name="content">content.</param>
-        void Deserialize(string content);
-
-        /// <summary>
-        /// Reads the Xml data.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        void ReadXml(XmlReader reader);
-
-        /// <summary>
-        /// Serialize.
-        /// </summary>
-        /// <returns>The result.</returns>
-        string Serialize();
-
-        /// <summary>
-        /// Writes the xml.
-        /// </summary>
-        /// <param name="writer">The xml writer.</param>
-        void WriteXml(XmlWriter writer);
-    }
 }

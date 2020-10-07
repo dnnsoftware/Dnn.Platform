@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Exceptions
 
     using DotNetNuke.Abstractions.Logging;
 
+    /// <inheritdoc />
     [Serializable]
     public class ExceptionInfo : IExceptionInfo
     {
@@ -32,38 +33,54 @@ namespace DotNetNuke.Services.Exceptions
             this.ExceptionHash = e.Hash();
         }
 
+        /// <inheritdoc />
         public string AssemblyVersion { get; set; }
 
+        /// <inheritdoc />
         public int PortalId { get; set; }
 
+        /// <inheritdoc />
         public int UserId { get; set; }
 
+        /// <inheritdoc />
         public int TabId { get; set; }
 
+        /// <inheritdoc />
         public string RawUrl { get; set; }
 
+        /// <inheritdoc />
         public string Referrer { get; set; }
 
+        /// <inheritdoc />
         public string UserAgent { get; set; }
 
+        /// <inheritdoc />
         public string ExceptionHash { get; set; }
 
+        /// <inheritdoc />
         public string Message { get; set; }
 
+        /// <inheritdoc />
         public string StackTrace { get; set; }
 
         public string InnerMessage { get; set; }
 
+        /// <inheritdoc />
         public string InnerStackTrace { get; set; }
 
+        /// <inheritdoc />
         public string Source { get; set; }
 
+        /// <inheritdoc />
         public string FileName { get; set; }
 
+        /// <inheritdoc />
         public int FileLineNumber { get; set; }
 
+        /// <inheritdoc />
         public int FileColumnNumber { get; set; }
 
+        /// <inheritdoc />
         public string Method { get; set; }
 
         public void Deserialize(string content)

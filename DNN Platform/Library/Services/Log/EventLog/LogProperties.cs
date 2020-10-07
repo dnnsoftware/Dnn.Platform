@@ -11,8 +11,10 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
 
+    /// <inheritdoc />
     public class LogProperties : ArrayList, ILogProperties
     {
+        /// <inheritdoc />
         public string Summary
         {
             get
