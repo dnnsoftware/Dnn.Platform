@@ -16,6 +16,6 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// XML.
         /// </summary>
-        XML = 1,
+        Xml = 1,
     }
 }

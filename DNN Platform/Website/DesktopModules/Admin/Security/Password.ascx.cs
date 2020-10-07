@@ -401,9 +401,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
             var log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
+                LogPortalId = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
+                LogUserId = this.UserId,
                 LogUserName = portalSecurity.InputFilter(this.User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
             };
 

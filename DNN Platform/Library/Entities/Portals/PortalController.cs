@@ -1509,7 +1509,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
                     LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
                     LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeCssClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeInfo);
@@ -1525,7 +1525,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
+                    LogTypePortalId = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
             }
@@ -1538,7 +1538,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
                     LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
                     LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeCssClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeFilterInfo);
@@ -1554,7 +1554,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
+                    LogTypePortalId = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }
@@ -1566,7 +1566,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
                     LogTypeFriendlyName = "TabURL created",
                     LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationSuccess",
+                    LogTypeCssClass = "OperationSuccess",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeInfo);
@@ -1590,7 +1590,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
+                    LogTypePortalId = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
 
@@ -1609,7 +1609,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
                     LogTypeFriendlyName = "Javscript library registration resolved script collision",
                     LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeCssClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeFilterInfo);
@@ -1625,7 +1625,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
+                    LogTypePortalId = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }

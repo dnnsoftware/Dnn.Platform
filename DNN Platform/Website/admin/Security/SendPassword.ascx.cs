@@ -336,9 +336,9 @@ namespace DotNetNuke.Modules.Admin.Security
 
             var log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
+                LogPortalId = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
+                LogUserId = this.UserId,
                 LogUserName = portalSecurity.InputFilter(this.txtUsername.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
             };
 

@@ -56,9 +56,9 @@ namespace DotNetNuke.Services.Log.EventLog
                     }
 
                     // Get portal name if name isn't set
-                    if (logInfo.LogPortalID != Null.NullInteger && string.IsNullOrEmpty(logInfo.LogPortalName))
+                    if (logInfo.LogPortalId != Null.NullInteger && string.IsNullOrEmpty(logInfo.LogPortalName))
                     {
-                        logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
+                        logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalId).PortalName;
                     }
 
                     // Check if Log Type exists
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             LogTypeKey = logInfo.LogTypeKey,
                             LogTypeFriendlyName = logInfo.LogTypeKey,
                             LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                            LogTypeCSSClass = "GeneralAdminOperation",
+                            LogTypeCssClass = "GeneralAdminOperation",
                             LogTypeDescription = string.Empty,
                         };
                         this.AddLogType(logType);
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Log.EventLog
                         var logTypeConfigInfo = new LogTypeConfigInfo()
                         {
                             LogTypeKey = logInfo.LogTypeKey,
-                            LogTypePortalID = "*",
+                            LogTypePortalId = "*",
                             LoggingIsActive = false,
                             KeepMostRecent = "-1",
                             EmailNotificationIsActive = false,
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             LogTypeKey = typeInfo.Attributes["LogTypeKey"].Value,
                             LogTypeFriendlyName = typeInfo.Attributes["LogTypeFriendlyName"].Value,
                             LogTypeDescription = typeInfo.Attributes["LogTypeDescription"].Value,
-                            LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
+                            LogTypeCssClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
                             LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value,
                         };
                         this.AddLogType(objLogTypeInfo);
@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             KeepMostRecent = typeConfigInfo.Attributes["KeepMostRecent"].Value,
                             LoggingIsActive = typeConfigInfo.Attributes["LoggingStatus"].Value == "On",
                             LogTypeKey = typeConfigInfo.Attributes["LogTypeKey"].Value,
-                            LogTypePortalID = typeConfigInfo.Attributes["LogTypePortalID"].Value,
+                            LogTypePortalId = typeConfigInfo.Attributes["LogTypePortalID"].Value,
                             MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
                             MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
                             NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
@@ -177,16 +177,16 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLogType(LogTypeInfo logType)
         {
-            LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
+            LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCssClass, logType.LogTypeOwner);
         }
 
         public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             LoggingProvider.Instance().AddLogTypeConfigInfo(
-                logTypeConfig.ID,
+                logTypeConfig.Id,
                 logTypeConfig.LoggingIsActive,
                 logTypeConfig.LogTypeKey,
-                logTypeConfig.LogTypePortalID,
+                logTypeConfig.LogTypePortalId,
                 logTypeConfig.KeepMostRecent,
                 logTypeConfig.LogFileName,
                 logTypeConfig.EmailNotificationIsActive,
@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public virtual void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
-            LoggingProvider.Instance().DeleteLogTypeConfigInfo(logTypeConfig.ID);
+            LoggingProvider.Instance().DeleteLogTypeConfigInfo(logTypeConfig.Id);
         }
 
         public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
@@ -250,10 +250,10 @@ namespace DotNetNuke.Services.Log.EventLog
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             LoggingProvider.Instance().UpdateLogTypeConfigInfo(
-                logTypeConfig.ID,
+                logTypeConfig.Id,
                 logTypeConfig.LoggingIsActive,
                 logTypeConfig.LogTypeKey,
-                logTypeConfig.LogTypePortalID,
+                logTypeConfig.LogTypePortalId,
                 logTypeConfig.KeepMostRecent,
                 logTypeConfig.LogFileName,
                 logTypeConfig.EmailNotificationIsActive,
@@ -266,7 +266,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public virtual void UpdateLogType(LogTypeInfo logType)
         {
-            LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
+            LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCssClass, logType.LogTypeOwner);
         }
 
         protected override Func<ILogController> GetFactory()

@@ -35,8 +35,8 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override void AddLog(LogInfo logInfo)
         {
-            string configPortalID = logInfo.LogPortalID != Null.NullInteger
-                                        ? logInfo.LogPortalID.ToString()
+            string configPortalID = logInfo.LogPortalId != Null.NullInteger
+                                        ? logInfo.LogPortalId.ToString()
                                         : "*";
             var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
             if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 return;
             }
 
-            logInfo.LogConfigID = logTypeConfigInfo.ID;
+            logInfo.LogConfigId = logTypeConfigInfo.Id;
             var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
             SchedulingProvider scheduler = SchedulingProvider.Instance();
             if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false
@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override void DeleteLog(LogInfo logInfo)
         {
-            DataProvider.Instance().DeleteLog(logInfo.LogGUID);
+            DataProvider.Instance().DeleteLog(logInfo.LogGuid);
         }
 
         public override void DeleteLogType(string logTypeKey)
@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)
         {
-            IDataReader dr = DataProvider.Instance().GetSingleLog(logInfo.LogGUID);
+            IDataReader dr = DataProvider.Instance().GetSingleLog(logInfo.LogGuid);
             LogInfo log = null;
             try
             {
@@ -261,7 +261,7 @@ namespace DotNetNuke.Services.Log.EventLog
             List<LogTypeConfigInfo> configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
             foreach (LogTypeConfigInfo typeConfigInfo in configInfos)
             {
-                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
+                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.Id));
                 string log = string.Empty;
                 try
                 {
@@ -277,7 +277,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 }
 
                 Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log)));
-                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
+                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.Id));
             }
         }
 
@@ -362,12 +362,12 @@ namespace DotNetNuke.Services.Log.EventLog
                     logTypeConfigInfo.LogTypeKey = "*";
                 }
 
-                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalId))
                 {
-                    logTypeConfigInfo.LogTypePortalID = "*";
+                    logTypeConfigInfo.LogTypePortalId = "*";
                 }
 
-                ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalID, logTypeConfigInfo);
+                ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalId, logTypeConfigInfo);
             }
 
             DataCache.SetCache(LogTypeInfoByKeyCacheKey, ht);
@@ -380,15 +380,15 @@ namespace DotNetNuke.Services.Log.EventLog
             try
             {
                 obj.LogCreateDate = Convert.ToDateTime(dr["LogCreateDate"]);
-                obj.LogGUID = Convert.ToString(dr["LogGUID"]);
-                obj.LogPortalID = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalID));
+                obj.LogGuid = Convert.ToString(dr["LogGUID"]);
+                obj.LogPortalId = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalId));
                 obj.LogPortalName = Convert.ToString(Null.SetNull(dr["LogPortalName"], obj.LogPortalName));
                 obj.LogServerName = Convert.ToString(Null.SetNull(dr["LogServerName"], obj.LogServerName));
-                obj.LogUserID = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserID));
-                obj.LogEventID = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventID));
+                obj.LogUserId = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserId));
+                obj.LogEventId = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventId));
                 obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"]);
                 obj.LogUserName = Convert.ToString(dr["LogUserName"]);
-                obj.LogConfigID = Convert.ToString(dr["LogConfigID"]);
+                obj.LogConfigId = Convert.ToString(dr["LogConfigID"]);
                 obj.LogProperties.Deserialize(Convert.ToString(dr["LogProperties"]));
                 obj.Exception.AssemblyVersion = Convert.ToString(Null.SetNull(dr["AssemblyVersion"], obj.Exception.AssemblyVersion));
                 obj.Exception.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], obj.Exception.PortalId));
@@ -477,16 +477,16 @@ namespace DotNetNuke.Services.Log.EventLog
                     LogInfo objLogInfo = logQueueItem.LogInfo;
                     string logProperties = objLogInfo.LogProperties.Serialize();
                     DataProvider.Instance().AddLog(
-                        objLogInfo.LogGUID,
+                        objLogInfo.LogGuid,
                         objLogInfo.LogTypeKey,
-                        objLogInfo.LogUserID,
+                        objLogInfo.LogUserId,
                         objLogInfo.LogUserName,
-                        objLogInfo.LogPortalID,
+                        objLogInfo.LogPortalId,
                         objLogInfo.LogPortalName,
                         objLogInfo.LogCreateDate,
                         objLogInfo.LogServerName,
                         logProperties,
-                        Convert.ToInt32(objLogInfo.LogConfigID),
+                        Convert.ToInt32(objLogInfo.LogConfigId),
                         objLogInfo.Exception,
                         logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)

@@ -339,9 +339,9 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             var log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
+                LogPortalId = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
+                LogUserId = this.UserId,
             };
 
             if (string.IsNullOrEmpty(message))

@@ -200,7 +200,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         public void DeleteLogTypeConfig(string logTypeConfigId)
         {
             var logTypeConfigInfo = new LogTypeConfigInfo();
-            logTypeConfigInfo.ID = logTypeConfigId;
+            logTypeConfigInfo.Id = logTypeConfigId;
             LogController.Instance.DeleteLogTypeConfigInfo(logTypeConfigInfo);
         }
 
@@ -259,7 +259,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             objXml.LoadXml("<LogEntries></LogEntries>");
             foreach (var logId in logIds)
             {
-                var objLogInfo = new LogInfo { LogGUID = logId };
+                var objLogInfo = new LogInfo { LogGuid = logId };
                 var objNode = objXml.ImportNode((XmlNode)LogController.Instance.GetSingleLog(objLogInfo, LoggingProvider.ReturnType.XML), true);
                 if (objXml.DocumentElement != null)
                 {

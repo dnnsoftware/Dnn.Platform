@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
     /// <inheritdoc />
     [Serializable]
-    public class LogTypeConfigInfo : LogTypeInfo, ILogTypeConfigInfo
+    public partial class LogTypeConfigInfo : LogTypeInfo, ILogTypeConfigInfo
     {
         private string _mailFromAddress;
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Log.EventLog
         NotificationThresholdTimeType ILogTypeConfigInfo.NotificationThresholdTimeType { get; set; }
 
         /// <inheritdoc />
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         /// <inheritdoc />
         public bool LoggingIsActive { get; set; }
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public string LogFileNameWithPath { get; set; }
 
         /// <inheritdoc />
-        public string LogTypePortalID { get; set; }
+        public string LogTypePortalId { get; set; }
 
         /// <inheritdoc />
         public string KeepMostRecent { get; set; }

@@ -11,7 +11,7 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// Gets or sets log type css class.
         /// </summary>
-        string LogTypeCSSClass { get; set; }
+        string LogTypeCssClass { get; set; }
 
         /// <summary>
         /// Gets or sets the log type description.

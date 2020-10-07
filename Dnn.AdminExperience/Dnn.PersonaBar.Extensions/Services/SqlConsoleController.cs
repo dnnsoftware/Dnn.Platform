@@ -146,11 +146,11 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             //Add the event log with host portal id.
             var log = new LogInfo
             {
-                LogUserID = this.UserInfo.UserID,
+                LogUserId = this.UserInfo.UserID,
                 LogTypeKey = EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(),
                 LogProperties = props,
                 BypassBuffering = true,
-                LogPortalID = Null.NullInteger
+                LogPortalId = Null.NullInteger
             };
 
             LogController.Instance.AddLog(log);

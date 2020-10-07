@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.InternalServices
 
             try
             {
-                var logInfo = new LogInfo { LogGUID = guid };
+                var logInfo = new LogInfo { LogGuid = guid };
                 logInfo = EventLogController.Instance.GetSingleLog(logInfo, LoggingProvider.ReturnType.LogInfoObjects) as LogInfo;
                 if (logInfo == null)
                 {

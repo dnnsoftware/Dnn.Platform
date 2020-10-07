@@ -48,7 +48,7 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// Gets or sets the Id.
         /// </summary>
-        string ID { get; set; }
+        string Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether if logging is active.
@@ -68,7 +68,7 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// Gets or sets the log type portal Id.
         /// </summary>
-        string LogTypePortalID { get; set; }
+        string LogTypePortalId { get; set; }
 
         /// <summary>
         /// Gets or sets the keep most recent.

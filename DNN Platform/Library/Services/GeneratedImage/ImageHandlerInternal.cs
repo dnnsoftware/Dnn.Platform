@@ -131,8 +131,8 @@ namespace DotNetNuke.Services.GeneratedImage
                     EventLogController logController = new EventLogController();
                     var logInfo = new LogInfo
                     {
-                        LogUserID = PortalSettings.Current.UserId,
-                        LogPortalID = PortalSettings.Current.PortalId,
+                        LogUserId = PortalSettings.Current.UserId,
+                        LogPortalId = PortalSettings.Current.PortalId,
                         LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                     };
                     logInfo.AddProperty("DnnImageHandler", message);
@@ -173,8 +173,8 @@ namespace DotNetNuke.Services.GeneratedImage
                         EventLogController logController = new EventLogController();
                         var logInfo = new LogInfo
                         {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
+                            LogUserId = PortalSettings.Current.UserId,
+                            LogPortalId = PortalSettings.Current.PortalId,
                             LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
@@ -271,8 +271,8 @@ namespace DotNetNuke.Services.GeneratedImage
                         EventLogController logController = new EventLogController();
                         var logInfo = new LogInfo
                         {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
+                            LogUserId = PortalSettings.Current.UserId,
+                            LogPortalId = PortalSettings.Current.PortalId,
                             LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);

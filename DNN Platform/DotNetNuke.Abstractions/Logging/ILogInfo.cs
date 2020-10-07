@@ -13,12 +13,12 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// Gets or sets the log GUID.
         /// </summary>
-        string LogGUID { get; set; }
+        string LogGuid { get; set; }
 
         /// <summary>
         /// Gets or sets the log file ID.
         /// </summary>
-        string LogFileID { get; set; }
+        string LogFileId { get; set; }
 
         /// <summary>
         /// Gets or sets the log type key.
@@ -28,12 +28,12 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// Gets or sets the log user id.
         /// </summary>
-        int LogUserID { get; set; }
+        int LogUserId { get; set; }
 
         /// <summary>
         /// Gets or sets the log event id.
         /// </summary>
-        int LogEventID { get; set; }
+        int LogEventId { get; set; }
 
         /// <summary>
         /// Gets or sets the log username.
@@ -43,7 +43,7 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// Gets or sets the log portal id.
         /// </summary>
-        int LogPortalID { get; set; }
+        int LogPortalId { get; set; }
 
         /// <summary>
         /// Gets or sets the log portal name.
@@ -78,7 +78,7 @@ namespace DotNetNuke.Abstractions.Logging
         /// <summary>
         /// Gets or sets the log config id.
         /// </summary>
-        string LogConfigID { get; set; }
+        string LogConfigId { get; set; }
 
         /// <summary>
         /// Gets or sets the exception info.

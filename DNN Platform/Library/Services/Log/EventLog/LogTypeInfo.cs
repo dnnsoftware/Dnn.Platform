@@ -9,10 +9,10 @@ namespace DotNetNuke.Services.Log.EventLog
 
     /// <inheritdoc />
     [Serializable]
-    public class LogTypeInfo : ILogTypeInfo
+    public partial class LogTypeInfo : ILogTypeInfo
     {
         /// <inheritdoc />
-        public string LogTypeCSSClass { get; set; }
+        public string LogTypeCssClass { get; set; }
 
         /// <inheritdoc />
         public string LogTypeDescription { get; set; }
