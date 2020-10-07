@@ -16,4 +16,5 @@ namespace DotNetNuke.Abstractions.Logging
         /// Gets the Summary.
         /// </summary>
         string Summary { get; }
+    }
 }
