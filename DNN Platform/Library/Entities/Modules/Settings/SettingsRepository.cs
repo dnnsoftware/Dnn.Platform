@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     {
         private readonly IModuleController moduleController;
 
-        internal static ISerializationManager SerializationManager =>
+        private static ISerializationManager SerializationManager =>
             Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
 
         /// <summary>
