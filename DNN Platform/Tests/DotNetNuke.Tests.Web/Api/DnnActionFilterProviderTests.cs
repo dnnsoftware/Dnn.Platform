@@ -4,12 +4,16 @@
 
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Reflection;
     using System.Web.Http;
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
-
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
     using Moq;
@@ -18,6 +22,23 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class DnnActionFilterProviderTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            var mockCache = new Mock<ICBO>();
+            mockCache
+                .Setup(x => x.GetCachedObject<IEnumerable<PropertyInfo>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
+                .Returns(new PropertyInfo[0]);
+
+            CBO.SetTestableInstance(mockCache.Object);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            CBO.ClearInstance();
+        }
+
         [Test]
         public void RequiresHostAttributeAddedWhenNoOtherActionFiltersPresent()
         {
@@ -34,7 +55,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
 
             // Act
-            var filterProvider = new DnnActionFilterProvider();
+            var filterProvider = new DnnActionFilterProvider(Mock.Of<IServiceProvider>());
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
@@ -58,7 +79,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
 
             // Act
-            var filterProvider = new DnnActionFilterProvider();
+            var filterProvider = new DnnActionFilterProvider(Mock.Of<IServiceProvider>());
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
@@ -82,7 +103,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
 
             // Act
-            var filterProvider = new DnnActionFilterProvider();
+            var filterProvider = new DnnActionFilterProvider(Mock.Of<IServiceProvider>());
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
