@@ -32,40 +32,25 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        ILogDetailInfo IList<ILogDetailInfo>.this[int index]
-        {
-            get => (ILogDetailInfo)this[index];
-            set => this[index] = value;
-        }
-
-        /// <inheritdoc />
-        public int IndexOf(ILogDetailInfo item) =>
-            base.IndexOf(item);
-
-        /// <inheritdoc />
-        public void Insert(int index, ILogDetailInfo item) =>
-            base.Insert(index, item);
-
-        /// <inheritdoc />
-        public void Add(ILogDetailInfo item) => 
+        public void Add(ILogDetailInfo item) =>
             base.Add(item);
 
         /// <inheritdoc />
-        public bool Contains(ILogDetailInfo item) => 
+        public bool Contains(ILogDetailInfo item) =>
             base.Contains(item);
 
         /// <inheritdoc />
-        public void CopyTo(ILogDetailInfo[] array, int arrayIndex) => 
+        public void CopyTo(ILogDetailInfo[] array, int arrayIndex) =>
             base.CopyTo(array, arrayIndex);
 
         /// <inheritdoc />
-        IEnumerator<ILogDetailInfo> IEnumerable<ILogDetailInfo>.GetEnumerator() => 
+        IEnumerator<ILogDetailInfo> IEnumerable<ILogDetailInfo>.GetEnumerator() =>
             this.ToArray().Cast<ILogDetailInfo>().GetEnumerator();
 
         /// <inheritdoc />
         public bool Remove(ILogDetailInfo item)
         {
-            var index = base.IndexOf(item);
+            var index = this.IndexOf(item);
             if (index >= 0)
             {
                 this.RemoveAt(index);
