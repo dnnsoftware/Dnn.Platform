@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Mail
         }
         public MailAttachment(string Filename, Byte[] Content)
         {
-            this.MailAttachmentInternal(Filename, Content, null);
+            this.MailAttachmentInternal(Filename, Content, GetContentType(Filename));
 
         }
         public MailAttachment(string Filename, Byte[] Content, string ContentType)
@@ -38,8 +38,34 @@ namespace DotNetNuke.Services.Mail
 
         private string GetContentType(string fileExtension)
         {
-            switch (fileExtension)
+            switch (fileExtension.ToLower())
             {
+                case "jpeg":
+                case "jpg":
+                    {
+                        return "image/jpeg";
+                    }
+
+                case "png":
+                    {
+                        return "image/png";
+                    }
+
+                case "gif":
+                    {
+                        return "image/gif";
+                    }
+
+                case "pdf":
+                    {
+                        return "application/pdf";
+                    }
+
+                case "zip":
+                    {
+                        return "application/zip";
+                    }
+
                 default:
                     {
                         return DefaultContentType;

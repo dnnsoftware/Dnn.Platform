@@ -7,7 +7,6 @@ using DotNetNuke.Entities.Portals;
 using MailKit.Net.Smtp;
 using MimeKit;
 using System;
-using System.Net;
 using System.Text.RegularExpressions;
 using Localize = DotNetNuke.Services.Localization.Localization;
 namespace DotNetNuke.Services.Mail
@@ -59,7 +58,7 @@ namespace DotNetNuke.Services.Mail
 
             string retValue = string.Empty;
 
-            var mailMessage = new MimeMessage(); 
+            var mailMessage = new MimeMessage();
             mailMessage.From.Add(new MailboxAddress(mailInfo.FromName, mailInfo.From)); //Test w/empty or null fromname
             mailMessage.To.Add(MailboxAddress.Parse(mailInfo.To)); //test with comma delimitted multiple address
 
@@ -115,23 +114,17 @@ namespace DotNetNuke.Services.Mail
                 builder.HtmlBody = mailInfo.Body;
             }
 
-            // attachments
-            // if (mailInfo.Attachments != null)
-            //{
-            //    foreach (var attachment in mailInfo.Attachments)
-            //    {
-            //        builder.Attachments.Add()
-                    
-            //        mailMessage.Attachments.Add(attachment);
-            //    }
-            //}
+            //attachments
+            if (mailInfo.Attachments != null)
+            {
+                foreach (var attachment in mailInfo.Attachments)
+                {
+                    builder.Attachments.Add(attachment.Filename, attachment.Content, ContentType.Parse(attachment.ContentType));
+                }
+            }
 
             // message
-            // mailMessage.SubjectEncoding = mailInfo.BodyEncoding;
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(mailInfo.Subject, true);
-            // mailMessage.BodyEncoding = mailInfo.BodyEncoding;
-
-            
             mailMessage.Body = builder.ToMessageBody();
 
             smtpInfo.Server = smtpInfo.Server.Trim();
@@ -160,10 +153,6 @@ namespace DotNetNuke.Services.Mail
                     {
                         smtpClient.Connect(host, port, smtpInfo.EnableSSL);
 
-                        // else the port defaults to 25 by .NET when not set
-                        // smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
-                        // smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
-
                         switch (smtpInfo.Authentication)
                         {
                             case "":
@@ -186,15 +175,7 @@ namespace DotNetNuke.Services.Mail
                 }
                 catch (Exception exc)
                 {
-                    //var exc2 = exc as SmtpFailedRecipientException;
-                    //if (exc2 != null)
-                    //{
-                    //    retValue = string.Format(Localize.GetString("FailedRecipient"), exc2.FailedRecipient) + " ";
-                    //}
-                    //else if (exc is SmtpException)
-                    //{
-                    //    retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
-                    //}
+                    retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
 
                     // mail configuration problem
                     if (exc.InnerException != null)
