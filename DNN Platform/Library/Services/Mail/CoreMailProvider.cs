@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Mail
                     if (smtpHostParts.Length > 1)
                     {
                         // port is guaranteed to be of max 5 digits numeric by the RegEx check
-                        port = Convert.ToInt32(smtpHostParts[1]);
+                        port = int.Parse(smtpHostParts[1]);
                         if (port < 1 || port > 65535)
                         {
                             return Localize.GetString("SmtpInvalidPort");

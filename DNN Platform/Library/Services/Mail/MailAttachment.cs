@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Web;
 
 namespace DotNetNuke.Services.Mail
 {
@@ -15,62 +16,26 @@ namespace DotNetNuke.Services.Mail
         {
             var Content = File.ReadAllBytes(FilePath);
             var Filename = Path.GetFileName(FilePath);
-            var ContentType = GetContentType(Path.GetExtension(FilePath));
+            var ContentType = MimeMapping.GetMimeMapping(Filename);
 
             this.MailAttachmentInternal(Filename, Content, ContentType);
         }
+
         public MailAttachment(string Filename, Byte[] Content)
         {
-            this.MailAttachmentInternal(Filename, Content, GetContentType(Filename));
-
+            this.MailAttachmentInternal(Filename, Content, MimeMapping.GetMimeMapping(Filename));
         }
+
         public MailAttachment(string Filename, Byte[] Content, string ContentType)
         {
             this.MailAttachmentInternal(Filename, Content, ContentType);
-
         }
+
         private void MailAttachmentInternal(string Filename, Byte[] Content, string ContentType)
         {
             this.Filename = Filename;
             this.Content = Content;
             this.ContentType = ContentType;
-        }
-
-        private string GetContentType(string fileExtension)
-        {
-            switch (fileExtension.ToLower())
-            {
-                case "jpeg":
-                case "jpg":
-                    {
-                        return "image/jpeg";
-                    }
-
-                case "png":
-                    {
-                        return "image/png";
-                    }
-
-                case "gif":
-                    {
-                        return "image/gif";
-                    }
-
-                case "pdf":
-                    {
-                        return "application/pdf";
-                    }
-
-                case "zip":
-                    {
-                        return "application/zip";
-                    }
-
-                default:
-                    {
-                        return DefaultContentType;
-                    }
-            }
         }
 
         public byte[] Content { get; set; }
