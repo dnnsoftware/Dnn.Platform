@@ -7,12 +7,12 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Text;
     using System.Xml;
 
-    [Serializable]
-    public class LogDetailInfo
-    {
-        private string _PropertyName;
-        private string _PropertyValue;
+    using DotNetNuke.Abstractions.Logging;
 
+    /// <inheritdoc />
+    [Serializable]
+    public class LogDetailInfo : ILogDetailInfo
+    {
         public LogDetailInfo()
             : this(string.Empty, string.Empty)
         {
@@ -20,36 +20,15 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public LogDetailInfo(string name, string value)
         {
-            this._PropertyName = name;
-            this._PropertyValue = value;
+            this.PropertyName = name;
+            this.PropertyValue = value;
         }
 
-        public string PropertyName
-        {
-            get
-            {
-                return this._PropertyName;
-            }
+        /// <inheritdoc />
+        public string PropertyName { get; set; }
 
-            set
-            {
-                this._PropertyName = value;
-            }
-        }
-
-        public string PropertyValue
-        {
-            get
-            {
-                return this._PropertyValue;
-            }
-
-            set
-            {
-                this._PropertyValue = value;
-            }
-        }
-
+        /// <inheritdoc />
+        public string PropertyValue { get; set; }
         public void ReadXml(XmlReader reader)
         {
             reader.ReadStartElement("PropertyName");

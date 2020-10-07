@@ -4,7 +4,9 @@
 namespace DotNetNuke.Services.Log.EventLog
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Xml;
 
@@ -27,6 +29,52 @@ namespace DotNetNuke.Services.Log.EventLog
 
                 return summary;
             }
+        }
+
+        /// <inheritdoc />
+        ILogDetailInfo IList<ILogDetailInfo>.this[int index]
+        {
+            get => (ILogDetailInfo)this[index];
+            set => this[index] = value;
+        }
+
+        /// <inheritdoc />
+        public int IndexOf(ILogDetailInfo item) =>
+            base.IndexOf(item);
+
+        /// <inheritdoc />
+        public void Insert(int index, ILogDetailInfo item) =>
+            base.Insert(index, item);
+
+        /// <inheritdoc />
+        public void Add(ILogDetailInfo item) => 
+            base.Add(item);
+
+        /// <inheritdoc />
+        public bool Contains(ILogDetailInfo item) => 
+            base.Contains(item);
+
+        /// <inheritdoc />
+        public void CopyTo(ILogDetailInfo[] array, int arrayIndex) => 
+            base.CopyTo(array, arrayIndex);
+
+        /// <inheritdoc />
+        IEnumerator<ILogDetailInfo> IEnumerable<ILogDetailInfo>.GetEnumerator() => 
+            this.ToArray().Cast<ILogDetailInfo>().GetEnumerator();
+
+        /// <inheritdoc />
+        public bool Remove(ILogDetailInfo item)
+        {
+            try
+            {
+                base.Remove(item);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public void Deserialize(string content)

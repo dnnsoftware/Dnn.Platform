@@ -3,18 +3,19 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Logging
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-
     /// <summary>
-    /// add xml docs.
+    /// The log details infor.
     /// </summary>
-    public interface ILogProperties : IList<ILogDetailInfo>, ICollection<ILogDetailInfo>, IEnumerable<ILogDetailInfo>, IList, ICollection, IEnumerable, ICloneable
+    public interface ILogDetailInfo
     {
         /// <summary>
-        /// Gets the Summary.
+        /// Gets or sets the property name.
         /// </summary>
-        string Summary { get; }
+        string PropertyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        string PropertyValue { get; set; }
     }
 }
