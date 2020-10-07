@@ -134,7 +134,7 @@ namespace DotNetNuke.Web.Api.Internal
                 GlobalConfiguration.Configuration.Services.Replace(typeof(ITraceWriter), new TraceWriter(IsTracingEnabled()));
 
                 // replace the default action filter provider with our own
-                GlobalConfiguration.Configuration.Services.Add(typeof(IFilterProvider), new DnnActionFilterProvider());
+                GlobalConfiguration.Configuration.Services.Add(typeof(IFilterProvider), Globals.DependencyProvider.GetRequiredService<IFilterProvider>());
                 var defaultprovider = GlobalConfiguration.Configuration.Services.GetFilterProviders().Where(x => x is ActionDescriptorFilterProvider);
                 GlobalConfiguration.Configuration.Services.Remove(typeof(IFilterProvider), defaultprovider);
 
