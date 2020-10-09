@@ -10,7 +10,7 @@ namespace DotNetNuke.Abstractions.Logging
     /// <summary>
     /// add xml docs.
     /// </summary>
-    public interface ILogProperties : ICollection<ILogDetailInfo>, IList, ICollection, IEnumerable
+    public interface ILogProperties : ICollection<ILogDetailInfo>
     {
         /// <summary>
         /// Gets the Summary.
