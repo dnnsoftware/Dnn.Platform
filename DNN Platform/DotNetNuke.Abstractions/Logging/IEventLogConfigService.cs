@@ -32,17 +32,6 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLogType(ILogTypeInfo logType);
 
         /// <summary>
-        /// Clears the log.
-        /// </summary>
-        void ClearLog();
-
-        /// <summary>
-        /// Deletes the log.
-        /// </summary>
-        /// <param name="logInfo">the log info.</param>
-        void DeleteLog(ILogInfo logInfo);
-
-        /// <summary>
         /// Deletes the log type.
         /// </summary>
         /// <param name="logType">The log type.</param>
@@ -53,17 +42,6 @@ namespace DotNetNuke.Abstractions.Logging
         /// </summary>
         /// <param name="logTypeConfig">The log type config.</param>
         void DeleteLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig);
-
-        /// <summary>
-        /// Get the logs.
-        /// </summary>
-        /// <param name="portalID">The portal id.</param>
-        /// <param name="logType">The log type.</param>
-        /// <param name="pageSize">The page size.</param>
-        /// <param name="pageIndex">The page index.</param>
-        /// <param name="totalRecords">The total records.</param>
-        /// <returns>The logs.</returns>
-        IEnumerable<ILogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords);
 
         /// <summary>
         /// Gets the log type config info.
@@ -83,19 +61,6 @@ namespace DotNetNuke.Abstractions.Logging
         /// </summary>
         /// <returns>The dictionary.</returns>
         IDictionary<string, ILogTypeInfo> GetLogTypeInfoDictionary();
-
-        /// <summary>
-        /// Get a single log.
-        /// </summary>
-        /// <param name="log">The log to retrieve.</param>
-        /// <param name="returnType">The return type.</param>
-        /// <returns>The single log.</returns>
-        object GetSingleLog(ILogInfo log, LoggingProviderReturnType returnType);
-
-        /// <summary>
-        /// Purge the log buffer.
-        /// </summary>
-        void PurgeLogBuffer();
 
         /// <summary>
         /// UPdate the log type config info.
