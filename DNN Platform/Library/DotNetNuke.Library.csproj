@@ -818,6 +818,7 @@
     <Compile Include="Services\Localization\LocalizationExtensions.cs" />
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
+    <Compile Include="Services\Log\EventLog\EventLogExtensions.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
     <Compile Include="Services\Mail\CoreMailProvider.cs" />
     <Compile Include="Services\Mail\MailInfo.cs" />

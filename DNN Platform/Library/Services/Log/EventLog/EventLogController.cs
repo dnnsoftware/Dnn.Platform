@@ -27,18 +27,6 @@ namespace DotNetNuke.Services.Log.EventLog
 
         private IEventLogService EventLogService => this;
 
-
-        /// <inheritdoc />
-        void IEventLogger.AddSettingLog(Abstractions.Logging.EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
-        {
-            var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
-            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
-            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
-            log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
-
-            LogController.Instance.AddLog(log);
-        }
-
         /// <inheritdoc />
         void IEventLogger.AddLog(string name, string value, Abstractions.Logging.EventLogType logType)
         {

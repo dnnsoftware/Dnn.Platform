@@ -12,17 +12,6 @@ namespace DotNetNuke.Abstractions.Logging
     public interface IEventLogger
     {
         /// <summary>
-        /// Add setting log.
-        /// </summary>
-        /// <param name="logTypeKey">The log type key.</param>
-        /// <param name="idFieldName">The id field name.</param>
-        /// <param name="idValue">The id value.</param>
-        /// <param name="settingName">The setting name.</param>
-        /// <param name="settingValue">The setting value.</param>
-        /// <param name="userId">The user id.</param>
-        void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId);
-
-        /// <summary>
         /// Adds an Event Log.
         /// </summary>
         /// <param name="name">The log property name.</param>
