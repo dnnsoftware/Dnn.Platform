@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Logging
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -34,12 +35,11 @@ namespace DotNetNuke.Abstractions.Logging
         IEnumerable<ILogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords);
 
         /// <summary>
-        /// Get a single log.
+        /// Retrieves a single event log via the Log Guid.
         /// </summary>
-        /// <param name="log">The log to retrieve.</param>
-        /// <param name="returnType">The return type.</param>
-        /// <returns>The single log.</returns>
-        object GetSingleLog(ILogInfo log, LoggingProviderReturnType returnType);
+        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+        /// <returns>The <see cref="ILogInfo"/>.</returns>
+        ILogInfo GetLog(string logGuid);
 
         /// <summary>
         /// Purge the log buffer.

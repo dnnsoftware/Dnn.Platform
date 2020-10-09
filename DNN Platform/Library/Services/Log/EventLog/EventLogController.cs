@@ -274,9 +274,9 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        object IEventLogService.GetSingleLog(ILogInfo log, LoggingProviderReturnType returnType)
+        public ILogInfo GetLog(string logGuid)
         {
-            return LogController.Instance.GetSingleLog((LogInfo)log, (LoggingProvider.ReturnType)returnType);
+            return LogController.Instance.GetLog(logGuid);
         }
 
         /// <inheritdoc />

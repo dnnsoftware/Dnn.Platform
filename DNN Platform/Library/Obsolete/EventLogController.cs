@@ -284,9 +284,9 @@ namespace DotNetNuke.Services.Log.EventLog
                 .GetLogTypeInfoDictionary()
                 .ToDictionary(key => key.Key, value => (LogTypeInfo)value.Value);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType) =>
-            this.EventLogService.GetSingleLog(log, (LoggingProviderReturnType)returnType);
+            LogController.Instance.GetSingleLog(log, returnType);
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService' instead. Scheduled for removal in v11.0.0.")]
         public void PurgeLogBuffer() =>

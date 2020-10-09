@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Web;
     using System.Web.Caching;
     using System.Xml;
-
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -180,7 +180,26 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)
         {
-            IDataReader dr = DataProvider.Instance().GetSingleLog(logInfo.LogGUID);
+            var log = (LogInfo)GetLog(logInfo.LogGUID);
+
+            if (returnType == ReturnType.LogInfoObjects)
+            {
+                return log;
+            }
+
+            var xmlDoc = new XmlDocument { XmlResolver = null };
+            if (log != null)
+            {
+                xmlDoc.LoadXml(log.Serialize());
+            }
+
+            return xmlDoc.DocumentElement;
+        }
+
+        /// <inheritdoc />
+        public override ILogInfo GetLog(string logGuid)
+        {
+            IDataReader dr = DataProvider.Instance().GetSingleLog(logGuid);
             LogInfo log = null;
             try
             {
@@ -195,18 +214,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 CBO.CloseDataReader(dr, true);
             }
 
-            if (returnType == ReturnType.LogInfoObjects)
-            {
-                return log;
-            }
-
-            var xmlDoc = new XmlDocument { XmlResolver = null };
-            if (log != null)
-            {
-                xmlDoc.LoadXml(log.Serialize());
-            }
-
-            return xmlDoc.DocumentElement;
+            return log;
         }
 
         public override bool LoggingIsEnabled(string logType, int portalID)

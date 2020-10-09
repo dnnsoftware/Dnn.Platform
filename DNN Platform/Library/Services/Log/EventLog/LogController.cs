@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Threading;
     using System.Web;
     using System.Xml;
-
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -240,6 +240,12 @@ namespace DotNetNuke.Services.Log.EventLog
         public virtual object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
         {
             return LoggingProvider.Instance().GetSingleLog(log, returnType);
+        }
+
+        /// <inheritdoc />
+        public virtual ILogInfo GetLog(string logGuid)
+        {
+            return LoggingProvider.Instance().GetLog(logGuid);
         }
 
         public void PurgeLogBuffer()

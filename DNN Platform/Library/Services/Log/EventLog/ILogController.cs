@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using DotNetNuke.Abstractions.Logging;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -34,6 +35,13 @@ namespace DotNetNuke.Services.Log.EventLog
         Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary();
 
         object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType);
+
+        /// <summary>
+        /// Retrieves a single event log via the Log Guid.
+        /// </summary>
+        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+        /// <returns>The <see cref="ILogInfo"/>.</returns>
+        ILogInfo GetLog(string logGuid);
 
         void PurgeLogBuffer();
 
