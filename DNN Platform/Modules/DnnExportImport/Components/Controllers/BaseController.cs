@@ -232,10 +232,10 @@ namespace Dnn.ExportImport.Components.Controllers
             var log = new LogInfo
             {
                 LogTypeKey = logTypeKey,
-                LogPortalId = portalId,
+                LogPortalID = portalId,
                 LogPortalName = portalInfo.PortalName,
                 LogUserName = username,
-                LogUserId = userId,
+                LogUserID = userId,
             };
 
             log.AddProperty("JobID", jobId.ToString());

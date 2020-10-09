@@ -1439,9 +1439,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             var log = new LogInfo
             {
-                LogUserId = userId,
+                LogUserID = userId,
                 LogUserName = username,
-                LogPortalId = portalId,
+                LogPortalID = portalId,
                 LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
             };
             log.AddProperty(propertyName, propertyValue);
