@@ -46,6 +46,12 @@ define(['jquery',
                 configEditor.setValue('');
             } else {
                 requestService('get', 'GetConfigFile', { 'fileName': curConfigName }, function (data) {
+                    if (curConfigName.endsWith("config")) {
+                        configEditor.setOption("mode", "xml");
+                    }
+                    else if (curConfigName.endsWith("txt")) {
+                        configEditor.setOption("mode", "text");
+                    }
                     configEditor.setValue(data.FileContent);
                 }, function () {
                     // failed

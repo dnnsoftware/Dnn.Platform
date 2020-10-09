@@ -528,6 +528,14 @@ namespace DotNetNuke.Common.Utilities
             return xmlDoc;
         }
 
+        public static string LoadNonConfig(string filename)
+        {
+            // open the config file
+            var doc = File.ReadAllText(Globals.ApplicationMapPath + "\\" + filename);
+
+            return doc;
+        }
+
         public static void RemoveCodeSubDirectory(string name)
         {
             XmlDocument xmlConfig = Load();
@@ -603,6 +611,61 @@ namespace DotNetNuke.Common.Utilities
                             writer.Flush();
                             writer.Close();
                         }
+
+                        break;
+                    }
+                    catch (IOException exc)
+                    {
+                        if (retry == 0)
+                        {
+                            Logger.Error(exc);
+                            retMsg = exc.Message;
+                        }
+
+                        // try incremental delay; maybe the file lock is released by then
+                        Thread.Sleep((int)(miltiplier * (maxRetires - retry + 1)) * 1000);
+                    }
+                }
+
+                // reset file attributes
+                File.SetAttributes(strFilePath, objFileAttributes);
+            }
+            catch (Exception exc)
+            {
+                // the file permissions may not be set properly
+                Logger.Error(exc);
+                retMsg = exc.Message;
+            }
+
+            return retMsg;
+        }
+
+        public static string SaveNonConfig(string document, string filename)
+        {
+            var retMsg = string.Empty;
+            try
+            {
+                var strFilePath = Globals.ApplicationMapPath + "\\" + filename;
+                var objFileAttributes = FileAttributes.Normal;
+                if (File.Exists(strFilePath))
+                {
+                    // save current file attributes
+                    objFileAttributes = File.GetAttributes(strFilePath);
+
+                    // change to normal ( in case it is flagged as read-only )
+                    File.SetAttributes(strFilePath, FileAttributes.Normal);
+                }
+
+                // Attempt a few times in case the file was locked; occurs during modules' installation due
+                // to application restarts where IIS can overlap old application shutdown and new one start.
+                const int maxRetires = 4;
+                const double miltiplier = 2.5;
+                for (var retry = maxRetires; retry >= 0; retry--)
+                {
+                    try
+                    {
+                        // save the config file
+                        File.WriteAllText(strFilePath, document);
 
                         break;
                     }

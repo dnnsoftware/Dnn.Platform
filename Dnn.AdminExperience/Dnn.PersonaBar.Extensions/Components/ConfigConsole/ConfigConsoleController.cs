@@ -15,9 +15,15 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
     public class ConfigConsoleController
     {
+        private const string CONFIG_EXT = ".config";
+        private const string ROBOTS_EXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
+
         public IEnumerable<string> GetConfigFilesList()
         {
-            var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.config");
+            var files = Directory
+                .EnumerateFiles(Globals.ApplicationMapPath) 
+                .Where(file => file.ToLower().EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase) || file.ToLower().EndsWith(ROBOTS_EXT, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
             IEnumerable<string> fileList = (from file in files select Path.GetFileName(file));
             return fileList;
         }
@@ -26,15 +32,24 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(configFile);
 
-            var configDoc = Config.Load(configFile);
-            using (var txtWriter = new StringWriter())
+            if (configFile.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
             {
-                using (var writer = new XmlTextWriter(txtWriter))
+                var configDoc = Config.Load(configFile);
+                using (var txtWriter = new StringWriter())
                 {
-                    writer.Formatting = Formatting.Indented;
-                    configDoc.WriteTo(writer);
+                    using (var writer = new XmlTextWriter(txtWriter))
+                    {
+                        writer.Formatting = Formatting.Indented;
+                        configDoc.WriteTo(writer);
+                    }
+
+                    return txtWriter.ToString();
                 }
-                return txtWriter.ToString();
+            }
+            else
+            {
+                var doc = Config.LoadNonConfig(configFile);
+                return doc;
             }
         }
 
@@ -42,9 +57,16 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(fileName);
 
-            var configDoc = new XmlDocument { XmlResolver = null };
-            configDoc.LoadXml(fileContent);
-            Config.Save(configDoc, fileName);
+            if (fileName.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var configDoc = new XmlDocument {XmlResolver = null};
+                configDoc.LoadXml(fileContent);
+                Config.Save(configDoc, fileName);
+            }
+            else
+            {
+                Config.SaveNonConfig(fileContent, fileName);
+            }
         }
 
         public void MergeConfigFile(string fileContent)
