@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Text;
     using System.Web;
     using System.Web.Http;
-    using System.Xml;
+
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
@@ -33,8 +33,7 @@ namespace DotNetNuke.Web.InternalServices
 
             try
             {
-                var log = EventLogController.Instance.GetLog(guid);
-                if (log == null || !(log is LogInfo))
+                if (!(EventLogController.Instance.GetLog(guid) is LogInfo logInfo))
                 {
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
@@ -42,7 +41,7 @@ namespace DotNetNuke.Web.InternalServices
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Title = Localization.GetSafeJSString("CriticalError.Error", Localization.SharedResourceFile),
-                    Content = this.GetPropertiesText((LogInfo)log),
+                    Content = this.GetPropertiesText(logInfo),
                 });
             }
             catch (Exception ex)
