@@ -178,7 +178,6 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
-
         public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId) =>
             Globals.DependencyProvider.GetRequiredService<IEventLogger>()
                 .AddSettingLog((Abstractions.Logging.EventLogType)logTypeKey, idFieldName, idValue, settingName, settingValue, userId);
@@ -188,60 +187,48 @@ namespace DotNetNuke.Services.Log.EventLog
             this.EventLogger.AddLog(propertyName, propertyValue, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
-        public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType)
-        {
+        public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType) =>
             this.AddLog(propertyName, propertyValue, (IPortalSettings)portalSettings, userID, logType);
-        }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, EventLogType logType) =>
             this.EventLogger.AddLog(propertyName, propertyValue, portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
-        public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
-        {
+        public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType) =>
             this.AddLog(propertyName, propertyValue, (IPortalSettings)portalSettings, userID, logType);
-        }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, string logType) =>
             this.EventLogger.AddLog(propertyName, propertyValue, portalSettings, userID, logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
-        public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
-        {
+        public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering) =>
             this.AddLog(properties, (IPortalSettings)portalSettings, userID, logTypeKey, bypassBuffering);
-        }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public void AddLog(LogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering) =>
             this.EventLogger.AddLog(properties, portalSettings, userID, logTypeKey, bypassBuffering);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
-        public void AddLog(PortalSettings portalSettings, int userID, EventLogType logType)
-        {
+        public void AddLog(PortalSettings portalSettings, int userID, EventLogType logType) =>
             this.AddLog((IPortalSettings)portalSettings, userID, logType);
-        }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public void AddLog(IPortalSettings portalSettings, int userID, EventLogType logType) =>
             this.EventLogger.AddLog(portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
-        public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, EventLogType logType)
-        {
+        public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, EventLogType logType) =>
             this.AddLog(businessObject, (IPortalSettings)portalSettings, userID, userName, logType);
-        }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, EventLogType logType) =>
             this.EventLogger.AddLog(businessObject, portalSettings, userID, userName, (Abstractions.Logging.EventLogType)logType);
 
         [Obsolete("Deprecated in DNN 9.7.  It has been replaced by the overload taking IPortalSettings. Scheduled removal in v11.0.0.")]
-        public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType)
-        {
+        public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType) =>
             this.AddLog(businessObject, (IPortalSettings)portalSettings, userID, userName, logType);
-        }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType) =>
@@ -251,72 +238,70 @@ namespace DotNetNuke.Services.Log.EventLog
         public void AddLog(LogInfo logInfo) =>
             this.EventLogger.AddLog(logInfo);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public void AddLogType(string configFile, string fallbackConfigFile) =>
             this.EventLogConfigService.AddLogType(configFile, fallbackConfigFile);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public void AddLogType(LogTypeInfo logType) =>
             this.EventLogConfigService.AddLogType(logType);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig) =>
             this.EventLogConfigService.AddLogTypeConfigInfo(logTypeConfig);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService' instead. Scheduled for removal in v11.0.0.")]
         public void ClearLog() =>
             this.EventLogService.ClearLog();
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService' instead. Scheduled for removal in v11.0.0.")]
         public void DeleteLog(LogInfo logInfo) =>
             this.EventLogService.DeleteLog(logInfo);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public void DeleteLogType(LogTypeInfo logType) =>
             this.EventLogConfigService.DeleteLogType(logType);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig) =>
             this.EventLogConfigService.DeleteLogTypeConfigInfo(logTypeConfig);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService' instead. Scheduled for removal in v11.0.0.")]
         public List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords) =>
             this.EventLogService.GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords).Cast<LogInfo>().ToList();
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public ArrayList GetLogTypeConfigInfo() =>
             LogController.Instance.GetLogTypeConfigInfo();
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public LogTypeConfigInfo GetLogTypeConfigInfoByID(string id) =>
             (LogTypeConfigInfo)this.EventLogConfigService.GetLogTypeConfigInfoByID(id);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary() =>
             this.EventLogConfigService
                 .GetLogTypeInfoDictionary()
                 .ToDictionary(key => key.Key, value => (LogTypeInfo)value.Value);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService' instead. Scheduled for removal in v11.0.0.")]
         public object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType) =>
             this.EventLogService.GetSingleLog(log, (LoggingProviderReturnType)returnType);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService' instead. Scheduled for removal in v11.0.0.")]
         public void PurgeLogBuffer() =>
             this.EventLogService.PurgeLogBuffer();
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig) =>
             this.EventLogConfigService.UpdateLogTypeConfigInfo(logTypeConfig);
 
-        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogConfigService' instead. Scheduled for removal in v11.0.0.")]
         public virtual void UpdateLogType(LogTypeInfo logType) =>
             this.EventLogConfigService.UpdateLogType(logType);
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
-        protected override Func<IEventLogController> GetFactory()
-        {
-            return () => new EventLogController();
-        }
+        protected override Func<IEventLogController> GetFactory() =>
+            () => new EventLogController();
     }
 }

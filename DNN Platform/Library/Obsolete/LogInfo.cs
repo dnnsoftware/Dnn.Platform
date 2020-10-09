@@ -9,42 +9,42 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public partial class LogInfo
     {
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogInfo.LogGuid' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogInfo.LogGuid' instead. Scheduled for removal in v11.0.0.")]
         public string LogGUID
         {
             get => ((ILogInfo)this).LogGuid;
             set => ((ILogInfo)this).LogGuid = value;
         }
 
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogInfo.LogFileId' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogInfo.LogFileId' instead. Scheduled for removal in v11.0.0.")]
         public string LogFileID
         {
             get => ((ILogInfo)this).LogFileId;
             set => ((ILogInfo)this).LogFileId = value;
         }
 
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogInfo.LogUserId' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogInfo.LogUserId' instead. Scheduled for removal in v11.0.0.")]
         public int LogUserID
         {
             get => ((ILogInfo)this).LogUserId;
             set => ((ILogInfo)this).LogUserId = value;
         }
 
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogInfo.LogEventId' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogInfo.LogEventId' instead. Scheduled for removal in v11.0.0.")]
         public int LogEventID
         {
             get => ((ILogInfo)this).LogEventId;
             set => ((ILogInfo)this).LogEventId = value;
         }
 
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogInfo.LogPortalId' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogInfo.LogPortalId' instead. Scheduled for removal in v11.0.0.")]
         public int LogPortalID
         {
             get => ((ILogInfo)this).LogPortalId;
             set => ((ILogInfo)this).LogPortalId = value;
         }
 
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogInfo.LogConfigId' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogInfo.LogConfigId' instead. Scheduled for removal in v11.0.0.")]
         public string LogConfigID
         {
             get => ((ILogInfo)this).LogConfigId;

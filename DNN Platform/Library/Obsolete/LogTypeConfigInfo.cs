@@ -9,14 +9,14 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public partial class LogTypeConfigInfo
     {
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogTypeConfigInfo.Id' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogTypeConfigInfo.Id' instead. Scheduled for removal in v11.0.0.")]
         public string ID
         {
             get => ((ILogTypeConfigInfo)this).Id;
             set => ((ILogTypeConfigInfo)this).Id = value;
         }
 
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogTypeConfigInfo.LogTypePortalID' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogTypeConfigInfo.LogTypePortalId' instead. Scheduled for removal in v11.0.0.")]
         public string LogTypePortalID
         {
             get => ((ILogTypeConfigInfo)this).LogTypePortalId;
