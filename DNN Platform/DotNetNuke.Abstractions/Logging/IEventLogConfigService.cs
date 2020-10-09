@@ -47,7 +47,7 @@ namespace DotNetNuke.Abstractions.Logging
         /// Gets all the <see cref="ILogTypeConfigInfo"/> from the database.
         /// </summary>
         /// <returns>The logs.</returns>
-        ArrayList GetLogTypeConfigInfo();
+        IEnumerable<ILogTypeConfigInfo> GetLogTypeConfigInfo();
 
         /// <summary>
         /// Get the <see cref="ILogTypeConfigInfo"/> by id..

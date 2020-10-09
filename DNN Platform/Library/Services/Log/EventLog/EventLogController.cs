@@ -255,9 +255,9 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        ArrayList IEventLogConfigService.GetLogTypeConfigInfo()
+        IEnumerable<ILogTypeConfigInfo> IEventLogConfigService.GetLogTypeConfigInfo()
         {
-            return LogController.Instance.GetLogTypeConfigInfo();
+            return LogController.Instance.GetLogTypeConfigInfo().Cast<ILogTypeConfigInfo>();
         }
 
         /// <inheritdoc />

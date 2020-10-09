@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public ArrayList GetLogTypeConfigInfo() =>
-            this.EventLogConfigService.GetLogTypeConfigInfo();
+            LogController.Instance.GetLogTypeConfigInfo();
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public LogTypeConfigInfo GetLogTypeConfigInfoByID(string id) =>
