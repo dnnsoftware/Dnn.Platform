@@ -9,7 +9,7 @@ namespace DotNetNuke.Abstractions.Logging
     /// The event log service provides APIs for
     /// managing existing Event Logs in the database.
     /// </summary>
-    public interface IEventLogService
+    public interface IEventLogService : IEventLogger
     {
         /// <summary>
         /// Clears the Event Log.
