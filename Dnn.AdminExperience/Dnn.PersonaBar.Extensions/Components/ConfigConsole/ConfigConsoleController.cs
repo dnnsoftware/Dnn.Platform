@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
             else
             {
-                var doc = LoadNonConfig(configFile);
+                var doc = File.ReadAllText(Path.Combine(Globals.ApplicationMapPath, "\\", configFile));
                 return doc;
             }
         }
@@ -105,25 +105,17 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
-        private static string LoadNonConfig(string filename)
-        {
-            // open the config file
-            var doc = File.ReadAllText(string.Concat(Globals.ApplicationMapPath, "\\", filename));
-
-            return doc;
-        }
-
         private static string SaveNonConfig(string document, string filename)
         {
             var retMsg = string.Empty;
             try
             {
-                var strFilePath = string.Concat(Globals.ApplicationMapPath, "\\", filename);
-                var objFileAttributes = FileAttributes.Normal;
+                var strFilePath = Path.Combine(Globals.ApplicationMapPath, "\\", filename);
+                var existingFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
                     // save current file attributes
-                    objFileAttributes = File.GetAttributes(strFilePath);
+                    existingFileAttributes = File.GetAttributes(strFilePath);
 
                     // change to normal ( in case it is flagged as read-only )
                     File.SetAttributes(strFilePath, FileAttributes.Normal);
@@ -156,7 +148,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                 }
 
                 // reset file attributes
-                File.SetAttributes(strFilePath, objFileAttributes);
+                File.SetAttributes(strFilePath, existingFileAttributes);
             }
             catch (Exception exc)
             {
