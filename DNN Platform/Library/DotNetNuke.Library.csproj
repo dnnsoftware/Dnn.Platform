@@ -253,7 +253,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
+    <Compile Include="Obsolete\EventLogController.cs" />
     <Compile Include="Obsolete\HostController.cs" />
+    <Compile Include="Obsolete\LogInfo.cs" />
+    <Compile Include="Obsolete\LogTypeConfigInfo.cs" />
+    <Compile Include="Obsolete\LogTypeInfo.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
     <Compile Include="Prompt\Command.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />
@@ -814,6 +818,7 @@
     <Compile Include="Services\Localization\LocalizationExtensions.cs" />
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
+    <Compile Include="Services\Log\EventLog\EventLogExtensions.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
     <Compile Include="Services\Mail\CoreMailProvider.cs" />
     <Compile Include="Services\Mail\MailInfo.cs" />

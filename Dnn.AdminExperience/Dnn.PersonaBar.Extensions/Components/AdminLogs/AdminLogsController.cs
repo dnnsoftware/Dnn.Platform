@@ -259,13 +259,21 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             objXml.LoadXml("<LogEntries></LogEntries>");
             foreach (var logId in logIds)
             {
-                var objLogInfo = new LogInfo { LogGUID = logId };
-                var objNode = objXml.ImportNode((XmlNode)LogController.Instance.GetSingleLog(objLogInfo, LoggingProvider.ReturnType.XML), true);
+                var log = LogController.Instance.GetLog(logId);
+                var xmlDoc = new XmlDocument { XmlResolver = null };
+
+                if (log != null && log is LogInfo logInfo)
+                {
+                    xmlDoc.LoadXml(logInfo.Serialize());
+                }
+
+                var objNode = objXml.ImportNode(xmlDoc, true);
                 if (objXml.DocumentElement != null)
                 {
                     objXml.DocumentElement.AppendChild(objNode);
                 }
             }
+
             return objXml;
         }
     }

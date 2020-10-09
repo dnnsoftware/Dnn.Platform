@@ -165,11 +165,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                if (!this.UserInfo.IsSuperUser && request.LogIds.Any(
-                    x =>
-                        ((LogInfo)
-                            LogController.Instance.GetSingleLog(new LogInfo { LogGUID = x },
-                                LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalID != this.PortalId))
+                if (!this.UserInfo.IsSuperUser && request.LogIds.Any(logGuid => (LogController.Instance.GetLog(logGuid)?.LogPortalId != this.PortalId)))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
                         Localization.GetString("UnAuthorizedToSendLog", Components.Constants.LocalResourcesFile));
