@@ -31,6 +31,8 @@ namespace DotNetNuke
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
 
             services.AddScoped<IEventLogger, EventLogController>();
+            services.AddScoped<IEventLogConfigService, EventLogController>();
+            services.AddScoped<IEventLogService, EventLogController>();
 
             services.AddTransient(x => PortalController.Instance);
             services.AddScoped<IHostSettingsService, HostController>();
