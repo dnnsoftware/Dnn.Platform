@@ -98,9 +98,9 @@ namespace Dnn.PersonaBar.AdminLogs.Services
 
                 var items = logItems.Select(v => new
                 {
-                    v.LogGuid,
-                    v.LogFileId,
-                    this._controller.GetMyLogType(v.LogTypeKey).LogTypeCssClass,
+                    v.LogGUID,
+                    v.LogFileID,
+                    this._controller.GetMyLogType(v.LogTypeKey).LogTypeCSSClass,
                     this._controller.GetMyLogType(v.LogTypeKey).LogTypeFriendlyName,
                     v.LogUserName,
                     v.LogPortalName,
@@ -140,7 +140,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             {
                 foreach (var logId in logIds)
                 {
-                    var objLogInfo = new LogInfo { LogGuid = logId };
+                    var objLogInfo = new LogInfo { LogGUID = logId };
                     LogController.Instance.DeleteLog(objLogInfo);
                 }
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -168,8 +168,8 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 if (!this.UserInfo.IsSuperUser && request.LogIds.Any(
                     x =>
                         ((LogInfo)
-                            LogController.Instance.GetSingleLog(new LogInfo { LogGuid = x },
-                                LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalId != this.PortalId))
+                            LogController.Instance.GetSingleLog(new LogInfo { LogGUID = x },
+                                LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalID != this.PortalId))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
                         Localization.GetString("UnAuthorizedToSendLog", Components.Constants.LocalResourcesFile));
@@ -301,19 +301,19 @@ namespace Dnn.PersonaBar.AdminLogs.Services
 
                 int portalId;
                 var types = logTypes
-                    .Where(x => this.UserInfo.IsSuperUser || (int.TryParse(x.LogTypePortalId, out portalId) && portalId == this.PortalId))
+                    .Where(x => this.UserInfo.IsSuperUser || (int.TryParse(x.LogTypePortalID, out portalId) && portalId == this.PortalId))
                     .Select(v => new
                     {
                         v.LogTypeFriendlyName,
                         v.LogTypeKey,
-                        v.LogTypePortalId,
+                        v.LogTypePortalID,
                         LogTypePortalName =
-                            int.TryParse(v.LogTypePortalId, out portalId)
+                            int.TryParse(v.LogTypePortalID, out portalId)
                                 ? PortalController.Instance.GetPortal(portalId).PortalName
                                 : "*",
                         v.LoggingIsActive,
                         v.LogFileName,
-                        v.Id
+                        v.ID
                     }).ToList();
 
                 var response = new
@@ -346,19 +346,19 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             {
                 var configInfo = this._controller.GetLogTypeConfig(logTypeConfigId);
                 int portalId;
-                if (!this.UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalId, out portalId) || portalId != this.PortalId))
+                if (!this.UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != this.PortalId))
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    configInfo.Id,
+                    configInfo.ID,
                     configInfo.LoggingIsActive,
                     configInfo.LogTypeFriendlyName,
                     configInfo.LogTypeKey,
                     LogTypePortalID =
-                            int.TryParse(configInfo.LogTypePortalId, out portalId) ? portalId.ToString() : "*",
+                            int.TryParse(configInfo.LogTypePortalID, out portalId) ? portalId.ToString() : "*",
                     LogTypePortalName =
-                            int.TryParse(configInfo.LogTypePortalId, out portalId)
+                            int.TryParse(configInfo.LogTypePortalID, out portalId)
                                 ? PortalController.Instance.GetPortal(portalId).PortalName
                                 : "*",
                     configInfo.KeepMostRecent,
@@ -427,7 +427,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 int settingPortalId;
                 var configInfo = this._controller.GetLogTypeConfig(request.ID);
                 if (!this.UserInfo.IsSuperUser &&
-                    (!int.TryParse(configInfo.LogTypePortalId, out settingPortalId) ||
+                    (!int.TryParse(configInfo.LogTypePortalID, out settingPortalId) ||
                      !int.TryParse(request.LogTypePortalID, out requestPortalId) || requestPortalId != settingPortalId))
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
 
@@ -457,7 +457,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             {
                 var configInfo = this._controller.GetLogTypeConfig(request.LogTypeConfigId);
                 int portalId;
-                if (!this.UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalId, out portalId) || portalId != this.PortalId))
+                if (!this.UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != this.PortalId))
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
 
                 this._controller.DeleteLogTypeConfig(request.LogTypeConfigId);
@@ -482,7 +482,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             try
             {
                 var logTypes = LogController.Instance.GetLogTypeConfigInfo().Cast<LogTypeConfigInfo>()
-                    .OrderByDescending(l => Convert.ToInt32(l.Id)).ToList();
+                    .OrderByDescending(l => Convert.ToInt32(l.ID)).ToList();
                 var configInfo = logTypes.FirstOrDefault();
 
                 if (configInfo != null)
@@ -490,14 +490,14 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     int portalId;
                     return this.Request.CreateResponse(HttpStatusCode.OK, new
                     {
-                        configInfo.Id,
+                        configInfo.ID,
                         configInfo.LoggingIsActive,
                         configInfo.LogTypeFriendlyName,
                         configInfo.LogTypeKey,
                         LogTypePortalID =
-                            int.TryParse(configInfo.LogTypePortalId, out portalId) ? portalId.ToString() : "*",
+                            int.TryParse(configInfo.LogTypePortalID, out portalId) ? portalId.ToString() : "*",
                         LogTypePortalName =
-                            int.TryParse(configInfo.LogTypePortalId, out portalId)
+                            int.TryParse(configInfo.LogTypePortalID, out portalId)
                                 ? PortalController.Instance.GetPortal(portalId).PortalName
                                 : "*",
                         configInfo.KeepMostRecent,
