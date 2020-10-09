@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Log.EventLog
     public partial class LogTypeInfo : ILogTypeInfo
     {
         /// <inheritdoc />
-        public string LogTypeCssClass { get; set; }
+        string ILogTypeInfo.LogTypeCssClass { get; set; }
 
         /// <inheritdoc />
         public string LogTypeDescription { get; set; }

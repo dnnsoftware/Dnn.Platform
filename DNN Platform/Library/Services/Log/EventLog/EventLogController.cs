@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc />
         void IEventLogger.AddSettingLog(Abstractions.Logging.EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
         {
-            var log = new LogInfo() { LogUserId = userId, LogTypeKey = logTypeKey.ToString() };
+            var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
             log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Log.EventLog
             // supports adding a custom string for LogType
             var log = new LogInfo
             {
-                LogUserId = userID,
+                LogUserID = userID,
                 LogTypeKey = logTypeKey,
                 LogProperties = (LogProperties)properties,
                 BypassBuffering = bypassBuffering,
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
             if (portalSettings != null)
             {
-                log.LogPortalId = portalSettings.PortalId;
+                log.LogPortalID = portalSettings.PortalId;
                 log.LogPortalName = portalSettings.PortalName;
             }
 
@@ -96,10 +96,10 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc />
         void IEventLogger.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType)
         {
-            var log = new LogInfo { LogUserId = userID, LogTypeKey = logType };
+            var log = new LogInfo { LogUserID = userID, LogTypeKey = logType };
             if (portalSettings != null)
             {
-                log.LogPortalId = portalSettings.PortalId;
+                log.LogPortalID = portalSettings.PortalId;
                 log.LogPortalName = portalSettings.PortalName;
             }
 

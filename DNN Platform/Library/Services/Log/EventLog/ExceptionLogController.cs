@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Log.EventLog
             log.LogProperties.Add(new LogDetailInfo("AbsoluteURL", objBasePortalException.AbsoluteURL));
             log.LogProperties.Add(new LogDetailInfo("DefaultDataProvider", objBasePortalException.DefaultDataProvider));
             log.LogProperties.Add(new LogDetailInfo("ExceptionGUID", objBasePortalException.ExceptionGUID));
-            log.LogPortalId = objBasePortalException.PortalID;
+            log.LogPortalID = objBasePortalException.PortalID;
 
             var sqlException = objException as SqlException;
             if (sqlException != null && (uint)sqlException.ErrorCode == 0x80131904 && sqlException.Number == 4060)
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Log.EventLog
             if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 HttpContext.Current.Response.Cookies.Add(
-                    new HttpCookie("LogGUID", log.LogGuid) { HttpOnly = false, Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
+                    new HttpCookie("LogGUID", log.LogGUID) { HttpOnly = false, Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
             }
         }
     }

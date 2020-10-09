@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Urls
             var log = new LogInfo
             {
                 LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                LogPortalId = (result.PortalAlias != null) ? result.PortalId : -1,
+                LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1,
             };
             log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : string.Empty));
             log.LogProperties.Add(new LogDetailInfo("PortalAlias", (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : string.Empty));

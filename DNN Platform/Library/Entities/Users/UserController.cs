@@ -2179,10 +2179,10 @@ namespace DotNetNuke.Entities.Users
             var log = new LogInfo
             {
                 LogTypeKey = loginStatus.ToString(),
-                LogPortalId = portalId,
+                LogPortalID = portalId,
                 LogPortalName = portalName,
                 LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
-                LogUserId = userId,
+                LogUserID = userId,
             };
             log.AddProperty("IP", ip);
 

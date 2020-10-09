@@ -5,13 +5,15 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     using System;
 
+    using DotNetNuke.Abstractions.Logging;
+
     public partial class LogTypeInfo
     {
         [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Services.Log.EventLog.LogTypeCSSClass.LogTypeCSSClass' instead. Scheduled for removal in v11.0.0.")]
         public string LogTypeCSSClass
         {
-            get => this.LogTypeCssClass;
-            set => this.LogTypeCssClass = value;
+            get => ((ILogTypeInfo)this).LogTypeCssClass;
+            set => ((ILogTypeInfo)this).LogTypeCssClass = value;
         }
     }
 }

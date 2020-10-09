@@ -454,7 +454,7 @@ namespace DotNetNuke.Entities.Modules
                 var log = new LogInfo
                 {
                     LogTypeKey = EventLogController.EventLogType.TABMODULE_CREATED.ToString(),
-                    LogPortalId = module.PortalID,
+                    LogPortalID = module.PortalID,
                 };
                 log.LogProperties.Add(new LogDetailInfo("TabPath", module.ParentTab.TabPath));
                 log.LogProperties.Add(new LogDetailInfo("Module Type", module.ModuleDefinition.FriendlyName));

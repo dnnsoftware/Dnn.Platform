@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Log.EventLog
         NotificationThresholdTimeType ILogTypeConfigInfo.NotificationThresholdTimeType { get; set; }
 
         /// <inheritdoc />
-        public string Id { get; set; }
+        string ILogTypeConfigInfo.Id { get; set; }
 
         /// <inheritdoc />
         public bool LoggingIsActive { get; set; }
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public string LogFileNameWithPath { get; set; }
 
         /// <inheritdoc />
-        public string LogTypePortalId { get; set; }
+        string ILogTypeConfigInfo.LogTypePortalId { get; set; }
 
         /// <inheritdoc />
         public string KeepMostRecent { get; set; }
