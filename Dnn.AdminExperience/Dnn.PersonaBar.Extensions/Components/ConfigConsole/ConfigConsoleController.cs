@@ -1,20 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace Dnn.PersonaBar.ConfigConsole.Components
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using System.Xml;
 
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
 
     public class ConfigConsoleController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
         private const string CONFIG_EXT = ".config";
         private const string ROBOTS_EXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
 
@@ -48,7 +52,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
             else
             {
-                var doc = Config.LoadNonConfig(configFile);
+                var doc = LoadNonConfig(configFile);
                 return doc;
             }
         }
@@ -65,7 +69,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
             else
             {
-                Config.SaveNonConfig(fileContent, fileName);
+                SaveNonConfig(fileContent, fileName);
             }
         }
 
@@ -99,6 +103,69 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             {
                 throw new ArgumentException("Invalid File Path");
             }
+        }
+
+        private static string LoadNonConfig(string filename)
+        {
+            // open the config file
+            var doc = File.ReadAllText(string.Concat(Globals.ApplicationMapPath, "\\", filename));
+
+            return doc;
+        }
+
+        private static string SaveNonConfig(string document, string filename)
+        {
+            var retMsg = string.Empty;
+            try
+            {
+                var strFilePath = string.Concat(Globals.ApplicationMapPath, "\\", filename);
+                var objFileAttributes = FileAttributes.Normal;
+                if (File.Exists(strFilePath))
+                {
+                    // save current file attributes
+                    objFileAttributes = File.GetAttributes(strFilePath);
+
+                    // change to normal ( in case it is flagged as read-only )
+                    File.SetAttributes(strFilePath, FileAttributes.Normal);
+                }
+
+                // Attempt a few times in case the file was locked; occurs during modules' installation due
+                // to application restarts where IIS can overlap old application shutdown and new one start.
+                const int maxRetires = 4;
+                const double miltiplier = 2.5;
+                for (var retry = maxRetires; retry >= 0; retry--)
+                {
+                    try
+                    {
+                        // save the config file
+                        File.WriteAllText(strFilePath, document);
+
+                        break;
+                    }
+                    catch (IOException exc)
+                    {
+                        if (retry == 0)
+                        {
+                            Logger.Error(exc);
+                            retMsg = exc.Message;
+                        }
+
+                        // try incremental delay; maybe the file lock is released by then
+                        Thread.Sleep((int)(miltiplier * (maxRetires - retry + 1)) * 1000);
+                    }
+                }
+
+                // reset file attributes
+                File.SetAttributes(strFilePath, objFileAttributes);
+            }
+            catch (Exception exc)
+            {
+                // the file permissions may not be set properly
+                Logger.Error(exc);
+                retMsg = exc.Message;
+            }
+
+            return retMsg;
         }
     }
 }
