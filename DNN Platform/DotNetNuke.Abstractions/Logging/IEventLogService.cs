@@ -12,18 +12,18 @@ namespace DotNetNuke.Abstractions.Logging
     public interface IEventLogService
     {
         /// <summary>
-        /// Clears the log.
+        /// Clears the Event Log.
         /// </summary>
         void ClearLog();
 
         /// <summary>
-        /// Deletes the log.
+        /// Deletes a specific Event Log.
         /// </summary>
         /// <param name="logInfo">the log info.</param>
         void DeleteLog(ILogInfo logInfo);
 
         /// <summary>
-        /// Get the logs.
+        /// Get the Event Log.
         /// </summary>
         /// <param name="portalID">The portal id.</param>
         /// <param name="logType">The log type.</param>

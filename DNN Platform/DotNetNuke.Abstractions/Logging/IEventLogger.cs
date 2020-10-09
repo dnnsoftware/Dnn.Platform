@@ -23,7 +23,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="name">The log property name.</param>
         /// <param name="value">The log property value.</param>
@@ -31,7 +31,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLog(string name, string value, EventLogType logType);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="name">The log property name.</param>
         /// <param name="value">The log property value.</param>
@@ -41,7 +41,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLog(string name, string value, IPortalSettings portalSettings, int userID, EventLogType logType);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="name">The log property name.</param>
         /// <param name="value">The log property value.</param>
@@ -51,7 +51,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLog(string name, string value, IPortalSettings portalSettings, int userID, string logType);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="properties">The properties of the log.</param>
         /// <param name="portalSettings">The portal settings.</param>
@@ -61,7 +61,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLog(ILogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="userID">The user id.</param>
@@ -69,7 +69,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLog(IPortalSettings portalSettings, int userID, EventLogType logType);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="businessObject">The business object.</param>
         /// <param name="portalSettings">The portal settings.</param>
@@ -79,7 +79,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, EventLogType logType);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="businessObject">The business object.</param>
         /// <param name="portalSettings">The portal settings.</param>
@@ -89,7 +89,7 @@ namespace DotNetNuke.Abstractions.Logging
         void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds an Event Log.
         /// </summary>
         /// <param name="logInfo">The log info.</param>
         void AddLog(ILogInfo logInfo);

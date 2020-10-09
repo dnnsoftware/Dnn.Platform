@@ -4,7 +4,7 @@
 namespace DotNetNuke.Abstractions.Logging
 {
     /// <summary>
-    /// The exception info.
+    /// The exception info used for logging.
     /// </summary>
     public interface IExceptionInfo
     {

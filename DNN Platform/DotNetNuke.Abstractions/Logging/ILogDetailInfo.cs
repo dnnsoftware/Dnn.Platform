@@ -4,7 +4,7 @@
 namespace DotNetNuke.Abstractions.Logging
 {
     /// <summary>
-    /// The log details infor.
+    /// The log details info.
     /// </summary>
     public interface ILogDetailInfo
     {

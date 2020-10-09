@@ -13,44 +13,44 @@ namespace DotNetNuke.Abstractions.Logging
     public interface IEventLogConfigService
     {
         /// <summary>
-        /// Adds the log type.
+        /// Adds the log type via configuration file.
         /// </summary>
         /// <param name="configFile">The configuration file.</param>
         /// <param name="fallbackConfigFile">The fallback configuration file.</param>
         void AddLogType(string configFile, string fallbackConfigFile);
 
         /// <summary>
-        /// Adds the log type config info.
+        /// Adds a <see cref="ILogTypeConfigInfo"/> to the database.
         /// </summary>
         /// <param name="logTypeConfig">The log type configuration.</param>
         void AddLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig);
 
         /// <summary>
-        /// Adds the log.
+        /// Adds a <see cref="ILogTypeInfo"/> to the database.
         /// </summary>
         /// <param name="logType">The log type.</param>
         void AddLogType(ILogTypeInfo logType);
 
         /// <summary>
-        /// Deletes the log type.
+        /// Deletes an existing <see cref="ILogTypeInfo"/> from the database.
         /// </summary>
         /// <param name="logType">The log type.</param>
         void DeleteLogType(ILogTypeInfo logType);
 
         /// <summary>
-        /// Delete the log type config info.
+        /// Delete an existing <see cref="ILogTypeConfigInfo"/> from the database..
         /// </summary>
         /// <param name="logTypeConfig">The log type config.</param>
         void DeleteLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig);
 
         /// <summary>
-        /// Gets the log type config info.
+        /// Gets all the <see cref="ILogTypeConfigInfo"/> from the database.
         /// </summary>
         /// <returns>The logs.</returns>
         ArrayList GetLogTypeConfigInfo();
 
         /// <summary>
-        /// Get the log type config info by id.
+        /// Get the <see cref="ILogTypeConfigInfo"/> by id..
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns>The log type config info.</returns>

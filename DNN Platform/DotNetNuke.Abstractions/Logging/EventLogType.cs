@@ -4,7 +4,7 @@
 namespace DotNetNuke.Abstractions.Logging
 {
     /// <summary>
-    /// Event Log Types.
+    /// Systemm Event Log Types.
     /// </summary>
     public enum EventLogType
     {
