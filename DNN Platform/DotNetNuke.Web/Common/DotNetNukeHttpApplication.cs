@@ -174,6 +174,8 @@ namespace DotNetNuke.Web.Common.Internal
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
 
             // DotNetNukeSecurity.Initialize();
+
+            StartupConfigureInitialize.ConfigureApplication(Globals.DependencyProvider);
         }
 
         private static bool IsInstallOrUpgradeRequest(HttpRequest request)

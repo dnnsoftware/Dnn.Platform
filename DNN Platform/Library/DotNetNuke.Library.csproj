@@ -1821,7 +1821,6 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
-    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
