@@ -11,6 +11,8 @@ namespace DotNetNuke.Application
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
 
+    using Microsoft.Extensions.FileProviders;
+
     using NewReleaseMode = DotNetNuke.Abstractions.Application.ReleaseMode;
 
     /// <inheritdoc />
@@ -23,6 +25,16 @@ namespace DotNetNuke.Application
         /// </summary>
         public Application()
         {
+            this.ApplicationName = this.Title;
+            this.ContentRootPath = this.GetCurrentDomainDirectory();
+            this.ContentRootFileProvider = new PhysicalFileProvider(this.ContentRootPath);
+
+#if DEBUG
+            var environment = "Development";
+#else
+            var environment = "Production";
+#endif
+            this.EnvironmentName = environment;
         }
 
         /// <inheritdoc />
@@ -185,9 +197,36 @@ namespace DotNetNuke.Application
         }
 
         /// <inheritdoc />
+        public string EnvironmentName { get; set; }
+
+        /// <inheritdoc />
+        public string ApplicationName { get; set; }
+
+        /// <inheritdoc />
+        public string ContentRootPath { get; set; }
+
+        /// <inheritdoc />
+        public IFileProvider ContentRootFileProvider { get; set; }
+
+        /// <inheritdoc />
         public virtual bool ApplyToProduct(string productNames)
         {
             return productNames.Contains(this.Name);
+        }
+
+        /// <summary>
+        /// Get the current domain directory.
+        /// </summary>
+        /// <returns>returns the domain directory.</returns>
+        private string GetCurrentDomainDirectory()
+        {
+            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
+            if (dir.Length > 3 && dir.EndsWith("\\"))
+            {
+                dir = dir.Substring(0, dir.Length - 1);
+            }
+
+            return dir;
         }
     }
 }

@@ -5,10 +5,12 @@ namespace DotNetNuke.Abstractions.Application
 {
     using System;
 
+    using Microsoft.Extensions.Hosting;
+
     /// <summary>
     /// The Application class contains properties that describe the DotNetNuke Application.
     /// </summary>
-    public interface IApplicationInfo
+    public interface IApplicationInfo : IHostingEnvironment
     {
         /// <summary>
         /// Gets the company to which the DotNetNuke application is related.

@@ -128,7 +128,7 @@ namespace DotNetNuke.Application
         public Version DatabaseVersion { get; private set; }
 
         /// <inheritdoc />
-        public string ApplicationMapPath { get => this.applicationMapPath ?? (this.applicationMapPath = this.GetCurrentDomainDirectory()); }
+        public string ApplicationMapPath => this.applicationInfo.ContentRootPath;
 
         /// <inheritdoc />
         public bool IsInstalled()
@@ -298,21 +298,6 @@ namespace DotNetNuke.Application
         private bool HasInstallVersion()
         {
             return Config.GetSetting("InstallVersion") != null;
-        }
-
-        /// <summary>
-        /// Get the current domain directory.
-        /// </summary>
-        /// <returns>returns the domain directory.</returns>
-        private string GetCurrentDomainDirectory()
-        {
-            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
-            if (dir.Length > 3 && dir.EndsWith("\\"))
-            {
-                dir = dir.Substring(0, dir.Length - 1);
-            }
-
-            return dir;
         }
     }
 }

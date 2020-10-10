@@ -16,7 +16,6 @@ namespace DotNetNuke
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
