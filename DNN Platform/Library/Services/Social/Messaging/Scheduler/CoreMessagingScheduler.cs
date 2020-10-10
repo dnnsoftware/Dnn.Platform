@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             var emailItemContent = itemTemplate;
             emailItemContent = emailItemContent.Replace("[TITLE]", messageDetails.Subject);
-            emailItemContent = emailItemContent.Replace("[CONTENT]", messageDetails.Body);
+            emailItemContent = emailItemContent.Replace("[CONTENT]", HtmlUtils.ConvertToHtml(messageDetails.Body));
             emailItemContent = emailItemContent.Replace("[PROFILEPICURL]", GetProfilePicUrl(portalSettings, authorId));
             emailItemContent = emailItemContent.Replace("[PROFILEURL]", GetProfileUrl(portalSettings, authorId));
             emailItemContent = emailItemContent.Replace("[DISPLAYNAME]", GetDisplayName(portalSettings, authorId));
