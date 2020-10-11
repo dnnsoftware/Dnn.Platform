@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
             else
             {
-                var doc = File.ReadAllText(Path.Combine(Globals.ApplicationMapPath, "\\", configFile));
+                var doc = File.ReadAllText(Path.Combine(Globals.ApplicationMapPath, configFile));
                 return doc;
             }
         }
@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             var retMsg = string.Empty;
             try
             {
-                var strFilePath = Path.Combine(Globals.ApplicationMapPath, "\\", filename);
+                var strFilePath = Path.Combine(Globals.ApplicationMapPath, filename);
                 var existingFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
