@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
             else
             {
-                var doc = File.ReadAllText(Path.Combine(Globals.ApplicationMapPath, "\\", configFile));
+                var doc = File.ReadAllText(string.Concat(Globals.ApplicationMapPath, "\\", configFile));
                 return doc;
             }
         }
