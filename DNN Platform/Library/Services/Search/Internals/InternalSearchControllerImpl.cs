@@ -609,7 +609,14 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new Field(Constants.PermissionsTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.Permissions, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             }
 
-            doc.Add(new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true).SetLongValue(long.Parse(searchDocument.ModifiedTimeUtc.ToString(Constants.DateTimeFormat))));
+            doc.Add(
+                new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true)
+                .SetLongValue(
+                    long.Parse(
+                        searchDocument.ModifiedTimeUtc.ToString(
+                            Constants.DateTimeFormat,
+                            CultureInfo.InvariantCulture),
+                        CultureInfo.InvariantCulture)));
 
             if (sb.Length > 0)
             {
