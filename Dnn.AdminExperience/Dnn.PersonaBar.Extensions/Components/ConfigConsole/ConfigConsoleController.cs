@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             var retMsg = string.Empty;
             try
             {
-                var strFilePath = Path.Combine(Globals.ApplicationMapPath, "\\", filename);
+                var strFilePath = string.Concat(Globals.ApplicationMapPath, "\\", filename);
                 var existingFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
