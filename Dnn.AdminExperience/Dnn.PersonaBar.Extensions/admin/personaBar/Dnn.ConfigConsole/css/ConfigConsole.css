@@ -45,7 +45,6 @@
     margin-left: 4px;
 }
 
-.configConsolePanel .form-item textarea,
 .configConsolePanel .form-item select {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -82,7 +81,8 @@
     padding: 9px 22px;
 }
 
-.configConsolePanel .form-item textarea{ 
+.configConsolePanel .form-item #monaco-editor-config-files,
+.configConsolePanel .form-item #monaco-editor-merge-scripts { 
 	height: 220px;
 }
 
