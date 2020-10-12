@@ -2,7 +2,7 @@
 DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersion
 GO
 
-CREAE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDatabaseVersion]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDatabaseVersion]
     @Major  int,
     @Minor  int,
     @Build  int
