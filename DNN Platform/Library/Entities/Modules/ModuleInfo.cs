@@ -390,6 +390,7 @@ namespace DotNetNuke.Entities.Modules
         [XmlIgnore]
         public bool IsShareableViewOnly { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("iswebslice")]
         public bool IsWebSlice { get; set; }
 
@@ -472,12 +473,15 @@ namespace DotNetNuke.Entities.Modules
         [XmlElement("visibility")]
         public VisibilityState Visibility { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("websliceexpirydate")]
         public DateTime WebSliceExpiryDate { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("webslicetitle")]
         public string WebSliceTitle { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("webslicettl")]
         public int WebSliceTTL { get; set; }
 
