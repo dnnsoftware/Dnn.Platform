@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Threading;
     using System.Web;
     using System.Xml;
+
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -48,9 +49,16 @@ namespace DotNetNuke.Services.Log.EventLog
                     {
                         if (HttpContext.Current != null)
                         {
-                            if (HttpContext.Current.Request.IsAuthenticated)
+                            try
                             {
-                                logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
+                                if (HttpContext.Current.Request.IsAuthenticated)
+                                {
+                                    logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
+                                }
+                            }
+                            catch (HttpException exception)
+                            {
+                                Logger.Error("Unable to retrieve HttpContext.Request, ignoring LogUserName", exception);
                             }
                         }
                     }
