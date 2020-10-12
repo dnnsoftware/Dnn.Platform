@@ -47,19 +47,19 @@ namespace DotNetNuke.Services.Log.EventLog
 
                     if (string.IsNullOrEmpty(logInfo.LogUserName))
                     {
-                        try
+                        if (HttpContext.Current != null)
                         {
-                            if (HttpContext.Current != null)
+                            try
                             {
                                 if (HttpContext.Current.Request.IsAuthenticated)
                                 {
                                     logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
                                 }
                             }
-                        }
-                        catch (Exception exception)
-                        {
-                            Logger.Error("Unable to retrieve HttpContext, ignoring LogUserName", exception);
+                            catch (HttpException exception)
+                            {
+                                Logger.Error("Unable to retrieve HttpContext.Request, ignoring LogUserName", exception);
+                            }
                         }
                     }
 
