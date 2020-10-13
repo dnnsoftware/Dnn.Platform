@@ -21,7 +21,7 @@ Production releases will only be completed after a successful RC phase, except i
 
 The anticipated release date will be communicated to the community at the time of the RC.  And each release will take the following considerations into mind for all releases.
 
-* Releases must allow for at least two additional business days after the release for regular Monday - Friday office situations (Releases only on Monday, Tuesday, or Wednesday)
+* Releases must allow for at least two business days following the release (based on standard business operations of Monday - Friday). Thus, releases should only be made on Mondays, Tuesdays, or Wednesdays.
 * Releases will not be completed during weeks of major US holidays, specifically New Years, Memorial Day, Independence Day, Labor Day, Thanksgiving Day, or Christmas.
 * Best efforts shall be made to avoid other significant holidays in other countries.
 
