@@ -7,7 +7,7 @@ A Release Candidate (RC) is designed to give the community time to adjust their 
 ### Major Releases (Example 10.0.0)
 Major releases will have an initial RC cycle with a minimum duration of three weeks between the date of the RC release and the date of the final release. 
 
-### Minor Releases (Example 9.8.x, or 9.9.x)
+### Minor Releases (Example 9.8.0, or 9.9.0)
 Minor releases will have an initial RC cycle with a minimum duration of two weeks from the date of RC release and final release.
 
 ### Revision Releases (Example 9.8.1, or 9.8.2)
