@@ -9,18 +9,22 @@ namespace DotNetNuke.Entities.Modules.Settings
     using System.Reflection;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Cache;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc/>
-    public abstract class SettingsRepository<T> : ISettingsRepository<T>
-        where T : class, new()
+    public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
     {
         private readonly IModuleController moduleController;
+
+        private static ISerializationManager SerializationManager =>
+            Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.
@@ -196,7 +200,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <exception cref="InvalidCastException">Thrown if string value cannot be deserialized to desired type.</exception>
         private void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, string propertyValue)
         {
-            SerializationController.DeserializeProperty(settings, property, propertyValue, attribute.Serializer);
+            SerializationManager.DeserializeProperty(settings, property, propertyValue, attribute.Serializer);
         }
     }
 }

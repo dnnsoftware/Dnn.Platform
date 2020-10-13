@@ -220,7 +220,7 @@
     <Compile Include="Entities\Modules\Settings\ParameterAttributeBase.cs" />
     <Compile Include="Entities\Modules\Settings\ParameterMapping.cs" />
     <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
-    <Compile Include="Entities\Modules\Settings\SerializationController.cs" />
+    <Compile Include="Entities\Modules\Settings\SerializationManager.cs" />
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Entities\Portals\IPortalSettingHandlers.cs" />
@@ -259,6 +259,7 @@
     <Compile Include="Obsolete\LogTypeConfigInfo.cs" />
     <Compile Include="Obsolete\LogTypeInfo.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
+    <Compile Include="Obsolete\SerializationController.cs" />
     <Compile Include="Prompt\Command.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />
     <Compile Include="Prompt\Output\CommandOption.cs" />

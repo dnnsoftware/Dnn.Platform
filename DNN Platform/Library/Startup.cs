@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke
 {
     using DotNetNuke.Abstractions;
@@ -12,6 +11,7 @@ namespace DotNetNuke
     using DotNetNuke.Common;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Modules;
@@ -37,6 +37,7 @@ namespace DotNetNuke
             services.AddTransient(x => PortalController.Instance);
             services.AddScoped<IHostSettingsService, HostController>();
             services.AddScoped<INavigationManager, NavigationManager>();
+            services.AddScoped<ISerializationManager, SerializationManager>();
 
             services.AddScoped<IApplicationInfo, Application.Application>();
             services.AddScoped<IApplicationStatusInfo, ApplicationStatusInfo>();
