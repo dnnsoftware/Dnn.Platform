@@ -7,17 +7,17 @@ A Release Candidate (RC) is designed to give the community time to adjust their 
 ### Major Releases (`MAJOR.Minor.Patch`)
 Major releases will have an initial RC cycle with a minimum duration of three weeks between the date of the RC release and the date of the final release. 
 
-### Minor Releases (Example 9.8.0, or 9.9.0)
+### Minor Releases (`Major.MINOR.Patch`)
 Minor releases will have an initial RC cycle with a minimum duration of two weeks from the date of RC release and final release.
 
-### Revision Releases (Example 9.8.1, or 9.8.2)
-Revision releases will have an initial RC cycle with a minimum duration of one week from the RC release and final release.
+### Patch Releases (`Major.Minor.PATCH`)
+Patch releases will have an initial RC cycle with a minimum duration of one week from the RC release and final release.
 
 ### Changes During RC Phase
 If necessary, changes will be incorporated during an RC; if the changes resolve significant issues or introduce risk, an additional RC may be created at the Approvers group's discretion.  If a revised RC is necessary, the Production Release schedule will be impacted; the exact impact will vary on a case-by-case basis depending on the nature of the issue(s) identified during the RC review. However, it will be communicated as part of the updated RC release notes.
 
-## Production Releases
-Production releases will only be completed after a successful RC phase, except in the case of a significant security release included as part of a revision release.
+## Final Releases
+Final releases will only be completed after a successful RC phase, except in the case of a significant security release included as part of a revision release.
 
 The anticipated release date will be communicated to the community at the time of the RC.  And each release will take the following considerations into mind for all releases.
 
@@ -26,4 +26,4 @@ The anticipated release date will be communicated to the community at the time o
 * Best efforts shall be made to avoid other significant holidays in other countries.
 
 ## Release Notifications
-You can utilize the "Watch" functionality within GitHub to receive notifications for new RC & Production releases using the "Releases Only" notification option.
+You can utilize the "Watch" functionality within GitHub to receive notifications for new Relese Candidate & Final releases using the "Releases Only" notification option.
