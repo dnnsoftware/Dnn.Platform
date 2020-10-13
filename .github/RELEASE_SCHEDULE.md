@@ -26,4 +26,4 @@ The anticipated release date will be communicated to the community at the time o
 * Best efforts shall be made to avoid other significant holidays in other countries.
 
 ## Release Notifications
-You can utilize the "Watch" functionality within GitHub to receive notifications for new Relese Candidate & Final releases using the "Releases Only" notification option.
+You can utilize the "Watch" functionality within GitHub to receive notifications for new Release Candidates and Production Releases using the "Releases Only" notification option.
