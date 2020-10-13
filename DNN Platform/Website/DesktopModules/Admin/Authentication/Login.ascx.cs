@@ -80,8 +80,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
             get
             {
                 var redirectURL = string.Empty;
-
-                var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
+                var redirectAfterLoginUrl = Convert.ToInt32(GetSetting(this.PortalId, "Redirect_AfterLogin"));
+                var isValidRedirectAfterLoginUrl = this.NeedRedirectAfterLogin
+                    && redirectAfterLoginUrl != Null.NullInteger;
 
                 // first we need to check if there is a returnurl
                 if (this.Request.QueryString["returnurl"] != null)
@@ -111,6 +112,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
 
+                // Reset redirect url for redirecting to 'Redirect After Login' page
+                if (isValidRedirectAfterLoginUrl)
+                {
+                    redirectURL = string.Empty;
+                }
+
                 var alias = this.PortalAlias.HTTPAlias;
                 var comparison = StringComparison.InvariantCultureIgnoreCase;
 
@@ -120,12 +127,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
-                    if (
-                        this.NeedRedirectAfterLogin
-                        && (isDefaultPage || this.IsRedirectingFromLoginUrl())
-                        && Convert.ToInt32(setting) != Null.NullInteger)
+                    if (isValidRedirectAfterLoginUrl && (isDefaultPage || this.IsRedirectingFromLoginUrl()))
                     {
-                        redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
+                        redirectURL = this._navigationManager.NavigateURL(redirectAfterLoginUrl);
                     }
                     else
                     {
