@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Authentication
 {
     using System;
@@ -23,6 +24,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
@@ -800,10 +802,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
             return returnValue;
         }
 
+        private string GetLoginPath()
+        {
+            if (this.PortalSettings.LoginTabId == Null.NullInteger)
+            {
+                return LOGIN_PATH;
+            }
+
+            var tab = TabController.Instance.GetTab(this.PortalSettings.LoginTabId, this.PortalId);
+            return tab != null ? $"/{tab.TabName}" : LOGIN_PATH;
+        }
+
         private bool IsRedirectingFromLoginUrl()
         {
             return this.Request.UrlReferrer != null &&
-                this.Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
+                this.Request.UrlReferrer.LocalPath.EndsWith(GetLoginPath(), StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)
