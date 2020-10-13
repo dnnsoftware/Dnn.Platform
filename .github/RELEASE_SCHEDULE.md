@@ -8,7 +8,7 @@ A Release Candidate (RC) is designed to give the community time to adjust their 
 Major releases will have an initial RC cycle with a minimum duration of three weeks between the date of the RC release and the date of the final release. 
 
 ### Minor Releases (`Major.MINOR.Patch`)
-Minor releases will have an initial RC cycle with a minimum duration of two weeks from the date of RC release and final release.
+Minor releases will have an initial RC cycle with a minimum duration of two weeks between the date of the RC release and the date of the final release.
 
 ### Patch Releases (`Major.Minor.PATCH`)
 Patch releases will have an initial RC cycle with a minimum duration of one week from the RC release and final release.
