@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Api.Internal
 {
     using System;
@@ -22,6 +21,8 @@ namespace DotNetNuke.Web.Api.Internal
     using DotNetNuke.Web.Api.Auth;
     using DotNetNuke.Web.Api.Internal.Auth;
     using DotNetNuke.Web.ConfigSection;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public sealed class ServicesRoutingManager : IMapRoute
     {
@@ -225,16 +226,18 @@ namespace DotNetNuke.Web.Api.Internal
             this.ClearCachedRouteData();
 
             this._moduleUsage.Clear();
-            foreach (IServiceRouteMapper routeMapper in this.GetServiceRouteMappers())
+            using (var serviceScope = Globals.DependencyProvider.CreateScope())
             {
-                try
+                foreach (IServiceRouteMapper routeMapper in this.GetServiceRouteMappers(serviceScope.ServiceProvider))
                 {
-                    routeMapper.RegisterRoutes(this);
-                }
-                catch (Exception e)
-                {
-                    Logger.ErrorFormat("{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName,
-                                 e.Message, e.StackTrace);
+                    try
+                    {
+                        routeMapper.RegisterRoutes(this);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.ErrorFormat("{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
+                    }
                 }
             }
         }
@@ -249,7 +252,7 @@ namespace DotNetNuke.Web.Api.Internal
             // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
-        private IEnumerable<IServiceRouteMapper> GetServiceRouteMappers()
+        private IEnumerable<IServiceRouteMapper> GetServiceRouteMappers(IServiceProvider serviceProvider)
         {
             IEnumerable<Type> types = this.GetAllServiceRouteMapperTypes();
 
@@ -258,12 +261,11 @@ namespace DotNetNuke.Web.Api.Internal
                 IServiceRouteMapper routeMapper;
                 try
                 {
-                    routeMapper = Activator.CreateInstance(routeMapperType) as IServiceRouteMapper;
+                    routeMapper = ActivatorUtilities.CreateInstance(serviceProvider, routeMapperType) as IServiceRouteMapper;
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName,
-                                 e.Message);
+                    Logger.ErrorFormat("Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
                     routeMapper = null;
                 }
 
