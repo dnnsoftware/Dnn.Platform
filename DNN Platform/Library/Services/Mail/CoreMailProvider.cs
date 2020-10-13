@@ -1,25 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using System;
-using System.Net;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
-using Localize = DotNetNuke.Services.Localization.Localization;
 namespace DotNetNuke.Services.Mail
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Mail;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+
+    using Localize = DotNetNuke.Services.Localization.Localization;
+
+    /// <summary>A <see cref="MailProvider"/> implementation using the original core DNN logic (via <see cref="SmtpClient"/>).</summary>
     public class CoreMailProvider : MailProvider
     {
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
-        private static string ConvertToText(string sHTML)
-        {
-            var formattedHtml = HtmlUtils.FormatText(sHTML, true);
-            var styleLessHtml = HtmlUtils.RemoveInlineStyle(formattedHtml);
-            return HtmlUtils.StripTags(styleLessHtml, true);
-        }
+
+        /// <inheritdoc />
         public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
             // validate smtp server
@@ -56,9 +58,9 @@ namespace DotNetNuke.Services.Mail
                 mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
             }
 
-            string retValue = string.Empty;
+            var retValue = string.Empty;
 
-            MailMessage mailMessage = new MailMessage(mailInfo.From, mailInfo.To);
+            var mailMessage = new MailMessage(mailInfo.From, mailInfo.To);
 
             if (!string.IsNullOrEmpty(mailInfo.Sender))
             {
@@ -68,7 +70,7 @@ namespace DotNetNuke.Services.Mail
             mailMessage.Priority = (System.Net.Mail.MailPriority)mailInfo.Priority;
             mailMessage.IsBodyHtml = mailInfo.BodyFormat == MailFormat.Html;
 
-            // Only modify senderAdress if smtpAuthentication is enabled
+            // Only modify senderAddress if smtpAuthentication is enabled
             // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM.
             if (smtpInfo.Authentication == "1" || smtpInfo.Authentication == "2")
             {
@@ -103,30 +105,21 @@ namespace DotNetNuke.Services.Mail
                 }
             }
 
-            //attachments
+            // attachments
             if (mailInfo.Attachments != null)
             {
-                foreach (var attachment in mailInfo.Attachments)
+                foreach (var attachment in mailInfo.Attachments.Where(attachment => attachment.Content != null))
                 {
-                    mailMessage.Attachments.Add(attachment);
+                    mailMessage.Attachments.Add(
+                        new Attachment(
+                            new MemoryStream(attachment.Content, writable: false),
+                            attachment.Filename,
+                            attachment.ContentType));
                 }
             }
 
             // message
-            mailMessage.SubjectEncoding = mailInfo.BodyEncoding;
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(mailInfo.Subject, true);
-            mailMessage.BodyEncoding = mailInfo.BodyEncoding;
-
-            // added support for multipart html messages
-            // add text part as alternate view
-            var PlainView = AlternateView.CreateAlternateViewFromString(ConvertToText(mailInfo.Body), null, "text/plain");
-            mailMessage.AlternateViews.Add(PlainView);
-            if (mailMessage.IsBodyHtml)
-            {
-                var HTMLView = AlternateView.CreateAlternateViewFromString(mailInfo.Body, null, "text/html");
-                mailMessage.AlternateViews.Add(HTMLView);
-            }
-
             smtpInfo.Server = smtpInfo.Server.Trim();
             if (SmtpServerRegex.IsMatch(smtpInfo.Server))
             {
@@ -140,7 +133,7 @@ namespace DotNetNuke.Services.Mail
                         if (smtpHostParts.Length > 1)
                         {
                             // port is guaranteed to be of max 5 digits numeric by the RegEx check
-                            var port = Convert.ToInt32(smtpHostParts[1]);
+                            var port = int.Parse(smtpHostParts[1]);
                             if (port < 1 || port > 65535)
                             {
                                 return Localize.GetString("SmtpInvalidPort");
@@ -149,20 +142,19 @@ namespace DotNetNuke.Services.Mail
                             smtpClient.Port = port;
                         }
 
-                        // else the port defaults to 25 by .NET when not set
-                        smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
-                        smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
-
                         switch (smtpInfo.Authentication)
                         {
                             case "":
                             case "0": // anonymous
                                 break;
                             case "1": // basic
-                                if (!string.IsNullOrEmpty(smtpInfo.Username) && !string.IsNullOrEmpty(smtpInfo.Password))
+                                if (!string.IsNullOrEmpty(smtpInfo.Username)
+                                    && !string.IsNullOrEmpty(smtpInfo.Password))
                                 {
                                     smtpClient.UseDefaultCredentials = false;
-                                    smtpClient.Credentials = new NetworkCredential(smtpInfo.Username, smtpInfo.Password);
+                                    smtpClient.Credentials = new NetworkCredential(
+                                        smtpInfo.Username,
+                                        smtpInfo.Password);
                                 }
 
                                 break;
@@ -178,15 +170,7 @@ namespace DotNetNuke.Services.Mail
                 }
                 catch (Exception exc)
                 {
-                    var exc2 = exc as SmtpFailedRecipientException;
-                    if (exc2 != null)
-                    {
-                        retValue = string.Format(Localize.GetString("FailedRecipient"), exc2.FailedRecipient) + " ";
-                    }
-                    else if (exc is SmtpException)
-                    {
-                        retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
-                    }
+                    retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
 
                     // mail configuration problem
                     if (exc.InnerException != null)

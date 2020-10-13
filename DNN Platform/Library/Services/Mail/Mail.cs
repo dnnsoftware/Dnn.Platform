@@ -6,8 +6,8 @@ namespace DotNetNuke.Services.Mail
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Net.Mail;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.Mail
 
     public class Mail
     {
-
         public static bool IsValidEmailAddress(string Email, int portalid)
         {
             string pattern = Null.NullString;
@@ -51,37 +50,55 @@ namespace DotNetNuke.Services.Mail
                 return;
             }
 
-            MailInfo mailInfo = new MailInfo()
-            {
-                From = fromAddress,
-                Sender = senderAddress,
-                To = toAddress,
-                Subject = subject,
-                Body = body,
-                Priority = MailPriority.Normal,
-                BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
-                BodyEncoding = Encoding.UTF8,
-            };
+            var mailInfo = new MailInfo
+                           {
+                               From = fromAddress,
+                               Sender = senderAddress,
+                               To = toAddress,
+                               Subject = subject,
+                               Body = body,
+                               Priority = MailPriority.Normal,
+                               BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                               BodyEncoding = Encoding.UTF8,
+                           };
 
             MailProvider.Instance().SendMail(mailInfo);
         }
 
+        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
-            MailInfo mailInfo = new MailInfo()
-            {
-                From = fromAddress,
-                Sender = senderAddress,
-                To = toAddress,
-                Subject = subject,
-                Body = body,
-                Priority = MailPriority.Normal,
-                BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
-                BodyEncoding = Encoding.UTF8,
-                Attachments = attachments,
-            };
+            var mailInfo = new MailInfo
+                           {
+                               From = fromAddress,
+                               Sender = senderAddress,
+                               To = toAddress,
+                               Subject = subject,
+                               Body = body,
+                               Priority = MailPriority.Normal,
+                               BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                               BodyEncoding = Encoding.UTF8,
+                               Attachments = ConvertAttachments(attachments),
+                           };
 
-            
+            return MailProvider.Instance().SendMail(mailInfo);
+        }
+
+        public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, ICollection<MailAttachment> attachments)
+        {
+            var mailInfo = new MailInfo
+                           {
+                               From = fromAddress,
+                               Sender = senderAddress,
+                               To = toAddress,
+                               Subject = subject,
+                               Body = body,
+                               Priority = MailPriority.Normal,
+                               BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                               BodyEncoding = Encoding.UTF8,
+                               Attachments = attachments,
+                           };
+
             return MailProvider.Instance().SendMail(mailInfo);
         }
 
@@ -148,11 +165,18 @@ namespace DotNetNuke.Services.Mail
                     if (HttpContext.Current != null)
                     {
                         custom = new ArrayList
-                        {
-                            HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
-                            HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", string.Empty, null,
-                                user, Scope.SystemMessages, ref propertyNotFound)),
-                        };
+                                 {
+                                     HttpContext.Current.Server.HtmlEncode(
+                                         HttpContext.Current.Server.UrlEncode(user.Username)),
+                                     HttpContext.Current.Server.UrlEncode(
+                                         user.GetProperty(
+                                             "verificationcode",
+                                             string.Empty,
+                                             null,
+                                             user,
+                                             Scope.SystemMessages,
+                                             ref propertyNotFound)),
+                                 };
                     }
 
                     break;
@@ -367,6 +391,7 @@ namespace DotNetNuke.Services.Mail
                 smtpEnableSSL);
         }
 
+        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                               string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
@@ -390,33 +415,57 @@ namespace DotNetNuke.Services.Mail
                 smtpEnableSSL);
         }
 
+        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
+                              string body, ICollection<MailAttachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
+        {
+            return SendMail(
+                mailFrom,
+                string.Empty,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL);
+        }
+
+        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
         public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            SmtpInfo smtpInfo = new SmtpInfo()
-            {
-                Server = smtpServer,
-                Authentication = smtpAuthentication,
-                Username = smtpUsername,
-                Password = smtpPassword,
-                EnableSSL = smtpEnableSSL,
-            };
+            var smtpInfo = new SmtpInfo
+                           {
+                               Server = smtpServer,
+                               Authentication = smtpAuthentication,
+                               Username = smtpUsername,
+                               Password = smtpPassword,
+                               EnableSSL = smtpEnableSSL,
+                           };
 
-            MailInfo mailInfo = new MailInfo()
-            {
-                From = mailFrom,
-                Sender = mailSender,
-                To = mailTo,
-                CC = cc,
-                BCC = bcc,
-                ReplyTo = replyTo,
-                Priority = priority,
-                BodyEncoding = bodyEncoding,
-                BodyFormat = bodyFormat,
-                Body = body,
-                Subject = subject,
-                Attachments = attachments,
-            };
+            var mailInfo = new MailInfo
+                           {
+                               From = mailFrom,
+                               Sender = mailSender,
+                               To = mailTo,
+                               CC = cc,
+                               BCC = bcc,
+                               ReplyTo = replyTo,
+                               Priority = priority,
+                               BodyEncoding = bodyEncoding,
+                               BodyFormat = bodyFormat,
+                               Body = body,
+                               Subject = subject,
+                               Attachments = ConvertAttachments(attachments),
+                           };
 
             if (PortalSettings.Current != null && UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
             {
@@ -424,6 +473,56 @@ namespace DotNetNuke.Services.Mail
             }
 
             return MailProvider.Instance().SendMail(mailInfo, smtpInfo);
+        }
+
+        public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
+                                      string body, ICollection<MailAttachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
+        {
+            var smtpInfo = new SmtpInfo
+                           {
+                               Server = smtpServer,
+                               Authentication = smtpAuthentication,
+                               Username = smtpUsername,
+                               Password = smtpPassword,
+                               EnableSSL = smtpEnableSSL,
+                           };
+
+            var mailInfo = new MailInfo
+                           {
+                               From = mailFrom,
+                               Sender = mailSender,
+                               To = mailTo,
+                               CC = cc,
+                               BCC = bcc,
+                               ReplyTo = replyTo,
+                               Priority = priority,
+                               BodyEncoding = bodyEncoding,
+                               BodyFormat = bodyFormat,
+                               Body = body,
+                               Subject = subject,
+                               Attachments = attachments,
+                           };
+
+            if (PortalSettings.Current != null && UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
+            {
+                mailInfo.FromName = UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName;
+            }
+
+            return MailProvider.Instance().SendMail(mailInfo, smtpInfo);
+        }
+
+        private static ICollection<MailAttachment> ConvertAttachments(List<Attachment> attachments)
+        {
+            return attachments.Select(
+                    attachment =>
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            attachment.ContentStream.CopyTo(ms);
+                            return new MailAttachment(attachment.Name, ms.ToArray());
+                        }
+                    })
+                .ToList();
         }
     }
 }
