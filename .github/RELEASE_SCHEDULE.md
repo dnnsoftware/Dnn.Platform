@@ -13,7 +13,7 @@ Minor releases will have an initial RC cycle with a minimum duration of two week
 ### Patch Releases (`Major.Minor.PATCH`)
 Patch releases will have an initial RC cycle with a minimum duration of one week from the RC release and final release.
 
-### Changes During RC Phase
+### Changes During RC Cycle
 If necessary, changes will be incorporated during an RC; if the changes resolve significant issues or introduce risk, an additional RC may be created at the Approvers group's discretion.  If a revised RC is necessary, the Final Release schedule will be impacted; the exact impact will vary on a case-by-case basis depending on the nature of the issue(s) identified during the RC review. However, it will be communicated as part of the updated RC release notes.
 
 ## Final Releases
