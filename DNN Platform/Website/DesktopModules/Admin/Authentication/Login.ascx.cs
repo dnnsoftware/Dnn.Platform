@@ -806,7 +806,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
 
             var tab = TabController.Instance.GetTab(this.PortalSettings.LoginTabId, this.PortalId);
-            return tab != null ? $"/{tab.TabName}" : LOGIN_PATH;
+            return tab != null ? $"/{this._navigationManager.NavigateURL(tab.TabName)}" : LOGIN_PATH;
         }
 
         private bool IsRedirectingFromLoginUrl()
