@@ -17,7 +17,7 @@ Patch releases will have an initial RC cycle with a minimum duration of one week
 If necessary, changes will be incorporated during an RC; if the changes resolve significant issues or introduce risk, an additional RC may be created at the discretion of the Approvers group.  If a revised RC is necessary, the Production Release schedule will be impacted; the exact impact will vary on a case-by-case basis depending on the nature of the issue(s) identified during the RC review. However, it will be communicated as part of the updated RC release notes.
 
 ## Final Releases
-Final releases will only be completed after a successful RC phase, except in the case of a significant security release included as part of a revision release.
+Production Releases will only be completed after a successful Release Candidate cycle, except in the case of a significant security release included as part of a Patch release.
 
 The anticipated release date will be communicated to the community at the time of the RC.  And each release will take the following considerations into mind for all releases.
 
