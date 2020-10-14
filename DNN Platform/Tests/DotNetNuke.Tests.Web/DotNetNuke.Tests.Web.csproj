@@ -102,6 +102,8 @@
     <Compile Include="Api\HttpRequestMessageExtensionsTests.cs" />
     <Compile Include="Api\StandardTabAndModuleInfoProviderTests.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttributeTests.cs" />
+    <Compile Include="DependencyInjection\BuildUpExtensionsTests.cs" />
+    <Compile Include="DependencyInjection\BuildUpExtensions_SampleFilters.cs" />
     <Compile Include="InternalServices\FakeModuleCrawlerController.cs" />
     <Compile Include="InternalServices\SearchServiceControllerTests.cs">
       <SubType>Code</SubType>
