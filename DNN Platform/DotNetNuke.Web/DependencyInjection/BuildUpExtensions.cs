@@ -15,7 +15,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
     /// <summary>
     /// Adds property injection extension methods.
     /// </summary>
-    public static class BuildUpExtensions
+    internal static class BuildUpExtensions
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BuildUpExtensions));
 
@@ -25,7 +25,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// </summary>
         /// <param name="container">The service provider.</param>
         /// <param name="filter">The <see cref="IFilter"/> to inject properties.</param>
-        public static void BuildUp(this IServiceProvider container, IFilter filter)
+        internal static void BuildUp(this IServiceProvider container, IFilter filter)
         {
             if (container == null || filter == null)
             {
