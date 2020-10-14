@@ -45,7 +45,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
                     new CacheItemArgs($"WebApiDependencyProperties_{type.FullName}"),
                     (args) => type
                         .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                        .Where(propertyInfo => propertyInfo.GetCustomAttribute<DependencyAttribute>() != null)
+                        .Where(propertyInfo => propertyInfo.GetSetMethod(true) != null && propertyInfo.GetCustomAttribute<DependencyAttribute>() != null)
                         .ToList(),
                     false);
             }
