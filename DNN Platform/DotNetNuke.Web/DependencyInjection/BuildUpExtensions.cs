@@ -10,12 +10,15 @@ namespace DotNetNuke.DependencyInjection.Extensions
     using System.Web.Http.Filters;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
 
     /// <summary>
     /// Adds property injection extension methods.
     /// </summary>
     public static class BuildUpExtensions
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BuildUpExtensions));
+
         /// <summary>
         /// Injects property dependency for public or proetected
         /// properties that are decorated with <see cref="DependencyAttribute"/>.
@@ -35,7 +38,14 @@ namespace DotNetNuke.DependencyInjection.Extensions
                 var service = container.GetService(property.PropertyType);
                 if (service != null)
                 {
-                    property.SetValue(filter, service);
+                    try
+                    {
+                        property.SetValue(filter, service);
+                    }
+                    catch (Exception exception)
+                    {
+                        Logger.Error(exception);
+                    }
                 }
             }
 
