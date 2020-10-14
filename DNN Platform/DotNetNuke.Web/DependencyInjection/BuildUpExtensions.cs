@@ -32,10 +32,10 @@ namespace DotNetNuke.DependencyInjection.Extensions
             var properties = GetDependencyProperties(filter.GetType());
             foreach (var property in properties)
             {
-                var service = container.GetService(property.GetType());
+                var service = container.GetService(property.PropertyType);
                 if (service != null)
                 {
-                    property.SetValue(service, filter);
+                    property.SetValue(filter, service);
                 }
             }
 
