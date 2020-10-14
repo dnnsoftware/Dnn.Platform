@@ -16,6 +16,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml.Linq;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -41,11 +42,11 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
-    using ICSharpCode.SharpZipLib.Zip;
 
+    using ICSharpCode.SharpZipLib.Zip;
+    using Microsoft.Extensions.DependencyInjection;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
 
@@ -353,9 +354,13 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSetting(int portalID, string settingName)
         {
-            DeletePortalSetting(portalID, settingName, Null.NullString);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID)
+                .Delete(settingName);
         }
 
         /// <summary>
@@ -364,31 +369,39 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="cultureCode">The culture code.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
         {
-            DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLowerInvariant());
-            EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-            DataCache.ClearHostCache(true);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Delete(settingName);
         }
 
         /// <summary>
         /// Deletes all portal settings by portal id.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSettings(int portalID)
         {
-            DeletePortalSettings(portalID, Null.NullString);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID)
+                .DeleteAll(true);
         }
 
         /// <summary>
         /// Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void DeletePortalSettings(int portalID, string cultureCode)
         {
-            DataProvider.Instance().DeletePortalSettings(portalID, cultureCode);
-            EventLogController.Instance.AddLog("PortalID", portalID.ToString() + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-            DataCache.ClearHostCache(true);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .DeleteAll(true);
         }
 
         /// <summary>
@@ -397,14 +410,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">the setting to read.</param>
         /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
         /// <returns></returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static string GetEncryptedString(string settingName, int portalID, string passPhrase)
         {
-            Requires.NotNullOrEmpty("key", settingName);
-            Requires.NotNullOrEmpty("passPhrase", passPhrase);
-
-            var cipherText = GetPortalSetting(settingName, portalID, string.Empty);
-
-            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Host.Host.GUID);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .GetEncrypted<string>(settingName, passPhrase);
         }
 
         /// <summary>
@@ -414,21 +426,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue)
         {
-            var retValue = Null.NullString;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
-                retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .Get<string>(settingName) ?? defaultValue;
         }
 
         /// <summary>
@@ -439,21 +443,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="defaultValue">The default value.</param>
         /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
         /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
         {
-            var retValue = Null.NullString;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID, cultureCode).TryGetValue(settingName, out setting);
-                retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Get<string>(settingName) ?? defaultValue;
         }
 
         /// <summary>
@@ -463,28 +459,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue)
         {
-            bool retValue = Null.NullBoolean;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .Get<bool>(key);
         }
 
         /// <summary>
@@ -495,28 +476,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="defaultValue">default value.</param>
         /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
         /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
         {
-            bool retValue = Null.NullBoolean;
-            try
-            {
-                string setting;
-                GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Get<bool>(key);
         }
 
         /// <summary>
@@ -526,28 +492,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue)
         {
-            int retValue = Null.NullInteger;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = Convert.ToInt32(setting);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID)
+                .Get<int>(key);
         }
 
         /// <summary>
@@ -557,28 +508,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalId">The portal Id.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
         {
-            double retValue = Null.NullDouble;
-            try
-            {
-                string setting;
-                Instance.GetPortalSettings(portalId).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = Convert.ToDouble(setting);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalId)
+                .Get<double>(key);
         }
 
         /// <summary>
@@ -589,28 +525,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="defaultValue">The default value.</param>
         /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
         /// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
         {
-            int retValue = Null.NullInteger;
-            try
-            {
-                string setting;
-                GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(key, out setting);
-                if (string.IsNullOrEmpty(setting))
-                {
-                    retValue = defaultValue;
-                }
-                else
-                {
-                    retValue = Convert.ToInt32(setting);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            return retValue;
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            return portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Get<int>(key);
         }
 
         /// <summary>
@@ -620,15 +541,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">host settings key.</param>
         /// <param name="settingValue">host settings value.</param>
         /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase)
         {
-            Requires.NotNullOrEmpty("key", settingName);
-            Requires.PropertyNotNull("value", settingValue);
-            Requires.NotNullOrEmpty("passPhrase", passPhrase);
-
-            var cipherText = Security.FIPSCompliant.EncryptAES(settingValue, passPhrase, Host.Host.GUID);
-
-            UpdatePortalSetting(portalID, settingName, cipherText);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID)
+                .UpdateEncrypted(settingName, settingValue, passPhrase);
         }
 
         /// <summary>
@@ -637,9 +556,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue)
         {
-            UpdatePortalSetting(portalID, settingName, settingValue, true);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID)
+                .Update(settingName, settingValue, true);
         }
 
         /// <summary>
@@ -649,9 +572,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache)
         {
-            UpdatePortalSetting(portalID, settingName, settingValue, clearCache, Null.NullString, false);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID)
+                .Update(settingName, settingValue, clearCache);
         }
 
         /// <summary>
@@ -664,7 +591,10 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, string cultureCode)
         {
-            UpdatePortalSetting(portalID, settingName, settingValue, true, cultureCode, false);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Update(settingName, settingValue, false);
         }
 
         /// <summary>
@@ -675,9 +605,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
-            UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, false);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Update(settingName, settingValue, clearCache);
         }
 
         /// <summary>
@@ -691,9 +625,20 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
         /// <param name="isSecure">When true it encrypt the value before storing it in the database.</param>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
-            Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            var portalSettings = portalSettingsManager.GetPortalSettings(portalID, cultureCode);
+
+            if (isSecure)
+            {
+                portalSettings.UpdateEncrypted(settingName, settingValue, clearCache);
+            }
+            else
+            {
+                portalSettings.Update(settingName, settingValue, clearCache);
+            }
         }
 
         /// <summary>
@@ -2340,42 +2285,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
-        {
-            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
-
-            if (currentSetting != settingValue)
-            {
-                if (isSecure && !string.IsNullOrEmpty(settingName) && !string.IsNullOrEmpty(settingValue))
-                {
-                    settingValue = Security.FIPSCompliant.EncryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
-                }
-
-                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode, isSecure);
-                EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
-                if (clearCache)
-                {
-                    DataCache.ClearPortalCache(portalID, false);
-                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
-
-                    var httpContext = HttpContext.Current;
-                    if (httpContext != null)
-                    {
-                        var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(httpContext, portalID);
-                        var dictionaryKey = string.Format(HttpContextKeyPortalSettingsDictionary, portalID, cultureCodeForKey);
-                        httpContext.Items[dictionaryKey] = null;
-                    }
-                }
-
-                EventManager.Instance.OnPortalSettingUpdated(new PortalSettingUpdatedEventArgs
-                {
-                    PortalId = portalID,
-                    SettingName = settingName,
-                    SettingValue = settingValue,
-                });
-            }
-        }
-
         private void AddFolderPermissions(int portalId, int folderId)
         {
             var portal = this.GetPortal(portalId);
@@ -3666,18 +3575,32 @@ namespace DotNetNuke.Entities.Portals
             return GetCurrentPortalSettingsInternal();
         }
 
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DNN 9.2.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
-            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, false);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            portalSettingsManager
+                .GetPortalSettings(portalID, cultureCode)
+                .Update(settingName, settingValue, clearCache);
         }
 
         /// <summary>
         /// Adds or Updates or Deletes a portal setting value.
         /// </summary>
+        [Obsolete("Deprecated in 9.8.0 Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalSettingsManager instead.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
-            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
+            var portalSettingsManager = Globals.DependencyProvider.GetRequiredService<IPortalSettingsManager>();
+            var portalSettings = portalSettingsManager.GetPortalSettings(portalID, cultureCode);
+
+            if (isSecure)
+            {
+                portalSettings.UpdateEncrypted(settingName, settingValue, clearCache);
+            }
+            else
+            {
+                portalSettings.Update(settingName, settingValue, clearCache);
+            }
         }
 
         public class PortalTemplateInfo
