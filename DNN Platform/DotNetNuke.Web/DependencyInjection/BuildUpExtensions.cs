@@ -20,8 +20,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BuildUpExtensions));
 
         /// <summary>
-        /// Injects property dependency for public or proetected
-        /// properties that are decorated with <see cref="DependencyAttribute"/>.
+        /// Injects property dependency for properties that are decorated with <see cref="DependencyAttribute"/>.
         /// </summary>
         /// <param name="container">The service provider.</param>
         /// <param name="filter">The <see cref="IFilter"/> to inject properties.</param>
