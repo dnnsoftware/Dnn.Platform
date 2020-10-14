@@ -56,7 +56,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
                         .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                         .Where(propertyInfo => propertyInfo.GetSetMethod(true) != null && propertyInfo.GetCustomAttribute<DependencyAttribute>() != null)
                         .ToList(),
-                    false);
+                    saveInDictionary: false);
             }
         }
     }
