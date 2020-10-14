@@ -5,13 +5,11 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using System.Web.Http.Filters;
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.DependencyInjection;
     using DotNetNuke.DependencyInjection.Extensions;
 
     using Moq;
@@ -28,6 +26,13 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [SetUp]
         public void Setup()
         {
+            var mockCbo = new Mock<ICBO>();
+            mockCbo
+                .Setup(x => x.GetCachedObject<IEnumerable<PropertyInfo>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
+                .Returns<CacheItemArgs, CacheItemExpiredCallback, bool>((args, callback, _) => (IEnumerable<PropertyInfo>)callback(args));
+
+            CBO.SetTestableInstance(mockCbo.Object);
+
             this.eventLogger = Mock.Of<IEventLogger>();
 
             var mockContainer = new Mock<IServiceProvider>();
@@ -65,7 +70,6 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [Test]
         public void BuildUp_PrivateProperty_Test()
         {
-            this.MockCBO<PrivateFilterAttribute>();
             var filter = new PrivateFilterAttribute();
 
             this.container.BuildUp(filter);
@@ -77,7 +81,6 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [Test]
         public void BuildUp_ProtectedProperty_Test()
         {
-            this.MockCBO<ProtectedFilterAttribute>();
             var filter = new ProtectedFilterAttribute();
 
             this.container.BuildUp(filter);
@@ -90,7 +93,6 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [Test]
         public void BuildUp_ProtectedInternalProperty_Test()
         {
-            this.MockCBO<ProtectedInternalFilterAttribute>();
             var filter = new ProtectedInternalFilterAttribute();
 
             this.container.BuildUp(filter);
@@ -102,7 +104,6 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [Test]
         public void BuildUp_InternalProperty_Test()
         {
-            this.MockCBO<InternalFilterAttribute>();
             var filter = new InternalFilterAttribute();
 
             this.container.BuildUp(filter);
@@ -114,7 +115,6 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [Test]
         public void BuildUp_NoDependencyAttribute_Test()
         {
-            this.MockCBO<PublicNoDependencyAttributeFilterAttribute>();
             var filter = new PublicNoDependencyAttributeFilterAttribute();
 
             this.container.BuildUp(filter);
@@ -126,29 +126,12 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [Test]
         public void BuildUp_NoSetter_Test()
         {
-            this.MockCBO<NoSetFilterAttribute>();
             var filter = new NoSetFilterAttribute();
 
             this.container.BuildUp(filter);
             Assert.Throws<NullReferenceException>(() => filter.OnActionExecuted(null));
 
             this.VerifyEventLoggerInvoked(Times.Never());
-        }
-
-        void MockCBO<T>()
-            where T : IFilter
-        {
-            var properties = typeof(T)
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(propertyInfo => propertyInfo.GetSetMethod(true) != null && propertyInfo.GetCustomAttribute<DependencyAttribute>() != null)
-                .ToList();
-
-            var mockCbo = new Mock<ICBO>();
-            mockCbo
-                .Setup(x => x.GetCachedObject<IEnumerable<PropertyInfo>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
-                .Returns(properties);
-
-            CBO.SetTestableInstance(mockCbo.Object);
         }
 
         private void VerifyEventLoggerInvoked() => this.VerifyEventLoggerInvoked(Times.Once());
