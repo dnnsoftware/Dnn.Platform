@@ -806,13 +806,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
 
             var tab = TabController.Instance.GetTab(this.PortalSettings.LoginTabId, this.PortalId);
-            return tab != null ? new Uri(this._navigationManager.NavigateURL(tab.TabName)).LocalPath : LOGIN_PATH;
+            return tab != null ? new Uri(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId), UriKind.RelativeOrAbsolute).LocalPath : LOGIN_PATH;
         }
 
         private bool IsRedirectingFromLoginUrl()
         {
             return this.Request.UrlReferrer != null &&
-                this.GetLoginPath().StartsWith(this.Request.UrlReferrer.LocalPath, StringComparison.InvariantCultureIgnoreCase);
+                this.Request.UrlReferrer.LocalPath.EndsWith(GetLoginPath(), StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)
