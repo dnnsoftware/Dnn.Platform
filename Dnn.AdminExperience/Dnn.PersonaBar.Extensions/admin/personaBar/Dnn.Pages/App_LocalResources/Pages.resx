@@ -1759,4 +1759,7 @@
   <data name="LocalizedSharedModule_tooltip.Text" xml:space="preserve">
     <value>This is a localized shared module</value>
   </data>
+  <data name="NoParentTabName.Text" xml:space="preserve">
+    <value>No parent page supplied</value>
+  </data>
 </root>

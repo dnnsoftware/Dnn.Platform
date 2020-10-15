@@ -80,7 +80,11 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     string errorMessage = null;
 
-                    if (DuplicateExists(currentIndex, pages))
+                    if (currentIndex == 0 && oTab.Level > 0)
+                    {
+                        errorMessage = Localization.GetString("NoParentTabName");
+                    }
+                    else if (DuplicateExists(currentIndex, pages))
                     {
                         errorMessage = Localization.GetString("TabExists");
                     }
@@ -90,7 +94,14 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                     else if (validateOnly)
                     {
-                        errorMessage = string.Empty;
+                        if (string.IsNullOrWhiteSpace(oTab.TabName))
+                        {
+                            errorMessage = string.Format(Localization.GetString("EmptyTabName"), oTab.TabName);
+                        }
+                        else
+                        {
+                            errorMessage = string.Empty;
+                        }
                     }
                     else
                     {
