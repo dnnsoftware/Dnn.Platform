@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Tokens
         /// </summary>
         /// <param name="propertyName">The property name to get.</param>
         /// <param name="format">The format string to format the property with.</param>
-        /// <param name="formatProvider">The <see cref="CultureInfo"/> format profider to use.</param>
+        /// <param name="formatProvider">The format provider (e.g. <see cref="CultureInfo"/>) to use.</param>
         /// <param name="accessingUser">The user this property belongs to, <see cref="UserInfo"/>.</param>
         /// <param name="accessLevel">The <see cref="Scope"/> of the access level for this property.</param>
         /// <param name="propertyNotFound">An out parameter that indicates if the property was not found.</param>
