@@ -29,51 +29,51 @@ namespace DotNetNuke.Entities.Users
 #pragma warning disable SA1310 // Field names should not contain underscore
 #pragma warning disable SA1600 // Elements should be documented
         // Name properties
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_FirstName = UserProfileFirstName;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_LastName = UserProfileLastName;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Title = UserProfileTitle;
 
         // Address Properties
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Unit = UserProfileUnit;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Street = UserProfileStreet;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_City = UserProfileCity;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Country = UserProfileCountry;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Region = UserProfileRegion;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_PostalCode = UserProfilePostalCode;
 
         // Phone contact
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Telephone = UserProfileTelephone;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Cell = UserProfileCell;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Fax = UserProfileFax;
 
         // Online contact
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Website = UserProfileWebsite;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_IM = UserProfileIM;
 
         // Preferences
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Photo = UserProfilePhoto;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_TimeZone = UserProfileTimeZone;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_PreferredLocale = UserProfilePreferredLocale;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_PreferredTimeZone = UserProfilePreferredTimeZone;
-        [Obsolete("Deprecated in 9.8. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_Biography = UserProfileBiography;
 #pragma warning restore SA1310 // Field names should not contain underscore
 #pragma warning restore SA1600 // Elements should be documented
