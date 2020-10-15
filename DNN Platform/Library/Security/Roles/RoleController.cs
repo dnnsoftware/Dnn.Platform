@@ -12,7 +12,6 @@ namespace DotNetNuke.Security.Roles
     using System.Xml;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities;

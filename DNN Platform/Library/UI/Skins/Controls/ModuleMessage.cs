@@ -5,11 +5,9 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
 
     /// <summary></summary>
     /// <remarks></remarks>

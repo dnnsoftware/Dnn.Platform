@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
-    using System;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;

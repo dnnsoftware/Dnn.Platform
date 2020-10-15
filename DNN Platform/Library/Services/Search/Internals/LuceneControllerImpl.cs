@@ -18,7 +18,6 @@ namespace DotNetNuke.Services.Search.Internals
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Search.Entities;
     using Lucene.Net.Analysis;
     using Lucene.Net.Documents;
     using Lucene.Net.Index;

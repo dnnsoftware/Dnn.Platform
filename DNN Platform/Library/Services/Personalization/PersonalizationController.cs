@@ -6,13 +6,11 @@ namespace DotNetNuke.Services.Personalization
     using System;
     using System.Collections;
     using System.Data;
-    using System.Text;
     using System.Web;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Security;
 
     public class PersonalizationController

@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Web;
     using System.Web.Caching;
     using System.Xml;
+
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;

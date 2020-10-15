@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
-    using System;
     using System.Text;
-    using System.Web;
 
     using DotNetNuke.Common;
 

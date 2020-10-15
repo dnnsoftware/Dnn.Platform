@@ -4,7 +4,6 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
-    using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -13,7 +12,6 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.HTMLEditorProvider;
-    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;

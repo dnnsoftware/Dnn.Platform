@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
 
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Icons;

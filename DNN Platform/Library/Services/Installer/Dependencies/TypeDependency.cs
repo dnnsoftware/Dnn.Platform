@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Dependencies
 {
-    using System;
     using System.Xml.XPath;
 
     using DotNetNuke.Framework;

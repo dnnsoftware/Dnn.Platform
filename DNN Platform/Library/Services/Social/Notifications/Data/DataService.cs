@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Social.Notifications.Data
 {
-    using System;
     using System.Data;
 
     using DotNetNuke.ComponentModel;

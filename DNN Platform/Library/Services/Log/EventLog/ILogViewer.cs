@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Services.Log.EventLog
 {
-    using System;
-
     public interface ILogViewer
     {
         string EventFilter { get; set; }

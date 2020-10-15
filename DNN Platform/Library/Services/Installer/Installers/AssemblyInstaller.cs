@@ -12,7 +12,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using DotNetNuke.Common;
     using DotNetNuke.Data;
-    using DotNetNuke.Framework;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

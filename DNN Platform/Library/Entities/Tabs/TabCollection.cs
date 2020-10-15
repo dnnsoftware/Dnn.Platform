@@ -8,7 +8,6 @@ namespace DotNetNuke.Entities.Tabs
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Security;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;

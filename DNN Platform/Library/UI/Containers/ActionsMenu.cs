@@ -4,7 +4,6 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
-    using System.Text.RegularExpressions;
     using System.Web.UI;
 
     using DotNetNuke.Common;

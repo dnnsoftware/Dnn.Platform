@@ -7,8 +7,6 @@ namespace DotNetNuke.Services.FileSystem
     using System;
     using System.Runtime.Serialization;
 
-    using DotNetNuke.Services.Exceptions;
-
     [Serializable]
     public class InvalidFileContentException : Exception
     {

@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.EventQueue.Config
 {
     using System;
-    using System.Xml.Serialization;
 
     [Serializable]
     public class PublishedEvent

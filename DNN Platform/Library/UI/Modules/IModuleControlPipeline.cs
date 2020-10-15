@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.UI.Modules
 {
-    using System;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules;

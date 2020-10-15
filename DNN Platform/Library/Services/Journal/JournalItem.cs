@@ -5,16 +5,11 @@ namespace DotNetNuke.Services.Journal
 {
     using System;
     using System.Data;
-    using System.IO;
-    using System.Runtime.Serialization;
-    using System.Runtime.Serialization.Json;
-    using System.Web.Script.Serialization;
     using System.Xml;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
 
     public class JournalItem : IHydratable, IPropertyAccess

@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Exceptions
     using System;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
     using System.Web;
     using System.Xml.Serialization;
 

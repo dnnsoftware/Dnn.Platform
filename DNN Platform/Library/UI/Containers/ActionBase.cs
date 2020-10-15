@@ -6,7 +6,6 @@ namespace DotNetNuke.UI.Containers
     using System;
     using System.Web.UI;
 
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;

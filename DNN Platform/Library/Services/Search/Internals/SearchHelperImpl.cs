@@ -22,9 +22,7 @@ namespace DotNetNuke.Services.Search.Internals
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using Lucene.Net.Analysis;
-    using Lucene.Net.Analysis.Standard;
     using Lucene.Net.Analysis.Tokenattributes;
-    using Lucene.Net.Util;
 
     internal class SearchHelperImpl : ISearchHelper
     {

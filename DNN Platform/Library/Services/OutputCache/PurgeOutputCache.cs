@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.OutputCache
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using DotNetNuke.Entities.Portals;

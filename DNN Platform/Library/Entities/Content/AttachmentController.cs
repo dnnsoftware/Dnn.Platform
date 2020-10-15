@@ -9,10 +9,8 @@ namespace DotNetNuke.Entities.Content
     using System.Collections.Specialized;
     using System.Linq;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
-    using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
 

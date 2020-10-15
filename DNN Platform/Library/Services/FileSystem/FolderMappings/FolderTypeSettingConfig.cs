@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.

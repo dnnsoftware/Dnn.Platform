@@ -8,8 +8,6 @@ namespace DotNetNuke.Services.Connections
     using System.Collections.Generic;
     using System.Linq;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
 
     public class ConnectionsController : ServiceLocator<IConnectionsController, ConnectionsController>, IConnectionsController

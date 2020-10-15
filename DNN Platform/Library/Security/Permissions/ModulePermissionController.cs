@@ -3,15 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
 

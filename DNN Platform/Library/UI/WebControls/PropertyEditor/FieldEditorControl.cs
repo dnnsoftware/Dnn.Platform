@@ -8,12 +8,10 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
 
     public enum EditorDisplayMode
     {

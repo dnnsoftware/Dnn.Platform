@@ -7,7 +7,6 @@ namespace DotNetNuke.Framework
     using System.Collections;
     using System.Collections.Specialized;
     using System.Globalization;
-    using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI;
@@ -20,7 +19,6 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;

@@ -7,8 +7,6 @@ namespace DotNetNuke.UI.UserControls
     using System.IO;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;

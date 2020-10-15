@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    using System;
 
     using DotNetNuke.Security;
 

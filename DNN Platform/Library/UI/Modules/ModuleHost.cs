@@ -27,7 +27,6 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.ModuleCache;
-    using DotNetNuke.UI.Utilities;
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;

@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Entities.Modules
 {
-    using System;
-
     public enum ModuleSharing
     {
         Unknown,

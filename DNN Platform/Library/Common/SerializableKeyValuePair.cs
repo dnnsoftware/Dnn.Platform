@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Common
 {
-    using System;
     using System.Runtime.Serialization;
 
     using DotNetNuke.Common.Utilities;

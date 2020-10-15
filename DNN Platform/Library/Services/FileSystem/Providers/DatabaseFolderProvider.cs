@@ -14,7 +14,6 @@ namespace DotNetNuke.Services.FileSystem
     using System.Linq;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
 

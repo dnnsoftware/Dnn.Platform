@@ -4,15 +4,10 @@
 namespace DotNetNuke.Entities.Urls
 {
     using System;
-    using System.Reflection;
-    using System.Text.RegularExpressions;
     using System.Web;
-    using System.Web.Caching;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Cache;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
     public static class UrlRewriterUtils

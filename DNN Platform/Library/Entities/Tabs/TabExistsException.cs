@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Tabs
 {
-    using System;
-
     public class TabExistsException : TabException
     {
         public TabExistsException(int tabId, string message)

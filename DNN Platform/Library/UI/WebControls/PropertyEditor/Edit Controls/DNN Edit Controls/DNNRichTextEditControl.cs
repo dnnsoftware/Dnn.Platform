@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
-    using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 

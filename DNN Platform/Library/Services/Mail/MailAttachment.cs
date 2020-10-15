@@ -39,7 +39,9 @@ namespace DotNetNuke.Services.Mail
         }
 
         public byte[] Content { get; set; }
+
         public string Filename { get; set; }
+
         public string ContentType { get; set; }
     }
 }
