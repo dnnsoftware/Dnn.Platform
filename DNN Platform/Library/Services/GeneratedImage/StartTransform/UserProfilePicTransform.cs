@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         {
             photoFile = null;
 
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             var targetUser = UserController.Instance.GetUser(settings.PortalId, this.UserID);
             if (targetUser == null)
             {

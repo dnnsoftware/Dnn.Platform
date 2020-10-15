@@ -516,7 +516,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();
-            return ProfilePropertyAccess.CheckAccessLevel((PortalSettings)settings, photoProperty, currentUser, profileUser);
+            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
         }
     }
 }
