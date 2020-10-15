@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.UserProfile
             photoFile = null;
 
             UserInfo user = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {
