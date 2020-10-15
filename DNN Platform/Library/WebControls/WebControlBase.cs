@@ -31,9 +31,8 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets a value indicating whether the control is currently in the host menu.
+        /// Gets a value indicating whether the control is currently in a page visible only to hosts.
         /// </summary>
-        [Obsolete("There is no longer the concept of aa Host Page.  All pages are controlled by Permissions. Scheduled removal in v11.0.0.")]
         public bool IsHostMenu
         {
             get
