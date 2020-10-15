@@ -14,14 +14,11 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
 
     /// <summary>
     /// The VisibilityControl control provides a base control for defining visibility

@@ -3,10 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     using DotNetNuke.Entities.Modules;
 

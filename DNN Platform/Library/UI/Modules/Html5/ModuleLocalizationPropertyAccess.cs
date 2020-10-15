@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    using System;
     using System.IO;
 
     using DotNetNuke.Entities.Users;

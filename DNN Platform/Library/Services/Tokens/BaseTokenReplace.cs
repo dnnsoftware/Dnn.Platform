@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Tokens
 {
-    using System;
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -55,6 +54,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 return _language;
             }
+
             set
             {
                 _language = value;

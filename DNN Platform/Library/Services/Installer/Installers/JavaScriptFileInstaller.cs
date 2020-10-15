@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Installer.Installers
 {
-    using System;
     using System.Xml.XPath;
 
     using DotNetNuke.Common;

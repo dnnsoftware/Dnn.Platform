@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Search.Internals
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Services.Search.Entities;

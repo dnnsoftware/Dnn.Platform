@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 {
-    using System;
     using System.Collections.Generic;
 
     /// -----------------------------------------------------------------------------

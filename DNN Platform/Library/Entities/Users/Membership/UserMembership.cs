@@ -4,9 +4,6 @@
 namespace DotNetNuke.Entities.Users
 {
     using System;
-    using System.ComponentModel;
-
-    using DotNetNuke.UI.WebControls;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke

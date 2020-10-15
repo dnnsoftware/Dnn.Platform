@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using System.Data;
     using System.Xml.Serialization;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
 

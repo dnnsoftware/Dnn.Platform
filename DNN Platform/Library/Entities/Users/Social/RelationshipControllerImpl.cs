@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Users.Social
 {
-    using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -14,7 +12,6 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Entities.Users.Social.Data;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Social.Notifications;
 
     internal class RelationshipControllerImpl : IRelationshipController
     {

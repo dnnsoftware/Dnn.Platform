@@ -3,10 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
-    using System;
     using System.IO;
 
-    using DotNetNuke.Entities.Controllers;
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Standard;
 

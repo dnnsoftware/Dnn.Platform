@@ -4,11 +4,8 @@
 namespace DotNetNuke.Services.Mobile
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Xml.Serialization;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
     [Serializable]

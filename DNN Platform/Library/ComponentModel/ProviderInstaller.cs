@@ -10,7 +10,6 @@ namespace DotNetNuke.ComponentModel
 
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Exceptions;
 
     public class ProviderInstaller : IComponentInstaller
     {

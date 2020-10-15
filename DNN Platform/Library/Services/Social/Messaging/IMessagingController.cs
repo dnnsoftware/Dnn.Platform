@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Social.Messaging
 {
-    using System;
     using System.Collections.Generic;
 
     using DotNetNuke.Entities.Users;

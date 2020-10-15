@@ -5,9 +5,6 @@
 namespace DotNetNuke.Services.Journal
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;

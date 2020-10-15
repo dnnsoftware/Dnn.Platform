@@ -5,7 +5,6 @@
 namespace DotNetNuke.Entities.Users
 {
     using System;
-    using System.Web.Services.Description;
 
     using DotNetNuke.Entities.Users.Social;
 

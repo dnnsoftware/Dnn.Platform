@@ -20,8 +20,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    using Microsoft.Extensions.DependencyInjection;
-
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : PortalModuleBase

@@ -3,17 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Linq;
-    using System.Text;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Services.FileSystem;
 
     /// <summary>
     /// Persistent data of content with DataProvider instance.

@@ -6,6 +6,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Services.Localization;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +129,7 @@ namespace DotNetNuke.Prompt
             var camelCasedParts = SplitCamelCase(className);
             return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
         }
+
         private static string[] SplitCamelCase(string source)
         {
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");

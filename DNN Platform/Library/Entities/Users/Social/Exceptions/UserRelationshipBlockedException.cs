@@ -7,8 +7,6 @@ namespace DotNetNuke.Entities.Users
     using System;
     using System.Runtime.Serialization;
 
-    using DotNetNuke.Services.Exceptions;
-
     [Serializable]
     public class UserRelationshipBlockedException : Exception
     {

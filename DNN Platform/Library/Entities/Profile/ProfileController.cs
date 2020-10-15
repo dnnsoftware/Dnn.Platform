@@ -6,17 +6,13 @@ namespace DotNetNuke.Entities.Profile
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Text.RegularExpressions;
-    using System.Web;
 
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Profile;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;

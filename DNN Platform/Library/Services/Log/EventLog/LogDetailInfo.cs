@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         /// <inheritdoc />
         public string PropertyValue { get; set; }
+
         public void ReadXml(XmlReader reader)
         {
             reader.ReadStartElement("PropertyName");

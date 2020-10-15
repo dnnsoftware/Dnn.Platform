@@ -8,7 +8,6 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Threading;
 
     using DotNetNuke.Collections.Internal;
@@ -16,7 +15,6 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Log.EventLog;
 
     internal static class TabIndexController

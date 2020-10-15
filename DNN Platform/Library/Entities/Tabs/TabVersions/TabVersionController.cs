@@ -11,7 +11,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
 

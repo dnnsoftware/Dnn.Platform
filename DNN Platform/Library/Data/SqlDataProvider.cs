@@ -12,10 +12,7 @@ namespace DotNetNuke.Data
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Log.EventLog;
 
     public sealed class SqlDataProvider : DataProvider
     {

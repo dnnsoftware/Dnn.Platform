@@ -5,7 +5,6 @@ namespace DotNetNuke.Common.Lists
 {
     using System;
     using System.IO;
-    using System.Linq;
 
     using DotNetNuke.Common.Utilities;
 

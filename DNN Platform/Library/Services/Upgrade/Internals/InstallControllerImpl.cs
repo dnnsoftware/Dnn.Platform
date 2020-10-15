@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Upgrade.Internals
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Globalization;
@@ -13,8 +12,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     using System.Web;
     using System.Xml;
 
-    using DotNetNuke.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Services.FileSystem;

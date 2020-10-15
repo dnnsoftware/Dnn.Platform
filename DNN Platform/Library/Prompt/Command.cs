@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 using DotNetNuke.Abstractions.Prompt;
 using Newtonsoft.Json;
+
 using System;
 
 namespace DotNetNuke.Prompt
@@ -12,10 +13,15 @@ namespace DotNetNuke.Prompt
     public class Command : ICommand
     {
         public string Key { get; set; }
+
         public string Name { get; set; }
+
         public string Category { get; set; }
+
         public string Description { get; set; }
+
         public string Version { get; set; }
+
         [JsonIgnore]
         public string TypeFullName { get; set; }
     }

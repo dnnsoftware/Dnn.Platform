@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    using System;
     using System.Threading;
     using System.Web;
 

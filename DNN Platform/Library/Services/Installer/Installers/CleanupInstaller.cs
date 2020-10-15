@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Installer.Installers
     using System;
     using System.IO;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Xml.XPath;
 
     using DotNetNuke.Common;

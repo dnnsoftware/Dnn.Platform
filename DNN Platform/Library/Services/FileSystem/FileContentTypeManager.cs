@@ -4,10 +4,8 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     using DotNetNuke.Common.Lists;
     using DotNetNuke.ComponentModel;

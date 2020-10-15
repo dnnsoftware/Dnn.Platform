@@ -19,7 +19,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.ModuleCache;

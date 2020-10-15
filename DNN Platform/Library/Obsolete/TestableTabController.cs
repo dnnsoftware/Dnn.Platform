@@ -7,7 +7,6 @@ namespace DotNetNuke.Entities.Tabs.Internal
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Web.Services.Description;
 
     using DotNetNuke.Framework;
 

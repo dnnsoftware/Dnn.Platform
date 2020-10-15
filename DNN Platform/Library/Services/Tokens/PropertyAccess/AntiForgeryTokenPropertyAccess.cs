@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Tokens
 {
-    using System;
     using System.Globalization;
 
     using DotNetNuke.Entities.Users;

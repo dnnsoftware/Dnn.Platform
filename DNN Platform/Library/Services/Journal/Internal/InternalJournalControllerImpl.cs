@@ -3,12 +3,9 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Journal.Internal
 {
-    using System;
     using System.Collections.Generic;
-    using System.Web;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Security;
 
     public class InternalJournalControllerImpl : IInternalJournalController
     {

@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Collections
 {
-    using System;
-
     /// <summary>
     /// This interface used to make a class can have index declaration.
     /// </summary>

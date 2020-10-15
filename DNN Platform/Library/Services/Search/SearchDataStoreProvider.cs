@@ -4,12 +4,8 @@
 namespace DotNetNuke.Services.Search
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     using DotNetNuke.ComponentModel;
-    using DotNetNuke.Services.Search.Entities;
-    using DotNetNuke.Services.Search.Internals;
 
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public abstract class SearchDataStoreProvider

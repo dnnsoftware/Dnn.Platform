@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Entities.Tabs.Actions
 {
-    using System;
     using System.Xml;
 
     public class TabSyncEventArgs : TabEventArgs

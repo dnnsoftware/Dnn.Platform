@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Entities.Users
 {
-    using System;
-
     public class UpdateUserEventArgs : UserEventArgs
     {
         public UserInfo OldUser { get; set; }

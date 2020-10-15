@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Installer.Installers
     using System.Xml.XPath;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 

@@ -4,10 +4,7 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     public interface IFileContentTypeManager
     {

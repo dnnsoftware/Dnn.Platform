@@ -7,7 +7,6 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System;
     using System.ComponentModel;
 
-    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
 

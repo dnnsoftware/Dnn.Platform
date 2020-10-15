@@ -6,7 +6,6 @@ namespace DotNetNuke.Framework
 {
     using System;
 
-    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
 
     /// <summary>

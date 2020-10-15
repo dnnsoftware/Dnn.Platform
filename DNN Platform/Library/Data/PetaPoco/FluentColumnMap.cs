@@ -5,6 +5,7 @@
 namespace DotNetNuke.Data.PetaPoco
 {
     using System;
+
     using global::PetaPoco;
 
     [CLSCompliant(false)]

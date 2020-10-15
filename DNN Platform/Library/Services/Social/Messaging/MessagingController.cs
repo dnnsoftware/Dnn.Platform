@@ -11,7 +11,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;

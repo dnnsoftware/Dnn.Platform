@@ -6,8 +6,6 @@ namespace DotNetNuke.Common.Utilities
 {
     using System;
 
-    using DotNetNuke.Entities.Users;
-
     public interface IPathUtils
     {
         /// <summary>

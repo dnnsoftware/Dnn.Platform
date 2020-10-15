@@ -16,7 +16,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// -----------------------------------------------------------------------------

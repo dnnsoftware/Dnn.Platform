@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
