@@ -46,6 +46,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in 9.8, use PortalController.Instance.GetCurrentSettings() instead. Scheduled removal in v10.0.0.")]
         public PortalSettings PortalSettings
         {
             get
