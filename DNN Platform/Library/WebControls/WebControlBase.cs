@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
 
     /// <summary>
     /// Base class for Dnn specific WebControls.
@@ -37,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+                return Globals.IsHostTab(TabController.CurrentPage.TabID);
             }
         }
 
@@ -46,7 +47,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in 9.8, use PortalController.Instance.GetCurrentSettings() instead. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.8, use PortalController.Instance.GetCurrentSettings() instead, if you need access to the ActiveTab, use TabController.CurrentPage. Scheduled removal in v10.0.0.")]
         public PortalSettings PortalSettings
         {
             get
