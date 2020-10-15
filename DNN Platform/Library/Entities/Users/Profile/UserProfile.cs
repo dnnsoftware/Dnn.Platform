@@ -8,7 +8,6 @@ namespace DotNetNuke.Entities.Users
 // ReSharper restore CheckNamespace
 {
     using System;
-    using System.ComponentModel;
     using System.Globalization;
     using System.Xml.Serialization;
 

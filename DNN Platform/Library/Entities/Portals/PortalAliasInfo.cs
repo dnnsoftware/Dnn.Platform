@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Portals
         {
         }
 
-        public PortalAliasInfo(PortalAliasInfo alias) 
+        public PortalAliasInfo(PortalAliasInfo alias)
             : this((IPortalAliasInfo)alias)
         {
         }

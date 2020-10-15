@@ -95,15 +95,15 @@ namespace DotNetNuke.Services.Search.Internals
         internal static readonly string[] KeyWordSearchFields =
         {
             TitleTag,
-                                                                Tag,
-                                                                DescriptionTag,
-                                                                BodyTag,
-                                                                ContentTag,
-                                                                KeywordsPrefixTag + TitleTag,
-                                                                KeywordsPrefixTag + SubjectTag,
-                                                                KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag,
+            Tag,
+            DescriptionTag,
+            BodyTag,
+            ContentTag,
+            KeywordsPrefixTag + TitleTag,
+            KeywordsPrefixTag + SubjectTag,
+            KeywordsPrefixTag + CommentsTag,
+            KeywordsPrefixTag + AuthorNameTag,
         };
 
-        }
+    }
 }

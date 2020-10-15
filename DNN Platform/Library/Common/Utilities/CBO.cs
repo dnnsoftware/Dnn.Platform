@@ -707,7 +707,7 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField, 
+        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField,
                                                                                         IDataReader dr,
                                                                                         IDictionary<TKey, TValue> objDictionary,
                                                                                         bool closeReader)

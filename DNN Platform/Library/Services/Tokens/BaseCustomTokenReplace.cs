@@ -19,14 +19,17 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
-        protected TokenProvider Provider {
+        protected TokenProvider Provider
+        {
             get => ComponentFactory.GetComponent<TokenProvider>();
         }
 
         TokenContext _tokenContext = new TokenContext();
-        public TokenContext TokenContext {
+        public TokenContext TokenContext
+        {
             get => _tokenContext;
-            set {
+            set
+            {
                 _tokenContext = value;
                 PropertySource = _tokenContext.PropertySource;
             }
@@ -62,7 +65,8 @@ namespace DotNetNuke.Services.Tokens
         /// Gets the Format provider as Culture info from stored language or current culture
         /// </summary>
         /// <value>An CultureInfo</value>
-        protected override CultureInfo FormatProvider {
+        protected override CultureInfo FormatProvider
+        {
             get => TokenContext.Language;
         }
 
@@ -70,9 +74,11 @@ namespace DotNetNuke.Services.Tokens
         /// Gets/sets the language to be used, e.g. for date format
         /// </summary>
         /// <value>A string, representing the locale</value>
-        public override string Language {
+        public override string Language
+        {
             get => TokenContext.Language.ToString();
-            set {
+            set
+            {
                 TokenContext.Language = new CultureInfo(value);
             }
         }
@@ -87,7 +93,8 @@ namespace DotNetNuke.Services.Tokens
             set => TokenContext.CurrentAccessLevel = value;
         }
 
-        public BaseCustomTokenReplace() {
+        public BaseCustomTokenReplace()
+        {
             PropertySource = TokenContext.PropertySource;
         }
 
@@ -140,9 +147,9 @@ namespace DotNetNuke.Services.Tokens
         public bool ContainsTokens(string strSourceText)
         {
             if (string.IsNullOrEmpty(strSourceText))
-			{
+            {
                 return false;
-			}
+            }
 
             // also check providers, since they might support different syntax than square brackets
             return this.TokenizerRegex.Matches(strSourceText).Cast<Match>().Any(currentMatch => currentMatch.Result("${object}").Length > 0)
