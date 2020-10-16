@@ -15,7 +15,7 @@ namespace DotNetNuke.Common.Lists
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedCountryList"/> class.
         /// </summary>
-        /// <param name="locale"></param>
+        /// <param name="locale">This value is not currently used.</param>
         public CachedCountryList(string locale)
             : base()
         {
