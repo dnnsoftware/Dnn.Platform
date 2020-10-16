@@ -27,7 +27,7 @@ namespace DotNetNuke.Collections.Internal
         /// <inheritdoc/>
         public void Dispose()
         {
-            // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            // Do not change this code.  Put cleanup code in Dispose(bool disposing) below.
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
