@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Collections.Internal
 {
-    /// <summary>
-    /// Represents a locking stragety.
-    /// </summary>
+    /// <summary>Represents a locking strategy.</summary>
     public enum LockingStrategy
     {
         /// <summary>
