@@ -2868,7 +2868,6 @@
     <Content Include="Licenses\jQuery Iframe Transport %28MIT%29.txt.resources" />
     <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt.resources" />
     <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt.resources" />
-    <Content Include="Licenses\json2 %28Public Domain%29.txt.resources" />
     <Content Include="Licenses\Dnn ClientDependency %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Dnn-Connect CkEditorProvider %28MIT%29.txt.resources" />
     <Content Include="Licenses\GitVersion %28MIT%29.txt.resources" />
@@ -3026,7 +3025,6 @@
     <Content Include="Resources\Shared\scripts\jquery\jquery.min.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.mousewheel.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.tmpl.js" />
-    <Content Include="Resources\Shared\scripts\json2.js" />
     <Content Include="Resources\Shared\scripts\knockout.js" />
     <Content Include="Resources\Shared\scripts\knockout.mapping.js" />
     <Content Include="Resources\Shared\scripts\slides.min.jquery.js" />
