@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.GoogleTagManagerConnector", "Dnn.GoogleTagManagerConnector.csproj", "{ADB57FFD-677C-4C30-9723-6EE0A475315B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
+		Cloud_Release|Any CPU = Cloud_Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Debug|Any CPU.ActiveCfg = Cloud_Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Debug|Any CPU.Build.0 = Cloud_Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Release|Any CPU.ActiveCfg = Cloud_Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Release|Any CPU.Build.0 = Cloud_Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E92A2BF-8DA9-498C-BB30-4B2AB18CE06A}
+	EndGlobalSection
+EndGlobal
