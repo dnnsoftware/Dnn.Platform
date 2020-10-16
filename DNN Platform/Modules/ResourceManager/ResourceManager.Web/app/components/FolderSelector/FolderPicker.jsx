@@ -58,14 +58,15 @@ export default class FolderPicker extends React.Component {
         if (this.unmounted) {
             return;
         }
-        
+
         const { props } = this;
         let homeFolderId = props.homeFolderId;
 
         let source = result.Tree;
         let filtered = this.findNode(source, (n) => {return n !== null && n.data.key === homeFolderId.toString();});
-        source.children.splice(0, source.children.length, filtered);
-
+        if (filtered !== null){
+            source.children.splice(0, source.children.length, filtered);
+        }
         this.setState({ folders: result.Tree });
     }
 

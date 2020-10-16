@@ -51,7 +51,9 @@ export default class FolderSelector extends Component {
         const searchFolderText = e.target.value ? e.target.value : "";
         this.setState({ searchFolderText });
         clearTimeout(this.timeOut);
-        this.timeOut = setTimeout(() => {this.props.searchFolder(searchFolderText.toLowerCase());}, 500);
+        this.timeOut = setTimeout(() => 
+            this.props.searchFolder(searchFolderText.toLowerCase()),
+        500);
     }
 
     clearSearch(e) {
@@ -87,7 +89,7 @@ export default class FolderSelector extends Component {
                             <input 
                                 type="text" 
                                 value={this.state.searchFolderText} 
-                                onChange={this.onChangeSearchFolderText.bind(this) } 
+                                onChange={e => this.onChangeSearchFolderText(e) } 
                                 placeholder={searchFolderPlaceHolder}
                                 aria-label="Search" />
                             {this.state.searchFolderText && 
