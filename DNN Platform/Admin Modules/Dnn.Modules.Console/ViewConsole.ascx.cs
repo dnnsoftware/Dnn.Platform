@@ -34,7 +34,6 @@ namespace Dnn.Modules.Console
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
         private readonly INavigationManager navigationManager;
-        private ConsoleController consoleCtrl;
         private string defaultSize = string.Empty;
         private string defaultView = string.Empty;
         private int groupTabID = -1;
