@@ -6,9 +6,7 @@ namespace DotNetNuke.Collections.Internal
     using System;
     using System.Threading;
 
-    /// <summary>
-    /// Provides read/write slimlock functionnality.
-    /// </summary>
+    /// <summary>Provides read/write slimlock functionality.</summary>
     internal class ReaderWriterSlimLock : ISharedCollectionLock
     {
         private bool disposed;
