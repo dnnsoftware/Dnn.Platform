@@ -11,7 +11,7 @@ namespace DotNetNuke.Collections.Internal
     /// <summary>
     /// Provides naive locking for generic lists.
     /// </summary>
-    /// <typeparam name="T">The type of the IList.</typeparam>
+    /// <typeparam name="T">The type of value in the list.</typeparam>
     public class NaiveLockingList<T> : IList<T>
     {
         private readonly SharedList<T> list = new SharedList<T>();
