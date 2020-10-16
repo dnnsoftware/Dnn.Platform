@@ -7,9 +7,7 @@ namespace DotNetNuke.Collections.Internal
     using System.Collections;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Provides shared functionnality to a generic dictionary.
-    /// </summary>
+    /// <summary>An <see cref="IDictionary{TKey,TValue}"/> implementation designed to be shared across threads.</summary>
     /// <typeparam name="TKey">The type of the key.</typeparam>
     /// <typeparam name="TValue">The type of the value.</typeparam>
     [Serializable]
