@@ -22,7 +22,7 @@ namespace DotNetNuke.Common.Lists
         /// <summary>
         /// Initializes a new instance of the <see cref="ListInfo"/> class.
         /// </summary>
-        /// <param name="Name"></param>
+        /// <param name="Name">The name of the list.</param>
         public ListInfo(string Name)
         {
             this.SystemList = Null.NullBoolean;
