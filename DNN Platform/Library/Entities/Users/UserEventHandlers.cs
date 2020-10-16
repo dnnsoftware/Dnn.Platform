@@ -13,10 +13,12 @@ namespace DotNetNuke.Entities.Users
     [Export(typeof(IUserEventHandlers))]
     public class UserEventHandlers : IUserEventHandlers
     {
+        /// <inheritdoc/>
         public void UserAuthenticated(object sender, UserEventArgs args)
         {
         }
 
+        /// <inheritdoc/>
         public void UserCreated(object sender, UserEventArgs args)
         {
             UserRegistrationEmailNotifier.NotifyAdministrator(args.User);
@@ -27,15 +29,18 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <inheritdoc/>
         public void UserRemoved(object sender, UserEventArgs args)
         {
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 
+        /// <inheritdoc/>
         public void UserDeleted(object sender, UserEventArgs args)
         {
         }
 
+        /// <inheritdoc/>
         public void UserApproved(object sender, UserEventArgs args)
         {
             if (args.SendNotification)
@@ -46,6 +51,7 @@ namespace DotNetNuke.Entities.Users
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 
+        /// <inheritdoc/>
         public void UserUpdated(object sender, UpdateUserEventArgs args)
         {
         }

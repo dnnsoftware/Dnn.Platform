@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
     /// </summary>
     internal class QueryParameterComparer : IComparer<QueryParameter>
     {
+        /// <inheritdoc/>
         public int Compare(QueryParameter x, QueryParameter y)
         {
             if (x.Name == y.Name)

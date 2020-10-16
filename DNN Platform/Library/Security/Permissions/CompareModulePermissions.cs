@@ -17,6 +17,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     internal class CompareModulePermissions : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             return ((ModulePermissionInfo)x).ModulePermissionID.CompareTo(((ModulePermissionInfo)y).ModulePermissionID);

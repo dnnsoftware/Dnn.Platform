@@ -176,6 +176,7 @@ namespace DotNetNuke.Entities.Urls
             return destUrl;
         }
 
+        /// <inheritdoc/>
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             Guid parentTraceId = Guid.Empty;

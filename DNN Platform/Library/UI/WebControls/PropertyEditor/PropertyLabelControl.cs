@@ -31,6 +31,9 @@ namespace DotNetNuke.UI.WebControls
         protected Panel pnlHelp;
         private string _ResourceKey;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyLabelControl"/> class.
+        /// </summary>
         public PropertyLabelControl()
         {
         }
@@ -213,6 +216,7 @@ namespace DotNetNuke.UI.WebControls
 
         public bool Required { get; set; }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -288,6 +292,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

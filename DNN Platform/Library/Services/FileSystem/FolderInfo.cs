@@ -26,17 +26,39 @@ namespace DotNetNuke.Services.FileSystem
         private FolderPermissionCollection _folderPermissions;
         private int _folderMappingId;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
+        /// </summary>
         public FolderInfo()
             : this(false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="folderpath"></param>
+        /// <param name="storageLocation"></param>
+        /// <param name="isProtected"></param>
+        /// <param name="isCached"></param>
+        /// <param name="lastUpdated"></param>
         [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
             : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
+        /// </summary>
+        /// <param name="uniqueId"></param>
+        /// <param name="portalId"></param>
+        /// <param name="folderpath"></param>
+        /// <param name="storageLocation"></param>
+        /// <param name="isProtected"></param>
+        /// <param name="isCached"></param>
+        /// <param name="lastUpdated"></param>
         [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
         {
@@ -53,6 +75,10 @@ namespace DotNetNuke.Services.FileSystem
             this.LastUpdated = lastUpdated;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
+        /// </summary>
+        /// <param name="initialiseEmptyPermissions"></param>
         internal FolderInfo(bool initialiseEmptyPermissions)
         {
             this.FolderID = Null.NullInteger;
@@ -65,12 +91,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("uniqueid")]
         public Guid UniqueId { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("versionguid")]
         public Guid VersionGuid { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("foldername")]
         public string FolderName
         {
@@ -110,6 +139,7 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("parentid")]
         public int ParentID { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("physicalpath")]
         public string PhysicalPath
         {
@@ -145,12 +175,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("portalid")]
         public int PortalID { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("storagelocation")]
         public int StorageLocation { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("folderpermissions")]
         public FolderPermissionCollection FolderPermissions
         {
@@ -160,6 +193,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         public bool IsStorageSecure
         {
             get
@@ -169,10 +203,12 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("folderid")]
         public int FolderID { get; set; }
 
 
+        /// <inheritdoc/>
         [XmlElement("displayname")]
         public string DisplayName
         {
@@ -192,9 +228,11 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("folderpath")]
         public string FolderPath { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("displaypath")]
         public string DisplayPath
         {
@@ -214,9 +252,11 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("iscached")]
         public bool IsCached { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("isprotected")]
         public bool IsProtected { get; set; }
 
@@ -233,10 +273,12 @@ namespace DotNetNuke.Services.FileSystem
         public string MappedPath { get; set; }
 
 
+        /// <inheritdoc/>
         [XmlIgnore]
         public DateTime LastUpdated { get; set; }
 
 
+        /// <inheritdoc/>
         public int FolderMappingID
         {
             get

@@ -644,6 +644,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<ICBO> GetFactory()
         {
             return () => new CBO();
@@ -1047,16 +1048,19 @@ namespace DotNetNuke.Common.Utilities
             return tableName;
         }
 
+        /// <inheritdoc/>
         List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
         {
             return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
         }
 
+        /// <inheritdoc/>
         TObject ICBO.FillObject<TObject>(IDataReader dr)
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
         }
 
+        /// <inheritdoc/>
         TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);

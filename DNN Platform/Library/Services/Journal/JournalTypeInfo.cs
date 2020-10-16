@@ -34,6 +34,7 @@ namespace DotNetNuke.Services.Journal
 
         public bool EnableComments { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -47,6 +48,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        /// <inheritdoc/>
         public void Fill(System.Data.IDataReader dr)
         {
             this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);

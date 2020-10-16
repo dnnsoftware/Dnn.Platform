@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </summary>
     public class InstallController : ServiceLocator<IInstallController, InstallController>
     {
+        /// <inheritdoc/>
         protected override Func<IInstallController> GetFactory()
         {
             return () => new InstallControllerImpl();

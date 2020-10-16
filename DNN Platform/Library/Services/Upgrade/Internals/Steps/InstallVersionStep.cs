@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
-
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Instrumentation;
@@ -20,6 +19,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallVersionStep));
 
+        /// <inheritdoc/>
         public override void Execute()
         {
             this.Percentage = 0;

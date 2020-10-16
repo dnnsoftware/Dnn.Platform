@@ -162,16 +162,19 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void AddEditorRow(Table table, object obj)
         {
             this.AddEditorRow(table, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
         }
 
+        /// <inheritdoc/>
         protected override void AddEditorRow(Panel container, object obj)
         {
             this.AddEditorRow(container, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
         }
 
+        /// <inheritdoc/>
         protected override void AddEditorRow(object obj)
         {
             this.AddEditorRow(this, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));

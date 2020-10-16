@@ -25,6 +25,9 @@ namespace DotNetNuke.Entities.Host
             this.RuleType = ruleType;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPFilterInfo"/> class.
+        /// </summary>
         public IPFilterInfo()
         {
             this.IPAddress = string.Empty;

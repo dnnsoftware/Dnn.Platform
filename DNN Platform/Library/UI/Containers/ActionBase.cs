@@ -30,6 +30,7 @@ namespace DotNetNuke.UI.Containers
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
 
+        /// <inheritdoc/>
         public event ActionEventHandler Action;
 
         public bool EditMode

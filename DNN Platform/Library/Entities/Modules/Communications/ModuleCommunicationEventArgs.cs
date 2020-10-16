@@ -7,15 +7,29 @@ namespace DotNetNuke.Entities.Modules.Communications
 
     public class ModuleCommunicationEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleCommunicationEventArgs"/> class.
+        /// </summary>
         public ModuleCommunicationEventArgs()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleCommunicationEventArgs"/> class.
+        /// </summary>
+        /// <param name="text"></param>
         public ModuleCommunicationEventArgs(string text)
         {
             this.Text = text;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleCommunicationEventArgs"/> class.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <param name="sender"></param>
+        /// <param name="target"></param>
         public ModuleCommunicationEventArgs(string type, object value, string sender, string target)
         {
             this.Type = type;

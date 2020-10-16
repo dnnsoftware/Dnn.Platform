@@ -17,11 +17,18 @@ namespace DotNetNuke.Services.Exceptions
         private string m_Querystring;
 
         // default constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityException"/> class.
+        /// </summary>
         public SecurityException()
         {
         }
 
         // constructor with exception message
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
         public SecurityException(string message)
             : base(message)
         {
@@ -29,12 +36,22 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with message and inner exception
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public SecurityException(string message, Exception inner)
             : base(message, inner)
         {
             this.InitilizePrivateVariables();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityException"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected SecurityException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

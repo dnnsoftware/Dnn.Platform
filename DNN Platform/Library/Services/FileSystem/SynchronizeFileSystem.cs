@@ -11,11 +11,16 @@ namespace DotNetNuke.Services.FileSystem
 
     public class SynchronizeFileSystem : SchedulerClient
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SynchronizeFileSystem"/> class.
+        /// </summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public SynchronizeFileSystem(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try

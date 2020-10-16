@@ -34,6 +34,7 @@ namespace DotNetNuke.UI.Containers
         private NavigationProvider _ProviderControl;
         private string _ProviderName = "DNNMenuNavigationProvider";
 
+        /// <inheritdoc/>
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------

@@ -10,10 +10,17 @@ namespace DotNetNuke.Services.Journal
 
     public class JournalEntity : IPropertyAccess
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JournalEntity"/> class.
+        /// </summary>
         public JournalEntity()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JournalEntity"/> class.
+        /// </summary>
+        /// <param name="entityXML"></param>
         public JournalEntity(string entityXML)
         {
             if (!string.IsNullOrEmpty(entityXML))
@@ -38,6 +45,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get { return CacheLevel.fullyCacheable; }
@@ -51,6 +59,7 @@ namespace DotNetNuke.Services.Journal
 
         public string Avatar { get; set; }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string OutputFormat = string.Empty;

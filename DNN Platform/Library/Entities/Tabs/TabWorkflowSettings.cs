@@ -20,12 +20,16 @@ namespace DotNetNuke.Entities.Tabs
         private readonly ITabController _tabController;
         private readonly ISystemWorkflowManager _systemWorkflowManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabWorkflowSettings"/> class.
+        /// </summary>
         public TabWorkflowSettings()
         {
             this._tabController = TabController.Instance;
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
+        /// <inheritdoc/>
         public int GetDefaultTabWorkflowId(int portalId)
         {
             var workflowId = PortalController.GetPortalSettingAsInteger(DefaultTabWorkflowKey, portalId, Null.NullInteger);
@@ -42,11 +46,13 @@ namespace DotNetNuke.Entities.Tabs
             return workflowId;
         }
 
+        /// <inheritdoc/>
         public void SetDefaultTabWorkflowId(int portalId, int workflowId)
         {
             PortalController.UpdatePortalSetting(portalId, DefaultTabWorkflowKey, workflowId.ToString(CultureInfo.InvariantCulture), true);
         }
 
+        /// <inheritdoc/>
         public void SetWorkflowEnabled(int portalId, bool enabled)
         {
             Requires.NotNegative("portalId", portalId);
@@ -54,6 +60,7 @@ namespace DotNetNuke.Entities.Tabs
             PortalController.UpdatePortalSetting(portalId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture), true);
         }
 
+        /// <inheritdoc/>
         public void SetWorkflowEnabled(int portalId, int tabId, bool enabled)
         {
             Requires.NotNegative("tabId", tabId);
@@ -61,6 +68,7 @@ namespace DotNetNuke.Entities.Tabs
             this._tabController.UpdateTabSetting(tabId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture));
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowEnabled(int portalId, int tabId)
         {
             if (!this.IsWorkflowEnabled(portalId))
@@ -74,6 +82,7 @@ namespace DotNetNuke.Entities.Tabs
             return !this._tabController.IsHostOrAdminPage(tabInfo) && (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey]));
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowEnabled(int portalId)
         {
             if (portalId == Null.NullInteger)
@@ -84,6 +93,7 @@ namespace DotNetNuke.Entities.Tabs
             return Convert.ToBoolean(PortalController.GetPortalSetting(TabWorkflowEnableKey, portalId, bool.FalseString));
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabWorkflowSettings> GetFactory()
         {
             return () => new TabWorkflowSettings();

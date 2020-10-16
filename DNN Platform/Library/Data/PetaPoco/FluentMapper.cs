@@ -16,6 +16,10 @@ namespace DotNetNuke.Data.PetaPoco
     {
         private readonly string _tablePrefix;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FluentMapper{TModel}"/> class.
+        /// </summary>
+        /// <param name="tablePrefix"></param>
         public FluentMapper(string tablePrefix)
         {
             this.CacheKey = string.Empty;
@@ -39,11 +43,13 @@ namespace DotNetNuke.Data.PetaPoco
 
         public TableInfo TableInfo { get; set; }
 
+        /// <inheritdoc/>
         public TableInfo GetTableInfo(Type pocoType)
         {
             return this.TableInfo;
         }
 
+        /// <inheritdoc/>
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
         {
             var fluentMap = default(FluentColumnMap);
@@ -55,6 +61,7 @@ namespace DotNetNuke.Data.PetaPoco
             return null;
         }
 
+        /// <inheritdoc/>
         public Func<object, object> GetFromDbConverter(PropertyInfo targetProperty, Type sourceType)
         {
             // ReSharper disable once RedundantAssignment
@@ -67,6 +74,7 @@ namespace DotNetNuke.Data.PetaPoco
             return null;
         }
 
+        /// <inheritdoc/>
         public Func<object, object> GetToDbConverter(PropertyInfo sourceProperty)
         {
             // ReSharper disable once RedundantAssignment

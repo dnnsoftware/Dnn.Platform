@@ -10,6 +10,11 @@ namespace DotNetNuke.Entities.Users
 
     public class RelationshipEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RelationshipEventArgs"/> class.
+        /// </summary>
+        /// <param name="relationship"></param>
+        /// <param name="portalId"></param>
         internal RelationshipEventArgs(UserRelationship relationship, int portalId)
         {
             this.Relationship = relationship;

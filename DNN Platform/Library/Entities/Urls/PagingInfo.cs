@@ -9,6 +9,11 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     public class PagingInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PagingInfo"/> class.
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
         public PagingInfo(int pageNumber, int pageSize)
         {
             this.PageNumber = pageNumber;

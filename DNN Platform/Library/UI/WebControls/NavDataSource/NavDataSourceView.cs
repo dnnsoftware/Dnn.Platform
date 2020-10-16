@@ -11,6 +11,10 @@ namespace DotNetNuke.UI.WebControls
         private readonly string m_sKey;
         private string m_sNamespace = "MyNS";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NavDataSourceView"/> class.
+        /// </summary>
+        /// <param name="viewPath"></param>
         public NavDataSourceView(string viewPath)
         {
             if (string.IsNullOrEmpty(viewPath))

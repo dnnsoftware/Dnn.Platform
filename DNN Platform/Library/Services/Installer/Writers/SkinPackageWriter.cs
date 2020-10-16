@@ -22,6 +22,10 @@ namespace DotNetNuke.Services.Installer.Writers
         private readonly SkinPackageInfo _SkinPackage;
         private readonly string _SubFolder;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
+        /// </summary>
+        /// <param name="package"></param>
         public SkinPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -29,6 +33,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this.SetBasePath();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
+        /// </summary>
+        /// <param name="skinPackage"></param>
+        /// <param name="package"></param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
             : base(package)
         {
@@ -36,6 +45,12 @@ namespace DotNetNuke.Services.Installer.Writers
             this.SetBasePath();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
+        /// </summary>
+        /// <param name="skinPackage"></param>
+        /// <param name="package"></param>
+        /// <param name="basePath"></param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath)
             : base(package)
         {
@@ -43,6 +58,13 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = basePath;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
+        /// </summary>
+        /// <param name="skinPackage"></param>
+        /// <param name="package"></param>
+        /// <param name="basePath"></param>
+        /// <param name="subFolder"></param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath, string subFolder)
             : base(package)
         {
@@ -51,6 +73,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Path.Combine(basePath, subFolder);
         }
 
+        /// <inheritdoc/>
         public override bool IncludeAssemblies
         {
             get
@@ -79,12 +102,14 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Call base class method with includeAppCode = false
             base.GetFiles(includeSource, false);
         }
 
+        /// <inheritdoc/>
         protected override void ParseFiles(DirectoryInfo folder, string rootPath)
         {
             // Add the Files in the Folder
@@ -112,6 +137,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             var skinFileWriter = new SkinComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);

@@ -24,6 +24,13 @@ namespace DotNetNuke.Prompt
         /// The resource key for the description of this parameter
         /// </summary>
         public string DescriptionKey { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="descriptionKey"></param>
+        /// <param name="required"></param>
+        /// <param name="defaultValue"></param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required, string defaultValue)
         {
             Name = name;
@@ -31,12 +38,29 @@ namespace DotNetNuke.Prompt
             DefaultValue = defaultValue;
             DescriptionKey = descriptionKey;
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="descriptionKey"></param>
+        /// <param name="required"></param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required) : this(name, descriptionKey, required, string.Empty)
         {
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="descriptionKey"></param>
+        /// <param name="defaultValue"></param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, string defaultValue) : this(name, descriptionKey, false, defaultValue)
         {
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="descriptionKey"></param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey) : this(name, descriptionKey, false, string.Empty)
         {
         }

@@ -417,6 +417,7 @@ namespace DotNetNuke.UI.ControlPanels
             Personalization.SetProfile("Usability", "ControlPanelVisible" + this.PortalSettings.PortalId, isVisible.ToString());
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             if (this.Page.Items.Contains(typeof(ControlPanelBase)) && this.Page.Items[typeof(ControlPanelBase)] is ControlPanelBase)

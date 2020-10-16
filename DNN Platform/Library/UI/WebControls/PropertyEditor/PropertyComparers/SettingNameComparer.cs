@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.WebControls
 
     public class SettingNameComparer : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             if (x is SettingInfo && y is SettingInfo)

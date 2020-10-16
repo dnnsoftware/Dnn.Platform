@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalController.Instance.GetCurrentPortalSettings to get a mockable PortalSettings. Scheduled removal in v10.0.0.")]
     public class TestablePortalSettings : ComponentBase<IPortalSettings, TestablePortalSettings>, IPortalSettings
     {
+        /// <inheritdoc/>
         public string AdministratorRoleName
         {
             get { return PortalSettings.Current.AdministratorRoleName; }

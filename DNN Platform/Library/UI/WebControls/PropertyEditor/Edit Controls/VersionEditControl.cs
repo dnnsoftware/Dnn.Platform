@@ -47,6 +47,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             string majorVersion = postCollection[postDataKey + "_Major"];

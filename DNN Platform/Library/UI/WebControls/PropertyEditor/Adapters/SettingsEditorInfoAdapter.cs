@@ -27,6 +27,12 @@ namespace DotNetNuke.UI.WebControls
         private readonly object DataSource;
         private string FieldName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.
+        /// </summary>
+        /// <param name="dataSource"></param>
+        /// <param name="dataMember"></param>
+        /// <param name="fieldName"></param>
         public SettingsEditorInfoAdapter(object dataSource, object dataMember, string fieldName)
         {
             this.DataMember = dataMember;
@@ -34,6 +40,7 @@ namespace DotNetNuke.UI.WebControls
             this.FieldName = fieldName;
         }
 
+        /// <inheritdoc/>
         public EditorInfo CreateEditControl()
         {
             var info = (SettingInfo)this.DataMember;
@@ -71,6 +78,7 @@ namespace DotNetNuke.UI.WebControls
             return editInfo;
         }
 
+        /// <inheritdoc/>
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
             string key;
@@ -103,6 +111,7 @@ namespace DotNetNuke.UI.WebControls
             return _IsDirty;
         }
 
+        /// <inheritdoc/>
         public bool UpdateVisibility(PropertyEditorEventArgs e)
         {
             return false;

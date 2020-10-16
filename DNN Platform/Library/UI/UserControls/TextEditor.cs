@@ -41,6 +41,9 @@ namespace DotNetNuke.UI.UserControls
         protected TextBox TxtDesktopHTML;
         private HtmlEditorProvider _richTextEditor;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEditor"/> class.
+        /// </summary>
         public TextEditor()
         {
             this.HtmlEncode = true;
@@ -262,6 +265,7 @@ namespace DotNetNuke.UI.UserControls
             this.OptRenderSelectedIndexChanged(this.OptRender, EventArgs.Empty);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

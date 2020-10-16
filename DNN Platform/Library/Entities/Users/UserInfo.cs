@@ -41,6 +41,9 @@ namespace DotNetNuke.Entities.Users
         private UserMembership _membership;
         private UserProfile _profile;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserInfo"/> class.
+        /// </summary>
         public UserInfo()
         {
             this.IsDeleted = Null.NullBoolean;
@@ -81,6 +84,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <inheritdoc/>
         [Browsable(false)]
         public CacheLevel Cacheability
         {
@@ -261,6 +265,7 @@ namespace DotNetNuke.Entities.Users
             set { this._profile = value; }
         }
 
+        /// <inheritdoc/>
         [Browsable(false)]
         public string[] Roles
         {
@@ -303,6 +308,7 @@ namespace DotNetNuke.Entities.Users
         [Required(true)]
         public string Username { get; set; }
 
+        /// <inheritdoc/>
         public string VanityUrl { get; set; }
 
         /// <summary>

@@ -4,9 +4,19 @@
 
 namespace DotNetNuke.Collections.Internal
 {
+    /// <summary>
+    /// Represents a locking stragety.
+    /// </summary>
     public enum LockingStrategy
     {
+        /// <summary>
+        /// A read/write locking strategy.
+        /// </summary>
         ReaderWriter = 0,
+
+        /// <summary>
+        /// An exclusive strategy.
+        /// </summary>
         Exclusive,
     }
 }

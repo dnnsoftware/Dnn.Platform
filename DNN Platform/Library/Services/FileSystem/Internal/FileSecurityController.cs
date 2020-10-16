@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
 
+        /// <inheritdoc/>
         public bool Validate(string fileName, Stream fileContent)
         {
             Requires.NotNullOrEmpty("fileName", fileName);
@@ -42,6 +43,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<IFileSecurityController> GetFactory()
         {
             return () => new FileSecurityController();

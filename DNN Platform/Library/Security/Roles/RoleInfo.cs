@@ -37,6 +37,9 @@ namespace DotNetNuke.Security.Roles
         private bool _RoleTypeSet = Null.NullBoolean;
         private Dictionary<string, string> _settings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleInfo"/> class.
+        /// </summary>
         public RoleInfo()
         {
             this.TrialFrequency = "N";
@@ -105,6 +108,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get { return CacheLevel.fullyCacheable; }
@@ -373,6 +377,7 @@ namespace DotNetNuke.Security.Roles
             this.FillInternal(dr);
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser,
                                   Scope accessLevel, ref bool propertyNotFound)
         {

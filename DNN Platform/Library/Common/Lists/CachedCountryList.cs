@@ -12,6 +12,10 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class CachedCountryList : Dictionary<string, CachedCountryList.Country>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CachedCountryList"/> class.
+        /// </summary>
+        /// <param name="locale"></param>
         public CachedCountryList(string locale)
             : base()
         {

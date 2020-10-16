@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Users.Social
     /// </summary>
     public class RelationshipController : ServiceLocator<IRelationshipController, RelationshipController>
     {
+        /// <inheritdoc/>
         protected override Func<IRelationshipController> GetFactory()
         {
             return () => new RelationshipControllerImpl();

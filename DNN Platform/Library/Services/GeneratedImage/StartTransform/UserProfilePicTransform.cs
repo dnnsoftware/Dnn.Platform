@@ -19,6 +19,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class UserProfilePicTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserProfilePicTransform"/> class.
+        /// </summary>
         public UserProfilePicTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

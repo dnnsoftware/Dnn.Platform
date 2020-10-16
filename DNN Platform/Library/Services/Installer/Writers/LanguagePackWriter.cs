@@ -28,6 +28,10 @@ namespace DotNetNuke.Services.Installer.Writers
         private Locale _Language;
         private LanguagePackInfo _LanguagePack;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
+        /// </summary>
+        /// <param name="package"></param>
         public LanguagePackWriter(PackageInfo package)
             : base(package)
         {
@@ -53,6 +57,11 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
+        /// </summary>
+        /// <param name="manifestNav"></param>
+        /// <param name="installer"></param>
         public LanguagePackWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
             this._Language = new Locale();
@@ -83,6 +92,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Null.NullString;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
+        /// </summary>
+        /// <param name="language"></param>
+        /// <param name="package"></param>
         public LanguagePackWriter(Locale language, PackageInfo package)
             : base(package)
         {
@@ -90,6 +104,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Null.NullString;
         }
 
+        /// <inheritdoc/>
         public override bool IncludeAssemblies
         {
             get
@@ -136,12 +151,14 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Language file starts at the root
             this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
         }
 
+        /// <inheritdoc/>
         protected override void ParseFiles(DirectoryInfo folder, string rootPath)
         {
             if (this.LanguagePack.PackageType == LanguagePackType.Core)
@@ -177,6 +194,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             LanguageComponentWriter languageFileWriter;

@@ -22,6 +22,7 @@ namespace DotNetNuke.Framework.Reflections
             set { this._assemblyLocator = value; }
         }
 
+        /// <inheritdoc/>
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
         {
             // this method is not readily testable as the assemblies in the current app domain
@@ -34,6 +35,7 @@ namespace DotNetNuke.Framework.Reflections
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Type> GetAllMatchingTypes(Predicate<Type> predicate)
         {
             foreach (var assembly in this.AssemblyLocator.Assemblies)

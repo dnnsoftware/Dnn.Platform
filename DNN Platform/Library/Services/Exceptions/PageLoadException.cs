@@ -9,22 +9,39 @@ namespace DotNetNuke.Services.Exceptions
     public class PageLoadException : BasePortalException
     {
         // default constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
+        /// </summary>
         public PageLoadException()
         {
         }
 
         // constructor with exception message
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
         public PageLoadException(string message)
             : base(message)
         {
         }
 
         // constructor with message and inner exception
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public PageLoadException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected PageLoadException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

@@ -17,11 +17,26 @@ namespace DotNetNuke.Common.Utilities.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RetryableAction"/> class.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="description"></param>
+        /// <param name="maxRetries"></param>
+        /// <param name="delay"></param>
         public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay)
             : this(action, description, maxRetries, delay, 1)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RetryableAction"/> class.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="description"></param>
+        /// <param name="maxRetries"></param>
+        /// <param name="delay"></param>
+        /// <param name="delayMultiplier"></param>
         public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay, float delayMultiplier)
         {
             if (delay.TotalMilliseconds > int.MaxValue)

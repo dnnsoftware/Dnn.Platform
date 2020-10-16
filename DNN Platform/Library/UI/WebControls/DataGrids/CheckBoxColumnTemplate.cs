@@ -27,11 +27,18 @@ namespace DotNetNuke.UI.WebControls
         private ListItemType mItemType = ListItemType.Item;
         private string mText = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckBoxColumnTemplate"/> class.
+        /// </summary>
         public CheckBoxColumnTemplate()
             : this(ListItemType.Item)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckBoxColumnTemplate"/> class.
+        /// </summary>
+        /// <param name="itemType"></param>
         public CheckBoxColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;

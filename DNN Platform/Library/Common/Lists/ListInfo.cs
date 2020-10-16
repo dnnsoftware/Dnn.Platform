@@ -11,11 +11,18 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class ListInfo : BaseEntityInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListInfo"/> class.
+        /// </summary>
         public ListInfo()
             : this(string.Empty)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListInfo"/> class.
+        /// </summary>
+        /// <param name="Name"></param>
         public ListInfo(string Name)
         {
             this.SystemList = Null.NullBoolean;

@@ -20,6 +20,9 @@ namespace DotNetNuke.Common.Internal
         [ImportMany]
         private IEnumerable<Lazy<T>> _eventHandlers = new List<Lazy<T>>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventHandlersContainer{T}"/> class.
+        /// </summary>
         public EventHandlersContainer()
         {
             try
@@ -37,6 +40,7 @@ namespace DotNetNuke.Common.Internal
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Lazy<T>> EventHandlers
         {
             get

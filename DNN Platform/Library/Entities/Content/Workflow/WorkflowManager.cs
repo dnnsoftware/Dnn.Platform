@@ -21,6 +21,9 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowStateRepository _workflowStateRepository;
         private readonly ISystemWorkflowManager _systemWorkflowManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowManager"/> class.
+        /// </summary>
         public WorkflowManager()
         {
             this._dataProvider = DataProvider.Instance();
@@ -29,6 +32,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
+        /// <inheritdoc/>
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
             var workflowToDelete = this._workflowRepository.GetWorkflow(workflow.WorkflowID);
@@ -51,11 +55,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowRepository.DeleteWorkflow(workflowToDelete);
         }
 
+        /// <inheritdoc/>
         public Entities.Workflow GetWorkflow(int workflowId)
         {
             return this._workflowRepository.GetWorkflow(workflowId);
         }
 
+        /// <inheritdoc/>
         public Entities.Workflow GetWorkflow(ContentItem contentItem)
         {
             if (contentItem.StateID == Null.NullInteger)
@@ -67,11 +73,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state == null ? null : this.GetWorkflow(state.WorkflowID);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
             return this._workflowRepository.GetWorkflows(portalId);
         }
 
+        /// <inheritdoc/>
         public void AddWorkflow(Entities.Workflow workflow)
         {
             this._workflowRepository.AddWorkflow(workflow);
@@ -92,21 +100,25 @@ namespace DotNetNuke.Entities.Content.Workflow
                               };
         }
 
+        /// <inheritdoc/>
         public void UpdateWorkflow(Entities.Workflow workflow)
         {
             this._workflowRepository.UpdateWorkflow(workflow);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkflowUsageItem> GetWorkflowUsage(int workflowId, int pageIndex, int pageSize)
         {
             return CBO.FillCollection<WorkflowUsageItem>(this._dataProvider.GetContentWorkflowUsage(workflowId, pageIndex, pageSize));
         }
 
+        /// <inheritdoc/>
         public int GetWorkflowUsageCount(int workflowId)
         {
             return this._dataProvider.GetContentWorkflowUsageCount(workflowId);
         }
 
+        /// <inheritdoc/>
         protected override System.Func<IWorkflowManager> GetFactory()
         {
             return () => new WorkflowManager();

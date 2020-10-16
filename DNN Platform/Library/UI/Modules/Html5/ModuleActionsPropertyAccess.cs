@@ -42,12 +42,18 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly ModuleActionCollection _moduleActions;
         private readonly ModuleInstanceContext _moduleContext;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleActionsPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="moduleContext"></param>
+        /// <param name="moduleActions"></param>
         public ModuleActionsPropertyAccess(ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
         {
             this._moduleContext = moduleContext;
             this._moduleActions = moduleActions;
         }
 
+        /// <inheritdoc/>
         protected override string ProcessToken(ModuleActionDto model, UserInfo accessingUser, Scope accessLevel)
         {
             var title = (!string.IsNullOrEmpty(model.TitleKey) && !string.IsNullOrEmpty(model.LocalResourceFile))

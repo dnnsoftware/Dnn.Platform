@@ -33,6 +33,9 @@ namespace DotNetNuke.UI.WebControls
         private List<ListEntryInfo> _listEntries;
         private string _listName = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DNNListEditControl"/> class.
+        /// </summary>
         public DNNListEditControl()
         {
             this.ValueField = ListBoundField.Value;
@@ -242,6 +245,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
             if (this.AutoPostBack)

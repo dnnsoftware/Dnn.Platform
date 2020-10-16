@@ -12,6 +12,11 @@ namespace DotNetNuke.Common
 
     internal struct ServiceScopeContainer : IDisposable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceScopeContainer"/> struct.
+        /// </summary>
+        /// <param name="serviceScope"></param>
+        /// <param name="shouldDispose"></param>
         public ServiceScopeContainer(IServiceScope serviceScope, bool shouldDispose)
         {
             ServiceScope = serviceScope;

@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Connections
 
     public class ConnectionsController : ServiceLocator<IConnectionsController, ConnectionsController>, IConnectionsController
     {
+        /// <inheritdoc/>
         public IList<IConnector> GetConnections(int portalId)
         {
             var connectors = ConnectionsManager.Instance.GetConnectors().Where(c => c.HasConfig(portalId)).ToList();
@@ -24,6 +25,7 @@ namespace DotNetNuke.Services.Connections
             return allConnectors;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, string> GetConnectionConfigs(int portalId, string name)
         {
             var connector = ConnectionsManager.Instance.GetConnectors()
@@ -36,6 +38,7 @@ namespace DotNetNuke.Services.Connections
             return null;
         }
 
+        /// <inheritdoc/>
         protected override Func<IConnectionsController> GetFactory()
         {
             return () => new ConnectionsController();

@@ -22,21 +22,27 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowStateRepository _workflowStateRepository = WorkflowStateRepository.Instance;
         private readonly IWorkflowStatePermissionsRepository _workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowStateManager"/> class.
+        /// </summary>
         public WorkflowStateManager()
         {
             this._dataProvider = DataProvider.Instance();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
             return this._workflowStateRepository.GetWorkflowStates(workflowId);
         }
 
+        /// <inheritdoc/>
         public WorkflowState GetWorkflowState(int stateId)
         {
             return this._workflowStateRepository.GetWorkflowStateByID(stateId);
         }
 
+        /// <inheritdoc/>
         public void AddWorkflowState(WorkflowState state)
         {
             var workflow = this._workflowRepository.GetWorkflow(state.WorkflowID);
@@ -60,6 +66,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowStateRepository.UpdateWorkflowState(lastState); // Update last state order
         }
 
+        /// <inheritdoc/>
         public void DeleteWorkflowState(WorkflowState state)
         {
             var stateToDelete = this._workflowStateRepository.GetWorkflowStateByID(state.StateID);
@@ -88,6 +95,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
         }
 
+        /// <inheritdoc/>
         public void UpdateWorkflowState(WorkflowState state)
         {
             var workflowState = this._workflowStateRepository.GetWorkflowStateByID(state.StateID);
@@ -99,6 +107,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowStateRepository.UpdateWorkflowState(state);
         }
 
+        /// <inheritdoc/>
         public void MoveWorkflowStateDown(int stateId)
         {
             var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
@@ -148,6 +157,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
         }
 
+        /// <inheritdoc/>
         public void MoveWorkflowStateUp(int stateId)
         {
             var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
@@ -197,6 +207,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
         }
 
+        /// <inheritdoc/>
         public void MoveState(int stateId, int index)
         {
             var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
@@ -222,26 +233,31 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.MoveState(state, index, currentIndex);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)
         {
             return this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
         }
 
+        /// <inheritdoc/>
         public void AddWorkflowStatePermission(WorkflowStatePermission permission, int userId)
         {
             permission.WorkflowStatePermissionID = this._workflowStatePermissionsRepository.AddWorkflowStatePermission(permission, userId);
         }
 
+        /// <inheritdoc/>
         public void DeleteWorkflowStatePermission(int workflowStatePermissionId)
         {
             this._workflowStatePermissionsRepository.DeleteWorkflowStatePermission(workflowStatePermissionId);
         }
 
+        /// <inheritdoc/>
         public int GetContentWorkflowStateUsageCount(int stateId)
         {
             return this._dataProvider.GetContentWorkflowStateUsageCount(stateId);
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowStateManager> GetFactory()
         {
             return () => new WorkflowStateManager();

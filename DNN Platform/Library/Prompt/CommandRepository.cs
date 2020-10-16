@@ -18,16 +18,19 @@ namespace DotNetNuke.Prompt
 {
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
+        /// <inheritdoc/>
         protected override Func<ICommandRepository> GetFactory()
         {
             return () => new CommandRepository();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<ICommand> GetCommands()
         {
             return CommandList().Values;
         }
 
+        /// <inheritdoc/>
         public IConsoleCommand GetCommand(string commandName)
         {
             commandName = commandName.ToUpper();
@@ -78,6 +81,7 @@ namespace DotNetNuke.Prompt
             return commands;
         }
 
+        /// <inheritdoc/>
         public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";

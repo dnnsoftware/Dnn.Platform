@@ -5,11 +5,13 @@ namespace DotNetNuke.Services.Tokens
 {
     public class CoreTokenProvider : TokenProvider
     {
+        /// <inheritdoc/>
         public override bool ContainsTokens(string content, TokenContext context)
         {
             return false; // already determined by BaseCustomTokenReplace
         }
 
+        /// <inheritdoc/>
         public override string Tokenize(string content, TokenContext context)
         {
             var tokenizer = new TokenReplace { TokenContext = context };

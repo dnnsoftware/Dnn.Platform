@@ -11,11 +11,15 @@ namespace DotNetNuke.Services.Journal.Internal
     {
         private readonly IJournalDataService _dataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InternalJournalControllerImpl"/> class.
+        /// </summary>
         public InternalJournalControllerImpl()
         {
             this._dataService = JournalDataService.Instance;
         }
 
+        /// <inheritdoc/>
         public IList<JournalItem> GetJournalItemsByProfile(int portalId, int moduleId, int currentUserId, int profileId,
                                                            int rowIndex, int maxRows)
         {
@@ -24,6 +28,7 @@ namespace DotNetNuke.Services.Journal.Internal
                                                                                     profileId, rowIndex, maxRows));
         }
 
+        /// <inheritdoc/>
         public IList<JournalItem> GetJournalItemsByGroup(int portalId, int moduleId, int currentUserId, int groupId,
                                                          int rowIndex, int maxRows)
         {
@@ -32,6 +37,7 @@ namespace DotNetNuke.Services.Journal.Internal
                                                                                   groupId, rowIndex, maxRows));
         }
 
+        /// <inheritdoc/>
         public IList<JournalItem> GetJournalItems(int portalId, int moduleId, int currentUserId, int rowIndex,
                                                   int maxRows)
         {
@@ -40,11 +46,13 @@ namespace DotNetNuke.Services.Journal.Internal
                                                                                     rowIndex, maxRows));
         }
 
+        /// <inheritdoc/>
         public void DeleteFilters(int portalId, int moduleId)
         {
             this._dataService.Journal_TypeFilters_Delete(portalId, moduleId);
         }
 
+        /// <inheritdoc/>
         public void SaveFilters(int portalId, int moduleId, int journalTypeId)
         {
             this._dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);

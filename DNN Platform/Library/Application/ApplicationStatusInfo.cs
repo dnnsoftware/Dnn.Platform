@@ -38,6 +38,7 @@ namespace DotNetNuke.Application
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public UpgradeStatus Status
         {
             get

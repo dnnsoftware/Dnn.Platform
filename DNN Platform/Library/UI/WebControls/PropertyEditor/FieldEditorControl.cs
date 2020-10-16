@@ -47,6 +47,9 @@ namespace DotNetNuke.UI.WebControls
         private StandardEditorInfoAdapter _StdAdapter;
         private bool _Validated;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FieldEditorControl"/> class.
+        /// </summary>
         public FieldEditorControl()
         {
             this.ValidationExpression = Null.NullString;
@@ -328,6 +331,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -508,6 +512,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
