@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
 
         [ConsoleCommandParameter("deleted", "Prompt_ListModules_FlagDeleted")]
         public bool? Deleted { get; set; }
-        
+
 
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {

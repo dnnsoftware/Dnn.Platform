@@ -21,11 +21,13 @@ namespace DotNetNuke.HttpModules.UsersOnline
             }
         }
 
+        /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
             application.AuthorizeRequest += this.OnAuthorizeRequest;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }

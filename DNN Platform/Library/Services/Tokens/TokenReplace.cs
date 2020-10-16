@@ -90,7 +90,8 @@ namespace DotNetNuke.Services.Tokens
         {
             this.CurrentAccessLevel = accessLevel;
 
-            if (accessLevel != Scope.NoSettings) {
+            if (accessLevel != Scope.NoSettings)
+            {
                 DeterminePortal(portalSettings);
                 DetermineUser(user);
                 DetermineLanguage(language);
@@ -129,7 +130,8 @@ namespace DotNetNuke.Services.Tokens
         /// Gets or sets /sets the current ModuleID to be used for 'User:' token replacement.
         /// </summary>
         /// <value>ModuleID (Integer).</value>
-        public int ModuleId {
+        public int ModuleId
+        {
             get => TokenContext.Module?.ModuleID ?? Null.NullInteger;
             set => TokenContext.Module = GetModule(value);
         }
@@ -171,7 +173,8 @@ namespace DotNetNuke.Services.Tokens
         /// Gets or sets /sets the portal settings object to use for 'Portal:' token replacement.
         /// </summary>
         /// <value>PortalSettings oject.</value>
-        public PortalSettings PortalSettings {
+        public PortalSettings PortalSettings
+        {
             get => TokenContext.Portal;
             set => TokenContext.Portal = value;
         }
@@ -180,7 +183,8 @@ namespace DotNetNuke.Services.Tokens
         /// Gets or sets /sets the user object to use for 'User:' token replacement.
         /// </summary>
         /// <value>UserInfo oject.</value>
-        public UserInfo User {
+        public UserInfo User
+        {
             get => TokenContext.User;
             set => TokenContext.User = value;
         }

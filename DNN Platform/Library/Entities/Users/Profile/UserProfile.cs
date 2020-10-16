@@ -26,11 +26,11 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserProfile : IIndexable
     {
-#pragma warning disable SA1310 // Field names should not contain underscore
-#pragma warning disable SA1600 // Elements should be documented
-        // Name properties
-        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
-        public const string USERPROFILE_FirstName = UserProfileFirstName;
+        #pragma warning disable SA1310 // Field names should not contain underscore
+        #pragma warning disable SA1600 // Elements should be documented
+                // Name properties
+                [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+                public const string USERPROFILE_FirstName = UserProfileFirstName;
         [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
         public const string USERPROFILE_LastName = UserProfileLastName;
         [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
@@ -79,8 +79,14 @@ namespace DotNetNuke.Entities.Users
 #pragma warning restore SA1600 // Elements should be documented
 
         private const string UserProfileFirstName = "FirstName";
+        private bool isDirty;
         private const string UserProfileLastName = "LastName";
+
+        private UserInfo user;
         private const string UserProfileTitle = "Title";
+
+        // collection to store all profile properties.
+        private ProfilePropertyDefinitionCollection profileProperties;
 
         // Address Properties
         private const string UserProfileUnit = "Unit";
@@ -105,12 +111,6 @@ namespace DotNetNuke.Entities.Users
         private const string UserProfilePreferredLocale = "PreferredLocale";
         private const string UserProfilePreferredTimeZone = "PreferredTimeZone";
         private const string UserProfileBiography = "Biography";
-
-        private bool isDirty;
-        private UserInfo user;
-
-        // collection to store all profile properties.
-        private ProfilePropertyDefinitionCollection profileProperties;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserProfile"/> class.

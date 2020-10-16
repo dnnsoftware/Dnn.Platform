@@ -7,5 +7,6 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
     using System;
 
     public class IgnoreColumnAttribute : Attribute
-    {}
+    {
+    }
 }

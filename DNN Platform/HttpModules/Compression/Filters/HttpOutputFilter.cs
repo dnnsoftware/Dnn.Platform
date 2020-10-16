@@ -15,6 +15,7 @@ namespace DotNetNuke.HttpModules.Compression
             this._sink = baseStream;
         }
 
+        /// <inheritdoc/>
         public override bool CanRead
         {
             get
@@ -23,6 +24,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanSeek
         {
             get
@@ -31,6 +33,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanWrite
         {
             get
@@ -39,6 +42,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
+        /// <inheritdoc/>
         public override long Length
         {
             get
@@ -47,6 +51,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
+        /// <inheritdoc/>
         public override long Position
         {
             get
@@ -68,26 +73,31 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
+        /// <inheritdoc/>
         public override long Seek(long offset, SeekOrigin direction)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public override void SetLength(long length)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public override void Close()
         {
             this._sink.Close();
         }
 
+        /// <inheritdoc/>
         public override void Flush()
         {
             this._sink.Flush();
         }
 
+        /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)
         {
             throw new NotSupportedException();

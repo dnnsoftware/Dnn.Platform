@@ -524,7 +524,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             return AddPortal(node, status, indent, null);
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   DeleteInstallerFiles - clean up install config and installwizard files

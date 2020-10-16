@@ -24,7 +24,6 @@ namespace DotNetNuke.Prompt
         /// The resource key for the description of this parameter
         /// </summary>
         public string DescriptionKey { get; set; }
-
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required, string defaultValue)
         {
             Name = name;
@@ -32,11 +31,14 @@ namespace DotNetNuke.Prompt
             DefaultValue = defaultValue;
             DescriptionKey = descriptionKey;
         }
-
-        public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required) : this(name, descriptionKey, required, string.Empty) { }
-
-        public ConsoleCommandParameterAttribute(string name, string descriptionKey, string defaultValue) : this(name, descriptionKey, false, defaultValue) { }
-
-        public ConsoleCommandParameterAttribute(string name, string descriptionKey) : this(name, descriptionKey, false, string.Empty) { }
+        public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required) : this(name, descriptionKey, required, string.Empty)
+        {
+        }
+        public ConsoleCommandParameterAttribute(string name, string descriptionKey, string defaultValue) : this(name, descriptionKey, false, defaultValue)
+        {
+        }
+        public ConsoleCommandParameterAttribute(string name, string descriptionKey) : this(name, descriptionKey, false, string.Empty)
+        {
+        }
     }
 }

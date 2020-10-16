@@ -25,6 +25,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
         }
 
+        /// <inheritdoc/>
         public void Init(HttpApplication context)
         {
             context.BeginRequest += FilterRequest;

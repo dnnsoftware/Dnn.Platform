@@ -15,7 +15,6 @@ namespace DotNetNuke.Application
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade;
 
-
     /// <inheritdoc />
     public class ApplicationStatusInfo : IApplicationStatusInfo
     {
