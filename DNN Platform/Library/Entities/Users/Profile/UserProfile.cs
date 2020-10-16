@@ -26,55 +26,111 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserProfile : IIndexable
     {
-        // Name properties
-        public const string USERPROFILE_FirstName = "FirstName";
-        public const string USERPROFILE_LastName = "LastName";
-        public const string USERPROFILE_Title = "Title";
+        #pragma warning disable SA1310 // Field names should not contain underscore
+        #pragma warning disable SA1600 // Elements should be documented
+                // Name properties
+                [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+                public const string USERPROFILE_FirstName = UserProfileFirstName;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_LastName = UserProfileLastName;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Title = UserProfileTitle;
 
         // Address Properties
-        public const string USERPROFILE_Unit = "Unit";
-        public const string USERPROFILE_Street = "Street";
-        public const string USERPROFILE_City = "City";
-        public const string USERPROFILE_Country = "Country";
-        public const string USERPROFILE_Region = "Region";
-        public const string USERPROFILE_PostalCode = "PostalCode";
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Unit = UserProfileUnit;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Street = UserProfileStreet;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_City = UserProfileCity;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Country = UserProfileCountry;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Region = UserProfileRegion;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_PostalCode = UserProfilePostalCode;
 
         // Phone contact
-        public const string USERPROFILE_Telephone = "Telephone";
-        public const string USERPROFILE_Cell = "Cell";
-        public const string USERPROFILE_Fax = "Fax";
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Telephone = UserProfileTelephone;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Cell = UserProfileCell;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Fax = UserProfileFax;
 
         // Online contact
-        public const string USERPROFILE_Website = "Website";
-        public const string USERPROFILE_IM = "IM";
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Website = UserProfileWebsite;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_IM = UserProfileIM;
 
         // Preferences
-        public const string USERPROFILE_Photo = "Photo";
-        public const string USERPROFILE_TimeZone = "TimeZone";
-        public const string USERPROFILE_PreferredLocale = "PreferredLocale";
-        public const string USERPROFILE_PreferredTimeZone = "PreferredTimeZone";
-        public const string USERPROFILE_Biography = "Biography";
-        private bool _IsDirty;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Photo = UserProfilePhoto;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_TimeZone = UserProfileTimeZone;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_PreferredLocale = UserProfilePreferredLocale;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_PreferredTimeZone = UserProfilePreferredTimeZone;
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v10.0.0")]
+        public const string USERPROFILE_Biography = UserProfileBiography;
+#pragma warning restore SA1310 // Field names should not contain underscore
+#pragma warning restore SA1600 // Elements should be documented
 
-        private UserInfo _user;
+        private const string UserProfileFirstName = "FirstName";
+        private bool isDirty;
+        private const string UserProfileLastName = "LastName";
+
+        private UserInfo user;
+        private const string UserProfileTitle = "Title";
 
         // collection to store all profile properties.
-        private ProfilePropertyDefinitionCollection _profileProperties;
+        private ProfilePropertyDefinitionCollection profileProperties;
 
+        // Address Properties
+        private const string UserProfileUnit = "Unit";
+        private const string UserProfileStreet = "Street";
+        private const string UserProfileCity = "City";
+        private const string UserProfileCountry = "Country";
+        private const string UserProfileRegion = "Region";
+        private const string UserProfilePostalCode = "PostalCode";
+
+        // Phone contact
+        private const string UserProfileTelephone = "Telephone";
+        private const string UserProfileCell = "Cell";
+        private const string UserProfileFax = "Fax";
+
+        // Online contact
+        private const string UserProfileWebsite = "Website";
+        private const string UserProfileIM = "IM";
+
+        // Preferences
+        private const string UserProfilePhoto = "Photo";
+        private const string UserProfileTimeZone = "TimeZone";
+        private const string UserProfilePreferredLocale = "PreferredLocale";
+        private const string UserProfilePreferredTimeZone = "PreferredTimeZone";
+        private const string UserProfileBiography = "Biography";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserProfile"/> class.
+        /// </summary>
         public UserProfile()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserProfile"/> class with a proficed existing user.
+        /// </summary>
+        /// <param name="user">The user this profile belongs to.</param>
         public UserProfile(UserInfo user)
         {
-            this._user = user;
+            this.user = user;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Full Name.
+        /// Gets the full name by concatenating the first and last name with a space.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string FullName
         {
             get
@@ -83,34 +139,32 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets or sets whether the property has been changed.
+        /// Gets a value indicating whether a property has been changed.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public bool IsDirty
         {
             get
             {
-                return this._IsDirty;
+                return this.isDirty;
             }
         }
 
         /// <summary>
-        /// Gets property will return a URL for the photourl - if the path contains invalid url characters it will return a fileticket.
+        /// Gets a URL for the profile picture - if the path contains invalid url characters it will return a fileticket.
         /// </summary>
         public string PhotoURL
         {
             get
             {
                 string photoURL = Globals.ApplicationPath + "/images/no_avatar.gif";
-                ProfilePropertyDefinition photoProperty = this.GetProperty(USERPROFILE_Photo);
+                ProfilePropertyDefinition photoProperty = this.GetProperty(UserProfilePhoto);
                 if (photoProperty != null)
                 {
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
-                    PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+                    var settings = PortalController.Instance.GetCurrentSettings();
 
-                    bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, this._user);
+                    bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, this.user);
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
@@ -126,7 +180,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Gets property will return the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching).
+        /// Gets the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching).
         /// </summary>
         [Obsolete("Obsolete in 7.2.2, Use PhotoUrl instead of it.. Scheduled removal in v10.0.0.")]
         public string PhotoURLFile
@@ -140,7 +194,7 @@ namespace DotNetNuke.Entities.Users
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    bool isVisible = user.UserID == this._user.UserID;
+                    bool isVisible = user.UserID == this.user.UserID;
                     if (!isVisible)
                     {
                         switch (photoProperty.ProfileVisibility.VisibilityMode)
@@ -184,350 +238,328 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Collection of Profile Properties.
+        /// Gets the Collection of Profile Properties.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection ProfileProperties
         {
-            get { return this._profileProperties ?? (this._profileProperties = new ProfilePropertyDefinitionCollection()); }
+            get { return this.profileProperties ?? (this.profileProperties = new ProfilePropertyDefinitionCollection()); }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Cell/Mobile Phone.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Cell
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Cell);
+                return this.GetPropertyValue(UserProfileCell);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Cell, value);
+                this.SetProfileProperty(UserProfileCell, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the City part of the Address.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string City
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_City);
+                return this.GetPropertyValue(UserProfileCity);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_City, value);
+                this.SetProfileProperty(UserProfileCity, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Country part of the Address.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Country
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Country);
+                return this.GetPropertyValue(UserProfileCountry);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Country, value);
+                this.SetProfileProperty(UserProfileCountry, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Fax Phone.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Fax
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Fax);
+                return this.GetPropertyValue(UserProfileFax);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Fax, value);
+                this.SetProfileProperty(UserProfileFax, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the First Name.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string FirstName
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_FirstName);
+                return this.GetPropertyValue(UserProfileFirstName);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_FirstName, value);
+                this.SetProfileProperty(UserProfileFirstName, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Instant Messenger Handle.
+        /// Gets or sets the Instant Messenger Handle.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string IM
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_IM);
+                return this.GetPropertyValue(UserProfileIM);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_IM, value);
+                this.SetProfileProperty(UserProfileIM, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Last Name.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string LastName
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_LastName);
+                return this.GetPropertyValue(UserProfileLastName);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_LastName, value);
+                this.SetProfileProperty(UserProfileLastName, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets the path to the profile picture.
+        /// </summary>
         public string Photo
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Photo);
+                return this.GetPropertyValue(UserProfilePhoto);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Photo, value);
+                this.SetProfileProperty(UserProfilePhoto, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the PostalCode part of the Address.
+        /// Gets or sets the PostalCode part of the Address.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string PostalCode
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_PostalCode);
+                return this.GetPropertyValue(UserProfilePostalCode);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_PostalCode, value);
+                this.SetProfileProperty(UserProfilePostalCode, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Preferred Locale.
+        /// Gets or sets the Preferred Locale.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string PreferredLocale
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_PreferredLocale);
+                return this.GetPropertyValue(UserProfilePreferredLocale);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_PreferredLocale, value);
+                this.SetProfileProperty(UserProfilePreferredLocale, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets the preferred time zone.
+        /// </summary>
         [XmlIgnore]
         public TimeZoneInfo PreferredTimeZone
         {
             get
             {
                 // First set to Server
-                TimeZoneInfo _TimeZone = TimeZoneInfo.Local;
+                TimeZoneInfo timeZone = TimeZoneInfo.Local;
 
                 // Next check if there is a Property Setting
-                string _TimeZoneId = this.GetPropertyValue(USERPROFILE_PreferredTimeZone);
-                if (!string.IsNullOrEmpty(_TimeZoneId))
+                string timeZoneId = this.GetPropertyValue(UserProfilePreferredTimeZone);
+                if (!string.IsNullOrEmpty(timeZoneId))
                 {
-                    _TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_TimeZoneId);
+                    timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
                 }
 
                 // Next check if there is a Portal Setting
                 else
                 {
-                    PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    if (_PortalSettings != null)
+                    var portalSettings = PortalController.Instance.GetCurrentSettings();
+                    if (portalSettings != null)
                     {
-                        _TimeZone = _PortalSettings.TimeZone;
+                        timeZone = portalSettings.TimeZone;
                     }
                 }
 
                 // still we can't find it or it's somehow set to null
-                return _TimeZone ?? TimeZoneInfo.Local;
+                return timeZone ?? TimeZoneInfo.Local;
             }
 
             set
             {
                 if (value != null)
                 {
-                    this.SetProfileProperty(USERPROFILE_PreferredTimeZone, value.Id);
+                    this.SetProfileProperty(UserProfilePreferredTimeZone, value.Id);
                 }
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Region part of the Address.
+        /// Gets or sets the Region part of the Address.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Region
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Region);
+                return this.GetPropertyValue(UserProfileRegion);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Region, value);
+                this.SetProfileProperty(UserProfileRegion, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Street part of the Address.
+        /// Gets or sets the Street part of the Address.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Street
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Street);
+                return this.GetPropertyValue(UserProfileStreet);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Street, value);
+                this.SetProfileProperty(UserProfileStreet, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Telephone.
+        /// Gets or sets the telephone number.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Telephone
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Telephone);
+                return this.GetPropertyValue(UserProfileTelephone);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Telephone, value);
+                this.SetProfileProperty(UserProfileTelephone, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Title.
+        /// Gets or sets the Title.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Title
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Title);
+                return this.GetPropertyValue(UserProfileTitle);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Title, value);
+                this.SetProfileProperty(UserProfileTitle, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Unit part of the Address.
+        /// Gets or sets the Unit part of the Address.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Unit
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Unit);
+                return this.GetPropertyValue(UserProfileUnit);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Unit, value);
+                this.SetProfileProperty(UserProfileUnit, value);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Website.
+        /// Gets or sets the Website.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string Website
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Website);
+                return this.GetPropertyValue(UserProfileWebsite);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Website, value);
+                this.SetProfileProperty(UserProfileWebsite, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets the biography.
+        /// </summary>
         public string Biography
         {
             get
             {
-                return this.GetPropertyValue(USERPROFILE_Biography);
+                return this.GetPropertyValue(UserProfileBiography);
             }
 
             set
             {
-                this.SetProfileProperty(USERPROFILE_Biography, value);
+                this.SetProfileProperty(UserProfileBiography, value);
             }
         }
 
+        /// <inheritdoc/>
         public object this[string name]
         {
             get
@@ -557,41 +589,39 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Clears the IsDirty Flag.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void ClearIsDirty()
         {
-            this._IsDirty = false;
+            this.isDirty = false;
             foreach (ProfilePropertyDefinition profProperty in this.ProfileProperties)
             {
                 profProperty?.ClearIsDirty();
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Profile Property from the Profile.
         /// </summary>
-        /// <remarks></remarks>
+        /// <remarks>
+        /// Used mainly for custom profile properties, many default properties are already exposed in this class.
+        /// </remarks>
         /// <param name="propName">The name of the property to retrieve.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A profile property definition, <see cref="ProfilePropertyDefinition"/>.</returns>
         public ProfilePropertyDefinition GetProperty(string propName)
         {
             return this.ProfileProperties[propName];
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Profile Property Value from the Profile.
         /// </summary>
-        /// <remarks></remarks>
+        /// <remarks>
+        /// Used mainly for custom profile properties, many default properties are already exposed in this class.
+        /// </remarks>
         /// <param name="propName">The name of the propoerty to retrieve.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A string representing the property value.</returns>
         public string GetPropertyValue(string propName)
         {
             string propValue = Null.NullString;
@@ -614,35 +644,29 @@ namespace DotNetNuke.Entities.Users
             return propValue;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialises the Profile with an empty collection of profile properties.
+        /// Initialises the Profile with a collection of profile properties and their default values.
         /// </summary>
-        /// <remarks></remarks>
-        /// <param name="portalId">The name of the property to retrieve.</param>
-        /// -----------------------------------------------------------------------------
+        /// <param name="portalId">The id of the portal this profile belongs to.</param>
         public void InitialiseProfile(int portalId)
         {
             this.InitialiseProfile(portalId, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialises the Profile with an empty collection of profile properties.
+        /// Initialises the Profile with an empty collection of profile properties or default values.
         /// </summary>
-        /// <remarks></remarks>
-        /// <param name="portalId">The name of the property to retrieve.</param>
+        /// <param name="portalId">the id of the portal this profile belongs to.</param>
         /// <param name="useDefaults">A flag that indicates whether the profile default values should be
         /// copied to the Profile.</param>
-        /// -----------------------------------------------------------------------------
         public void InitialiseProfile(int portalId, bool useDefaults)
         {
-            this._profileProperties = ProfileController.GetPropertyDefinitionsByPortal(portalId, true, false);
+            this.profileProperties = ProfileController.GetPropertyDefinitionsByPortal(portalId, true, false);
             if (useDefaults)
             {
-                foreach (ProfilePropertyDefinition ProfileProperty in this._profileProperties)
+                foreach (ProfilePropertyDefinition profileProperty in this.profileProperties)
                 {
-                    ProfileProperty.PropertyValue = ProfileProperty.DefaultValue;
+                    profileProperty.PropertyValue = profileProperty.DefaultValue;
                 }
             }
         }
@@ -651,7 +675,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Sets a Profile Property Value in the Profile.
         /// </summary>
-        /// <remarks></remarks>
         /// <param name="propName">The name of the propoerty to set.</param>
         /// <param name="propValue">The value of the propoerty to set.</param>
         /// -----------------------------------------------------------------------------
@@ -665,18 +688,18 @@ namespace DotNetNuke.Entities.Users
                 // Set the IsDirty flag
                 if (profileProp.IsDirty)
                 {
-                    this._IsDirty = true;
+                    this.isDirty = true;
                 }
             }
         }
 
         private string GetListValue(string listName, string value)
         {
-            ListController lc = new ListController();
+            ListController listController = new ListController();
             int entryId;
             if (int.TryParse(value, out entryId))
             {
-                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
+                ListEntryInfo item = listController.GetListEntryInfo(listName, entryId);
                 if (item != null)
                 {
                     return item.Text;

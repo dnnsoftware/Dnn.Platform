@@ -6,8 +6,6 @@ namespace DotNetNuke.Services.Search.Entities
     using System;
     using System.Collections.Generic;
 
-    using DotNetNuke.Common.Utilities;
-
     /// <summary>
     /// Collection storing Search Results.
     /// </summary>

@@ -41,6 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage
         private Hashtable _fileLocks = new Hashtable();
 #else
         private readonly object _fileLock = new object();
+
         static DiskImageStore()
         {
             EnableAutoPurge = true;

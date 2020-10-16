@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Services.UserRequest
 {
-    using System;
-
     /// <summary>
     /// IP address family.
     /// </summary>

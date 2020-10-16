@@ -9,15 +9,12 @@ namespace DotNetNuke.Framework
     using System.Web;
     using System.Web.Caching;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using DataCache = DotNetNuke.UI.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;

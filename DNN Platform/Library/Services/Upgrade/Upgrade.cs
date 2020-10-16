@@ -6,8 +6,6 @@ namespace DotNetNuke.Services.Upgrade
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Data.SqlClient;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -20,28 +18,19 @@ namespace DotNetNuke.Services.Upgrade
 
     using DotNetNuke.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content;
-    using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Framework;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Analytics;
-    using DotNetNuke.Services.Authentication;
-    using DotNetNuke.Services.EventQueue.Config;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Installer;
@@ -49,19 +38,14 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Search;
-    using DotNetNuke.Services.Social.Messaging.Internal;
-    using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
-    using DotNetNuke.UI.Internals;
 
     using Assembly = System.Reflection.Assembly;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
     using Localization = DotNetNuke.Services.Localization.Localization;
     using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
-    using Util = DotNetNuke.Entities.Content.Common.Util;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

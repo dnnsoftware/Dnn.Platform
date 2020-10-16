@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     using System;
     using System.Web;
-    using System.Web.Configuration;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;

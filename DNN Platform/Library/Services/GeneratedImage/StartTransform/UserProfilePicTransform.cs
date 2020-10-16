@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Drawing2D;
-    using System.Drawing.Imaging;
     using System.IO;
 
     using DotNetNuke.Common;
@@ -90,7 +89,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         {
             photoFile = null;
 
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             var targetUser = UserController.Instance.GetUser(settings.PortalId, this.UserID);
             if (targetUser == null)
             {

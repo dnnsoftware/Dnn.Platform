@@ -4,9 +4,7 @@
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
-    using System.Collections;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Scheduling;

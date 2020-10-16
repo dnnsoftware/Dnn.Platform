@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Upgrade.Internals
 {
-    using System;
     using System.IO;
     using System.Net;
 

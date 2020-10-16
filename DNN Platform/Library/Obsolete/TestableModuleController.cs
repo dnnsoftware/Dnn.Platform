@@ -5,7 +5,6 @@ namespace DotNetNuke.Entities.Modules.Internal
 {
     using System;
     using System.ComponentModel;
-    using System.Reflection;
 
     using DotNetNuke.Framework;
 

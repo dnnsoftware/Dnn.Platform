@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Installer.Writers;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

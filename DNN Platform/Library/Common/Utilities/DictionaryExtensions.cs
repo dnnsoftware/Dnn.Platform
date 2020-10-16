@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
     using System.Collections;
 
     public static class DictionaryExtensions

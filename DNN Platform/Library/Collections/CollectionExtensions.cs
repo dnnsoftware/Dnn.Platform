@@ -14,7 +14,6 @@ namespace DotNetNuke.Collections
     using System.Xml.XPath;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Instrumentation;
 
     /// <summary>

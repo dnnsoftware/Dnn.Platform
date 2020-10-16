@@ -13,8 +13,6 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.ComponentModel;
     using Microsoft.VisualBasic;
 
-    using Globals = DotNetNuke.Common.Globals;
-
     public class DNNScheduler : SchedulingProvider
     {
         public override Dictionary<string, string> Settings

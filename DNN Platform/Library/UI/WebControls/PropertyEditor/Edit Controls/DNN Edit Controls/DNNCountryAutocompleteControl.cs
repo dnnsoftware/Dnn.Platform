@@ -4,7 +4,6 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
-    using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -12,7 +11,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]

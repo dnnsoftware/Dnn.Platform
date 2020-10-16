@@ -8,7 +8,6 @@ namespace DotNetNuke.Application
     using System.IO;
     using System.Web;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;

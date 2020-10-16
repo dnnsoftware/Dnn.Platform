@@ -12,7 +12,6 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.UI.UserControls;
     using Microsoft.Extensions.DependencyInjection;
 
     public class GlobalsImpl : IGlobals

@@ -6,11 +6,9 @@ namespace DotNetNuke.Security.Roles
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Roles.Internal;
 
     public abstract class RoleProvider
     {

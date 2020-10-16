@@ -4,7 +4,6 @@
 namespace DotNetNuke.Common
 {
     using System;
-    using System.Collections;
     using System.IO;
     using System.Reflection;
     using System.Threading;
@@ -15,13 +14,11 @@ namespace DotNetNuke.Common
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Connections;
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Scheduling;

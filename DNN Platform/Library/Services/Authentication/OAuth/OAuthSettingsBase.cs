@@ -5,7 +5,6 @@
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     using System;
-    using System.Linq;
 
     using DotNetNuke.UI.WebControls;
 

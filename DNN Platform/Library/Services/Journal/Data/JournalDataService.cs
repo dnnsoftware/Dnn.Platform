@@ -4,11 +4,7 @@
 namespace DotNetNuke.Services.Journal
 {
     using System;
-    using System.IO;
-    using System.Xml;
 
-    using DotNetNuke.Entities.Content;
-    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Framework;
 
     public class JournalDataService : ServiceLocator<IJournalDataService, JournalDataService>

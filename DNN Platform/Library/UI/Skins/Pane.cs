@@ -7,7 +7,6 @@ namespace DotNetNuke.UI.Skins
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Threading;
     using System.Web;
     using System.Web.UI;
@@ -21,7 +20,6 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.UI.WebControls;
 
     using Globals = DotNetNuke.Common.Globals;
 

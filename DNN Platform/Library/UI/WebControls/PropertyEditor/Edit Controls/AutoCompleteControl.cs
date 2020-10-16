@@ -9,7 +9,6 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// <summary>

@@ -13,11 +13,10 @@ namespace DotNetNuke.Services.FileSystem
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Web;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
-    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -27,7 +26,6 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -1372,6 +1370,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return exactFilesCount;
         }
+
         private static Stream ToStream(Image image, ImageFormat formaw)
         {
             var stream = new MemoryStream();

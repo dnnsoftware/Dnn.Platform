@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Authentication
     using System.ComponentModel;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

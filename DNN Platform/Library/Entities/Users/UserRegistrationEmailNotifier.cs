@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Entities.Users
 {
-    using System;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;

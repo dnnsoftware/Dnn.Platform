@@ -52,7 +52,6 @@ namespace DotNetNuke.Common
     using Microsoft.VisualBasic.CompilerServices;
 
     using DataCache = DotNetNuke.UI.Utilities.DataCache;
-    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     /// <summary>
     /// The global instance of DotNetNuke. all basic functions and properties are defined in this instance.

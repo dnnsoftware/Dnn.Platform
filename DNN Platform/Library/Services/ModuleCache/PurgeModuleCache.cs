@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.ModuleCache
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using DotNetNuke.Entities.Portals;

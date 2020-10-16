@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.Modules
 {
     using System;
     using System.Collections;
-    using System.Linq;
     using System.Web;
     using System.Web.UI;
 

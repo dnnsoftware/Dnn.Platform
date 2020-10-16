@@ -3,14 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Xml;
-    using System.Xml.Serialization;
-    using System.Xml.XPath;
-    using System.Xml.Xsl;
 
     /// <summary>
     /// The XmlExtensions class allows you to write more efficient code to manage Xml documents.

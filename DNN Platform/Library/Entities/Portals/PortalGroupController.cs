@@ -4,7 +4,6 @@
 namespace DotNetNuke.Entities.Portals
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -12,13 +11,11 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Internal;
     using DotNetNuke.Entities.Portals.Data;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Log.EventLog;
 
     public class PortalGroupController : ComponentBase<IPortalGroupController, PortalGroupController>, IPortalGroupController

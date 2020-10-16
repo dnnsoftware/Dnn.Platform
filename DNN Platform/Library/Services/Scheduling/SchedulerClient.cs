@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Scheduling
     using System.Threading;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Instrumentation;
 
     /// <summary>
     /// This class is inherited by any class that wants to run tasks in the scheduler.

@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     using System;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security;
 
     /// <summary>

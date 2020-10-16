@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
-    using System;
     using System.Web.UI;
 
     /// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>

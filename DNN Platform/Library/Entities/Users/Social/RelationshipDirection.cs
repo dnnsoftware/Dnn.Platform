@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Users
 {
-    using System;
-
     public enum RelationshipDirection
     {
         /// <summary>

@@ -8,7 +8,6 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
 
     public class FileLockingController : ServiceLocator<IFileLockingController, FileLockingController>, IFileLockingController

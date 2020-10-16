@@ -12,7 +12,6 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
 
     [Serializable]
     public class ProfileVisibility

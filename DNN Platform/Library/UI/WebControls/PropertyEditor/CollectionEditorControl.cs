@@ -8,7 +8,6 @@ namespace DotNetNuke.UI.WebControls
     using System.ComponentModel;
     using System.Reflection;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;

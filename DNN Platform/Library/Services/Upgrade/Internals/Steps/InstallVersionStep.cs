@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
-    using System;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;

@@ -5,7 +5,6 @@
 namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
@@ -517,7 +516,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();
-            return ProfilePropertyAccess.CheckAccessLevel((PortalSettings)settings, photoProperty, currentUser, profileUser);
+            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
         }
     }
 }

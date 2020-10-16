@@ -10,7 +10,6 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Users.Social;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke

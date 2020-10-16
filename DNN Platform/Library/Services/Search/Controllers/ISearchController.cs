@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Controllers
 {
-    using System;
 
     using DotNetNuke.Services.Search.Entities;
 
