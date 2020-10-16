@@ -161,9 +161,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <summary>
-        /// Provides naive locking for a generic enumerator.
-        /// </summary>
+        /// <summary>An <see cref="IEnumerator{T}"/> implementation for <see cref="NaiveLockingList{T}"/>.</summary>
         public class NaiveLockingEnumerator : IEnumerator<T>
         {
             private readonly IEnumerator<T> enumerator;
