@@ -6,7 +6,7 @@ namespace DotNetNuke.Collections.Internal
     using System;
 
     /// <summary>
-    /// Used to monitor a lock.
+    /// An <see cref="ISharedCollectionLock"/> implementation which uses an <see cref="ExclusiveLockStrategy"/>.
     /// </summary>
     internal class MonitorLock : IDisposable, ISharedCollectionLock
     {
