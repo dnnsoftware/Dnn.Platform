@@ -7,10 +7,8 @@ namespace DotNetNuke.Collections.Internal
     using System.Collections;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Provides shared list functionnality.
-    /// </summary>
-    /// <typeparam name="T">The type of the list.</typeparam>
+    /// <summary>An <see cref="IList{T}"/> implementation designed to be shared across threads.</summary>
+    /// <typeparam name="T">The type of value in the list.</typeparam>
     public class SharedList<T> : IList<T>, IDisposable
     {
         private readonly List<T> list = new List<T>();
