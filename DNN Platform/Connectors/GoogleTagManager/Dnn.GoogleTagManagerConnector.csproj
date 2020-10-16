@@ -125,6 +125,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="GoogleTagManagerEngine.cs" />
+    <Compile Include="GoogleTagManagerController.cs" />
     <Compile Include="GoogleTagManagerConnector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

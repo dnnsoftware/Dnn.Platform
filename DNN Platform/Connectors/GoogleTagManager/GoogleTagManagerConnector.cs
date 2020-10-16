@@ -15,13 +15,13 @@ namespace DNN.Connectors.GoogleTagManager
 
     public class GoogleTagManagerConnector : IConnector
     {
-        private const string DefaultDisplayName = "Google Analytics";
+        private const string DefaultDisplayName = "Google Tag Manager";
 
         private string _displayName;
 
         public string Name
         {
-            get { return "Core Google Analytics Connector"; }
+            get { return "Core Google Tag Manager Connector"; }
         }
 
         public string IconUrl
@@ -73,43 +73,31 @@ namespace DNN.Connectors.GoogleTagManager
         {
             IDictionary<string, string> config = this.GetConfig(portalId);
 
-            return config.ContainsKey("TrackingID") && !string.IsNullOrEmpty(config["TrackingID"]);
+            return config.ContainsKey("GtmID") && !string.IsNullOrEmpty(config["GtmID"]);
         }
 
         public IDictionary<string, string> GetConfig(int portalId)
         {
-            var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleTagManager");
+            var gtmConfig = AnalyticsConfiguration.GetConfig("GoogleTagManager");
             var portalSettings = new PortalSettings(portalId);
 
             // Important, knockout handles empty strings as false and any other string as true
             // so we need to pass empty strings when we mean false, however it passes us back the string "false"
             // when saving the settings in the SaveConfig method, so we need to handle that case too
-            var trackingId = string.Empty;
-            var urlParameter = string.Empty;
+            var gtmId = string.Empty;
             var trackForAdmin = string.Empty;
-            var anonymizeIp = string.Empty;
-            var trackUserId = string.Empty;
 
-            if (analyticsConfig != null)
+            if (gtmConfig != null)
             {
-                foreach (AnalyticsSetting setting in analyticsConfig.Settings)
+                foreach (AnalyticsSetting setting in gtmConfig.Settings)
                 {
                     switch (setting.SettingName.ToLower())
                     {
-                        case "trackingid":
-                            trackingId = setting.SettingValue;
-                            break;
-                        case "urlparameter":
-                            urlParameter = setting.SettingValue;
+                        case "gtmid":
+                            gtmId = setting.SettingValue;
                             break;
                         case "trackforadmin":
                             trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
-                            break;
-                        case "anonymizeip":
-                            anonymizeIp = this.HandleCustomBoolean(setting.SettingValue);
-                            break;
-                        case "trackuserid":
-                            trackUserId = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -117,16 +105,13 @@ namespace DNN.Connectors.GoogleTagManager
 
             if (portalSettings.DataConsentActive)
             {
-                anonymizeIp = "true";
+                //anonymizeIp = "true";
             }
 
             var configItems = new Dictionary<string, string>
             {
-                { "TrackingID", trackingId },
-                { "UrlParameter", urlParameter },
+                { "GtmID", gtmId },
                 { "TrackAdministrators", trackForAdmin },
-                { "AnonymizeIp", anonymizeIp },
-                { "TrackUserId", trackUserId },
                 { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
                 { "isDeactivating", this.HandleCustomBoolean("false") },
             };
@@ -147,31 +132,22 @@ namespace DNN.Connectors.GoogleTagManager
 
                 bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
 
-                string trackingID;
-                string urlParameter;
+                string gtmID;
                 string trackForAdmin;
-                string anonymizeIp;
-                string trackUserId;
 
                 isValid = true;
 
                 if (isDeactivating)
                 {
-                    trackingID = null;
-                    urlParameter = null;
+                    gtmID = null;
                     trackForAdmin = null;
-                    anonymizeIp = null;
-                    trackUserId = null;
                 }
                 else
                 {
-                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
-                    urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
+                    gtmID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
-                    anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
-                    trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (string.IsNullOrEmpty(trackingID))
+                    if (string.IsNullOrEmpty(gtmID))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
@@ -187,32 +163,14 @@ namespace DNN.Connectors.GoogleTagManager
 
                     config.Settings.Add(new AnalyticsSetting
                     {
-                        SettingName = "TrackingId",
-                        SettingValue = trackingID,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "UrlParameter",
-                        SettingValue = urlParameter,
+                        SettingName = "GtmId",
+                        SettingValue = gtmID,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackForAdmin",
                         SettingValue = trackForAdmin,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "AnonymizeIp",
-                        SettingValue = anonymizeIp,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackUserId",
-                        SettingValue = trackUserId,
                     });
 
                     AnalyticsConfiguration.SaveConfig("GoogleTagManager", config);
