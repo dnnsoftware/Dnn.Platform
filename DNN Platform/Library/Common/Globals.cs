@@ -1299,7 +1299,6 @@ namespace DotNetNuke.Common
             }
 
             // load the PortalSettings into current context
-            // TODO: We should implement a PortalSettings constructor that implements IPortalSettings instead of casting here.
             return new PortalSettings(tabId, objPortalAliasInfo as PortalAliasInfo);
         }
 
