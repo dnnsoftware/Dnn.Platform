@@ -370,7 +370,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
                     }
                 }
-                else if (exportedTab.TabPath.HasValue())
+                else if (!string.IsNullOrEmpty(exportedTab.TabPath))
                 {
                     var index = exportedTab.TabPath.LastIndexOf(@"//", StringComparison.Ordinal);
                     if (index > 0)

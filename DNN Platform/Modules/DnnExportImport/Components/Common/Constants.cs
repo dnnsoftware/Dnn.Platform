@@ -7,15 +7,20 @@ namespace Dnn.ExportImport.Components.Common
 {
     using System;
 
+    /// <summary>
+    /// Lists constants used across the library.
+    /// </summary>
     public class Constants
     {
         /// <summary>
         /// This is the currently supported schema version support as of this release.
-        /// In future releases thi must be updated to be compatible wiht th e.
+        /// In future releases this must be updated to be compatible wiht the schema version.
         /// </summary>
         public const string CurrentSchemaVersion = "1.0.2";
 
         // these are set by the API caller
+#pragma warning disable SA1310 // Field names should not contain underscore, bypassing this warning in case something unexpected consumes these.
+#pragma warning disable SA1600 // Elements should be documented, these names carry their meaning enough to not need documenting.
         public const string Category_Users = "USERS";
         public const string Category_Vocabularies = "VOCABULARIES";
         public const string Category_Roles = "ROLES";
@@ -55,8 +60,10 @@ namespace Dnn.ExportImport.Components.Common
         internal const string Category_Pages = "PAGES";
         internal const string Category_UsersData = "USERS_DATA";
 
-        internal static DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        internal static int MaxZipFilesMemory = 104857600; // 100 MB
+        internal static readonly DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static readonly DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static readonly int MaxZipFilesMemory = 104857600; // 100 MB
+#pragma warning restore SA1310 // Field names should not contain underscore
+#pragma warning restore SA1600 // Elements should be documented
     }
 }

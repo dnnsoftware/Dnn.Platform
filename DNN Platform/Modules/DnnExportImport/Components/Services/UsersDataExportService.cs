@@ -15,7 +15,6 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Dto.Assets;
     using Dnn.ExportImport.Dto.Users;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
