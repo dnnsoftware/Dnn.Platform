@@ -468,7 +468,6 @@ namespace DotNetNuke.Services.Journal
             this._dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
         }
 
-        // Journal Comments
         /// <inheritdoc/>
         public IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList)
         {
