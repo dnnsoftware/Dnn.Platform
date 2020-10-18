@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
@@ -38,12 +39,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                         if (moduleDefinition != null)
                         {
                             var portals = PortalController.Instance.GetPortals();
-                            foreach (PortalInfo portal in portals)
+                            foreach (IPortalInfo portal in portals)
                             {
                                 if (portal.UserTabId > Null.NullInteger)
                                 {
                                     // Find TabInfo
-                                    var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
+                                    var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalId, true);
                                     if (tab != null)
                                     {
                                         foreach (var module in ModuleController.Instance.GetTabModules(portal.UserTabId).Values)
