@@ -332,7 +332,6 @@ namespace DotNetNuke.Services.Search.Internals
             return searcher.IndexReader.NumDocs();
         }
 
-        // works on the computer (in a web-farm) that runs under the scheduler
         /// <inheritdoc/>
         public SearchStatistics GetSearchStatistics()
         {
