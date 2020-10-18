@@ -17,6 +17,9 @@ namespace DotNetNuke.Common
         private ArrayList _errs;
         private XmlTextReader _reader;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlValidatorBase"/> class.
+        /// </summary>
         public XmlValidatorBase()
         {
             this._errs = new ArrayList();

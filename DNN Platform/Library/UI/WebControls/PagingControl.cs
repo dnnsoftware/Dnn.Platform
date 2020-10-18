@@ -115,12 +115,14 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue("0")]
         public int TotalRecords { get; set; }
 
+        /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
             this.CurrentPage = int.Parse(eventArgument.Replace("Page_", string.Empty));
             this.OnPageChanged(new EventArgs());
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.tablePageNumbers = new Table();
@@ -162,6 +164,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter output)
         {
             if (this.PageNumbers == null)
@@ -357,11 +360,16 @@ namespace DotNetNuke.UI.WebControls
         {
             private readonly PagingControl _PagingControl;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PageNumberLinkTemplate"/> class.
+            /// </summary>
+            /// <param name="ctlPagingControl"></param>
             public PageNumberLinkTemplate(PagingControl ctlPagingControl)
             {
                 this._PagingControl = ctlPagingControl;
             }
 
+            /// <inheritdoc/>
             void ITemplate.InstantiateIn(Control container)
             {
                 var l = new Literal();

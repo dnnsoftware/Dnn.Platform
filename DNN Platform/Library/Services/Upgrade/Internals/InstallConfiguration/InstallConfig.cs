@@ -13,6 +13,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// -----------------------------------------------------------------------------
     public class InstallConfig
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InstallConfig"/> class.
+        /// </summary>
         public InstallConfig()
         {
             this.Portals = new List<PortalConfig>();

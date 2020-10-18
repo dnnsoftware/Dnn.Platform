@@ -23,11 +23,18 @@ namespace DotNetNuke.Entities.Users
         private readonly UserInfo _user;
         private bool _approved;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserMembership"/> class.
+        /// </summary>
         public UserMembership()
             : this(new UserInfo())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserMembership"/> class.
+        /// </summary>
+        /// <param name="user"></param>
         public UserMembership(UserInfo user)
         {
             this._approved = true;

@@ -10,6 +10,7 @@ namespace DotNetNuke.ExtensionPoints
 
     public class ToolBarMenuButtonRenderer : IExtensionControlRenderer
     {
+        /// <inheritdoc/>
         public string GetOutput(IExtensionPoint extensionPoint)
         {
             var extension = (IToolBarMenuButtonExtensionPoint)extensionPoint;

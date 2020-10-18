@@ -11,11 +11,15 @@ namespace DotNetNuke.Entities.Host
 
     public class HostPropertyAccess : DictionaryPropertyAccess
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HostPropertyAccess"/> class.
+        /// </summary>
         public HostPropertyAccess()
             : base(HostController.Instance.GetSettingsDictionary())
         {
         }
 
+        /// <inheritdoc/>
         public override string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
         {
             if (propertyName.ToLowerInvariant() == "hosttitle" || CurrentScope == Scope.Debug)

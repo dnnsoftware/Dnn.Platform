@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Journal
 
     public class JournalDataService : ServiceLocator<IJournalDataService, JournalDataService>
     {
+        /// <inheritdoc/>
         protected override Func<IJournalDataService> GetFactory()
         {
             return () => new JournalDataServiceImpl();

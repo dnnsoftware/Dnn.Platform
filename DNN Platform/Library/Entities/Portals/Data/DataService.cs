@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Portals.Data
     {
         private readonly DataProvider _provider = DataProvider.Instance();
 
+        /// <inheritdoc/>
         public int AddPortalGroup(PortalGroupInfo portalGroup, int createdByUserId)
         {
             return this._provider.ExecuteScalar<int>(
@@ -23,16 +24,19 @@ namespace DotNetNuke.Entities.Portals.Data
                 createdByUserId);
         }
 
+        /// <inheritdoc/>
         public void DeletePortalGroup(PortalGroupInfo portalGroup)
         {
             this._provider.ExecuteNonQuery("DeletePortalGroup", portalGroup.PortalGroupId);
         }
 
+        /// <inheritdoc/>
         public IDataReader GetPortalGroups()
         {
             return this._provider.ExecuteReader("GetPortalGroups");
         }
 
+        /// <inheritdoc/>
         public void UpdatePortalGroup(PortalGroupInfo portalGroup, int lastModifiedByUserId)
         {
             this._provider.ExecuteNonQuery(
@@ -44,11 +48,13 @@ namespace DotNetNuke.Entities.Portals.Data
                 lastModifiedByUserId);
         }
 
+        /// <inheritdoc/>
         public IDataReader GetSharedModulesWithPortal(PortalInfo portal)
         {
             return this._provider.ExecuteReader("GetSharedModulesWithPortal", portal.PortalID);
         }
 
+        /// <inheritdoc/>
         public IDataReader GetSharedModulesByPortal(PortalInfo portal)
         {
             return this._provider.ExecuteReader("GetSharedModulesByPortal", portal.PortalID);

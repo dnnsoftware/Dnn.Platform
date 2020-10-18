@@ -666,6 +666,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name = "module"></param>
         /// <remarks>
         /// </remarks>
+/// <inheritdoc/>
         public void CreateContentItem(ModuleInfo module)
         {
             ContentType contentType = ContentType.Module;
@@ -1189,6 +1190,7 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillCollection<ModuleInfo>(dataProvider.GetModule(moduleID, Null.NullInteger));
         }
 
+        /// <inheritdoc/>
         public void InitialModulePermission(ModuleInfo module, int tabId, int permissionType)
         {
             var tabPermissions = TabPermissionController.GetTabPermissions(tabId, module.PortalID);
@@ -1250,6 +1252,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public void LocalizeModule(ModuleInfo sourceModule, Locale locale)
         {
             try
@@ -1798,6 +1801,7 @@ namespace DotNetNuke.Entities.Modules
             return tabModuleSettings.ContainsKey(tabmoduleId) ? tabModuleSettings[tabmoduleId] : new Hashtable();
         }
 
+        /// <inheritdoc/>
         protected override Func<IModuleController> GetFactory()
         {
             return () => new ModuleController();

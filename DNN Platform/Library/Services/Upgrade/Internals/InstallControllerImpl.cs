@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </remarks>
     internal class InstallControllerImpl : IInstallController
     {
+        /// <inheritdoc/>
         public string InstallerLogName
         {
             get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
@@ -253,6 +254,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             Upgrade.SetInstallTemplate(installTemplate);
         }
 
+        /// <inheritdoc/>
         public void RemoveFromInstallConfig(string xmlNodePath)
         {
             InstallConfig config = this.GetInstallConfig();
@@ -439,6 +441,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return installConfig;
         }
 
+        /// <inheritdoc/>
         public bool IsValidSqlServerVersion(string connectionString)
         {
             // todo: check if we can use globals.DatabaseEngineVersion instead
@@ -491,6 +494,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return isValidVersion;
         }
 
+        /// <inheritdoc/>
         public bool IsAbleToPerformDatabaseActions(string connectionString)
         {
             var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
@@ -501,12 +505,14 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return string.IsNullOrEmpty(strExceptions);
         }
 
+        /// <inheritdoc/>
         public bool IsValidDotNetVersion()
         {
             // todo: check that this works for 4.5 etc.
             return Upgrade.IsNETFrameworkCurrent("4.0");
         }
 
+        /// <inheritdoc/>
         public bool IsSqlServerDbo()
         {
             string dbo = DataProvider.Instance().Settings["databaseOwner"];
@@ -520,6 +526,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
         }
 
+        /// <inheritdoc/>
         public bool IsAvailableLanguagePack(string cultureCode)
         {
             try
@@ -545,6 +552,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
         }
 
+        /// <inheritdoc/>
         public CultureInfo GetCurrentLanguage()
         {
             CultureInfo pageCulture = null;
@@ -596,6 +604,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return DataProvider.Instance().TestDatabaseConnection(builder, owner, objectQualifier);
         }
 
+        /// <inheritdoc/>
         public CultureInfo GetCultureFromCookie()
         {
             var langCookie = HttpContext.Current.Request.Cookies["language"];

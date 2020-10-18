@@ -25,6 +25,10 @@ namespace DotNetNuke.Services.Installer.Installers
         private LanguagePackInfo LanguagePack;
         private Locale TempLanguage;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageInstaller"/> class.
+        /// </summary>
+        /// <param name="type"></param>
         public LanguageInstaller(LanguagePackType type)
         {
             this.LanguagePackType = type;

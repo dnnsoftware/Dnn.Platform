@@ -24,6 +24,10 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly PositionIncrementAttribute _posIncrAtt;
         private State _current;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SynonymFilter"/> class.
+        /// </summary>
+        /// <param name="input"></param>
         public SynonymFilter(TokenStream input)
             : base(input)
         {
@@ -31,6 +35,7 @@ namespace DotNetNuke.Services.Search.Internals
             this._posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();
         }
 
+        /// <inheritdoc/>
         public override bool IncrementToken()
         {
             // Pop buffered synonyms

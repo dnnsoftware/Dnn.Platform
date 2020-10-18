@@ -29,6 +29,11 @@ namespace DotNetNuke.Services.Installer.Writers
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
+        /// </summary>
+        /// <param name="manifestNav"></param>
+        /// <param name="installer"></param>
         public ModulePackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
             this.DesktopModule = new DesktopModuleInfo();
@@ -53,6 +58,12 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(this.DesktopModule.FolderName);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
+        /// </summary>
+        /// <param name="desktopModule"></param>
+        /// <param name="manifestNav"></param>
+        /// <param name="package"></param>
         public ModulePackageWriter(DesktopModuleInfo desktopModule, XPathNavigator manifestNav, PackageInfo package)
             : base(package)
         {
@@ -68,6 +79,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this.ProcessModuleFolders(physicalFolderPath, physicalFolderPath);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
+        /// </summary>
+        /// <param name="package"></param>
         public ModulePackageWriter(PackageInfo package)
             : base(package)
         {
@@ -75,6 +90,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(this.DesktopModule.FolderName);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
+        /// </summary>
+        /// <param name="desktopModule"></param>
+        /// <param name="package"></param>
         public ModulePackageWriter(DesktopModuleInfo desktopModule, PackageInfo package)
             : base(package)
         {
@@ -90,6 +110,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public DesktopModuleInfo DesktopModule { get; set; }
 
+        /// <inheritdoc/>
         protected override Dictionary<string, string> Dependencies
         {
             get
@@ -109,6 +130,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Write Module Component

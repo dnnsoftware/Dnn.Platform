@@ -10,6 +10,9 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     internal class LuceneQuery
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LuceneQuery"/> class.
+        /// </summary>
         public LuceneQuery()
         {
             this.PageIndex = 1;

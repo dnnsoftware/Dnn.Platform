@@ -11,6 +11,11 @@ namespace DotNetNuke.Common
     [DataContract]
     public class SerializableKeyValuePair<TKey, TValue>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SerializableKeyValuePair{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public SerializableKeyValuePair(TKey key, TValue value)
         {
             this.Key = key;
@@ -23,6 +28,7 @@ namespace DotNetNuke.Common
         [DataMember(Name = "value")]
         public TValue Value { get; set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return Json.Serialize(this);

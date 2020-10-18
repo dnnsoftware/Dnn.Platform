@@ -35,25 +35,72 @@ namespace DotNetNuke.Services.Search
         private int _TabId;
         private string _Title;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
         public SearchItemInfo()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content)
             : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, string.Empty, Null.NullInteger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Guid"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid)
             : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, Guid, Null.NullInteger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Image"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, int Image)
             : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, string.Empty, Image)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Guid"></param>
+        /// <param name="Image"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid, int Image)
         {
             this._Title = Title;
@@ -68,6 +115,19 @@ namespace DotNetNuke.Services.Search
             this._HitCount = 0;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Guid"></param>
+        /// <param name="Image"></param>
+        /// <param name="TabID"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid, int Image, int TabID)
         {
             this._Title = Title;

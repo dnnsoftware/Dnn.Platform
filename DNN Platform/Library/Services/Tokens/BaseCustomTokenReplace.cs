@@ -92,6 +92,9 @@ namespace DotNetNuke.Services.Tokens
             set => TokenContext.CurrentAccessLevel = value;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.
+        /// </summary>
         public BaseCustomTokenReplace()
         {
             PropertySource = TokenContext.PropertySource;
@@ -155,6 +158,7 @@ namespace DotNetNuke.Services.Tokens
                 || Provider.ContainsTokens(strSourceText, TokenContext);
         }
 
+        /// <inheritdoc/>
         protected override string replacedTokenValue(string objectName, string propertyName, string format)
         {
             string result = string.Empty;
@@ -200,6 +204,7 @@ namespace DotNetNuke.Services.Tokens
             return result;
         }
 
+        /// <inheritdoc/>
         protected override string ReplaceTokens(string sourceText)
         {
             return Provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : Provider.Tokenize(sourceText, TokenContext);

@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Journal
 
     public class JournalItem : IHydratable, IPropertyAccess
     {
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -97,6 +98,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.JournalId = Null.SetNullInteger(dr["JournalId"]);
@@ -141,6 +143,7 @@ namespace DotNetNuke.Services.Journal
             this.SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string OutputFormat = string.Empty;

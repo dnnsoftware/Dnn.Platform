@@ -51,6 +51,9 @@ namespace DotNetNuke.Entities.Profile
         private int _viewOrder;
         private bool _visible;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.
+        /// </summary>
         public ProfilePropertyDefinition()
         {
             this.PropertyDefinitionId = Null.NullInteger;
@@ -60,6 +63,10 @@ namespace DotNetNuke.Entities.Profile
             this.PortalId = _Settings.PortalId;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.
+        /// </summary>
+        /// <param name="portalId"></param>
         public ProfilePropertyDefinition(int portalId)
         {
             this.PropertyDefinitionId = Null.NullInteger;

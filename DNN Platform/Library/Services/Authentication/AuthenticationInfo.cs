@@ -19,6 +19,9 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public class AuthenticationInfo : BaseEntityInfo, IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationInfo"/> class.
+        /// </summary>
         public AuthenticationInfo()
         {
             this.LogoffControlSrc = Null.NullString;

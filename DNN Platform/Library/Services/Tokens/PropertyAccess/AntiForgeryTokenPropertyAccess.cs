@@ -11,11 +11,13 @@ namespace DotNetNuke.Services.Tokens
 
     public class AntiForgeryTokenPropertyAccess : IPropertyAccess
     {
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get { return CacheLevel.notCacheable; }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

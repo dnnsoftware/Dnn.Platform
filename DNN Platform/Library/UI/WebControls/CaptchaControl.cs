@@ -59,6 +59,9 @@ namespace DotNetNuke.UI.WebControls
         private string _UserText = string.Empty;
         private Image _image;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CaptchaControl"/> class.
+        /// </summary>
         public CaptchaControl()
         {
             this.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);

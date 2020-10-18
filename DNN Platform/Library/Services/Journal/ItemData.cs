@@ -4,11 +4,11 @@
 
 namespace DotNetNuke.Services.Journal
 {
-
     using DotNetNuke.Services.Tokens;
 
     public class ItemData : IPropertyAccess
     {
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Journal
 
         public string ImageUrl { get; set; }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string OutputFormat = string.Empty;

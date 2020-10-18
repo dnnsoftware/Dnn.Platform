@@ -583,6 +583,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -596,6 +597,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -642,6 +644,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

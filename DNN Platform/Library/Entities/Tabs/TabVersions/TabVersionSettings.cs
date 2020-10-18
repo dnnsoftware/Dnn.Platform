@@ -18,24 +18,28 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private const string TabVersionQueryStringParam = "DnnTabVersion";
         private const string TabVersioningSettingKey = "TabVersioningSettingKey";
 
+        /// <inheritdoc/>
         public int GetMaxNumberOfVersions(int portalId)
         {
             Requires.NotNegative("portalId", portalId);
             return portalId == Null.NullInteger ? TabVersionsMaxNumber : PortalController.GetPortalSettingAsInteger("TabVersionsMaxNumber", portalId, TabVersionsMaxNumber);
         }
 
+        /// <inheritdoc/>
         public void SetMaxNumberOfVersions(int portalId, int maxNumberOfVersions)
         {
             Requires.NotNegative("portalId", portalId);
             PortalController.UpdatePortalSetting(portalId, "TabVersionsMaxNumber", maxNumberOfVersions.ToString(CultureInfo.InvariantCulture));
         }
 
+        /// <inheritdoc/>
         public void SetEnabledVersioningForPortal(int portalId, bool enabled)
         {
             Requires.NotNegative("portalId", portalId);
             PortalController.UpdatePortalSetting(portalId, "TabVersionsEnabled", enabled.ToString(CultureInfo.InvariantCulture));
         }
 
+        /// <inheritdoc/>
         public void SetEnabledVersioningForTab(int tabId, bool enabled)
         {
             Requires.NotNegative("tabId", tabId);
@@ -43,6 +47,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             TabController.Instance.UpdateTabSetting(tabId, TabVersioningSettingKey, enabled.ToString(CultureInfo.InvariantCulture));
         }
 
+        /// <inheritdoc/>
         public bool IsVersioningEnabled(int portalId)
         {
             Requires.NotNegative("portalId", portalId);
@@ -50,6 +55,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 Convert.ToBoolean(PortalController.GetPortalSetting("TabVersionsEnabled", portalId, bool.FalseString));
         }
 
+        /// <inheritdoc/>
         public bool IsVersioningEnabled(int portalId, int tabId)
         {
             Requires.NotNegative("portalId", portalId);
@@ -74,12 +80,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return isVersioningEnableForTab;
         }
 
+        /// <inheritdoc/>
         public string GetTabVersionQueryStringParameter(int portalId)
         {
             Requires.NotNegative("portalId", portalId);
             return PortalController.GetPortalSetting("TabVersionQueryStringParameter", portalId, TabVersionQueryStringParam);
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabVersionSettings> GetFactory()
         {
             return () => new TabVersionSettings();

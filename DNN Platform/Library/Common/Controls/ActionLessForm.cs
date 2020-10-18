@@ -13,6 +13,7 @@ namespace DotNetNuke.Common.Controls
     /// </summary>
     public class Form : HtmlForm
     {
+        /// <inheritdoc/>
         protected override void RenderAttributes(HtmlTextWriter writer)
         {
             var stringWriter = new StringWriter();

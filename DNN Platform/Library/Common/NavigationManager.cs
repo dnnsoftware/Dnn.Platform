@@ -19,6 +19,10 @@ namespace DotNetNuke.Common
     {
         private readonly IPortalController _portalController;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NavigationManager"/> class.
+        /// </summary>
+        /// <param name="portalController">An <see cref="IPortalController"/> instance.</param>
         public NavigationManager(IPortalController portalController)
         {
             this._portalController = portalController;

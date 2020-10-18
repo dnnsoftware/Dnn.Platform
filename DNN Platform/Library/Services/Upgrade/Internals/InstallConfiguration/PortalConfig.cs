@@ -12,6 +12,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// -----------------------------------------------------------------------------
     public class PortalConfig
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalConfig"/> class.
+        /// </summary>
         public PortalConfig()
         {
             this.PortAliases = new List<string>();

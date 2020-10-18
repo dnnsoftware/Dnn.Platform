@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.Containers
         private ActionManager _ActionManager;
         private ModuleAction _ModuleAction;
 
+        /// <inheritdoc/>
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------

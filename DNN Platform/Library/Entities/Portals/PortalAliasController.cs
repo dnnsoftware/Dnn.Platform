@@ -237,6 +237,7 @@ namespace DotNetNuke.Entities.Portals
                 true);
         }
 
+        /// <inheritdoc/>
         protected override Func<IPortalAliasController> GetFactory()
         {
             return () => new PortalAliasController();

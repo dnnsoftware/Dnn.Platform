@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
-
     using Version = Lucene.Net.Util.Version;
 
     /// <summary>

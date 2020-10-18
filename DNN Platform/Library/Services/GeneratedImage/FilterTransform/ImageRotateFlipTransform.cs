@@ -12,6 +12,9 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageRotateFlipTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageRotateFlipTransform"/> class.
+        /// </summary>
         public ImageRotateFlipTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

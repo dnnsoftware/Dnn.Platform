@@ -22,13 +22,19 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly string _html5File;
         private string _fileContent;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Html5HostControl"/> class.
+        /// </summary>
+        /// <param name="html5File"></param>
         public Html5HostControl(string html5File)
         {
             this._html5File = html5File;
         }
 
+        /// <inheritdoc/>
         public ModuleActionCollection ModuleActions { get; private set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -60,6 +66,7 @@ namespace DotNetNuke.UI.Modules.Html5
             ServicesFramework.Instance.RequestAjaxScriptSupport();
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

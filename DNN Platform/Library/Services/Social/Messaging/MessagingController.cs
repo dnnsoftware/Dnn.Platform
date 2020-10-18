@@ -45,11 +45,18 @@ namespace DotNetNuke.Services.Social.Messaging
 
         private readonly IDataService _dataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessagingController"/> class.
+        /// </summary>
         public MessagingController()
             : this(DataService.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessagingController"/> class.
+        /// </summary>
+        /// <param name="dataService"></param>
         public MessagingController(IDataService dataService)
         {
             // Argument Contract
@@ -58,11 +65,13 @@ namespace DotNetNuke.Services.Social.Messaging
             this._dataService = dataService;
         }
 
+        /// <inheritdoc/>
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs)
         {
             this.SendMessage(message, roles, users, fileIDs, UserController.Instance.GetCurrentUserInfo());
         }
 
+        /// <inheritdoc/>
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs, UserInfo sender)
         {
             if (sender == null || sender.UserID <= 0)
@@ -263,6 +272,7 @@ namespace DotNetNuke.Services.Social.Messaging
             return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
+        /// <inheritdoc/>
         protected override Func<IMessagingController> GetFactory()
         {
             return () => new MessagingController();

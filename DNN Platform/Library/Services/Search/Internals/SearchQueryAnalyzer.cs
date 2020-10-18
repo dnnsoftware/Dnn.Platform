@@ -15,11 +15,16 @@ namespace DotNetNuke.Services.Search.Internals
     {
         private readonly bool _useStemmingFilter;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchQueryAnalyzer"/> class.
+        /// </summary>
+        /// <param name="useStemmingFilter"></param>
         public SearchQueryAnalyzer(bool useStemmingFilter)
         {
             this._useStemmingFilter = useStemmingFilter;
         }
 
+        /// <inheritdoc/>
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             var wordLengthMinMax = SearchHelper.Instance.GetSearchMinMaxLength();

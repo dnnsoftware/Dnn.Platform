@@ -50,6 +50,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PermissionsGrid"/> class.
+        /// </summary>
         public PermissionsGrid()
         {
             this.dtUserPermissions = new DataTable();
@@ -596,6 +599,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             return false;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

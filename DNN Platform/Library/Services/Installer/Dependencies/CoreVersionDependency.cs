@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     {
         private Version minVersion;
 
+        /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
@@ -26,6 +27,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsValid
         {
             get
@@ -40,6 +42,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.minVersion = new Version(dependencyNav.Value);

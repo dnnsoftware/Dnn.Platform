@@ -23,6 +23,9 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class EditorInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorInfo"/> class.
+        /// </summary>
         public EditorInfo()
         {
             this.Visible = true;

@@ -34,6 +34,7 @@ namespace DotNetNuke.Services.Log.EventLog
         private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
 
+        /// <inheritdoc/>
         public override void AddLog(LogInfo logInfo)
         {
             string configPortalID = logInfo.LogPortalID != Null.NullInteger
@@ -60,12 +61,14 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         // ReSharper disable once InconsistentNaming
+        /// <inheritdoc/>
         public override void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
         {
             DataProvider.Instance().AddLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
             DataCache.RemoveCache(LogTypeCacheKey);
         }
 
+        /// <inheritdoc/>
         public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive,
                                                   string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
         {
@@ -108,22 +111,26 @@ namespace DotNetNuke.Services.Log.EventLog
             DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
         }
 
+        /// <inheritdoc/>
         public override void ClearLog()
         {
             DataProvider.Instance().ClearLog();
         }
 
+        /// <inheritdoc/>
         public override void DeleteLog(LogInfo logInfo)
         {
             DataProvider.Instance().DeleteLog(logInfo.LogGUID);
         }
 
+        /// <inheritdoc/>
         public override void DeleteLogType(string logTypeKey)
         {
             DataProvider.Instance().DeleteLogType(logTypeKey);
             DataCache.RemoveCache(LogTypeCacheKey);
         }
 
+        /// <inheritdoc/>
         public override void DeleteLogTypeConfigInfo(string id)
         {
             DataProvider.Instance().DeleteLogTypeConfigInfo(id);
@@ -131,6 +138,7 @@ namespace DotNetNuke.Services.Log.EventLog
             DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
         }
 
+        /// <inheritdoc/>
         public override List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
         {
             var logs = new List<LogInfo>();
@@ -138,6 +146,7 @@ namespace DotNetNuke.Services.Log.EventLog
             return logs;
         }
 
+        /// <inheritdoc/>
         public override ArrayList GetLogTypeConfigInfo()
         {
             var list = (ArrayList)DataCache.GetCache(LogTypeInfoCacheKey);
@@ -167,11 +176,13 @@ namespace DotNetNuke.Services.Log.EventLog
             return list;
         }
 
+        /// <inheritdoc/>
         public override LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
         {
             return CBO.FillObject<LogTypeConfigInfo>(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)));
         }
 
+        /// <inheritdoc/>
         public override ArrayList GetLogTypeInfo()
         {
             return CBO.GetCachedObject<ArrayList>(
@@ -179,6 +190,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 c => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof(LogTypeInfo)));
         }
 
+        /// <inheritdoc/>
         public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)
         {
             var log = (LogInfo)GetLog(logInfo.LogGUID);
@@ -218,6 +230,7 @@ namespace DotNetNuke.Services.Log.EventLog
             return log;
         }
 
+        /// <inheritdoc/>
         public override bool LoggingIsEnabled(string logType, int portalID)
         {
             string configPortalID = portalID.ToString();
@@ -235,6 +248,7 @@ namespace DotNetNuke.Services.Log.EventLog
             return configInfo.LoggingIsActive;
         }
 
+        /// <inheritdoc/>
         public override void PurgeLogBuffer()
         {
             if (!LockQueueLog.TryEnterWriteLock(WriterLockTimeout))
@@ -265,6 +279,7 @@ namespace DotNetNuke.Services.Log.EventLog
             DataProvider.Instance().PurgeLog();
         }
 
+        /// <inheritdoc/>
         public override void SendLogNotifications()
         {
             List<LogTypeConfigInfo> configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
@@ -290,33 +305,39 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
+        /// <inheritdoc/>
         public override bool SupportsEmailNotification()
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public override bool SupportsInternalViewer()
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public override bool SupportsSendToCoreTeam()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override bool SupportsSendViaEmail()
         {
             return true;
         }
 
         // ReSharper disable once InconsistentNaming
+        /// <inheritdoc/>
         public override void UpdateLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
         {
             DataProvider.Instance().UpdateLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
             DataCache.RemoveCache(LogTypeCacheKey);
         }
 
+        /// <inheritdoc/>
         public override void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
         {
             var intThreshold = -1;

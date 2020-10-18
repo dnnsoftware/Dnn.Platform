@@ -159,6 +159,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

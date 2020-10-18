@@ -77,6 +77,7 @@ namespace DotNetNuke.Services.Assets
             return hasPermision;
         }
 
+        /// <inheritdoc/>
         public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
         {
             var folder = this.GetFolderInfo(folderId);
@@ -126,6 +127,7 @@ namespace DotNetNuke.Services.Assets
             };
         }
 
+        /// <inheritdoc/>
         public ContentPage SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
         {
             var recursive = subfolderFilter != SubfolderFilter.ExcludeSubfolders;
@@ -145,6 +147,7 @@ namespace DotNetNuke.Services.Assets
             };
         }
 
+        /// <inheritdoc/>
         public IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, string orderingField, bool asc)
         {
             Requires.NotNull("parentFolder", parentFolder);
@@ -157,6 +160,7 @@ namespace DotNetNuke.Services.Assets
             return ApplyOrder(folders.AsQueryable(), field, asc);
         }
 
+        /// <inheritdoc/>
         public IFileInfo RenameFile(int fileId, string newFileName)
         {
             Requires.NotNullOrEmpty("newFileName", newFileName);
@@ -198,6 +202,7 @@ namespace DotNetNuke.Services.Assets
             return FileManager.Instance.RenameFile(file, newFileName);
         }
 
+        /// <inheritdoc/>
         public IFolderInfo RenameFolder(int folderId, string newFolderName)
         {
             Requires.NotNullOrEmpty("newFolderName", newFolderName);
@@ -248,6 +253,7 @@ namespace DotNetNuke.Services.Assets
             return folder;
         }
 
+        /// <inheritdoc/>
         public IFolderInfo CreateFolder(string folderName, int folderParentId, int folderMappingId, string mappedPath)
         {
             Requires.NotNullOrEmpty("folderName", folderName);
@@ -294,6 +300,7 @@ namespace DotNetNuke.Services.Assets
             }
         }
 
+        /// <inheritdoc/>
         public bool DeleteFolder(int folderId, bool onlyUnlink, ICollection<IFolderInfo> nonDeletedSubfolders)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
@@ -321,6 +328,7 @@ namespace DotNetNuke.Services.Assets
             return true;
         }
 
+        /// <inheritdoc/>
         public bool DeleteFile(int fileId)
         {
             var fileInfo = FileManager.Instance.GetFile(fileId, true);

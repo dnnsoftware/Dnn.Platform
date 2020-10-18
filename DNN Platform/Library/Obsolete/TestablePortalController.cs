@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalController instead. Scheduled removal in v10.0.0.")]
     public class TestablePortalController : ServiceLocator<IPortalController, TestablePortalController>
     {
+        /// <inheritdoc/>
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();

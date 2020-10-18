@@ -125,6 +125,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnVisibilityChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -132,6 +133,7 @@ namespace DotNetNuke.UI.WebControls
             JavaScript.RequestRegistration(CommonJs.jQuery);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

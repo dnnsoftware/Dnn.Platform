@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.FileSystem.Internal.SecurityCheckers
 
     public class SvgFileChecker : IFileSecurityChecker
     {
+        /// <inheritdoc/>
         public bool Validate(Stream fileContent)
         {
             try

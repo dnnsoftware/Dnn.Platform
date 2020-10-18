@@ -37,10 +37,17 @@ namespace DotNetNuke.UI.Modules
         private int _nextActionId = -1;
         private Hashtable _settings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
+        /// </summary>
         public ModuleInstanceContext()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
+        /// </summary>
+        /// <param name="moduleControl"></param>
         public ModuleInstanceContext(IModuleControl moduleControl)
         {
             this._moduleControl = moduleControl;

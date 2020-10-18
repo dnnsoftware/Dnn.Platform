@@ -43,16 +43,19 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
             return this.GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
         }
 
+        /// <inheritdoc/>
         public override int GetItemCount(int tabId)
         {
             return GetCacheKeys(tabId).Count();
         }
 
+        /// <inheritdoc/>
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             object output = Cache[cacheKey];
@@ -66,11 +69,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
         {
             return new MemoryResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
         }
 
+        /// <inheritdoc/>
         public override void PurgeCache(int portalId)
         {
             foreach (string key in GetCacheKeys())
@@ -79,11 +84,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override void PurgeExpiredItems(int portalId)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public override void Remove(int tabId)
         {
             foreach (string key in GetCacheKeys(tabId))
@@ -92,11 +99,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output)
         {
             Cache.Insert(cacheKey, output, null, DateTime.UtcNow.Add(duration), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
         }
 
+        /// <inheritdoc/>
         public override bool StreamOutput(int tabId, string cacheKey, HttpContext context)
         {
             if (Cache[cacheKey] == null)

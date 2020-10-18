@@ -21,12 +21,16 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:TextEditControl runat=server></{0}:TextEditControl>")]
     internal class AutoCompleteControl : TextEditControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoCompleteControl"/> class.
+        /// </summary>
         public AutoCompleteControl()
         {
             this.Init += this.AutoCompleteControl_Init;
             this.Load += this.AutoCompleteControl_Load;
         }
 
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;

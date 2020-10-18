@@ -26,46 +26,60 @@ namespace DotNetNuke.Entities.Content
 
         private readonly IContentController _contentController;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttachmentController"/> class.
+        /// </summary>
         public AttachmentController()
             : this(Util.GetContentController())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttachmentController"/> class.
+        /// </summary>
+        /// <param name="contentController"></param>
         public AttachmentController(IContentController contentController)
         {
             this._contentController = contentController;
         }
 
+        /// <inheritdoc/>
         public void AddFileToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddFilesToContent(contentItemId, new[] { fileInfo });
         }
 
+        /// <inheritdoc/>
         public void AddFilesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
         }
 
+        /// <inheritdoc/>
         public void AddVideoToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddVideosToContent(contentItemId, new[] { fileInfo });
         }
 
+        /// <inheritdoc/>
         public void AddVideosToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Videos.AddRange(fileInfo));
         }
 
+        /// <inheritdoc/>
         public void AddImageToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddImagesToContent(contentItemId, new[] { fileInfo });
         }
 
+        /// <inheritdoc/>
         public void AddImagesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Images.AddRange(fileInfo));
         }
 
+        /// <inheritdoc/>
         public IList<IFileInfo> GetVideosByContent(int contentItemId)
         {
             var files = this.GetFilesByContent(contentItemId, VideoKey);
@@ -73,6 +87,7 @@ namespace DotNetNuke.Entities.Content
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
 
+        /// <inheritdoc/>
         public IList<IFileInfo> GetImagesByContent(int contentItemId)
         {
             var files = this.GetFilesByContent(contentItemId, ImageKey);
@@ -80,6 +95,7 @@ namespace DotNetNuke.Entities.Content
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
 
+        /// <inheritdoc/>
         public IList<IFileInfo> GetFilesByContent(int contentItemId)
         {
             var files = this.GetFilesByContent(contentItemId, FilesKey);

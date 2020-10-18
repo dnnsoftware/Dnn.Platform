@@ -63,6 +63,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override List<PermissionInfoBase> PermissionsList
         {
             get
@@ -76,6 +77,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override bool RefreshGrid
         {
             get
@@ -104,12 +106,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             this._permissionsList = null;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
             this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
         }
 
+        /// <inheritdoc/>
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new FolderPermissionInfo(permission)
@@ -224,11 +228,13 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permission;
         }
 
+        /// <inheritdoc/>
         protected override bool IsFullControl(PermissionInfo permissionInfo)
         {
             return (permissionInfo.PermissionKey == "WRITE") && PermissionProvider.Instance().SupportsFullControl();
         }
 
+        /// <inheritdoc/>
         protected override bool IsViewPermisison(PermissionInfo permissionInfo)
         {
             return permissionInfo.PermissionKey == "READ";
@@ -291,6 +297,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this.FolderPermissions.Remove(permissionID, roleID, userID);

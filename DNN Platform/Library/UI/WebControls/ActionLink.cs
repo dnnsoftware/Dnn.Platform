@@ -26,6 +26,9 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class ActionLink : HyperLink
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActionLink"/> class.
+        /// </summary>
         public ActionLink()
         {
             this.RequireEditMode = false;

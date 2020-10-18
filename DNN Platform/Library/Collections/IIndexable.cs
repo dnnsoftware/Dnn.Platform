@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Collections
 {
-
     /// <summary>
     /// This interface is used to make a class indexable.
     /// </summary>

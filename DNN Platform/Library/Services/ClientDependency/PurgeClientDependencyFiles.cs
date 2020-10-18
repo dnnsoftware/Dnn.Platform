@@ -10,11 +10,16 @@ namespace DotNetNuke.Services.ClientDependency
 
     internal class PurgeClientDependencyFiles : SchedulerClient
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PurgeClientDependencyFiles"/> class.
+        /// </summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public PurgeClientDependencyFiles(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try

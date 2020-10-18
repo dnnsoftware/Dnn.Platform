@@ -101,6 +101,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
