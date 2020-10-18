@@ -27,15 +27,14 @@ namespace DotNetNuke.Services.Exceptions
     /// </summary>
     /// <remarks>
     /// <para>
-    /// For most developers, there is a hard problem need to face to is that our product will run on many and many servers with
-    /// much different environment, such as hardware, network, system version, framework version and so on, so there is many of reasons
-    /// will make our application throw lof of exceptions,even will stop our app to working. so when some error occured, we need a way
-    /// to find out the reason, we know we need to log all the exception, but the point is how to log useful information, you should log
-    /// the information what you need to location the code caught the error, but DONOT just log 'ERROR'. so we provide a full support of
-    /// exception log system. when error occured, we can found the detail information in event log and can locationt the error quickly.
+    /// Logging is an import part of a good architecture. A good practice is to provide enough logging to accurately be able to identify which
+    /// code caused an exception. Some exceptions are expected and you can display information to the user to help him figure out what happened.
+    /// It is however bad practice to catch any and all exceptions (general exception) and display this to users. In such situations it is best
+    /// to provide the user with a general message and only log the details in a way that the details are either just visible to administrators
+    /// (Event Log) or only to SuperUsers (hosts) in the server logs.
     /// </para>
     /// <para>
-    /// Current we immplement lot of custom exception to use in different levels:
+    /// Current we immplement a lot of custom exception to use in different levels:
     /// <list type="bullet">
     /// <item><see cref="ModuleLoadException"/></item>
     /// <item><see cref="ObjectHydrationException"/></item>

@@ -31,7 +31,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.Modules.Console.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <LangVersion>7</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -43,8 +44,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.Modules.Console.XML</DocumentationFile>
-    <NoWarn>1591,1573</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
