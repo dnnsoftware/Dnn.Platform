@@ -194,6 +194,7 @@
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Application\ApplicationStatusInfo.cs" />
     <Compile Include="Collections\PageSelector{T}.cs" />
+    <Compile Include="Common\Controls\Form.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\ServiceScopeContainer.cs" />
@@ -279,9 +280,6 @@
     <Compile Include="Collections\NaiveLockingList.cs" />
     <Compile Include="Collections\PagedList.cs" />
     <Compile Include="Collections\PagingExtensions.cs" />
-    <Compile Include="Common\Controls\ActionLessForm.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Common\FileItem.cs" />
     <Compile Include="Common\Globals.cs">
       <SubType>Code</SubType>

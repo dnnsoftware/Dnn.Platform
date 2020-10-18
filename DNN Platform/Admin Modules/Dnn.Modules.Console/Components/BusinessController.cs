@@ -9,7 +9,6 @@ namespace Dnn.Modules.Console.Components
     using DotNetNuke.Entities.Modules;
 
     /// <summary>Implements the module's business controller interface(s).</summary>
-
     public class BusinessController : IUpgradeable
     {
         /// <inheritdoc/>
