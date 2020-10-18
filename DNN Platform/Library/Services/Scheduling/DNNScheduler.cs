@@ -279,7 +279,6 @@ namespace DotNetNuke.Services.Scheduling
             this.RunScheduleItemNow(scheduleItem);
         }
 
-        // DNN-5001 Possibility to stop already running tasks
         /// <inheritdoc/>
         public override void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
         {
