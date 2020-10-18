@@ -46,6 +46,7 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.UI.Utilities;
     using Lucene.Net.Search;
@@ -2375,20 +2376,21 @@ namespace DotNetNuke.Common
             string strURL = string.Empty;
 
             // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4213
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var currentTabId = TabController.CurrentPage.TabID;
+            var currentUserId = UserController.Instance.GetCurrentUserInfo().UserID;
             if (HttpContext.Current.Request.IsAuthenticated)
             {
                 if (string.IsNullOrEmpty(message))
                 {
                     // redirect to access denied page
-                    strURL = navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Access Denied");
+                    strURL = navigationManager.NavigateURL(currentTabId, "Access Denied");
                 }
                 else
                 {
                     // redirect to access denied page with custom message
                     var messageGuid = DataProvider.Instance().AddRedirectMessage(
-                        portalSettings.UserId, portalSettings.ActiveTab.TabID, message).ToString("N");
-                    strURL = navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Access Denied", "message=" + messageGuid);
+                        currentUserId, currentTabId, message).ToString("N");
+                    strURL = navigationManager.NavigateURL(currentTabId, "Access Denied", "message=" + messageGuid);
                 }
             }
             else
@@ -2426,11 +2428,10 @@ namespace DotNetNuke.Common
         /// <returns>The formatted root url.</returns>
         public static string ApplicationURL()
         {
-            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4213
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings != null && portalSettings.ActiveTab.HasAVisibleVersion)
+            var currentPage = TabController.CurrentPage;
+            if (currentPage != null && currentPage.HasAVisibleVersion)
             {
-                return ApplicationURL(portalSettings.ActiveTab.TabID);
+                return ApplicationURL(currentPage.TabID);
             }
 
             return ApplicationURL(-1);
@@ -2745,8 +2746,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnUrl, bool overrideSetting)
         {
-            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4213
-            return LoginURL(returnUrl, overrideSetting, PortalController.Instance.GetCurrentPortalSettings());
+            return LoginURL(returnUrl, overrideSetting, PortalController.Instance.GetCurrentSettings());
         }
 
         /// <summary>
@@ -2756,9 +2756,24 @@ namespace DotNetNuke.Common
         /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <returns>Formatted URL.</returns>
+        [Obsolete("Deprecated in v9.8.0, use the overload that takes IPortalSettings instead, scheduled removal in v10.")]
         public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
+            return LoginURL(returnUrl, overrideSetting, (IPortalSettings)portalSettings);
+        }
+
+        /// <summary>
+        /// Gets the login URL.
+        /// </summary>
+        /// <param name="returnUrl">The URL to redirect to after logging in.</param>
+        /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <param name="portalSettings">The Portal Settings.</param>
+        /// <returns>Formatted URL.</returns>
+        public static string LoginURL(string returnUrl, bool overrideSetting, IPortalSettings portalSettings)
+        {
             string loginUrl;
+            var currentTabId = TabController.CurrentPage.TabID;
+
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 returnUrl = string.Format("returnurl={0}", returnUrl);
@@ -2784,16 +2799,16 @@ namespace DotNetNuke.Common
 
                     // No account module so use portal tab
                     loginUrl = string.IsNullOrEmpty(returnUrl)
-                                 ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
-                                 : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, strMessage, popUpParameter);
+                                 ? navigationManager.NavigateURL(currentTabId, "Login", strMessage, popUpParameter)
+                                 : navigationManager.NavigateURL(currentTabId, "Login", returnUrl, strMessage, popUpParameter);
                 }
             }
             else
             {
                 // portal tab
                 loginUrl = string.IsNullOrEmpty(returnUrl)
-                                ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
-                                : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, popUpParameter);
+                                ? navigationManager.NavigateURL(currentTabId, "Login", popUpParameter)
+                                : navigationManager.NavigateURL(currentTabId, "Login", returnUrl, popUpParameter);
             }
 
             return loginUrl;
@@ -3023,8 +3038,7 @@ namespace DotNetNuke.Common
         {
             string strURL;
 
-            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4213
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             string extraParams = string.Empty;
             if (!string.IsNullOrEmpty(returnURL))
             {
@@ -3043,7 +3057,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                strURL = navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Register", extraParams);
+                strURL = navigationManager.NavigateURL(TabController.CurrentPage.TabID, "Register", extraParams);
             }
 
             return strURL;
