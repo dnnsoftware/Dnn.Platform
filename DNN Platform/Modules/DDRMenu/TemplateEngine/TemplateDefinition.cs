@@ -12,7 +12,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Web;
     using System.Web.Caching;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Xml;
 
     using DotNetNuke.Common;

@@ -15,41 +15,56 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.UI;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
+    /// <summary>
+    /// Base class for multiple DDR Menu classes.
+    /// </summary>
     public class MenuBase
     {
         private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
-                                                                          {
-                                                                            { "rootonly", "*,0,0" },
-                                                                            { "rootchildren", "+0" },
-                                                                            { "currentchildren", "." },
-                                                                          };
+        {
+            { "rootonly", "*,0,0" },
+            { "rootchildren", "+0" },
+            { "currentchildren", "." },
+        };
 
         private Settings menuSettings;
 
         private HttpContext currentContext;
 
-        private PortalSettings hostPortalSettings;
+        private IPortalSettings hostPortalSettings;
 
+        /// <summary>
+        /// Gets or sets the template definition.
+        /// </summary>
         public TemplateDefinition TemplateDef { get; set; }
 
-        internal PortalSettings HostPortalSettings
+        /// <summary>
+        /// Gets the portal settings for the current portal.
+        /// </summary>
+        internal IPortalSettings HostPortalSettings
         {
-            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
+            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentSettings()); }
         }
 
+        /// <summary>
+        /// Gets or sets the root node.
+        /// </summary>
         internal MenuNode RootNode { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to skip localization.
+        /// </summary>
         internal bool SkipLocalisation { get; set; }
 
         private HttpContext CurrentContext
@@ -57,6 +72,11 @@ namespace DotNetNuke.Web.DDRMenu
             get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
         }
 
+        /// <summary>
+        /// Instantiates the MenuBase.
+        /// </summary>
+        /// <param name="menuStyle">The menu style to use.</param>
+        /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
         public static MenuBase Instantiate(string menuStyle)
         {
             try
@@ -70,11 +90,18 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <summary>
+        /// Applies the provided settings.
+        /// </summary>
+        /// <param name="settings">The settings to apply.</param>
         internal void ApplySettings(Settings settings)
         {
             this.menuSettings = settings;
         }
 
+        /// <summary>
+        /// Runs menu initialization logic that should be done before rendering the menu.
+        /// </summary>
         internal virtual void PreRender()
         {
             this.TemplateDef.AddTemplateArguments(this.menuSettings.TemplateArguments, true);
@@ -123,6 +150,10 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.PreRender();
         }
 
+        /// <summary>
+        /// Renders the menu.
+        /// </summary>
+        /// <param name="htmlWriter">The html writer to which to render the menu.</param>
         internal void Render(HtmlTextWriter htmlWriter)
         {
             if (Host.DebugMode)
@@ -142,6 +173,11 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user }, htmlWriter);
         }
 
+        /// <summary>
+        /// Gets the physical path from a virtual path.
+        /// </summary>
+        /// <param name="path">The virtual path to map.</param>
+        /// <returns>The full physical path to the file.</returns>
         protected string MapPath(string path)
         {
             return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
@@ -253,7 +289,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private void FilterHiddenNodes(MenuNode parentNode)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var filteredNodes = new List<MenuNode>();
             filteredNodes.AddRange(
                 parentNode.Children.FindAll(
@@ -278,7 +314,7 @@ namespace DotNetNuke.Web.DDRMenu
 
             var selectorSplit = SplitAndTrim(selector);
 
-            var currentTabId = this.HostPortalSettings.ActiveTab.TabID;
+            var currentTabId = TabController.CurrentPage.TabID;
 
             var newRoot = this.RootNode;
 
@@ -374,7 +410,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.RootNode =
                 new MenuNode(
                     ((INodeManipulator)Activator.CreateInstance(BuildManager.GetType(this.menuSettings.NodeManipulator, true, true))).
-                        ManipulateNodes(this.RootNode.Children, this.HostPortalSettings));
+                        ManipulateNodes(this.RootNode.Children, (PortalSettings)this.HostPortalSettings));
         }
     }
 }
