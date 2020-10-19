@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Exceptions
     /// (Event Log) or only to SuperUsers (hosts) in the server logs.
     /// </para>
     /// <para>
-    /// Current we immplement a lot of custom exception to use in different levels:
+    /// Currently we implement a lot of custom exception to use in different levels:
     /// <list type="bullet">
     /// <item><see cref="ModuleLoadException"/></item>
     /// <item><see cref="ObjectHydrationException"/></item>
