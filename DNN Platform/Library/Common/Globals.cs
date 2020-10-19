@@ -538,7 +538,7 @@ namespace DotNetNuke.Common
         /// Gets image file types.
         /// </summary>
         /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
-        [Obsolete("Deprecated in v9.8.1, use GlbImageFileTypes instead, scheduled for removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, use ImageFileTypes instead, scheduled for removal in v10.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.NamingRules",
             "SA1300:Element should begin with upper-case letter",
