@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Installer
     using System.IO;
     using System.Linq;
     using System.Xml;
+    using System.Xml.Linq;
 
     using DotNetNuke.Application;
     using DotNetNuke.Common;
@@ -630,6 +631,15 @@ namespace DotNetNuke.Services.Installer
                             changedNode = !string.Equals(oldContent, newContent, StringComparison.Ordinal);
                             break;
                         case "save":
+                            var newChild = this.TargetConfig.ImportNode(child, true);
+                            var targetXElement = XElement.Load(targetNode.CreateNavigator().ReadSubtree());
+                            var newXElement = XElement.Load(newChild.CreateNavigator().ReadSubtree());
+
+                            if (XElement.DeepEquals(targetXElement, newXElement))
+                            {
+                                break;
+                            }
+
                             string commentHeaderText = string.Format(
                                 Localization.GetString("XMLMERGE_Upgrade", Localization.SharedResourceFile),
                                 Environment.NewLine,
@@ -637,10 +647,8 @@ namespace DotNetNuke.Services.Installer
                                 this.Version,
                                 DateTime.Now);
                             XmlComment commentHeader = this.TargetConfig.CreateComment(commentHeaderText);
-
                             var targetNodeContent = this.GetNodeContentWithoutComment(targetNode);
                             XmlComment commentNode = this.TargetConfig.CreateComment(targetNodeContent);
-                            var newChild = this.TargetConfig.ImportNode(child, true);
                             rootNode.ReplaceChild(newChild, targetNode);
                             rootNode.InsertBefore(commentHeader, newChild);
                             rootNode.InsertBefore(commentNode, newChild);
