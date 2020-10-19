@@ -65,7 +65,7 @@ namespace DotNetNuke.Abstractions.Application
         /// </summary>
         /// <example>If a 09.08.01.01.sqlDataProvider file exists for a provided version 09.08.01 this method will return true.</example>
         /// <param name="version">The version.</param>
-        /// <returns>A vlue indicating wheter any incremental sql script file exists.</returns>
+        /// <returns>A value indicating whether any incremental sql script file exists.</returns>
         bool IncrementalVersionExists(Version version);
 
         /// <summary>
