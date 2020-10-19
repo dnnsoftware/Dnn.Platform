@@ -380,7 +380,7 @@ namespace DotNetNuke.Framework
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+            if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
             {
                 var editClass = "dnnEditState";
 
@@ -571,7 +571,7 @@ namespace DotNetNuke.Framework
 
             // META Refresh
             // Only autorefresh the page if we are in VIEW-mode and if we aren't displaying some module's subcontrol.
-            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && this.PortalSettings.UserMode == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
+            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && Personalization.GetUserMode() == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
             {
                 this.MetaRefresh.Content = this.PortalSettings.ActiveTab.RefreshInterval.ToString();
                 this.MetaRefresh.Visible = true;

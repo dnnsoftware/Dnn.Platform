@@ -14,6 +14,7 @@ namespace Dnn.EditBar.UI.Items
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Web.Components.Controllers;
 
     [Serializable]
@@ -53,7 +54,7 @@ namespace Dnn.EditBar.UI.Items
                 return false;
             }
 
-            return portalSettings.UserMode == PortalSettings.Mode.Edit
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit
                 && ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "All", string.Empty).Any();
         }
     }

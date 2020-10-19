@@ -105,10 +105,24 @@ namespace DotNetNuke.Entities.Portals
             ModuleEditor,
         }
 
+        /// <summary>
+        /// Enumerates the possible view modes of a page.
+        /// </summary>
         public enum Mode
         {
+            /// <summary>
+            /// The user is viewing the page in normal mode like a visitor.
+            /// </summary>
             View,
+
+            /// <summary>
+            /// The user is editing the page.
+            /// </summary>
             Edit,
+
+            /// <summary>
+            /// The user is viewing the page in layout mode.
+            /// </summary>
             Layout,
         }
 
@@ -201,6 +215,10 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <summary>
+        /// Gets the mode the user is viewing the page in.
+        /// </summary>
+        [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v10.")]
         public Mode UserMode
         {
             get

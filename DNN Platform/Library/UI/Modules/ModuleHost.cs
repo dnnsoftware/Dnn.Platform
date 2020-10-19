@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -124,7 +125,7 @@ namespace DotNetNuke.UI.Modules
                                                               moduleInfo);
             }
 
-            return viewMode || settings.UserMode == PortalSettings.Mode.View;
+            return viewMode || Personalization.GetUserMode() == PortalSettings.Mode.View;
         }
 
         /// -----------------------------------------------------------------------------
@@ -305,7 +306,7 @@ namespace DotNetNuke.UI.Modules
         private bool DisplayContent()
         {
             // module content visibility options
-            var content = this.PortalSettings.UserMode != PortalSettings.Mode.Layout;
+            var content = Personalization.GetUserMode() != PortalSettings.Mode.Layout;
             if (this.Page.Request.QueryString["content"] != null)
             {
                 switch (this.Page.Request.QueryString["Content"].ToLowerInvariant())

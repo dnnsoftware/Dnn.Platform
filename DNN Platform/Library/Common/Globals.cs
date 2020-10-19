@@ -46,6 +46,7 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
@@ -1709,7 +1710,7 @@ namespace DotNetNuke.Common
                 return false;
             }
 
-            return portalSettings.UserMode == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
@@ -1722,7 +1723,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsLayoutMode()
         {
-            return TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout;
+            return TabPermissionController.CanAddContentToPage() && Personalization.GetUserMode() == PortalSettings.Mode.Layout;
         }
 
         /// <summary>
