@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Personalization
         public static Mode GetUserMode()
         {
             Mode mode;
-            if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
+            if (HttpContextSource.Current?.Request.IsAuthenticated == true)
             {
                 mode = PortalSettings.Current.DefaultControlPanelMode;
                 string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalController.Instance.GetCurrentSettings().PortalId));
