@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Personalization
             {
                 mode = PortalSettings.Current.DefaultControlPanelMode;
                 string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalController.Instance.GetCurrentSettings().PortalId));
-                switch (setting.ToUpper())
+                switch (setting.ToUpperInvariant())
                 {
                     case "VIEW":
                         mode = Mode.View;
