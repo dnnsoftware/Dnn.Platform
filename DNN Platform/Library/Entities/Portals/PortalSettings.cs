@@ -221,33 +221,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v10.")]
         public Mode UserMode
         {
-            get
-            {
-                Mode mode;
-                if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-                {
-                    mode = this.DefaultControlPanelMode;
-                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + this.PortalId));
-                    switch (setting.ToUpper())
-                    {
-                        case "VIEW":
-                            mode = Mode.View;
-                            break;
-                        case "EDIT":
-                            mode = Mode.Edit;
-                            break;
-                        case "LAYOUT":
-                            mode = Mode.Layout;
-                            break;
-                    }
-                }
-                else
-                {
-                    mode = Mode.View;
-                }
-
-                return mode;
-            }
+            get => Personalization.GetUserMode();
         }
 
         /// <summary>

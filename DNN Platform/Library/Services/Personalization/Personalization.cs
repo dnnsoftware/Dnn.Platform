@@ -6,10 +6,12 @@ namespace DotNetNuke.Services.Personalization
     using System;
     using System.Web;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
+
     using static DotNetNuke.Entities.Portals.PortalSettings;
 
     /// <summary>
