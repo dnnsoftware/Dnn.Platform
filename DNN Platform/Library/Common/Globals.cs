@@ -538,7 +538,7 @@ namespace DotNetNuke.Common
         /// Gets image file types.
         /// </summary>
         /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
-        [Obsolete("Deprecated in v9.8.1, use ImageFileTypes instead, scheduled for removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, use ImageFileTypes instead, scheduled for removal in v11.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.NamingRules",
             "SA1300:Element should begin with upper-case letter",
@@ -682,7 +682,7 @@ namespace DotNetNuke.Common
         /// <param name="stringValueColumn">The string value column.</param>
         /// <param name="numericValueColumn">The numeric value column.</param>
         /// <returns>the dataset instance.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled for removal in v10")]
+        [Obsolete("Deprecated in v9.8.1, scheduled for removal in v11")]
         public static DataSet BuildCrossTabDataSet(
             string dataSetName,
             IDataReader result,
@@ -711,7 +711,7 @@ namespace DotNetNuke.Common
         /// <param name="numericValueColumn">Name of the column, that contains the field value, if stored as number. Column must be contained in DataReader.</param>
         /// <param name="culture">culture of the field values in data reader's string value column.</param>
         /// <returns>The generated DataSet.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled for removal in v10")]
+        [Obsolete("Deprecated in v9.8.1, scheduled for removal in v11")]
         public static DataSet BuildCrossTabDataSet(
             string dataSetName,
             IDataReader result,
@@ -2660,7 +2660,7 @@ namespace DotNetNuke.Common
         /// <param name="moduleId">The id of the module (unused).</param>
         /// <param name="url">the url to import.</param>
         /// <returns>If an internal link does not exist, an empty string is returned, otherwise the passed in url is returned as is.</returns>
-        [Obsolete("Deprecated in 9.8.1, moduleId is not used in the method, use the overload that takes only the url, scheduled removal in v10")]
+        [Obsolete("Deprecated in 9.8.1, moduleId is not used in the method, use the overload that takes only the url, scheduled removal in v11")]
         public static string ImportUrl(int moduleId, string url)
         {
             return ImportUrl(url);
@@ -2754,7 +2754,7 @@ namespace DotNetNuke.Common
         /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <returns>Formatted URL.</returns>
-        [Obsolete("Deprecated in v9.8.0, use the overload that takes IPortalSettings instead, scheduled removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, use the overload that takes IPortalSettings instead, scheduled removal in v11.")]
         public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
             return LoginURL(returnUrl, overrideSetting, (IPortalSettings)portalSettings);
@@ -3117,7 +3117,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="queryString">The query string.</param>
         /// <returns>Encoded content.</returns>
-        [Obsolete("Deprecated in v9.8.1, use System.Web.HttpUtility.UrlEncode instead, scheduled removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, use System.Net.WebUtility.UrlEncode instead, scheduled removal in v11.")]
         public static string EncodeReservedCharacters(string queryString)
         {
             queryString = queryString.Replace("$", "%24");
@@ -3138,7 +3138,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="dateValue">The date value.</param>
         /// <returns>return value of input with SortableDateTimePattern.</returns>
-        [Obsolete(@"Deprecated in 9.8.1, use DateTime.ToString(""s"") instead, schedule removal in v10.")]
+        [Obsolete(@"Deprecated in 9.8.1, use DateTime.ToString(""s"") instead, schedule removal in v11.")]
         public static string DateToString(DateTime dateValue)
         {
             try
@@ -3166,7 +3166,7 @@ namespace DotNetNuke.Common
         /// <param name="hashObject">The hash object.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>HashOject's value or DefaultValue if HashObject is null.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled removal in v10")]
+        [Obsolete("Deprecated in v9.8.1, scheduled removal in v11")]
         public static string GetHashValue(object hashObject, string defaultValue)
         {
             if (hashObject != null)
@@ -3448,7 +3448,7 @@ namespace DotNetNuke.Common
         /// <param name="helpUrl">The help URL.</param>
         /// <param name="moduleConfig">The module config.</param>
         /// <returns>The help url.</returns>
-        [Obsolete("Deprecated in 9.8.1, ModuleInfo is unused, use the overload that does not take a ModuleInfo, scheduled removal in v10.")]
+        [Obsolete("Deprecated in 9.8.1, ModuleInfo is unused, use the overload that does not take a ModuleInfo, scheduled removal in v11.")]
         public static string GetOnLineHelp(string helpUrl, ModuleInfo moduleConfig)
         {
             return GetOnLineHelp(helpUrl);
@@ -3514,7 +3514,7 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The String Source to deserialize.</param>
         /// <returns>The deserialized Hashtable.</returns>
-        [Obsolete("Deprecated in 9.8.1, scheduled for removal in v10.")]
+        [Obsolete("Deprecated in 9.8.1, scheduled for removal in v11.")]
         public static Hashtable DeserializeHashTableBase64(string source)
         {
             Hashtable objHashTable;
@@ -3554,7 +3554,7 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The String Source to deserialize.</param>
         /// <returns>The deserialized Hashtable.</returns>
-        [Obsolete("Deprecated in v9.8.1, this API was not meant to be public and only deserializes xml with a root of 'profile', scheduled removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, this API was not meant to be public and only deserializes xml with a root of 'profile', scheduled removal in v11.")]
         public static Hashtable DeserializeHashTableXml(string source)
         {
             return XmlUtils.DeSerializeHashtable(source, "profile");
@@ -3569,7 +3569,7 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The Hashtable to serialize.</param>
         /// <returns>The serialized String.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, scheduled removal in v11.")]
         public static string SerializeHashTableBase64(Hashtable source)
         {
             string strString;
@@ -3609,7 +3609,7 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The Hashtable to serialize.</param>
         /// <returns>The serialized String.</returns>
-        [Obsolete("Deprecated in v9.8.1, this method was never meant to be public and only works for 'profile' root namespace, scheduled removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, this method was never meant to be public and only works for 'profile' root namespace, scheduled removal in v11.")]
         public static string SerializeHashTableXml(Hashtable source)
         {
             return XmlUtils.SerializeDictionary(source, "profile");
@@ -3756,7 +3756,7 @@ namespace DotNetNuke.Common
         /// <param name="strExtensions">The extensions to filter for.</param>
         /// <param name="noneSpecified">If true, adds 'None Specified' to the list.</param>
         /// <returns>A list of file names.</returns>
-        [Obsolete("This method has been deprecated. Scheduled removal in v10.0.0.")]
+        [Obsolete("This method has been deprecated. Scheduled removal in v11.0.0.")]
         public static ArrayList GetFileList(
             DirectoryInfo currentDirectory,
             [Optional, DefaultParameterValue("")] // ERROR: Optional parameters aren't supported in C#
@@ -3797,7 +3797,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="strFileNamePath">The filename full path.</param>
         /// <returns>The subfolder name.</returns>
-        [Obsolete("This method has been deprecated. Replaced by GetSubFolderPath(ByVal strFileNamePath As String, ByVal portaId as Integer). Scheduled removal in v10.0.0.")]
+        [Obsolete("This method has been deprecated. Replaced by GetSubFolderPath(ByVal strFileNamePath As String, ByVal portaId as Integer). Scheduled removal in v11.0.0.")]
         public static string GetSubFolderPath(string strFileNamePath)
         {
             // Obtain PortalSettings from Current Context
@@ -3822,7 +3822,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="link">The actual link the LinkClick handler should point to.</param>
         /// <returns>The formatted LinkClick url.</returns>
-        [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs. Scheduled removal in v10.0.0.")]
+        [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs. Scheduled removal in v11.0.0.")]
         public static string LinkClickURL(string link)
         {
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
