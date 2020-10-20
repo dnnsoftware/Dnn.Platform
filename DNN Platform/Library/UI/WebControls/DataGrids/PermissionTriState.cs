@@ -29,6 +29,9 @@ namespace DotNetNuke.UI.WebControls.Internal
         private readonly string _denyAltText;
         private readonly string _nullAltText;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PermissionTriState"/> class.
+        /// </summary>
         public PermissionTriState()
         {
             // kind of ugly to lookup this data each time, but doesn't seem worth the effort to
@@ -89,6 +92,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             return script;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -96,6 +100,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             RegisterScripts(this.Page, this);
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             string imagePath;

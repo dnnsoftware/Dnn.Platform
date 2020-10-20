@@ -13,11 +13,16 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly IDictionary NameValueCollection;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DictionaryPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="list"></param>
         public DictionaryPropertyAccess(IDictionary list)
         {
             this.NameValueCollection = list;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -26,6 +31,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
+        /// <inheritdoc/>
         public virtual string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             if (this.NameValueCollection == null)

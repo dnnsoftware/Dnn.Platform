@@ -12,11 +12,13 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
     public class UserSecurityController : ServiceLocator<IUserSecurityController, UserSecurityController>, IUserSecurityController
     {
+        /// <inheritdoc/>
         public bool IsHostAdminUser(int portalId)
         {
             return this.IsHostAdminUser(portalId, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
+        /// <inheritdoc/>
         public bool IsHostAdminUser(int portalId, int userId)
         {
             if (userId == Null.NullInteger)
@@ -28,12 +30,14 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return user.IsSuperUser || (portalId > Null.NullInteger && user.IsInRole(PortalController.Instance.GetPortal(portalId).AdministratorRoleName));
         }
 
+        /// <inheritdoc/>
         public bool HasFolderPermission(IFolderInfo folder, string permissionKey)
         {
             return UserController.Instance.GetCurrentUserInfo().IsSuperUser ||
                    FolderPermissionController.HasFolderPermission(folder.FolderPermissions, permissionKey);
         }
 
+        /// <inheritdoc/>
         protected override System.Func<IUserSecurityController> GetFactory()
         {
             return () => new UserSecurityController();

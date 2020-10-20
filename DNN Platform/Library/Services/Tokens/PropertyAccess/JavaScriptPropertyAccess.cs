@@ -39,11 +39,16 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly Page _page;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="page"></param>
         public JavaScriptPropertyAccess(Page page)
         {
             this._page = page;
         }
 
+        /// <inheritdoc/>
         protected override string ProcessToken(JavaScriptDto model, UserInfo accessingUser, Scope accessLevel)
         {
             if (string.IsNullOrEmpty(model.JsName))

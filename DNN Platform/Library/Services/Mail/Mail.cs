@@ -51,16 +51,16 @@ namespace DotNetNuke.Services.Mail
             }
 
             var mailInfo = new MailInfo
-                           {
-                               From = fromAddress,
-                               Sender = senderAddress,
-                               To = toAddress,
-                               Subject = subject,
-                               Body = body,
-                               Priority = MailPriority.Normal,
-                               BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
-                               BodyEncoding = Encoding.UTF8,
-                           };
+            {
+                From = fromAddress,
+                Sender = senderAddress,
+                To = toAddress,
+                Subject = subject,
+                Body = body,
+                Priority = MailPriority.Normal,
+                BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                BodyEncoding = Encoding.UTF8,
+            };
 
             MailProvider.Instance().SendMail(mailInfo);
         }
@@ -69,17 +69,17 @@ namespace DotNetNuke.Services.Mail
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
             var mailInfo = new MailInfo
-                           {
-                               From = fromAddress,
-                               Sender = senderAddress,
-                               To = toAddress,
-                               Subject = subject,
-                               Body = body,
-                               Priority = MailPriority.Normal,
-                               BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
-                               BodyEncoding = Encoding.UTF8,
-                               Attachments = ConvertAttachments(attachments),
-                           };
+            {
+                From = fromAddress,
+                Sender = senderAddress,
+                To = toAddress,
+                Subject = subject,
+                Body = body,
+                Priority = MailPriority.Normal,
+                BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                BodyEncoding = Encoding.UTF8,
+                Attachments = ConvertAttachments(attachments),
+            };
 
             return MailProvider.Instance().SendMail(mailInfo);
         }
@@ -87,17 +87,17 @@ namespace DotNetNuke.Services.Mail
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, ICollection<MailAttachment> attachments)
         {
             var mailInfo = new MailInfo
-                           {
-                               From = fromAddress,
-                               Sender = senderAddress,
-                               To = toAddress,
-                               Subject = subject,
-                               Body = body,
-                               Priority = MailPriority.Normal,
-                               BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
-                               BodyEncoding = Encoding.UTF8,
-                               Attachments = attachments,
-                           };
+            {
+                From = fromAddress,
+                Sender = senderAddress,
+                To = toAddress,
+                Subject = subject,
+                Body = body,
+                Priority = MailPriority.Normal,
+                BodyFormat = HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                BodyEncoding = Encoding.UTF8,
+                Attachments = attachments,
+            };
 
             return MailProvider.Instance().SendMail(mailInfo);
         }
@@ -443,29 +443,29 @@ namespace DotNetNuke.Services.Mail
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             var smtpInfo = new SmtpInfo
-                           {
-                               Server = smtpServer,
-                               Authentication = smtpAuthentication,
-                               Username = smtpUsername,
-                               Password = smtpPassword,
-                               EnableSSL = smtpEnableSSL,
-                           };
+            {
+                Server = smtpServer,
+                Authentication = smtpAuthentication,
+                Username = smtpUsername,
+                Password = smtpPassword,
+                EnableSSL = smtpEnableSSL,
+            };
 
             var mailInfo = new MailInfo
-                           {
-                               From = mailFrom,
-                               Sender = mailSender,
-                               To = mailTo,
-                               CC = cc,
-                               BCC = bcc,
-                               ReplyTo = replyTo,
-                               Priority = priority,
-                               BodyEncoding = bodyEncoding,
-                               BodyFormat = bodyFormat,
-                               Body = body,
-                               Subject = subject,
-                               Attachments = ConvertAttachments(attachments),
-                           };
+            {
+                From = mailFrom,
+                Sender = mailSender,
+                To = mailTo,
+                CC = cc,
+                BCC = bcc,
+                ReplyTo = replyTo,
+                Priority = priority,
+                BodyEncoding = bodyEncoding,
+                BodyFormat = bodyFormat,
+                Body = body,
+                Subject = subject,
+                Attachments = ConvertAttachments(attachments),
+            };
 
             if (PortalSettings.Current != null && UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
             {
@@ -479,29 +479,29 @@ namespace DotNetNuke.Services.Mail
                                       string body, ICollection<MailAttachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             var smtpInfo = new SmtpInfo
-                           {
-                               Server = smtpServer,
-                               Authentication = smtpAuthentication,
-                               Username = smtpUsername,
-                               Password = smtpPassword,
-                               EnableSSL = smtpEnableSSL,
-                           };
+            {
+                Server = smtpServer,
+                Authentication = smtpAuthentication,
+                Username = smtpUsername,
+                Password = smtpPassword,
+                EnableSSL = smtpEnableSSL,
+            };
 
             var mailInfo = new MailInfo
-                           {
-                               From = mailFrom,
-                               Sender = mailSender,
-                               To = mailTo,
-                               CC = cc,
-                               BCC = bcc,
-                               ReplyTo = replyTo,
-                               Priority = priority,
-                               BodyEncoding = bodyEncoding,
-                               BodyFormat = bodyFormat,
-                               Body = body,
-                               Subject = subject,
-                               Attachments = attachments,
-                           };
+            {
+                From = mailFrom,
+                Sender = mailSender,
+                To = mailTo,
+                CC = cc,
+                BCC = bcc,
+                ReplyTo = replyTo,
+                Priority = priority,
+                BodyEncoding = bodyEncoding,
+                BodyFormat = bodyFormat,
+                Body = body,
+                Subject = subject,
+                Attachments = attachments,
+            };
 
             if (PortalSettings.Current != null && UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
             {

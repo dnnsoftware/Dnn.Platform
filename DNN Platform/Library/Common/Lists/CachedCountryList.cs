@@ -6,14 +6,16 @@ namespace DotNetNuke.Common.Lists
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     using DotNetNuke.Common.Utilities;
 
     [Serializable]
     public class CachedCountryList : Dictionary<string, CachedCountryList.Country>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CachedCountryList"/> class.
+        /// </summary>
+        /// <param name="locale">This value is not currently used.</param>
         public CachedCountryList(string locale)
             : base()
         {

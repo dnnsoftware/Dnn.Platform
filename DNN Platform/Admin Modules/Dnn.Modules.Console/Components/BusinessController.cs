@@ -7,19 +7,11 @@ namespace Dnn.Modules.Console.Components
     using System;
 
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Services.Upgrade;
 
-    /// <summary>
-    ///
-    /// </summary>
+    /// <summary>Implements the module's business controller interface(s).</summary>
     public class BusinessController : IUpgradeable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="version"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             try

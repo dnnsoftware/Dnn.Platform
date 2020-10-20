@@ -6,8 +6,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
+
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.ComponentModel;
 

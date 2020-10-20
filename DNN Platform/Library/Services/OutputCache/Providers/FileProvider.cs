@@ -26,11 +26,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
+        /// <inheritdoc/>
         public override int GetItemCount(int tabId)
         {
             return GetCachedItemCount(tabId);
         }
 
+        /// <inheritdoc/>
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
@@ -48,11 +50,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
         {
             return new FileResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
         }
 
+        /// <inheritdoc/>
         public override void PurgeCache(int portalId)
         {
             string cacheFolder = GetCacheFolder(portalId);
@@ -62,6 +66,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override void PurgeExpiredItems(int portalId)
         {
             var filesNotDeleted = new StringBuilder();
@@ -93,6 +98,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override void Remove(int tabId)
         {
             try
@@ -144,6 +150,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output)
         {
             string attribFile = GetAttribFileName(tabId, cacheKey);
@@ -179,6 +186,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override bool StreamOutput(int tabId, string cacheKey, HttpContext context)
         {
             bool foundFile = false;

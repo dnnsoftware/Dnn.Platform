@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.UI.Internals
 {
-    using System;
-
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;

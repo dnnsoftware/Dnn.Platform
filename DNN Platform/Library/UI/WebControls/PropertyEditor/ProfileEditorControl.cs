@@ -12,7 +12,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
 
     /// -----------------------------------------------------------------------------

@@ -17,6 +17,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     internal class CompareTabPermissions : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             return ((TabPermissionInfo)x).TabPermissionID.CompareTo(((TabPermissionInfo)y).TabPermissionID);

@@ -22,12 +22,14 @@ namespace DotNetNuke.HttpModules
 
         public string ModuleName => "MobileRedirectModule";
 
+        /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
             this._redirectionController = new RedirectionController();
             application.BeginRequest += this.OnBeginRequest;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }

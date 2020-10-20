@@ -24,6 +24,9 @@ namespace DotNetNuke.UI.Skins.Controls
     public class LanguageTokenReplace : TokenReplace
     {
         // see http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=6505
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageTokenReplace"/> class.
+        /// </summary>
         public LanguageTokenReplace()
             : base(Scope.NoSettings)
         {
@@ -41,12 +44,18 @@ namespace DotNetNuke.UI.Skins.Controls
         public LanguageTokenReplace objParent;
         private readonly PortalSettings objPortal;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguagePropertyAccess"/> class.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="settings"></param>
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
         {
             this.objPortal = settings;
             this.objParent = parent;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -55,6 +64,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())

@@ -12,11 +12,16 @@ namespace DotNetNuke.Entities.Users
     {
         private readonly UserInfo objUser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MembershipPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="User"></param>
         public MembershipPropertyAccess(UserInfo User)
         {
             this.objUser = User;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -25,6 +30,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
         {
             UserMembership objMembership = this.objUser.Membership;

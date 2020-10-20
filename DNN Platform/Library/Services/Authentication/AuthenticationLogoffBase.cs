@@ -20,6 +20,9 @@ namespace DotNetNuke.Services.Authentication
         private string _AuthenticationType = Null.NullString;
         private string _RedirectURL = Null.NullString;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationLogoffBase"/> class.
+        /// </summary>
         public AuthenticationLogoffBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;

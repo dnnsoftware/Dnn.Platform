@@ -65,6 +65,9 @@ namespace DotNetNuke.UI.Skins
         private Control _controlPanel;
         private Dictionary<string, Pane> _panes;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Skin"/> class.
+        /// </summary>
         public Skin()
         {
             this.ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();

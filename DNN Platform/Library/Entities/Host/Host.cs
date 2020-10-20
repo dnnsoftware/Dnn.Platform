@@ -4,19 +4,13 @@
 namespace DotNetNuke.Entities.Host
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
     using System.Web;
-    using System.Web.Caching;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.Client;

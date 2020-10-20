@@ -33,11 +33,18 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private const int _CacheTimeOut = 20;
         private readonly IDataService _DataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TermController"/> class.
+        /// </summary>
         public TermController()
             : this(Util.GetDataService())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TermController"/> class.
+        /// </summary>
+        /// <param name="dataService"></param>
         public TermController(IDataService dataService)
         {
             this._DataService = dataService;

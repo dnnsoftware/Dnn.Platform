@@ -33,6 +33,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             ExcludeByDefault,
         }
 
+        /// <inheritdoc/>
         public void Init(HttpApplication httpApp)
         {
             this._app = httpApp;
@@ -41,6 +42,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             httpApp.UpdateRequestCache += this.OnUpdateRequestCache;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }

@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
-    using System;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Lists;
@@ -24,6 +23,9 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class EditorInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorInfo"/> class.
+        /// </summary>
         public EditorInfo()
         {
             this.Visible = true;

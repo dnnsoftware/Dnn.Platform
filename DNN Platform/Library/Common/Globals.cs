@@ -46,13 +46,13 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualBasic.CompilerServices;
 
     using DataCache = DotNetNuke.UI.Utilities.DataCache;
-    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     /// <summary>
     /// The global instance of DotNetNuke. all basic functions and properties are defined in this instance.
@@ -1710,7 +1710,7 @@ namespace DotNetNuke.Common
                 return false;
             }
 
-            return portalSettings.UserMode == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
@@ -1723,7 +1723,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsLayoutMode()
         {
-            return TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout;
+            return TabPermissionController.CanAddContentToPage() && Personalization.GetUserMode() == PortalSettings.Mode.Layout;
         }
 
         /// <summary>

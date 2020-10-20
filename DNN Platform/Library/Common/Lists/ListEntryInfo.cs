@@ -5,7 +5,6 @@ namespace DotNetNuke.Common.Lists
 {
     using System;
     using System.IO;
-    using System.Linq;
 
     using DotNetNuke.Common.Utilities;
 
@@ -14,6 +13,9 @@ namespace DotNetNuke.Common.Lists
     {
         private string _Text = Null.NullString;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListEntryInfo"/> class.
+        /// </summary>
         public ListEntryInfo()
         {
             this.ParentKey = Null.NullString;

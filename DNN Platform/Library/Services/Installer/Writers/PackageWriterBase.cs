@@ -38,12 +38,19 @@ namespace DotNetNuke.Services.Installer.Writers
         private string _BasePath = Null.NullString;
         private PackageInfo _Package;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackageWriterBase"/> class.
+        /// </summary>
+        /// <param name="package"></param>
         public PackageWriterBase(PackageInfo package)
         {
             this._Package = package;
             this._Package.AttachInstallerInfo(new InstallerInfo());
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackageWriterBase"/> class.
+        /// </summary>
         protected PackageWriterBase()
         {
         }

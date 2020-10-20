@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     internal class StringLengthComparer : Comparer<string>
     {
+        /// <inheritdoc/>
         public override int Compare(string x, string y)
         {
             if (x == null && y == null)

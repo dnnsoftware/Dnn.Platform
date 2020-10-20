@@ -5,37 +5,49 @@ namespace DotNetNuke.Collections.Internal
 {
     using System;
 
+    /// <summary>
+    /// An <see cref="ISharedCollectionLock"/> implementation which uses an <see cref="ExclusiveLockStrategy"/>.
+    /// </summary>
     internal class MonitorLock : IDisposable, ISharedCollectionLock
     {
-        private ExclusiveLockStrategy _lockStrategy;
+        private ExclusiveLockStrategy lockStrategy;
 
         // To detect redundant calls
-        private bool _isDisposed;
+        private bool isDisposed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MonitorLock"/> class.
+        /// </summary>
+        /// <param name="lockStrategy">An <see cref="ExclusiveLockStrategy"/> instance to use.</param>
         public MonitorLock(ExclusiveLockStrategy lockStrategy)
         {
-            this._lockStrategy = lockStrategy;
+            this.lockStrategy = lockStrategy;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
-            // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            // Do not change this code.  Put cleanup code in Dispose(bool disposing) below.
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Releases resources before final disposal.
+        /// </summary>
+        /// <param name="disposing">A value indicating if the instance is currently beeing disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._isDisposed)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
-                    this._lockStrategy.Exit();
-                    this._lockStrategy = null;
+                    this.lockStrategy.Exit();
+                    this.lockStrategy = null;
                 }
             }
 
-            this._isDisposed = true;
+            this.isDisposed = true;
         }
     }
 }

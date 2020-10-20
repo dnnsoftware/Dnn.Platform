@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Portals.Internal
 
     public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
+        /// <inheritdoc/>
         public IEnumerable<string> EnumerateTemplates()
         {
             string path = Globals.HostMapPath;
@@ -26,6 +27,7 @@ namespace DotNetNuke.Entities.Portals.Internal
             return new string[0];
         }
 
+        /// <inheritdoc/>
         public IEnumerable<string> EnumerateLanguageFiles()
         {
             string path = Globals.HostMapPath;
@@ -37,16 +39,19 @@ namespace DotNetNuke.Entities.Portals.Internal
             return new string[0];
         }
 
+        /// <inheritdoc/>
         public string GetResourceFilePath(string templateFilePath)
         {
             return CheckFilePath(templateFilePath + ".resources");
         }
 
+        /// <inheritdoc/>
         public string GetLanguageFilePath(string templateFilePath, string cultureCode)
         {
             return CheckFilePath(string.Format("{0}.{1}.resx", templateFilePath, cultureCode));
         }
 
+        /// <inheritdoc/>
         public TextReader OpenTextReader(string filePath)
         {
             StreamReader reader = null;
@@ -59,6 +64,7 @@ namespace DotNetNuke.Entities.Portals.Internal
             return reader;
         }
 
+        /// <inheritdoc/>
         protected override Func<IPortalTemplateIO> GetFactory()
         {
             return () => new PortalTemplateIO();

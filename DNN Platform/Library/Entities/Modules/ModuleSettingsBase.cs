@@ -3,11 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
-    using System;
     using System.Collections;
-    using System.ComponentModel;
 
-    using DotNetNuke.Common;
     using DotNetNuke.UI.Modules;
 
     public class ModuleSettingsBase : PortalModuleBase, ISettingsControl
@@ -28,10 +25,12 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public virtual void LoadSettings()
         {
         }
 
+        /// <inheritdoc/>
         public virtual void UpdateSettings()
         {
         }

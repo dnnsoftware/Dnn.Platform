@@ -6,11 +6,11 @@ namespace DotNetNuke.UI.Containers
     using System;
     using System.Web.UI;
 
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
@@ -31,13 +31,14 @@ namespace DotNetNuke.UI.Containers
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
 
+        /// <inheritdoc/>
         public event ActionEventHandler Action;
 
         public bool EditMode
         {
             get
             {
-                return this.ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
+                return Personalization.GetUserMode() != PortalSettings.Mode.View;
             }
         }
 

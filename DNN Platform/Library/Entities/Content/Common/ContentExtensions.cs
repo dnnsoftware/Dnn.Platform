@@ -8,9 +8,7 @@ using System.Linq;
 using System.Text;
 
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Entities.Content
 {

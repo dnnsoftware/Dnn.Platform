@@ -1,17 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Users
 
 // ReSharper restore CheckNamespace
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -24,15 +25,23 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
 
+    /// <summary>
+    /// Provides access to profile properties.
+    /// </summary>
     public class ProfilePropertyAccess : IPropertyAccess
     {
         private readonly UserInfo user;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProfilePropertyAccess"/> class for a user.
+        /// </summary>
+        /// <param name="user">The user to use for these properties, <see cref="UserInfo"/>.</param>
         public ProfilePropertyAccess(UserInfo user)
         {
             this.user = user;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -49,7 +58,22 @@ namespace DotNetNuke.Entities.Users
         /// <param name="accessingUser">The accessing user.</param>
         /// <param name="targetUser">The target user.</param>
         /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
+        [Obsolete("Deprecated in 9.8, Use the overload that takes IPortalSettings instead. Scheduled removal in v10.0.0")]
         public static bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
+        {
+            var portalSettingsAsInterface = (IPortalSettings)portalSettings;
+            return CheckAccessLevel(portalSettingsAsInterface, property, accessingUser, targetUser);
+        }
+
+        /// <summary>
+        /// Checks whether profile property is accessible.
+        /// </summary>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="accessingUser">The accessing user.</param>
+        /// <param name="targetUser">The target user.</param>
+        /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
+        public static bool CheckAccessLevel(IPortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
             var isAdminUser = IsAdminUser(portalSettings, accessingUser, targetUser);
 
@@ -68,10 +92,10 @@ namespace DotNetNuke.Entities.Users
                             foreach (Relationship relationship in property.ProfileVisibility.RelationshipVisibilities)
                             {
                                 if (targetUser.Social.UserRelationships.Any(userRelationship =>
-                                                                          (userRelationship.RelationshipId == relationship.RelationshipId
-                                                                              && userRelationship.Status == RelationshipStatus.Accepted
-                                                                              && ((userRelationship.RelatedUserId == accessingUser.UserID && userRelationship.UserId == targetUser.UserID)
-                                                                                    || (userRelationship.RelatedUserId == targetUser.UserID && userRelationship.UserId == accessingUser.UserID)))))
+                                    (userRelationship.RelationshipId == relationship.RelationshipId
+                                    && userRelationship.Status == RelationshipStatus.Accepted
+                                    && ((userRelationship.RelatedUserId == accessingUser.UserID && userRelationship.UserId == targetUser.UserID)
+                                        || (userRelationship.RelatedUserId == targetUser.UserID && userRelationship.UserId == accessingUser.UserID)))))
                                 {
                                     isVisible = true;
                                     break;
@@ -103,6 +127,17 @@ namespace DotNetNuke.Entities.Users
             return isVisible;
         }
 
+        /// <summary>
+        /// Gets a human readable string representing some complex profile properties.
+        /// </summary>
+        /// <param name="property">The <see cref="ProfilePropertyDefinition"/> to get the string from.</param>
+        /// <param name="formatString">An optional format string.</param>
+        /// <param name="formatProvider">An optional <see cref="CultureInfo"/> format provider to use.</param>
+        /// <returns>
+        /// For booleans, will return localized values for True or False,
+        /// For dates, it will return a human formatted date for the requested culture,
+        /// For pages, it will return an html link to the page, etc.
+        /// </returns>
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {
             string result = string.Empty;
@@ -115,7 +150,7 @@ namespace DotNetNuke.Entities.Users
                         break;
                     case "date":
                     case "datetime":
-                        if (formatString == string.Empty)
+                        if (string.IsNullOrEmpty(formatString))
                         {
                             formatString = "g";
                         }
@@ -168,6 +203,11 @@ namespace DotNetNuke.Entities.Users
             return result;
         }
 
+        /// <summary>
+        /// Gets the date type for a profile property definition.
+        /// </summary>
+        /// <param name="definition">The <see cref="ProfilePropertyDefinition"/> to check.</param>
+        /// <returns>A string representing the data type such as: truefalse, date, datetime, integer, page, image or richtext.</returns>
         public static string DisplayDataType(ProfilePropertyDefinition definition)
         {
             string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
@@ -182,6 +222,7 @@ namespace DotNetNuke.Entities.Users
             return strDataType;
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             if (currentScope >= Scope.DefaultSettings && this.user != null && this.user.Profile != null)
@@ -192,7 +233,7 @@ namespace DotNetNuke.Entities.Users
 
                 if (property != null)
                 {
-                    var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    var portalSettings = PortalController.Instance.GetCurrentSettings();
                     if (CheckAccessLevel(portalSettings, property, accessingUser, this.user))
                     {
                         switch (property.PropertyName.ToLowerInvariant())
@@ -218,7 +259,7 @@ namespace DotNetNuke.Entities.Users
             return string.Empty;
         }
 
-        private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
+        private static bool IsAdminUser(IPortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
         {
             bool isAdmin = false;
 

@@ -4,8 +4,6 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
-    using System.Collections;
-    using System.IO;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -15,16 +13,12 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Containers.EventListeners;
     using DotNetNuke.UI.Modules;

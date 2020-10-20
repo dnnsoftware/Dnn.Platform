@@ -4,10 +4,7 @@
 
 namespace DotNetNuke.Collections
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     ///   Provides options to allow the consumer to select a page of data from a paged data store.

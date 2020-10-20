@@ -28,6 +28,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
         private Dictionary<string, ModuleControlInfo> _ModuleControls;
         private string _definitionName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleDefinitionInfo"/> class.
+        /// </summary>
         public ModuleDefinitionInfo()
         {
             this.Permissions = new Dictionary<string, PermissionInfo>();

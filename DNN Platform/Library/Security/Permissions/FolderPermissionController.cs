@@ -172,6 +172,7 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache(folder.PortalID);
         }
 
+        /// <inheritdoc/>
         protected override Func<IFolderPermissionController> GetFactory()
         {
             return () => new FolderPermissionController();

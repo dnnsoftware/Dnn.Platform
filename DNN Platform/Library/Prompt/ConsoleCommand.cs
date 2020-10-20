@@ -19,12 +19,19 @@ namespace DotNetNuke.Prompt
         private static ISerializationManager SerializationManager =>
             Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
 
+        /// <inheritdoc/>
         public abstract string LocalResourceFile { get; }
+
         protected IPortalSettings PortalSettings { get; private set; }
+
         protected IUserInfo User { get; private set; }
+
         protected int PortalId { get; private set; }
+
         protected int TabId { get; private set; }
+
         protected string[] Args { get; private set; }
+
         protected IDictionary<string, string> Flags { get; private set; }
 
         #region Protected Methods
@@ -33,10 +40,12 @@ namespace DotNetNuke.Prompt
             var localizedText = Localization.GetString(key, LocalResourceFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
+
         protected void AddMessage(string message)
         {
             ValidationMessage += message;
         }
+
         protected void ParseParameters<T>(T myCommand) where T : class, new()
         {
             //LoadMapping();
@@ -56,6 +65,7 @@ namespace DotNetNuke.Prompt
         #endregion
 
         #region Public Methods
+        /// <inheritdoc/>
         public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             Args = args;
@@ -67,8 +77,10 @@ namespace DotNetNuke.Prompt
             ParseFlags();
         }
 
+        /// <inheritdoc/>
         public abstract IConsoleResultModel Run();
 
+        /// <inheritdoc/>
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(ValidationMessage);
@@ -121,6 +133,7 @@ namespace DotNetNuke.Prompt
         }
         #endregion
 
+        /// <inheritdoc/>
         public string ValidationMessage { get; private set; }
 
         /// <summary>
@@ -132,6 +145,7 @@ namespace DotNetNuke.Prompt
         public struct ParameterMapping
         {
             public ConsoleCommandParameterAttribute Attribute { get; set; }
+
             public PropertyInfo Property { get; set; }
         }
 

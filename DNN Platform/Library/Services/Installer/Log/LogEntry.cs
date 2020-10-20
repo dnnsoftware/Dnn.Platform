@@ -60,6 +60,7 @@ namespace DotNetNuke.Services.Installer.Log
         /// -----------------------------------------------------------------------------
         public LogType Type { get; private set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("{0}:  {1}", this.Type, this.Description);

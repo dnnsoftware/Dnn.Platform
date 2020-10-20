@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
     /// </summary>
     public class InternalMessagingController : ServiceLocator<IInternalMessagingController, InternalMessagingController>
     {
+        /// <inheritdoc/>
         protected override Func<IInternalMessagingController> GetFactory()
         {
             return () => new InternalMessagingControllerImpl();

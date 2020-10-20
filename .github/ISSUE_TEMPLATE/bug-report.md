@@ -12,38 +12,33 @@ assignees: dnnsoftware/triage
   Any potential security issues SHOULD NOT be posted on GitHub.  Instead, please send an email to security@dnnsoftware.com.
 -->
 ## Description of bug
-Provide a clear and concise description of the bug.
+GetUserRequestIPAddress has a bug since it assumes that all incoming requests are IPv4 addresses. This causes bugs in all downstream IP address handling. One specific example is the LOGIN_SUCCESS event log entry does not include the IPv6 address (IPv4 addresses are working). My proposed change checks if the request is coming from a valid IPv4 address and returns it if it is IPv4. If not, it checks if it is an IPv6 address and returns it or string.Empty if the IP address is not valid.
 
 ## Steps to reproduce
-List the precise steps to reproduce the bug:
-1. Go to '...'
-2. Click on '....'
-3. Scroll to '....'
-4. See error
+Login using an IPv6 address and the LOGIN_SUCCESS log message does not have the IPv6 address.
 
 ## Current behavior
-Explain the current behavior.
+The LOGIN_SUCCESS log message does not have the IPv6 address.  Only the IPv4 address is shown.
 
 ## Expected behavior
-Provide a clear and concise description of the expected behavior.
+The IPv6 IP address should show up in the log.
 
 ## Screenshots
-If applicable, provide screenshots to help explain the bug.
+
 
 ## Error information
-Provide any error information (console errors, error logs, etc.) related to this bug.
+
 
 ## Additional context
-Provide any additional context that may be helpful in understanding and/or resolving the bug.
+
 
 ## Affected version
 <!-- 
 Please add X in at least one of the boxes as appropriate. In order for an issue to be accepted, a developer needs to be able to reproduce the issue on a currently supported version. If you are looking for a workaround for an issue with an older version, please visit the forums at https://dnncommunity.org/forums
 -->
-* [ ] 10.00.00 alpha build
-* [ ] 09.08.00 release candidate
-* [ ] 09.07.02 release candidate
-* [ ] 09.07.01 latest supported release
+* [X] 10.00.00 alpha build
+* [X] 09.08.00 release candidate
+* [X] 09.07.02 release candidate
 
 ## Affected browser
 <!-- 

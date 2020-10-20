@@ -20,6 +20,10 @@ namespace DotNetNuke.Entities.Urls
         private PortalAliasInfo _portalAlias;
 
         // 829 add in constructor that works around physical path length restriction
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlAction"/> class.
+        /// </summary>
+        /// <param name="request"></param>
         public UrlAction(HttpRequest request)
         {
             this.BrowserType = BrowserTypes.Normal;
@@ -48,6 +52,12 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlAction"/> class.
+        /// </summary>
+        /// <param name="scheme"></param>
+        /// <param name="applicationPath"></param>
+        /// <param name="physicalPath"></param>
         public UrlAction(string scheme, string applicationPath, string physicalPath)
         {
             this.BrowserType = BrowserTypes.Normal;

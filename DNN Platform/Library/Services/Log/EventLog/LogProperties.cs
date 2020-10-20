@@ -106,6 +106,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();

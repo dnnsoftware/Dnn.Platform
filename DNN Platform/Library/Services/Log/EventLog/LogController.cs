@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Log.EventLog
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
 
+        /// <inheritdoc/>
         public void AddLog(LogInfo logInfo)
         {
             if (Globals.Status == Globals.UpgradeStatus.Install)
@@ -123,6 +124,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
+        /// <inheritdoc/>
         public void AddLogType(string configFile, string fallbackConfigFile)
         {
             var xmlDoc = new XmlDocument { XmlResolver = null };
@@ -183,11 +185,13 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
+        /// <inheritdoc/>
         public void AddLogType(LogTypeInfo logType)
         {
             LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
         }
 
+        /// <inheritdoc/>
         public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             LoggingProvider.Instance().AddLogTypeConfigInfo(
@@ -205,46 +209,55 @@ namespace DotNetNuke.Services.Log.EventLog
                 logTypeConfig.MailToAddress);
         }
 
+        /// <inheritdoc/>
         public void ClearLog()
         {
             LoggingProvider.Instance().ClearLog();
         }
 
+        /// <inheritdoc/>
         public void DeleteLog(LogInfo logInfo)
         {
             LoggingProvider.Instance().DeleteLog(logInfo);
         }
 
+        /// <inheritdoc/>
         public virtual void DeleteLogType(LogTypeInfo logType)
         {
             LoggingProvider.Instance().DeleteLogType(logType.LogTypeKey);
         }
 
+        /// <inheritdoc/>
         public virtual void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             LoggingProvider.Instance().DeleteLogTypeConfigInfo(logTypeConfig.ID);
         }
 
+        /// <inheritdoc/>
         public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
         {
             return LoggingProvider.Instance().GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords);
         }
 
+        /// <inheritdoc/>
         public virtual ArrayList GetLogTypeConfigInfo()
         {
             return LoggingProvider.Instance().GetLogTypeConfigInfo();
         }
 
+        /// <inheritdoc/>
         public virtual LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
         {
             return LoggingProvider.Instance().GetLogTypeConfigInfoByID(id);
         }
 
+        /// <inheritdoc/>
         public virtual Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary()
         {
             return LoggingProvider.Instance().GetLogTypeInfo().Cast<LogTypeInfo>().ToDictionary(logTypeInfo => logTypeInfo.LogTypeKey);
         }
 
+        /// <inheritdoc/>
         public virtual object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
         {
             return LoggingProvider.Instance().GetSingleLog(log, returnType);
@@ -256,11 +269,13 @@ namespace DotNetNuke.Services.Log.EventLog
             return LoggingProvider.Instance().GetLog(logGuid);
         }
 
+        /// <inheritdoc/>
         public void PurgeLogBuffer()
         {
             LoggingProvider.Instance().PurgeLogBuffer();
         }
 
+        /// <inheritdoc/>
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             LoggingProvider.Instance().UpdateLogTypeConfigInfo(
@@ -278,11 +293,13 @@ namespace DotNetNuke.Services.Log.EventLog
                 logTypeConfig.MailToAddress);
         }
 
+        /// <inheritdoc/>
         public virtual void UpdateLogType(LogTypeInfo logType)
         {
             LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
         }
 
+        /// <inheritdoc/>
         protected override Func<ILogController> GetFactory()
         {
             return () => new LogController();

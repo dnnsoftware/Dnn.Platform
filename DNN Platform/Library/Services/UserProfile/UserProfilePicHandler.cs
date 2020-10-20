@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.UserProfile
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Web;
 
@@ -21,6 +20,7 @@ namespace DotNetNuke.Services.UserProfile
     {
         private static object _locker = new object();
 
+        /// <inheritdoc/>
         public bool IsReusable
         {
             get
@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
+        /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
             this.SetupCulture();
@@ -158,7 +159,7 @@ namespace DotNetNuke.Services.UserProfile
             photoFile = null;
 
             UserInfo user = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {

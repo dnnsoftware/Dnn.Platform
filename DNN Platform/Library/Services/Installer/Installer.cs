@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Installer.Writers;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -116,6 +115,12 @@ namespace DotNetNuke.Services.Installer
             this.Packages.Add(this.Packages.Count, new PackageInstaller(package));
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Installer"/> class.
+        /// </summary>
+        /// <param name="manifest"></param>
+        /// <param name="physicalSitePath"></param>
+        /// <param name="loadManifest"></param>
         public Installer(string manifest, string physicalSitePath, bool loadManifest)
         {
             this.Packages = new SortedList<int, PackageInstaller>();

@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
-    using System;
-
     public interface IEditPageTabControlActions
     {
         void SaveAction(int portalId, int tabId, int moduleId);

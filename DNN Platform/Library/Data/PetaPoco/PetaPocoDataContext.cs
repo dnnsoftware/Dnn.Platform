@@ -18,21 +18,39 @@ namespace DotNetNuke.Data.PetaPoco
         private readonly Database _database;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
+        /// </summary>
         public PetaPocoDataContext()
             : this(ConfigurationManager.ConnectionStrings[0].Name, string.Empty)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
+        /// </summary>
+        /// <param name="connectionStringName"></param>
         public PetaPocoDataContext(string connectionStringName)
             : this(connectionStringName, string.Empty, new Dictionary<Type, IMapper>())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
+        /// </summary>
+        /// <param name="connectionStringName"></param>
+        /// <param name="tablePrefix"></param>
         public PetaPocoDataContext(string connectionStringName, string tablePrefix)
             : this(connectionStringName, tablePrefix, new Dictionary<Type, IMapper>())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
+        /// </summary>
+        /// <param name="connectionStringName"></param>
+        /// <param name="tablePrefix"></param>
+        /// <param name="mappers"></param>
         public PetaPocoDataContext(string connectionStringName, string tablePrefix, Dictionary<Type, IMapper> mappers)
         {
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
@@ -53,16 +71,19 @@ namespace DotNetNuke.Data.PetaPoco
             set { this._database.EnableAutoSelect = value; }
         }
 
+        /// <inheritdoc/>
         public void BeginTransaction()
         {
             this._database.BeginTransaction();
         }
 
+        /// <inheritdoc/>
         public void Commit()
         {
             this._database.CompleteTransaction();
         }
 
+        /// <inheritdoc/>
         public void Execute(CommandType type, string sql, params object[] args)
         {
             if (type == CommandType.StoredProcedure)
@@ -73,6 +94,7 @@ namespace DotNetNuke.Data.PetaPoco
             this._database.Execute(DataUtil.ReplaceTokens(sql), args);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<T> ExecuteQuery<T>(CommandType type, string sql, params object[] args)
         {
             PetaPocoMapper.SetMapper<T>(this._mapper);
@@ -84,6 +106,7 @@ namespace DotNetNuke.Data.PetaPoco
             return this._database.Fetch<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
+        /// <inheritdoc/>
         public T ExecuteScalar<T>(CommandType type, string sql, params object[] args)
         {
             if (type == CommandType.StoredProcedure)
@@ -94,6 +117,7 @@ namespace DotNetNuke.Data.PetaPoco
             return this._database.ExecuteScalar<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
+        /// <inheritdoc/>
         public T ExecuteSingleOrDefault<T>(CommandType type, string sql, params object[] args)
         {
             PetaPocoMapper.SetMapper<T>(this._mapper);
@@ -105,6 +129,7 @@ namespace DotNetNuke.Data.PetaPoco
             return this._database.SingleOrDefault<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
+        /// <inheritdoc/>
         public IRepository<T> GetRepository<T>()
             where T : class
         {
@@ -128,11 +153,13 @@ namespace DotNetNuke.Data.PetaPoco
             return rep;
         }
 
+        /// <inheritdoc/>
         public void RollbackTransaction()
         {
             this._database.AbortTransaction();
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             this._database.Dispose();

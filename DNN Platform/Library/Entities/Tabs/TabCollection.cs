@@ -8,7 +8,6 @@ namespace DotNetNuke.Entities.Tabs
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Security;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
@@ -34,6 +33,9 @@ namespace DotNetNuke.Entities.Tabs
         [NonSerialized]
         private readonly Dictionary<string, List<TabInfo>> _localizedTabs;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabCollection"/> class.
+        /// </summary>
         public TabCollection()
         {
             this._list = new List<TabInfo>();
@@ -42,6 +44,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         // The special constructor is used to deserialize values.
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabCollection"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public TabCollection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -50,12 +57,17 @@ namespace DotNetNuke.Entities.Tabs
             this._localizedTabs = new Dictionary<string, List<TabInfo>>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabCollection"/> class.
+        /// </summary>
+        /// <param name="tabs"></param>
         public TabCollection(IEnumerable<TabInfo> tabs)
             : this()
         {
             this.AddRange(tabs);
         }
 
+        /// <inheritdoc/>
         public override void OnDeserialization(object sender)
         {
             base.OnDeserialization(sender);

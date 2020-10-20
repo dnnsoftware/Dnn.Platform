@@ -4,13 +4,10 @@
 
 namespace DotNetNuke.Entities.Users.Social.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
-    using DotNetNuke.Entities.Friends;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Social.Notifications;
 

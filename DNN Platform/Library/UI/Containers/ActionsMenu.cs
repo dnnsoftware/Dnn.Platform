@@ -4,7 +4,6 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
-    using System.Text.RegularExpressions;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -35,6 +34,7 @@ namespace DotNetNuke.UI.Containers
         private NavigationProvider _ProviderControl;
         private string _ProviderName = "DNNMenuNavigationProvider";
 
+        /// <inheritdoc/>
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------

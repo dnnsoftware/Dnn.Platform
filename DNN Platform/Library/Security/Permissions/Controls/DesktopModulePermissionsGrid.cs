@@ -60,6 +60,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override List<PermissionInfoBase> PermissionsList
         {
             get
@@ -79,10 +80,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             this._PermissionsList = null;
         }
 
+        /// <inheritdoc/>
         public override void GenerateDataGrid()
         {
         }
 
+        /// <inheritdoc/>
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new DesktopModulePermissionInfo(permission);
@@ -211,6 +214,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this._DesktopModulePermissions.Remove(permissionID, roleID, userID);

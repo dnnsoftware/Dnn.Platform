@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Tokens
 {
-    using System;
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -19,7 +18,6 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseTokenReplace
     {
-
         protected const string ObjectLessToken = "no_object";
         private const string ExpressionDefault =
             "(?:(?<text>\\[\\])|\\[(?:(?<object>[^{}\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])|(?<text>\\[[^\\]\\[]+\\])|(?<text>[^\\]\\[]+)";
@@ -55,6 +53,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 return _language;
             }
+
             set
             {
                 _language = value;

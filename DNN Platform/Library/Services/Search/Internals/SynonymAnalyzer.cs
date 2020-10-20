@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     internal class SynonymAnalyzer : Analyzer
     {
+        /// <inheritdoc/>
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             var stops = GetStopWords();
