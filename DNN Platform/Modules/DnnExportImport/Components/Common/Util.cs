@@ -37,7 +37,7 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string is null or empty.</returns>
-        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrEmpty from System.String instead, scheduled removal in v10.")]
+        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrEmpty from System.String instead, scheduled removal in v11.")]
         public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string is null or contains only whtespace.</returns>
-        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrWhiteSpace from System.String instead, scheduled removal in v10.")]
+        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrWhiteSpace from System.String instead, scheduled removal in v11.")]
         public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string contains any value.</returns>
-        [Obsolete("Depracated in v9.8.0 use !string.IsNullOrEmpty from System.String instead, cheduled removal in v10.")]
+        [Obsolete("Depracated in v9.8.0 use !string.IsNullOrEmpty from System.String instead, cheduled removal in v11.")]
         public static bool HasValue(this string s) => !string.IsNullOrEmpty(s);
 
         /// <summary>
