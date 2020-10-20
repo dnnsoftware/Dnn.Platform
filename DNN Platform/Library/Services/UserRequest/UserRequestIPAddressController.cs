@@ -17,7 +17,8 @@ namespace DotNetNuke.Services.UserRequest
     {
         public string GetUserRequestIPAddress(HttpRequestBase request)
         {
-            return this.GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
+            string ipV4 = GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
+            return !string.IsNullOrEmpty(ipV4) ? ipV4 : GetUserRequestIPAddress(request, IPAddressFamily.IPv6);
         }
 
         public string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily)
