@@ -146,7 +146,6 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             if (disposing)
             {
                 // free managed resources.
-                this.page.Dispose();
             }
 
             Current = this.savedContext;
