@@ -43,14 +43,6 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="DNNContext"/> class.
-        /// </summary>
-        ~DNNContext()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// Gets the module name.
         /// </summary>
         public static string ModuleName
