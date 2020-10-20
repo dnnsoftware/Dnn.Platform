@@ -19,6 +19,7 @@ namespace Dnn.PersonaBar.Library.Containers
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Personalization;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json.Linq;
 
@@ -96,7 +97,7 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("culture", Thread.CurrentThread.CurrentUICulture.Name);
             settings.Add("logOff", this.NavigationManager.NavigateURL("Logoff"));
             settings.Add("visible", this.Visible);
-            settings.Add("userMode", portalSettings.UserMode.ToString());
+            settings.Add("userMode", Personalization.GetUserMode().ToString());
             settings.Add("userSettings", PersonaBarUserSettingsController.Instance.GetPersonaBarUserSettings());
             settings.Add("menuStructure", JObject.FromObject(menuStructure));
             settings.Add("sku", DotNetNukeContext.Current.Application.SKU);

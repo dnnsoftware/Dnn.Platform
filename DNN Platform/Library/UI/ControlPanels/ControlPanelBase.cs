@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                return this.PortalSettings.UserMode;
+                return Personalization.GetUserMode();
             }
         }
 
