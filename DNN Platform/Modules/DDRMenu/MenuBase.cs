@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private HttpContext currentContext;
 
-        private IPortalSettings hostPortalSettings;
+        private PortalSettings hostPortalSettings;
 
         /// <summary>
         /// Gets or sets the template definition.
@@ -52,9 +52,11 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>
         /// Gets the portal settings for the current portal.
         /// </summary>
+        // TODO: In v11 we should replace this by IPortalSettings and make it private or intantiate PortalSetings in the constructor.
+        [Obsolete("Deprecated in Dnn 9.8.1, scheduled removal in v11.")]
         internal PortalSettings HostPortalSettings
         {
-            get { return (PortalSettings)(this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentSettings())); }
+            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
         }
 
         /// <summary>
@@ -129,7 +131,10 @@ namespace DotNetNuke.Web.DDRMenu
 
             if (string.IsNullOrEmpty(this.menuSettings.NodeXmlPath) && !this.SkipLocalisation)
             {
+#pragma warning disable CS0618 // Type or member is obsolete
+                // TODO: In Dnn v11, replace this to use IPortalSettings private field instantiate in constructor
                 new Localiser(this.HostPortalSettings.PortalId).LocaliseNode(this.RootNode);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(this.menuSettings.NodeManipulator))
@@ -407,10 +412,13 @@ namespace DotNetNuke.Web.DDRMenu
 
         private void ApplyNodeManipulator()
         {
+            // TODO: In Dnn v11, replace this.HostProtalSettings to use IPortalSettings private field instantiate in constructor
+#pragma warning disable CS0618 // Type or member is obsolete
             this.RootNode =
                 new MenuNode(
                     ((INodeManipulator)Activator.CreateInstance(BuildManager.GetType(this.menuSettings.NodeManipulator, true, true))).
-                        ManipulateNodes(this.RootNode.Children, (PortalSettings)this.HostPortalSettings));
+                        ManipulateNodes(this.RootNode.Children, this.HostPortalSettings));
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }
