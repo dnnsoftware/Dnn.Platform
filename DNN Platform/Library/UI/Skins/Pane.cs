@@ -18,6 +18,7 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Utilities;
 
@@ -139,7 +140,7 @@ namespace DotNetNuke.UI.Skins
 
             try
             {
-                if (!Globals.IsAdminControl() && (this.PortalSettings.InjectModuleHyperLink || this.PortalSettings.UserMode != PortalSettings.Mode.View))
+                if (!Globals.IsAdminControl() && (this.PortalSettings.InjectModuleHyperLink || Personalization.GetUserMode() != PortalSettings.Mode.View))
                 {
                     this._containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
                 }
@@ -474,7 +475,7 @@ namespace DotNetNuke.UI.Skins
                 // unless the administrator is in view mode
                 if (displayTitle)
                 {
-                    displayTitle = this.PortalSettings.UserMode != PortalSettings.Mode.View;
+                    displayTitle = Personalization.GetUserMode() != PortalSettings.Mode.View;
                 }
 
                 if (displayTitle == false)

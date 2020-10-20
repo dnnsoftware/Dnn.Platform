@@ -105,10 +105,24 @@ namespace DotNetNuke.Entities.Portals
             ModuleEditor,
         }
 
+        /// <summary>
+        /// Enumerates the possible view modes of a page.
+        /// </summary>
         public enum Mode
         {
+            /// <summary>
+            /// The user is viewing the page in normal mode like a visitor.
+            /// </summary>
             View,
+
+            /// <summary>
+            /// The user is editing the page.
+            /// </summary>
             Edit,
+
+            /// <summary>
+            /// The user is viewing the page in layout mode.
+            /// </summary>
             Layout,
         }
 
@@ -201,35 +215,13 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <summary>
+        /// Gets the mode the user is viewing the page in.
+        /// </summary>
+        [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v10.")]
         public Mode UserMode
         {
-            get
-            {
-                Mode mode;
-                if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-                {
-                    mode = this.DefaultControlPanelMode;
-                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + this.PortalId));
-                    switch (setting.ToUpper())
-                    {
-                        case "VIEW":
-                            mode = Mode.View;
-                            break;
-                        case "EDIT":
-                            mode = Mode.Edit;
-                            break;
-                        case "LAYOUT":
-                            mode = Mode.Layout;
-                            break;
-                    }
-                }
-                else
-                {
-                    mode = Mode.View;
-                }
-
-                return mode;
-            }
+            get => Personalization.GetUserMode();
         }
 
         /// <summary>

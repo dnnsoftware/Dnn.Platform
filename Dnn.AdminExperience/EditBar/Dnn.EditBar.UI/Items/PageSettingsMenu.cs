@@ -17,6 +17,7 @@ namespace Dnn.EditBar.UI.Items
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
 
     [Serializable]
     public class PageSettingsMenu : BaseMenuItem
@@ -33,7 +34,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override bool Visible()
         {
-            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit
                 && Host.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
         }
     }

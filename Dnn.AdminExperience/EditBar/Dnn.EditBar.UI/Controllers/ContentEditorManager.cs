@@ -113,7 +113,7 @@ namespace Dnn.EditBar.UI.Controllers
                 ClientAPI.RegisterClientVariable(this.Page, "dnn_current_userid", this.PortalSettings.UserInfo.UserID.ToString(), true);
             }
 
-            if (this.PortalSettings.UserMode != PortalSettings.Mode.Edit
+            if (Personalization.GetUserMode() != PortalSettings.Mode.Edit
                     || !this.IsPageEditor()
                     || EditBarController.Instance.GetMenuItems().Count == 0)
             {
@@ -644,7 +644,7 @@ namespace Dnn.EditBar.UI.Controllers
             HttpCookie cookie = this.Request.Cookies["StayInEditMode"];
             if (cookie != null && cookie.Value == "YES")
             {
-                if (PortalSettings.Current.UserMode != PortalSettings.Mode.Edit)
+                if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
                 {
                     this.SetUserMode("EDIT");
                     this.SetLastPageHistory(pageId);
@@ -660,7 +660,7 @@ namespace Dnn.EditBar.UI.Controllers
             if (lastPageId != pageId && !isShowAsCustomError)
             {
                 // navigate between pages
-                if (PortalSettings.Current.UserMode != PortalSettings.Mode.View)
+                if (Personalization.GetUserMode() != PortalSettings.Mode.View)
                 {
                     this.SetUserMode("VIEW");
                     this.SetLastPageHistory(pageId);

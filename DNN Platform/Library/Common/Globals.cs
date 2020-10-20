@@ -1787,7 +1787,7 @@ namespace DotNetNuke.Common
                 return false;
             }
 
-            return portalSettings.UserMode == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
         /// <summary>
@@ -1796,8 +1796,7 @@ namespace DotNetNuke.Common
         /// <returns><c>true</c> if the current tab is in layout mode; otherwise <c>false</c>.</returns>
         public static bool IsLayoutMode()
         {
-            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4213
-            return TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout;
+            return TabPermissionController.CanAddContentToPage() && Personalization.GetUserMode() == PortalSettings.Mode.Layout;
         }
 
         /// <summary>
