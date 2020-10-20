@@ -73,26 +73,29 @@ namespace Dnn.ExportImport.Components.Services
                         return;
                     }
 
-                    foreach (var file in skinPackageFiles)
+                    using (var zipArchive = CompressionUtil.OpenCreate(packagesZipFile))
                     {
-                        var exportPackage = this.GenerateExportPackage(file);
-                        if (exportPackage != null)
+                        foreach (var file in skinPackageFiles)
                         {
-                            this.Repository.CreateItem(exportPackage, null);
-                            totalPackagesExported += 1;
-                            var folderOffset = Path.GetDirectoryName(file)?.Length + 1;
+                            var exportPackage = this.GenerateExportPackage(file);
+                            if (exportPackage != null)
+                            {
+                                this.Repository.CreateItem(exportPackage, null);
+                                totalPackagesExported += 1;
+                                var folderOffset = Path.GetDirectoryName(file)?.Length + 1;
 
-                            CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset.GetValueOrDefault(0));
-                        }
+                                CompressionUtil.AddFileToArchive(zipArchive, file, folderOffset.GetValueOrDefault(0));
+                            }
 
-                        this.CheckPoint.ProcessedItems++;
-                        this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalPackages;
-                        currentIndex++;
+                            this.CheckPoint.ProcessedItems++;
+                            this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalPackages;
+                            currentIndex++;
 
-                        // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
-                        {
-                            return;
+                            // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
+                            {
+                                return;
+                            }
                         }
                     }
 
