@@ -52,9 +52,9 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>
         /// Gets the portal settings for the current portal.
         /// </summary>
-        internal IPortalSettings HostPortalSettings
+        internal PortalSettings HostPortalSettings
         {
-            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentSettings()); }
+            get { return (PortalSettings)(this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentSettings())); }
         }
 
         /// <summary>
