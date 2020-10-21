@@ -665,7 +665,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <example>If a 09.08.01.01.sqlDataProvider file exists for a provided version 09.08.01 this method will return true.</example>
         /// <param name="version">The version.</param>
-        /// <returns>A vlue indicating wheter any incremental sql script file exists.</returns>
+        /// <returns>A value indicating whether any incremental sql script file exists.</returns>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
 
