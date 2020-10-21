@@ -1780,13 +1780,6 @@ namespace DotNetNuke.Common
         /// <returns><c>true</c> if the tab is in Edit mode; otherwise <c>false</c>.</returns>
         public static bool IsEditMode()
         {
-            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4213
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings == null)
-            {
-                return false;
-            }
-
             return Personalization.GetUserMode() == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
