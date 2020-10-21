@@ -16,7 +16,7 @@ var clientsDir = 'Clients/',
     binDir = 'bin/',
     webModuleDir = `${CONFIG.WEBSITE_PATH}DesktopModules/Cantarus/${CONFIG.MODULE_NAME}/`,
     webBinDir = `${CONFIG.WEBSITE_PATH}bin/`,
-    compiledModulesDir = '../../CompiledModules/';
+    compiledModulesDir = '../dist/';
 
 /*
     Modules

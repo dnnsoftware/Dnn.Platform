@@ -11,7 +11,7 @@ var CONFIG = require('./project.config');
     Create all the paths we need ahead of time.
 */
 var binDir = 'bin/Release/',
-    compiledModulesDir = '../../CompiledModules/';
+    compiledModulesDir = '../dist/';
 
 /*
     Modules
