@@ -218,7 +218,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Gets the mode the user is viewing the page in.
         /// </summary>
-        [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v10.")]
+        [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v11.")]
         public Mode UserMode
         {
             get => Personalization.GetUserMode();

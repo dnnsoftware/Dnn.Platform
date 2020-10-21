@@ -18,14 +18,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     /// <summary>
     /// Deprecated Ealo localization support.
     /// </summary>
-    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
     public class Ealo : ILocalisation
     {
         private bool haveChecked;
         private bool found;
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public bool HaveApi()
         {
             if (!this.haveChecked)
@@ -38,14 +38,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
             return EaloWorker.LocaliseTab(tab, portalId);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
             return null;

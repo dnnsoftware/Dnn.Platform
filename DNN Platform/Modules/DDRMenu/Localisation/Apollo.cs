@@ -15,14 +15,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     /// <summary>
     /// Deprecated Apollo localization.
     /// </summary>
-    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
     public class Apollo : ILocalisation
     {
         private bool haveChecked;
         private MethodInfo apiMember;
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public bool HaveApi()
         {
             if (!this.haveChecked)
@@ -47,14 +47,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
             return this.apiMember.Invoke(null, new object[] { tab }) as TabInfo ?? tab;
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
             return null;
