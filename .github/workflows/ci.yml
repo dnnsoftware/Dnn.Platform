@@ -26,6 +26,14 @@ jobs:
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
+    
+    - name: Install npm modules
+      run: |
+        cd DeployClient
+        npm ci
+        cd ../PolyDeploy
+        npm ci
+        cd ..
 
     - name: Build and package the application
       run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration
