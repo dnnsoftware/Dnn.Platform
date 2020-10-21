@@ -59,10 +59,19 @@ namespace DeployClient
 
             using (HttpClient client = BuildClient())
             {
-                var httpResponse = await client.GetAsync(endpoint);
+                HttpResponseMessage httpResponse;
+                try
+                {
+                    httpResponse = await client.GetAsync(endpoint);
+                }
+                catch
+                {
+                    return (false, new Dictionary<string, dynamic>(0));
+                }
+                
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    string json = httpResponse.Content.ReadAsStringAsync().Result;
+                    string json = await httpResponse.Content.ReadAsStringAsync();
                     return (true, jsonSer.Deserialize<Dictionary<string, dynamic>>(json));
                 }
 
