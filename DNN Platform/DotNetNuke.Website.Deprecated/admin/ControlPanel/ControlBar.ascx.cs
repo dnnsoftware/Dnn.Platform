@@ -982,7 +982,7 @@ namespace DotNetNuke.UI.ControlPanels
             HttpCookie cookie = this.Request.Cookies["StayInEditMode"];
             if (cookie != null && cookie.Value == "YES")
             {
-                if (PortalSettings.Current.UserMode != PortalSettings.Mode.Edit)
+                if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
                 {
                     this.SetUserMode("EDIT");
                     this.SetLastPageHistory(pageId);
@@ -998,7 +998,7 @@ namespace DotNetNuke.UI.ControlPanels
             if (lastPageId != pageId && !isShowAsCustomError)
             {
                 // navigate between pages
-                if (PortalSettings.Current.UserMode != PortalSettings.Mode.View)
+                if (Personalization.GetUserMode() != PortalSettings.Mode.View)
                 {
                     this.SetUserMode("VIEW");
                     this.SetLastPageHistory(pageId);

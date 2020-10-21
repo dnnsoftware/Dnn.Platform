@@ -12,6 +12,7 @@ namespace DotNetNuke.UI.Modules.Html5
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Tokens;
 
     public class Html5ModuleTokenReplace : HtmlTokenReplace
@@ -31,7 +32,7 @@ namespace DotNetNuke.UI.Modules.Html5
             : base(page)
         {
             this.AccessingUser = moduleContext.PortalSettings.UserInfo;
-            this.DebugMessages = moduleContext.PortalSettings.UserMode != Entities.Portals.PortalSettings.Mode.View;
+            this.DebugMessages = Personalization.GetUserMode() != Entities.Portals.PortalSettings.Mode.View;
             this.ModuleId = moduleContext.ModuleId;
             this.PortalSettings = moduleContext.PortalSettings;
 

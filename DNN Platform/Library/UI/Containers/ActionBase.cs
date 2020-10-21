@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
@@ -48,7 +49,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this.ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
+                return Personalization.GetUserMode() != PortalSettings.Mode.View;
             }
         }
 
