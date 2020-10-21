@@ -21,7 +21,20 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
-        private bool supportsIcons = true;
+        /// <summary>
+        /// Defines if the action supports icons.
+        /// </summary>
+        [Obsolete("Deprecates in v9.8.1, sheduled removal in v11.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "StyleCop.CSharp.NamingRules",
+            "SA1308:Variable names should not be prefixed",
+            Justification = "Keeping the name to prevent a breaking change, will be removed in v11.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "StyleCop.CSharp.MaintainabilityRules",
+            "SA1401:Fields should be private",
+            Justification = "In v11, we will make this private and rename.")]
+        protected bool m_supportsIcons = true;
+
         private ActionManager actionManager;
         private ModuleAction actionRoot;
 
@@ -46,7 +59,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this.supportsIcons;
+                return this.m_supportsIcons;
             }
         }
 
