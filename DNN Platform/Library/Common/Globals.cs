@@ -1471,7 +1471,7 @@ namespace DotNetNuke.Common
         /// <param name="portalId">The Portal ID.</param>
         public static void SetApplicationName(int portalId)
         {
-            HttpContext.Current.Items["ApplicationName"] = GetApplicationName(portalID);
+            HttpContext.Current.Items["ApplicationName"] = GetApplicationName(portalId);
         }
 
         /// -----------------------------------------------------------------------------
