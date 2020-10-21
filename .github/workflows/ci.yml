@@ -1,4 +1,4 @@
-name: CI
+name: CI (Build and Package)
 
 on:
   push:
@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Release]
+        node-version: [12.x]
 
     runs-on: windows-latest
 
@@ -27,6 +28,16 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
     
+    - name: Setup NuGet.exe for use with actions
+      uses: NuGet/setup-nuget@v1.0.2
+      with:
+        nuget-version: latest
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    
     - name: Install npm modules
       run: |
         cd DeployClient
@@ -34,6 +45,9 @@ jobs:
         cd ../PolyDeploy
         npm ci
         cd ..
+
+    - name: Restore NuGet packages
+      run: nuget restore
 
     - name: Build and package the application
       run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration
