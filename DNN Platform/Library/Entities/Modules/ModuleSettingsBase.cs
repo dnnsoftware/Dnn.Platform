@@ -7,8 +7,14 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.UI.Modules;
 
+    /// <summary>
+    /// Base class for module settings.
+    /// </summary>
     public class ModuleSettingsBase : PortalModuleBase, ISettingsControl
     {
+        /// <summary>
+        /// Gets the module settings.
+        /// </summary>
         public Hashtable ModuleSettings
         {
             get
@@ -17,6 +23,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>
+        /// Gets the tab module settings.
+        /// </summary>
         public Hashtable TabModuleSettings
         {
             get
