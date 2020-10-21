@@ -12,6 +12,7 @@
       </owner>
       <license></license>
       <releaseNotes></releaseNotes>
+      <azureCompatible>true</azureCompatible>
       <dependencies>
         <dependency type="CoreVersion">07.00.00</dependency>
       </dependencies>
