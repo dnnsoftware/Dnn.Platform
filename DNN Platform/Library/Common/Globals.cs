@@ -1468,8 +1468,8 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// This overload takes a the PortalId.
         /// </remarks>
-        /// <param name="portalID">The Portal Id.</param>
-        public static void SetApplicationName(int portalID)
+        /// <param name="portalId">The Portal ID.</param>
+        public static void SetApplicationName(int portalId)
         {
             HttpContext.Current.Items["ApplicationName"] = GetApplicationName(portalID);
         }
