@@ -2366,7 +2366,6 @@ namespace DotNetNuke.Common
         {
             string strURL = string.Empty;
 
-            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4213
             var currentTabId = TabController.CurrentPage.TabID;
             var currentUserId = UserController.Instance.GetCurrentUserInfo().UserID;
             if (HttpContext.Current.Request.IsAuthenticated)
