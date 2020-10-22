@@ -23,6 +23,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Services.Social.Subscriptions.Entities;
     using DotNetNuke.Web.Api;
 
+    /// <summary>
+    /// Provides a web service to manage subscriptions.
+    /// </summary>
     [DnnAuthorize]
     public class SubscriptionsController : DnnApiController
     {
@@ -94,11 +97,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
             catch (Exception ex)
             {
+                var message = "An unexpected error occurred while attempting to get the subscriptions, consult the server logs for more information.";
                 Exceptions.LogException(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Updates system sybscriptions.
+        /// </summary>
+        /// <param name="post"><see cref="InboxSubscriptionViewModel"/>.</param>
+        /// <returns><see cref="UserPreference"/>.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateSystemSubscription(InboxSubscriptionViewModel post)
@@ -119,11 +128,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
             catch (Exception ex)
             {
+                var message = "An unexpected error occurred while attempting to update the system subscriptions, consult the server logs for more information.";
                 Exceptions.LogException(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Deletes a content subscriptions.
+        /// </summary>
+        /// <param name="subscription"><see cref="Subscription"/>.</param>
+        /// <returns>"unsubscribed" or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteContentSubscription(Subscription subscription)
@@ -141,11 +156,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
             catch (Exception ex)
             {
+                var message = "An unexpected error occurred while attempting to delete a content subscription, consult the server logs for more information.";
                 Exceptions.LogException(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Gets a localized table for a given culture.
+        /// </summary>
+        /// <param name="culture">The culture for which to get the localization.</param>
+        /// <returns>A dictionnary of localization keys and their localized values.</returns>
         [HttpGet]
         [AllowAnonymous]
         public HttpResponseMessage GetLocalizationTable(string culture)
@@ -177,9 +198,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
             catch (Exception ex)
             {
+                var message = "An unexpected error occurred while attempting to get the localization table, consult the server logs for more information.";
                 Exceptions.LogException(ex);
-
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
@@ -241,16 +262,11 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var document = new XmlDocument { XmlResolver = null };
                 document.Load(stream);
 
-                // ReSharper disable AssignNullToNotNullAttribute
                 var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
 
-                // ReSharper restore AssignNullToNotNullAttribute
                 AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
-                // ReSharper disable AssignNullToNotNullAttribute
                 foreach (var xmlNode in document.SelectNodes("/root/data").Cast<XmlNode>())
-
-                // ReSharper restore AssignNullToNotNullAttribute
                 {
                     var name = GetNameAttribute(xmlNode).Replace(".Text", string.Empty);
 
