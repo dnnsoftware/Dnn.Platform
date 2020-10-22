@@ -586,6 +586,10 @@ namespace DotNetNuke.Web.InternalServices
                             break;
                     }
                 }
+                else if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", moduleInfo))
+                {
+                    throw new SecurityException($"Module '{moduleInfo.ModuleID}' is not available in current context.");
+                }
 
                 // clone the module object ( to avoid creating an object reference to the data cache )
                 ModuleInfo newModule = moduleInfo.Clone();
