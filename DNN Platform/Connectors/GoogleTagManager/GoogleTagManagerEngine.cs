@@ -64,8 +64,7 @@ namespace DotNetNuke.Services.Analytics
                 return string.Empty;
             }
 
-            scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
-            scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", string.Empty);
+            scriptTemplate = scriptTemplate.Replace("[GTM_ID]", trackingId);
 
             return scriptTemplate;
         }

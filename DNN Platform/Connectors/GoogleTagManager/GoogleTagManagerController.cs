@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Analytics
             string filePath = string.Empty;
             try
             {
-                filePath = Globals.ApplicationMapPath + "\\SiteAnalytics.config";
+                filePath = Globals.ApplicationMapPath + "\\DesktopModules\\Connectors\\GoogleTagManager\\GoogleTagManager.config";
 
                 if (File.Exists(filePath))
                 {
@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Analytics
             {
                 // log it
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-                log.AddProperty("GoogleAnalytics.UpgradeModule", "GetConfigFile Failed");
+                log.AddProperty("GoogleTagManager", "GetConfigFile Failed");
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);

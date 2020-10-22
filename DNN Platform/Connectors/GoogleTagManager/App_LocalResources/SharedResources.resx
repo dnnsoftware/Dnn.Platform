@@ -132,7 +132,4 @@
   <data name="GtmID.Text" xml:space="preserve">
     <value>Tag Manager ID:</value>
   </data>
-  <data name="DataConsent.Text" xml:space="preserve">
-    <value>Note: Data Consent is enabled, automatically enforcing this setting.</value>
-  </data>
 </root>

@@ -103,16 +103,10 @@ namespace DNN.Connectors.GoogleTagManager
                 }
             }
 
-            if (portalSettings.DataConsentActive)
-            {
-                //anonymizeIp = "true";
-            }
-
             var configItems = new Dictionary<string, string>
             {
                 { "GtmID", gtmId },
                 { "TrackAdministrators", trackForAdmin },
-                { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
                 { "isDeactivating", this.HandleCustomBoolean("false") },
             };
 
@@ -144,7 +138,7 @@ namespace DNN.Connectors.GoogleTagManager
                 }
                 else
                 {
-                    gtmID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
+                    gtmID = values["GtmID"] != null ? values["GtmID"].ToUpperInvariant().Trim() : string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
 
                     if (string.IsNullOrEmpty(gtmID))

@@ -89,6 +89,7 @@
     <None Include="GoogleTagManagerConnector.dnn" />
     <None Include="Module.build" />
     <None Include="packages.config" />
+    <None Include="GoogleTagManager.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
