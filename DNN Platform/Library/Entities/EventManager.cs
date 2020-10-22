@@ -20,6 +20,9 @@ namespace DotNetNuke.Entities
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.Log.EventLog;
 
+    /// <summary>
+    /// Manages Dnn Events.
+    /// </summary>
     public class EventManager : ServiceLocator<IEventManager, EventManager>, IEventManager
     {
         /// <summary>
