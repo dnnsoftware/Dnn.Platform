@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Tokens
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
+
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Users;
 
@@ -24,6 +25,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         TokenContext _tokenContext = new TokenContext();
+
         public TokenContext TokenContext
         {
             get => _tokenContext;

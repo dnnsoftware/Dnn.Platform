@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-// ReSharper disable UseNullPropagation
 namespace DotNetNuke.Entities
 {
     using System;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Friends;
     using DotNetNuke.Entities.Modules.Actions;
@@ -18,15 +18,26 @@ namespace DotNetNuke.Entities
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.EventArgs;
-    using DotNetNuke.Services.Log.EventLog;
+    using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Manages DNN Events.</summary>
     public class EventManager : ServiceLocator<IEventManager, EventManager>, IEventManager
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EventManager"/> class.
-        /// </summary>
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="EventManager"/> class.</summary>
+        [Obsolete("Deprecated in 9.8.1, use overload taking IEventLogger.  Scheduled removal in v11.0.0.")]
         public EventManager()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EventManager"/> class.</summary>
+        /// <param name="eventLogger">An event logger.</param>
+        public EventManager(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+
             foreach (var handler in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
             {
                 this.FileChanged += handler.Value.FileOverwritten;
@@ -214,7 +225,7 @@ namespace DotNetNuke.Entities
                 this.FileAdded(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_ADDED);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_ADDED);
         }
 
         /// <inheritdoc/>
@@ -225,7 +236,7 @@ namespace DotNetNuke.Entities
                 this.FileChanged(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_CHANGED);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_CHANGED);
         }
 
         /// <inheritdoc/>
@@ -236,7 +247,7 @@ namespace DotNetNuke.Entities
                 this.FileDeleted(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_DELETED);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_DELETED);
         }
 
         /// <inheritdoc/>
@@ -247,7 +258,7 @@ namespace DotNetNuke.Entities
                 this.FileMetadataChanged(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_METADATACHANGED);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_METADATACHANGED);
         }
 
         /// <inheritdoc/>
@@ -258,7 +269,7 @@ namespace DotNetNuke.Entities
                 this.FileDownloaded(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_DOWNLOADED);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_DOWNLOADED);
         }
 
         /// <inheritdoc/>
@@ -269,7 +280,7 @@ namespace DotNetNuke.Entities
                 this.FileMoved(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_MOVED);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_MOVED);
         }
 
         /// <inheritdoc/>
@@ -280,7 +291,7 @@ namespace DotNetNuke.Entities
                 this.FileOverwritten(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_OVERWRITTEN);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_OVERWRITTEN);
         }
 
         /// <inheritdoc/>
@@ -291,7 +302,7 @@ namespace DotNetNuke.Entities
                 this.FileRenamed(this, args);
             }
 
-            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_RENAMED);
+            this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_RENAMED);
         }
 
         /// <inheritdoc/>
@@ -622,17 +633,17 @@ namespace DotNetNuke.Entities
         /// <inheritdoc/>
         protected override Func<IEventManager> GetFactory()
         {
-            return () => new EventManager();
+            return () => new EventManager(Globals.DependencyProvider.GetRequiredService<IEventLogger>());
         }
 
-        private static void AddLog(IFileInfo fileInfo, int userId, EventLogController.EventLogType logType)
+        private void AddLog(IFileInfo fileInfo, int userId, EventLogType logType)
         {
             if (fileInfo == null)
             {
                 return;
             }
 
-            EventLogController.Instance.AddLog(fileInfo, PortalSettings.Current, userId, string.Empty, logType);
+            this.eventLogger.AddLog(fileInfo, PortalSettings.Current, userId, string.Empty, logType);
         }
     }
 }

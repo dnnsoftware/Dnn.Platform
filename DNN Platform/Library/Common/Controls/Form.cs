@@ -22,23 +22,23 @@ namespace DotNetNuke.Common.Controls
             string html = stringWriter.ToString();
 
             // Locate and replace action attribute
-            int StartPoint = html.IndexOf("action=\"");
-            if (StartPoint >= 0)
+            int startPoint = html.IndexOf("action=\"");
+            if (startPoint >= 0)
             {
-                int EndPoint = html.IndexOf("\"", StartPoint + 8) + 1;
-                html = html.Remove(StartPoint, EndPoint - StartPoint);
-                html = html.Insert(StartPoint, "action=\"" + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\"");
+                int endPoint = html.IndexOf("\"", startPoint + 8) + 1;
+                html = html.Remove(startPoint, endPoint - startPoint);
+                html = html.Insert(startPoint, "action=\"" + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\"");
             }
 
             if (this.ID != null)
             {
                 // Locate and replace id attribute
-                StartPoint = html.IndexOf("id=\"");
-                if (StartPoint >= 0)
+                startPoint = html.IndexOf("id=\"");
+                if (startPoint >= 0)
                 {
-                    int EndPoint = html.IndexOf("\"", StartPoint + 4) + 1;
-                    html = html.Remove(StartPoint, EndPoint - StartPoint);
-                    html = html.Insert(StartPoint, "id=\"" + this.ClientID + "\"");
+                    int endPoint = html.IndexOf("\"", startPoint + 4) + 1;
+                    html = html.Remove(startPoint, endPoint - startPoint);
+                    html = html.Insert(startPoint, "id=\"" + this.ClientID + "\"");
                 }
             }
 
