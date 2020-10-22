@@ -4,7 +4,6 @@
 
 namespace Dnn.ExportImport.Components.Controllers
 {
-    using System;
     using System.IO;
 
     using Dnn.ExportImport.Components.Common;
