@@ -15,12 +15,16 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using EaloTabInfo = effority.Ealo.Specialized.TabInfo;
     using TabInfo = DotNetNuke.Entities.Tabs.TabInfo;
 
+    /// <summary>
+    /// Deprecated Ealo localization support.
+    /// </summary>
     [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
     public class Ealo : ILocalisation
     {
         private bool haveChecked;
         private bool found;
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public bool HaveApi()
         {
@@ -33,12 +37,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             return this.found;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
             return EaloWorker.LocaliseTab(tab, portalId);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
@@ -48,21 +54,21 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         // Separate class only instantiated if Ealo is available.
         private static class EaloWorker
         {
-            private static readonly Dictionary<string, Dictionary<int, EaloTabInfo>> ealoTabLookup =
+            private static readonly Dictionary<string, Dictionary<int, EaloTabInfo>> EaloTabLookup =
                 new Dictionary<string, Dictionary<int, EaloTabInfo>>();
 
             public static TabInfo LocaliseTab(TabInfo tab, int portalId)
             {
                 var culture = DNNAbstract.GetCurrentCulture();
                 Dictionary<int, EaloTabInfo> ealoTabs;
-                if (!ealoTabLookup.TryGetValue(culture, out ealoTabs))
+                if (!EaloTabLookup.TryGetValue(culture, out ealoTabs))
                 {
                     ealoTabs = Tabs.GetAllTabsAsDictionary(culture, true);
-                    lock (ealoTabLookup)
+                    lock (EaloTabLookup)
                     {
-                        if (!ealoTabLookup.ContainsKey(culture))
+                        if (!EaloTabLookup.ContainsKey(culture))
                         {
-                            ealoTabLookup.Add(culture, ealoTabs);
+                            EaloTabLookup.Add(culture, ealoTabs);
                         }
                     }
                 }
