@@ -61,17 +61,18 @@ namespace DotNetNuke.Abstractions.Application
         void UpdateDatabaseVersionIncrement(Version version, int increment);
 
         /// <summary>
-        /// Needs documentation.
+        /// Checks if incremental sqlDataProvider files exist.
         /// </summary>
+        /// <example>If a 09.08.01.01.sqlDataProvider file exists for a provided version 09.08.01 this method will return true.</example>
         /// <param name="version">The version.</param>
-        /// <returns>true is success else false.</returns>
+        /// <returns>A value indicating whether any incremental sql script file exists.</returns>
         bool IncrementalVersionExists(Version version);
 
         /// <summary>
-        /// Get the last application iteration.
+        /// Get the last applied iteration (revision) for a given version.
         /// </summary>
-        /// <param name="version">The version.</param>
-        /// <returns>The result.</returns>
+        /// <param name="version">The version to check.</param>
+        /// <returns>The last applied iteration (revision).</returns>
         int GetLastAppliedIteration(Version version);
     }
 }

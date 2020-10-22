@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Personalization
             }
 
             personalization.Profile = string.IsNullOrEmpty(profileData)
-                ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
+                ? new Hashtable() : XmlUtils.DeSerializeHashtable(profileData, "profile");
             return personalization;
         }
 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Personalization
         {
             if (personalization != null && personalization.IsModified)
             {
-                var profileData = Globals.SerializeHashTableXml(personalization.Profile);
+                var profileData = XmlUtils.SerializeDictionary(personalization.Profile, "profile");
                 if (userId > Null.NullInteger)
                 {
                     DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
