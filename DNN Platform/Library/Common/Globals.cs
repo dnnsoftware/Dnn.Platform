@@ -1892,57 +1892,56 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// injects the upload directory into raw HTML for a single token.
+        /// Injects the upload directory into raw HTML for a single token.
         /// </summary>
-        /// <param name="strHTML">raw HTML text.</param>
-        /// <param name="strUploadDirectory">path of portal image directory.</param>
-        /// <param name="strToken">token to be replaced.</param>
+        /// <param name="strHTML">The raw HTML text.</param>
+        /// <param name="strUploadDirectory">The path of portal image directory.</param>
+        /// <param name="strToken">The token to be replaced.</param>
         /// <returns>HTML with paths for images and background corrected.</returns>
         /// <remarks>
-        /// called by ManageUploadDirectory for each token.
+        /// Called by ManageUploadDirectory for each token.
         /// </remarks>
         public static string ManageTokenUploadDirectory(string strHTML, string strUploadDirectory, string strToken)
         {
-            int p;
-            int r;
-            int s = 0;
-            int tLen;
+            int tokenStartPosition;
+            int endOfUrl;
+            int urlStartPosition = 0;
+            int tokenLength;
             string strURL;
             var sbBuff = new StringBuilder(string.Empty);
             if (!string.IsNullOrEmpty(strHTML))
             {
-                tLen = strToken.Length + 2;
+                tokenLength = strToken.Length + 2;
                 string uploadDirectory = strUploadDirectory.ToLowerInvariant();
 
-                // find position of first occurrance:
-                p = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
-                while (p != -1)
+                tokenStartPosition = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
+                while (tokenStartPosition != -1)
                 {
-                    sbBuff.Append(strHTML.Substring(s, p - s + tLen)); // keep charactes left of URL
-                    s = p + tLen; // save startpos of URL
-                    r = strHTML.IndexOf("\"", s); // end of URL
-                    if (r >= 0)
+                    sbBuff.Append(strHTML.Substring(urlStartPosition, tokenStartPosition - urlStartPosition + tokenLength)); // keep characters left of URL
+                    urlStartPosition = tokenStartPosition + tokenLength;
+                    endOfUrl = strHTML.IndexOf("\"", urlStartPosition);
+                    if (endOfUrl >= 0)
                     {
-                        strURL = strHTML.Substring(s, r - s).ToLowerInvariant();
+                        strURL = strHTML.Substring(urlStartPosition, endOfUrl - urlStartPosition).ToLowerInvariant();
                     }
                     else
                     {
-                        strURL = strHTML.Substring(s).ToLowerInvariant();
+                        strURL = strHTML.Substring(urlStartPosition).ToLowerInvariant();
                     }
 
-                    // add uploaddirectory if we are linking internally and the uploaddirectory is not already included
+                    // add upload directory if we are linking internally and the upload directory is not already included
                     if (!strURL.Contains("://") && !strURL.StartsWith("/") && !strURL.StartsWith(uploadDirectory))
                     {
                         sbBuff.Append(strUploadDirectory);
                     }
 
                     // find position of next occurrance:
-                    p = strHTML.IndexOf(strToken + "=\"", s + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                    tokenStartPosition = strHTML.IndexOf(strToken + "=\"", urlStartPosition + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
                 }
 
-                if (s > -1)
+                if (urlStartPosition > -1)
                 {
-                    sbBuff.Append(strHTML.Substring(s));
+                    sbBuff.Append(strHTML.Substring(urlStartPosition));
                 }
             }
 
