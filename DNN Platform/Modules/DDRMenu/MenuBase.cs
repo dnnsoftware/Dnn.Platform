@@ -15,7 +15,6 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml;
     using System.Xml.Serialization;
 
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -52,7 +51,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>
         /// Gets the portal settings for the current portal.
         /// </summary>
-        // TODO: In v11 we should replace this by IPortalSettings and make it private or intantiate PortalSetings in the constructor.
+        // TODO: In v11 we should replace this by IPortalSettings and make it private or instantiate PortalSettings in the constructor.
         [Obsolete("Deprecated in Dnn 9.8.1, scheduled removal in v11.")]
         internal PortalSettings HostPortalSettings
         {
@@ -276,7 +275,7 @@ namespace DotNetNuke.Web.DDRMenu
                 }
             }
 
-            // if filtered for foksonomy tags, use flat tree to get all related pages in nodeselection
+            // if filtered for folksonomy tags, use flat tree to get all related pages in nodeselection
             if (flattenedNodes.HasChildren())
             {
                 this.RootNode = flattenedNodes;
@@ -412,7 +411,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private void ApplyNodeManipulator()
         {
-            // TODO: In Dnn v11, replace this.HostProtalSettings to use IPortalSettings private field instantiate in constructor
+            // TODO: In Dnn v11, replace this.HostPortalSettings to use IPortalSettings private field instantiate in constructor
 #pragma warning disable CS0618 // Type or member is obsolete
             this.RootNode =
                 new MenuNode(

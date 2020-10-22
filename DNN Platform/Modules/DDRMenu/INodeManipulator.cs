@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu
 {
     using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace DotNetNuke.Web.DDRMenu
     public interface INodeManipulator
     {
         /// <summary>
-        /// Manimulates the menu nodes before they render.
+        /// Manipulates the menu nodes before they render.
         /// </summary>
         /// <param name="nodes">The list of nodes before they are manipulated.</param>
         /// <param name="portalSettings">The settings of the portal (site) on which the menu is rendered.</param>
