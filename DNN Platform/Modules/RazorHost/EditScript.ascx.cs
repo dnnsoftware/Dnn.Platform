@@ -16,18 +16,27 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Implements the EditScript view logic.
+    /// </summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditScript"/> class.
+        /// </summary>
         public EditScript()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <summary>
+        /// Gets the razor script file.
+        /// </summary>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
         {
@@ -44,20 +53,26 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdSave.Click += this.cmdSave_Click;
-            this.cmdSaveClose.Click += this.cmdSaveClose_Click;
-            this.cmdAdd.Click += this.cmdAdd_Click;
-            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
+            this.cmdCancel.Click += this.CmdCancel_Click;
+            this.cmdSave.Click += this.CmdSave_Click;
+            this.cmdSaveClose.Click += this.CmdSaveClose_Click;
+            this.cmdAdd.Click += this.CmdAdd_Click;
+            this.scriptList.SelectedIndexChanged += this.ScriptList_SelectedIndexChanged;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 
@@ -122,56 +137,56 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancel_Click(object sender, EventArgs e)
         {
             try
             {
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void cmdSave_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                this.SaveScript();
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        private void cmdSaveClose_Click(object sender, EventArgs e)
+        private void CmdSave_Click(object sender, EventArgs e)
         {
             try
             {
                 this.SaveScript();
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void cmdAdd_Click(object sender, EventArgs e)
+        private void CmdSaveClose_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.SaveScript();
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        private void CmdAdd_Click(object sender, EventArgs e)
         {
             try
             {
                 this.Response.Redirect(this.ModuleContext.EditUrl("Add"), true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void scriptList_SelectedIndexChanged(object sender, EventArgs e)
+        private void ScriptList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.DisplayFile();
         }
