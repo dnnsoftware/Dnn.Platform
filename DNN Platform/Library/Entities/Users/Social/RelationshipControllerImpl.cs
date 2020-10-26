@@ -5,13 +5,14 @@ namespace DotNetNuke.Entities.Users.Social
 {
     using System.Collections.Generic;
     using System.Linq;
-
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users.Social.Data;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
+    using Microsoft.Extensions.DependencyInjection;
 
     internal class RelationshipControllerImpl : IRelationshipController
     {
@@ -19,29 +20,29 @@ namespace DotNetNuke.Entities.Users.Social
         internal const string FollowerRequest = "FollowerRequest";
         internal const string FollowBackRequest = "FollowBackRequest";
         private readonly IDataService _dataService;
-        private readonly IEventLogController _eventLogController;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelationshipControllerImpl"/> class.
         /// </summary>
         public RelationshipControllerImpl()
-            : this(DataService.Instance, EventLogController.Instance)
+            : this(DataService.Instance, Globals.DependencyProvider.GetRequiredService<IEventLogger>())
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelationshipControllerImpl"/> class.
         /// </summary>
-        /// <param name="dataService"></param>
-        /// <param name="eventLogController"></param>
-        public RelationshipControllerImpl(IDataService dataService, IEventLogController eventLogController)
+        /// <param name="dataService">An instance of the data service.</param>
+        /// <param name="eventLogger">An instance of the event logger.</param>
+        public RelationshipControllerImpl(IDataService dataService, IEventLogger eventLogger)
         {
             // Argument Contract
             Requires.NotNull("dataService", dataService);
-            Requires.NotNull("eventLogController", eventLogController);
+            Requires.NotNull("eventLogger", eventLogger);
 
             this._dataService = dataService;
-            this._eventLogController = eventLogController;
+            this.eventLogger = eventLogger;
         }
 
         /// <inheritdoc/>
@@ -591,7 +592,7 @@ namespace DotNetNuke.Entities.Users.Social
 
         private void AddLog(string logContent)
         {
-            this._eventLogController.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT);
+            this.eventLogger.AddLog("Message", logContent, EventLogType.ADMIN_ALERT);
         }
 
         private void ClearRelationshipCache(Relationship relationship)
