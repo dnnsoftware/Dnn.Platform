@@ -74,9 +74,7 @@ namespace DotNetNuke.Common.Lists
             return string.Format("CountryList:{0}", locale);
         }
 
-        /// <summary>
-        /// Represetns a country.
-        /// </summary>
+        /// <summary>Represents a country.</summary>
         [Serializable]
         public struct Country
         {
