@@ -16,9 +16,16 @@ namespace DotNetNuke.Services.Log.EventLog
 
     using Microsoft.Extensions.DependencyInjection;
 
+    [Obsolete("Deprecated in v9.8.1, use dependency injection to resolve IEventLogger, IEventLogService or IEventLogConfigService instead, scheduled removal in v11.")]
+#pragma warning disable SA1601 // Partial elements should be documented, not documenting, the whole class is deprecated.
+#pragma warning disable SA1600 // Elements should be documented, not documenting, the whole class is deprecated.
     public partial class EventLogController : ServiceLocator<IEventLogController, EventLogController>, IEventLogController
     {
         [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.EventLogType' instead. Scheduled for removal in v11.0.0.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "StyleCop.CSharp.DocumentationRules",
+            "SA1602:Enumeration items should be documented",
+            Justification = "Not documenting since the whole class is deprecated.")]
         public enum EventLogType
         {
             USER_CREATED = 0,
@@ -330,7 +337,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         /// <inheritdoc/>
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override Func<IEventLogController> GetFactory() =>
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
             () => new EventLogController();
     }
+#pragma warning restore SA1601 // Partial elements should be documented
+#pragma warning restore SA1600 // Elements should be documented
 }
