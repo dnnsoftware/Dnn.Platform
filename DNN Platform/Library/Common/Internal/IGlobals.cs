@@ -31,7 +31,7 @@ namespace DotNetNuke.Common.Internal
         /// </summary>
         /// <param name="fileNamePath">The folder the absolute path.</param>
         /// <param name="portalId">Portal Id.</param>
-        /// <returns>The subforlder path.</returns>
+        /// <returns>The subfolder path.</returns>
         string GetSubFolderPath(string fileNamePath, int portalId);
 
         /// <summary>
