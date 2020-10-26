@@ -9,11 +9,15 @@ namespace DotNetNuke.Common.Internal
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// A collection of Dnn global methods and properties.
+    /// </summary>
     public class GlobalsImpl : IGlobals
     {
         /// <summary>
@@ -36,6 +40,9 @@ namespace DotNetNuke.Common.Internal
             get { return Globals.HostMapPath; }
         }
 
+        /// <summary>
+        /// Gets a navigation manager to provide navigation services.
+        /// </summary>
         protected INavigationManager NavigationManager { get; }
 
         /// <inheritdoc/>
@@ -75,9 +82,9 @@ namespace DotNetNuke.Common.Internal
         }
 
         /// <inheritdoc/>
-        public string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP)
+        public string GetPortalDomainName(string strPortalAlias, HttpRequest request, bool blnAddHTTP)
         {
-            return Globals.GetPortalDomainName(strPortalAlias, Request, blnAddHTTP);
+            return Globals.GetPortalDomainName(strPortalAlias, request, blnAddHTTP);
         }
 
         /// <inheritdoc/>
@@ -167,15 +174,15 @@ namespace DotNetNuke.Common.Internal
         }
 
         /// <inheritdoc/>
-        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name)
+        public string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name)
         {
-            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name);
+            return Globals.FormatHelpUrl(helpUrl, objPortalSettings, name);
         }
 
         /// <inheritdoc/>
-        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version)
+        public string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name, string version)
         {
-            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name, Version);
+            return Globals.FormatHelpUrl(helpUrl, objPortalSettings, name, version);
         }
 
         /// <inheritdoc/>
@@ -185,9 +192,9 @@ namespace DotNetNuke.Common.Internal
         }
 
         /// <inheritdoc/>
-        public string AccessDeniedURL(string Message)
+        public string AccessDeniedURL(string message)
         {
-            return Globals.AccessDeniedURL(Message);
+            return Globals.AccessDeniedURL(message);
         }
 
         /// <inheritdoc/>
@@ -277,13 +284,13 @@ namespace DotNetNuke.Common.Internal
         /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, settings);
+            return Globals.FriendlyUrl(tab, path, (IPortalSettings)settings);
         }
 
         /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, pageName, settings);
+            return Globals.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
         /// <inheritdoc/>

@@ -19,16 +19,34 @@ namespace DotNetNuke.Common.Lists
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
+    /// <summary>
+    /// Provides access to Dnn Lists.
+    /// </summary>
     public class ListController
     {
-        public readonly string[] NonLocalizedLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
+        /// <summary>
+        /// The list of list types that are not localized.
+        /// </summary>
+        [Obsolete("Deprecated in v9.8.1, use UnLocalizedLists instead, schedule removal in v11.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "StyleCop.CSharp.MaintainabilityRules",
+            "SA1401:Fields should be private",
+            Justification = "Make private in v11.")]
+        public readonly string[] NonLocalizedLists = UnLocalizableLists;
+
+        private static readonly string[] UnLocalizableLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
+
+        /// <summary>
+        /// Gets the lists that do not support localization.
+        /// </summary>
+        public string[] UnLocalizedLists => UnLocalizableLists;
 
         /// <summary>
         /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be
         /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
         /// </summary>
         /// <param name="listEntry">The list entry.</param>
-        /// <returns></returns>
+        /// <returns>The entry id.</returns>
         public int AddListEntry(ListEntryInfo listEntry)
         {
             bool enableSortOrder = listEntry.SortOrder > 0;
@@ -48,18 +66,42 @@ namespace DotNetNuke.Common.Lists
 
             if (entryId != Null.NullInteger)
             {
-                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_CREATED);
+                // TODO: Refactor this usage as decided in https://github.com/dnnsoftware/Dnn.Platform/issues/4242
+                EventLogController.Instance.AddLog(
+                    listEntry,
+                    PortalController.Instance.GetCurrentSettings(),
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    string.Empty,
+#pragma warning disable CS0618 // Type or member is obsolete
+                    EventLogController.EventLogType.LISTENTRY_CREATED);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
-            if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !this.NonLocalizedLists.Contains(listEntry.ListName))
+            if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && UnLocalizableLists.Contains(listEntry.ListName))
             {
                 if (string.IsNullOrEmpty(listEntry.ParentKey))
                 {
-                    LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
+                    LocalizationProvider.Instance.SaveString(
+                        listEntry.Value + ".Text",
+                        listEntry.TextNonLocalized,
+                        listEntry.ResourceFileRoot,
+                        Thread.CurrentThread.CurrentCulture.Name,
+                        (PortalSettings)PortalController.Instance.GetCurrentSettings(),
+                        LocalizationProvider.CustomizedLocale.None,
+                        true,
+                        true);
                 }
                 else
                 {
-                    LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
+                    LocalizationProvider.Instance.SaveString(
+                        listEntry.ParentKey + "." + listEntry.Value + ".Text",
+                        listEntry.TextNonLocalized,
+                        listEntry.ResourceFileRoot,
+                        Thread.CurrentThread.CurrentCulture.Name,
+                        (PortalSettings)PortalController.Instance.GetCurrentSettings(),
+                        LocalizationProvider.CustomizedLocale.None,
+                        true,
+                        true);
                 }
             }
 
@@ -67,15 +109,36 @@ namespace DotNetNuke.Common.Lists
             return entryId;
         }
 
+        /// <summary>
+        /// Deletes a a list.
+        /// </summary>
+        /// <param name="listName">The name of the list to deleted.</param>
+        /// <param name="parentKey">The parent key for the list to delete.</param>
         public void DeleteList(string listName, string parentKey)
         {
             this.DeleteList(listName, parentKey, Null.NullInteger);
         }
 
+        /// <summary>
+        /// Deletes a list.
+        /// </summary>
+        /// <param name="listName">The name of the list to delete.</param>
+        /// <param name="parentKey">The parent key of the list to delete.</param>
+        /// <param name="portalId">The id of the site (portal) on which to delete the list.</param>
         public void DeleteList(string listName, string parentKey, int portalId)
         {
             ListInfo list = this.GetListInfo(listName, parentKey, portalId);
-            EventLogController.Instance.AddLog("ListName", listName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
+
+            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4242
+            EventLogController.Instance.AddLog(
+                "ListName",
+                listName,
+                PortalController.Instance.GetCurrentSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+#pragma warning disable CS0618 // Type or member is obsolete
+                EventLogController.EventLogType.LISTENTRY_DELETED);
+#pragma warning restore CS0618 // Type or member is obsolete
+
             DataProvider.Instance().DeleteList(listName, parentKey);
             if (list != null)
             {
@@ -84,6 +147,11 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
+        /// <summary>
+        /// Deletes a list.
+        /// </summary>
+        /// <param name="list">The <see cref="ListInfo"/> reference for the list to delete.</param>
+        /// <param name="includeChildren">A value indicating wheter to also delete the children items for this list.</param>
         public void DeleteList(ListInfo list, bool includeChildren)
         {
             if (list == null)
@@ -113,6 +181,11 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
+        /// <summary>
+        /// Deletes a list entry.
+        /// </summary>
+        /// <param name="entryId">the id of the entry to delete.</param>
+        /// <param name="deleteChild">A value indicating whether to also delete the childrens of that item.</param>
         public void DeleteListEntryByID(int entryId, bool deleteChild)
         {
             ListEntryInfo entry = this.GetListEntryInfo(entryId);
@@ -121,6 +194,12 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
+        /// <summary>
+        /// Deletes a list entry by it's name.
+        /// </summary>
+        /// <param name="listName">The name of the list entry.</param>
+        /// <param name="listValue">The value of the list entry.</param>
+        /// <param name="deleteChild">A value indicating wheter to also delete the childrens of that item.</param>
         public void DeleteListEntryByListName(string listName, string listValue, bool deleteChild)
         {
             ListEntryInfo entry = this.GetListEntryInfo(listName, listValue);
@@ -129,61 +208,132 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(listName, entry.PortalID);
         }
 
+        /// <summary>
+        /// Gets a list entry information.
+        /// </summary>
+        /// <param name="entryId">The id of the list entry.</param>
+        /// <returns><see cref="ListEntryInfo"/>.</returns>
         public ListEntryInfo GetListEntryInfo(int entryId)
         {
             return CBO.FillObject<ListEntryInfo>(DataProvider.Instance().GetListEntry(entryId));
         }
 
+        /// <summary>
+        /// Gets a list entry information.
+        /// </summary>
+        /// <param name="listName">The name of the list.</param>
+        /// <param name="entryId">The id of the list entry.</param>
+        /// <returns><see cref="ListEntryInfo"/>.</returns>
         public ListEntryInfo GetListEntryInfo(string listName, int entryId)
         {
             return this.GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.EntryID == entryId);
         }
 
+        /// <summary>
+        /// Gets a list entry information.
+        /// </summary>
+        /// <param name="listName">The name of the list.</param>
+        /// <param name="listValue">The value of the list entry.</param>
+        /// <returns><see cref="ListEntryInfo"/>.</returns>
         public ListEntryInfo GetListEntryInfo(string listName, string listValue)
         {
             return this.GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.Value == listValue);
         }
 
+        /// <summary>
+        /// Gets multiple list entries for a list name.
+        /// </summary>
+        /// <param name="listName">The name of the list.</param>
+        /// <returns>An enumeration of list entries.</returns>
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName)
         {
             return this.GetListEntries(listName, Null.NullInteger);
         }
 
+        /// <summary>
+        /// Gets multiple list entries.
+        /// </summary>
+        /// <param name="listName">The list name.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <returns>An enumeration of list entries.</returns>
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey)
         {
             return this.GetListEntries(listName, Null.NullInteger).Where(l => l.ParentKey == parentKey);
         }
 
+        /// <summary>
+        /// Gets multiple list entries.
+        /// </summary>
+        /// <param name="listName">The list name.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="portalId">The id of the site (portal) from which to get the list from.</param>
+        /// <returns>An enumeration of list entries.</returns>
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey, int portalId)
         {
             return this.GetListEntries(listName, portalId).Where(l => l.ParentKey == parentKey);
         }
 
+        /// <summary>
+        /// Gets all list entries for a given list name.
+        /// </summary>
+        /// <param name="listName">The name of the list to get.</param>
+        /// <returns>A dictionnary where the index is a unique key and the value is the actual <see cref="ListEntryInfo"/>.</returns>
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName)
         {
             return this.GetListEntryInfoDictionary(listName, string.Empty, Null.NullInteger);
         }
 
+        /// <summary>
+        /// Gets all list entries for a given list name.
+        /// </summary>
+        /// <param name="listName">The name of the list to get.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <returns>A dictionnary where the index is a unique key and the value is the actual <see cref="ListEntryInfo"/>.</returns>
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName, string parentKey)
         {
             return this.GetListEntryInfoDictionary(listName, parentKey, Null.NullInteger);
         }
 
+        /// <summary>
+        /// Gets all list entries for a given list name.
+        /// </summary>
+        /// <param name="listName">The name of the list to get.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="portalId">The id of the site (portal) from which to get the list entries from.</param>
+        /// <returns>A dictionnary where the index is a unique key and the value is the actual <see cref="ListEntryInfo"/>.</returns>
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName, string parentKey, int portalId)
         {
             return ListEntryInfoItemsToDictionary(this.GetListEntryInfoItems(listName, parentKey, portalId));
         }
 
+        /// <summary>
+        /// Gets a single list.
+        /// </summary>
+        /// <param name="listName">The name of the list.</param>
+        /// <returns><see cref="ListInfo"/>.</returns>
         public ListInfo GetListInfo(string listName)
         {
             return this.GetListInfo(listName, string.Empty);
         }
 
+        /// <summary>
+        /// Gets a single list.
+        /// </summary>
+        /// <param name="listName">The name of the list.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <returns><see cref="ListInfo"/>.</returns>
         public ListInfo GetListInfo(string listName, string parentKey)
         {
             return this.GetListInfo(listName, parentKey, -1);
         }
 
+        /// <summary>
+        /// Gets a single list.
+        /// </summary>
+        /// <param name="listName">The name of the list.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="portalId">The id of the site (portal) to get the list from.</param>
+        /// <returns><see cref="ListInfo"/>.</returns>
         public ListInfo GetListInfo(string listName, string parentKey, int portalId)
         {
             ListInfo list = null;
@@ -211,21 +361,43 @@ namespace DotNetNuke.Common.Lists
             return list;
         }
 
+        /// <summary>
+        /// Gets a collection of lists.
+        /// </summary>
+        /// <returns><see cref="ListInfoCollection"/>.</returns>
         public ListInfoCollection GetListInfoCollection()
         {
             return this.GetListInfoCollection(string.Empty);
         }
 
+        /// <summary>
+        /// Gets a collection of lists.
+        /// </summary>
+        /// <param name="listName">The list name.</param>
+        /// <returns><see cref="ListInfoCollection"/>.</returns>
         public ListInfoCollection GetListInfoCollection(string listName)
         {
             return this.GetListInfoCollection(listName, string.Empty);
         }
 
+        /// <summary>
+        /// Gets a collection of lists.
+        /// </summary>
+        /// <param name="listName">The list name.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <returns><see cref="ListInfoCollection"/>.</returns>
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey)
         {
             return this.GetListInfoCollection(listName, parentKey, -1);
         }
 
+        /// <summary>
+        /// Gets a collection of lists.
+        /// </summary>
+        /// <param name="listName">The list name.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="portalId">The id of the site (portal) to get the list from.</param>
+        /// <returns><see cref="ListInfoCollection"/>.</returns>
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey, int portalId)
         {
             IList lists = new ListInfoCollection();
@@ -250,7 +422,7 @@ namespace DotNetNuke.Common.Lists
         /// <param name="listEntry">The list entry info item to update.</param>
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
-            if (Thread.CurrentThread.CurrentCulture.Name == Localization.SystemLocale || this.NonLocalizedLists.Contains(listEntry.ListName))
+            if (Thread.CurrentThread.CurrentCulture.Name == Localization.SystemLocale || UnLocalizableLists.Contains(listEntry.ListName))
             {
                 DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
             }
@@ -263,23 +435,49 @@ namespace DotNetNuke.Common.Lists
                     ? listEntry.Value + ".Text"
                     : listEntry.ParentKey + "." + listEntry.Value + ".Text";
 
-                LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot,
-                    Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
+                LocalizationProvider.Instance.SaveString(
+                    key,
+                    listEntry.TextNonLocalized,
+                    listEntry.ResourceFileRoot,
+                    Thread.CurrentThread.CurrentCulture.Name,
+                    (PortalSettings)PortalController.Instance.GetCurrentSettings(),
+                    LocalizationProvider.CustomizedLocale.None,
+                    true,
+                    true);
             }
 
-            EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_UPDATED);
+            // TODO: Refactor this usage as decided in https://github.com/dnnsoftware/Dnn.Platform/issues/4242
+            EventLogController.Instance.AddLog(
+                listEntry,
+                PortalController.Instance.GetCurrentSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+#pragma warning disable CS0618 // Type or member is obsolete
+                EventLogController.EventLogType.LISTENTRY_UPDATED);
+#pragma warning restore CS0618 // Type or member is obsolete
+
             this.ClearListCache(listEntry.PortalID);
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }
 
-        public void UpdateListSortOrder(int EntryID, bool MoveUp)
+        /// <summary>
+        /// Updates a list sort order.
+        /// </summary>
+        /// <param name="entryID">The id of the entry to move.</param>
+        /// <param name="moveUp">The entry is moved up of true or moved down if false.</param>
+        public void UpdateListSortOrder(int entryID, bool moveUp)
         {
-            DataProvider.Instance().UpdateListSortOrder(EntryID, MoveUp);
-            ListEntryInfo entry = this.GetListEntryInfo(EntryID);
+            DataProvider.Instance().UpdateListSortOrder(entryID, moveUp);
+            ListEntryInfo entry = this.GetListEntryInfo(entryID);
             this.ClearListCache(entry.PortalID);
             this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
+        /// <summary>
+        /// Gets a collection of list entries.
+        /// </summary>
+        /// <param name="listName">The name of the list to get.</param>
+        /// <returns>A collection of list entries.</returns>
         [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName)
@@ -287,6 +485,12 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntryInfoCollection(listName, string.Empty, Null.NullInteger);
         }
 
+        /// <summary>
+        /// Gets a collection of list entries.
+        /// </summary>
+        /// <param name="listName">The name of the list to get.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <returns>A collection of list entries.</returns>
         [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey)
@@ -294,6 +498,13 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntryInfoCollection(listName, parentKey, Null.NullInteger);
         }
 
+        /// <summary>
+        /// Gets a collection of list entries.
+        /// </summary>
+        /// <param name="listName">The name of the list to get.</param>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="portalId">The id of the site (portal) to get the list from.</param>
+        /// <returns>A collection of list entries.</returns>
         [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey, int portalId)
@@ -328,13 +539,13 @@ namespace DotNetNuke.Common.Lists
             DataCache.RemoveCache(cacheKey);
         }
 
-        private ListInfo FillListInfo(IDataReader dr, bool CheckForOpenDataReader)
+        private ListInfo FillListInfo(IDataReader dr, bool checkForOpenDataReader)
         {
             ListInfo list = null;
 
             // read datareader
             bool canContinue = true;
-            if (CheckForOpenDataReader)
+            if (checkForOpenDataReader)
             {
                 canContinue = false;
                 if (dr.Read())

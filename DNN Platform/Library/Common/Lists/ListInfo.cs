@@ -8,6 +8,9 @@ namespace DotNetNuke.Common.Lists
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
 
+    /// <summary>
+    /// Represents the informaiton relative to a list.
+    /// </summary>
     [Serializable]
     public class ListInfo : BaseEntityInfo
     {
@@ -22,8 +25,8 @@ namespace DotNetNuke.Common.Lists
         /// <summary>
         /// Initializes a new instance of the <see cref="ListInfo"/> class.
         /// </summary>
-        /// <param name="Name">The name of the list.</param>
-        public ListInfo(string Name)
+        /// <param name="name">The name of the list.</param>
+        public ListInfo(string name)
         {
             this.SystemList = Null.NullBoolean;
             this.EnableSortOrder = Null.NullBoolean;
@@ -33,59 +36,101 @@ namespace DotNetNuke.Common.Lists
             this.ParentKey = Null.NullString;
             this.PortalID = Null.NullInteger;
             this.DefinitionID = Null.NullInteger;
-            this.Name = Name;
+            this.Name = name;
         }
 
+        /// <summary>
+        /// Gets the display name which includes the parents names and this entry name.
+        /// </summary>
         public string DisplayName
         {
             get
             {
-                string _DisplayName = this.Parent;
-                if (!string.IsNullOrEmpty(_DisplayName))
+                string displayName = this.Parent;
+                if (!string.IsNullOrEmpty(displayName))
                 {
-                    _DisplayName += ":";
+                    displayName += ":";
                 }
 
-                return _DisplayName + this.Name;
+                return displayName + this.Name;
             }
         }
 
+        /// <summary>
+        /// Gets a unique key to identify this entry which includes the parents keys and this item name.
+        /// </summary>
         public string Key
         {
             get
             {
-                string _Key = this.ParentKey;
-                if (!string.IsNullOrEmpty(_Key))
+                string key = this.ParentKey;
+                if (!string.IsNullOrEmpty(key))
                 {
-                    _Key += ":";
+                    key += ":";
                 }
 
-                return _Key + this.Name;
+                return key + this.Name;
             }
         }
 
+        /// <summary>
+        /// Gets or sets the id of the definition.
+        /// </summary>
         public int DefinitionID { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to enable the sort order.
+        /// </summary>
         public bool EnableSortOrder { get; set; }
 
+        /// <summary>
+        /// Gets or sets the total number of entries.
+        /// </summary>
         public int EntryCount { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the list is populated.
+        /// </summary>
         public bool IsPopulated { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating how deep this list in nested into the hierarchy.
+        /// </summary>
         public int Level { get; set; }
 
+        /// <summary>
+        /// Gets or sets the list name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parent.
+        /// </summary>
         public string Parent { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the parent list.
+        /// </summary>
         public int ParentID { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parent key.
+        /// </summary>
         public string ParentKey { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parent list.
+        /// </summary>
         public string ParentList { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the site (portal).
+        /// </summary>
         public int PortalID { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this list is a system list.
+        /// </summary>
         public bool SystemList { get; set; }
     }
 }
