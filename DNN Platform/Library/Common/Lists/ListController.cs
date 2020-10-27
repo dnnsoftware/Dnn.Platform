@@ -255,9 +255,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntries(listName, Null.NullInteger).Where(l => l.ParentKey == parentKey);
         }
 
-        /// <summary>
-        /// Gets multiple list entries.
-        /// </summary>
+        /// <summary>Gets the entries in a child list.</summary>
         /// <param name="listName">The list name.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) from which to get the list from.</param>
