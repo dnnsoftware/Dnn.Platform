@@ -456,7 +456,7 @@ namespace DotNetNuke.Common.Lists
         /// Updates a list sort order.
         /// </summary>
         /// <param name="entryID">The id of the entry to move.</param>
-        /// <param name="moveUp">The entry is moved up of true or moved down if false.</param>
+        /// <param name="moveUp">The entry is moved up if <c>true</c> or moved down if <c>false</c>.</param>
         public void UpdateListSortOrder(int entryID, bool moveUp)
         {
             DataProvider.Instance().UpdateListSortOrder(entryID, moveUp);
