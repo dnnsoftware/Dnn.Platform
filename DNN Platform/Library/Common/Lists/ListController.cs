@@ -238,9 +238,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.Value == listValue);
         }
 
-        /// <summary>
-        /// Gets multiple list entries for a list name.
-        /// </summary>
+        /// <summary>Gets the entries in the list with the given <paramref name="listName"/>.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <returns>An enumeration of list entries.</returns>
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName)
