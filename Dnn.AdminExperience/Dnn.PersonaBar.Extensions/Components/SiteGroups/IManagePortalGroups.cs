@@ -11,8 +11,11 @@ namespace Dnn.PersonaBar.SiteGroups
     public interface IManagePortalGroups
     {
         IEnumerable<PortalInfo> AvailablePortals();
+
         void Delete(int portalGroupId);
+
         IEnumerable<PortalGroupInfo> SiteGroups();
+
         int Save(PortalGroupInfo portalGroup);
     }
 }

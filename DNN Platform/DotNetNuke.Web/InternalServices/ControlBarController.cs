@@ -516,9 +516,9 @@ namespace DotNetNuke.Web.InternalServices
 
             string imageUrl =
                 (from pkgs in packages
-                    join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                    where portMods.Value.DesktopModuleID == moduleId
-                    select pkgs.IconFile).FirstOrDefault();
+                 join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                 where portMods.Value.DesktopModuleID == moduleId
+                 select pkgs.IconFile).FirstOrDefault();
 
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
@@ -532,11 +532,11 @@ namespace DotNetNuke.Web.InternalServices
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl = (from pkgs in packages
-                join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
-                join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
-                where tabMods.Value.ModuleID == moduleId
-                select pkgs.IconFile).FirstOrDefault();
+                               join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                               join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
+                               join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
+                               where tabMods.Value.ModuleID == moduleId
+                               select pkgs.IconFile).FirstOrDefault();
 
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);

@@ -8,6 +8,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     {
         New,
         Copy,
-        Reference
+        Reference,
     }
 }

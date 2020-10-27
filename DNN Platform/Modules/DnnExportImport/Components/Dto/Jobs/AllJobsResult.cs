@@ -20,6 +20,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public string LastExportTimeString => Util.GetDateTimeString(this.LastExportTime);
 
         public string LastImportTimeString => Util.GetDateTimeString(this.LastImportTime);
+
         public int PortalId { get; set; }
 
         public string PortalName { get; set; }

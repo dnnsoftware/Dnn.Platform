@@ -259,7 +259,7 @@ namespace Dnn.PersonaBar.Themes.Components
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="portalSettings"></param>
         /// <param name="theme"></param>
@@ -328,11 +328,11 @@ namespace Dnn.PersonaBar.Themes.Components
                 string strValue = updateTheme.Value;
                 if (intStartAttribute != -1 && intStartAttribute < intCloseTag)
                 {
-                    //remove attribute
+                    // remove attribute
                     var intEndAttribute = strSkin.IndexOf("\" ", intStartAttribute);
                     strSkin = strSkin.Substring(0, intStartAttribute) + strSkin.Substring(intEndAttribute + 2);
                 }
-                //add attribute
+                // add attribute
                 strSkin = strSkin.Insert(intOpenTag + strTag.Length, " " + strAttribute + "=\"" + strValue + "\"");
 
                 File.SetAttributes(themePath, FileAttributes.Normal);
@@ -355,10 +355,10 @@ namespace Dnn.PersonaBar.Themes.Components
             var strRootPath = Null.NullString;
             switch (theme.Level)
             {
-                case ThemeLevel.Global: //global
+                case ThemeLevel.Global: // global
                     strRootPath = Globals.HostMapPath;
                     break;
-                case ThemeLevel.Site: //local
+                case ThemeLevel.Site: // local
                     strRootPath = portalSettings.HomeDirectoryMapPath;
                     break;
             }
@@ -392,10 +392,10 @@ namespace Dnn.PersonaBar.Themes.Components
             }
             switch (parseType)
             {
-                case ParseType.Localized: //localized
+                case ParseType.Localized: // localized
                     objSkinFiles.ProcessList(arrSkinFiles, SkinParser.Localized);
                     break;
-                case ParseType.Portable: //portable
+                case ParseType.Portable: // portable
                     objSkinFiles.ProcessList(arrSkinFiles, SkinParser.Portable);
                     break;
             }
@@ -419,51 +419,51 @@ namespace Dnn.PersonaBar.Themes.Components
                 {
                     if (NeedCreateThumbnail(strThumbnail, strImage))
                     {
-                        const int intSize = 150; //size of the thumbnail 
+                        const int intSize = 150; // size of the thumbnail
                         try
                         {
                             var objImage = Image.FromFile(strImage);
 
-                            //scale the image to prevent distortion
+                            // scale the image to prevent distortion
                             int intHeight;
                             int intWidth;
                             double dblScale;
                             if (objImage.Height > objImage.Width)
                             {
-                                //The height was larger, so scale the width 
+                                // The height was larger, so scale the width
                                 dblScale = (double)intSize / objImage.Height;
                                 intHeight = intSize;
                                 intWidth = Convert.ToInt32(objImage.Width * dblScale);
                             }
                             else
                             {
-                                //The width was larger, so scale the height 
+                                // The width was larger, so scale the height
                                 dblScale = (double)intSize / objImage.Width;
                                 intWidth = intSize;
                                 intHeight = Convert.ToInt32(objImage.Height * dblScale);
                             }
 
-                            //create the thumbnail image
+                            // create the thumbnail image
                             var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
 
-                            //delete the old file ( if it exists )
+                            // delete the old file ( if it exists )
                             if (File.Exists(strThumbnail))
                             {
                                 File.Delete(strThumbnail);
                             }
 
-                            //save the thumbnail image 
+                            // save the thumbnail image
                             objThumbnail.Save(strThumbnail, objImage.RawFormat);
 
-                            //set the file attributes
+                            // set the file attributes
                             File.SetAttributes(strThumbnail, FileAttributes.Normal);
                             File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
 
-                            //tidy up
+                            // tidy up
                             objImage.Dispose();
                             objThumbnail.Dispose();
                         }
-                        catch (Exception ex) //problem creating thumbnail
+                        catch (Exception ex) // problem creating thumbnail
                         {
                             Logger.Error(ex);
                         }
@@ -474,7 +474,7 @@ namespace Dnn.PersonaBar.Themes.Components
             strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
             strThumbnail = strThumbnail.Replace("\\", "/");
 
-            //return thumbnail filename
+            // return thumbnail filename
             return strThumbnail;
         }
 
@@ -532,7 +532,7 @@ namespace Dnn.PersonaBar.Themes.Components
                             Path = themePath,
                             DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
                             Thumbnail = GetThumbnail(themePath, defaultThemeFile),
-                            CanDelete = canDelete
+                            CanDelete = canDelete,
                         });
                     }
                 }
@@ -656,7 +656,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
                 if (xmlToken == null)
                 {
-                    //add token
+                    // add token
                     string strToken = "<Token>[" + updateTheme.Token + "]</Token><Settings></Settings>";
                     xmlToken = xmlDoc.CreateElement("Object");
                     xmlToken.InnerXml = strToken;

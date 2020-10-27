@@ -302,6 +302,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public class ModulesSettingsRepository : SettingsRepository<ModulesSettings>
-        {}
+        {
+        }
     }
 }

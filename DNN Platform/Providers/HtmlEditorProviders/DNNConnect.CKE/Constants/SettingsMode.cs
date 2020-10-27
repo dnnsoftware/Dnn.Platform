@@ -5,7 +5,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     /// <summary>
-    /// Settings Mode
+    /// Settings Mode.
     /// </summary>
     public enum SettingsMode
     {

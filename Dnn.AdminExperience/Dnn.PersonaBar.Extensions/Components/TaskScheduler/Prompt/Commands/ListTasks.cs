@@ -26,6 +26,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private bool? Enabled { get; set; }
+
         private string TaskName { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -44,7 +45,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_TasksFound"), tasks.Count))
             {
                 Data = tasks,
-                Records = tasks.Count
+                Records = tasks.Count,
             };
         }
     }

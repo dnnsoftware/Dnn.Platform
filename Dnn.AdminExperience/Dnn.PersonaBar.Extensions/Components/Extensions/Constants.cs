@@ -32,14 +32,14 @@ namespace Dnn.PersonaBar.Extensions.Components
     {
         Control,
         Template,
-        Manifest
+        Manifest,
     }
 
     public enum CreateModuleType
     {
         New,
         Control,
-        Manifest
+        Manifest,
     }
 
     public class Constants

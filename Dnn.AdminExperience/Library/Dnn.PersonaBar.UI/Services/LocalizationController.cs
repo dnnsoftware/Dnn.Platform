@@ -245,5 +245,6 @@ namespace Dnn.PersonaBar.UI.Services
 
     [Serializable]
     public class CacheDto
-    {}
+    {
+    }
 }

@@ -26,7 +26,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private const string FlagPageId = "pageid";
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private int ModuleId { get; set; }
+
         private int PageId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -44,8 +46,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 this.PortalSettings,
                 this.ModuleId,
                 this.PageId,
-                out message
-                );
+                out message);
             if (moduleInfo == null && !string.IsNullOrEmpty(message.Value))
             {
                 return new ConsoleErrorResultModel(message.Value);

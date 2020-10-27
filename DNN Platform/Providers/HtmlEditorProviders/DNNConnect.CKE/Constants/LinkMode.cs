@@ -5,7 +5,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     /// <summary>
-    /// File Browser Link Modes
+    /// File Browser Link Modes.
     /// </summary>
     public enum LinkMode
     {
@@ -27,6 +27,6 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// Absolute Secured URL
         /// </summary>
-        AbsoluteSecuredURL = 3
+        AbsoluteSecuredURL = 3,
     }
 }

@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Users.Components
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasNotAgreedToTerms)));
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RequestedRemoval)));
             }
-            userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RegisteredUsers)));//Temporarily removed registered users.
+            userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RegisteredUsers))); // Temporarily removed registered users.
             return userFilters;
         }
 
@@ -126,7 +126,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             }
 
-            //check new password is not in history
+            // check new password is not in history
             if (membershipPasswordController.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
                 throw new Exception(Localization.GetString("PasswordResetFailed_PasswordInHistory", Constants.LocalResourcesFile));
@@ -144,7 +144,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
             catch (MembershipPasswordException exc)
             {
-                //Password Answer missing
+                // Password Answer missing
                 Logger.Error(exc);
                 throw new Exception(Localization.GetString("PasswordInvalid", Constants.LocalResourcesFile));
             }
@@ -154,7 +154,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
             catch (Exception exc)
             {
-                //Fail
+                // Fail
                 Logger.Error(exc);
                 throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
             }
@@ -180,7 +180,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             if (userBasicDto.UserId == requestPortalSettings.AdministratorId)
             {
-                //Clear the Portal Cache
+                // Clear the Portal Cache
                 DataCache.ClearPortalCache(portalId, true);
             }
             if (user.IsSuperUser)
@@ -191,12 +191,12 @@ namespace Dnn.PersonaBar.Users.Components
             user.Email = userBasicDto.Email;
             user.FirstName = !string.IsNullOrEmpty(userBasicDto.Firstname) ? userBasicDto.Firstname : user.FirstName;
             user.LastName = !string.IsNullOrEmpty(userBasicDto.Lastname) ? userBasicDto.Lastname : user.LastName;
-            //Update DisplayName to conform to Format
+            // Update DisplayName to conform to Format
             if (!string.IsNullOrEmpty(requestPortalSettings.Registration.DisplayNameFormat))
             {
                 user.UpdateDisplayName(requestPortalSettings.Registration.DisplayNameFormat);
             }
-            //either update the username or update the user details
+            // either update the username or update the user details
 
             if (this.CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
             {
@@ -204,7 +204,7 @@ namespace Dnn.PersonaBar.Users.Components
                 user.Username = userBasicDto.Username;
             }
 
-            //DNN-5874 Check if unique display name is required
+            // DNN-5874 Check if unique display name is required
             if (requestPortalSettings.Registration.RequireUniqueDisplayName)
             {
                 var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(portalId, 0, 2, "DisplayName", true, "DisplayName", user.DisplayName);
@@ -266,7 +266,7 @@ namespace Dnn.PersonaBar.Users.Components
                     StartTime = addedRole.EffectiveDate,
                     ExpiresTime = addedRole.ExpiryDate,
                     AllowExpired = UserRoleDto.AllowExpiredRole(portalSettings, user.UserID, role.RoleID),
-                    AllowDelete = RoleController.CanRemoveUserFromRole(portalSettings, user.UserID, role.RoleID)
+                    AllowDelete = RoleController.CanRemoveUserFromRole(portalSettings, user.UserID, role.RoleID),
                 };
             }
             throw new Exception(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
@@ -281,7 +281,7 @@ namespace Dnn.PersonaBar.Users.Components
                 {
                     userInfo.Membership.UpdatePassword = true;
 
-                    //Update User
+                    // Update User
                     UserController.UpdateUser(portalId, userInfo);
                     return true;
                 }
@@ -307,7 +307,7 @@ namespace Dnn.PersonaBar.Users.Components
                     UserId = userId,
                     StartTime = effDate,
                     ExpiresTime = expDate,
-                    RoleName = curRole
+                    RoleName = curRole,
                 };
                 Instance.SaveUserRole(portalId, currentUserInfo, userRoleDto, false, false);
             }
@@ -350,11 +350,11 @@ namespace Dnn.PersonaBar.Users.Components
         {
             userInfo.Membership.Approved = authorized;
 
-            //Update User
+            // Update User
             UserController.UpdateUser(portalId, userInfo);
             if (authorized)
             {
-                //Update User Roles if needed
+                // Update User Roles if needed
                 if (!userInfo.IsSuperUser && userInfo.IsInRole("Unverified Users") &&
                     this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                 {
@@ -491,20 +491,20 @@ namespace Dnn.PersonaBar.Users.Components
 
         private bool CanUpdateUsername(UserInfo user)
         {
-            //can only update username if a host/admin and account being managed is not a superuser
+            // can only update username if a host/admin and account being managed is not a superuser
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
-                //only allow updates for non-superuser accounts
+                // only allow updates for non-superuser accounts
                 if (user.IsSuperUser == false)
                 {
                     return true;
                 }
             }
 
-            //if an admin, check if the user is only within this portal
+            // if an admin, check if the user is only within this portal
             if (UserController.Instance.GetCurrentUserInfo().IsInRole(this.PortalSettings.AdministratorRoleName))
             {
-                //only allow updates for non-superuser accounts
+                // only allow updates for non-superuser accounts
                 if (user.IsSuperUser)
                 {
                     return false;

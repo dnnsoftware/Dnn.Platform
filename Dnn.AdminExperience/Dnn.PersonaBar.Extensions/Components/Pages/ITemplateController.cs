@@ -15,7 +15,9 @@ namespace Dnn.PersonaBar.Pages.Components
         string SaveAsTemplate(PageTemplate template);
 
         IEnumerable<Template> GetTemplates();
+
         int GetDefaultTemplateId(IEnumerable<Template> templates);
+
         void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId);
     }
 }

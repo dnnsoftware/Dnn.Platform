@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Security.Components
 
     public class Utility
     {
-        private const long MaxFileSize = 1024 * 1024 * 10; //10M
+        private const long MaxFileSize = 1024 * 1024 * 10; // 10M
 
         private const int ModifiedFilesCount = 50;
 
@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Security.Components
                 }
                 catch (Exception)
                 {
-                    //do nothing.
+                    // do nothing.
                 }
             }
         }
@@ -88,12 +88,12 @@ namespace Dnn.PersonaBar.Security.Components
                     select new SearchFileInfo
                     {
                         FileName = f.FullName,
-                        LastWriteTime = f.LastWriteTime.ToString(CultureInfo.InvariantCulture)
+                        LastWriteTime = f.LastWriteTime.ToString(CultureInfo.InvariantCulture),
                     };
             }
             catch
             {
-                //suppress any unexpected error
+                // suppress any unexpected error
             }
             return null;
         }
@@ -144,14 +144,14 @@ namespace Dnn.PersonaBar.Security.Components
                         results.Add(new
                         {
                             ColumnName = dr["ColumnName"],
-                            ColumnValue = dr["ColumnValue"]
+                            ColumnValue = dr["ColumnValue"],
                         });
                     }
                 }
             }
             catch
             {
-                //ignore
+                // ignore
             }
             return results;
         }
@@ -249,8 +249,8 @@ namespace Dnn.PersonaBar.Security.Components
         {
             try
             {
-                // If the file has been deleted since we took  
-                // the snapshot, ignore it and return the empty string. 
+                // If the file has been deleted since we took
+                // the snapshot, ignore it and return the empty string.
                 if (IsReadable(name))
                 {
                     return File.ReadAllText(name).IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
@@ -258,7 +258,7 @@ namespace Dnn.PersonaBar.Security.Components
             }
             catch (Exception)
             {
-                //might be a locking issue
+                // might be a locking issue
             }
 
             return false;
@@ -272,7 +272,7 @@ namespace Dnn.PersonaBar.Security.Components
             }
 
             var file = new FileInfo(name);
-            if (file.Length > MaxFileSize) //when file large than 10M, then don't read it.
+            if (file.Length > MaxFileSize) // when file large than 10M, then don't read it.
             {
                 return false;
             }
@@ -302,7 +302,7 @@ namespace Dnn.PersonaBar.Security.Components
         /// <returns></returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, ICollection<string> invalidFolders)
         {
-            //Looking at the root folder only. There should not be any permission issue here.
+            // Looking at the root folder only. There should not be any permission issue here.
             IList<string> files;
             try
             {
@@ -334,7 +334,7 @@ namespace Dnn.PersonaBar.Security.Components
 
                 foreach (var folder in folders)
                 {
-                    //recursive call to the same method
+                    // recursive call to the same method
                     foreach (var f in GetFiles(folder, searchPattern, searchOption, invalidFolders))
                     {
                         yield return f;

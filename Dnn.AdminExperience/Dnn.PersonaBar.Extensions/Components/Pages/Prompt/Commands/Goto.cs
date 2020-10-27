@@ -25,8 +25,11 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         private const string FlagParentId = "parentid";
 
         public override string LocalResourceFile => Constants.LocalResourceFile;
+
         private int PageId { get; set; } = -1;
+
         private string PageName { get; set; }
+
         private int ParentId { get; set; } = -1;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

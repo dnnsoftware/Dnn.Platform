@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     public class InstallerLogEntry
     {
         public string Type { get; set; }
+
         public string Description { get; set; }
     }
 }

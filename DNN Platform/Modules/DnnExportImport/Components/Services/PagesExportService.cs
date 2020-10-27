@@ -1562,6 +1562,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             this._dataProvider.UpdateRecordChangers("Tabs", "TabID", tabId, createdBy, modifiedBy);
         } // ReSharper disable UnusedMember.Local
+
         private void UpdateTabPermissionChangers(int tabPermissionId, int createdBy, int modifiedBy)
         {
             this._dataProvider.UpdateRecordChangers("TabPermission", "TabPermissionID", tabPermissionId, createdBy, modifiedBy);

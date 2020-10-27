@@ -3,41 +3,42 @@
 // See the LICENSE file in the project root for more information
 
 using System.Collections.Generic;
+
 using DNNConnect.CKEditorProvider.Constants;
 
 namespace DNNConnect.CKEditorProvider.Objects
 {
 
     /// <summary>
-    /// The Editor Provider Settings
+    /// The Editor Provider Settings.
     /// </summary>
     public class EditorProviderSettings : object
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditorProviderSettings"/> class. 
+        /// Initializes a new instance of the <see cref="EditorProviderSettings"/> class.
         /// </summary>
         public EditorProviderSettings()
         {
-            OverrideFileOnUpload = false;
-            UseAnchorSelector = true;
-            FileListPageSize = 20;
-            FileListViewMode = FileListView.DetailView;
-            SettingMode = SettingsMode.Portal;
-            DefaultLinkMode = LinkMode.RelativeURL;
-            InjectSyntaxJs = true;
-            BrowserRootDirId = -1;
-            UploadDirId = -1;
-            ResizeHeight = -1;
-            ResizeWidth = -1;
-            BrowserRoles = "0;Administrators;";
-            Browser = "standard";
-            ToolBarRoles = new List<ToolbarRoles> { new ToolbarRoles { RoleId = 0, Toolbar = "Full" } };
-            UploadSizeRoles = new List<UploadSizeRoles>
+            this.OverrideFileOnUpload = false;
+            this.UseAnchorSelector = true;
+            this.FileListPageSize = 20;
+            this.FileListViewMode = FileListView.DetailView;
+            this.SettingMode = SettingsMode.Portal;
+            this.DefaultLinkMode = LinkMode.RelativeURL;
+            this.InjectSyntaxJs = true;
+            this.BrowserRootDirId = -1;
+            this.UploadDirId = -1;
+            this.ResizeHeight = -1;
+            this.ResizeWidth = -1;
+            this.BrowserRoles = "0;Administrators;";
+            this.Browser = "standard";
+            this.ToolBarRoles = new List<ToolbarRoles> { new ToolbarRoles { RoleId = 0, Toolbar = "Full" } };
+            this.UploadSizeRoles = new List<UploadSizeRoles>
                                        {
-                                           new UploadSizeRoles { RoleId = 0, UploadFileLimit = -1 }
+                                           new UploadSizeRoles { RoleId = 0, UploadFileLimit = -1 },
                                        };
 
-            Config = new EditorConfig();
+            this.Config = new EditorConfig();
         }
         #region Properties
 
@@ -95,18 +96,18 @@ namespace DNNConnect.CKEditorProvider.Objects
         public bool SubDirs { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Inject the Syntax 
-        /// jQuery Java Script
+        /// Gets or sets a value indicating whether Inject the Syntax
+        /// jQuery Java Script.
         /// </summary>
         public bool InjectSyntaxJs { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Browser Root Directory Id
+        /// Gets or sets a value indicating whether The Browser Root Directory Id.
         /// </summary>
         public int BrowserRootDirId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Upload Directory Id
+        /// Gets or sets a value indicating whether The Upload Directory Id.
         /// </summary>
         public int UploadDirId { get; set; }
 
@@ -119,22 +120,22 @@ namespace DNNConnect.CKEditorProvider.Objects
         public string CustomJsFile { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Default Resize Image Height
+        /// Gets or sets a value indicating whether Default Resize Image Height.
         /// </summary>
         public int ResizeHeight { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Default Resize Image Width
+        /// Gets or sets a value indicating whether Default Resize Image Width.
         /// </summary>
         public int ResizeWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Toolbar Roles
+        /// Gets or sets a value indicating whether Toolbar Roles.
         /// </summary>
         public List<ToolbarRoles> ToolBarRoles { get; set; }
 
         /// <summary>
-        /// Gets or sets a value setting the Upload Sizes for each Role
+        /// Gets or sets a value setting the Upload Sizes for each Role.
         /// </summary>
         public List<UploadSizeRoles> UploadSizeRoles { get; set; }
 
@@ -147,7 +148,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         public int UploadFileSizeLimit { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Blank Initial text
+        /// Gets or sets a value indicating whether Blank Initial text.
         /// </summary>
         public string BlankText { get; set; }
 
@@ -160,12 +161,12 @@ namespace DNNConnect.CKEditorProvider.Objects
         public BrowserType BrowserMode { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Editor File Browser
+        /// Gets or sets a value indicating whether Editor File Browser.
         /// </summary>
         public string Browser { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Allowed Browser Roles
+        /// Gets or sets a value indicating whether Allowed Browser Roles.
         /// </summary>
         public string BrowserRoles { get; set; }
 
@@ -186,7 +187,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         public string EditorHeight { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Current Setting Mode
+        /// Gets or sets a value indicating whether Current Setting Mode.
         /// </summary>
         public SettingsMode SettingMode { get; set; }
 

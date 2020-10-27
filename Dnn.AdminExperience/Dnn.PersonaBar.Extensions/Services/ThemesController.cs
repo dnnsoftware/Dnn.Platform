@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Layouts = this._controller.GetLayouts(this.PortalSettings, level),
-                    Containers = this._controller.GetContainers(this.PortalSettings, level)
+                    Containers = this._controller.GetContainers(this.PortalSettings, level),
                 });
             }
             catch (Exception ex)
@@ -72,8 +72,8 @@ namespace Dnn.PersonaBar.Themes.Services
             try
             {
                 var theme = (type == ThemeType.Skin ? this._controller.GetLayouts(this.PortalSettings, level)
-                                                    : this._controller.GetContainers(this.PortalSettings, level)
-                            ).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase));
+                                                    : this._controller.GetContainers(this.PortalSettings, level))
+                            .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase));
 
                 if (theme == null)
                 {
@@ -350,7 +350,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 SiteLayout = this._controller.GetThemeFile(this.PortalSettings, siteLayout, ThemeType.Skin),
                 SiteContainer = this._controller.GetThemeFile(this.PortalSettings, siteContainer, ThemeType.Container),
                 EditLayout = this._controller.GetThemeFile(this.PortalSettings, editLayout, ThemeType.Skin),
-                EditContainer = this._controller.GetThemeFile(this.PortalSettings, editContainer, ThemeType.Container)
+                EditContainer = this._controller.GetThemeFile(this.PortalSettings, editContainer, ThemeType.Container),
 
             };
 

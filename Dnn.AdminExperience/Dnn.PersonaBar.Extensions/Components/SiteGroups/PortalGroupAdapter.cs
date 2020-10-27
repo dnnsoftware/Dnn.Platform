@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.SiteGroups
                 MasterPortal = new PortalInfo
                 {
                     PortalName = g.MasterPortalName,
-                    PortalId = g.MasterPortalId
+                    PortalId = g.MasterPortalId,
                 },
                 PortalGroupName = g.PortalGroupName,
                 Portals = this.PortalsOfGroup(g.PortalGroupId, g.MasterPortalId)
@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.SiteGroups
                         {
                             PortalId = p.PortalID,
                             PortalName = p.PortalName
-                        })
+                        }),
 
             });
         }
@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.SiteGroups
                         .Select(p => new PortalInfo
                         {
                             PortalId = p.PortalID,
-                            PortalName = p.PortalName
+                            PortalName = p.PortalName,
                         });
         }
 
@@ -97,6 +97,7 @@ namespace Dnn.PersonaBar.SiteGroups
             }
 
             if (portalGroup.Portals != null)
+            {
                 foreach (var portal in portalGroup.Portals)
                 {
                     if (currentPortals.All(p => p.PortalID != portal.PortalId))
@@ -105,6 +106,8 @@ namespace Dnn.PersonaBar.SiteGroups
                         this.PortalGroupController.AddPortalToGroup(p, @group, callback);
                     }
                 }
+            }
+
             return @group.PortalGroupId;
         }
 
@@ -116,7 +119,7 @@ namespace Dnn.PersonaBar.SiteGroups
                 AuthenticationDomain = portalGroup.AuthenticationDomain,
                 MasterPortalId = portalGroup.MasterPortal.PortalId,
                 PortalGroupDescription = portalGroup.Description,
-                PortalGroupName = portalGroup.PortalGroupName
+                PortalGroupName = portalGroup.PortalGroupName,
             };
             this.PortalGroupController.AddPortalGroup(@group);
             if (portalGroup.Portals != null)

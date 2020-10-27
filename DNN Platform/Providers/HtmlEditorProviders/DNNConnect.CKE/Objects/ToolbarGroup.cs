@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DNNConnect.CKEditorProvider.Objects
 {
     /// <summary>
-    /// Toolbar Group Class
+    /// Toolbar Group Class.
     /// </summary>
     public class ToolbarGroup
     {
@@ -16,7 +16,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public ToolbarGroup()
         {
-            items = new List<string>();
+            this.items = new List<string>();
         }
 
         /// <summary>

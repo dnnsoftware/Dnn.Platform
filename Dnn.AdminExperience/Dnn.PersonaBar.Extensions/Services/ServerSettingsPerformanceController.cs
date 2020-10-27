@@ -75,7 +75,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     PageCacheProviders = this._performanceController.GetPageCacheProviders(),
                     CacheSettingOptions = this._performanceController.GetCacheSettingOptions(),
                     AuthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
-                    UnauthCacheabilityOptions = this._performanceController.GetCacheabilityOptions()
+                    UnauthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, perfSettings);
             }

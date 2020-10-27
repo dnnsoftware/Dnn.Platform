@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         /// <summary>
         /// Sets whether the import/export process of the Visualizer module is executed
-        /// as part of the process of cloning a module or not. 
+        /// as part of the process of cloning a module or not.
         /// F.i: when creating a page from a template, duplicating, etc.
         /// </summary>
         void SetCloneModuleContext(bool cloneModule);

@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     KeyWords = page.Keywords,
                     StartDate = page.StartDate ?? Null.NullDate,
                     EndDate = page.EndDate ?? Null.NullDate,
-                    IsVisible = page.IncludeInMenu
+                    IsVisible = page.IncludeInMenu,
                 };
                 tab.Terms.AddRange(TermHelper.ToTabTerms(page.Tags, portalId));
                 tabs.Add(tab);
@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 TabId = tab.TabID,
                 ErrorMessage = error,
                 Status = (error == null && tab.TabID > 0) ? 0 : 1,
-                PageName = tab.TabName
+                PageName = tab.TabName,
             };
         }
 
@@ -221,7 +221,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 ContainerSrc = "",
                 CultureCode = Null.NullString,
                 StartDate = oTab.StartDate,
-                EndDate = oTab.EndDate
+                EndDate = oTab.EndDate,
             };
 
             tab.Terms.AddRange(oTab.Terms);
@@ -229,7 +229,7 @@ namespace Dnn.PersonaBar.Pages.Components
             if (objRoot != null)
             {
                 // TODO: To be retrieved once the parent tab  is selected?
-                //tab.IsVisible = objRoot.IsVisible;
+                // tab.IsVisible = objRoot.IsVisible;
                 tab.DisableLink = objRoot.DisableLink;
                 tab.SkinSrc = objRoot.SkinSrc;
                 tab.ContainerSrc = objRoot.ContainerSrc;
@@ -249,14 +249,14 @@ namespace Dnn.PersonaBar.Pages.Components
             }
             else
             {
-                //return Null.NullInteger;
+                // return Null.NullInteger;
                 tab.PortalID = portalSettings.PortalId;
                 tab.ParentId = Null.NullInteger;
             }
 
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
 
-            //Check for invalid
+            // Check for invalid
             string invalidType;
             if (!TabController.IsValidTabName(tab.TabName, out invalidType))
             {
@@ -264,13 +264,13 @@ namespace Dnn.PersonaBar.Pages.Components
                 return Null.NullInteger;
             }
 
-            //Validate Tab Path
+            // Validate Tab Path
             if (!this.IsValidTabPath(tab, tab.TabPath, out errorMessage))
             {
                 return Null.NullInteger;
             }
 
-            //Inherit permissions from parent
+            // Inherit permissions from parent
             tab.TabPermissions.Clear();
             if (tab.PortalID != Null.NullInteger && objRoot != null)
             {
@@ -278,7 +278,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
             else if (tab.PortalID != Null.NullInteger)
             {
-                //Give admin full permission
+                // Give admin full permission
                 ArrayList permissions = PermissionController.GetPermissionsByTab();
 
                 foreach (PermissionInfo permission in permissions)
@@ -289,19 +289,19 @@ namespace Dnn.PersonaBar.Pages.Components
                         PermissionKey = permission.PermissionKey,
                         PermissionName = permission.PermissionName,
                         AllowAccess = true,
-                        RoleID = portalSettings.AdministratorRoleId
+                        RoleID = portalSettings.AdministratorRoleId,
                     };
                     tab.TabPermissions.Add(newTabPermission);
                 }
             }
 
-            //Inherit other information from Parent
+            // Inherit other information from Parent
             if (objRoot != null)
             {
                 // TODO: To be retrieved once the parent tab  is selected?
-                //tab.Terms.Clear();
-                //tab.StartDate = objRoot.StartDate;
-                //tab.EndDate = objRoot.EndDate;
+                // tab.Terms.Clear();
+                // tab.StartDate = objRoot.StartDate;
+                // tab.EndDate = objRoot.EndDate;
                 tab.RefreshInterval = objRoot.RefreshInterval;
                 tab.SiteMapPriority = objRoot.SiteMapPriority;
                 tab.PageHeadText = objRoot.PageHeadText;
@@ -315,7 +315,7 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.TabID = TabController.Instance.AddTab(tab);
             this.ApplyDefaultTabTemplate(tab);
 
-            //create localized tabs if content localization is enabled
+            // create localized tabs if content localization is enabled
             if (portalSettings.ContentLocalizationEnabled)
             {
                 TabController.Instance.CreateLocalizedCopies(tab);
@@ -351,7 +351,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var valid = true;
             errorMessage = null;
 
-            //get default culture if the tab's culture is null
+            // get default culture if the tab's culture is null
             var cultureCode = tab.CultureCode;
             if (string.IsNullOrEmpty(cultureCode))
             {
@@ -359,7 +359,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 cultureCode = portalSettings.DefaultLanguage;
             }
 
-            //Validate Tab Path
+            // Validate Tab Path
             var tabId = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
             if (tabId != Null.NullInteger && tabId != tab.TabID)
             {
@@ -372,7 +372,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 valid = false;
             }
 
-            //check whether have conflict between tab path and portal alias.
+            // check whether have conflict between tab path and portal alias.
             if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
             {
                 errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);

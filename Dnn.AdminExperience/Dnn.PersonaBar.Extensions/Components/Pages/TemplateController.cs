@@ -54,16 +54,16 @@ namespace Dnn.PersonaBar.Pages.Components
                 var nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));
                 nodePortal.Attributes?.Append(XmlUtils.CreateAttribute(xmlTemplate, "version", "3.0"));
 
-                //Add template description
+                // Add template description
                 var node = xmlTemplate.CreateElement("description");
                 node.InnerXml = HttpUtility.HtmlEncode(template.Description);
                 nodePortal.AppendChild(node);
 
-                //Serialize tabs
+                // Serialize tabs
                 var nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
                 this.SerializeTab(template, xmlTemplate, nodeTabs);
 
-                //add file to Files table
+                // add file to Files table
                 using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
                 {
                     FileManager.Instance.AddFile(folder, template.Name + ".page.template", fileContent, true, false, "application/octet-stream");
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     throw new PageException(Localization.GetString("BadTemplate"));
                 }
                 TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
-                //save tab permissions
+                // save tab permissions
                 RibbonBarManager.DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
 
                 var tabIndex = 0;
@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (XmlNode tabNode in xmlDoc.SelectSingleNode("//portal/tabs").ChildNodes)
                 {
-                    //Create second tab onward tabs. Note first tab is already created above.
+                    // Create second tab onward tabs. Note first tab is already created above.
                     if (tabIndex > 0)
                     {
                         try
@@ -203,7 +203,7 @@ namespace Dnn.PersonaBar.Pages.Components
             templates.Add(new Template
             {
                 Id = Localization.GetString("None_Specified"),
-                Value = Null.NullInteger
+                Value = Null.NullInteger,
             });
 
             var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
@@ -214,7 +214,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 templates.Add(new Template
                 {
                     Id = file.Text.Replace(".page.template", ""),
-                    Value = i
+                    Value = i,
                 });
             }
 

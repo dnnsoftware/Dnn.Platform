@@ -785,7 +785,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="propertyNames"></param>
         /// <param name="propertyValues"></param>
         /// <returns></returns>
-/// <inheritdoc/>
+        /// <inheritdoc/>
         public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId,
                                                                int filterRoleId, int relationshipTypeId,
                                                                bool isAdmin, int pageIndex, int pageSize,
@@ -812,7 +812,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="propertyName"></param>
         /// <param name="propertyValue"></param>
         /// <returns></returns>
-/// <inheritdoc/>
+        /// <inheritdoc/>
         public override IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
                                                             bool sortAscending, string propertyName,
                                                             string propertyValue)

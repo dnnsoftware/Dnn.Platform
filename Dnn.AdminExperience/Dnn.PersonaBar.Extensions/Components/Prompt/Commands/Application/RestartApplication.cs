@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()
+                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
                 };
                 log.AddProperty("Message", this.LocalizeString("Prompt_UserRestart"));
                 LogController.Instance.AddLog(log);

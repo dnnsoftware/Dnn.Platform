@@ -204,7 +204,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 Indent = true,
                 IndentChars = "  ",
                 Encoding = Encoding.UTF8,
-                WriteEndDocumentOnClose = true
+                WriteEndDocumentOnClose = true,
             };
 
             var filename = Globals.HostMapPath + request.FileName.Replace("/", @"\");
@@ -218,10 +218,10 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.WriteStartElement("portal");
                 writer.WriteAttributeString("version", "5.0");
 
-                //Add template description
+                // Add template description
                 writer.WriteElementString("description", HttpUtility.HtmlEncode(request.Description));
 
-                //Serialize portal settings
+                // Serialize portal settings
                 var portal = PortalController.Instance.GetPortal(request.PortalId);
 
                 this.SerializePortalSettings(writer, portal, request.IsMultilanguage);
@@ -230,35 +230,35 @@ namespace Dnn.PersonaBar.Sites.Components
 
                 if (request.IncludeProfile)
                 {
-                    //Serialize Profile Definitions
+                    // Serialize Profile Definitions
                     this.SerializeProfileDefinitions(writer, portal);
                 }
 
                 if (request.IncludeModules)
                 {
-                    //Serialize Portal Desktop Modules
+                    // Serialize Portal Desktop Modules
                     DesktopModuleController.SerializePortalDesktopModules(writer, request.PortalId);
                 }
 
                 if (request.IncludeRoles)
                 {
-                    //Serialize Roles
+                    // Serialize Roles
                     RoleController.SerializeRoleGroups(writer, request.PortalId);
                 }
 
-                //Serialize tabs
+                // Serialize tabs
                 this.SerializeTabs(writer, portal, request.IsMultilanguage, pages, userInfo, request.IncludeContent, locales, request.LocalizationCulture);
 
                 if (request.IncludeFiles)
                 {
-                    //Create Zip File to hold files
+                    // Create Zip File to hold files
                     var resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
                     resourcesFile.SetLevel(6);
 
-                    //Serialize folders (while adding files to zip file)
+                    // Serialize folders (while adding files to zip file)
                     this.SerializeFolders(writer, portal, ref resourcesFile);
 
-                    //Finish and Close Zip file
+                    // Finish and Close Zip file
                     resourcesFile.Finish();
                     resourcesFile.Close();
                 }
@@ -269,7 +269,7 @@ namespace Dnn.PersonaBar.Sites.Components
             EventManager.Instance.OnPortalTemplateCreated(new PortalTemplateEventArgs()
             {
                 PortalId = request.PortalId,
-                TemplatePath = filename
+                TemplatePath = filename,
             });
 
             success = true;
@@ -287,7 +287,7 @@ namespace Dnn.PersonaBar.Sites.Components
             var strChildPath = string.Empty;
             var closePopUpStr = string.Empty;
             var intPortalId = -1;
-            //check template validity
+            // check template validity
             var schemaFilename = HttpContext.Current.Server.MapPath("~/DesktopModules/Admin/Portals/portal.template.xsd");
             var xmlFilename = template.TemplateFilePath;
             var xval = new PortalTemplateValidator();
@@ -297,10 +297,10 @@ namespace Dnn.PersonaBar.Sites.Components
                 return intPortalId;
             }
 
-            //Set Portal Name
+            // Set Portal Name
             siteAlias = siteAlias.ToLowerInvariant().Replace("http://", "").Replace("https://", "");
 
-            //Validate Portal Name
+            // Validate Portal Name
             var strPortalAlias = isChildSite
                 ? PortalController.GetPortalFolder(siteAlias)
                 : siteAlias;
@@ -313,7 +313,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 message = Localization.GetString("InvalidName", this.LocalResourcesFile);
             }
 
-            //check whether have conflict between tab path and portal alias.
+            // check whether have conflict between tab path and portal alias.
             var checkTabPath = string.Format("//{0}", strPortalAlias);
             if (TabController.GetTabByTabPath(this.PortalSettings.PortalId, checkTabPath, string.Empty) != Null.NullInteger
                 || TabController.GetTabByTabPath(Null.NullInteger, checkTabPath, string.Empty) != Null.NullInteger)
@@ -322,7 +322,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 message = Localization.GetString("DuplicateWithTab", this.LocalResourcesFile);
             }
 
-            //Validate Password
+            // Validate Password
             if (password != confirm)
             {
                 error = true;
@@ -330,7 +330,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 message += Localization.GetString("InvalidPassword", this.LocalResourcesFile);
             }
 
-            //Set Portal Alias for Child Portals
+            // Set Portal Alias for Child Portals
             if (string.IsNullOrEmpty(message))
             {
                 if (isChildSite)
@@ -349,10 +349,10 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
             }
 
-            //Get Home Directory
+            // Get Home Directory
             var homeDir = homeDirectory != @"Portals/[PortalID]" ? homeDirectory : "";
 
-            //Validate Home Folder
+            // Validate Home Folder
             if (!string.IsNullOrEmpty(homeDir))
             {
                 var fullHomeDir = string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, homeDir).Replace("/", "\\");
@@ -368,7 +368,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
             }
 
-            //Validate Portal Alias
+            // Validate Portal Alias
             if (!string.IsNullOrEmpty(strPortalAlias))
             {
                 PortalAliasInfo portalAlias = null;
@@ -388,10 +388,10 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
             }
 
-            //Create Portal
+            // Create Portal
             if (!error)
             {
-                //Attempt to create the portal
+                // Attempt to create the portal
                 var adminUser = new UserInfo();
                 try
                 {
@@ -424,13 +424,13 @@ namespace Dnn.PersonaBar.Sites.Components
                                 Approved = true,
                                 Password = password,
                                 PasswordQuestion = question,
-                                PasswordAnswer = answer
+                                PasswordAnswer = answer,
                             },
                             Profile =
                             {
                                 FirstName = firstname,
                                 LastName = lastname
-                            }
+                            },
                         };
 
                         intPortalId = PortalController.Instance.CreatePortal(siteName,
@@ -457,7 +457,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
                 if (intPortalId != -1)
                 {
-                    //Add new portal to Site Group
+                    // Add new portal to Site Group
                     if (siteGroupId != Null.NullInteger)
                     {
                         var portal = PortalController.Instance.GetPortal(intPortalId);
@@ -468,13 +468,13 @@ namespace Dnn.PersonaBar.Sites.Components
                         }
                     }
 
-                    //Create a Portal Settings object for the new Portal
+                    // Create a Portal Settings object for the new Portal
                     var objPortal = PortalController.Instance.GetPortal(intPortalId);
                     var newSettings = new PortalSettings
                     {
                         PortalAlias = new PortalAliasInfo { HTTPAlias = strPortalAlias },
                         PortalId = intPortalId,
-                        DefaultLanguage = objPortal.DefaultLanguage
+                        DefaultLanguage = objPortal.DefaultLanguage,
                     };
                     var webUrl = Globals.AddHTTP(strPortalAlias);
                     try
@@ -508,7 +508,7 @@ namespace Dnn.PersonaBar.Sites.Components
                         lc.PublishLanguage(intPortalId, objPortal.DefaultLanguage, true);
                     }
 
-                    //Redirect to this new site
+                    // Redirect to this new site
                     if (message != Null.NullString)
                     {
                         message = string.Format(Localization.GetString("SendMail.Error", this.LocalResourcesFile), message, webUrl, closePopUpStr);
@@ -836,7 +836,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.WriteElementString("dataconsentdelaymeasurement", setting);
             }
 
-            //End Portal Settings
+            // End Portal Settings
             writer.WriteEndElement();
         }
 
@@ -913,7 +913,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
         private void SerializeFolders(XmlWriter writer, PortalInfo objportal, ref ZipOutputStream zipFile)
         {
-            //Sync db and filesystem before exporting so all required files are found
+            // Sync db and filesystem before exporting so all required files are found
             var folderManager = FolderManager.Instance;
             folderManager.Synchronize(objportal.PortalID);
             writer.WriteStartElement("folders");
@@ -925,10 +925,10 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.WriteElementString("folderpath", folder.FolderPath);
                 writer.WriteElementString("storagelocation", folder.StorageLocation.ToString());
 
-                //Serialize Folder Permissions
+                // Serialize Folder Permissions
                 this.SerializeFolderPermissions(writer, objportal, folder.FolderPath);
 
-                //Serialize files
+                // Serialize files
                 this.SerializeFiles(writer, objportal, folder.FolderPath, ref zipFile);
 
                 writer.WriteEndElement();
@@ -945,7 +945,7 @@ namespace Dnn.PersonaBar.Sites.Components
             foreach (var fileInfo in folderManager.GetFiles(objFolder))
             {
                 var objFile = (FileInfo)fileInfo;
-                //verify that the file exists on the file system
+                // verify that the file exists on the file system
                 var filePath = objportal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
                 if (File.Exists(filePath))
                 {
@@ -1018,7 +1018,7 @@ namespace Dnn.PersonaBar.Sites.Components
         private void SerializeTabs(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<TabDto> pages, UserInfo userInfo,
             bool includeContent, IEnumerable<string> locales, string localizationCulture = "")
         {
-            //supporting object to build the tab hierarchy
+            // supporting object to build the tab hierarchy
             var tabs = new Hashtable();
 
             writer.WriteStartElement("tabs");
@@ -1026,13 +1026,13 @@ namespace Dnn.PersonaBar.Sites.Components
 
             if (isMultilanguage)
             {
-                //Process Default Language first
+                // Process Default Language first
                 this.SerializeTabs(writer, portal, tabs,
                     this.GetExportableTabs(
                         TabController.Instance.GetTabsByPortal(portal.PortalID)
                             .WithCulture(portal.DefaultLanguage, true)), tabsToExport, includeContent);
 
-                //Process other locales
+                // Process other locales
                 foreach (var cultureCode in locales)
                 {
                     if (cultureCode != portal.DefaultLanguage)
@@ -1071,7 +1071,7 @@ namespace Dnn.PersonaBar.Sites.Components
             pages = pages.ToList();
             foreach (var tab in tabCollection.Values.OrderBy(x => x.Level))
             {
-                //if not deleted
+                // if not deleted
                 if (!tab.IsDeleted)
                 {
                     XmlNode tabNode = null;
@@ -1156,8 +1156,8 @@ namespace Dnn.PersonaBar.Sites.Components
             return Globals.ResolveUrl(imagePath);
         }
 
-        //private void CreateThumbnailFromOriginal(string templatePath, string oldTemplateImg)
-        //{
+        // private void CreateThumbnailFromOriginal(string templatePath, string oldTemplateImg)
+        // {
         //    try
         //    {
         //        var originalPath = Path.Combine(Globals.HostMapPath, oldTemplateImg.Replace("/", @"\"));
@@ -1174,7 +1174,7 @@ namespace Dnn.PersonaBar.Sites.Components
         //    {
         //        Logger.Error(ex);
         //    }
-        //}
+        // }
 
         private class TemplateDisplayComparer : IComparer<PortalController.PortalTemplateInfo>
         {
@@ -1186,7 +1186,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     return string.Compare(x.Name, y.Name, StringComparison.CurrentCulture);
                 }
 
-                //put blank cultures last
+                // put blank cultures last
                 if (string.IsNullOrEmpty(x.CultureCode) || string.IsNullOrEmpty(y.CultureCode))
                 {
                     cultureCompare *= -1;

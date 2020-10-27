@@ -19,6 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Services.Localization;
+
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
@@ -67,7 +68,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                     Key = key,
                     Name = commandAttribute.Name,
                     Version = version,
-                    CommandType = cmd
+                    CommandType = cmd,
                 });
             }
             return commands;
@@ -111,7 +112,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
                         Description =
-                               LocalizeString(attribute.Description, consoleCommand.LocalResourceFile)
+                               LocalizeString(attribute.Description, consoleCommand.LocalResourceFile),
                     }).ToList();
                     commandHelp.Options = options;
                 }

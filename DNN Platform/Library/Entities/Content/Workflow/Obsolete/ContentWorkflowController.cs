@@ -402,7 +402,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                                                                    "DefaultWorkflowState1.OnDiscardMessageSubject"),
                                                            OnDiscardMessageBody =
                                                                Localization.GetString(
-                                                                   "DefaultWorkflowState1.OnDiscardMessageBody")
+                                                                   "DefaultWorkflowState1.OnDiscardMessageBody"),
                                                        },
                                                    new ContentWorkflowState
                                                        {
@@ -424,7 +424,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                                                                    "DefaultWorkflowState2.OnDiscardMessageSubject"),
                                                            OnDiscardMessageBody =
                                                                Localization.GetString(
-                                                                   "DefaultWorkflowState2.OnDiscardMessageBody")
+                                                                   "DefaultWorkflowState2.OnDiscardMessageBody"),
                                                        },
                                                    new ContentWorkflowState
                                                        {
@@ -447,7 +447,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                                                            OnDiscardMessageBody =
                                                                Localization.GetString(
                                                                    "DefaultWorkflowState3.OnDiscardMessageBody")
-                                                       }
+                                                       },
                                                },
             };
 

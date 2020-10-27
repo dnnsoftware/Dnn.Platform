@@ -8,7 +8,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
 {
     public class PromptModuleInfo
     {
-        public string __ModuleId { get; set; }   // command link
+        public string __ModuleId { get; set; } // command link
 
         public int ModuleId { get; set; }
 
@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
                 FriendlyName = dnnModule.DesktopModule.FriendlyName,
                 ModuleName = dnnModule.DesktopModule.ModuleName,
                 TabModuleId = dnnModule.TabModuleID,
-                ModuleDefId = dnnModule.ModuleDefID
+                ModuleDefId = dnnModule.ModuleDefID,
             };
 
             // assign command links

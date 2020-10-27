@@ -12,6 +12,6 @@ namespace Dnn.PersonaBar.Themes.Components
     public enum ThemeType
     {
         Skin,
-        Container
+        Container,
     }
 }

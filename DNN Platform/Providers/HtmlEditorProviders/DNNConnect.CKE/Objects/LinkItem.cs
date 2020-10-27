@@ -5,7 +5,7 @@
 namespace DNNConnect.CKEditorProvider.Objects
 {
     /// <summary>
-    /// A Link Item Class
+    /// A Link Item Class.
     /// </summary>
     public class LinkItem
     {

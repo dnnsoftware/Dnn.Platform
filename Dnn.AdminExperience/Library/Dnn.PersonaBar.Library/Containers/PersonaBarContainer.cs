@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.Library.Containers
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
         }
-        
+
         private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)
         {
             var settings = new Dictionary<string, object>();

@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
                 SecurityMode = role.SecurityMode,
                 IsSystem = role.IsSystemRole,
                 UsersCount = role.UserCount,
-                AllowOwner = (role.SecurityMode == SecurityMode.SocialGroup) || (role.SecurityMode == SecurityMode.Both)
+                AllowOwner = (role.SecurityMode == SecurityMode.SocialGroup) || (role.SecurityMode == SecurityMode.Both),
             };
         }
 
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
                 IconFile = this.Icon,
                 Status = this.Status,
                 SecurityMode = this.SecurityMode,
-                IsSystemRole = this.IsSystem
+                IsSystemRole = this.IsSystem,
             };
         }
     }

@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var response = new
                 {
                     Success = true,
-                    Results = packageTypes
+                    Results = packageTypes,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -129,7 +129,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     Success = true,
                     Results = packages,
-                    TotalResults = packages.Count
+                    TotalResults = packages.Count,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -157,7 +157,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     Success = true,
                     Results = packages,
-                    TotalResults = packages.Count
+                    TotalResults = packages.Count,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -168,7 +168,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        //        /// GET: api/Extensions/GetPackageUsage
+        // /// GET: api/Extensions/GetPackageUsage
         //        /// <summary>
         //        /// Gets package usage
         //        /// </summary>
@@ -211,8 +211,8 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             controlfolders.Insert(0, Path.Combine(Globals.ApplicationMapPath, "Admin\\Skins"));
 
-            //var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
-            //var currentControlFolder = moduleControl == null ? "" :
+            // var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
+            // var currentControlFolder = moduleControl == null ? "" :
             //    (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
 
             var response = new List<KeyValuePair<string, string>>();
@@ -239,7 +239,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             var response = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">")
+                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">"),
             };
 
             if (!string.IsNullOrEmpty(root))
@@ -264,7 +264,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             var response = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">")
+                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">"),
             };
 
             if (!string.IsNullOrEmpty(controlPath))
@@ -664,7 +664,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     v.PortalID,
                     v.PortalName,
-                    IsCurrentPortal = this.PortalId == v.PortalID
+                    IsCurrentPortal = this.PortalId == v.PortalID,
                 }).ToList();
 
                 if (this.UserInfo.IsSuperUser)
@@ -673,7 +673,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     {
                         PortalID = -2,
                         PortalName = "Host",
-                        IsCurrentPortal = false
+                        IsCurrentPortal = false,
                     });
                 }
 
@@ -681,7 +681,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     Success = true,
                     Results = availablePortals,
-                    TotalResults = availablePortals.Count
+                    TotalResults = availablePortals.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -717,9 +717,9 @@ namespace Dnn.PersonaBar.Extensions.Services
                     Success = true,
                     Results = tabsInOrder.Select(t => new
                     {
-                        TabUrl = this.GetFormattedLink(t.Value)
+                        TabUrl = this.GetFormattedLink(t.Value),
                     }).ToList(),
-                    TotalResults = tabsInOrder.Count
+                    TotalResults = tabsInOrder.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -773,12 +773,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                 switch (pkgType)
                 {
                     case PackageTypes.AuthSystem:
-                        //Create a new Auth System
+                        // Create a new Auth System
                         var authSystem = new AuthenticationInfo
                         {
                             AuthenticationType = package.Name,
                             IsEnabled = Null.NullBoolean,
-                            PackageID = package.PackageID
+                            PackageID = package.PackageID,
                         };
                         AuthenticationController.AddAuthentication(authSystem);
                         break;
@@ -788,7 +788,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         {
                             SkinName = package.Name,
                             PackageID = package.PackageID,
-                            SkinType = package.PackageType
+                            SkinType = package.PackageType,
                         };
                         SkinController.AddSkinPackage(skinPackage);
                         break;
@@ -798,7 +798,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         {
                             PackageID = package.PackageID,
                             LanguageID = locale.LanguageId,
-                            DependentPackageID = -2
+                            DependentPackageID = -2,
                         };
                         LanguagePackController.SaveLanguagePack(languagePack);
                         break;
@@ -808,12 +808,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                         {
                             PackageID = package.PackageID,
                             LanguageID = locale.LanguageId,
-                            DependentPackageID = Null.NullInteger
+                            DependentPackageID = Null.NullInteger,
                         };
                         LanguagePackController.SaveLanguagePack(languagePack);
                         break;
                     case PackageTypes.Module:
-                        //Create a new DesktopModule
+                        // Create a new DesktopModule
                         var desktopModule = new DesktopModuleInfo
                         {
                             PackageID = package.PackageID,
@@ -822,7 +822,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                             FolderName = package.Name,
                             Description = package.Description,
                             Version = package.Version.ToString(3),
-                            SupportedFeatures = 0
+                            SupportedFeatures = 0,
                         };
                         var desktopModuleId = DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
                         if (desktopModuleId > Null.NullInteger)
@@ -867,7 +867,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 foreach (var folder in this.GetRootModuleDefinitionFolders())
                 {
                     var files = Directory.GetFiles(folder.Path, "*.ascx");
-                    //exclude module folders
+                    // exclude module folders
                     if (files.Length == 0 || folder.Path.ToLowerInvariant() == "admin")
                     {
                         var path = this.GetFolderPath(folder);
@@ -1017,7 +1017,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     Success = packageId > Null.NullInteger,
                     PackageInfo = newPackage != null ? new PackageInfoDto(Null.NullInteger, newPackage) : null,
                     NewPageUrl = newPageUrl,
-                    Error = errorMessage
+                    Error = errorMessage,
                 };
 
                 return this.Request.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, result);
@@ -1057,10 +1057,10 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                 packageManifestDto.BasePath = writer.BasePath;
 
-                //Load Manifests
+                // Load Manifests
                 if (!string.IsNullOrEmpty(package.Manifest))
                 {
-                    //Use Database
+                    // Use Database
                     var sb = new StringBuilder();
                     var settings = new XmlWriterSettings();
                     settings.ConformanceLevel = ConformanceLevel.Fragment;
@@ -1089,28 +1089,28 @@ namespace Dnn.PersonaBar.Extensions.Services
                     }
                 }
 
-                //get assemblies
+                // get assemblies
                 foreach (var file in writer.Assemblies.Values)
                 {
                     packageManifestDto.Assemblies.Add(file.FullName);
                 }
 
-                //get files
+                // get files
                 writer.GetFiles(true);
 
-                //Display App Code files
+                // Display App Code files
                 foreach (var file in writer.AppCodeFiles.Values)
                 {
                     packageManifestDto.Files.Add("[app_code]" + file.FullName);
                 }
 
-                //Display Script files
+                // Display Script files
                 foreach (var file in writer.Scripts.Values)
                 {
                     packageManifestDto.Files.Add(file.FullName);
                 }
 
-                //Display regular files
+                // Display regular files
                 foreach (var file in writer.Files.Values)
                 {
                     if (file.Path.StartsWith(".git"))
@@ -1183,7 +1183,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "PackageNotFound");
                 }
 
-                //Save package manifest
+                // Save package manifest
                 if (packageManifestDto.Manifests.Any())
                 {
                     var doc = new XPathDocument(new StringReader(packageManifestDto.Manifests.Values.FirstOrDefault()));
@@ -1203,7 +1203,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     manifestName = packageManifestDto.ArchiveName.ToLowerInvariant().Replace("zip", "dnn");
                 }
-                //Use the installer to parse the manifest and load the files that need to be packaged
+                // Use the installer to parse the manifest and load the files that need to be packaged
                 var installer = new Installer(package, Globals.ApplicationMapPath);
                 foreach (var file in installer.InstallerInfo.Files.Values)
                 {
@@ -1435,8 +1435,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                             {
                                 result = action(portalSettings, userInfo, fileName, stream);
                             },
-                            null
-                            );
+                            null);
                     }
 
                     var mediaTypeFormatter = new JsonMediaTypeFormatter();
@@ -1482,16 +1481,15 @@ namespace Dnn.PersonaBar.Extensions.Services
                             {
                                 Path = specialFolderChild,
                                 IsSpecial = true,
-                                SpecialType = folderName
-                            })
-                        );
+                                SpecialType = folderName,
+                            }));
                 }
                 else
                 {
                     moduleFolders.Add(new ModuleFolderDto
                     {
                         Path = folderPath,
-                        IsSpecial = false
+                        IsSpecial = false,
                     });
                 }
             }

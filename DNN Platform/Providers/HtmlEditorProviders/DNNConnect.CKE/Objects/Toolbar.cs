@@ -7,23 +7,23 @@ using System;
 namespace DNNConnect.CKEditorProvider.Objects
 {
     /// <summary>
-    /// Toolbar Class
+    /// Toolbar Class.
     /// </summary>
     [Obsolete("This class is phasing out please use ToolbarSet Class instead")]
     public class Toolbar
     {
         /// <summary>
-        /// Gets or sets The Name of the Toolbar Set
+        /// Gets or sets The Name of the Toolbar Set.
         /// </summary>
         public string sToolbarName { get; set; }
 
         /// <summary>
-        /// Gets or sets The Hole Toolbar Set
+        /// Gets or sets The Hole Toolbar Set.
         /// </summary>
         public string sToolbarSet { get; set; }
 
         /// <summary>
-        /// Gets or sets Toolbar Prioritity from 1-20
+        /// Gets or sets Toolbar Prioritity from 1-20.
         /// </summary>
         public int iPriority { get; set; }
     }

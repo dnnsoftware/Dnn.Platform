@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
@@ -101,13 +102,13 @@ namespace DNNConnect.CKEditorProvider.Browser
             if (file == null)
             {
                 return;
-                
+
             }
 
             Bitmap img = (Bitmap)Image.FromStream(FileManager.Instance.GetFileContent(file));
 
             // Resize
-            Bitmap imageP = ResizeImage(img, Convert.ToInt32(pWidth), Convert.ToInt32(pHeight));
+            Bitmap imageP = this.ResizeImage(img, Convert.ToInt32(pWidth), Convert.ToInt32(pHeight));
 
             // Rotate if angle is not 0.00 or 360
             if (angle > 0.0F && angle < 360.00F)
@@ -156,8 +157,8 @@ namespace DNNConnect.CKEditorProvider.Browser
                 context.Response.ContentType = "text/plain";
 
                 var sourceFolder = FolderManager.Instance.GetFolder(file.FolderId);
-                if (PortalSettings.Current != null 
-                        && !HasWritePermission(sourceFolder.FolderPath))
+                if (PortalSettings.Current != null
+                        && !this.HasWritePermission(sourceFolder.FolderPath))
                 {
                     throw new SecurityException("You don't have write permission to save files under this folder.");
                 }
@@ -192,13 +193,13 @@ namespace DNNConnect.CKEditorProvider.Browser
         #region Methods
 
         /// <summary>
-        /// Generats the New File Path
+        /// Generats the New File Path.
         /// </summary>
         /// <param name="sNewFileName">
-        /// New File Name for the Image
+        /// New File Name for the Image.
         /// </param>
         /// <param name="sSourceFullPath">
-        /// The Full Path of the Original Image
+        /// The Full Path of the Original Image.
         /// </param>
         /// <returns>
         /// The generate name.
@@ -248,7 +249,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// The dst height.
         /// </param>
         /// <returns>
-        /// Returns the copied Bitmap
+        /// Returns the copied Bitmap.
         /// </returns>
         private static Bitmap ImageCopy(
             Image srcBitmap, float dstX, float dstY, float srcX, float srcY, float dstWidth, float dstHeight)
@@ -266,18 +267,18 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>
-        /// Method to rotate an image either clockwise or counter-clockwise
+        /// Method to rotate an image either clockwise or counter-clockwise.
         /// </summary>
         /// <param name="img">
-        /// the image to be rotated
+        /// the image to be rotated.
         /// </param>
         /// <param name="rotationAngle">
-        /// the angle (in degrees). 
+        /// the angle (in degrees).
         ///   Positive values will rotate clockwise
-        ///   negative values will rotate counter-clockwise
+        ///   negative values will rotate counter-clockwise.
         /// </param>
         /// <returns>
-        /// Returns the Rotated Image
+        /// Returns the Rotated Image.
         /// </returns>
         private static Image RotateImage(Image img, double rotationAngle)
         {
@@ -307,11 +308,11 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// The height.
         /// </param>
         /// <returns>
-        /// Returns the Resized Bitmap
+        /// Returns the Resized Bitmap.
         /// </returns>
         private Bitmap ResizeImage(Image img, int width, int height)
         {
-            Image.GetThumbnailImageAbort callback = GetThumbAbort;
+            Image.GetThumbnailImageAbort callback = this.GetThumbAbort;
             return (Bitmap)img.GetThumbnailImage(width, height, callback, IntPtr.Zero);
         }
 

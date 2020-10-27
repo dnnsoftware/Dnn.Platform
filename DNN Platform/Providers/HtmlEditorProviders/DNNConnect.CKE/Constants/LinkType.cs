@@ -5,7 +5,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     /// <summary>
-    /// The Default Link Type
+    /// The Default Link Type.
     /// </summary>
     public enum LinkType
     {
@@ -27,6 +27,6 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// Link Type email
         /// </summary>
-        email
+        email,
     }
 }

@@ -33,14 +33,14 @@ namespace Dnn.PersonaBar.Servers.Services
                     startDate = b.StartDate,
                     finishDate = b.FinishDate,
                     size = b.Size,
-                    backupType = b.BackupType
+                    backupType = b.BackupType,
                 });
                 var dbFileInfo = this._databaseController.GetDbFileInfo().Select(f => new
                 {
                     name = f.Name,
                     size = f.Megabytes,
                     fileType = f.FileType,
-                    fileName = f.ShortFileName
+                    fileName = f.ShortFileName,
                 });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     productEdition = dbInfo.ProductEdition,
                     softwarePlatform = dbInfo.SoftwarePlatform,
                     backups = dbBackups,
-                    files = dbFileInfo
+                    files = dbFileInfo,
                 });
             }
             catch (Exception exc)
