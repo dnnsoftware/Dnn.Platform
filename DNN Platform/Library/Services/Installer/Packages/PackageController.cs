@@ -364,6 +364,7 @@ namespace DotNetNuke.Services.Installer.Packages
             Instance.SaveExtensionPackage(package);
         }
 
+        /// <inheritdoc/>
         public void DeleteExtensionPackage(PackageInfo package)
         {
             switch (package.PackageType)
@@ -406,11 +407,13 @@ namespace DotNetNuke.Services.Installer.Packages
             DeletePackageInternal(package);
         }
 
+        /// <inheritdoc/>
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackage(portalId, predicate, false);
         }
 
+        /// <inheritdoc/>
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
         {
             var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
@@ -423,6 +426,7 @@ namespace DotNetNuke.Services.Installer.Packages
             return package;
         }
 
+        /// <inheritdoc/>
         public IList<PackageInfo> GetExtensionPackages(int portalId)
         {
             var cacheKey = string.Format(DataCache.PackagesCacheKey, portalId);
@@ -432,6 +436,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 c => CBO.FillCollection<PackageInfo>(provider.GetPackages(portalId)));
         }
 
+        /// <inheritdoc/>
         public IList<PackageInfo> GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackages(portalId).Where(predicate).ToList();
@@ -453,11 +458,13 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
+        /// <inheritdoc/>
         public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
         {
             return this.GetExtensionPackageTypes().SingleOrDefault(predicate);
         }
 
+        /// <inheritdoc/>
         public IList<PackageType> GetExtensionPackageTypes()
         {
             return CBO.GetCachedObject<List<PackageType>>(
@@ -468,6 +475,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
         }
 
+        /// <inheritdoc/>
         public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
         {
             return GetPackageDependencies().Where(predicate).ToList();
@@ -494,6 +502,7 @@ namespace DotNetNuke.Services.Installer.Packages
             return result;
         }
 
+        /// <inheritdoc/>
         protected override Func<IPackageController> GetFactory()
         {
             return () => new PackageController();

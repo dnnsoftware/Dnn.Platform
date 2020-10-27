@@ -25,20 +25,36 @@ namespace DotNetNuke.Security.Permissions
     [XmlRoot("tabpermissions")]
     public class TabPermissionCollection : CollectionBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
+        /// </summary>
         public TabPermissionCollection()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
+        /// </summary>
+        /// <param name="tabPermissions"></param>
         public TabPermissionCollection(ArrayList tabPermissions)
         {
             this.AddRange(tabPermissions);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
+        /// </summary>
+        /// <param name="tabPermissions"></param>
         public TabPermissionCollection(TabPermissionCollection tabPermissions)
         {
             this.AddRange(tabPermissions);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
+        /// </summary>
+        /// <param name="tabPermissions"></param>
+        /// <param name="TabId"></param>
         public TabPermissionCollection(ArrayList tabPermissions, int TabId)
         {
             foreach (TabPermissionInfo permission in tabPermissions)

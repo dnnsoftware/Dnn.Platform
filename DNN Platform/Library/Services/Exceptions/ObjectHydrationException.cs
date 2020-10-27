@@ -13,11 +13,23 @@ namespace DotNetNuke.Services.Exceptions
         private List<string> _Columns;
         private Type _Type;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="innerException"></param>
         public ObjectHydrationException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="innerException"></param>
+        /// <param name="type"></param>
+        /// <param name="dr"></param>
         public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr)
             : base(message, innerException)
         {
@@ -29,11 +41,17 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected ObjectHydrationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
 
+        /// <inheritdoc/>
         public override string Message
         {
             get

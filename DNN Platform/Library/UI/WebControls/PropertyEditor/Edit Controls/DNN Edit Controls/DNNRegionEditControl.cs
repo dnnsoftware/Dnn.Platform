@@ -39,11 +39,18 @@ namespace DotNetNuke.UI.WebControls
 
         private List<ListEntryInfo> _listEntries;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.
+        /// </summary>
         public DNNRegionEditControl()
         {
             this.Init += this.DnnRegionControl_Init;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.
+        /// </summary>
+        /// <param name="type"></param>
         public DNNRegionEditControl(string type)
         {
             this.Init += this.DnnRegionControl_Init;
@@ -85,6 +92,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override string StringValue
         {
             get
@@ -140,6 +148,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -177,6 +186,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnDataChanged(EventArgs e)
         {
             PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
@@ -186,6 +196,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -207,6 +218,7 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(this.RegionCode);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(System.EventArgs e)
         {
             base.OnPreRender(e);
@@ -220,6 +232,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             if (this.ListEntries != null && this.ListEntries.Any())

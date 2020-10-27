@@ -10,16 +10,19 @@ namespace DotNetNuke.UI.Modules.Html5
 
     public class Html5ModuleControlFactory : BaseModuleControlFactory
     {
+        /// <inheritdoc/>
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new Html5HostControl("~/" + controlSrc);
         }
 
+        /// <inheritdoc/>
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return this.CreateControl(containerControl, string.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
+        /// <inheritdoc/>
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return this.CreateControl(containerControl, string.Empty, controlSrc);

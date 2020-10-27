@@ -17,6 +17,7 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Utilities;
 
@@ -37,10 +38,17 @@ namespace DotNetNuke.UI.Modules
         private int _nextActionId = -1;
         private Hashtable _settings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
+        /// </summary>
         public ModuleInstanceContext()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
+        /// </summary>
+        /// <param name="moduleControl"></param>
         public ModuleInstanceContext(IModuleControl moduleControl)
         {
             this._moduleControl = moduleControl;
@@ -73,7 +81,7 @@ namespace DotNetNuke.UI.Modules
                 // role lookup on every property access (instead caching the result)
                 if (!this._isEditable.HasValue)
                 {
-                    bool blnPreview = (this.PortalSettings.UserMode == PortalSettings.Mode.View) || this.PortalSettings.IsLocked;
+                    bool blnPreview = (Personalization.GetUserMode() == PortalSettings.Mode.View) || this.PortalSettings.IsLocked;
                     if (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID))
                     {
                         blnPreview = false;

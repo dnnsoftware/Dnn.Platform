@@ -53,6 +53,9 @@ namespace DotNetNuke.Entities.Modules
         private Hashtable _moduleSettings;
         private Hashtable _tabModuleSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleInfo"/> class.
+        /// </summary>
         public ModuleInfo()
         {
             // initialize the properties that can be null
@@ -309,6 +312,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -643,6 +647,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;

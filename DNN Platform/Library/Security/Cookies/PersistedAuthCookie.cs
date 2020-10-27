@@ -23,12 +23,14 @@ namespace DotNetNuke.Security.Cookies
 
         public DateTime ExpiresOn { get; private set; } // UTC
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.CookieId; }
             set { this.CookieId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.CookieId = Null.SetNullInteger(dr[nameof(this.CookieId)]);

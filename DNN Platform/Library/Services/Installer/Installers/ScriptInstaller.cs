@@ -287,6 +287,7 @@ namespace DotNetNuke.Services.Installer.Installers
             base.ProcessFile(file, nav);
         }
 
+        /// <inheritdoc/>
         protected override void UnInstallFile(InstallFile scriptFile)
         {
             // Process the file if it is an UnInstall Script

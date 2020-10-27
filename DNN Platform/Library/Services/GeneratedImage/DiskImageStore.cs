@@ -49,6 +49,9 @@ namespace DotNetNuke.Services.GeneratedImage
             CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiskImageStore"/> class.
+        /// </summary>
         internal DiskImageStore()
         {
             if (CachePath != null && !Directory.Exists(CachePath))
@@ -141,6 +144,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        /// <inheritdoc/>
         public void ForcePurgeFromServerCache(string cacheId)
         {
             var files = new DirectoryInfo(CachePath).GetFiles();
@@ -155,11 +159,13 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        /// <inheritdoc/>
         void IImageStore.Add(string id, byte[] data)
         {
             this.Add(id, data);
         }
 
+        /// <inheritdoc/>
         bool IImageStore.TryTransmitIfContains(string id, HttpResponseBase response)
         {
             return this.TryTransmitIfContains(id, response);

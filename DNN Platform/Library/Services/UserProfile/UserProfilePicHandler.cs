@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.UserProfile
     {
         private static object _locker = new object();
 
+        /// <inheritdoc/>
         public bool IsReusable
         {
             get
@@ -28,6 +29,7 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
+        /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
             this.SetupCulture();

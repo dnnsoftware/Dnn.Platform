@@ -15,11 +15,13 @@ namespace DotNetNuke.Services.Connections
 
     public sealed class DynamicJsonConverter : JavaScriptConverter
     {
+        /// <inheritdoc/>
         public override IEnumerable<Type> SupportedTypes
         {
             get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
         }
 
+        /// <inheritdoc/>
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
         {
             if (dictionary == null)
@@ -30,6 +32,7 @@ namespace DotNetNuke.Services.Connections
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
         }
 
+        /// <inheritdoc/>
         public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
         {
             throw new NotImplementedException();

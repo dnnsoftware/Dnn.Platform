@@ -17,11 +17,18 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public abstract class AuthenticationConfigBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationConfigBase"/> class.
+        /// </summary>
         public AuthenticationConfigBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationConfigBase"/> class.
+        /// </summary>
+        /// <param name="portalID"></param>
         protected AuthenticationConfigBase(int portalID)
             : this()
         {

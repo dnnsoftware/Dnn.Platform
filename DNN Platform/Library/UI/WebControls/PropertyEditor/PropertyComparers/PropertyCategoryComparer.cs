@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.WebControls
 
     public class PropertyCategoryComparer : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             if (x is PropertyInfo && y is PropertyInfo)

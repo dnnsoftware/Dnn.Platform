@@ -21,6 +21,9 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderMappingsConfigController));
         private static readonly string defaultConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderMappingsConfigController"/> class.
+        /// </summary>
         public FolderMappingsConfigController()
         {
             this.FolderMappings = new Dictionary<string, string>();
@@ -28,15 +31,18 @@ namespace DotNetNuke.Services.FileSystem
             this.LoadConfig();
         }
 
+        /// <inheritdoc/>
         public string ConfigNode
         {
             get { return configNode; }
         }
 
+        /// <inheritdoc/>
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
         private IDictionary<string, string> FolderMappings { get; set; }
 
+        /// <inheritdoc/>
         public void LoadConfig()
         {
             try
@@ -55,6 +61,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         public void SaveConfig(string folderMappinsSettings)
         {
             if (!File.Exists(defaultConfigFilePath))
@@ -68,6 +75,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
         {
             if (!this.FolderMappings.ContainsKey(folderPath))
@@ -78,6 +86,7 @@ namespace DotNetNuke.Services.FileSystem
             return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
         }
 
+        /// <inheritdoc/>
         protected override Func<IFolderMappingsConfigController> GetFactory()
         {
             return () => new FolderMappingsConfigController();

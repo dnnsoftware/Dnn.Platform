@@ -13,6 +13,9 @@ namespace DotNetNuke.Services.Scheduling
     /// </summary>
     public abstract class SchedulerClient
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchedulerClient"/> class.
+        /// </summary>
         public SchedulerClient()
         {
             this.SchedulerEventGUID = Null.NullString;

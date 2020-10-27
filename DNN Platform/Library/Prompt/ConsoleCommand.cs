@@ -19,6 +19,7 @@ namespace DotNetNuke.Prompt
         private static ISerializationManager SerializationManager =>
             Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
 
+        /// <inheritdoc/>
         public abstract string LocalResourceFile { get; }
 
         protected IPortalSettings PortalSettings { get; private set; }
@@ -64,6 +65,7 @@ namespace DotNetNuke.Prompt
         #endregion
 
         #region Public Methods
+        /// <inheritdoc/>
         public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             Args = args;
@@ -75,8 +77,10 @@ namespace DotNetNuke.Prompt
             ParseFlags();
         }
 
+        /// <inheritdoc/>
         public abstract IConsoleResultModel Run();
 
+        /// <inheritdoc/>
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(ValidationMessage);
@@ -129,6 +133,7 @@ namespace DotNetNuke.Prompt
         }
         #endregion
 
+        /// <inheritdoc/>
         public string ValidationMessage { get; private set; }
 
         /// <summary>

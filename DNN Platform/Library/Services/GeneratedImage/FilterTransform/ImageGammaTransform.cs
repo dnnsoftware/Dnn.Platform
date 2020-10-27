@@ -13,6 +13,9 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageGammaTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageGammaTransform"/> class.
+        /// </summary>
         public ImageGammaTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

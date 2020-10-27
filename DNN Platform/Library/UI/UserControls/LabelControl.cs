@@ -164,6 +164,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

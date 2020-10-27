@@ -12,6 +12,10 @@ namespace DotNetNuke.Services.Mail
     {
         private const string DefaultContentType = "application/octet-stream";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MailAttachment"/> class.
+        /// </summary>
+        /// <param name="FilePath"></param>
         public MailAttachment(string FilePath)
         {
             var Content = File.ReadAllBytes(FilePath);
@@ -21,11 +25,22 @@ namespace DotNetNuke.Services.Mail
             this.MailAttachmentInternal(Filename, Content, ContentType);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MailAttachment"/> class.
+        /// </summary>
+        /// <param name="Filename"></param>
+        /// <param name="Content"></param>
         public MailAttachment(string Filename, Byte[] Content)
         {
             this.MailAttachmentInternal(Filename, Content, MimeMapping.GetMimeMapping(Filename));
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MailAttachment"/> class.
+        /// </summary>
+        /// <param name="Filename"></param>
+        /// <param name="Content"></param>
+        /// <param name="ContentType"></param>
         public MailAttachment(string Filename, Byte[] Content, string ContentType)
         {
             this.MailAttachmentInternal(Filename, Content, ContentType);

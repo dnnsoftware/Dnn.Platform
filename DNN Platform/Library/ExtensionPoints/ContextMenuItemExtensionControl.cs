@@ -17,6 +17,7 @@ namespace DotNetNuke.ExtensionPoints
     {
         private string content = string.Empty;
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -43,6 +44,7 @@ namespace DotNetNuke.ExtensionPoints
             this.content = str.ToString();
         }
 
+        /// <inheritdoc/>
         protected override void RenderContents(HtmlTextWriter output)
         {
             output.Write(this.content);

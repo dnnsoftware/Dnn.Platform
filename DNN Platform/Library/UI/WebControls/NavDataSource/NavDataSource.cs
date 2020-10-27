@@ -13,6 +13,7 @@ namespace DotNetNuke.UI.WebControls
         // Return a strongly typed view for the current data source control.
         private NavDataSourceView view;
 
+        /// <inheritdoc/>
         protected override HierarchicalDataSourceView GetHierarchicalView(string viewPath)
         {
             this.view = new NavDataSourceView(viewPath);

@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     {
         private XslCompiledTransform xsl;
 
+        /// <inheritdoc/>
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             try
@@ -39,6 +40,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
         }
 
+        /// <inheritdoc/>
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
             var resolver = new PathResolver(liveDefinition.Folder);

@@ -5,6 +5,9 @@ namespace DotNetNuke.Collections.Internal
 {
     using System;
 
+    /// <summary>
+    /// Represents a shared collection lock.
+    /// </summary>
     public interface ISharedCollectionLock : IDisposable
     {
     }

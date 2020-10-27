@@ -11,6 +11,10 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly DNNNode m_objNode;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NavDataPageHierarchyData"/> class.
+        /// </summary>
+        /// <param name="obj"></param>
         public NavDataPageHierarchyData(DNNNode obj)
         {
             this.m_objNode = obj;
@@ -203,6 +207,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return this.m_objNode.Text;

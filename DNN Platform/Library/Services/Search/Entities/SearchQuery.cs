@@ -13,6 +13,9 @@ namespace DotNetNuke.Services.Search.Entities
     [Serializable]
     public class SearchQuery
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchQuery"/> class.
+        /// </summary>
         public SearchQuery()
         {
             this.Tags = new string[0];

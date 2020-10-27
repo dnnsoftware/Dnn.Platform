@@ -53,6 +53,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// </summary>
         public string CDNPath { get; set; }
 
+        /// <inheritdoc/>
         public XmlSchema GetSchema()
         {
             throw new NotImplementedException();

@@ -63,6 +63,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override List<PermissionInfoBase> PermissionsList
         {
             get
@@ -76,32 +77,38 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         public override void DataBind()
         {
             this.GetTabPermissions();
             base.DataBind();
         }
 
+        /// <inheritdoc/>
         public override void GenerateDataGrid()
         {
         }
 
+        /// <inheritdoc/>
         protected override bool IsFullControl(PermissionInfo permissionInfo)
         {
             return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
         }
 
+        /// <inheritdoc/>
         protected override bool IsViewPermisison(PermissionInfo permissionInfo)
         {
             return permissionInfo.PermissionKey == "VIEW";
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
             this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
         }
 
+        /// <inheritdoc/>
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new TabPermissionInfo(permission);
@@ -271,6 +278,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this._TabPermissions.Remove(permissionID, roleID, userID);

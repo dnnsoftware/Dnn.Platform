@@ -46,11 +46,13 @@ namespace DotNetNuke.Services.FileSystem
         private const int BufferSize = 4096;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
+        /// <inheritdoc/>
         public virtual IDictionary<string, string> ContentTypes
         {
             get { return FileContentTypeManager.Instance.ContentTypes; }
         }
 
+        /// <inheritdoc/>
         public FileExtensionWhitelist WhiteList
         {
             get
@@ -524,7 +526,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The Content Type for the specified extension.</returns>
         public virtual string GetContentType(string extension)
         {
-
             return FileContentTypeManager.Instance.GetContentType(extension);
         }
 

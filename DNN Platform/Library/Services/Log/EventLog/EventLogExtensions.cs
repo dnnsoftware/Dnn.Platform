@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
-
     using DotNetNuke.Abstractions.Logging;
 
     /// <summary>Extensions methods for types related to the Event Log.</summary>

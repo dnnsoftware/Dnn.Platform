@@ -61,26 +61,48 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private int _vocabularyId;
         private int _weight;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Term"/> class.
+        /// </summary>
         public Term()
             : this(Null.NullString, Null.NullString, Null.NullInteger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Term"/> class.
+        /// </summary>
+        /// <param name="vocabularyId"></param>
         public Term(int vocabularyId)
             : this(Null.NullString, Null.NullString, vocabularyId)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Term"/> class.
+        /// </summary>
+        /// <param name="name"></param>
         public Term(string name)
             : this(name, Null.NullString, Null.NullInteger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Term"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
         public Term(string name, string description)
             : this(name, description, Null.NullInteger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Term"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="vocabularyId"></param>
         public Term(string name, string description, int vocabularyId)
         {
             this.Description = description;
@@ -259,6 +281,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -272,6 +295,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
+        /// <inheritdoc/>
         public virtual void Fill(IDataReader dr)
         {
             this.TermId = Null.SetNullInteger(dr["TermID"]);

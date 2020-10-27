@@ -4,18 +4,50 @@
 
 namespace Dnn.ExportImport.Components.Common
 {
+    /// <summary>
+    /// Defines the possible job types.
+    /// </summary>
     public enum JobType
     {
+        /// <summary>
+        /// An export job.
+        /// </summary>
         Export = 0, // never change these numbers
+
+        /// <summary>
+        /// An import job.
+        /// </summary>
         Import,
     }
 
+    /// <summary>
+    /// Defines the possible job statuses.
+    /// </summary>
     public enum JobStatus
     {
+        /// <summary>
+        /// The job was submitted but not yet started.
+        /// </summary>
         Submitted = 0, // never change these numbers
+
+        /// <summary>
+        /// The job is currently in progress.
+        /// </summary>
         InProgress,
+
+        /// <summary>
+        /// The job completed successfully.
+        /// </summary>
         Successful,
+
+        /// <summary>
+        /// The job completed but failed.
+        /// </summary>
         Failed,
+
+        /// <summary>
+        /// The job was cancelled.
+        /// </summary>
         Cancelled,
     }
 
@@ -24,7 +56,14 @@ namespace Dnn.ExportImport.Components.Common
     /// </summary>
     public enum ExportMode
     {
+        /// <summary>
+        /// Exports the full content.
+        /// </summary>
         Full = 0,
+
+        /// <summary>
+        /// Exports the difference only.
+        /// </summary>
         Differential = 1,
     }
 
@@ -44,11 +83,29 @@ namespace Dnn.ExportImport.Components.Common
         Overwrite,
     }
 
+    /// <summary>
+    /// Defines the possible report (log) levels.
+    /// </summary>
     public enum ReportLevel
     {
+        /// <summary>
+        /// Reports everything.
+        /// </summary>
         Verbose,
+
+        /// <summary>
+        /// Reports information, warnings and errors.
+        /// </summary>
         Info,
+
+        /// <summary>
+        /// Reports warnings and errors.
+        /// </summary>
         Warn,
+
+        /// <summary>
+        /// Reports errors only.
+        /// </summary>
         Error,
     }
 }

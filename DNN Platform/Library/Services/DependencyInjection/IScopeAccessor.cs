@@ -22,11 +22,15 @@ namespace DotNetNuke.Services.DependencyInjection
 
         private Func<IDictionary> _getContextItems;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScopeAccessor"/> class.
+        /// </summary>
         public ScopeAccessor()
         {
             this._getContextItems = fallbackGetContextItems;
         }
 
+        /// <inheritdoc/>
         public IServiceScope GetScope()
         {
             return HttpContextDependencyInjectionExtensions.GetScope(this._getContextItems());

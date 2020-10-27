@@ -27,6 +27,9 @@ namespace DotNetNuke.Security.Permissions.Controls
         private List<PermissionInfoBase> _PermissionsList;
         private int _ViewColumnIndex;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModulePermissionsGrid"/> class.
+        /// </summary>
         public ModulePermissionsGrid()
         {
             this.TabId = -1;
@@ -97,6 +100,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         public int TabId { get; set; }
 
+        /// <inheritdoc/>
         protected override List<PermissionInfoBase> PermissionsList
         {
             get
@@ -119,6 +123,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -176,6 +181,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new ModulePermissionInfo(permission)
@@ -193,6 +199,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this._PermissionsList = null;
         }
 
+        /// <inheritdoc/>
         protected override void UpdatePermission(PermissionInfo permission, int roleId, string roleName, string stateKey)
         {
             if (this.InheritViewPermissionsFromTab && permission.PermissionKey == "VIEW")
@@ -203,6 +210,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             base.UpdatePermission(permission, roleId, roleName, stateKey);
         }
 
+        /// <inheritdoc/>
         protected override void UpdatePermission(PermissionInfo permission, string displayName, int userId, string stateKey)
         {
             if (this.InheritViewPermissionsFromTab && permission.PermissionKey == "VIEW")
@@ -348,11 +356,13 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permissionList;
         }
 
+        /// <inheritdoc/>
         protected override bool IsFullControl(PermissionInfo permissionInfo)
         {
             return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
         }
 
+        /// <inheritdoc/>
         protected override bool IsViewPermisison(PermissionInfo permissionInfo)
         {
             return permissionInfo.PermissionKey == "VIEW";
@@ -414,6 +424,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this._ModulePermissions.Remove(permissionID, roleID, userID);

@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
     public class FileLockingController : ServiceLocator<IFileLockingController, FileLockingController>, IFileLockingController
     {
+        /// <inheritdoc/>
         public bool IsFileLocked(IFileInfo file, out string lockReasonKey)
         {
             lockReasonKey = string.Empty;
@@ -42,6 +43,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return false;
         }
 
+        /// <inheritdoc/>
         public bool IsFileOutOfPublishPeriod(IFileInfo file, int portalId, int userId)
         {
             if (UserSecurityController.Instance.IsHostAdminUser(portalId, userId))
@@ -52,6 +54,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return this.IsFileOutOfPublishPeriod(file);
         }
 
+        /// <inheritdoc/>
         protected override Func<IFileLockingController> GetFactory()
         {
             return () => new FileLockingController();

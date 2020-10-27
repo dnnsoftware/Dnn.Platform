@@ -32,6 +32,9 @@ namespace DotNetNuke.Services.GeneratedImage
         private IImageStore _imageStore;
         private DateTime? _now;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.
+        /// </summary>
         public ImageHandlerInternal()
         {
             this.ContentType = ImageFormat.Jpeg;
@@ -40,6 +43,11 @@ namespace DotNetNuke.Services.GeneratedImage
             this.AllowStandalone = false;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.
+        /// </summary>
+        /// <param name="imageStore"></param>
+        /// <param name="now"></param>
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
             : this()
         {

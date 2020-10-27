@@ -391,7 +391,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
 
                 // set view mode to edit after add module.
-                if (this.PortalSettings.UserMode != PortalSettings.Mode.Edit)
+                if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
                 {
                     Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, "EDIT");
                 }

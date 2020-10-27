@@ -14,11 +14,16 @@ namespace DotNetNuke.Services.ModuleCache
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PurgeModuleCache"/> class.
+        /// </summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try

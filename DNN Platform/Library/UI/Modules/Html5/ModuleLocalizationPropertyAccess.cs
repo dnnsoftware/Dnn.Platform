@@ -25,12 +25,18 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly ModuleInstanceContext _moduleContext;
         private readonly string _html5File;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleLocalizationPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="moduleContext"></param>
+        /// <param name="html5File"></param>
         public ModuleLocalizationPropertyAccess(ModuleInstanceContext moduleContext, string html5File)
         {
             this._html5File = html5File;
             this._moduleContext = moduleContext;
         }
 
+        /// <inheritdoc/>
         protected override string ProcessToken(ModuleLocalizationDto model, UserInfo accessingUser, Scope accessLevel)
         {
             string returnValue = string.Empty;

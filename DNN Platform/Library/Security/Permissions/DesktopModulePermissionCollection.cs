@@ -22,20 +22,36 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class DesktopModulePermissionCollection : CollectionBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
         public DesktopModulePermissionCollection()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
+        /// <param name="DesktopModulePermissions"></param>
         public DesktopModulePermissionCollection(ArrayList DesktopModulePermissions)
         {
             this.AddRange(DesktopModulePermissions);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
+        /// <param name="DesktopModulePermissions"></param>
         public DesktopModulePermissionCollection(DesktopModulePermissionCollection DesktopModulePermissions)
         {
             this.AddRange(DesktopModulePermissions);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
+        /// <param name="DesktopModulePermissions"></param>
+        /// <param name="DesktopModulePermissionID"></param>
         public DesktopModulePermissionCollection(ArrayList DesktopModulePermissions, int DesktopModulePermissionID)
         {
             foreach (DesktopModulePermissionInfo permission in DesktopModulePermissions)

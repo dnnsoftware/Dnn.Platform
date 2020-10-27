@@ -123,14 +123,14 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Formats an Email address.
+        /// Formats an Email address as a cloaked html link.
         /// </summary>
-        /// <param name="Email">The email address to format.</param>
-        /// <returns>The formatted email address.</returns>
+        /// <param name="email">The email address to format.</param>
+        /// <returns>The email address as a cloaked html link.</returns>
         /// -----------------------------------------------------------------------------
-        public static string FormatEmail(string Email)
+        public static string FormatEmail(string email)
         {
-            return FormatEmail(Email, true);
+            return FormatEmail(email, true);
         }
 
         /// -----------------------------------------------------------------------------

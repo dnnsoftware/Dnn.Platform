@@ -22,11 +22,18 @@ namespace DotNetNuke.UI.WebControls
     {
         private ListItemType mItemType = ListItemType.Item;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextColumnTemplate"/> class.
+        /// </summary>
         public TextColumnTemplate()
             : this(ListItemType.Item)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextColumnTemplate"/> class.
+        /// </summary>
+        /// <param name="itemType"></param>
         public TextColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;

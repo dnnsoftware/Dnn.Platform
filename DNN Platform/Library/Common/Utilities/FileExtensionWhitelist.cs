@@ -91,6 +91,7 @@ namespace DotNetNuke.Common.Utilities
             return allExtensions.Contains(extension);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return this.ToDisplayString();

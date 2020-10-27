@@ -24,6 +24,10 @@ namespace DotNetNuke.Entities.Urls
         private readonly bool _includePageName;
         private readonly string _regexMatch;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasicFriendlyUrlProvider"/> class.
+        /// </summary>
+        /// <param name="attributes"></param>
         internal BasicFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
@@ -48,23 +52,27 @@ namespace DotNetNuke.Entities.Urls
             get { return this._regexMatch; }
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, _portalSettings);
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return this.FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
             return this.FriendlyUrl(tab, path, pageName, ((PortalSettings)settings)?.PortalAlias.HTTPAlias, settings);
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return this.FriendlyUrl(tab, path, pageName, portalAlias, null);

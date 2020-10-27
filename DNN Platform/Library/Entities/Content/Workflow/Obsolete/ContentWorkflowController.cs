@@ -34,6 +34,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.contentController = new ContentController();
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public void DiscardWorkflow(int contentItemId, string comment, int portalId, int userId)
         {
@@ -45,6 +46,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.SetWorkflowState(stateId, item);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public void CompleteWorkflow(int contentItemId, string comment, int portalId, int userId)
         {
@@ -56,6 +58,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.SetWorkflowState(lastStateId, item);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public string ReplaceNotificationTokens(string text, ContentWorkflow workflow, ContentItem item, ContentWorkflowState state, int portalID, int userID, string comment = "")
         {
@@ -71,12 +74,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             return result;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID)
         {
             this.CompleteState(itemID, subject, body, comment, portalID, userID, string.Empty);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public void StartWorkflow(int workflowID, int itemID, int userID)
         {
@@ -102,6 +107,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.AddWorkflowLog(item, ContentWorkflowLogType.StateInitiated, userID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID, string source, params string[] parameters)
         {
@@ -137,6 +143,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public void DiscardState(int itemID, string subject, string body, string comment, int portalID, int userID)
         {
@@ -163,6 +170,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public bool IsWorkflowCompleted(int itemID)
         {
@@ -176,6 +184,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.IsWorkflowCompleted(workflow, item);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public bool IsWorkflowOnDraft(int itemID)
         {
@@ -189,6 +198,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return item.StateID == this.GetFirstWorkflowStateID(workflow);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger. Scheduled removal in v10.0.0.")]
         public void AddWorkflowLog(ContentItem item, string action, string comment, int userID)
         {
@@ -197,24 +207,28 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.AddWorkflowLog(workflow != null ? workflow.WorkflowID : Null.NullInteger, item, action, comment, userID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger. Scheduled removal in v10.0.0.")]
         public IEnumerable<ContentWorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
             return CBO.FillCollection<ContentWorkflowLog>(DataProvider.Instance().GetContentWorkflowLogs(contentItemId, workflowId));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
         public void DeleteWorkflowLogs(int contentItemID, int workflowID)
         {
             DataProvider.Instance().DeleteContentWorkflowLogs(contentItemID, workflowID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public IEnumerable<ContentWorkflowStatePermission> GetWorkflowStatePermissionByState(int stateID)
         {
             return CBO.FillCollection<ContentWorkflowStatePermission>(DataProvider.Instance().GetContentWorkflowStatePermissionsByStateID(stateID));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void AddWorkflowStatePermission(ContentWorkflowStatePermission permission, int lastModifiedByUserID)
         {
@@ -227,6 +241,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 lastModifiedByUserID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void UpdateWorkflowStatePermission(ContentWorkflowStatePermission permission, int lastModifiedByUserID)
         {
@@ -240,18 +255,21 @@ namespace DotNetNuke.Entities.Content.Workflow
                 lastModifiedByUserID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void DeleteWorkflowStatePermission(int workflowStatePermissionID)
         {
             DataProvider.Instance().DeleteContentWorkflowStatePermission(workflowStatePermissionID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public ContentWorkflowState GetWorkflowStateByID(int stateID)
         {
             return CBO.FillObject<ContentWorkflowState>(DataProvider.Instance().GetContentWorkflowState(stateID));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void AddWorkflowState(ContentWorkflowState state)
         {
@@ -270,6 +288,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             state.StateID = id;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void UpdateWorkflowState(ContentWorkflowState state)
         {
@@ -287,18 +306,21 @@ namespace DotNetNuke.Entities.Content.Workflow
                 state.OnDiscardMessageBody);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public IEnumerable<ContentWorkflowState> GetWorkflowStates(int workflowID)
         {
             return CBO.FillCollection<ContentWorkflowState>(DataProvider.Instance().GetContentWorkflowStates(workflowID));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager. Scheduled removal in v10.0.0.")]
         public IEnumerable<ContentWorkflow> GetWorkflows(int portalID)
         {
             return CBO.FillCollection<ContentWorkflow>(DataProvider.Instance().GetContentWorkflows(portalID));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager. Scheduled removal in v10.0.0.")]
         public ContentWorkflow GetWorkflow(ContentItem item)
         {
@@ -311,6 +333,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.GetWorkflowByID(state.WorkflowID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager. Scheduled removal in v10.0.0.")]
         public void AddWorkflow(ContentWorkflow workflow)
         {
@@ -318,12 +341,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             workflow.WorkflowID = id;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager. Scheduled removal in v10.0.0.")]
         public void UpdateWorkflow(ContentWorkflow workflow)
         {
             DataProvider.Instance().UpdateContentWorkflow(workflow.WorkflowID, workflow.WorkflowName, workflow.Description, workflow.IsDeleted, workflow.StartAfterCreating, workflow.StartAfterEditing, workflow.DispositionEnabled);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager. Scheduled removal in v10.0.0.")]
         public ContentWorkflow GetWorkflowByID(int workflowID)
         {
@@ -337,6 +362,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return null;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead ISystemWorkflowManager. Scheduled removal in v10.0.0.")]
         public void CreateDefaultWorkflows(int portalId)
         {
@@ -433,6 +459,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead ISystemWorkflowManager. Scheduled removal in v10.0.0.")]
         public ContentWorkflow GetDefaultWorkflow(int portalID)
         {
@@ -441,6 +468,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return wf;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity. Scheduled removal in v10.0.0.")]
         public bool IsAnyReviewer(int workflowID)
         {
@@ -448,6 +476,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return workflow.States.Any(contentWorkflowState => this.IsReviewer(contentWorkflowState.StateID));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity. Scheduled removal in v10.0.0.")]
         public bool IsAnyReviewer(int portalID, int userID, int workflowID)
         {
@@ -455,6 +484,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return workflow.States.Any(contentWorkflowState => this.IsReviewer(portalID, userID, contentWorkflowState.StateID));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity. Scheduled removal in v10.0.0.")]
         public bool IsReviewer(int stateID)
         {
@@ -463,6 +493,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.IsReviewer(user, PortalSettings.Current, permissions);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity. Scheduled removal in v10.0.0.")]
         public bool IsReviewer(int portalID, int userID, int stateID)
         {
@@ -473,6 +504,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.IsReviewer(user, portalSettings, permissions);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity. Scheduled removal in v10.0.0.")]
         public bool IsCurrentReviewer(int portalID, int userID, int itemID)
         {
@@ -480,6 +512,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.IsReviewer(portalID, userID, item.StateID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity. Scheduled removal in v10.0.0.")]
         public bool IsCurrentReviewer(int itemID)
         {
@@ -487,12 +520,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.IsReviewer(item.StateID);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public ContentWorkflowSource GetWorkflowSource(int workflowId, string sourceName)
         {
             return CBO.FillObject<ContentWorkflowSource>(DataProvider.Instance().GetContentWorkflowSource(workflowId, sourceName));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body,
                                              string comment, int userID)

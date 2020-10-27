@@ -192,6 +192,7 @@ namespace DotNetNuke.Security.Permissions
             return this.Equals((ModulePermissionInfo)obj);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             unchecked

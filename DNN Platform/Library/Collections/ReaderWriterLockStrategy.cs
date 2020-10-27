@@ -8,40 +8,59 @@ namespace DotNetNuke.Collections.Internal
     using System.Runtime.Serialization;
     using System.Threading;
 
+    /// <summary>
+    /// Provides read/write locking.
+    /// </summary>
     [Serializable]
     public class ReaderWriterLockStrategy : IDisposable, ILockStrategy
     {
         [NonSerialized]
-        private ReaderWriterLockSlim _lock;
+        private ReaderWriterLockSlim @lock;
 
-        private LockRecursionPolicy _lockRecursionPolicy;
+        private LockRecursionPolicy lockRecursionPolicy;
 
-        private bool _isDisposed;
+        private bool isDisposed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReaderWriterLockStrategy"/> class.
+        /// </summary>
         public ReaderWriterLockStrategy()
             : this(LockRecursionPolicy.NoRecursion)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReaderWriterLockStrategy"/> class.
+        /// </summary>
+        /// <param name="recursionPolicy">An instance of a <see cref="LockRecursionPolicy"/> to use.</param>
         public ReaderWriterLockStrategy(LockRecursionPolicy recursionPolicy)
         {
-            this._lockRecursionPolicy = recursionPolicy;
-            this._lock = new ReaderWriterLockSlim(recursionPolicy);
+            this.lockRecursionPolicy = recursionPolicy;
+            this.@lock = new ReaderWriterLockSlim(recursionPolicy);
         }
 
-        // The special constructor is used to deserialize values.
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReaderWriterLockStrategy"/> class.
+        /// The special constructor is used to deserialize values.
+        /// </summary>
+        /// <param name="info">A <see cref="SerializationInfo"/> to use.</param>
+        /// <param name="context">The streaming context to use.</param>
         public ReaderWriterLockStrategy(SerializationInfo info, StreamingContext context)
         {
-            this._lockRecursionPolicy = (LockRecursionPolicy)info.GetValue("_lockRecursionPolicy", typeof(LockRecursionPolicy));
-            this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy);
+            this.lockRecursionPolicy = (LockRecursionPolicy)info.GetValue("_lockRecursionPolicy", typeof(LockRecursionPolicy));
+            this.@lock = new ReaderWriterLockSlim(this.lockRecursionPolicy);
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ReaderWriterLockStrategy"/> class.
+        /// </summary>
         ~ReaderWriterLockStrategy()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
             this.Dispose(false);
         }
 
+        /// <inheritdoc/>
         public bool ThreadCanRead
         {
             get
@@ -51,6 +70,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
+        /// <inheritdoc/>
         public bool ThreadCanWrite
         {
             get
@@ -60,6 +80,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
+        /// <inheritdoc/>
         public bool SupportsConcurrentReads
         {
             get
@@ -72,23 +93,29 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                return this._lock ?? (this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy));
+                return this.@lock ?? (this.@lock = new ReaderWriterLockSlim(this.lockRecursionPolicy));
             }
         }
 
-        // Implement this method to serialize data. The method is called
-        // on serialization.
+        /// <summary>
+        /// Implement this method to serialize data. The method is called
+        /// on serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to use.</param>
+        /// <param name="context">The <see cref="StreamingContext"/> to use.</param>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // Use the AddValue method to specify serialized values.
-            info.AddValue("_lockRecursionPolicy", this._lockRecursionPolicy, typeof(LockRecursionPolicy));
+            info.AddValue("_lockRecursionPolicy", this.lockRecursionPolicy, typeof(LockRecursionPolicy));
         }
 
+        /// <inheritdoc/>
         public ISharedCollectionLock GetReadLock()
         {
             return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
         }
 
+        /// <inheritdoc/>
         public ISharedCollectionLock GetReadLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
@@ -103,11 +130,13 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
+        /// <inheritdoc/>
         public ISharedCollectionLock GetWriteLock()
         {
             return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
         }
 
+        /// <inheritdoc/>
         public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
@@ -122,6 +151,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
@@ -129,36 +159,35 @@ namespace DotNetNuke.Collections.Internal
             GC.SuppressFinalize(this);
         }
 
-        // To detect redundant calls
-
-        // IDisposable
+        /// <summary>
+        /// Disposes this instance resources.
+        /// </summary>
+        /// <param name="disposing">A value indicating whether this instance is currently disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._isDisposed)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
                     // dispose managed state (managed objects).
                 }
 
-                if (this._lock != null)
+                if (this.@lock != null)
                 {
-                    this._lock.Dispose();
-                    this._lock = null;
+                    this.@lock.Dispose();
+                    this.@lock = null;
                 }
             }
 
-            this._isDisposed = true;
+            this.isDisposed = true;
         }
 
         private void EnsureNotDisposed()
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("ReaderWriterLockStrategy");
             }
         }
-
-        // This code added by Visual Basic to correctly implement the disposable pattern.
     }
 }

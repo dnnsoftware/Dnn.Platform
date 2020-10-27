@@ -39,6 +39,7 @@ namespace DotNetNuke.Framework
             return path;
         }
 
+        /// <inheritdoc/>
         protected override Func<IServicesFramework> GetFactory()
         {
             return () => new ServicesFrameworkImpl();
