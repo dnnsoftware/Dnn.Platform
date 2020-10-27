@@ -39,12 +39,17 @@ namespace DotNetNuke.Common.Lists
         private static readonly string[] UnLocalizableLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
         private readonly IEventLogger eventLogger;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>
         public ListController()
+            : this(null)
         {
-            this.eventLogger = Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>
+        /// <param name="eventLogger">An event logger.</param>
+        public ListController(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <summary>
