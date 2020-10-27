@@ -269,7 +269,7 @@ namespace DotNetNuke.Common.Lists
         /// Gets all list entries for a given list name.
         /// </summary>
         /// <param name="listName">The name of the list to get.</param>
-        /// <returns>A dictionnary where the index is a unique key and the value is the actual <see cref="ListEntryInfo"/>.</returns>
+        /// <returns>A dictionary where the index is <see cref="ListEntryInfo.Key"/> and the value is the actual <see cref="ListEntryInfo"/>.</returns>
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName)
         {
             return this.GetListEntryInfoDictionary(listName, string.Empty, Null.NullInteger);
