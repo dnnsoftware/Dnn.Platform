@@ -38,9 +38,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Gets the entry by it's key.
-        /// </summary>
+        /// <summary>Gets the entry by its key.</summary>
         /// <param name="key">The key of the entry.</param>
         /// <returns>A single list entry.</returns>
         public ListEntryInfo Item(string key)
