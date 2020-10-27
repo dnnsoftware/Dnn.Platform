@@ -292,7 +292,7 @@ namespace DotNetNuke.Common.Lists
         /// <param name="listName">The name of the list to get.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) from which to get the list entries from.</param>
-        /// <returns>A dictionnary where the index is a unique key and the value is the actual <see cref="ListEntryInfo"/>.</returns>
+        /// <returns>A dictionary where the index is <see cref="ListEntryInfo.Key"/> and the value is the actual <see cref="ListEntryInfo"/>.</returns>
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName, string parentKey, int portalId)
         {
             return ListEntryInfoItemsToDictionary(this.GetListEntryInfoItems(listName, parentKey, portalId));
