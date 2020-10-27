@@ -11,6 +11,7 @@ namespace DotNetNuke.Common.Lists
     using System.Linq;
     using System.Threading;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
@@ -18,6 +19,7 @@ namespace DotNetNuke.Common.Lists
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Provides access to Dnn Lists.
@@ -35,6 +37,15 @@ namespace DotNetNuke.Common.Lists
         public readonly string[] NonLocalizedLists = UnLocalizableLists;
 
         private static readonly string[] UnLocalizableLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListController"/> class.
+        /// </summary>
+        public ListController()
+        {
+            this.eventLogger = Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+        }
 
         /// <summary>
         /// Gets the lists that do not support localization.
@@ -66,15 +77,12 @@ namespace DotNetNuke.Common.Lists
 
             if (entryId != Null.NullInteger)
             {
-                // TODO: Refactor this usage as decided in https://github.com/dnnsoftware/Dnn.Platform/issues/4242
-                EventLogController.Instance.AddLog(
+                this.eventLogger.AddLog(
                     listEntry,
                     PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     string.Empty,
-#pragma warning disable CS0618 // Type or member is obsolete
-                    EventLogController.EventLogType.LISTENTRY_CREATED);
-#pragma warning restore CS0618 // Type or member is obsolete
+                    EventLogType.LISTENTRY_CREATED);
             }
 
             if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !UnLocalizableLists.Contains(listEntry.ListName))
@@ -129,15 +137,12 @@ namespace DotNetNuke.Common.Lists
         {
             ListInfo list = this.GetListInfo(listName, parentKey, portalId);
 
-            // TODO: Refactor this as per decision on https://github.com/dnnsoftware/Dnn.Platform/issues/4242
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "ListName",
                 listName,
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-#pragma warning disable CS0618 // Type or member is obsolete
-                EventLogController.EventLogType.LISTENTRY_DELETED);
-#pragma warning restore CS0618 // Type or member is obsolete
+                EventLogType.LISTENTRY_DELETED);
 
             DataProvider.Instance().DeleteList(listName, parentKey);
             if (list != null)
@@ -438,15 +443,12 @@ namespace DotNetNuke.Common.Lists
                     true);
             }
 
-            // TODO: Refactor this usage as decided in https://github.com/dnnsoftware/Dnn.Platform/issues/4242
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 listEntry,
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
-#pragma warning disable CS0618 // Type or member is obsolete
-                EventLogController.EventLogType.LISTENTRY_UPDATED);
-#pragma warning restore CS0618 // Type or member is obsolete
+                EventLogType.LISTENTRY_UPDATED);
 
             this.ClearListCache(listEntry.PortalID);
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
