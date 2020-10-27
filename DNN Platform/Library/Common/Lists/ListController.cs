@@ -185,7 +185,7 @@ namespace DotNetNuke.Common.Lists
         /// Deletes a list entry.
         /// </summary>
         /// <param name="entryId">the id of the entry to delete.</param>
-        /// <param name="deleteChild">A value indicating whether to also delete the childrens of that item.</param>
+        /// <param name="deleteChild">A value indicating whether to also delete the children of that item.</param>
         public void DeleteListEntryByID(int entryId, bool deleteChild)
         {
             ListEntryInfo entry = this.GetListEntryInfo(entryId);
