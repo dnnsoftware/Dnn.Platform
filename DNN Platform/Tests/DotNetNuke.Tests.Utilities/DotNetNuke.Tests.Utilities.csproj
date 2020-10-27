@@ -61,8 +61,13 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\..\..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Administration, Version=7.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,6 +79,9 @@
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="PetaPoco, Version=6.0.415.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PetaPoco.Compiled.6.0.415\lib\net45\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -115,6 +123,18 @@
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
+      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
+      <Name>DotNetNuke.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
@@ -127,6 +147,10 @@
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <None Include="..\..\Website\Config\DotNetNuke.config">
+      <Link>DotNetNuke.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

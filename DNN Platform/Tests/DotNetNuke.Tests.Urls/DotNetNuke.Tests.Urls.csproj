@@ -37,9 +37,6 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Abstractions, Version=9.7.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\Modules\CoreMessaging\bin\DotNetNuke.Abstractions.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.HttpModules">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
@@ -67,10 +64,11 @@
       <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PetaPoco">
-      <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+    <Reference Include="PetaPoco, Version=6.0.415.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PetaPoco.Compiled.6.0.415\lib\net45\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -193,6 +191,10 @@
     <None Include="TestFiles\UrlRewrite\TestList.csv" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
