@@ -280,7 +280,7 @@ namespace DotNetNuke.Common.Lists
         /// </summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <param name="parentKey">The parent key.</param>
-        /// <returns>A dictionnary where the index is a unique key and the value is the actual <see cref="ListEntryInfo"/>.</returns>
+        /// <returns>A dictionary where the index is <see cref="ListEntryInfo.Key"/> and the value is the actual <see cref="ListEntryInfo"/>.</returns>
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName, string parentKey)
         {
             return this.GetListEntryInfoDictionary(listName, parentKey, Null.NullInteger);
