@@ -8,9 +8,7 @@ namespace DotNetNuke.Common.Lists
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
 
-    /// <summary>
-    /// Represents the informaiton relative to a list.
-    /// </summary>
+    /// <summary>Represents the information relative to a list.</summary>
     [Serializable]
     public class ListInfo : BaseEntityInfo
     {
