@@ -39,7 +39,7 @@ namespace DotNetNuke.Common.Lists
         /// <summary>
         /// Gets the lists that do not support localization.
         /// </summary>
-        public string[] UnLocalizedLists => UnLocalizableLists;
+        public IReadOnlyCollection<string> UnLocalizedLists => UnLocalizableLists;
 
         /// <summary>
         /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be
