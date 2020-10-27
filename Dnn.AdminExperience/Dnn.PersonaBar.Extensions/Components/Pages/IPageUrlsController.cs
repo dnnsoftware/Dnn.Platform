@@ -15,8 +15,11 @@ namespace Dnn.PersonaBar.Pages.Components
     public interface IPageUrlsController
     {
         IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId);
+
         PageUrlResult CreateCustomUrl(SaveUrlDto dto, TabInfo tab);
+
         PageUrlResult UpdateCustomUrl(SaveUrlDto dto, TabInfo tab);
+
         PageUrlResult DeleteCustomUrl(int id, TabInfo tab);
     }
 }

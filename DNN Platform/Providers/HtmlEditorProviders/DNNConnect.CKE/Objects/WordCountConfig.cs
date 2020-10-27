@@ -9,7 +9,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 {
 
     /// <summary>
-    /// WordCount Plugin Config
+    /// WordCount Plugin Config.
     /// </summary>
     public class WordCountConfig
     {
@@ -18,8 +18,8 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public WordCountConfig()
         {
-            ShowWordCount = true;
-            ShowCharCount = false;
+            this.ShowWordCount = true;
+            this.ShowCharCount = false;
         }
 
         /// <summary>

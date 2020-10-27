@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DNNConnect.CKEditorProvider.Objects
 {
     /// <summary>
-    /// Toolbar Set Class
+    /// Toolbar Set Class.
     /// </summary>
     public class ToolbarSet
     {
@@ -16,7 +16,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public ToolbarSet()
         {
-            ToolbarGroups = new List<ToolbarGroup>();
+            this.ToolbarGroups = new List<ToolbarGroup>();
         }
 
         /// <summary>
@@ -25,8 +25,8 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="name">The name.</param>
         public ToolbarSet(string name)
         {
-            Name = name;
-            ToolbarGroups = new List<ToolbarGroup>();
+            this.Name = name;
+            this.ToolbarGroups = new List<ToolbarGroup>();
         }
 
         /// <summary>
@@ -36,18 +36,18 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="priority">The priority.</param>
         public ToolbarSet(string name, int priority)
         {
-            Name = name;
-            Priority = priority;
-            ToolbarGroups = new List<ToolbarGroup>();
+            this.Name = name;
+            this.Priority = priority;
+            this.ToolbarGroups = new List<ToolbarGroup>();
         }
 
         /// <summary>
-        /// Gets or sets The Name of the Toolbar Set
+        /// Gets or sets The Name of the Toolbar Set.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets Toolbar Priority from 1-20
+        /// Gets or sets Toolbar Priority from 1-20.
         /// </summary>
         public int Priority { get; set; }
 

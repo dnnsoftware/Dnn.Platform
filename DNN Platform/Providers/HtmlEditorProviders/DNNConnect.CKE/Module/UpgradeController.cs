@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -14,7 +15,7 @@ namespace DNNConnect.CKEditorProvider.Module
 {
 
     /// <summary>
-    /// Add Settings Module to Host -> Html Editor Manager Page
+    /// Add Settings Module to Host -> Html Editor Manager Page.
     /// </summary>
     public class UpgradeController : IUpgradeable
     {
@@ -22,13 +23,13 @@ namespace DNNConnect.CKEditorProvider.Module
         /// Upgrades the module.
         /// </summary>
         /// <param name="version">The <paramref name="version"/> number string.</param>
-        /// <returns>Returns if Upgrade was Success fully or not</returns>
+        /// <returns>Returns if Upgrade was Success fully or not.</returns>
         public string UpgradeModule(string version)
         {
             try
             {
                 const string ResourceFile =
-					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/App_LocalResources/EditorConfigManager.ascx.resx";
+                    "~/Providers/HtmlEditorProviders/DNNConnect.CKE/App_LocalResources/EditorConfigManager.ascx.resx";
 
                 var pageName = Localization.GetString("EditorMangerPageName.Text", ResourceFile);
                 var moduleTitle = Localization.GetString("EditorMangerName.Text", ResourceFile);
@@ -41,8 +42,8 @@ namespace DNNConnect.CKEditorProvider.Module
                 var editorManagerPage = Upgrade.AddHostPage(
                     pageName,
                     pageDescription,
-					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_small.png",
-					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_large.png",
+                    "~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_small.png",
+                    "~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_large.png",
                     false);
 
                 // Add Module To Page
@@ -52,7 +53,7 @@ namespace DNNConnect.CKEditorProvider.Module
                     editorManagerPage,
                     moduleDefId,
                     moduleTitle,
-					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png",
+                    "~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png",
                     true);
             }
             catch (Exception ex)
@@ -68,7 +69,7 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <summary>
         /// Gets the module definition ID.
         /// </summary>
-        /// <returns>Returns the module definition ID</returns>
+        /// <returns>Returns the module definition ID.</returns>
         private static int GetModuleDefinitionID()
         {
             var editorDesktopModule =

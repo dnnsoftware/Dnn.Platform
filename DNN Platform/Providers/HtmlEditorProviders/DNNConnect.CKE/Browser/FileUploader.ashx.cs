@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Script.Serialization;
+
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
 using DotNetNuke.Entities.Users;
@@ -17,12 +18,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 {
 
     /// <summary>
-    /// The File Upload Handler
+    /// The File Upload Handler.
     /// </summary>
     public class FileUploader : IHttpHandler
     {
         /// <summary>
-        /// The JavaScript Serializer
+        /// The JavaScript Serializer.
         /// </summary>
         private readonly JavaScriptSerializer js = new JavaScriptSerializer();
 
@@ -92,7 +93,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             context.Response.AddHeader("Pragma", "no-cache");
             context.Response.AddHeader("Cache-Control", "private, no-cache");
 
-            HandleMethod(context);
+            this.HandleMethod(context);
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>
-        /// Handle request based on method
+        /// Handle request based on method.
         /// </summary>
         /// <param name="context">The context.</param>
         private void HandleMethod(HttpContext context)
@@ -128,7 +129,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 case "POST":
                 case "PUT":
-                    UploadFile(context);
+                    this.UploadFile(context);
                     break;
 
                 case "OPTIONS":
@@ -150,9 +151,9 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             var statuses = new List<FilesUploadStatus>();
 
-            UploadWholeFile(context, statuses);
+            this.UploadWholeFile(context, statuses);
 
-            WriteJsonIframeSafe(context, statuses);
+            this.WriteJsonIframeSafe(context, statuses);
         }
 
         /// <summary>
@@ -195,11 +196,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                 var fileNameNoExtenstion = Path.GetFileNameWithoutExtension(fileName);
 
                 // Rename File if Exists
-                if (!OverrideFiles)
+                if (!this.OverrideFiles)
                 {
                     var counter = 0;
 
-                    while (File.Exists(Path.Combine(StorageFolder.PhysicalPath, fileName)))
+                    while (File.Exists(Path.Combine(this.StorageFolder.PhysicalPath, fileName)))
                     {
                         counter++;
                         fileName = string.Format(
@@ -213,7 +214,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 var fileManager = FileManager.Instance;
                 var contentType = fileManager.GetContentType(Path.GetExtension(fileName));
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-                fileManager.AddFile(StorageFolder, fileName, file.InputStream, OverrideFiles, true, contentType, userId);
+                fileManager.AddFile(this.StorageFolder, fileName, file.InputStream, this.OverrideFiles, true, contentType, userId);
 
                 var fullName = Path.GetFileName(fileName);
                 statuses.Add(new FilesUploadStatus(fullName, file.ContentLength));
@@ -239,7 +240,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 context.Response.ContentType = "text/plain";
             }
 
-            var jsonObj = js.Serialize(statuses.ToArray());
+            var jsonObj = this.js.Serialize(statuses.ToArray());
             context.Response.Write(jsonObj);
         }
     }

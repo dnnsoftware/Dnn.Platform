@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : "",
                 PublishStatus = GetTabPublishStatus(tab),
                 Tags = tab.Terms.Select(t => t.Name).ToArray(),
-                TabOrder = tab.TabOrder
+                TabOrder = tab.TabOrder,
             };
         }
 
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Pages.Components
             EditContentUrl = GetModuleEditContentUrl(module),
             EditSettingUrl = GetModuleEditSettingUrl(module),
             IsPortable = module.DesktopModule?.IsPortable,
-            AllTabs = module.AllTabs
+            AllTabs = module.AllTabs,
         };
 
         public static T ConvertToPageSettings<T>(TabInfo tab) where T : PageSettings, new()
@@ -134,7 +134,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 HasChild = pageManagementController.TabHasChildren(tab),
                 ParentId = tab.ParentId,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
-                PagePermissions = SecurityService.Instance.GetPagePermissions(tab)
+                PagePermissions = SecurityService.Instance.GetPagePermissions(tab),
             };
         }
 

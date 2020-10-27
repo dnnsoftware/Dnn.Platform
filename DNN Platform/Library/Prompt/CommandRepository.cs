@@ -75,7 +75,7 @@ namespace DotNetNuke.Prompt
                     Key = key,
                     Name = commandAttribute.Name,
                     Version = version,
-                    TypeFullName = cmd.AssemblyQualifiedName
+                    TypeFullName = cmd.AssemblyQualifiedName,
                 });
             }
             return commands;
@@ -109,7 +109,7 @@ namespace DotNetNuke.Prompt
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
                         Description =
-                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile)
+                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
                     }).ToList();
                     commandHelp.Options = options;
                 }

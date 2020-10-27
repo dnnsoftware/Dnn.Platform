@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
                     Snippet = basic.Snippet,
                     Description = basic.Description,
                     DocumentUrl = basic.DocumentUrl,
-                    Attributes = basic.Attributes
+                    Attributes = basic.Attributes,
                 },
             };
         }

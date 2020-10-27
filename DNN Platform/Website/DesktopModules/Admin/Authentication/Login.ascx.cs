@@ -812,7 +812,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private bool IsRedirectingFromLoginUrl()
         {
             return this.Request.UrlReferrer != null &&
-                this.Request.UrlReferrer.LocalPath.EndsWith(GetLoginPath(), StringComparison.InvariantCultureIgnoreCase);
+                this.Request.UrlReferrer.LocalPath.EndsWith(this.GetLoginPath(), StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)

@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     break;
                 case "corelanguagepack":
                     rootPath = Globals.ApplicationMapPath + "\\Install\\Language";
-                    return true; //core languages should always marked as have available packages.
+                    return true; // core languages should always marked as have available packages.
                 case "module":
                 case "skin":
                 case "container":
@@ -144,7 +144,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 {
                     PackageType = packageType,
                     ValidPackages = validpackages.Values.Select(p => new PackageInfoSlimDto(Null.NullInteger, p)).ToList(),
-                    InvalidPackages = invalidPackages
+                    InvalidPackages = invalidPackages,
                 });
             }
             return packages;
@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 }
                 else
                 {
-                    //use the current portal alias for host tabs
+                    // use the current portal alias for host tabs
                     var alias = t.PortalID == Null.NullInteger || t.PortalID == portalId
                                     ? PortalSettings.Current.PortalAlias
                                     : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID)
@@ -266,10 +266,10 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
             packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
-                let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
-                from portalModule in portalModules.Values
-                where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
-                select modulePackage);
+                              let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
+                              from portalModule in portalModules.Values
+                              where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
+                              select modulePackage);
         }
 
         private static string FixIconUrl(string url)
@@ -285,7 +285,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             TabCollection allPortalTabs = TabController.Instance.GetTabsByPortal(portalId);
             IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
 
-            //must get each tab, they parent may not exist
+            // must get each tab, they parent may not exist
             foreach (TabInfo tab in allPortalTabs.Values)
             {
                 AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
@@ -297,9 +297,9 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             if ((tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID)))
             {
-                //add current tab
+                // add current tab
                 tabsInOrder.Add(currentTab.TabID, currentTab);
-                //add children of current tab
+                // add children of current tab
                 foreach (TabInfo tab in allPortalTabs.WithParentId(currentTab.TabID))
                 {
                     AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
@@ -394,9 +394,9 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             catch (Exception)
             {
-                //suppress for now - need to decide what to do when webservice is unreachable
-                //throw;
-                //same problem happens in InstallWizard.aspx.cs in BindLanguageList method
+                // suppress for now - need to decide what to do when webservice is unreachable
+                // throw;
+                // same problem happens in InstallWizard.aspx.cs in BindLanguageList method
             }
         }
     }

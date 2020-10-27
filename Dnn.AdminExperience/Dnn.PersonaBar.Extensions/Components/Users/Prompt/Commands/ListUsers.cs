@@ -38,9 +38,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
+
         private string Username { get; set; }
+
         private string Role { get; set; }
+
         private int Page { get; set; }
+
         private int Max { get; set; } = 10;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -63,7 +67,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     }
                     else
                     {
-                        //assume it's a username
+                        // assume it's a username
                         this.Username = args[1];
                     }
                 }
@@ -93,7 +97,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             var recCount = 0;
             var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);
 
-            // We need to cover the site group scenario for child portal 
+            // We need to cover the site group scenario for child portal
             var portalId = PortalController.GetEffectivePortalId(this.PortalId);
             var getUsersContract = new GetUsersContract
             {
@@ -103,7 +107,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 SortColumn = "displayname",
                 SortAscending = true,
                 PortalId = portalId,
-                Filter = UserFilters.All
+                Filter = UserFilters.All,
             };
             if (!string.IsNullOrEmpty(this.Username))
             {
@@ -117,7 +121,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
             else if (!string.IsNullOrEmpty(this.Role))
             {
-                //exact match only allowed at this time. Listing users in multiple roles would require
+                // exact match only allowed at this time. Listing users in multiple roles would require
                 // 1) getting all ID's of roles matching search phrase;
                 // 2) getting all users in each of those roles;
                 // 3) de-duplicating the users list;
@@ -150,10 +154,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
-                    PageSize = max
+                    PageSize = max,
                 },
                 Records = usersList?.Count ?? 0,
-                Output = usersList?.Count == 0 ? this.LocalizeString("noUsers") : ""
+                Output = usersList?.Count == 0 ? this.LocalizeString("noUsers") : "",
             };
         }
 

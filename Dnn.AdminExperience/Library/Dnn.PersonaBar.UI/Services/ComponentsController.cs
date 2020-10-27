@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Globalization;
+
 using DotNetNuke.Common;
 
 namespace Dnn.PersonaBar.UI.Services
@@ -121,10 +122,10 @@ namespace Dnn.PersonaBar.UI.Services
                 }
 
                 var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
-                    {
-                        Value = r.RoleID,
-                        Label = r.RoleName
-                    });
+                {
+                    Value = r.RoleID,
+                    Label = r.RoleName,
+                });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }

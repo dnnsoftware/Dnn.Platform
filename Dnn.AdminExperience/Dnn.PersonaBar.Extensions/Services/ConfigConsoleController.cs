@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
                 {
                     Success = true,
                     Results = configFileList,
-                    TotalResults = configFileList.Count()
+                    TotalResults = configFileList.Count(),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
                 var response = new
                 {
                     FileName = fileName,
-                    FileContent = fileContent
+                    FileContent = fileContent,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

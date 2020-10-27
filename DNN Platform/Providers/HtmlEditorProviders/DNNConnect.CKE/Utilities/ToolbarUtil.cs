@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+
 using DNNConnect.CKEditorProvider.Constants;
 using DNNConnect.CKEditorProvider.Objects;
 using DotNetNuke.Common;
@@ -17,7 +18,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 {
 
     /// <summary>
-    /// Toolbar Helper Class
+    /// Toolbar Helper Class.
     /// </summary>
     public class ToolbarUtil
     {
@@ -27,7 +28,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// Loads the tool bar buttons.
         /// </summary>
         /// <param name="homeDirPath">The home folder path.</param>
-        /// <returns>Returns the Toolbar Button List</returns>
+        /// <returns>Returns the Toolbar Button List.</returns>
         public static List<ToolbarButton> LoadToolBarButtons(string homeDirPath)
         {
             List<ToolbarButton> buttons;
@@ -60,7 +61,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// Converts the string to toolbar set.
         /// </summary>
         /// <param name="inputString">The input string.</param>
-        /// <returns>Returns the ToolbarSet</returns>
+        /// <returns>Returns the ToolbarSet.</returns>
         public static ToolbarSet ConvertStringToToolbarSet(string inputString)
         {
             inputString = inputString.Replace(" ", string.Empty).Replace("\"", "'");
@@ -80,10 +81,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         matchOld.Groups["group"].Value.Replace("'", string.Empty).Replace(" ", string.Empty).Split(',');
 
                     var toolBarGroup = new ToolbarGroup
-                                           {
-                                               items = new List<string>(),
-                                               name = string.Format("Group{0}", groupId)
-                                           };
+                    {
+                        items = new List<string>(),
+                        name = string.Format("Group{0}", groupId),
+                    };
 
                     foreach (string s in group)
                     {
@@ -125,7 +126,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="toolbarSet">The toolbar set.</param>
         /// <param name="convertRowBreak">if set to <c>true</c> [convert row break].</param>
         /// <returns>
-        /// Returns the Toolbar set as string
+        /// Returns the Toolbar set as string.
         /// </returns>
         public static string ConvertToolbarSetToString(ToolbarSet toolbarSet, bool convertRowBreak = false)
         {
@@ -166,7 +167,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Create Default Toolbar Button xml File
+        /// Create Default Toolbar Button xml File.
         /// </summary>
         /// <param name="savePath">The save path.</param>
         public static void CreateDefaultToolbarButtonXml(string savePath)
@@ -177,391 +178,391 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                              {
                                                                  ToolbarName = "Source",
                                                                  ToolbarIcon =
-                                                                     "Source.png"
+                                                                     "Source.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Save",
                                                                  ToolbarIcon =
-                                                                     "Save.png"
+                                                                     "Save.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "NewPage",
                                                                  ToolbarIcon =
-                                                                     "NewPage.png"
+                                                                     "NewPage.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Preview",
                                                                  ToolbarIcon =
-                                                                     "Preview.png"
+                                                                     "Preview.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Print",
                                                                  ToolbarIcon =
-                                                                     "Print.png"
+                                                                     "Print.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "Templates",
                                                                  ToolbarIcon =
-                                                                     "Templates.png"
+                                                                     "Templates.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Cut",
-                                                                 ToolbarIcon = "Cut.png"
+                                                                 ToolbarIcon = "Cut.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Copy",
                                                                  ToolbarIcon =
-                                                                     "Copy.png"
+                                                                     "Copy.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Paste",
                                                                  ToolbarIcon =
-                                                                     "Paste.png"
+                                                                     "Paste.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "PasteText",
                                                                  ToolbarIcon =
-                                                                     "PasteText.png"
+                                                                     "PasteText.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "PasteFromWord",
                                                                  ToolbarIcon =
-                                                                     "PasteFromWord.png"
+                                                                     "PasteFromWord.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Undo",
                                                                  ToolbarIcon =
-                                                                     "Undo.png"
+                                                                     "Undo.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Redo",
                                                                  ToolbarIcon =
-                                                                     "Redo.png"
+                                                                     "Redo.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Find",
                                                                  ToolbarIcon =
-                                                                     "Find.png"
+                                                                     "Find.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Replace",
                                                                  ToolbarIcon =
-                                                                     "Replace.png"
+                                                                     "Replace.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "SelectAll",
                                                                  ToolbarIcon =
-                                                                     "SelectAll.png"
+                                                                     "SelectAll.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Scayt",
                                                                  ToolbarIcon =
-                                                                     "SpellChecker.png"
+                                                                     "SpellChecker.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Bold",
                                                                  ToolbarIcon =
-                                                                     "Bold.png"
+                                                                     "Bold.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Italic",
                                                                  ToolbarIcon =
-                                                                     "Italic.png"
+                                                                     "Italic.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "Underline",
                                                                  ToolbarIcon =
-                                                                     "Underline.png"
+                                                                     "Underline.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Strike",
                                                                  ToolbarIcon =
-                                                                     "Strike.png"
+                                                                     "Strike.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "Subscript",
                                                                  ToolbarIcon =
-                                                                     "Subscript.png"
+                                                                     "Subscript.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "Superscript",
                                                                  ToolbarIcon =
-                                                                     "Superscript.png"
+                                                                     "Superscript.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "RemoveFormat",
                                                                  ToolbarIcon =
-                                                                     "RemoveFormat.png"
+                                                                     "RemoveFormat.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "NumberedList",
                                                                  ToolbarIcon =
-                                                                     "NumberedList.png"
+                                                                     "NumberedList.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "BulletedList",
                                                                  ToolbarIcon =
-                                                                     "BulletedList.png"
+                                                                     "BulletedList.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Outdent",
                                                                  ToolbarIcon =
-                                                                     "Outdent.png"
+                                                                     "Outdent.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Indent",
                                                                  ToolbarIcon =
-                                                                     "Indent.png"
+                                                                     "Indent.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "Blockquote",
                                                                  ToolbarIcon =
-                                                                     "Blockquote.png"
+                                                                     "Blockquote.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "CreateDiv",
                                                                  ToolbarIcon =
-                                                                     "CreateDiv.png"
+                                                                     "CreateDiv.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "JustifyLeft",
                                                                  ToolbarIcon =
-                                                                     "JustifyLeft.png"
+                                                                     "JustifyLeft.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "JustifyCenter",
                                                                  ToolbarIcon =
-                                                                     "JustifyCenter.png"
+                                                                     "JustifyCenter.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "JustifyRight",
                                                                  ToolbarIcon =
-                                                                     "JustifyRight.png"
+                                                                     "JustifyRight.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "JustifyBlock",
                                                                  ToolbarIcon =
-                                                                     "JustifyBlock.png"
+                                                                     "JustifyBlock.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "BidiLtr",
                                                                  ToolbarIcon =
-                                                                     "BidiLtr.png"
+                                                                     "BidiLtr.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "BidiRtl",
                                                                  ToolbarIcon =
-                                                                     "BidiRtl.png"
+                                                                     "BidiRtl.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Link",
                                                                  ToolbarIcon =
-                                                                     "Link.png"
+                                                                     "Link.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Unlink",
                                                                  ToolbarIcon =
-                                                                     "Unlink.png"
+                                                                     "Unlink.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Anchor",
                                                                  ToolbarIcon =
-                                                                     "Anchor.png"
+                                                                     "Anchor.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Image",
                                                                  ToolbarIcon =
-                                                                     "Image.png"
+                                                                     "Image.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Flash",
                                                                  ToolbarIcon =
-                                                                     "Flash.png"
+                                                                     "Flash.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Table",
                                                                  ToolbarIcon =
-                                                                     "Table.png"
+                                                                     "Table.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "HorizontalRule",
                                                                  ToolbarIcon =
-                                                                     "HorizontalRule.png"
+                                                                     "HorizontalRule.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Smiley",
                                                                  ToolbarIcon =
-                                                                     "Smiley.png"
+                                                                     "Smiley.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "SpecialChar",
                                                                  ToolbarIcon =
-                                                                     "SpecialChar.png"
+                                                                     "SpecialChar.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "PageBreak",
                                                                  ToolbarIcon =
-                                                                     "PageBreak.png"
+                                                                     "PageBreak.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Styles",
                                                                  ToolbarIcon =
-                                                                     "Styles.png"
+                                                                     "Styles.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Format",
                                                                  ToolbarIcon =
-                                                                     "Format.png"
+                                                                     "Format.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Font",
                                                                  ToolbarIcon =
-                                                                     "Font.png"
+                                                                     "Font.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "FontSize",
                                                                  ToolbarIcon =
-                                                                     "FontSize.png"
+                                                                     "FontSize.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "TextColor",
                                                                  ToolbarIcon =
-                                                                     "TextColor.png"
+                                                                     "TextColor.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "BGColor",
                                                                  ToolbarIcon =
-                                                                     "BGColor.png"
+                                                                     "BGColor.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "Maximize",
                                                                  ToolbarIcon =
-                                                                     "Maximize.png"
+                                                                     "Maximize.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "ShowBlocks",
                                                                  ToolbarIcon =
-                                                                     "ShowBlocks.png"
+                                                                     "ShowBlocks.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "About",
                                                                  ToolbarIcon =
-                                                                     "About.png"
+                                                                     "About.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Iframe",
                                                                  ToolbarIcon =
-                                                                     "Iframe.png"
+                                                                     "Iframe.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "Mathjax",
                                                                  ToolbarIcon =
-                                                                     "mathjax.png"
+                                                                     "mathjax.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "oembed",
                                                                  ToolbarIcon =
-                                                                     "oEmbed.png"
+                                                                     "oEmbed.png",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName =
                                                                      "syntaxhighlight",
                                                                  ToolbarIcon =
-                                                                     "syntaxhighlight.gif"
+                                                                     "syntaxhighlight.gif",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "qrcodes",
                                                                  ToolbarIcon =
-                                                                     "qrcodes.jpg"
+                                                                     "qrcodes.jpg",
                                                              },
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "-",
                                                                  ToolbarIcon =
                                                                      "separator.png"
-                                                             }
+                                                             },
                                                      };
 
             // Save the file
@@ -579,7 +580,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// Gets the default toolbar.
         /// </summary>
         /// <param name="toolbarName">Name of the toolbar.</param>
-        /// <returns>Gets the Default Toolbar Based on the toolbarName</returns>
+        /// <returns>Gets the Default Toolbar Based on the toolbarName.</returns>
         public static ToolbarSet GetDefaultToolbar(string toolbarName)
         {
             switch (toolbarName)
@@ -590,8 +591,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                         // Basic Toolbar
                         var toolBarGroup = new ToolbarGroup
-                                               {
-                                                   items =
+                        {
+                            items =
                                                        new List<string>
                                                            {
                                                                "Bold",
@@ -606,10 +607,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                                "Mathjax",
                                                                "oembed",
                                                                "-",
-                                                               "About"
+                                                               "About",
                                                            },
-                                                   name = "basicset"
-                                               };
+                            name = "basicset",
+                        };
 
                         toolbarSetBasic.ToolbarGroups.Add(toolBarGroup);
 
@@ -622,8 +623,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         // Standard Toolbar
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "Cut",
@@ -633,21 +634,21 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "PasteFromWord",
                                                 "-",
                                                 "Undo",
-                                                "Redo"
+                                                "Redo",
                                             },
-                                    name = "clipboard"
-                                });
+                                name = "clipboard",
+                            });
 
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "Link", "Unlink", "Anchor" }, name = "link" });
 
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string> { "Image", "Mathjax", "oembed", "HorizontalRule" },
-                                    name = "insert"
-                                });
+                                name = "insert",
+                            });
 
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "Maximize" }, name = "tools" });
@@ -660,15 +661,15 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items = new List<string> { "Bold", "Italic", "Strike", "RemoveFormat" },
-                                    name = "basicstyles"
-                                });
+                            {
+                                items = new List<string> { "Bold", "Italic", "Strike", "RemoveFormat" },
+                                name = "basicstyles",
+                            });
 
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "NumberedList",
@@ -676,10 +677,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "-",
                                                 "Outdent",
                                                 "Indent",
-                                                "Blockquote"
+                                                "Blockquote",
                                             },
-                                    name = "paragraph"
-                                });
+                                name = "paragraph",
+                            });
 
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "Styles" }, name = "styles" });
@@ -699,8 +700,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         // Full Toolbar
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "Source",
@@ -708,15 +709,15 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "Preview",
                                                 "Print",
                                                 "-",
-                                                "Templates"
+                                                "Templates",
                                             },
-                                    name = "document"
-                                });
+                                name = "document",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "Cut",
@@ -726,39 +727,39 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "PasteFromWord",
                                                 "-",
                                                 "Undo",
-                                                "Redo"
+                                                "Redo",
                                             },
-                                    name = "clipboard"
-                                });
+                                name = "clipboard",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "Find",
                                                 "Replace",
                                                 "-",
-                                                "SelectAll"
+                                                "SelectAll",
                                             },
-                                    name = "editing"
-                                });
+                                name = "editing",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items = new List<string> { "Maximize", "ShowBlocks", "-", "About" },
-                                    name = "tools"
-                                });
+                            {
+                                items = new List<string> { "Maximize", "ShowBlocks", "-", "About" },
+                                name = "tools",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak" });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "NumberedList",
@@ -775,18 +776,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "JustifyBlock",
                                                 "-",
                                                 "BidiLtr",
-                                                "BidiRtl"
+                                                "BidiRtl",
                                             },
-                                    name = "paragraph"
-                                });
+                                name = "paragraph",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "Link", "Unlink", "Anchor" }, name = "links" });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "Image",
@@ -798,18 +799,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "Smiley",
                                                 "SpecialChar",
                                                 "PageBreak",
-                                                "Iframe"
+                                                "Iframe",
                                             },
-                                    name = "insert"
-                                });
+                                name = "insert",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak" });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items =
+                            {
+                                items =
                                         new List<string>
                                             {
                                                 "Bold",
@@ -819,17 +820,17 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "Subscript",
                                                 "Superscript",
                                                 "-",
-                                                "RemoveFormat"
+                                                "RemoveFormat",
                                             },
-                                    name = "basicstyles"
-                                });
+                                name = "basicstyles",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
-                                {
-                                    items = new List<string> { "Styles", "Format", "Font", "FontSize" },
-                                    name = "styles"
-                                });
+                            {
+                                items = new List<string> { "Styles", "Format", "Font", "FontSize" },
+                                name = "styles",
+                            });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "TextColor", "BGColor" }, name = "colors" });
@@ -843,7 +844,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Create Default ToolbarSet xml File
+        /// Create Default ToolbarSet xml File.
         /// </summary>
         /// <param name="savePath">
         /// The save path.
@@ -854,7 +855,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                        {
                                            GetDefaultToolbar("Basic"),
                                            GetDefaultToolbar("Standard"),
-                                           GetDefaultToolbar("Full")
+                                           GetDefaultToolbar("Full"),
                                        };
 
             var serializer = new XmlSerializer(typeof(List<ToolbarSet>));
@@ -872,16 +873,16 @@ namespace DNNConnect.CKEditorProvider.Utilities
         #region Methods
 
         /// <summary>
-        /// Find the Toolbar Set with the x Value
+        /// Find the Toolbar Set with the x Value.
         /// </summary>
         /// <param name="toolbars">
-        /// Toolbar List to Search in
+        /// Toolbar List to Search in.
         /// </param>
         /// <param name="maxPriority">
-        /// The Value of the Priority
+        /// The Value of the Priority.
         /// </param>
         /// <returns>
-        /// The Toolbar Set List
+        /// The Toolbar Set List.
         /// </returns>
         internal static ToolbarSet FindHighestToolbar(List<ToolbarSet> toolbars, int maxPriority)
         {
@@ -889,16 +890,16 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Get Toolbar Sets from the Serialized Xml File
+        /// Get Toolbar Sets from the Serialized Xml File.
         /// </summary>
         /// <param name="homeDirPath">
-        /// Current Portal Home directory
+        /// Current Portal Home directory.
         /// </param>
         /// <param name="alternateConfigSubFolder">
         /// The alternate config sub folder.
         /// </param>
         /// <returns>
-        /// The Toolbar Set List
+        /// The Toolbar Set List.
         /// </returns>
         internal static List<ToolbarSet> GetToolbars(string homeDirPath, string alternateConfigSubFolder)
         {
@@ -1013,9 +1014,9 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Save Toolbar Set list as serialized Xml File
+        /// Save Toolbar Set list as serialized Xml File.
         /// </summary>
-        /// <param name="toolBarSets">The Toolbar Set list</param>
+        /// <param name="toolBarSets">The Toolbar Set list.</param>
         /// <param name="homeDirPath">The home directory path.</param>
         internal static void SaveToolbarSets(List<ToolbarSet> toolBarSets, string homeDirPath)
         {

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using DNNConnect.CKEditorProvider.Objects;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -95,7 +96,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <summary>
         /// Gets the editor host settings.
         /// </summary>
-        /// <returns>Returns the list of all Editor Host Settings</returns>
+        /// <returns>Returns the list of all Editor Host Settings.</returns>
         public static List<EditorHostSetting> GetEditorHostSettings()
         {
             var editorHostSettings = new List<EditorHostSetting>();

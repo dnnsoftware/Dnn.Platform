@@ -46,6 +46,7 @@ namespace Dnn.PersonaBar.Security.Components
         }
 
         public SeverityEnum Severity { get; set; }
+
         public string CheckName { get; set; }
 
         public IList<String> Notes { get; set; }

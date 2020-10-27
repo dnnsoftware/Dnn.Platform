@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Journal
         public FilesStatus()
         {
         } // ReSharper disable InconsistentNaming
+
         public bool success { get; set; }
 
         public string name { get; set; }

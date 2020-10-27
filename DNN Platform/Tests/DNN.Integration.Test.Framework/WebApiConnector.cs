@@ -615,8 +615,8 @@ namespace DNN.Integration.Test.Framework
         private static string QueryStringFromObject(object query)
         {
             var properties = from p in query.GetType().GetProperties()
-                where p.GetValue(query, null) != null
-                select p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(query, null).ToString());
+                             where p.GetValue(query, null) != null
+                             select p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(query, null).ToString());
 
             return string.Join("&", properties.ToArray());
         }

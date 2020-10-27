@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     public class DownloadPackageDto
     {
         public string PackageType { get; set; }
+
         public string FileName { get; set; }
     }
 }

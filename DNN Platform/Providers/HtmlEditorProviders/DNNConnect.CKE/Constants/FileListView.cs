@@ -5,7 +5,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     /// <summary>
-    /// File List View Mode
+    /// File List View Mode.
     /// </summary>
     public enum FileListView
     {
@@ -22,6 +22,6 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// List View Type Icons View
         /// </summary>
-        IconsView = 2
+        IconsView = 2,
     }
 }

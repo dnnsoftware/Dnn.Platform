@@ -33,6 +33,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private int UserId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

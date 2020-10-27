@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System.Runtime.Serialization;
+
     using DotNetNuke.Common;
 
     [DataContract]

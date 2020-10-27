@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             if (isDeleted)
             {
-                // We must clear User cache or else, when the user is 'removed' (so it can't be restored), you 
+                // We must clear User cache or else, when the user is 'removed' (so it can't be restored), you
                 // will not be able to create a new user with the same username -- even though no user with that username
                 // exists.
                 DataCache.ClearUserCache(userInfo.PortalID, userInfo.Username);

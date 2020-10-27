@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                 AutoAssignment = autoAssign,
                 Status = status,
                 RoleGroupID = roleGroupId,
-                SecurityMode = SecurityMode.SecurityRole
+                SecurityMode = SecurityMode.SecurityRole,
             };
 
             var newRoleId = RoleController.Instance.AddRole(ri);

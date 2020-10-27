@@ -301,6 +301,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public class MyTabModuleSettingsRepository : SettingsRepository<MyTabModuleSettings>
-        {}
+        {
+        }
     }
 }

@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Authorized = user.Membership.Approved,
                 HasAgreedToTerms = user.HasAgreedToTerms,
                 RequestsRemoval = user.RequestsRemoval,
-                IsSuperUser = user.IsSuperUser
+                IsSuperUser = user.IsSuperUser,
             };
         }
 
@@ -112,7 +112,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Authorized = user.Authorized,
                 HasAgreedToTerms = user.HasAgreedToTerms,
                 RequestsRemoval = user.RequestsRemoval,
-                IsSuperUser = user.IsSuperUser
+                IsSuperUser = user.IsSuperUser,
             };
         }
     }

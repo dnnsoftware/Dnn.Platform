@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             var success = true;
             resultmessage = null;
 
-            //if parent of the page is deleted, then can't restore - parent should be restored first
+            // if parent of the page is deleted, then can't restore - parent should be restored first
             var totalRecords = 0;
             var deletedTabs = this.GetDeletedTabs(out totalRecords);
             if (!Null.IsNull(tab.ParentId) && deletedTabs.Any(t => t.TabID == tab.ParentId))
@@ -139,7 +139,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             {
                 this._tabController.RestoreTab(tab, PortalSettings);
 
-                //restore modules in this tab
+                // restore modules in this tab
                 var tabdeletedModules = this.GetDeletedModules(out totalRecords).Where(m => m.TabID == tab.TabID);
 
                 foreach (var m in tabdeletedModules)
@@ -211,8 +211,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                 .Cast<ModuleInfo>()
                 .Where(module => module.IsDeleted && (
                     TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) ||
-                    ModulePermissionController.CanDeleteModule(module))
-                );
+                    ModulePermissionController.CanDeleteModule(module)));
             totalRecords = deletedModules.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedModules.ToList() : deletedModules.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
@@ -282,16 +281,16 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     errors.Append(string.Format(this.LocalizeString("Service_RemoveTabWithChildError"), tab.TabName));
                     return;
                 }
-                //get tab modules before deleting page
+                // get tab modules before deleting page
                 var tabModules = this._moduleController.GetTabModules(tab.TabID);
 
-                //hard delete the tab
+                // hard delete the tab
                 this._tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
 
-                //delete modules that do not have other instances
+                // delete modules that do not have other instances
                 foreach (var kvp in tabModules)
                 {
-                    //check if all modules instances have been deleted
+                    // check if all modules instances have been deleted
                     var delModule = this._moduleController.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
                     if (delModule == null || delModule.TabID == Null.NullInteger)
                     {
@@ -329,7 +328,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             {
                 Logger.Error(exc);
             }
-            //hard-delete Tab Module Instance
+            // hard-delete Tab Module Instance
         }
 
         /// <summary>

@@ -26,11 +26,11 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserProfile : IIndexable
     {
-        #pragma warning disable SA1310 // Field names should not contain underscore
-        #pragma warning disable SA1600 // Elements should be documented
-                // Name properties
-                [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v11.0.0")]
-                public const string USERPROFILE_FirstName = UserProfileFirstName;
+#pragma warning disable SA1310 // Field names should not contain underscore
+#pragma warning disable SA1600 // Elements should be documented
+        // Name properties
+        [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v11.0.0")]
+        public const string USERPROFILE_FirstName = UserProfileFirstName;
         [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v11.0.0")]
         public const string USERPROFILE_LastName = UserProfileLastName;
         [Obsolete("Deprectated in v9.8. Use the properties on this class instead. Scheduled removal in v11.0.0")]

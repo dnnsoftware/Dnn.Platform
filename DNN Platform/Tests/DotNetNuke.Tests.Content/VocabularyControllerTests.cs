@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Content
 {
     using System;
     using System.Linq;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Abstractions.Application;

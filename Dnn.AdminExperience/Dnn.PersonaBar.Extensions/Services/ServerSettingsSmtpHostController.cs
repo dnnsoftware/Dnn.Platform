@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpUserName = HostController.Instance.GetString("SMTPUsername"),
                         smtpPassword = GetSmtpPassword(),
                         smtpHostEmail = HostController.Instance.GetString("HostEmail"),
-                        messageSchedulerBatchSize = Host.MessageSchedulerBatchSize
+                        messageSchedulerBatchSize = Host.MessageSchedulerBatchSize,
                     },
                     site = new
                     {
@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0"),
                         enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
-                        smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey())
+                        smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey()),
                     },
                     portalName = PortalSettings.Current.PortalName,
                     hideCoreSettings = ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes.GetValueOrDefault("hideCoreSettings", false),

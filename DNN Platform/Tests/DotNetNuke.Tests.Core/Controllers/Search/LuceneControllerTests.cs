@@ -31,6 +31,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using Moq;
 
     using NUnit.Framework;
+
     using Directory = System.IO.Directory;
 
     /// <summary>

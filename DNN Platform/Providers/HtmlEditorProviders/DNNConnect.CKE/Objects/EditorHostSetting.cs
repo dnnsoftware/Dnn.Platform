@@ -7,7 +7,7 @@ using System;
 namespace DNNConnect.CKEditorProvider.Objects
 {
     /// <summary>
-    /// A Editor Host Setting Item
+    /// A Editor Host Setting Item.
     /// </summary>
     [Serializable]
     public class EditorHostSetting
@@ -21,8 +21,8 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="settingValue">The setting value.</param>
         public EditorHostSetting(string settingName, string settingValue)
         {
-            Name = settingName;
-            Value = settingValue;
+            this.Name = settingName;
+            this.Value = settingValue;
         }
 
         /// <summary>
