@@ -52,9 +52,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Gets a unique key to identify this entry which includes the parents keys and this item name.
-        /// </summary>
+        /// <summary>Gets a unique key to identify this list, which includes the <see cref="ParentKey"/> and this list's <see cref="Name"/>.</summary>
         public string Key
         {
             get
