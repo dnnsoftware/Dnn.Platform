@@ -82,9 +82,7 @@ namespace DotNetNuke.Common.Lists
         /// </summary>
         public int EntryCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the list is populated.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether this instance is populated.</summary>
         public bool IsPopulated { get; set; }
 
         /// <summary>
