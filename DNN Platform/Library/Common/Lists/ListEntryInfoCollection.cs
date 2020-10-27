@@ -65,9 +65,7 @@ namespace DotNetNuke.Common.Lists
             return (ListEntryInfo)this.List[index];
         }
 
-        /// <summary>
-        /// Gets the children by it's parent name.
-        /// </summary>
+        /// <summary>Gets the children by its parent name.</summary>
         /// <param name="parentName">The name of the parent.</param>
         /// <returns>A single list entry.</returns>
         public ListEntryInfo GetChildren(string parentName)
