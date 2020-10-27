@@ -110,7 +110,7 @@ namespace DotNetNuke.Common.Lists
         }
 
         /// <summary>
-        /// Deletes a a list.
+        /// Deletes a list.
         /// </summary>
         /// <param name="listName">The name of the list to deleted.</param>
         /// <param name="parentKey">The parent key for the list to delete.</param>
