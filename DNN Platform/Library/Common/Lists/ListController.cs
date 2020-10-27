@@ -194,12 +194,10 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
-        /// <summary>
-        /// Deletes a list entry by it's name.
-        /// </summary>
+        /// <summary>Deletes a list entry by its name.</summary>
         /// <param name="listName">The name of the list entry.</param>
         /// <param name="listValue">The value of the list entry.</param>
-        /// <param name="deleteChild">A value indicating wheter to also delete the childrens of that item.</param>
+        /// <param name="deleteChild">A value indicating whether to also delete the children of that item.</param>
         public void DeleteListEntryByListName(string listName, string listValue, bool deleteChild)
         {
             ListEntryInfo entry = this.GetListEntryInfo(listName, listValue);
