@@ -19,10 +19,8 @@ namespace DotNetNuke.Services.Analytics
     /// Module:     GoogleAnalytics
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Controller class definition for GoogleAnalytics which handles upgrades.
+    ///   Controller class definition for GoogleTagManager which handles upgrades.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     /// -----------------------------------------------------------------------------
     public class GoogleTagManagerController
     {
@@ -30,23 +28,19 @@ namespace DotNetNuke.Services.Analytics
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Handles module upgrades includes a new Google Analytics Asychronous script.
+        ///   Handles module upgrades includes a new Google Tag Manager Asychronous script.
         /// </summary>
-        /// <param name = "Version"></param>
-        /// <remarks>
-        /// </remarks>
+        /// <param name = "version">Target Version number for the upgrade.</param>
         /// -----------------------------------------------------------------------------
-        public void UpgradeModule(string Version)
+        public void UpgradeModule(string version)
         {
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Retrieves the Google Analytics config file, "SiteAnalytics.config".
+        ///   Retrieves the Google Tag Manager config file, "GoogleTagManager.config".
         /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
+        /// <returns>Streamreader for the Google Tag Manager config file.</returns>
         /// -----------------------------------------------------------------------------
         private StreamReader GetConfigFile()
         {
