@@ -246,9 +246,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntries(listName, Null.NullInteger);
         }
 
-        /// <summary>
-        /// Gets multiple list entries.
-        /// </summary>
+        /// <summary>Gets the entries in a child list.</summary>
         /// <param name="listName">The list name.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <returns>An enumeration of list entries.</returns>
