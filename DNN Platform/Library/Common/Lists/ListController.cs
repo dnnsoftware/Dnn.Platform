@@ -77,7 +77,7 @@ namespace DotNetNuke.Common.Lists
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
-            if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && UnLocalizableLists.Contains(listEntry.ListName))
+            if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !UnLocalizableLists.Contains(listEntry.ListName))
             {
                 if (string.IsNullOrEmpty(listEntry.ParentKey))
                 {
