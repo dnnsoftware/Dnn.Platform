@@ -37,9 +37,7 @@ namespace DotNetNuke.Common.Lists
             this.Name = name;
         }
 
-        /// <summary>
-        /// Gets the display name which includes the parents names and this entry name.
-        /// </summary>
+        /// <summary>Gets the display name, which includes the <see cref="Parent"/> list and this list's <see cref="Name"/>.</summary>
         public string DisplayName
         {
             get
