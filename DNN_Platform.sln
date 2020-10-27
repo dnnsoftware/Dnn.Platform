@@ -76,6 +76,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client Capability", "Client
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{973A675B-1CF8-42E0-8566-09B4EFD3E83E}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Tests\.editorconfig = DNN Platform\Tests\.editorconfig
 		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
 	EndProjectSection
 EndProject
@@ -488,6 +489,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Dnn.Ad
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}"
+	ProjectSection(SolutionItems) = preProject
+		Dnn.AdminExperience\Tests\.editorconfig = Dnn.AdminExperience\Tests\.editorconfig
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages.Tests", "Dnn.AdminExperience\Tests\Dnn.PersonaBar.Pages.Tests\Dnn.PersonaBar.Pages.Tests.csproj", "{05515510-9979-4424-8D0A-647F32A25FE7}"
 EndProject
