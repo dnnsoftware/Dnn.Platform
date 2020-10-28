@@ -54,7 +54,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// </remarks>
     public partial class Login : UserModuleBase
     {
-        private const string LOGIN_PATH = "/login";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
 
         private static readonly Regex UserLanguageRegex = new Regex(
@@ -80,8 +79,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             get
             {
                 var redirectURL = string.Empty;
-
-                var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
 
                 // first we need to check if there is a returnurl
                 if (this.Request.QueryString["returnurl"] != null)
@@ -120,12 +117,16 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
-                    if (
-                        this.NeedRedirectAfterLogin
-                        && (isDefaultPage || this.IsRedirectingFromLoginUrl())
-                        && Convert.ToInt32(setting) != Null.NullInteger)
+                    var redirectAfterLogin = Convert.ToString(GetSetting(this.PortalId, "Redirect_AfterLogin"));
+
+                    if (!int.TryParse(redirectAfterLogin, out var redirectAfterLoginTabId))
                     {
-                        redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
+                        redirectAfterLoginTabId = Null.NullInteger;
+                    }
+
+                    if (this.NeedRedirectAfterLogin && redirectAfterLoginTabId != Null.NullInteger)
+                    {
+                        redirectURL = this._navigationManager.NavigateURL(redirectAfterLoginTabId);
                     }
                     else
                     {
@@ -796,23 +797,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
                 : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
             return returnValue;
-        }
-
-        private string GetLoginPath()
-        {
-            if (this.PortalSettings.LoginTabId == Null.NullInteger)
-            {
-                return LOGIN_PATH;
-            }
-
-            var tab = TabController.Instance.GetTab(this.PortalSettings.LoginTabId, this.PortalId);
-            return tab != null ? new Uri(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId), UriKind.RelativeOrAbsolute).LocalPath : LOGIN_PATH;
-        }
-
-        private bool IsRedirectingFromLoginUrl()
-        {
-            return this.Request.UrlReferrer != null &&
-                this.Request.UrlReferrer.LocalPath.EndsWith(GetLoginPath(), StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)
