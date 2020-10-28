@@ -4,23 +4,25 @@
 
 namespace DotNetNuke.UI.Modules
 {
-    using System;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules;
 
     public class WebFormsModuleControlFactory : BaseModuleControlFactory
     {
+        /// <inheritdoc/>
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return ControlUtilities.LoadControl<Control>(containerControl, controlSrc);
         }
 
+        /// <inheritdoc/>
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return this.CreateControl(containerControl, string.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
+        /// <inheritdoc/>
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return this.CreateControl(containerControl, string.Empty, controlSrc);

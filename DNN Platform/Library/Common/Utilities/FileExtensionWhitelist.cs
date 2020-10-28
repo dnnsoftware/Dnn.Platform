@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -92,6 +91,7 @@ namespace DotNetNuke.Common.Utilities
             return allExtensions.Contains(extension);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return this.ToDisplayString();

@@ -47,6 +47,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
             this._DisplayMode = eventArgument;

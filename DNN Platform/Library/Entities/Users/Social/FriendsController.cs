@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Users.Social
 
     public class FriendsController : ServiceLocator<IFriendsController, FriendsController>
     {
+        /// <inheritdoc/>
         protected override Func<IFriendsController> GetFactory()
         {
             return () => new FriendsControllerImpl();

@@ -432,6 +432,9 @@
   <data name="PageType.Text" xml:space="preserve">
     <value>Page Type</value>
   </data>
+  <data name="PageId.Text" xml:space="preserve">
+    <value>Page ID</value>
+  </data>
   <data name="Standard.Text" xml:space="preserve">
     <value>Standard</value>
   </data>

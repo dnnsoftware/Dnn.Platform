@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Framework
 {
-    using System;
     using System.Linq;
     using System.Web.UI;
 
@@ -69,6 +68,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         protected override void RegisterAjaxScript()
         {
             if (this.Page.Form != null)

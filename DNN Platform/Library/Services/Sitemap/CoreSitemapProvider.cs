@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Sitemap
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Web;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;

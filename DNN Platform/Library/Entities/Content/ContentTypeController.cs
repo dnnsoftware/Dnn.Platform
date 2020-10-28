@@ -33,11 +33,18 @@ namespace DotNetNuke.Entities.Content
     {
         private readonly IDataService _DataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentTypeController"/> class.
+        /// </summary>
         public ContentTypeController()
             : this(Util.GetDataService())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentTypeController"/> class.
+        /// </summary>
+        /// <param name="dataService"></param>
         public ContentTypeController(IDataService dataService)
         {
             this._DataService = dataService;

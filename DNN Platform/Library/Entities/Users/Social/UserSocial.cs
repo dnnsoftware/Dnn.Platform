@@ -5,7 +5,6 @@ namespace DotNetNuke.Entities.Users.Social
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Xml.Serialization;
 
@@ -29,6 +28,10 @@ namespace DotNetNuke.Entities.Users.Social
         private IList<UserRelationship> _userRelationships;
         private IList<UserRoleInfo> _roles;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserSocial"/> class.
+        /// </summary>
+        /// <param name="userInfo"></param>
         public UserSocial(UserInfo userInfo)
         {
             this._userInfo = userInfo;

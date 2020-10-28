@@ -22,11 +22,15 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:CheckEditControl runat=server></{0}:CheckEditControl>")]
     public class CheckEditControl : TrueFalseEditControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckEditControl"/> class.
+        /// </summary>
         public CheckEditControl()
         {
             this.SystemType = "System.Boolean";
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             string postedValue = postCollection[postDataKey];
@@ -45,6 +49,7 @@ namespace DotNetNuke.UI.WebControls
             return false;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -54,6 +59,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
@@ -74,6 +80,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
+        /// <inheritdoc/>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");

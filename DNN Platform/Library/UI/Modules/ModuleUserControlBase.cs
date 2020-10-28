@@ -8,28 +8,20 @@ namespace DotNetNuke.UI.Modules
 
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Modules
-    /// Class    : ModuleUserControlBase
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleUserControlBase is a base class for Module Controls that inherits from the
     /// UserControl base class.  As with all MontrolControl base classes it implements
     /// IModuleControl.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class ModuleUserControlBase : UserControl, IModuleControl
     {
-        private string _localResourceFile;
-        private ModuleInstanceContext _moduleContext;
+        private string localResourceFile;
+        private ModuleInstanceContext moduleContext;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the underlying base control for this ModuleControl.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public Control Control
         {
             get
@@ -38,12 +30,10 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Path for this control (used primarily for UserControls).
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlPath
         {
             get
@@ -52,12 +42,10 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Name for this control.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlName
         {
             get
@@ -66,43 +54,39 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Module Context for this control.
         /// </summary>
         /// <returns>A ModuleInstanceContext.</returns>
-        /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
             get
             {
-                if (this._moduleContext == null)
+                if (this.moduleContext == null)
                 {
-                    this._moduleContext = new ModuleInstanceContext(this);
+                    this.moduleContext = new ModuleInstanceContext(this);
                 }
 
-                return this._moduleContext;
+                return this.moduleContext;
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the local resource file for this control.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ID);
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -110,15 +94,25 @@ namespace DotNetNuke.UI.Modules
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
+        /// <summary>
+        /// Gets a localized string value from a key.
+        /// </summary>
+        /// <param name="key">The key to find the localized value.</param>
+        /// <returns>The localized value.</returns>
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
+        /// <summary>
+        /// Gets a localized string with special characters escape for safe use in javascript.
+        /// </summary>
+        /// <param name="key">The key to find the localized value.</param>
+        /// <returns>The localized text cleaned up for javascript usage.</returns>
         protected string LocalizeSafeJsString(string key)
         {
             return Localization.GetSafeJSString(key, this.LocalResourceFile);

@@ -12,6 +12,9 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageGreyScaleTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageGreyScaleTransform"/> class.
+        /// </summary>
         public ImageGreyScaleTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

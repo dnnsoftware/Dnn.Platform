@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Exceptions
 {
     using System;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
     using System.Xml.Serialization;
 
     using DotNetNuke.Entities.Modules;
@@ -19,11 +18,18 @@ namespace DotNetNuke.Services.Exceptions
         private int m_ModuleId;
 
         // default constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
+        /// </summary>
         public ModuleLoadException()
         {
         }
 
         // constructor with exception message
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
         public ModuleLoadException(string message)
             : base(message)
         {
@@ -31,6 +37,12 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
+        /// <param name="ModuleConfiguration"></param>
         public ModuleLoadException(string message, Exception inner, ModuleInfo ModuleConfiguration)
             : base(message, inner)
         {
@@ -39,12 +51,22 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with message and inner exception
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public ModuleLoadException(string message, Exception inner)
             : base(message, inner)
         {
             this.InitilizePrivateVariables();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected ModuleLoadException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

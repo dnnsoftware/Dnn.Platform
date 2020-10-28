@@ -6,10 +6,6 @@ namespace DotNetNuke.Services.ClientCapability
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
-    using DotNetNuke.Services.ClientCapability;
 
     /// <summary>
     /// Default Implementation of IClientCapability.

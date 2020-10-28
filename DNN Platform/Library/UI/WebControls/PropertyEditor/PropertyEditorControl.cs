@@ -35,6 +35,9 @@ namespace DotNetNuke.UI.WebControls
         private bool _itemChanged;
         private Hashtable _sections;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyEditorControl"/> class.
+        /// </summary>
         public PropertyEditorControl()
         {
             this.VisibilityStyle = new Style();
@@ -338,6 +341,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get

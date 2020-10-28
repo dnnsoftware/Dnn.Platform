@@ -7,19 +7,11 @@ namespace DotNetNuke.Entities.Tabs
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
     using System.Linq;
-    using System.Xml;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>
     /// TabController provides all operation to tabinfo.

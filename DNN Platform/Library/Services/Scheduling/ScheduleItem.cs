@@ -18,6 +18,9 @@ namespace DotNetNuke.Services.Scheduling
         private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleItem"/> class.
+        /// </summary>
         public ScheduleItem()
         {
             this.ScheduleID = Null.NullInteger;
@@ -89,6 +92,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public int ThreadID { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -102,6 +106,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
+        /// <inheritdoc/>
         public virtual void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -158,6 +163,7 @@ namespace DotNetNuke.Services.Scheduling
             return this._ScheduleItemSettings;
         }
 
+        /// <inheritdoc/>
         protected override void FillInternal(IDataReader dr)
         {
             this.ScheduleID = Null.SetNullInteger(dr["ScheduleID"]);

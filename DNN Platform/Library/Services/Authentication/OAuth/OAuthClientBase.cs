@@ -58,6 +58,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private readonly Random random = new Random();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OAuthClientBase"/> class.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="mode"></param>
+        /// <param name="service"></param>
         protected OAuthClientBase(int portalId, AuthMode mode, string service)
         {
             // Set default Expiry to 14 days

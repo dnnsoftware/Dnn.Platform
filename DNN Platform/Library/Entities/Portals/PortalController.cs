@@ -1631,6 +1631,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
@@ -3661,11 +3662,13 @@ namespace DotNetNuke.Entities.Portals
             return GetCurrentPortalSettingsInternal();
         }
 
+        /// <inheritdoc/>
         IAbPortalSettings IPortalController.GetCurrentSettings()
         {
             return GetCurrentPortalSettingsInternal();
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
@@ -3685,6 +3688,11 @@ namespace DotNetNuke.Entities.Portals
             private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
             private string _resourceFilePath;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.
+            /// </summary>
+            /// <param name="templateFilePath"></param>
+            /// <param name="cultureCode"></param>
             public PortalTemplateInfo(string templateFilePath, string cultureCode)
             {
                 this.TemplateFilePath = templateFilePath;

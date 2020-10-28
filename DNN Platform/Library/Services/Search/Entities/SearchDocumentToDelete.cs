@@ -15,6 +15,9 @@ namespace DotNetNuke.Services.Search.Entities
     [Serializable]
     public class SearchDocumentToDelete
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchDocumentToDelete"/> class.
+        /// </summary>
         public SearchDocumentToDelete()
         {
             this.Keywords = new Dictionary<string, string>();

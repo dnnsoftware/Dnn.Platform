@@ -10,6 +10,7 @@ namespace DotNetNuke.Common.Internal
 
     public class TestableGlobals : ServiceLocator<IGlobals, TestableGlobals>
     {
+        /// <inheritdoc/>
         protected override Func<IGlobals> GetFactory()
         {
             return () => new GlobalsImpl();

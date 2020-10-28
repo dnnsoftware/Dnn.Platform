@@ -4,11 +4,9 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
-    using System.Linq;
     using System.Web;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -18,6 +16,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
@@ -80,7 +79,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
-            if (objNodes != null && objNodes.Count > 0 && this.PortalSettings.UserMode != PortalSettings.Mode.View)
+            if (objNodes != null && objNodes.Count > 0 && Personalization.GetUserMode() != PortalSettings.Mode.View)
             {
                 DNNNode objRootNode = objNodes[0];
                 if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
@@ -165,7 +164,7 @@ namespace DotNetNuke.UI.Containers
             bool _IsVisible = false;
             if (action.Visible && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, this.ModuleContext.Configuration))
             {
-                if ((this.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+                if ((Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
                 {
                     _IsVisible = true;
                 }

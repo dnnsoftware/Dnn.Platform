@@ -6,21 +6,30 @@ namespace DotNetNuke.Collections.Internal
     using System;
     using System.Threading;
 
+    /// <summary>Provides read/write slimlock functionality.</summary>
     internal class ReaderWriterSlimLock : ISharedCollectionLock
     {
-        private bool _disposed;
-        private ReaderWriterLockSlim _lock;
+        private bool disposed;
+        private ReaderWriterLockSlim @lock;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReaderWriterSlimLock"/> class.
+        /// </summary>
+        /// <param name="lock">The reference to <see cref="ReaderWriterLockSlim"/>.</param>
         public ReaderWriterSlimLock(ReaderWriterLockSlim @lock)
         {
-            this._lock = @lock;
+            this.@lock = @lock;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ReaderWriterSlimLock"/> class.
+        /// </summary>
         ~ReaderWriterSlimLock()
         {
             this.Dispose(false);
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             this.Dispose(true);
@@ -28,9 +37,13 @@ namespace DotNetNuke.Collections.Internal
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Disposes this instance resources.
+        /// </summary>
+        /// <param name="disposing">A value indicating whether this instance is currently disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!this.disposed)
             {
                 if (disposing)
                 {
@@ -38,27 +51,27 @@ namespace DotNetNuke.Collections.Internal
                 }
 
                 // free unmanaged resrources here
-                if (this._lock.IsReadLockHeld)
+                if (this.@lock.IsReadLockHeld)
                 {
-                    this._lock.ExitReadLock();
+                    this.@lock.ExitReadLock();
                 }
-                else if (this._lock.IsWriteLockHeld)
+                else if (this.@lock.IsWriteLockHeld)
                 {
-                    this._lock.ExitWriteLock();
+                    this.@lock.ExitWriteLock();
                 }
-                else if (this._lock.IsUpgradeableReadLockHeld)
+                else if (this.@lock.IsUpgradeableReadLockHeld)
                 {
-                    this._lock.ExitUpgradeableReadLock();
+                    this.@lock.ExitUpgradeableReadLock();
                 }
 
-                this._lock = null;
-                this._disposed = true;
+                this.@lock = null;
+                this.disposed = true;
             }
         }
 
         private void EnsureNotDisposed()
         {
-            if (this._disposed)
+            if (this.disposed)
             {
                 throw new ObjectDisposedException("ReaderWriterSlimLock");
             }

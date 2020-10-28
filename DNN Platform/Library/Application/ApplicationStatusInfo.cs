@@ -8,14 +8,12 @@ namespace DotNetNuke.Application
     using System.IO;
     using System.Web;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade;
-
 
     /// <inheritdoc />
     public class ApplicationStatusInfo : IApplicationStatusInfo

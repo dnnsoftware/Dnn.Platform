@@ -16,7 +16,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Log.EventLog;
 
     public class PermissionController

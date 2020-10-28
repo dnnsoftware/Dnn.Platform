@@ -21,19 +21,21 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.UI;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
+    /// <summary>
+    /// Base class for multiple DDR Menu classes.
+    /// </summary>
     public class MenuBase
     {
         private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
-                                                                          {
-                                                                            { "rootonly", "*,0,0" },
-                                                                            { "rootchildren", "+0" },
-                                                                            { "currentchildren", "." },
-                                                                          };
+        {
+            { "rootonly", "*,0,0" },
+            { "rootchildren", "+0" },
+            { "currentchildren", "." },
+        };
 
         private Settings menuSettings;
 
@@ -41,15 +43,29 @@ namespace DotNetNuke.Web.DDRMenu
 
         private PortalSettings hostPortalSettings;
 
+        /// <summary>
+        /// Gets or sets the template definition.
+        /// </summary>
         public TemplateDefinition TemplateDef { get; set; }
 
+        /// <summary>
+        /// Gets the portal settings for the current portal.
+        /// </summary>
+        // TODO: In v11 we should replace this by IPortalSettings and make it private or instantiate PortalSettings in the constructor.
+        [Obsolete("Deprecated in Dnn 9.8.1, scheduled removal in v11.")]
         internal PortalSettings HostPortalSettings
         {
             get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
         }
 
+        /// <summary>
+        /// Gets or sets the root node.
+        /// </summary>
         internal MenuNode RootNode { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to skip localization.
+        /// </summary>
         internal bool SkipLocalisation { get; set; }
 
         private HttpContext CurrentContext
@@ -57,6 +73,11 @@ namespace DotNetNuke.Web.DDRMenu
             get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
         }
 
+        /// <summary>
+        /// Instantiates the MenuBase.
+        /// </summary>
+        /// <param name="menuStyle">The menu style to use.</param>
+        /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
         public static MenuBase Instantiate(string menuStyle)
         {
             try
@@ -70,11 +91,18 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <summary>
+        /// Applies the provided settings.
+        /// </summary>
+        /// <param name="settings">The settings to apply.</param>
         internal void ApplySettings(Settings settings)
         {
             this.menuSettings = settings;
         }
 
+        /// <summary>
+        /// Runs menu initialization logic that should be done before rendering the menu.
+        /// </summary>
         internal virtual void PreRender()
         {
             this.TemplateDef.AddTemplateArguments(this.menuSettings.TemplateArguments, true);
@@ -102,7 +130,10 @@ namespace DotNetNuke.Web.DDRMenu
 
             if (string.IsNullOrEmpty(this.menuSettings.NodeXmlPath) && !this.SkipLocalisation)
             {
+#pragma warning disable CS0618 // Type or member is obsolete
+                // TODO: In Dnn v11, replace this to use IPortalSettings private field instantiate in constructor
                 new Localiser(this.HostPortalSettings.PortalId).LocaliseNode(this.RootNode);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(this.menuSettings.NodeManipulator))
@@ -123,6 +154,10 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.PreRender();
         }
 
+        /// <summary>
+        /// Renders the menu.
+        /// </summary>
+        /// <param name="htmlWriter">The html writer to which to render the menu.</param>
         internal void Render(HtmlTextWriter htmlWriter)
         {
             if (Host.DebugMode)
@@ -142,6 +177,11 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user }, htmlWriter);
         }
 
+        /// <summary>
+        /// Gets the physical path from a virtual path.
+        /// </summary>
+        /// <param name="path">The virtual path to map.</param>
+        /// <returns>The full physical path to the file.</returns>
         protected string MapPath(string path)
         {
             return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
@@ -235,7 +275,7 @@ namespace DotNetNuke.Web.DDRMenu
                 }
             }
 
-            // if filtered for foksonomy tags, use flat tree to get all related pages in nodeselection
+            // if filtered for folksonomy tags, use flat tree to get all related pages in nodeselection
             if (flattenedNodes.HasChildren())
             {
                 this.RootNode = flattenedNodes;
@@ -253,7 +293,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private void FilterHiddenNodes(MenuNode parentNode)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var filteredNodes = new List<MenuNode>();
             filteredNodes.AddRange(
                 parentNode.Children.FindAll(
@@ -278,7 +318,7 @@ namespace DotNetNuke.Web.DDRMenu
 
             var selectorSplit = SplitAndTrim(selector);
 
-            var currentTabId = this.HostPortalSettings.ActiveTab.TabID;
+            var currentTabId = TabController.CurrentPage.TabID;
 
             var newRoot = this.RootNode;
 
@@ -371,10 +411,13 @@ namespace DotNetNuke.Web.DDRMenu
 
         private void ApplyNodeManipulator()
         {
+            // TODO: In Dnn v11, replace this.HostPortalSettings to use IPortalSettings private field instantiate in constructor
+#pragma warning disable CS0618 // Type or member is obsolete
             this.RootNode =
                 new MenuNode(
                     ((INodeManipulator)Activator.CreateInstance(BuildManager.GetType(this.menuSettings.NodeManipulator, true, true))).
                         ManipulateNodes(this.RootNode.Children, this.HostPortalSettings));
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

@@ -19,6 +19,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
     {
         private const string _cacheKey = "Authentication";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OAuthConfigBase"/> class.
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="portalId"></param>
         protected OAuthConfigBase(string service, int portalId)
             : base(portalId)
         {

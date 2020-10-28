@@ -5,7 +5,6 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Linq;
 
     using DotNetNuke.Collections.Internal;

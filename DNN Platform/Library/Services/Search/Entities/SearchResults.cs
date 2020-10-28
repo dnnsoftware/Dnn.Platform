@@ -6,14 +6,15 @@ namespace DotNetNuke.Services.Search.Entities
     using System;
     using System.Collections.Generic;
 
-    using DotNetNuke.Common.Utilities;
-
     /// <summary>
     /// Collection storing Search Results.
     /// </summary>
     [Serializable]
     public class SearchResults
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResults"/> class.
+        /// </summary>
         public SearchResults()
         {
             this.Results = new List<SearchResult>();

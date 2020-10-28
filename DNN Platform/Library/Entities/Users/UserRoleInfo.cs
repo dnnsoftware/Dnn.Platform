@@ -42,6 +42,7 @@ namespace DotNetNuke.Entities.Users
 
         public bool Subscribed { get; set; }
 
+        /// <inheritdoc/>
         public override void Fill(IDataReader dr)
         {
             // Fill base class properties

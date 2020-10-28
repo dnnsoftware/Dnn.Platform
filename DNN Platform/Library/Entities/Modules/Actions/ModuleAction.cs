@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    using System;
-
     using DotNetNuke.Security;
 
     /// -----------------------------------------------------------------------------
@@ -23,46 +21,126 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// -----------------------------------------------------------------------------
     public class ModuleAction
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
         public ModuleAction(int id)
             : this(id, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
         public ModuleAction(int id, string title, string cmdName)
             : this(id, title, cmdName, string.Empty, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
+        /// <param name="cmdArg"></param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg)
             : this(id, title, cmdName, cmdArg, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
+        /// <param name="cmdArg"></param>
+        /// <param name="icon"></param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon)
             : this(id, title, cmdName, cmdArg, icon, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
+        /// <param name="cmdArg"></param>
+        /// <param name="icon"></param>
+        /// <param name="url"></param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url)
             : this(id, title, cmdName, cmdArg, icon, url, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
+        /// <param name="cmdArg"></param>
+        /// <param name="icon"></param>
+        /// <param name="url"></param>
+        /// <param name="clientScript"></param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
+        /// <param name="cmdArg"></param>
+        /// <param name="icon"></param>
+        /// <param name="url"></param>
+        /// <param name="clientScript"></param>
+        /// <param name="useActionEvent"></param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
+        /// <param name="cmdArg"></param>
+        /// <param name="icon"></param>
+        /// <param name="url"></param>
+        /// <param name="clientScript"></param>
+        /// <param name="useActionEvent"></param>
+        /// <param name="secure"></param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, secure, true, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="cmdName"></param>
+        /// <param name="cmdArg"></param>
+        /// <param name="icon"></param>
+        /// <param name="url"></param>
+        /// <param name="clientScript"></param>
+        /// <param name="useActionEvent"></param>
+        /// <param name="secure"></param>
+        /// <param name="visible"></param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, secure, visible, false)
         {

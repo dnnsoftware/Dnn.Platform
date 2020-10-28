@@ -21,6 +21,9 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         private int _maxWidth;
         private int _maxHeight;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageResizeTransform"/> class.
+        /// </summary>
         public ImageResizeTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -179,6 +182,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             return procImage;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return "ImageResizeTransform";

@@ -22,10 +22,14 @@ namespace DotNetNuke.Services.FileSystem
         private const string CacheKeyPrefix = "GetFolderMappingSettings";
         private static readonly DataProvider dataProvider = DataProvider.Instance();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderMappingController"/> class.
+        /// </summary>
         internal FolderMappingController()
         {
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetDefaultFolderMapping(int portalId)
         {
             var defaultFolderMapping = Config.GetSection("dotnetnuke/folder") != null ?
@@ -34,6 +38,7 @@ namespace DotNetNuke.Services.FileSystem
             return defaultFolderMapping ?? this.GetFolderMapping(portalId, "Standard");
         }
 
+        /// <inheritdoc/>
         public int AddFolderMapping(FolderMappingInfo objFolderMapping)
         {
             objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(
@@ -49,6 +54,7 @@ namespace DotNetNuke.Services.FileSystem
             return objFolderMapping.FolderMappingID;
         }
 
+        /// <inheritdoc/>
         public void DeleteFolderMapping(int portalID, int folderMappingID)
         {
             var folderManager = FolderManager.Instance;
@@ -100,6 +106,7 @@ namespace DotNetNuke.Services.FileSystem
             ClearFolderMappingSettingsCache(folderMappingID);
         }
 
+        /// <inheritdoc/>
         public void UpdateFolderMapping(FolderMappingInfo objFolderMapping)
         {
             dataProvider.UpdateFolderMapping(
@@ -112,21 +119,25 @@ namespace DotNetNuke.Services.FileSystem
             UpdateFolderMappingSettings(objFolderMapping);
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int folderMappingID)
         {
             return CBO.FillObject<FolderMappingInfo>(dataProvider.GetFolderMapping(folderMappingID));
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, int folderMappingID)
         {
             return this.GetFolderMappings(portalId).SingleOrDefault(fm => fm.FolderMappingID == folderMappingID);
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, string mappingName)
         {
             return this.GetFolderMappings(portalId).SingleOrDefault(fm => fm.MappingName == mappingName);
         }
 
+        /// <inheritdoc/>
         public List<FolderMappingInfo> GetFolderMappings(int portalId)
         {
             var cacheKey = string.Format(DataCache.FolderMappingCacheKey, portalId);
@@ -138,11 +149,13 @@ namespace DotNetNuke.Services.FileSystem
                 (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));
         }
 
+        /// <inheritdoc/>
         public void AddDefaultFolderTypes(int portalID)
         {
             dataProvider.AddDefaultFolderTypes(portalID);
         }
 
+        /// <inheritdoc/>
         public Hashtable GetFolderMappingSettings(int folderMappingID)
         {
             var strCacheKey = CacheKeyPrefix + folderMappingID;

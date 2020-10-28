@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
     public class DirectoryWrapper : ComponentBase<IDirectory, DirectoryWrapper>, IDirectory
     {
+        /// <inheritdoc/>
         public void Delete(string path, bool recursive)
         {
             if (this.Exists(path))
@@ -18,26 +19,31 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
         }
 
+        /// <inheritdoc/>
         public bool Exists(string path)
         {
             return Directory.Exists(path);
         }
 
+        /// <inheritdoc/>
         public string[] GetDirectories(string path)
         {
             return Directory.GetDirectories(path);
         }
 
+        /// <inheritdoc/>
         public string[] GetFiles(string path)
         {
             return Directory.GetFiles(path);
         }
 
+        /// <inheritdoc/>
         public void Move(string sourceDirName, string destDirName)
         {
             Directory.Move(sourceDirName, destDirName);
         }
 
+        /// <inheritdoc/>
         public void CreateDirectory(string path)
         {
             Directory.CreateDirectory(path);

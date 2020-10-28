@@ -12,6 +12,9 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageBrightnessTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageBrightnessTransform"/> class.
+        /// </summary>
         public ImageBrightnessTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

@@ -271,6 +271,7 @@ namespace DotNetNuke.UI.UserControls
 
     public class ListItemComparer : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             var a = (ListItem)x;

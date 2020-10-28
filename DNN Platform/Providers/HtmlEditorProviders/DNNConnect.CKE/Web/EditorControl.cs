@@ -291,7 +291,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
                     if (string.IsNullOrEmpty(currentSettings.Config.Scayt_sLang))
                     {
-                        _settings["scayt_sLang"] = currentCulture.Name.ToLowerInvariant();
+                        // 'en-us' is not a language code that is supported, the correct is 'en_US'
+                        // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-scayt_sLang
+                        _settings["scayt_sLang"] = currentCulture.Name.Replace("-", "_");
                     }
                 }
                 catch (Exception)

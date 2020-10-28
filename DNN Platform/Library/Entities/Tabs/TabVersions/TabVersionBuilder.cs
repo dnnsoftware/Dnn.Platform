@@ -28,6 +28,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private readonly ITabVersionDetailController _tabVersionDetailController;
         private readonly PortalSettings _portalSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabVersionBuilder"/> class.
+        /// </summary>
         public TabVersionBuilder()
         {
             this._tabController = TabController.Instance;
@@ -38,6 +41,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this._portalSettings = PortalSettings.Current;
         }
 
+        /// <inheritdoc/>
         public void SetupFirstVersionForExistingTab(int portalId, int tabId)
         {
             if (!this._tabVersionSettings.IsVersioningEnabled(portalId, tabId))
@@ -63,6 +67,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this.CreateFirstTabVersion(tabId, tab, modules);
         }
 
+        /// <inheritdoc/>
         public void Publish(int portalId, int tabId, int createdByUserId)
         {
             var tabVersion = this.GetUnPublishedVersion(tabId);
@@ -86,6 +91,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
+        /// <inheritdoc/>
         public void Discard(int tabId, int createdByUserId)
         {
             var tabVersion = this.GetUnPublishedVersion(tabId);
@@ -102,6 +108,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this.DiscardVersion(tabId, tabVersion);
         }
 
+        /// <inheritdoc/>
         public void DeleteVersion(int tabId, int createdByUserId, int version)
         {
             this.CheckVersioningEnabled(tabId);
@@ -109,6 +116,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this.ForceDeleteVersion(tabId, version);
         }
 
+        /// <inheritdoc/>
         public TabVersion RollBackVesion(int tabId, int createdByUserId, int version)
         {
             this.CheckVersioningEnabled(tabId);
@@ -168,11 +176,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return this.PublishVersion(this.GetCurrentPortalId(), tabId, createdByUserId, newVersion);
         }
 
+        /// <inheritdoc/>
         public TabVersion CreateNewVersion(int tabId, int createdByUserId)
         {
             return this.CreateNewVersion(this.GetCurrentPortalId(), tabId, createdByUserId);
         }
 
+        /// <inheritdoc/>
         public TabVersion CreateNewVersion(int portalid, int tabId, int createdByUserId)
         {
             if (portalid == Null.NullInteger)
@@ -199,6 +209,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<ModuleInfo> GetUnPublishedVersionModules(int tabId)
         {
             var unPublishedVersion = this.GetUnPublishedVersion(tabId);
@@ -210,18 +221,21 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return this.GetVersionModules(tabId, unPublishedVersion.TabVersionId);
         }
 
+        /// <inheritdoc/>
         public TabVersion GetCurrentVersion(int tabId, bool ignoreCache = false)
         {
             return this._tabVersionController.GetTabVersions(tabId, ignoreCache)
                 .Where(tv => tv.IsPublished).OrderByDescending(tv => tv.CreatedOnDate).FirstOrDefault();
         }
 
+        /// <inheritdoc/>
         public TabVersion GetUnPublishedVersion(int tabId)
         {
             return this._tabVersionController.GetTabVersions(tabId, true)
                 .SingleOrDefault(tv => !tv.IsPublished);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<ModuleInfo> GetCurrentModules(int tabId)
         {
             var cacheKey = string.Format(DataCache.PublishedTabModuleCacheKey, tabId);
@@ -233,17 +247,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 c => this.GetCurrentModulesInternal(tabId));
         }
 
+        /// <inheritdoc/>
         public IEnumerable<ModuleInfo> GetVersionModules(int tabId, int version)
         {
             return this.ConvertToModuleInfo(this.GetVersionModulesDetails(tabId, version), tabId);
         }
 
+        /// <inheritdoc/>
         public int GetModuleContentLatestVersion(ModuleInfo module)
         {
             var versionableController = this.GetVersionableController(module);
             return versionableController != null ? versionableController.GetLatestVersion(module.ModuleID) : DefaultVersionNumber;
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabVersionBuilder> GetFactory()
         {
             return () => new TabVersionBuilder();

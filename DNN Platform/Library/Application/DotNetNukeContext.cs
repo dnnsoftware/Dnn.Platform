@@ -24,22 +24,6 @@ namespace DotNetNuke.Application
         private readonly IApplicationInfo applicationInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DotNetNukeContext"/> class.
-        /// </summary>
-        /// <remarks>
-        /// Initialize using the public constructor for Dependency Injection, this method will be removed.
-        /// </remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.7.1. This constructor has been replaced by parameterized public constructor which is designed to be used with Dependency Injection. Resolve the new interface 'DotNetNuke.Abstractions.IDnnContext' instead. Scheduled removal in v11.0.0.")]
-        protected DotNetNukeContext()
-            : this(Globals.DependencyProvider.GetRequiredService<IApplicationInfo>())
-        { }
-
-        [Obsolete("Deprecated in DotNetNuke 9.7.1. This constructor has been replaced by the overload taking an IApplicationInfo, which should be resolved via Dependency Injection. Scheduled removal in v11.0.0.")]
-    protected DotNetNukeContext(Application application)
-        : this((IApplicationInfo)application)
-    { }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DotNetNukeContext" /> class using the provided application as base.
         /// </summary>
         /// <param name="applicationInfo">The application.</param>
@@ -51,6 +35,31 @@ namespace DotNetNuke.Application
             this.applicationInfo = applicationInfo;
             this.ContainerEventListeners = new NaiveLockingList<ContainerEventListener>();
             this.SkinEventListeners = new NaiveLockingList<SkinEventListener>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DotNetNukeContext"/> class.
+        /// </summary>
+        /// <remarks>
+        /// Initialize using the public constructor for Dependency Injection, this method will be removed.
+        /// </remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. This constructor has been replaced by parameterized public constructor which is designed to be used with Dependency Injection. Resolve the new interface 'DotNetNuke.Abstractions.IDnnContext' instead. Scheduled removal in v11.0.0.")]
+        protected DotNetNukeContext()
+            : this(Globals.DependencyProvider.GetRequiredService<IApplicationInfo>())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DotNetNukeContext"/> class.
+        /// </summary>
+        /// <param name="application">A reference to the .Net application.</param>
+        /// <remarks>
+        /// Initialize using the public constructor for Dependency Injection, this method will be removed.
+        /// </remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. This constructor has been replaced by the overload taking an IApplicationInfo, which should be resolved via Dependency Injection. Scheduled removal in v11.0.0.")]
+        protected DotNetNukeContext(Application application)
+        : this((IApplicationInfo)application)
+        {
         }
 
         /// <summary>

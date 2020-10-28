@@ -14,6 +14,7 @@ namespace DotNetNuke.HttpModules.Services
     {
         public static readonly Regex ServiceApi = Globals.ServicesFrameworkRegex;
 
+        /// <inheritdoc/>
         public void Init(HttpApplication context)
         {
             context.BeginRequest += InitDnn;
@@ -21,6 +22,7 @@ namespace DotNetNuke.HttpModules.Services
             context.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }

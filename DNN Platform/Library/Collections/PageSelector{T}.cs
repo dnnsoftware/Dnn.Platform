@@ -4,10 +4,7 @@
 
 namespace DotNetNuke.Collections
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     ///   Provides options to allow the consumer to select a page of data from a paged data store.
@@ -15,8 +12,8 @@ namespace DotNetNuke.Collections
     /// <typeparam name = "T">The type of object in the data store.</typeparam>
     public class PageSelector<T>
     {
-        private readonly int _pageSize;
-        private readonly IEnumerable<T> _source;
+        private readonly int pageSize;
+        private readonly IEnumerable<T> source;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PageSelector{T}"/> class.
@@ -26,8 +23,8 @@ namespace DotNetNuke.Collections
         /// <param name = "pageSize">The size of each page.</param>
         public PageSelector(IEnumerable<T> source, int pageSize)
         {
-            this._source = source;
-            this._pageSize = pageSize;
+            this.source = source;
+            this.pageSize = pageSize;
         }
 
         /// <summary>
@@ -40,7 +37,7 @@ namespace DotNetNuke.Collections
         /// </returns>
         public IPagedList<T> GetPage(int pageIndex)
         {
-            return new PagedList<T>(this._source, pageIndex, this._pageSize);
+            return new PagedList<T>(this.source, pageIndex, this.pageSize);
         }
     }
 }

@@ -4,11 +4,6 @@
 
 namespace DotNetNuke.Entities.Tabs.Dto
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// Class that represents the full state of a tab regarding if versioning and workflow are enabled.
     /// </summary>

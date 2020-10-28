@@ -100,6 +100,14 @@ class PageTypeSelector extends Component {
                                 {this._defineVisibleOrHidden(page.includeInMenu)}
                             </span>
                         </div>
+                        <div className="page-info-item">
+                            <span className="page-info-item-label">
+                            {Localization.get("PageId") + ": "}
+                            </span>
+                            <span className="page-info-item-value">
+                                {page.tabId}
+                            </span>
+                        </div>
                     </div>
                     <div className="page-info-row">
                         <div className="page-info-item page-type">

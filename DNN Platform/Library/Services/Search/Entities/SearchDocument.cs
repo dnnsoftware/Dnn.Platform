@@ -13,6 +13,9 @@ namespace DotNetNuke.Services.Search.Entities
     [Serializable]
     public class SearchDocument : SearchDocumentToDelete
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchDocument"/> class.
+        /// </summary>
         public SearchDocument()
         {
             this.Tags = new string[0];
@@ -76,6 +79,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// </summary>
         public IEnumerable<string> Tags { get; set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Join(", ", new[]

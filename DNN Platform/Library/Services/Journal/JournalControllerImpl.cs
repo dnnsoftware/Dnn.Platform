@@ -8,10 +8,8 @@ namespace DotNetNuke.Services.Journal
     using System.Collections.Generic;
     using System.Data;
     using System.Drawing;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Web;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -36,6 +34,9 @@ namespace DotNetNuke.Services.Journal
         private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
         private readonly IJournalDataService _dataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JournalControllerImpl"/> class.
+        /// </summary>
         public JournalControllerImpl()
         {
             this._dataService = JournalDataService.Instance;
@@ -297,36 +298,43 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        /// <inheritdoc/>
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
         {
             return this.GetJournalItem(portalId, currentUserId, journalId, false, false);
         }
 
+        /// <inheritdoc/>
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
         {
             return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
         }
 
+        /// <inheritdoc/>
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
         {
             return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
         }
 
+        /// <inheritdoc/>
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
         {
             return CBO.FillObject<JournalItem>(this._dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
         }
 
+        /// <inheritdoc/>
         public JournalItem GetJournalItemByKey(int portalId, string objectKey)
         {
             return this.GetJournalItemByKey(portalId, objectKey, false, false);
         }
 
+        /// <inheritdoc/>
         public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
         {
             return this.GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
         }
 
+        /// <inheritdoc/>
         public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
         {
             if (string.IsNullOrEmpty(objectKey))
@@ -337,6 +345,7 @@ namespace DotNetNuke.Services.Journal
             return CBO.FillObject<JournalItem>(this._dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
+        /// <inheritdoc/>
         public IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent)
         {
             var userFolder = FolderManager.Instance.GetUserFolder(userInfo);
@@ -353,6 +362,7 @@ namespace DotNetNuke.Services.Journal
             return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);
         }
 
+        /// <inheritdoc/>
         public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
         {
             var tabId = module == null ? Null.NullInteger : module.TabID;
@@ -361,6 +371,7 @@ namespace DotNetNuke.Services.Journal
             this.SaveJournalItem(journalItem, tabId, tabModuleId);
         }
 
+        /// <inheritdoc/>
         public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
         {
             var tabId = module == null ? Null.NullInteger : module.TabID;
@@ -369,21 +380,25 @@ namespace DotNetNuke.Services.Journal
             this.UpdateJournalItem(journalItem, tabId, tabModuleId);
         }
 
+        /// <inheritdoc/>
         public void DisableComments(int portalId, int journalId)
         {
             this._dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
         }
 
+        /// <inheritdoc/>
         public void EnableComments(int portalId, int journalId)
         {
             this._dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
         }
 
+        /// <inheritdoc/>
         public void HideComments(int portalId, int journalId)
         {
             this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
         }
 
+        /// <inheritdoc/>
         public void ShowComments(int portalId, int journalId)
         {
             this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
@@ -453,18 +468,20 @@ namespace DotNetNuke.Services.Journal
             this._dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
         }
 
-        // Journal Comments
+        /// <inheritdoc/>
         public IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList)
         {
             var journalIds = journalIdList.Aggregate(string.Empty, (current, journalId) => current + journalId + ";");
             return CBO.FillCollection<CommentInfo>(this._dataService.Journal_Comment_ListByJournalIds(journalIds));
         }
 
+        /// <inheritdoc/>
         public void LikeJournalItem(int journalId, int userId, string displayName)
         {
             this._dataService.Journal_Like(journalId, userId, displayName);
         }
 
+        /// <inheritdoc/>
         public void SaveComment(CommentInfo comment)
         {
             var portalSecurity = PortalSecurity.Instance;
@@ -489,11 +506,13 @@ namespace DotNetNuke.Services.Journal
             comment.DateUpdated = newComment.DateUpdated;
         }
 
+        /// <inheritdoc/>
         public CommentInfo GetComment(int commentId)
         {
             return CBO.FillObject<CommentInfo>(this._dataService.Journal_Comment_Get(commentId));
         }
 
+        /// <inheritdoc/>
         public void DeleteComment(int journalId, int commentId)
         {
             this._dataService.Journal_Comment_Delete(journalId, commentId);
@@ -501,21 +520,25 @@ namespace DotNetNuke.Services.Journal
             // UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
 
+        /// <inheritdoc/>
         public void LikeComment(int journalId, int commentId, int userId, string displayName)
         {
             this._dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
         }
 
+        /// <inheritdoc/>
         public JournalTypeInfo GetJournalType(string journalType)
         {
             return CBO.FillObject<JournalTypeInfo>(this._dataService.Journal_Types_Get(journalType));
         }
 
+        /// <inheritdoc/>
         public JournalTypeInfo GetJournalTypeById(int journalTypeId)
         {
             return CBO.FillObject<JournalTypeInfo>(this._dataService.Journal_Types_GetById(journalTypeId));
         }
 
+        /// <inheritdoc/>
         public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
         {
             return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
@@ -527,12 +550,14 @@ namespace DotNetNuke.Services.Journal
                                             c => CBO.FillCollection<JournalTypeInfo>(this._dataService.Journal_Types_List(portalId)));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
         public void SaveJournalItem(JournalItem journalItem, int tabId)
         {
             this.SaveJournalItem(journalItem, tabId, Null.NullInteger);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
         public void UpdateJournalItem(JournalItem journalItem, int tabId)
         {

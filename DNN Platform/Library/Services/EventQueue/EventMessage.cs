@@ -34,6 +34,9 @@ namespace DotNetNuke.Services.EventQueue
         private DateTime _sentDate;
         private string _subscribers = Null.NullString;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventMessage"/> class.
+        /// </summary>
         public EventMessage()
         {
             this._attributes = new NameValueCollection();

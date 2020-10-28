@@ -4,10 +4,7 @@
 
 namespace DotNetNuke.Services.Upgrade.Internals
 {
-    using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Web.UI.WebControls;
 
     using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 

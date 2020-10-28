@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Tokens;
@@ -75,7 +76,7 @@ namespace DotNetNuke.Modules.Html
                 var tr = new HtmlTokenReplace(page)
                 {
                     AccessingUser = UserController.Instance.GetCurrentUserInfo(),
-                    DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
+                    DebugMessages = Personalization.GetUserMode() != PortalSettings.Mode.View,
                     ModuleId = moduleId,
                     PortalSettings = portalSettings,
                 };

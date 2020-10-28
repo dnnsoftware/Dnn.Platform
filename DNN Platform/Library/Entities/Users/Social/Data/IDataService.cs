@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Users.Social.Data
 {
-    using System;
-    using System.Collections.Generic;
     using System.Data;
 
     public interface IDataService

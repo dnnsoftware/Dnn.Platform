@@ -19,11 +19,19 @@ namespace DotNetNuke.Services.GeneratedImage
         private string _timestamp;
         private string _imageHandlerUrl;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeneratedImage"/> class.
+        /// </summary>
         public GeneratedImage()
         {
             this.Parameters = new List<ImageParameter>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeneratedImage"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="bindingContainer"></param>
         internal GeneratedImage(HttpContextBase context, Control bindingContainer)
             : this()
         {
@@ -63,6 +71,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private new Control BindingContainer => this._bindingContainer ?? base.BindingContainer;
 
+        /// <inheritdoc/>
         protected override void OnDataBinding(EventArgs e)
         {
             base.OnDataBinding(e);
@@ -75,6 +84,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

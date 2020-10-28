@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         private string Permission = Null.NullString;
         private string Permissions;
 
+        /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
@@ -31,6 +32,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsValid
         {
             get
@@ -39,6 +41,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.Permissions = dependencyNav.Value;

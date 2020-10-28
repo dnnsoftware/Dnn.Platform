@@ -106,6 +106,10 @@ namespace DotNetNuke.Entities.Urls
         private List<string> _processRequestList;
         private Dictionary<string, string> _replaceCharacterDictionary;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.
+        /// </summary>
+        /// <param name="portalId"></param>
         public FriendlyUrlSettings(int portalId)
         {
             this.PortalId = portalId < -1 ? -1 : portalId;

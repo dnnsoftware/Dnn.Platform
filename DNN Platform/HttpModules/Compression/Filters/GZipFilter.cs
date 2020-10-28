@@ -19,6 +19,7 @@ namespace DotNetNuke.HttpModules.Compression
             this.m_stream = new GZipStream(baseStream, CompressionMode.Compress);
         }
 
+        /// <inheritdoc/>
         public override string ContentEncoding
         {
             get
@@ -27,6 +28,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
+        /// <inheritdoc/>
         public override void Write(byte[] buffer, int offset, int count)
         {
             if (!this.HasWrittenHeaders)
@@ -37,11 +39,13 @@ namespace DotNetNuke.HttpModules.Compression
             this.m_stream.Write(buffer, offset, count);
         }
 
+        /// <inheritdoc/>
         public override void Close()
         {
             this.m_stream.Close();
         }
 
+        /// <inheritdoc/>
         public override void Flush()
         {
             this.m_stream.Flush();

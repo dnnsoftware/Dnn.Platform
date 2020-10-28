@@ -5,13 +5,6 @@
 namespace DotNetNuke.Services.ClientCapability
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Web;
-
-    using DotNetNuke.Common.Utilities;
 
     /// <summary>
     /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame,

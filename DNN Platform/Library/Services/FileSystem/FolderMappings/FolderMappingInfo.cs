@@ -22,12 +22,21 @@ namespace DotNetNuke.Services.FileSystem
 
         private string _imageUrl;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderMappingInfo"/> class.
+        /// </summary>
         public FolderMappingInfo()
         {
             this.FolderMappingID = Null.NullInteger;
             this.PortalID = Null.NullInteger;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderMappingInfo"/> class.
+        /// </summary>
+        /// <param name="portalID"></param>
+        /// <param name="mappingName"></param>
+        /// <param name="folderProviderType"></param>
         public FolderMappingInfo(int portalID, string mappingName, string folderProviderType)
         {
             this.FolderMappingID = Null.NullInteger;
