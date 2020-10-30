@@ -15,7 +15,7 @@ namespace DotNetNuke.HttpModules.Localization
         /// <inheritdoc />
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += Context_BeginRequest;
+            context.PreRequestHandlerExecute += Context_PreRequestHandlerExecute;
         }
 
         /// <inheritdoc />
@@ -24,8 +24,14 @@ namespace DotNetNuke.HttpModules.Localization
             // intentionally left empty
         }
 
-        private static void Context_BeginRequest(object sender, EventArgs e)
+        private static void Context_PreRequestHandlerExecute(object sender, EventArgs e)
         {
+            var isPage = HttpContext.Current.CurrentHandler is Framework.PageBase;
+            if (!isPage)
+            {
+                return;
+            }
+
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
             if (isInstallPage)
             {
@@ -33,7 +39,10 @@ namespace DotNetNuke.HttpModules.Localization
             }
 
             var portalSettings = PortalController.Instance.GetCurrentSettings();
-            Localization.SetThreadCultures(Localization.GetPageLocale(portalSettings), portalSettings);
+            if (portalSettings != null)
+            {
+                Localization.SetThreadCultures(Localization.GetPageLocale(portalSettings), portalSettings);
+            }
         }
     }
 }
