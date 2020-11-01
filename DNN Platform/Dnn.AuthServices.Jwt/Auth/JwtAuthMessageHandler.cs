@@ -5,6 +5,7 @@
 namespace Dnn.AuthServices.Jwt.Auth
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Security.Principal;
     using System.Threading;
@@ -24,8 +25,14 @@ namespace Dnn.AuthServices.Jwt.Auth
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
-        private readonly IJwtController _jwtController = JwtController.Instance;
+        private readonly IJwtController jwtController = JwtController.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JwtAuthMessageHandler"/> class.
+        /// </summary>
+        /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
+        /// <param name="forceSsl">Should SSL be enforced on this handler.</param>
+        [Obsolete("Deprecated in v9.9.0, use the overload that takes accessControlAllowOrigins instead, scheduled removal in v11.")]
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
         {
@@ -35,12 +42,45 @@ namespace Dnn.AuthServices.Jwt.Auth
             IsEnabled = true;
         }
 
-        public override string AuthScheme => this._jwtController.SchemeType;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JwtAuthMessageHandler"/> class.
+        /// </summary>
+        /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
+        /// <param name="forceSsl">Should SSL be enforced for this handler.</param>
+        /// <param name="accessControlAllowHeaders">A comma separated list of allowed HTTP headers for CORS support.</param>
+        /// <param name="accesscontrolAllowMethods">A comma separated list of allowed HTTP methods for CORS support.</param>
+        /// <param name="accessControlAllowOrigins">A list of allowed origins for CORS support.</param>
+        public JwtAuthMessageHandler(
+            bool includeByDefault,
+            bool forceSsl,
+            string accessControlAllowHeaders,
+            string accesscontrolAllowMethods,
+            IReadOnlyCollection<string> accessControlAllowOrigins)
+            : base(
+                  includeByDefault,
+                  forceSsl,
+                  accessControlAllowHeaders,
+                  accesscontrolAllowMethods,
+                  accessControlAllowOrigins)
+        {
+            // Once an instance is enabled and gets registered in
+            // ServicesRoutingManager.RegisterAuthenticationHandlers()
+            // this scheme gets marked as enabled.
+            IsEnabled = true;
+        }
 
+        /// <inheritdoc/>
+        public override string AuthScheme => this.jwtController.SchemeType;
+
+        /// <inheritdoc/>
         public override bool BypassAntiForgeryToken => true;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this handler is enabled.
+        /// </summary>
         internal static bool IsEnabled { get; set; }
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
@@ -55,7 +95,7 @@ namespace Dnn.AuthServices.Jwt.Auth
         {
             try
             {
-                var username = this._jwtController.ValidateToken(request);
+                var username = this.jwtController.ValidateToken(request);
                 if (!string.IsNullOrEmpty(username))
                 {
                     if (Logger.IsTraceEnabled)

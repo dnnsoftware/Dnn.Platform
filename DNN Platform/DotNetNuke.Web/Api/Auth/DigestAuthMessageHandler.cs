@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Api.Auth
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -16,20 +17,54 @@ namespace DotNetNuke.Web.Api.Auth
     using DotNetNuke.Web.Api.Internal.Auth;
     using DotNetNuke.Web.ConfigSection;
 
+    /// <summary>
+    /// Digest authentication message handler.
+    /// </summary>
     public class DigestAuthMessageHandler : AuthMessageHandlerBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DigestAuthMessageHandler"/> class.
+        /// </summary>
+        /// <param name="includeByDefault">Should this handler be included by default for all routes.</param>
+        /// <param name="forceSsl">Should SSL be enforced for this handler.</param>
+        [Obsolete("Deprecated in v9.9.0, use the overload that takes accessControlAllowOrigins instead, scheduled removal in v11.")]
         public DigestAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DigestAuthMessageHandler"/> class.
+        /// </summary>
+        /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
+        /// <param name="forceSsl">Should SSL be enforced for this handler.</param>
+        /// <param name="accessControlAllowHeaders">A comma separated list of allowed HTTP headers for CORS support.</param>
+        /// <param name="accesscontrolAllowMethods">A comma separated list of allowed HTTP methods for CORS support.</param>
+        /// <param name="accessControlAllowOrigins">A list of allowed origins for CORS support.</param>
+        public DigestAuthMessageHandler(
+            bool includeByDefault,
+            bool forceSsl,
+            string accessControlAllowHeaders,
+            string accesscontrolAllowMethods,
+            IReadOnlyCollection<string> accessControlAllowOrigins)
+            : base(
+                  includeByDefault,
+                  forceSsl,
+                  accessControlAllowHeaders,
+                  accesscontrolAllowMethods,
+                  accessControlAllowOrigins)
+        {
+        }
+
+        /// <inheritdoc/>
         public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 if (portalSettings != null)
                 {
                     var isStale = TryToAuthenticate(request, portalSettings.PortalId);
@@ -47,6 +82,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnInboundRequest(request, cancellationToken);
         }
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsDigestAuth(response.RequestMessage))

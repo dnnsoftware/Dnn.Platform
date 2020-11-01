@@ -77,6 +77,47 @@ namespace DotNetNuke.Tests.Web.Api
             Assert.AreEqual("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
         }
 
+        [Test]
+        public void DoesNotChangeAllowedOriginIfNotConfigured()
+        {
+            // Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.OK) { RequestMessage = null };
+            response.Headers.Add("Access-Control-Allow-Origin", "*");
+            var handler = new BasicAuthMessageHandler(true, false, "", "", null);
+
+            // Act
+            handler.OnOutboundResponse(response, CancellationToken.None);
+
+            // Assert
+            Assert.AreEqual("*", response.Headers.GetValues("Access-Control-Allow-Origin").FirstOrDefault());
+        }
+
+        [Test]
+        public void ChangesAllowedOriginWhenConfiguredAndAvailable()
+        {
+            // Arrange
+            var request = new HttpRequestMessage();
+            request.Headers.Add("Origin", "http://localhost");
+            var response = request.CreateResponse(HttpStatusCode.OK);
+            response.Headers.Add("Access-Control-Allow-Origin", "https://mywebsite.com");
+            var handler = new BasicAuthMessageHandler(
+                true,
+                false,
+                "*",
+                "GET, POST",
+                new[] { "http://localhost" });
+
+            // Act
+            handler.OnInboundRequest(request, CancellationToken.None);
+            handler.OnOutboundResponse(response, CancellationToken.None);
+
+            // Assert
+            Assert.AreEqual("*", response.Headers.GetValues("Access-Control-Allow-Headers").FirstOrDefault());
+            Assert.AreEqual("GET, POST", response.Headers.GetValues("Access-Control-Allow-Methods").FirstOrDefault());
+            Assert.AreEqual(1, response.Headers.GetValues("Access-Control-Allow-Origin").Count());
+            Assert.AreEqual("http://localhost", response.Headers.GetValues("Access-Control-Allow-Origin").FirstOrDefault());
+        }
+
         // todo unit test actual authentication code
         // very hard to unit test inbound authentication code as it dips into untestable bits of usercontroller etc.
         // need to write controllers with interfaces and servicelocator
