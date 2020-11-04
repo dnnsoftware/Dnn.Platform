@@ -547,9 +547,12 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 status == UserValidStatus.UPDATEPROFILE ||
                 status == UserValidStatus.UPDATEPASSWORD;
 
-            if (!valid && Logger.IsTraceEnabled)
+            if (!valid)
             {
-                Logger.Trace("Inactive user status: " + status);
+                if (Logger.IsTraceEnabled) {
+                    Logger.Trace("Inactive user status: " + status);
+                }
+                
                 return null;
             }
 
