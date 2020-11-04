@@ -13,21 +13,21 @@ namespace Dnn.AuthServices.Jwt.Data
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
-    ///  This class provides the Data Access Layer for the JWT Authentication library.
+    /// This class provides the Data Access Layer for the JWT Authentication library.
     /// </summary>
     public class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
-        private readonly DataProvider _dataProvider = DataProvider.Instance();
+        private readonly DataProvider dataProvider = DataProvider.Instance();
 
+        /// <inheritdoc/>
         public virtual PersistedToken GetTokenById(string tokenId)
         {
             try
             {
                 return CBO.GetCachedObject<PersistedToken>(
                     new CacheItemArgs(GetCacheKey(tokenId), 60, CacheItemPriority.Default),
-                    _ => CBO.FillObject<PersistedToken>(this._dataProvider.ExecuteReader("JsonWebTokens_GetById", tokenId)));
+                    _ => CBO.FillObject<PersistedToken>(this.dataProvider.ExecuteReader("JsonWebTokens_GetById", tokenId)));
             }
             catch (InvalidCastException)
             {
@@ -36,44 +36,56 @@ namespace Dnn.AuthServices.Jwt.Data
             }
         }
 
+        /// <inheritdoc/>
         public virtual IList<PersistedToken> GetUserTokens(int userId)
         {
-            return CBO.FillCollection<PersistedToken>(this._dataProvider.ExecuteReader("JsonWebTokens_GetByUserId", userId));
+            return CBO.FillCollection<PersistedToken>(this.dataProvider.ExecuteReader("JsonWebTokens_GetByUserId", userId));
         }
 
+        /// <inheritdoc/>
         public virtual void AddToken(PersistedToken token)
         {
-            this._dataProvider.ExecuteNonQuery("JsonWebTokens_Add", token.TokenId, token.UserId,
-                token.TokenExpiry, token.RenewalExpiry, token.TokenHash, token.RenewalHash);
+            this.dataProvider.ExecuteNonQuery(
+                "JsonWebTokens_Add",
+                token.TokenId,
+                token.UserId,
+                token.TokenExpiry,
+                token.RenewalExpiry,
+                token.TokenHash,
+                token.RenewalHash);
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
 
+        /// <inheritdoc/>
         public virtual void UpdateToken(PersistedToken token)
         {
-            this._dataProvider.ExecuteNonQuery("JsonWebTokens_Update", token.TokenId, token.TokenExpiry, token.TokenHash);
+            this.dataProvider.ExecuteNonQuery("JsonWebTokens_Update", token.TokenId, token.TokenExpiry, token.TokenHash);
             token.RenewCount += 1;
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
 
+        /// <inheritdoc/>
         public virtual void DeleteToken(string tokenId)
         {
-            this._dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteById", tokenId);
+            this.dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteById", tokenId);
             DataCache.RemoveCache(GetCacheKey(tokenId));
         }
 
+        /// <inheritdoc/>
         public virtual void DeleteUserTokens(int userId)
         {
-            this._dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteByUser", userId);
+            this.dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteByUser", userId);
             foreach (var token in this.GetUserTokens(userId))
             {
                 DataCache.RemoveCache(GetCacheKey(token.TokenId));
             }
         }
 
+        /// <inheritdoc/>
         public virtual void DeleteExpiredTokens()
         {
             // don't worry about caching; these will already be invalidated by cache manager
-            this._dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteExpired");
+            this.dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteExpired");
         }
 
         private static string GetCacheKey(string tokenId)
