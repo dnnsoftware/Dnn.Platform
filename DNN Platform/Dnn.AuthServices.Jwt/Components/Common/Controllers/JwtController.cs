@@ -547,9 +547,33 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 status == UserValidStatus.UPDATEPROFILE ||
                 status == UserValidStatus.UPDATEPASSWORD;
 
-            if (!valid && Logger.IsTraceEnabled)
+            if (!valid)
             {
-                Logger.Trace("Inactive user status: " + status);
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Inactive user status: " + status);
+                }
+
+                return null;
+            }
+
+            if (!userInfo.Membership.Approved)
+            {
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Non Approved user id: " + userInfo.UserID + " UserName: " + userInfo.Username);
+                }
+
+                return null;
+            }
+
+            if (userInfo.IsDeleted)
+            {
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Deleted user id: " + userInfo.UserID + " UserName: " + userInfo.Username);
+                }
+
                 return null;
             }
 
