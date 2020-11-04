@@ -4,7 +4,7 @@
   </PropertyGroup>
   <Import Project="..\..\DNN_Platform.build" />
   <PropertyGroup>
-    <Extension>resources</Extension>
+    <Extension>zip</Extension>
     <DNNFileName>Dnn.Jwt</DNNFileName>
     <PackageName>DnnJwtAuth</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\AuthenticationServices\JWTAuth</ModuleFolderName>
