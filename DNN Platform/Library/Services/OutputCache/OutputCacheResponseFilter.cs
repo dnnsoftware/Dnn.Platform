@@ -5,9 +5,7 @@ namespace DotNetNuke.Services.OutputCache
 {
     using System;
     using System.IO;
-    using System.Net;
     using System.Text;
-    using System.Web;
 
     // helper class to capture the response into a file
     public abstract class OutputCacheResponseFilter : Stream
@@ -154,11 +152,6 @@ namespace DotNetNuke.Services.OutputCache
         public virtual byte[] StopFiltering(int itemId, bool deleteData)
         {
             if (this.HasErrored)
-            {
-                return null;
-            }
-
-            if (HttpContext.Current.Response.StatusCode == Convert.ToInt32(HttpStatusCode.Redirect))
             {
                 return null;
             }

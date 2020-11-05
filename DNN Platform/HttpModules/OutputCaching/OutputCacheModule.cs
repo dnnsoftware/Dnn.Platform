@@ -8,6 +8,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Net;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -249,7 +250,8 @@ namespace DotNetNuke.HttpModules.OutputCaching
             if (!HttpContext.Current.Request.Browser.Crawler)
             {
                 var responseFilter = this._app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
-                if (responseFilter != null)
+                if (responseFilter != null &&
+                    HttpContext.Current.Response.StatusCode != Convert.ToInt32(HttpStatusCode.Redirect))
                 {
                     responseFilter.StopFiltering(Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]), false);
                 }
