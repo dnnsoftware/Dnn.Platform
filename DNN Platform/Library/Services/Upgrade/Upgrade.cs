@@ -2777,6 +2777,7 @@ namespace DotNetNuke.Services.Upgrade
                         continue;
                     }
 
+                    var isInstalled = false;
                     PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
                     if (packages.ContainsKey(file))
                     {
@@ -2787,6 +2788,7 @@ namespace DotNetNuke.Services.Upgrade
                             Null.NullInteger,
                             p => p.Name.Equals(package.Name, StringComparison.OrdinalIgnoreCase)
                                     && p.PackageType.Equals(package.PackageType, StringComparison.OrdinalIgnoreCase));
+                        isInstalled = installedPackage != null;
 
                         if (packages.Values.Count(p => p.FriendlyName.Equals(package.FriendlyName, StringComparison.OrdinalIgnoreCase)) > 1
                                 || installedPackage != null)
@@ -2818,7 +2820,7 @@ namespace DotNetNuke.Services.Upgrade
                         }
                     }
 
-                    if (extension != ".zip")
+                    if (extension != ".zip" && !isInstalled)
                     {
                         optionalPackages.Add(file);
                     }
