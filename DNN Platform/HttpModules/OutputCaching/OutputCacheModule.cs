@@ -247,11 +247,12 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         private void OnUpdateRequestCache(object sender, EventArgs e)
         {
-            if (!HttpContext.Current.Request.Browser.Crawler)
+            var request = HttpContext.CurrentRequest;
+            var isRedirect = response.StatusCode == (int)HttpStatusCode.Redirect;
+            if (!request.Browser.Crawler && !isRedirect)
             {
                 var responseFilter = this._app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
-                if (responseFilter != null &&
-                    HttpContext.Current.Response.StatusCode != Convert.ToInt32(HttpStatusCode.Redirect))
+                if (responseFilter != null)
                 {
                     responseFilter.StopFiltering(Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]), false);
                 }
