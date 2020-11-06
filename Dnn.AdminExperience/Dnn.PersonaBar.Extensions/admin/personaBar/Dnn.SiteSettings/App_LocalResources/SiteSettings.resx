@@ -1470,4 +1470,13 @@
   <data name="Redirect_AfterRegistration.Text" xml:space="preserve">
     <value>Redirect After Registration</value>
   </data>
+  <data name="MoreSettings.Text" xml:space="preserve">
+    <value>More Settings</value>
+  </data>
+  <data name="plEnablePopups.Help" xml:space="preserve">
+    <value>When enabled DNN will load some standard controls in a popup. Otherwise it will reload the page and show the control embedded on a page.</value>
+  </data>
+  <data name="plEnablePopups.Text" xml:space="preserve">
+    <value>Enable Popups</value>
+  </data>
 </root>
