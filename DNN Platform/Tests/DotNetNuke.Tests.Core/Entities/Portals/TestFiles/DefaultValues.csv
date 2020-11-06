@@ -11,7 +11,6 @@ EnableBrowserLanguage,			EnableBrowserLanguage,			EnableBrowserLanguage,			true,
 EnableCompositeFiles,			EnableCompositeFiles,			EnableCompositeFiles,			false,				false
 EnablePopUps,					EnablePopUps,					EnablePopUps,					false,				true
 HideLoginControl,				HideLoginControl,				HideLoginControl,				false,				false
-EnableSkinWidgets,				EnableSkinWidgets,				EnableSkinWidgets,				false,				true
 EnableUrlLanguage,				EnableUrlLanguage,				EnableUrlLanguage,				true,
 HideFoldersEnabled,				HideFoldersEnabled,				HideFoldersEnabled,				false,				true
 InlineEditorEnabled,			InlineEditorEnabled,			InlineEditorEnabled,			false,				true
