@@ -8,7 +8,8 @@ import {
   GridSystem,
   InputGroup,
   Label,
-  MultiLineInputWithError
+  MultiLineInputWithError,
+  Switch,
 } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
@@ -17,7 +18,7 @@ import styles from "./style.less";
 
 function getError(errors) {
   let hasError = false;
-  Object.keys(errors).forEach(key => {
+  Object.keys(errors).forEach((key) => {
     if (errors[key] === true) {
       hasError = true;
     }
@@ -34,7 +35,7 @@ class MoreSettingsPanelBody extends Component {
       otherSettings: undefined,
       siteBehaviorExtrasRendered: true,
       errorInSave: false,
-      whitelistOption: 0
+      whitelistOption: 0,
     };
     isHost = util.settings.isHost;
   }
@@ -42,7 +43,7 @@ class MoreSettingsPanelBody extends Component {
   loadData() {
     const { props } = this;
     props.dispatch(
-      SiteBehaviorActions.getOtherSettings(props.portalId, data => {
+      SiteBehaviorActions.getOtherSettings(props.portalId, (data) => {
         var whitelistOption = 1;
         if (
           data.Settings.AllowedExtensionsWhitelist ==
@@ -50,13 +51,14 @@ class MoreSettingsPanelBody extends Component {
         ) {
           whitelistOption = 0;
         } else if (
-          data.Settings.AllowedExtensionsWhitelist == data.Settings.ImageExtensionsList
+          data.Settings.AllowedExtensionsWhitelist ==
+          data.Settings.ImageExtensionsList
         ) {
           whitelistOption = 2;
         }
         this.setState({
           otherSettings: Object.assign({}, data.Settings),
-          whitelistOption: whitelistOption
+          whitelistOption: whitelistOption,
         });
       })
     );
@@ -66,13 +68,13 @@ class MoreSettingsPanelBody extends Component {
     const { props } = this;
     if (props.otherSettings) {
       this.setState({
-        otherSettings: props.otherSettings
+        otherSettings: props.otherSettings,
       });
       return;
     }
     this.setState({
       siteBehaviorExtrasRendered: true,
-      whitelistOption: 0
+      whitelistOption: 0,
     });
     this.loadData();
   }
@@ -112,7 +114,7 @@ class MoreSettingsPanelBody extends Component {
     otherSettings[key] = typeof event === "object" ? event.target.value : event;
 
     this.setState({
-      otherSettings: otherSettings
+      otherSettings: otherSettings,
     });
 
     props.dispatch(
@@ -132,7 +134,7 @@ class MoreSettingsPanelBody extends Component {
         () => {},
         () => {
           this.setState({
-            errorInSave: true
+            errorInSave: true,
           });
         }
       )
@@ -147,19 +149,19 @@ class MoreSettingsPanelBody extends Component {
       resx.get("No"),
       () => {
         props.dispatch(
-          SiteBehaviorActions.getOtherSettings(data => {
+          SiteBehaviorActions.getOtherSettings((data) => {
             this.setState({
-              otherSettings: Object.assign({}, data.Settings)
+              otherSettings: Object.assign({}, data.Settings),
             });
           })
         );
         this.setState(
           {
-            siteBehaviorExtrasRendered: false
+            siteBehaviorExtrasRendered: false,
           },
           () => {
             this.setState({
-              siteBehaviorExtrasRendered: true
+              siteBehaviorExtrasRendered: true,
             });
           }
         );
@@ -173,11 +175,11 @@ class MoreSettingsPanelBody extends Component {
     if (!SiteBehaviorExtras || SiteBehaviorExtras.length === 0) {
       return;
     }
-    return SiteBehaviorExtras.sort(function(a, b) {
+    return SiteBehaviorExtras.sort(function (a, b) {
       if (a.RenderOrder < b.RenderOrder) return -1;
       if (a.RenderOrder > b.RenderOrder) return 1;
       return 0;
-    }).map(data => {
+    }).map((data) => {
       return data.Component;
     });
   }
@@ -189,7 +191,7 @@ class MoreSettingsPanelBody extends Component {
 
     if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
       //First, loop through and check there are no errors.
-      SiteBehaviorExtras.forEach(extra => {
+      SiteBehaviorExtras.forEach((extra) => {
         const currentReducer = this.props[extra.ReducerKey];
 
         if (currentReducer.errors && getError(currentReducer.errors)) {
@@ -204,7 +206,7 @@ class MoreSettingsPanelBody extends Component {
 
       //Only go through the save if none of them have an error.
       if (!_errorInSave) {
-        SiteBehaviorExtras.forEach(extra => {
+        SiteBehaviorExtras.forEach((extra) => {
           if (typeof extra.SaveMethod === "function") {
             const currentReducer = this.props[extra.ReducerKey];
 
@@ -236,7 +238,7 @@ class MoreSettingsPanelBody extends Component {
     if (this.state.errorInSave) {
       util.utilities.notifyError(resx.get("SettingsError"));
       this.setState({
-        errorInSave: false
+        errorInSave: false,
       });
     } else {
       util.utilities.notify(resx.get("SettingsUpdateSuccess"));
@@ -248,7 +250,7 @@ class MoreSettingsPanelBody extends Component {
     const SiteBehaviorExtras =
       window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
     if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
-      SiteBehaviorExtras.forEach(extra => {
+      SiteBehaviorExtras.forEach((extra) => {
         if (
           this.props[extra.ReducerKey] &&
           this.props[extra.ReducerKey].formDirty
@@ -267,7 +269,7 @@ class MoreSettingsPanelBody extends Component {
     return [
       { label: resx.get("Default"), value: 0 },
       { label: resx.get("Custom"), value: 1 },
-      { label: resx.get("OnlyImages"), value: 2 }
+      { label: resx.get("OnlyImages"), value: 2 },
     ];
   }
 
@@ -317,9 +319,28 @@ class MoreSettingsPanelBody extends Component {
           {state.siteBehaviorExtrasRendered &&
             this.renderSiteBehaviorExtensions()}
           {htmlEditor}
-          <div className="sectionTitle">{resx.get("WhitelistSettings")}</div>
+          <div className="sectionTitle">{resx.get("MoreSettings")}</div>
           <GridSystem numberOfColumns={2}>
             <div key="column-one-left" className="left-column">
+              <InputGroup>
+                <Label
+                  labelType="inline"
+                  tooltipMessage={resx.get("plEnablePopups.Help")}
+                  label={resx.get("plEnablePopups")}
+                />
+                <Switch
+                  onText={resx.get("SwitchOn")}
+                  offText={resx.get("SwitchOff")}
+                  value={state.otherSettings.EnablePopups}
+                  onChange={this.onSettingChange.bind(this, "EnablePopups")}
+                />
+              </InputGroup>
+            </div>
+            <div key="column-one-right" className="left-column"></div>
+          </GridSystem>
+          <div className="sectionTitle">{resx.get("WhitelistSettings")}</div>
+          <GridSystem numberOfColumns={2}>
+            <div key="column-two-left" className="left-column">
               <InputGroup>
                 <Label
                   tooltipMessage={resx.get("plWhitelistOption.Help")}
@@ -328,11 +349,11 @@ class MoreSettingsPanelBody extends Component {
                 <Dropdown
                   options={this.getWhiteListOptions()}
                   value={state.whitelistOption}
-                  onSelect={e => this.onWhitelistOptionChange(e)}
+                  onSelect={(e) => this.onWhitelistOptionChange(e)}
                 />
               </InputGroup>
             </div>
-            <div key="column-one-right" className="right-column">
+            <div key="column-two-right" className="right-column">
               <InputGroup>
                 <Label
                   tooltipMessage={resx.get("plAllowedExtensionsWhitelist.Help")}
@@ -376,14 +397,14 @@ MoreSettingsPanelBody.propTypes = {
   portalId: PropTypes.number,
   openHtmlEditorManager: PropTypes.func,
   otherSettings: PropTypes.object,
-  otherSettingsClientModified: PropTypes.bool
+  otherSettingsClientModified: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
   return {
     ...state,
     otherSettings: state.siteBehavior.otherSettings,
-    otherSettingsClientModified: state.siteBehavior.otherSettingsClientModified
+    otherSettingsClientModified: state.siteBehavior.otherSettingsClientModified,
   };
 }
 
