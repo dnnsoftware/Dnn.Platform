@@ -55,7 +55,7 @@
             <install>
               <configuration>
                 <nodes>
-                  <node path="/configuration/dotnetnuke/authServices/messageHandlers" action="update" key="name" collision="overwrite">
+                  <node path="/configuration/dotnetnuke/authServices/messageHandlers" action="update" key="name" collision="ignore">
                     <add name="JWTAuth" type="Dnn.AuthServices.Jwt.Auth.JwtAuthMessageHandler, Dnn.AuthServices.Jwt"
                          enabled="true" defaultInclude="false" forceSSL="true" />
                   </node>

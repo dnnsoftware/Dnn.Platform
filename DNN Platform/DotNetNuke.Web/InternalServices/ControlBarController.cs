@@ -567,7 +567,7 @@ namespace DotNetNuke.Web.InternalServices
                 userID = user.UserID;
             }
 
-            if (moduleInfo != null)
+            if (moduleInfo != null && !moduleInfo.IsDeleted)
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -585,6 +585,11 @@ namespace DotNetNuke.Web.InternalServices
                         case ModuleSharing.Unknown:
                             break;
                     }
+                }
+
+                if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", moduleInfo))
+                {
+                    throw new SecurityException($"Module '{moduleInfo.ModuleID}' is not available in current context.");
                 }
 
                 // clone the module object ( to avoid creating an object reference to the data cache )

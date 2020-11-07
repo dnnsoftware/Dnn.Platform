@@ -12,7 +12,7 @@ namespace Dnn.AuthServices.Jwt.Components.Schedule
     using DotNetNuke.Services.Scheduling;
 
     /// <summary>
-    /// Scheduled task to delete tokens that linger in the database after having expired
+    /// Scheduled task to delete tokens that linger in the database after having expired.
     /// </summary>
     public class PurgeExpiredTokensTask : SchedulerClient
     {
@@ -21,7 +21,7 @@ namespace Dnn.AuthServices.Jwt.Components.Schedule
         /// <summary>
         /// Initializes a new instance of the <see cref="PurgeExpiredTokensTask"/> class.
         /// </summary>
-        /// <param name="objScheduleHistoryItem">The object used to record the results from this task</param>
+        /// <param name="objScheduleHistoryItem">The object used to record the results from this task.</param>
         public PurgeExpiredTokensTask(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
