@@ -13,11 +13,16 @@ namespace DotNetNuke.Framework.Reflections
     {
         private readonly Assembly _assembly;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyWrapper"/> class.
+        /// </summary>
+        /// <param name="assembly"></param>
         public AssemblyWrapper(Assembly assembly)
         {
             this._assembly = assembly;
         }
 
+        /// <inheritdoc/>
         public Type[] GetTypes()
         {
             return this._assembly.GetTypes();

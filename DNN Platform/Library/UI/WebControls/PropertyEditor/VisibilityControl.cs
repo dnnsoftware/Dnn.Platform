@@ -14,14 +14,11 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
 
     /// <summary>
     /// The VisibilityControl control provides a base control for defining visibility
@@ -128,6 +125,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnVisibilityChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -135,6 +133,7 @@ namespace DotNetNuke.UI.WebControls
             JavaScript.RequestRegistration(CommonJs.jQuery);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

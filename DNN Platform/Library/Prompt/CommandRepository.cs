@@ -6,6 +6,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Services.Localization;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +18,19 @@ namespace DotNetNuke.Prompt
 {
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
+        /// <inheritdoc/>
         protected override Func<ICommandRepository> GetFactory()
         {
             return () => new CommandRepository();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<ICommand> GetCommands()
         {
             return CommandList().Values;
         }
 
+        /// <inheritdoc/>
         public IConsoleCommand GetCommand(string commandName)
         {
             commandName = commandName.ToUpper();
@@ -77,6 +81,7 @@ namespace DotNetNuke.Prompt
             return commands;
         }
 
+        /// <inheritdoc/>
         public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
@@ -128,6 +133,7 @@ namespace DotNetNuke.Prompt
             var camelCasedParts = SplitCamelCase(className);
             return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
         }
+
         private static string[] SplitCamelCase(string source)
         {
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");

@@ -54,8 +54,6 @@ Examples of requests of this nature include technology or dependency changes tha
 ## Merging & Closing of Requests
 Once a pull request has been reviewed by two designated approvers it may be merged and the pull request closed.
 
-> This **_MUST NOT_** be done by the submitter of the Pull Request for ANY reason!  
-
 ### Execption for Build Process Pull Requests
 A special exception has been granted to reduce the number of Designed Approval reviews to 1 for all pull requests related to Build Support when incrementing versions in prepration of a release, or reconfiguration of the environment for the next version. 
 

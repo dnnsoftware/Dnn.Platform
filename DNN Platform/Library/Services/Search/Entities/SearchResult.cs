@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Search.Entities
     using System.Collections.Generic;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Services.Search.Internals;
 
     /// <summary>
     /// Search Result to be displayed to end user

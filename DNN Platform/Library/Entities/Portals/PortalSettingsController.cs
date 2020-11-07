@@ -34,6 +34,7 @@ namespace DotNetNuke.Entities.Portals
             return ComponentFactory.GetComponent<IPortalSettingsController>("PortalSettingsController");
         }
 
+        /// <inheritdoc/>
         public virtual void ConfigureActiveTab(PortalSettings portalSettings)
         {
             var activeTab = portalSettings.ActiveTab;
@@ -48,6 +49,7 @@ namespace DotNetNuke.Entities.Portals
             activeTab.BreadCrumbs = new ArrayList(this.GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
         }
 
+        /// <inheritdoc/>
         public virtual TabInfo GetActiveTab(int tabId, PortalSettings portalSettings)
         {
             var portalId = portalSettings.PortalId;
@@ -86,6 +88,7 @@ namespace DotNetNuke.Entities.Portals
             return activeTab;
         }
 
+        /// <inheritdoc/>
         public virtual PortalSettings.PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {
             var aliasMapping = PortalSettings.PortalAliasMapping.None;
@@ -109,11 +112,13 @@ namespace DotNetNuke.Entities.Portals
             return aliasMapping;
         }
 
+        /// <inheritdoc/>
         public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
         {
             return portalSettings.ActiveTab.Modules.Cast<ModuleInfo>().Select(m => m).ToList();
         }
 
+        /// <inheritdoc/>
         public virtual void LoadPortal(PortalInfo portal, PortalSettings portalSettings)
         {
             portalSettings.PortalName = portal.PortalName;
@@ -159,6 +164,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.CultureCode = portal.CultureCode;
         }
 
+        /// <inheritdoc/>
         public virtual void LoadPortalSettings(PortalSettings portalSettings)
         {
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);

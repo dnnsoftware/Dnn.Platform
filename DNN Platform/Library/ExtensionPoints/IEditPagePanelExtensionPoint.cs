@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
-    using System;
-
     public interface IEditPagePanelExtensionPoint : IUserControlExtensionPoint
     {
         string EditPagePanelId { get; }

@@ -23,6 +23,7 @@ namespace DotNetNuke.ComponentModel
             this._Type = type;
         }
 
+        /// <inheritdoc/>
         public string Name
         {
             get
@@ -31,6 +32,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
+        /// <inheritdoc/>
         public object BuildComponent()
         {
             return Reflection.CreateObject(this._Type);

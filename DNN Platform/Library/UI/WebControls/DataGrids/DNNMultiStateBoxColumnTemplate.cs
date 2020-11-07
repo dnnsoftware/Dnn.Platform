@@ -29,11 +29,18 @@ namespace DotNetNuke.UI.WebControls
         private DNNMultiStateCollection mStates;
         private string mText = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumnTemplate"/> class.
+        /// </summary>
         public DNNMultiStateBoxColumnTemplate()
             : this(ListItemType.Item)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumnTemplate"/> class.
+        /// </summary>
+        /// <param name="itemType"></param>
         public DNNMultiStateBoxColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;

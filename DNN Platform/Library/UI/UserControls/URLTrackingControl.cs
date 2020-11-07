@@ -132,6 +132,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

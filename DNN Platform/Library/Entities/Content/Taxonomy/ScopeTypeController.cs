@@ -20,16 +20,24 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private const int _CacheTimeOut = 20;
         private readonly IDataService _DataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScopeTypeController"/> class.
+        /// </summary>
         public ScopeTypeController()
             : this(Util.GetDataService())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScopeTypeController"/> class.
+        /// </summary>
+        /// <param name="dataService"></param>
         public ScopeTypeController(IDataService dataService)
         {
             this._DataService = dataService;
         }
 
+        /// <inheritdoc/>
         public int AddScopeType(ScopeType scopeType)
         {
             // Argument Contract
@@ -44,11 +52,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             return scopeType.ScopeTypeId;
         }
 
+        /// <inheritdoc/>
         public void ClearScopeTypeCache()
         {
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
+        /// <inheritdoc/>
         public void DeleteScopeType(ScopeType scopeType)
         {
             // Argument Contract
@@ -61,11 +71,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
+        /// <inheritdoc/>
         public IQueryable<ScopeType> GetScopeTypes()
         {
             return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, _CacheTimeOut), this.GetScopeTypesCallBack).AsQueryable();
         }
 
+        /// <inheritdoc/>
         public void UpdateScopeType(ScopeType scopeType)
         {
             // Argument Contract

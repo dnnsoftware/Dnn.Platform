@@ -21,6 +21,9 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public abstract class ControlInfo : BaseEntityInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ControlInfo"/> class.
+        /// </summary>
         protected ControlInfo()
         {
             this.SupportsPartialRendering = Null.NullBoolean;

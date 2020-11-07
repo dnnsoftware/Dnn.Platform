@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Installer.Blocker
         private const string installBlockerFile = "\\installBlocker.lock";
         private bool fileCreated = false;
 
+        /// <inheritdoc/>
         public void RegisterInstallBegining()
         {
             if (!this.fileCreated)
@@ -29,11 +30,13 @@ namespace DotNetNuke.Services.Installer.Blocker
             this.fileCreated = true;
         }
 
+        /// <inheritdoc/>
         public bool IsInstallInProgress()
         {
             return this.fileCreated || File.Exists(Globals.ApplicationMapPath + installBlockerFile);
         }
 
+        /// <inheritdoc/>
         public void RegisterInstallEnd()
         {
             var retryable = new RetryableAction(
@@ -49,6 +52,7 @@ namespace DotNetNuke.Services.Installer.Blocker
             this.fileCreated = false;
         }
 
+        /// <inheritdoc/>
         protected override Func<IInstallBlocker> GetFactory()
         {
             return () => new InstallBlocker();

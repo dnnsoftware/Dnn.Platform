@@ -20,6 +20,7 @@ namespace DotNetNuke.ComponentModel
             this._Instance = instance;
         }
 
+        /// <inheritdoc/>
         public string Name
         {
             get
@@ -28,6 +29,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
+        /// <inheritdoc/>
         public object BuildComponent()
         {
             return this._Instance;

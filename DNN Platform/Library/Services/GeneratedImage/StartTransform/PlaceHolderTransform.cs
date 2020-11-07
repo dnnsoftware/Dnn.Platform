@@ -13,6 +13,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class PlaceholderTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlaceholderTransform"/> class.
+        /// </summary>
         public PlaceholderTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

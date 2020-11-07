@@ -27,11 +27,18 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class ScopeType : ScopeTypeMemberNameFixer, IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScopeType"/> class.
+        /// </summary>
         public ScopeType()
             : this(Null.NullString)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScopeType"/> class.
+        /// </summary>
+        /// <param name="scopeType"></param>
         public ScopeType(string scopeType)
         {
             this.ScopeTypeId = Null.NullInteger;
@@ -40,6 +47,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public int ScopeTypeId { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -53,12 +61,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
             this.ScopeType = Null.SetNullString(dr["ScopeType"]);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return this.ScopeType;

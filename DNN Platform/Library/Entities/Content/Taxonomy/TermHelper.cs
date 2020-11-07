@@ -7,7 +7,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;

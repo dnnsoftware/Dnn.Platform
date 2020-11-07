@@ -10,20 +10,37 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class InvalidMetadataValuesException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidMetadataValuesException"/> class.
+        /// </summary>
         public InvalidMetadataValuesException()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidMetadataValuesException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
         public InvalidMetadataValuesException(string message)
             : base(message)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidMetadataValuesException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public InvalidMetadataValuesException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidMetadataValuesException"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public InvalidMetadataValuesException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

@@ -22,11 +22,20 @@ namespace DotNetNuke.Common.Utilities
 
         private int _retryTimes = 30;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.
+        /// </summary>
+        /// <param name="basePath"></param>
         public FileSystemPermissionVerifier(string basePath)
         {
             this._basePath = basePath;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.
+        /// </summary>
+        /// <param name="basePath"></param>
+        /// <param name="retryTimes"></param>
         public FileSystemPermissionVerifier(string basePath, int retryTimes)
             : this(basePath)
         {

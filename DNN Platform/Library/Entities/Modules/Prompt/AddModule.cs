@@ -11,6 +11,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Prompt;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
     [ConsoleCommand("add-module", Constants.CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand
     {
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
@@ -40,12 +42,14 @@ namespace DotNetNuke.Entities.Modules.Prompt
         [ConsoleCommandParameter("title", "Prompt_AddModule_FlagModuleTitle")]
         public string ModuleTitle { get; set; }   // title for the new module. defaults to friendly name
 
+        /// <inheritdoc/>
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
             ParseParameters(this);
         }
 
+        /// <inheritdoc/>
         public override IConsoleResultModel Run()
         {
             try

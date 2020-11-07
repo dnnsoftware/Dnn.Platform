@@ -3159,8 +3159,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         AllowedExtensionsWhitelist = portalSettings.AllowedExtensionsWhitelist.ToStorageString(),
                         HostAllowedExtensionsWhitelists = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
-                        ImageExtensionsList = Globals.glbImageFileTypes
-                    }
+                        ImageExtensionsList = Globals.ImageFileTypes,
+                        EnablePopups = portalSettings.EnablePopUps,
+                    },
                 });
             }
             catch (Exception exc)
@@ -3184,6 +3185,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? this.PortalId;
+                PortalController.Instance.UpdatePortalSetting(pid, "EnablePopups", request.EnablePopups.ToString(), false, null, false);
                 if (request.AllowedExtensionsWhitelist == Host.DefaultEndUserExtensionWhitelist.ToStorageString())
                 {
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", null, false, null, false);
@@ -3194,6 +3196,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     whitelist = whitelist.RestrictBy(Host.AllowedExtensionWhitelist);
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", whitelist.ToStorageString(), false, null, false);
                 }
+
                 DataCache.ClearCache();
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

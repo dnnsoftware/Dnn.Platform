@@ -23,6 +23,9 @@ namespace DotNetNuke.Entities
     [Serializable]
     public abstract class BaseEntityInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseEntityInfo"/> class.
+        /// </summary>
         protected BaseEntityInfo()
         {
             this.CreatedByUserID = Null.NullInteger;

@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Common
 {
-    using System;
     using System.Web;
 
     /// <summary>
@@ -12,7 +11,7 @@ namespace DotNetNuke.Common
     /// </summary>
     public class HttpContextSource
     {
-        private static HttpContextBase _fakeContext;
+        private static HttpContextBase fakeContext;
 
         /// <summary>
         /// Gets the current HttpContext.
@@ -21,9 +20,9 @@ namespace DotNetNuke.Common
         {
             get
             {
-                if (_fakeContext != null)
+                if (fakeContext != null)
                 {
-                    return _fakeContext;
+                    return fakeContext;
                 }
 
                 if (HttpContext.Current != null)
@@ -41,7 +40,7 @@ namespace DotNetNuke.Common
         /// <param name="instance">The fake context to inject.</param>
         public static void RegisterInstance(HttpContextBase instance)
         {
-            _fakeContext = instance;
+            fakeContext = instance;
         }
     }
 }

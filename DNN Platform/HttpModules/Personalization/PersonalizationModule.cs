@@ -21,11 +21,13 @@ namespace DotNetNuke.HttpModules.Personalization
             }
         }
 
+        /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
             application.EndRequest += this.OnEndRequest;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }

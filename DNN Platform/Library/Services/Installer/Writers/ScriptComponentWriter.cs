@@ -21,6 +21,12 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class ScriptComponentWriter : FileComponentWriter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptComponentWriter"/> class.
+        /// </summary>
+        /// <param name="basePath"></param>
+        /// <param name="scripts"></param>
+        /// <param name="package"></param>
         public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package)
             : base(basePath, scripts, package)
         {
@@ -68,6 +74,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void WriteFileElement(XmlWriter writer, InstallFile file)
         {
             this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));

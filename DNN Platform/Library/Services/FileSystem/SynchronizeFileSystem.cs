@@ -4,20 +4,23 @@
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
-    using System.Collections;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Scheduling;
 
     public class SynchronizeFileSystem : SchedulerClient
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SynchronizeFileSystem"/> class.
+        /// </summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public SynchronizeFileSystem(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try

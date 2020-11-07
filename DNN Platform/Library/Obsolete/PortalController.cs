@@ -8,15 +8,12 @@
 namespace DotNetNuke.Entities.Portals
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
-    using System.Xml;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;

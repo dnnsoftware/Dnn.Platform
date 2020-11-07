@@ -19,6 +19,9 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly Regex FolderPathRx = new Regex("^0\\\\", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PathUtils"/> class.
+        /// </summary>
         internal PathUtils()
         {
         }

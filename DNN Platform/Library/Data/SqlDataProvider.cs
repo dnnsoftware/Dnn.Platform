@@ -12,10 +12,7 @@ namespace DotNetNuke.Data
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Log.EventLog;
 
     public sealed class SqlDataProvider : DataProvider
     {
@@ -23,6 +20,7 @@ namespace DotNetNuke.Data
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
 
+        /// <inheritdoc/>
         public override bool IsConnectionValid
         {
             get
@@ -31,6 +29,7 @@ namespace DotNetNuke.Data
             }
         }
 
+        /// <inheritdoc/>
         public override Dictionary<string, string> Settings
         {
             get
@@ -39,61 +38,73 @@ namespace DotNetNuke.Data
             }
         }
 
+        /// <inheritdoc/>
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
             _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
         {
             _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
             _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
+        /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
         {
             _dbConnectionProvider.BulkInsert(this.ConnectionString, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
+        /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
         {
             _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
         {
             _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
             return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
         {
             return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
             return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
             return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
+        /// <inheritdoc/>
         public override string ExecuteScript(string script)
         {
             return this.ExecuteScript(script, 0);
         }
 
+        /// <inheritdoc/>
         public override string ExecuteScript(string script, int timeoutSec)
         {
             string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
@@ -136,43 +147,51 @@ namespace DotNetNuke.Data
             return exceptions;
         }
 
+        /// <inheritdoc/>
         public override string ExecuteScript(string connectionString, string script)
         {
             return this.ExecuteScriptInternal(connectionString, script);
         }
 
+        /// <inheritdoc/>
         public override string ExecuteScript(string connectionString, string script, int timeoutSec)
         {
             return this.ExecuteScriptInternal(connectionString, script, timeoutSec);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteSQL(string sql)
         {
             return this.ExecuteSQLInternal(this.ConnectionString, sql);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteSQL(string sql, int timeoutSec)
         {
             return this.ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
         {
             string errorMessage;
             return this.ExecuteSQLTemp(connectionString, sql, out errorMessage);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
         {
             string errorMessage;
             return this.ExecuteSQLTemp(connectionString, sql, timeoutSec, out errorMessage);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
         {
             return this.ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
         }
 
+        /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
             return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);

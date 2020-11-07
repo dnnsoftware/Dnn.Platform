@@ -37,6 +37,7 @@ namespace DotNetNuke.Services.FileSystem
         int LastModifiedByUserID { get; }
 
         DateTime LastModifiedOnDate { get; }
+
         string ContentType { get; set; }
 
         string Extension { get; set; }

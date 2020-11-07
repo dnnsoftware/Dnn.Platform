@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Sitemap
 
     public class SitemapHandler : IHttpHandler
     {
+        /// <inheritdoc/>
         public bool IsReusable
         {
             get
@@ -19,6 +20,7 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
+        /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
             try

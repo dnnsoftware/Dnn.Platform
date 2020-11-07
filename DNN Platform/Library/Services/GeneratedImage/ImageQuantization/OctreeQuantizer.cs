@@ -196,7 +196,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     }
                     else
                     {
-
                         // Just update the previous node
                         this._previousNode.Increment(pixel);
                     }

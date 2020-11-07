@@ -27,49 +27,53 @@ namespace Dnn.Modules.Console
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Implements the module view logic.
+    /// </summary>
     public partial class ViewConsole : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
-        private readonly INavigationManager _navigationManager;
-        private ConsoleController _consoleCtrl;
-        private string _defaultSize = string.Empty;
-        private string _defaultView = string.Empty;
-        private int _groupTabID = -1;
-        private IList<TabInfo> _tabs;
+        private readonly INavigationManager navigationManager;
+        private string defaultSize = string.Empty;
+        private string defaultView = string.Empty;
+        private int groupTabID = -1;
+        private IList<TabInfo> tabs;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewConsole"/> class.
+        /// </summary>
         public ViewConsole()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the module settings allow size change.
+        /// </summary>
         public bool AllowSizeChange
         {
             get { return !this.Settings.ContainsKey("AllowSizeChange") || bool.Parse(this.Settings["AllowSizeChange"].ToString()); }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the module settings allow to change view.
+        /// </summary>
         public bool AllowViewChange
         {
             get { return !this.Settings.ContainsKey("AllowViewChange") || bool.Parse(this.Settings["AllowViewChange"].ToString()); }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the module settings indicate to include hidden pages.
+        /// </summary>
         public bool IncludeHiddenPages
         {
             get { return this.Settings.ContainsKey("IncludeHiddenPages") && bool.Parse(this.Settings["IncludeHiddenPages"].ToString()); }
         }
 
-        public ConsoleController ConsoleCtrl
-        {
-            get
-            {
-                if (this._consoleCtrl == null)
-                {
-                    this._consoleCtrl = new ConsoleController();
-                }
-
-                return this._consoleCtrl;
-            }
-        }
-
+        /// <summary>
+        /// Gets the id of the page (tab) for the root node of the console display.
+        /// </summary>
         public int ConsoleTabID
         {
             get
@@ -82,6 +86,9 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <summary>
+        /// Gets the configured console width or an empty string if not specified in the settings.
+        /// </summary>
         public string ConsoleWidth
         {
             get
@@ -90,50 +97,59 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <summary>
+        /// Gets the default size for the console icons.
+        /// </summary>
         public string DefaultSize
         {
             get
             {
-                if (this._defaultSize == string.Empty && this.AllowSizeChange && this.UserId > Null.NullInteger)
+                if (this.defaultSize == string.Empty && this.AllowSizeChange && this.UserId > Null.NullInteger)
                 {
                     object personalizedValue = this.GetUserSetting("DefaultSize");
                     if (personalizedValue != null)
                     {
-                        this._defaultSize = Convert.ToString(personalizedValue);
+                        this.defaultSize = Convert.ToString(personalizedValue);
                     }
                 }
 
-                if (this._defaultSize == string.Empty)
+                if (this.defaultSize == string.Empty)
                 {
-                    this._defaultSize = this.Settings.ContainsKey("DefaultSize") ? Convert.ToString(this.Settings["DefaultSize"]) : "IconFile";
+                    this.defaultSize = this.Settings.ContainsKey("DefaultSize") ? Convert.ToString(this.Settings["DefaultSize"]) : "IconFile";
                 }
 
-                return this._defaultSize;
+                return this.defaultSize;
             }
         }
 
+        /// <summary>
+        /// Gets the default view module for the console.
+        /// </summary>
         public string DefaultView
         {
             get
             {
-                if (this._defaultView == string.Empty && this.AllowViewChange && this.UserId > Null.NullInteger)
+                if (this.defaultView == string.Empty && this.AllowViewChange && this.UserId > Null.NullInteger)
                 {
                     object personalizedValue = this.GetUserSetting("DefaultView");
                     if (personalizedValue != null)
                     {
-                        this._defaultView = Convert.ToString(personalizedValue);
+                        this.defaultView = Convert.ToString(personalizedValue);
                     }
                 }
 
-                if (this._defaultView == string.Empty)
+                if (this.defaultView == string.Empty)
                 {
-                    this._defaultView = this.Settings.ContainsKey("DefaultView") ? Convert.ToString(this.Settings["DefaultView"]) : "Hide";
+                    this.defaultView = this.Settings.ContainsKey("DefaultView") ? Convert.ToString(this.Settings["DefaultView"]) : "Hide";
                 }
 
-                return this._defaultView;
+                return this.defaultView;
             }
         }
 
+        /// <summary>
+        /// Gets the group id, if not displayed in a group, will return <see cref="Null.NullInteger"/>.
+        /// </summary>
         public int GroupId
         {
             get
@@ -148,6 +164,9 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the parent should be shown.
+        /// </summary>
         public bool IncludeParent
         {
             get
@@ -156,6 +175,9 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <summary>
+        /// Gets the module display mode.
+        /// </summary>
         public string Mode
         {
             get
@@ -164,6 +186,9 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <summary>
+        /// Gets the id of the user when used in a user profile page, if not used on a user profile returns <see cref="Null.NullInteger"/>.
+        /// </summary>
         public int ProfileUserId
         {
             get
@@ -178,11 +203,17 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the tooltips should be shown.
+        /// </summary>
         public bool ShowTooltip
         {
             get { return !this.Settings.ContainsKey("ShowTooltip") || bool.Parse(this.Settings["ShowTooltip"].ToString()); }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the pages (tabs) should by ordered by their hierarchy.
+        /// </summary>
         public bool OrderTabsByHierarchy
         {
             get
@@ -191,6 +222,7 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -212,6 +244,7 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -243,7 +276,7 @@ namespace Dnn.Modules.Console
                                         ? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList()
                                         : TabController.GetTabsBySortOrder(this.PortalId).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList();
 
-                    this._tabs = new List<TabInfo>();
+                    this.tabs = new List<TabInfo>();
 
                     IList<int> tabIdList = new List<int>();
                     tabIdList.Add(this.ConsoleTabID);
@@ -253,7 +286,7 @@ namespace Dnn.Modules.Console
                         TabInfo consoleTab = TabController.Instance.GetTab(this.ConsoleTabID, this.PortalId);
                         if (consoleTab != null)
                         {
-                            this._tabs.Add(consoleTab);
+                            this.tabs.Add(consoleTab);
                         }
                     }
 
@@ -271,7 +304,7 @@ namespace Dnn.Modules.Console
                                 tabIdList.Add(tab.TabID);
                             }
 
-                            this._tabs.Add(tab);
+                            this.tabs.Add(tab);
                         }
                     }
 
@@ -279,16 +312,16 @@ namespace Dnn.Modules.Console
                     // so that the list display in UI can show tabs in same level in same area, and not break by child tabs.
                     if (this.OrderTabsByHierarchy)
                     {
-                        this._tabs = this._tabs.OrderBy(t => t.HasChildren).ToList();
+                        this.tabs = this.tabs.OrderBy(t => t.HasChildren).ToList();
                     }
 
                     int minLevel = -1;
-                    if (this._tabs.Count > 0)
+                    if (this.tabs.Count > 0)
                     {
-                        minLevel = this._tabs.Min(t => t.Level);
+                        minLevel = this.tabs.Min(t => t.Level);
                     }
 
-                    this.DetailView.DataSource = (minLevel > -1) ? this._tabs.Where(t => t.Level == minLevel) : this._tabs;
+                    this.DetailView.DataSource = (minLevel > -1) ? this.tabs.Where(t => t.Level == minLevel) : this.tabs;
                     this.DetailView.DataBind();
                 }
 
@@ -303,12 +336,17 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <summary>
+        /// Gets the html rendering of the console view according to the module settings.
+        /// </summary>
+        /// <param name="tab">The root page to render the console from, <see cref="TabInfo"/>.</param>
+        /// <returns>A string containing the rendered html.</returns>
         protected string GetHtml(TabInfo tab)
         {
             string returnValue = string.Empty;
-            if (this._groupTabID > -1 && this._groupTabID != tab.ParentId)
+            if (this.groupTabID > -1 && this.groupTabID != tab.ParentId)
             {
-                this._groupTabID = -1;
+                this.groupTabID = -1;
                 if (!tab.DisableLink)
                 {
                     returnValue = "<br style=\"clear:both;\" /><br />";
@@ -319,7 +357,7 @@ namespace Dnn.Modules.Console
             {
                 const string headerHtml = "<br style=\"clear:both;\" /><br /><h1><span class=\"TitleHead\">{0}</span></h1><br style=\"clear:both\" />";
                 returnValue += string.Format(headerHtml, tab.TabName);
-                this._groupTabID = tab.TabID;
+                this.groupTabID = tab.TabID;
             }
             else
             {
@@ -350,12 +388,12 @@ namespace Dnn.Modules.Console
                 var tabUrl = tab.FullUrl;
                 if (this.ProfileUserId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = this.navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId.ToString(CultureInfo.InvariantCulture));
                 }
 
                 if (this.GroupId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = this.navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId.ToString(CultureInfo.InvariantCulture));
                 }
 
                 returnValue += string.Format(
@@ -370,12 +408,18 @@ namespace Dnn.Modules.Console
             return returnValue;
         }
 
+        /// <summary>
+        /// Gets the client side settings for the module.
+        /// </summary>
+        /// <returns>
+        /// A settings string ready to use by the .dnnConsole jQuery plugin.
+        /// </returns>
         protected string GetClientSideSettings()
         {
-            string tmid = "-1";
+            string tabModuleId = "-1";
             if (this.UserId > -1)
             {
-                tmid = this.TabModuleId.ToString(CultureInfo.InvariantCulture);
+                tabModuleId = this.TabModuleId.ToString(CultureInfo.InvariantCulture);
             }
 
             return string.Format(
@@ -384,7 +428,7 @@ namespace Dnn.Modules.Console
                 this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
                 this.DefaultSize,
                 this.DefaultView,
-                tmid,
+                tabModuleId,
                 this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
         }
 
@@ -526,12 +570,12 @@ namespace Dnn.Modules.Console
         {
             var tab = e.Item.DataItem as TabInfo;
             e.Item.Controls.Add(new Literal() { Text = this.GetHtml(tab) });
-            if (this._tabs.Any(t => t.ParentId == tab.TabID))
+            if (this.tabs.Any(t => t.ParentId == tab.TabID))
             {
                 var repeater = new Repeater();
                 repeater.ItemDataBound += this.RepeaterItemDataBound;
                 e.Item.Controls.Add(repeater);
-                repeater.DataSource = this._tabs.Where(t => t.ParentId == tab.TabID);
+                repeater.DataSource = this.tabs.Where(t => t.ParentId == tab.TabID);
                 repeater.DataBind();
             }
         }

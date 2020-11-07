@@ -7,6 +7,7 @@ using DotNetNuke.Abstractions.Users;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Prompt;
 using DotNetNuke.Security.Permissions;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
     [ConsoleCommand("list-modules", Constants.CommandCategoryKeys.Modules, "Prompt_ListModules_Description")]
     public class ListModules : ConsoleCommand
     {
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
         [ConsoleCommandParameter("pageid", "Prompt_ListModules_FlagPageId")]
@@ -38,14 +40,16 @@ namespace DotNetNuke.Entities.Modules.Prompt
 
         [ConsoleCommandParameter("deleted", "Prompt_ListModules_FlagDeleted")]
         public bool? Deleted { get; set; }
-        
 
+
+        /// <inheritdoc/>
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
             ParseParameters(this);
         }
 
+        /// <inheritdoc/>
         public override IConsoleResultModel Run()
         {
             var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);

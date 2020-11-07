@@ -28,6 +28,10 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdvancedFriendlyUrlProvider"/> class.
+        /// </summary>
+        /// <param name="attributes"></param>
         internal AdvancedFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
@@ -194,16 +198,19 @@ namespace DotNetNuke.Entities.Urls
             return url;
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
             return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
         {
             if (portalSettings == null)
@@ -214,6 +221,7 @@ namespace DotNetNuke.Entities.Urls
             return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
         }
 
+        /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);

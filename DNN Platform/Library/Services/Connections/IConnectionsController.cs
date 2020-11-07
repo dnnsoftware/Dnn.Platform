@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Connections
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     public interface IConnectionsController

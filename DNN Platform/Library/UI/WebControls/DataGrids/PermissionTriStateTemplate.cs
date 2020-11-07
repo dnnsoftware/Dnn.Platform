@@ -15,6 +15,10 @@ namespace DotNetNuke.UI.WebControls.Internal
     {
         private readonly PermissionInfo _permission;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PermissionTriStateTemplate"/> class.
+        /// </summary>
+        /// <param name="permission"></param>
         public PermissionTriStateTemplate(PermissionInfo permission)
         {
             this._permission = permission;
@@ -26,6 +30,7 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public bool SupportDenyMode { get; set; }
 
+        /// <inheritdoc/>
         public void InstantiateIn(Control container)
         {
             var triState = new PermissionTriState();

@@ -278,7 +278,7 @@ namespace Dnn.PersonaBar.Pages.Components
             };
             HttpContext.Current.Response.Cookies.Add(newCookie);
 
-            if (portalSettings.UserMode != PortalSettings.Mode.Edit)
+            if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
             {
                 var personalizationController = new PersonalizationController();
                 var personalization = personalizationController.LoadProfile(userId, portalSettings.PortalId);

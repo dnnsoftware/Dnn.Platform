@@ -58,6 +58,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <inheritdoc/>
         protected override object this[string key]
         {
             get
@@ -71,6 +72,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <inheritdoc/>
         protected override void Remove(string key)
         {
             CurrentItems.Remove(key);

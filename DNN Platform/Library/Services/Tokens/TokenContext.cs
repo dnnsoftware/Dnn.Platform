@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Tokens
     /// <summary>
     /// The context in which tokenization should happen. 
     /// </summary>
-    public class TokenContext 
+    public class TokenContext
     {
         /// <summary>
         /// Gets/sets the user object representing the currently accessing user (permission)

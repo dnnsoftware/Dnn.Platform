@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
-    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;

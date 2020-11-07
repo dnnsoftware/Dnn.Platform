@@ -6,13 +6,11 @@ namespace DotNetNuke.Common.Utilities
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Data;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -646,6 +644,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<ICBO> GetFactory()
         {
             return () => new CBO();
@@ -707,7 +706,7 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField, 
+        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField,
                                                                                         IDataReader dr,
                                                                                         IDictionary<TKey, TValue> objDictionary,
                                                                                         bool closeReader)
@@ -1049,16 +1048,19 @@ namespace DotNetNuke.Common.Utilities
             return tableName;
         }
 
+        /// <inheritdoc/>
         List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
         {
             return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
         }
 
+        /// <inheritdoc/>
         TObject ICBO.FillObject<TObject>(IDataReader dr)
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
         }
 
+        /// <inheritdoc/>
         TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);

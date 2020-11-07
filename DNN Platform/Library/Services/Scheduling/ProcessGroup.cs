@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Scheduling
 {
     using System;
-    using System.Reflection;
     using System.Threading;
     using System.Web.Compilation;
 

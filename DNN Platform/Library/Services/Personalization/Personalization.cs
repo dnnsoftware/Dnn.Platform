@@ -3,13 +3,20 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Personalization
 {
+    using System;
     using System.Web;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
 
+    using static DotNetNuke.Entities.Portals.PortalSettings;
+
+    /// <summary>
+    /// Provides access to user personalization.
+    /// </summary>
     public class Personalization
     {
         /// <summary>
@@ -17,7 +24,7 @@ namespace DotNetNuke.Services.Personalization
         /// </summary>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
-        /// <returns></returns>
+        /// <returns>The profile as an object.</returns>
         public static object GetProfile(string namingContainer, string key)
         {
             return GetProfile(LoadProfile(), namingContainer, key);
@@ -29,7 +36,7 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="personalization">Object containing user personalization info.</param>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
-        /// <returns></returns>
+        /// <returns>The profile as an object.</returns>
         public static object GetProfile(PersonalizationInfo personalization, string namingContainer, string key)
         {
             return personalization != null ? personalization.Profile[namingContainer + ":" + key] : string.Empty;
@@ -40,7 +47,7 @@ namespace DotNetNuke.Services.Personalization
         /// </summary>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
-        /// <returns></returns>
+        /// <returns>The profile as an object.</returns>
         public static object GetSecureProfile(string namingContainer, string key)
         {
             return GetSecureProfile(LoadProfile(), namingContainer, key);
@@ -53,7 +60,7 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="personalization">Object containing user personalization info.</param>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
-        /// <returns></returns>
+        /// <returns>The profile as an object.</returns>
         public static object GetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key)
         {
             if (personalization != null)
@@ -149,6 +156,38 @@ namespace DotNetNuke.Services.Personalization
             }
         }
 
+        /// <summary>
+        /// Gets the mode the user is viewing the page in.
+        /// </summary>
+        /// <returns><see cref="Mode"/>.</returns>
+        public static Mode GetUserMode()
+        {
+            Mode mode;
+            if (HttpContextSource.Current?.Request.IsAuthenticated == true)
+            {
+                mode = PortalSettings.Current.DefaultControlPanelMode;
+                string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalController.Instance.GetCurrentSettings().PortalId));
+                switch (setting.ToUpperInvariant())
+                {
+                    case "VIEW":
+                        mode = Mode.View;
+                        break;
+                    case "EDIT":
+                        mode = Mode.Edit;
+                        break;
+                    case "LAYOUT":
+                        mode = Mode.Layout;
+                        break;
+                }
+            }
+            else
+            {
+                mode = Mode.View;
+            }
+
+            return mode;
+        }
+
         private static PersonalizationInfo LoadProfile()
         {
             HttpContext context = HttpContext.Current;
@@ -159,14 +198,14 @@ namespace DotNetNuke.Services.Personalization
             // If the Personalization object is nothing load it and store it in the context for future calls
             if (personalization == null)
             {
-                var _portalSettings = (PortalSettings)context.Items["PortalSettings"];
+                var portalSettings = (PortalSettings)context.Items["PortalSettings"];
 
                 // load the user info object
-                UserInfo UserInfo = UserController.Instance.GetCurrentUserInfo();
+                UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
 
                 // get the personalization object
                 var personalizationController = new PersonalizationController();
-                personalization = personalizationController.LoadProfile(UserInfo.UserID, _portalSettings.PortalId);
+                personalization = personalizationController.LoadProfile(userInfo.UserID, portalSettings.PortalId);
 
                 // store it in the context
                 context.Items.Add("Personalization", personalization);

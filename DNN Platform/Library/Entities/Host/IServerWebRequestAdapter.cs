@@ -5,7 +5,6 @@
 namespace DotNetNuke.Entities.Host
 {
     using System.Net;
-    using System.Web;
 
     /// <summary>
     /// IServerWebRequestAdapter used to get server's info when new server added into server collections.

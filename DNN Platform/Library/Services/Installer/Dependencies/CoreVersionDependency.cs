@@ -7,8 +7,6 @@ namespace DotNetNuke.Services.Installer.Dependencies
     using System.Reflection;
     using System.Xml.XPath;
 
-    using DotNetNuke.Application;
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The CoreVersionDependency determines whether the CoreVersion is correct.
@@ -20,6 +18,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     {
         private Version minVersion;
 
+        /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
@@ -28,6 +27,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsValid
         {
             get
@@ -42,6 +42,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.minVersion = new Version(dependencyNav.Value);

@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Exceptions
     using System;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
     using System.Web;
     using System.Xml.Serialization;
 
@@ -28,11 +27,18 @@ namespace DotNetNuke.Services.Exceptions
         private string m_StackTrace;
 
         // default constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
+        /// </summary>
         public BasePortalException()
         {
         }
 
         // constructor with exception message
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
         public BasePortalException(string message)
             : base(message)
         {
@@ -40,12 +46,22 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with message and inner exception
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public BasePortalException(string message, Exception inner)
             : base(message, inner)
         {
             this.InitializePrivateVariables();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected BasePortalException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
