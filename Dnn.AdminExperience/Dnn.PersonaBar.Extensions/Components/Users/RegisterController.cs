@@ -116,8 +116,8 @@ namespace Dnn.PersonaBar.Users.Components
             newUser.Membership.PasswordConfirm = newUser.Membership.Password;
 
             //set other profile properties
-            newUser.Profile.PreferredLocale = new Localization().CurrentUICulture;
             newUser.Profile.InitialiseProfile(portalSettings.PortalId);
+            newUser.Profile.PreferredLocale = new Localization().CurrentUICulture;
             newUser.Profile.PreferredTimeZone = portalSettings.TimeZone;
 
             //derive display name from supplied firstname, lastname or from email
