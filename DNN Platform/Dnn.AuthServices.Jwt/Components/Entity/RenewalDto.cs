@@ -6,9 +6,15 @@ namespace Dnn.AuthServices.Jwt.Components.Entity
 {
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Renewal token data transfer object.
+    /// </summary>
     [JsonObject]
     public class RenewalDto
     {
+        /// <summary>
+        /// A string representing the renewal token.
+        /// </summary>
         [JsonProperty("rtoken")]
         public string RenewalToken;
     }
