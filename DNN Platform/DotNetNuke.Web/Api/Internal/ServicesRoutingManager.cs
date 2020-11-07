@@ -199,7 +199,7 @@ namespace DotNetNuke.Web.Api.Internal
                 {
                     var type = Reflection.CreateType(handlerEntry.ClassName, false);
                     AuthMessageHandlerBase handler;
-                    if (type.GetConstructors().Any(c => c.GetParameters().Count() == 5))
+                    if (type.GetConstructors().Any(c => c.GetParameters().Length == 5))
                     {
                         handler = Activator.CreateInstance(
                             type,

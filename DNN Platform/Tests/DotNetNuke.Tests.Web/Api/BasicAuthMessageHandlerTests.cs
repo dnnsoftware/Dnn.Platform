@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Web.Api
             // Arrange
             var response = new HttpResponseMessage(HttpStatusCode.OK) { RequestMessage = null };
             response.Headers.Add("Access-Control-Allow-Origin", "*");
-            var handler = new BasicAuthMessageHandler(true, false, "", "", null);
+            var handler = new BasicAuthMessageHandler(true, false, "", "", Array.Empty<string>());
 
             // Act
             handler.OnOutboundResponse(response, CancellationToken.None);
