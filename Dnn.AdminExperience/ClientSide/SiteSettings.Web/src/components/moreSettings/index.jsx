@@ -335,8 +335,41 @@ class MoreSettingsPanelBody extends Component {
                   onChange={this.onSettingChange.bind(this, "EnablePopups")}
                 />
               </InputGroup>
+              <InputGroup>
+                <Label
+                  labelType="inline"
+                  tooltipMessage={resx.get("plInlineEditorEnabled.Help")}
+                  label={resx.get("plInlineEditorEnabled")}
+                />
+                <Switch
+                  onText={resx.get("SwitchOn")}
+                  offText={resx.get("SwitchOff")}
+                  value={state.otherSettings.InlineEditorEnabled}
+                  onChange={this.onSettingChange.bind(
+                    this,
+                    "InlineEditorEnabled"
+                  )}
+                />
+              </InputGroup>
             </div>
-            <div key="column-one-right" className="left-column"></div>
+            <div key="column-one-right" className="right-column">
+              <InputGroup>
+                <Label
+                  labelType="inline"
+                  tooltipMessage={resx.get("plInjectModuleHyperLink.Help")}
+                  label={resx.get("plInjectModuleHyperLink")}
+                />
+                <Switch
+                  onText={resx.get("SwitchOn")}
+                  offText={resx.get("SwitchOff")}
+                  value={state.otherSettings.InjectModuleHyperLink}
+                  onChange={this.onSettingChange.bind(
+                    this,
+                    "InjectModuleHyperLink"
+                  )}
+                />
+              </InputGroup>
+            </div>
           </GridSystem>
           <div className="sectionTitle">{resx.get("WhitelistSettings")}</div>
           <GridSystem numberOfColumns={2}>
