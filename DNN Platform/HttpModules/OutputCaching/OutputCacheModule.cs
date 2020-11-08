@@ -248,6 +248,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private void OnUpdateRequestCache(object sender, EventArgs e)
         {
             var request = HttpContext.Current.Request;
+            var response = HttpContext.Current.Response;
             var isRedirect = response.StatusCode == (int)HttpStatusCode.Redirect;
             if (!request.Browser.Crawler && !isRedirect)
             {
