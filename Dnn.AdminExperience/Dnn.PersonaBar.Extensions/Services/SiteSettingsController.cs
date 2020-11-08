@@ -3161,6 +3161,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         HostAllowedExtensionsWhitelists = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
                         ImageExtensionsList = Globals.ImageFileTypes,
                         EnablePopups = portalSettings.EnablePopUps,
+                        InjectModuleHyperLink = portalSettings.InjectModuleHyperLink,
+                        InlineEditorEnabled = portalSettings.InlineEditorEnabled,
                     },
                 });
             }
@@ -3186,6 +3188,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 var pid = request.PortalId ?? this.PortalId;
                 PortalController.Instance.UpdatePortalSetting(pid, "EnablePopups", request.EnablePopups.ToString(), false, null, false);
+                PortalController.Instance.UpdatePortalSetting(pid, "InjectModuleHyperLink", request.InjectModuleHyperLink.ToString(), false, null, false);
+                PortalController.Instance.UpdatePortalSetting(pid, "InlineEditorEnabled", request.InlineEditorEnabled.ToString(), false, null, false);
                 if (request.AllowedExtensionsWhitelist == Host.DefaultEndUserExtensionWhitelist.ToStorageString())
                 {
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", null, false, null, false);
