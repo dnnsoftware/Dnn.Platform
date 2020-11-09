@@ -542,7 +542,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
-        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in DNN 11.")]
+        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0.")]
+
         public bool EnableSkinWidgets { get; internal set; }
 
         /// -----------------------------------------------------------------------------
