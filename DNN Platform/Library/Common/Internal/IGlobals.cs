@@ -10,6 +10,9 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
 
+    /// <summary>
+    /// A collection of Dnn global methods and properties.
+    /// </summary>
     public interface IGlobals
     {
         /// <summary>
@@ -28,7 +31,7 @@ namespace DotNetNuke.Common.Internal
         /// </summary>
         /// <param name="fileNamePath">The folder the absolute path.</param>
         /// <param name="portalId">Portal Id.</param>
-        /// <returns></returns>
+        /// <returns>The subfolder path.</returns>
         string GetSubFolderPath(string fileNamePath, int portalId);
 
         /// <summary>
@@ -43,23 +46,28 @@ namespace DotNetNuke.Common.Internal
         /// <summary>
         /// Gets Link click url.
         /// </summary>
-        /// <param name="Link">The link.</param>
-        /// <param name="TabID">The Tab ID.</param>
-        /// <param name="ModuleID">The Module ID.</param>
-        /// <param name="TrackClicks">Check whether it has to track clicks.</param>
-        /// <param name="ForceDownload">Check whether it has to force the download.</param>
-        /// <param name="PortalId">The Portal ID.</param>
-        /// <param name="EnableUrlLanguage">Check whether the portal has enabled  ulr languages.</param>
+        /// <param name="link">The link.</param>
+        /// <param name="tabId">The Tab ID.</param>
+        /// <param name="moduleId">The Module ID.</param>
+        /// <param name="trackClicks">Check whether it has to track clicks.</param>
+        /// <param name="forceDownload">Check whether it has to force the download.</param>
+        /// <param name="portalId">The Portal ID.</param>
+        /// <param name="enableUrlLanguage">Check whether the portal has enabled  ulr languages.</param>
         /// <param name="portalGuid">The Portal GUID.</param>
-        /// <returns></returns>
-        string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, bool ForceDownload, int PortalId,
-                         bool EnableUrlLanguage, string portalGuid);
+        /// <returns>The url for the link click.</returns>
+        string LinkClick(
+            string link,
+            int tabId,
+            int moduleId,
+            bool trackClicks,
+            bool forceDownload,
+            int portalId,
+            bool enableUrlLanguage,
+            string portalGuid);
 
         /// <summary>
         /// Generates the correctly formatted url.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="url">The url to format.</param>
         /// <returns>The formatted (resolved) url.</returns>
         string ResolveUrl(string url);
@@ -82,10 +90,10 @@ namespace DotNetNuke.Common.Internal
         /// Gets the portal domain name.
         /// </summary>
         /// <param name="strPortalAlias">The portal alias.</param>
-        /// <param name="Request">The request or <c>null</c>.</param>
+        /// <param name="request">The request or <c>null</c>.</param>
         /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
         /// <returns>domain name.</returns>
-        string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP);
+        string GetPortalDomainName(string strPortalAlias, HttpRequest request, bool blnAddHTTP);
 
         /// <summary>
         /// Gets the name of the domain.
@@ -105,21 +113,21 @@ namespace DotNetNuke.Common.Internal
         /// <summary>
         /// Formats the help URL, adding query-string parameters and a protocol (if missing).
         /// </summary>
-        /// <param name="HelpUrl">The help URL.</param>
+        /// <param name="helpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
-        /// <param name="Name">The name of the module.</param>
+        /// <param name="name">The name of the module.</param>
         /// <returns>Formatted URL.</returns>
-        string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name);
+        string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name);
 
         /// <summary>
         /// Formats the help URL, adding query-string parameters and a protocol (if missing).
         /// </summary>
-        /// <param name="HelpUrl">The help URL.</param>
+        /// <param name="helpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
-        /// <param name="Name">The name of the module.</param>
-        /// <param name="Version">The version of the module.</param>
+        /// <param name="name">The name of the module.</param>
+        /// <param name="version">The version of the module.</param>
         /// <returns>Formatted URL.</returns>
-        string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version);
+        string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name, string version);
 
         /// <summary>
         /// Get the URL to show the "access denied" message.
@@ -130,9 +138,9 @@ namespace DotNetNuke.Common.Internal
         /// <summary>
         /// Get the URL to show the "access denied" message.
         /// </summary>
-        /// <param name="Message">The message to display.</param>
+        /// <param name="message">The message to display.</param>
         /// <returns>URL to access denied view.</returns>
-        string AccessDeniedURL(string Message);
+        string AccessDeniedURL(string message);
 
         /// <summary>
         /// Gets the login URL.

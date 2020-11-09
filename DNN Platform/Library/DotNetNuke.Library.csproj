@@ -196,6 +196,7 @@
     <Compile Include="Collections\PageSelector{T}.cs" />
     <Compile Include="Common\Controls\Form.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
+    <Compile Include="Common\Lists\ListEntryInfoCollection.cs" />
     <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\ServiceScopeContainer.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
@@ -293,7 +294,6 @@
     <Compile Include="Common\Lists\CachedCountryList.cs" />
     <Compile Include="Common\Lists\ListEntryInfo.cs" />
     <Compile Include="Common\Lists\ListController.cs" />
-    <Compile Include="Common\Lists\ListEntryCollection.cs" />
     <Compile Include="Common\Lists\ListInfo.cs" />
     <Compile Include="Common\Lists\ListInfoCollection.cs" />
     <Compile Include="Common\SerializableKeyValuePair.cs" />

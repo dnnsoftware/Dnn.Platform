@@ -8,6 +8,7 @@ namespace DotNetNuke.Common.Internal
 
     using DotNetNuke.Framework;
 
+    /// <summary>A service locator for <see cref="IGlobals"/>.</summary>
     public class TestableGlobals : ServiceLocator<IGlobals, TestableGlobals>
     {
         /// <inheritdoc/>

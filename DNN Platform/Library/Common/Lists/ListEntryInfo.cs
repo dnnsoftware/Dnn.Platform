@@ -8,10 +8,13 @@ namespace DotNetNuke.Common.Lists
 
     using DotNetNuke.Common.Utilities;
 
+    /// <summary>
+    /// Represents one entry in the Dnn lists.
+    /// </summary>
     [Serializable]
     public class ListEntryInfo
     {
-        private string _Text = Null.NullString;
+        private string text = Null.NullString;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListEntryInfo"/> class.
@@ -26,20 +29,26 @@ namespace DotNetNuke.Common.Lists
             this.ListName = Null.NullString;
         }
 
+        /// <summary>
+        /// Gets a unique key for the entry.
+        /// </summary>
         public string Key
         {
             get
             {
-                string _Key = this.ParentKey.Replace(":", ".");
-                if (!string.IsNullOrEmpty(_Key))
+                string key = this.ParentKey.Replace(":", ".");
+                if (!string.IsNullOrEmpty(key))
                 {
-                    _Key += ".";
+                    key += ".";
                 }
 
-                return _Key + this.ListName + ":" + this.Value;
+                return key + this.ListName + ":" + this.Value;
             }
         }
 
+        /// <summary>
+        /// Gets a display name for the entry which includes the list name and the text.
+        /// </summary>
         public string DisplayName
         {
             get
@@ -58,16 +67,29 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                return this._Text;
+                return this.text;
             }
         }
 
+        /// <summary>
+        /// Gets or sets the id of the entry.
+        /// </summary>
         public int EntryID { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the site (portal) this entry belongs to.
+        /// Will be <see cref="Null.NullInteger"/> if not scoped to any site.
+        /// </summary>
         public int PortalID { get; set; }
 
+        /// <summary>
+        /// Gets or sets the name of the list this entry belongs to.
+        /// </summary>
         public string ListName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value of the entry.
+        /// </summary>
         public string Value { get; set; }
 
         /// <summary>
@@ -103,7 +125,7 @@ namespace DotNetNuke.Common.Lists
 
                 if (string.IsNullOrEmpty(res))
                 {
-                    res = this._Text;
+                    res = this.text;
                 }
 
                 return res;
@@ -111,28 +133,58 @@ namespace DotNetNuke.Common.Lists
 
             set
             {
-                this._Text = value;
+                this.text = value;
             }
         }
 
+        /// <summary>
+        /// Gets or sets the entry description.
+        /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the parent entry.
+        /// </summary>
         public int ParentID { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parent entry.
+        /// </summary>
         public string Parent { get; set; }
 
+        /// <summary>
+        /// Gets or sets the level (how deep in the hierarchy).
+        /// </summary>
         public int Level { get; set; }
 
+        /// <summary>
+        /// Gets or sets an integer that dictates the sort order.
+        /// </summary>
         public int SortOrder { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the definition.
+        /// </summary>
         public int DefinitionID { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the entry has any children.
+        /// </summary>
         public bool HasChildren { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parent key.
+        /// </summary>
         public string ParentKey { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the entry is part of a system list.
+        /// </summary>
         public bool SystemList { get; set; }
 
+        /// <summary>
+        /// Gets the path to the localization resource file used for this entry.
+        /// </summary>
         internal string ResourceFileRoot
         {
             get
