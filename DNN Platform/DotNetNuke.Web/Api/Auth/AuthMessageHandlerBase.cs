@@ -187,7 +187,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <summary>
         /// Sets the current principal.
         /// </summary>
-        /// <param name="principal">The pricipal to set.</param>
+        /// <param name="principal">The principal to set.</param>
         /// <param name="request">The http request message.</param>
         protected static void SetCurrentPrincipal(IPrincipal principal, HttpRequestMessage request)
         {
