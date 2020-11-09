@@ -220,7 +220,8 @@ namespace DotNetNuke.Abstractions.Portals
         /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported.
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
-        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in DNN 11.")]
+        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0")]
+
         bool EnableSkinWidgets { get; }
 
         /// <summary>
