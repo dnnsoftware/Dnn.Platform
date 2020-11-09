@@ -75,7 +75,7 @@ namespace DotNetNuke.Web.Api.Auth
         public virtual bool BypassAntiForgeryToken => false;
 
         /// <summary>
-        /// Gets a value indicating whether this hander in included in all routes.
+        /// Gets a value indicating whether this handler is included in all routes.
         /// </summary>
         public bool DefaultInclude { get; }
 
