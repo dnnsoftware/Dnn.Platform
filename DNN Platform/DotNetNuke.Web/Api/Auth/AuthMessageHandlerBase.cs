@@ -196,7 +196,7 @@ namespace DotNetNuke.Web.Api.Auth
         }
 
         /// <summary>
-        /// Sends an HTTP response asynchronously.
+        /// Sends an HTTP request asynchronously.
         /// </summary>
         /// <param name="request">The HTTP request message.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
