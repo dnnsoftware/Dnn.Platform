@@ -713,6 +713,11 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 writer.WriteElementString("containersrcadmin", setting);
             }
+            settingsDictionary.TryGetValue("EnableSkinWidgets", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enableskinwidgets", setting);
+            }
             settingsDictionary.TryGetValue("portalaliasmapping", out setting);
             if (!string.IsNullOrEmpty(setting))
             {

@@ -12,6 +12,7 @@ EnableCompositeFiles,			EnableCompositeFiles,			EnableCompositeFiles,			true
 EnablePopUps,					EnablePopUps,					EnablePopUps,					false
 EnableModuleEffect,				EnableModuleEffect,				EnableModuleEffect,				false
 HideLoginControl,				HideLoginControl,				HideLoginControl,				true
+EnableSkinWidgets,				EnableSkinWidgets,				EnableSkinWidgets,				false
 EnableUrlLanguage,				EnableUrlLanguage,				EnableUrlLanguage,				false
 HideFoldersEnabled,				HideFoldersEnabled,				HideFoldersEnabled,				false
 InlineEditorEnabled,			InlineEditorEnabled,			InlineEditorEnabled,			false

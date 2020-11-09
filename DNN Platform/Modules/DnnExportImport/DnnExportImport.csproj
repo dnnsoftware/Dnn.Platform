@@ -160,7 +160,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.01.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.02.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\09.03.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\09.08.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
