@@ -146,6 +146,7 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// Process legacy language package (that is based on manifest xml file).
         /// </summary>
+        [Obsolete("Module package required, functionality removed.  Will be removed in 10.0.0.")]
         public static void ProcessLegacyLanguages()
         {
             string filePath = Globals.ApplicationMapPath + Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
@@ -272,6 +273,7 @@ namespace DotNetNuke.Services.Installer
         /// Process legacy module version 3 .dnn install file.
         /// </summary>
         /// <param name="desktopModule"></param>
+        [Obsolete("Version 3 package formats not supported, must use modern package format.  Will be removed in 10.0.0.")]
         public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)
         {
             // Get the Module folder
@@ -343,77 +345,6 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        public static void ProcessLegacyModules()
-        {
-            foreach (DesktopModuleInfo desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values)
-            {
-                if (desktopModule.PackageID == Null.NullInteger)
-                {
-                    ProcessLegacyModule(desktopModule);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Process legacy skinobject version 3 .dnn install package.
-        /// </summary>
-        public static void ProcessLegacySkinControls()
-        {
-            foreach (SkinControlInfo skinControl in SkinControlController.GetSkinControls().Values)
-            {
-                if (skinControl.PackageID == Null.NullInteger)
-                {
-                    try
-                    {
-                        // SkinControl is not affiliated with a Package
-                        var package = new PackageInfo(new InstallerInfo());
-                        package.Name = skinControl.ControlKey;
-
-                        package.FriendlyName = skinControl.ControlKey;
-                        package.Description = Null.NullString;
-                        package.Version = new Version(1, 0, 0);
-                        package.PackageType = "SkinObject";
-
-                        // See if the SkinControl is using a "Namespace" for its name
-                        ParsePackageName(package);
-
-                        var skinControlWriter = new SkinControlPackageWriter(skinControl, package);
-                        package.Manifest = skinControlWriter.WriteManifest(true);
-
-                        // Save Package
-                        PackageController.Instance.SaveExtensionPackage(package);
-
-                        // Update SkinControl with new PackageID
-                        skinControl.PackageID = package.PackageID;
-
-                        // Save SkinControl
-                        SkinControlController.SaveSkinControl(skinControl);
-                    }
-                    catch (Exception exc)
-                    {
-                        Logger.Error(exc);
-                    }
-                }
-            }
-        }
-
-        public static void ProcessLegacySkins()
-        {
-            // Process Legacy Skins
-            string skinRootPath = Path.Combine(Globals.HostMapPath, SkinController.RootSkin);
-            foreach (string skinFolder in Directory.GetDirectories(skinRootPath))
-            {
-                ProcessLegacySkin(skinFolder, "Skin");
-            }
-
-            // Process Legacy Containers
-            skinRootPath = Path.Combine(Globals.HostMapPath, SkinController.RootContainer);
-            foreach (string skinFolder in Directory.GetDirectories(skinRootPath))
-            {
-                ProcessLegacySkin(skinFolder, "Container");
-            }
-        }
-
         private static PackageInfo CreateSkinPackage(SkinPackageInfo skin)
         {
             // Create a Package
@@ -450,51 +381,6 @@ namespace DotNetNuke.Services.Installer
 
             // Writer package manifest fragment to writer
             skinWriter.WriteManifest(writer, true);
-        }
-
-        private static void ProcessLegacySkin(string skinFolder, string skinType)
-        {
-            string skinName = Path.GetFileName(skinFolder);
-            if (skinName != "_default")
-            {
-                var skin = new SkinPackageInfo();
-                skin.SkinName = skinName;
-                skin.SkinType = skinType;
-
-                // Create a Package
-                PackageInfo package = CreateSkinPackage(skin);
-
-                // Create a SkinPackageWriter
-                var skinWriter = new SkinPackageWriter(skin, package);
-                skinWriter.GetFiles(false);
-
-                // Save the manifest
-                package.Manifest = skinWriter.WriteManifest(true);
-
-                // Save Package
-                PackageController.Instance.SaveExtensionPackage(package);
-
-                // Update Skin Package with new PackageID
-                skin.PackageID = package.PackageID;
-
-                // Save Skin Package
-                skin.SkinPackageID = SkinController.AddSkinPackage(skin);
-
-                foreach (InstallFile skinFile in skinWriter.Files.Values)
-                {
-                    if (skinFile.Type == InstallFileType.Ascx)
-                    {
-                        if (skinType == "Skin")
-                        {
-                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootSkin, Path.Combine(skin.SkinName, skinFile.FullName)));
-                        }
-                        else
-                        {
-                            SkinController.AddSkin(skin.SkinPackageID, Path.Combine("[G]" + SkinController.RootContainer, Path.Combine(skin.SkinName, skinFile.FullName)));
-                        }
-                    }
-                }
-            }
         }
 
         private static void ParsePackageName(PackageInfo package, string separator)

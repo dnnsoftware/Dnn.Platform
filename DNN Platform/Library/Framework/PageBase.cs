@@ -426,11 +426,6 @@ namespace DotNetNuke.Framework
         protected override void OnInit(EventArgs e)
         {
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
-            if (!isInstallPage)
-            {
-                Localization.SetThreadCultures(this.PageCulture, this.PortalSettings);
-            }
-
             if (ScriptManager.GetCurrent(this) == null)
             {
                 AJAX.AddScriptManager(this, !isInstallPage);

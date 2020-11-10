@@ -24,25 +24,40 @@ namespace DotNetNuke.Web.UI
 
     public class Utilities
     {
-        public static void ApplySkin(Control telerikControl)
+        /// <summary>
+        /// Applies a custom CSS file for a control using a consistent naming pattern.
+        /// </summary>
+        /// <param name="targetControl">The control that should have a skin injected.</param>
+        /// <param name="controlSubSkinName">An optional sub-skin.</param>
+        /// <param name="controlName">An optional control name that might differ from the type.</param>
+        public static void ApplyControlSkin(Control targetControl, string controlSubSkinName = "", string controlName = "")
         {
-            ApplySkin(telerikControl, string.Empty, string.Empty, string.Empty);
+            ApplySkin(targetControl, string.Empty, controlName, controlSubSkinName);
         }
 
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName)
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl)
         {
-            ApplySkin(telerikControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
+            ApplySkin(targetControl, string.Empty, string.Empty, string.Empty);
         }
 
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName)
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName)
         {
-            ApplySkin(telerikControl, string.Empty, controlName, fallBackEmbeddedSkinName);
+            ApplySkin(targetControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
+        }
+
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName)
+        {
+            ApplySkin(targetControl, string.Empty, controlName, fallBackEmbeddedSkinName);
         }
 
         // Use selected skin's webcontrol skin if one exists
         // or use _default skin's webcontrol skin if one exists
         // or use embedded skin
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
         {
             PropertyInfo skinProperty = null;
             PropertyInfo enableEmbeddedSkinsProperty = null;
@@ -50,12 +65,12 @@ namespace DotNetNuke.Web.UI
 
             try
             {
-                skinProperty = telerikControl.GetType().GetProperty("Skin");
-                enableEmbeddedSkinsProperty = telerikControl.GetType().GetProperty("EnableEmbeddedSkins");
+                skinProperty = targetControl.GetType().GetProperty("Skin");
+                enableEmbeddedSkinsProperty = targetControl.GetType().GetProperty("EnableEmbeddedSkins");
 
                 if (string.IsNullOrEmpty(controlName))
                 {
-                    controlName = telerikControl.GetType().BaseType.Name;
+                    controlName = targetControl.GetType().BaseType.Name;
                     if (controlName.StartsWith("Rad") || controlName.StartsWith("Dnn"))
                     {
                         controlName = controlName.Substring(3);
@@ -69,14 +84,14 @@ namespace DotNetNuke.Web.UI
                 }
                 else
                 {
-                    skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
+                    skinVirtualFolder = targetControl.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
                 }
 
                 string skinName = string.Empty;
                 string webControlSkinName = string.Empty;
                 if (skinProperty != null)
                 {
-                    var v = skinProperty.GetValue(telerikControl, null);
+                    var v = skinProperty.GetValue(targetControl, null);
                     if (v != null)
                     {
                         webControlSkinName = v.ToString();
@@ -117,7 +132,7 @@ namespace DotNetNuke.Web.UI
                     // No skin, try default folder
                     if (string.IsNullOrEmpty(systemWebControlSkin))
                     {
-                        skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/Skins/_default");
+                        skinVirtualFolder = targetControl.ResolveUrl("~/Portals/_default/Skins/_default");
                         skinName = "Default";
 
                         if (skinVirtualFolder.EndsWith("/"))
@@ -157,8 +172,8 @@ namespace DotNetNuke.Web.UI
                     if ((skinProperty != null) && (enableEmbeddedSkinsProperty != null))
                     {
                         skinApplied = true;
-                        skinProperty.SetValue(telerikControl, webControlSkinName, null);
-                        enableEmbeddedSkinsProperty.SetValue(telerikControl, false, null);
+                        skinProperty.SetValue(targetControl, webControlSkinName, null);
+                        enableEmbeddedSkinsProperty.SetValue(targetControl, false, null);
                     }
                 }
             }
@@ -175,8 +190,8 @@ namespace DotNetNuke.Web.UI
                 }
 
                 // Set fall back skin Embedded Skin
-                skinProperty.SetValue(telerikControl, fallBackEmbeddedSkinName, null);
-                enableEmbeddedSkinsProperty.SetValue(telerikControl, true, null);
+                skinProperty.SetValue(targetControl, fallBackEmbeddedSkinName, null);
+                enableEmbeddedSkinsProperty.SetValue(targetControl, true, null);
             }
         }
 

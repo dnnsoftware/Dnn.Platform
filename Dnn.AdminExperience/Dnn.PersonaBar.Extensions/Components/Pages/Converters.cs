@@ -79,9 +79,6 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             var pageManagementController = PageManagementController.Instance;
-
-            var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Current.Description;
-            var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.Current.KeyWords;
             var pageType = GetPageType(tab.Url);
 
             var file = GetFileRedirection(tab.Url);
@@ -97,8 +94,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 AbsoluteUrl = tab.FullUrl,
                 LocalizedName = tab.LocalizedTabName,
                 Title = tab.Title,
-                Description = description,
-                Keywords = keywords,
+                Description = tab.Description,
+                Keywords = tab.KeyWords,
                 Tags = string.Join(",", from t in tab.Terms select t.Name),
                 Alias = PortalSettings.Current.PortalAlias.HTTPAlias,
                 Url = pageManagementController.GetTabUrl(tab),

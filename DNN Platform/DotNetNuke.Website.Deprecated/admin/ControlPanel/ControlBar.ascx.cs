@@ -28,7 +28,6 @@ namespace DotNetNuke.UI.ControlPanels
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.ImprovementsProgram;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Utilities;
@@ -200,15 +199,6 @@ namespace DotNetNuke.UI.ControlPanels
                 }
 
                 return this._hostAdvancedTabs;
-            }
-        }
-
-        protected bool IsBeaconEnabled
-        {
-            get
-            {
-                var user = UserController.Instance.GetCurrentUserInfo();
-                return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
             }
         }
 
@@ -898,14 +888,6 @@ namespace DotNetNuke.UI.ControlPanels
             return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
         }
 
-        protected string GetBeaconUrl()
-        {
-            var beaconService = BeaconService.Instance;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var path = this.PortalSettings.ActiveTab.TabPath;
-            return beaconService.GetBeaconUrl(user, path);
-        }
-
         private static IEnumerable<PortalInfo> GetCurrentPortalsGroup()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
@@ -958,7 +940,7 @@ namespace DotNetNuke.UI.ControlPanels
             this.CategoryList.DataBind();
             if (!this.IsPostBack)
             {
-                this.CategoryList.Select(!string.IsNullOrEmpty(this.BookmarkedModuleKeys) ? this.BookmarkModuleCategory : "All", false);
+                this.CategoryList.SelectedValue = !string.IsNullOrEmpty(this.BookmarkedModuleKeys) ? this.BookmarkModuleCategory : "All";
             }
         }
 
@@ -1058,7 +1040,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             foreach (var portal in this.LoadPortalsList())
             {
-                this.controlBar_SwitchSite.Items.Add(new DnnComboBoxItem(portal[0], portal[1]));
+                this.controlBar_SwitchSite.Items.Add(new ListItem(portal[0], portal[1]));
             }
         }
 
@@ -1069,8 +1051,9 @@ namespace DotNetNuke.UI.ControlPanels
                 const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
                 foreach (var lang in this.LoadLanguagesList())
                 {
-                    var item = new DnnComboBoxItem(lang[0], lang[1]);
-                    item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                    var item = new ListItem(lang[0], lang[1]);
+                    var imageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                    item.Text = $"<img src='{imageUrl}' alt='' /> {item.Text}";
                     if (lang[2] == "true")
                     {
                         item.Selected = true;

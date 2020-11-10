@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" 
   xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props')" />
-  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
@@ -11,13 +11,13 @@
   <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package"></Target>
   <Target Name="GetFiles">
     <ItemGroup>
-      <PersonaBar-views Include="admin/**/*.html" />
-      <PersonaBar-images Include="admin/**/images/**/*" />
-      <PersonaBar-data Include="admin/**/data/*.resources" />
-      <PersonaBar-css Include="admin/**/css/**/*" />
-      <PersonaBar-resources Include="admin/**/App_LocalResources/*.resx" />
-      <PersonaBar-controls Include="admin/**/UserControls/*.ascx" />
-      <PersonaBar-scripts Include="admin/**/scripts/*;admin/**/scripts/**/*" />
+      <PersonaBar-views Include="admin/personaBar/**/*.html" />
+      <PersonaBar-images Include="admin/personaBar/**/images/**/*" />
+      <PersonaBar-data Include="admin/personaBar/**/data/*.resources" />
+      <PersonaBar-css Include="admin/personaBar/**/css/**/*" />
+      <PersonaBar-resources Include="admin/personaBar/**/App_LocalResources/*.resx" />
+      <PersonaBar-controls Include="admin/personaBar/**/UserControls/*.ascx" />
+      <PersonaBar-scripts Include="admin/personaBar/**/scripts/*;admin/personaBar/**/scripts/**/*" />
       <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)" Exclude="**/node_modules/**/*" />
     </ItemGroup>
   </Target>
@@ -27,12 +27,12 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(PersonaBar-views)" DestinationFolder="$(ModuleFolderName)" />
-    <Copy SourceFiles="@(PersonaBar-resources)" DestinationFolder="$(ModuleFolderName)\App_LocalResources" />
-    <Copy SourceFiles="@(PersonaBar-controls)" DestinationFolder="$(ModuleFolderName)\UserControls" />
-    <Copy SourceFiles="@(PersonaBar-images)" DestinationFolder="$(ModuleFolderName)\Images" />
-    <Copy SourceFiles="@(PersonaBar-scripts)" DestinationFolder="$(ModuleFolderName)\Scripts" />
-    <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\Css" />
+    <Copy SourceFiles="@(PersonaBar-views)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PersonaBar-resources)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PersonaBar-controls)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PersonaBar-images)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PersonaBar-scripts)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
   </Target>
   <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0 AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <ItemGroup>

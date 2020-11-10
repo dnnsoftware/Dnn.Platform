@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.UI.WebControls;
     using Telerik.Web.UI;
 
+    [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  You will need to find an alternative solution")]
     public class DnnGridImageCommandColumnTemplate : IBindableTemplate
     {
         private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;

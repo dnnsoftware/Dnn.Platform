@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -48,9 +49,16 @@ namespace DotNetNuke.Services.Log.EventLog
                     {
                         if (HttpContext.Current != null)
                         {
-                            if (HttpContext.Current.Request.IsAuthenticated)
+                            try
                             {
-                                logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
+                                if (HttpContext.Current.Request.IsAuthenticated)
+                                {
+                                    logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
+                                }
+                            }
+                            catch (HttpException exception)
+                            {
+                                Logger.Error("Unable to retrieve HttpContext.Request, ignoring LogUserName", exception);
                             }
                         }
                     }
@@ -240,6 +248,12 @@ namespace DotNetNuke.Services.Log.EventLog
         public virtual object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
         {
             return LoggingProvider.Instance().GetSingleLog(log, returnType);
+        }
+
+        /// <inheritdoc />
+        public virtual ILogInfo GetLog(string logGuid)
+        {
+            return LoggingProvider.Instance().GetLog(logGuid);
         }
 
         public void PurgeLogBuffer()

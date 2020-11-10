@@ -213,13 +213,14 @@
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
     <Compile Include="Entities\Modules\Prompt\ListModules.cs" />
     <Compile Include="Entities\Modules\Prompt\PromptModuleInfo.cs" />
+    <Compile Include="Entities\Modules\Settings\HostSettingAttribute.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
     <Compile Include="Entities\Modules\Settings\ParameterAttributeBase.cs" />
     <Compile Include="Entities\Modules\Settings\ParameterMapping.cs" />
     <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
-    <Compile Include="Entities\Modules\Settings\SerializationController.cs" />
+    <Compile Include="Entities\Modules\Settings\SerializationManager.cs" />
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Entities\Portals\IPortalSettingHandlers.cs" />
@@ -252,8 +253,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
+    <Compile Include="Obsolete\EventLogController.cs" />
     <Compile Include="Obsolete\HostController.cs" />
+    <Compile Include="Obsolete\LogInfo.cs" />
+    <Compile Include="Obsolete\LogTypeConfigInfo.cs" />
+    <Compile Include="Obsolete\LogTypeInfo.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
+    <Compile Include="Obsolete\SerializationController.cs" />
     <Compile Include="Prompt\Command.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />
     <Compile Include="Prompt\Output\CommandOption.cs" />
@@ -800,9 +806,6 @@
     <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\UserProfilePicTransform.cs" />
-    <Compile Include="Services\ImprovementsProgram\BeaconService.cs" />
-    <Compile Include="Services\ImprovementsProgram\IBeaconService.cs" />
-    <Compile Include="Services\ImprovementsProgram\RolesEnum.cs" />
     <Compile Include="Services\Installer\Blocker\IInstallBlocker.cs" />
     <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
@@ -816,7 +819,13 @@
     <Compile Include="Services\Localization\LocalizationExtensions.cs" />
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
+    <Compile Include="Services\Log\EventLog\EventLogExtensions.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
+    <Compile Include="Services\Mail\CoreMailProvider.cs" />
+    <Compile Include="Services\Mail\MailInfo.cs" />
+    <Compile Include="Services\Mail\MailAttachment.cs" />
+    <Compile Include="Services\Mail\MailProvider.cs" />
+    <Compile Include="Services\Mail\SmtpInfo.cs" />
     <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
     <Compile Include="Services\OutputCache\Providers\DatabaseResponseFilter.cs" />
     <Compile Include="Services\OutputCache\Providers\FileProvider.cs" />

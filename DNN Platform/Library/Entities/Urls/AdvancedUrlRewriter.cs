@@ -254,7 +254,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
-                if (queryStringCol != null && queryStringCol["forceAlias"] != "true")
+                if (queryStringCol != null && queryStringCol["forceAlias"] != null && queryStringCol["forceAlias"] != "true")
                 {
                     if (portalAliases.Count > 0)
                     {

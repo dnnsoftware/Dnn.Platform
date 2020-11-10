@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNJWT" type="Provider" version="09.07.02">
+    <package name="DNNJWT" type="Provider" version="09.08.00">
       <friendlyName>DNN JWT Auth Handler</friendlyName>
       <description>DNN Json Web Token Authentication (JWT) library for cookie-less Mobile authentication clients</description>
       <dependencies/>
@@ -37,6 +37,11 @@
               <name>01.00.00.SqlDataProvider</name>
               <version>01.00.00</version>
             </script>
+            <script type="Install">
+              <path>Data\Scripts</path>
+              <name>09.08.00.SqlDataProvider</name>
+              <version>09.08.00</version>
+            </script>
             <script type="UnInstall">
               <path>Data\Scripts</path>
               <name>Uninstall.SqlDataProvider</name>
@@ -50,7 +55,7 @@
             <install>
               <configuration>
                 <nodes>
-                  <node path="/configuration/dotnetnuke/authServices/messageHandlers" action="update" key="name" collision="overwrite">
+                  <node path="/configuration/dotnetnuke/authServices/messageHandlers" action="update" key="name" collision="ignore">
                     <add name="JWTAuth" type="Dnn.AuthServices.Jwt.Auth.JwtAuthMessageHandler, Dnn.AuthServices.Jwt"
                          enabled="true" defaultInclude="false" forceSSL="true" />
                   </node>

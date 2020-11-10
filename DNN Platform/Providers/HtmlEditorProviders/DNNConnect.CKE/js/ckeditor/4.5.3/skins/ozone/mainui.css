@@ -1,0 +1,156 @@
+/*
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
+
+/*
+mainui.css (part of editor.css)
+=================================
+
+This file styles the basic structure of the CKEditor user interface - the box
+that holds everything.
+
+CKEditor offers two main editing modes. The main UI blocks that compose these
+modes are:
+
+	For "Theme UI" mode, the one most generally used:
+
+	+-- .cke_chrome ----------------------+
+	|+-- .cke_inner ---------------------+|
+	|| +-- .cke_top -------------------+ ||
+	|| |                               | ||
+	|| +-------------------------------+ ||
+	|| +-- .cke_contents --------------+ ||
+	|| |                               | ||
+	|| +-------------------------------+ ||
+	|| +-- .cke_bottom ----------------+ ||
+	|| |                               | ||
+	|| +-------------------------------+ ||
+	|+-----------------------------------+|
+	+-------------------------------------+
+
+	For "Inline Editing" mode:
+
+	+-- .cke_chrome .cke_float------------+
+	|+-- .cke_inner ---------------------+|
+	|| +-- .cke_top -------------------+ ||
+	|| |                               | ||
+	|| +-------------------------------+ ||
+	|+-----------------------------------+|
+	+-------------------------------------+
+
+Special outer level classes used in this file:
+
+	.cke_hc: Available when the editor is rendered on "High Contrast".
+
+*/
+
+/* samples:
+
+img {
+  filter: url(filters.svg#grayscale); /* Firefox 3.5+ * /
+  filter: gray; /* IE6-9 * /
+  -webkit-filter: grayscale(1); /* Google Chrome & Safari 6+ * /
+}
+@media all and (min-width:0) {
+  #element { filter: none; }  /* IE9+ * /
+}
+
+*/
+
+/* The outer boundary of the interface. */
+.cke_chrome {
+	/* This is <span>, so transform it into a block.*/
+	display: block;
+}
+
+/* The inner boundary of the interface. */
+.cke_inner {
+	/* This is <span>, so transform it into a block.*/
+	display: block;
+}
+
+/* Added to the outer boundary of the UI when in inline editing,
+   when the UI is floating. */
+.cke_float {
+	/* Make white the space between the outer and the inner borders. */
+	background: #fff;
+}
+
+/* Make the main spaces enlarge to hold potentially floated content. */
+.cke_top,
+.cke_contents,
+.cke_bottom {
+	/* These are <span>s, so transform them into blocks.*/
+	display: block;
+
+	/* Ideally this should be "auto", but it shows scrollbars in IE7. */
+	overflow: hidden;
+}
+
+.cke_top {
+  padding: 3px 0 0 3px;
+  border-bottom: 1px solid #aeaeae;
+}
+.cke_float .cke_top {
+  border: 0;
+}
+
+.cke_bottom {
+  position: relative;
+  height: 22px;
+  border-top: 1px solid #aeaeae;
+  box-shadow: inset 0 -1px 1px #ddd;
+}
+
+.cke_inner, .cke_dialog_body {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6Q0IzRTQ1QTZGOERCMTFFMUI1NDREOTI0RkVBNkE3QUQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6Q0IzRTQ1QTdGOERCMTFFMUI1NDREOTI0RkVBNkE3QUQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpDQjNFNDVBNEY4REIxMUUxQjU0NEQ5MjRGRUE2QTdBRCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpDQjNFNDVBNUY4REIxMUUxQjU0NEQ5MjRGRUE2QTdBRCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PtCOFpEAACGPSURBVHjaPNvnr6R1+Qbwp83M2QUVu9h7r6CIqIBGsQQRE4gxmljiG6PRGOML/wH/FINvNJaAguiiIrv2ith77wXYM/OU3/W5ffa3ycmeM/PMt9zluq+7TPu+971v++9//3t++MMfPj34wQ/u//Of/yx/+MMf2vzrL7zwwvFRj3rU9Ktf/Wqz3++91957773Tbrdr8vy42WyavNdvt9ujeZ7PPuIRj5jy2f6+971vk7/7PHec99qf/OQnS34fss+Qz3f33HPPPp9dHvKQh/QPfOADp6Ojo+GQf9M07R772MdOD33oQ/e//vWvt//85z8POdMmnz/Ys+/77bIs829/+9v57Nmz7dOe9rTxCU94wvDnP/95ytr22Nj30Y9+9L2/+c1vNj5zn/vcZ8x+nplzp83nPve58SlPeUr797//fXnrW9869fe73/3m888/v3vqU5/a56HmxIkT3Qtf+ML5qquuWu66667dxz/+8SkX2/z4xz/uc/h9l395bnniE5/Y/u1vf1t+9rOflfBykP73v/99S4CPecxjhhy+yTNLPtdlnSXrLgT4zGc+s83Fm/vf//5LDjKfOnVqaZqmzaWnCK79y1/+MmXNPgKyfv+ABzxgzr5L9qCUNopY8vd4wQUXNHlmd/r06dHlI8Qm684+/69//auJ4Odf/vKX7XnnndfltTZ3aLPGIYLrHvnIR7ZR7vzXv/516COhNpfv8uHWoj/96U+bHKaLBOccuPnOd74zP+c5z2ki+eMoqX/e8543Hh8fO8j2YQ972CEb0+j0jW98o33uc5/bvvSlL+1zqOnkyZOHWMM2GqaB5bLLLuvGcWxykDn7RFFzk7WmP/7xj/3jH/94Gp2zZ5/XB+vFspYHPehBU5QzZ432lltuaaLZOecogcUammEY6hK56PLf//53oai77757yKXnZzzjGU1eb/LZLpYw3XHHHYs98/fwuMc9bokS25yv6eMCfcyhy4IW3v7jH/+YSChSnEnx9ttvby+//PIuhzn64Q9/eDZa6nM55t3l/d6BIsQhprrNZUYbRFAjN8hhrNXlkDSyffrTn95Eq20E0eZj25i8AzUxqjbWszh8Xuui4TkCngkmr7XRdB/ldxH4HHcgoC4WRKtNztHHFYYIYMi5ptxhyXPtnXfeueSiTZRojT5KdI42z9f++X/J/3P/tre9rf3d737X/fznP2+e9KQnMfEh0h/y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");
+}
+
+.cke_inner {
+  border: 1px solid #aeaeae;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px white;
+  background-color: #f0f0f0;
+}
+
+.cke_float .cke_inner {
+  box-shadow: inset 0 1px 1px white, inset 0 -1px 1px #ddd;
+}
+
+.cke_toolbox_collapser {
+  display: none;
+}
+
+/* The resizer is the small element that is rendered at the bottom right
+   of the editor. It is draggable to resize the editor. */
+.cke_resizer {
+	width: 14px;
+	height: 14px;
+	position: absolute;
+  right: 0;
+  bottom: 0;
+	vertical-align: bottom;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2lpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wUmlnaHRzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvcmlnaHRzLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcFJpZ2h0czpNYXJrZWQ9IkZhbHNlIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjVBMjYzOUUxRkRCNjExRTFCRjhCRDJBRjVCMDZEMzg3IiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjVBMjYzOUUwRkRCNjExRTFCRjhCRDJBRjVCMDZEMzg3IiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDUzMgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ1dWlkOjBENjQ2RDhDNzlEN0RFMTFBRkE1OUU2M0I1QUUzOThDIiBzdFJlZjpkb2N1bWVudElEPSJ1dWlkOjVCREMzODY0NzlEN0RFMTFBRkE1OUU2M0I1QUUzOThDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+szJq9gAAAK1JREFUeNrs0T0KwkAQhuGsTTobvYYQEfUuIjEGsdSbKOpxbDyAtSlE7dL4V3iA9R0YIYXETdI68BRTfN/ArrHWelWm5lWcfwEjv/CNMeaXCQ5lC2I8MC1TIOEXRrIXLZDwHZHuvSIFYzw/l7HB0bVAQjcMdV/jgr5LQYg0c3mh4cDlDSR8xUD3Fc5ooY55XkGsl6XExxIndNHAFru8gn3mtTtI0NZ9JmE03wIMAIAN0/dF0IR6AAAAAElFTkSuQmCC") -3px -3px;
+  opacity: .5;
+	cursor: se-resize;
+}
+
+.cke_resizer_ltr {}
+
+/* This class is added in RTL mode. This is a special case for the resizer
+   (usually the .cke_rtl class is used), because it may not necessarily be in
+   RTL mode if the main UI is RTL. It depends instead on the context where the
+   editor is inserted on. */
+.cke_resizer_rtl {}
+
+/* The editing area (where users type) can be rendered as an editable <div>
+   element (e.g. divarea plugin). In that case, this is the class applied to
+   that element. */
+.cke_wysiwyg_div {
+	display: block;
+	height: 100%;
+	overflow: auto;
+	padding: 0 8px;
+	outline-style: none;
+}

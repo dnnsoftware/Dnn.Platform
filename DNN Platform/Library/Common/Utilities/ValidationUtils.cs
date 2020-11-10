@@ -22,7 +22,7 @@ namespace DotNetNuke.Common.Utilities
             return FIPSCompliant.EncryptAES(key, key, Host.GUID);
         }
 
-        internal static string ComputeValidationCode(IList<object> parameters)
+        public static string ComputeValidationCode(IList<object> parameters)
         {
             if (parameters != null && parameters.Any())
             {

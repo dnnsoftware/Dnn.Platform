@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.GeneratedImage.ImageQuantization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.UserRequest;
@@ -215,9 +216,9 @@ namespace DotNetNuke.Services.GeneratedImage
 
             var cacheCleared = false;
             var profilepic = context.Request.QueryString["mode"];
+            int userId = -1;
             if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
             {
-                int userId;
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
                 {
                     cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
@@ -252,6 +253,30 @@ namespace DotNetNuke.Services.GeneratedImage
             // Handle Server cache
             if (this.EnableServerCache)
             {
+                if (!this.IsPicVisibleToCurrentUser(userId))
+                {
+                    string message = "Not allowed to see profile picture";
+
+                    if (this.LogSecurity)
+                    {
+                        EventLogController logController = new EventLogController();
+                        var logInfo = new LogInfo
+                        {
+                            LogUserID = PortalSettings.Current.UserId,
+                            LogPortalID = PortalSettings.Current.PortalId,
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                        };
+                        logInfo.AddProperty("DnnImageHandler", message);
+                        logInfo.AddProperty("IP", ipAddress);
+                        logController.AddLog(logInfo);
+                    }
+
+                    context.Response.StatusCode = 403;
+                    context.Response.StatusDescription = "Forbidden";
+                    context.Response.End();
+                    return;
+                }
+
                 if (this.ImageStore.TryTransmitIfContains(cacheId, context.Response))
                 {
                     context.Response.Flush();
@@ -474,6 +499,25 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 image?.Dispose();
             }
+        }
+
+        private bool IsPicVisibleToCurrentUser(int profileUserId)
+        {
+            var settings = PortalController.Instance.GetCurrentSettings();
+            var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
+            if (profileUser == null)
+            {
+                return false;
+            }
+
+            var photoProperty = profileUser.Profile.GetProperty("Photo");
+            if (photoProperty == null)
+            {
+                return false;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            return ProfilePropertyAccess.CheckAccessLevel((PortalSettings)settings, photoProperty, currentUser, profileUser);
         }
     }
 }

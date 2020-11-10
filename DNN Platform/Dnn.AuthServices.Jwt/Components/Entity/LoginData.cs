@@ -12,9 +12,15 @@ namespace Dnn.AuthServices.Jwt.Components.Entity
     [JsonObject]
     public struct LoginData
     {
+        /// <summary>
+        /// The authentication username.
+        /// </summary>
         [JsonProperty("u")]
         public string Username;
 
+        /// <summary>
+        /// The authentication password.
+        /// </summary>
         [JsonProperty("p")]
         public string Password;
     }

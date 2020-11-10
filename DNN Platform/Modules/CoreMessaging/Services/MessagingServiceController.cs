@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using System.Web.Http;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -117,8 +118,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                postData.Body = HttpUtility.UrlDecode(postData.Body);
-                var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, postData.Body, postData.FileIds);
+                var body = HttpUtility.UrlDecode(postData.Body);
+                body = PortalSecurity.Instance.InputFilter(body, PortalSecurity.FilterFlag.NoMarkup);
+                var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, body, postData.FileIds);
                 var message = this.ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
 
