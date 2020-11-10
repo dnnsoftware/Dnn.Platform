@@ -120,6 +120,7 @@ namespace DotNetNuke.Services.Mail
 
             // message
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(mailInfo.Subject, true);
+            mailMessage.Body = mailInfo.Body;
             smtpInfo.Server = smtpInfo.Server.Trim();
             if (SmtpServerRegex.IsMatch(smtpInfo.Server))
             {
