@@ -3077,7 +3077,7 @@ namespace DNNConnect.CKEditorProvider
                 this.Page,
                 this.GetType(),
                 $"notification_{Guid.NewGuid()}",
-                $"ShowNotificationBar('{message}','{type}','{this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/images/")}');",
+                $"ShowNotificationBar('{message}','{type}','{this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/")}');",
                 true);
         }
 
