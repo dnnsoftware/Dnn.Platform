@@ -269,6 +269,7 @@
     <Content Include="Images\indeterminate.gif" />
     <Content Include="Images\manageFolderTypes.png" />
     <Content Include="Images\transparencyBG.jpg" />
+    <Content Include="module.rtl.css" />
     <Content Include="PreviewFieldsControl.ascx" />
     <Content Include="PreviewPanelControl.ascx" />
     <Content Include="EditFolderMapping.ascx" />

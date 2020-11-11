@@ -130,7 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="03.00.00.txt" />
+    <Content Include="admin\personaBar\css\graph.rtl.css" />
+    <Content Include="admin\personaBar\css\main.rtl.css" />
     <Content Include="admin\personaBar\css\personaBarContainer.css" />
+    <EmbeddedResource Include="admin\personaBar\App_LocalResources\PersonaBar.fa-IR.resx" />
+    <EmbeddedResource Include="admin\personaBar\App_LocalResources\SharedResources.fa-IR.resx" />
+    <EmbeddedResource Include="admin\personaBar\App_LocalResources\Tabs.fa-IR.resx" />
     <EmbeddedResource Include="admin\personaBar\App_LocalResources\Tabs.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -158,6 +163,7 @@
     <Content Include="admin\personaBar\images\nav_settings.svg" />
     <Content Include="admin\personaBar\images\x_thin.svg" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.easydropdown.min.js" />
+    <Content Include="admin\personaBar\scripts\main.rtl.js" />
     <Content Include="admin\personaBar\scripts\menuIconLoader.js" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
@@ -183,6 +189,14 @@
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Light.eot" />
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Light.ttf" />
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Light.woff" />
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Light.woff2" />
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Medium.eot" />
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Medium.ttf" />
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Medium.woff" />
+    <None Include="admin\personaBar\css\fonts\IRANSansWeb_Medium.woff2" />
     <None Include="admin\personaBar\css\open-sans.semibold.ttf" />
     <None Include="admin\personaBar\css\Roboto-Regular.ttf" />
     <None Include="app.config" />

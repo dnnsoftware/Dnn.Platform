@@ -14,6 +14,16 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 
+<%--persian-dnnsoftware--%>
+<script runat="server">
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        If System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft Then
+            dnnBreadcrumb.Separator = "<img src=""images/breadcrumb-arrow.rtl.png"">"
+        End If
+    End Sub
+</script>
+<%--persian-dnnsoftware--%>
+
 <dnn:META ID="META1" runat="server" Name="viewport" Content="width=device-width,initial-scale=1" />
 
 <!--[if lt IE 9]>

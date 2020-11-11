@@ -100,6 +100,7 @@
     <Content Include="08.00.00.txt" />
     <Content Include="App_LocalResources\ViewConsole.ascx.resx" />
     <Content Include="console.png" />
+    <Content Include="module.rtl.css" />
     <Content Include="Scripts\jquery.console.js" />
     <Content Include="releaseNotes.txt" />
   </ItemGroup>

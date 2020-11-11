@@ -211,6 +211,7 @@
     </None>
     <None Include="App_LocalResources\View.ascx.resx" />
     <Content Include="Module.build" />
+    <Content Include="module.rtl.css" />
     <Content Include="packages.config" />
     <None Include="SocialGroups.dnn">
       <SubType>Designer</SubType>

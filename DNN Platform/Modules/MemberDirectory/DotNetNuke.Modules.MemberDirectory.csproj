@@ -132,6 +132,7 @@
     <None Include="MemberDirectory.dnn">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="module.rtl.css" />
     <Content Include="packages.config" />
     <Content Include="Module.build" />
     <Content Include="web.config" />
