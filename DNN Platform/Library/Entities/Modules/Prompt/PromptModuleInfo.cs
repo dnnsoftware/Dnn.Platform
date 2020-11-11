@@ -37,6 +37,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
                 TabModuleId = dnnModule.TabModuleID,
                 ModuleDefId = dnnModule.ModuleDefID
             };
+
             // assign command links
             mim.__ModuleId = $"get-module {mim.ModuleId}";
             mim.__ModuleName = $"list-modules --name '{mim.ModuleName}' --all";

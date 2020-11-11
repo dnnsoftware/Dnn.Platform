@@ -63,7 +63,7 @@ namespace DotNetNuke.Prompt
         /// <param name="output"></param>
         public ConsoleResultModel(string output)
         {
-            Output = output;
+            this.Output = output;
         }
     }
 }

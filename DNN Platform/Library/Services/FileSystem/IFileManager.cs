@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.FileSystem
         void WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition);
 
         /// <summary>
-        /// Current user's file upload extension whitelist
+        /// Current user's file upload extension whitelist.
         /// </summary>
         FileExtensionWhitelist WhiteList { get; }
     }

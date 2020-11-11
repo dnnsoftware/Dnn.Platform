@@ -92,10 +92,10 @@ namespace DotNetNuke.Services.Tokens
 
             if (accessLevel != Scope.NoSettings)
             {
-                DeterminePortal(portalSettings);
-                DetermineUser(user);
-                DetermineLanguage(language);
-                DetermineModule(moduleID);
+                this.DeterminePortal(portalSettings);
+                this.DetermineUser(user);
+                this.DetermineLanguage(language);
+                this.DetermineModule(moduleID);
             }
 
             this.PropertySource["date"] = new DateTimePropertyAccess();
@@ -106,24 +106,24 @@ namespace DotNetNuke.Services.Tokens
 
         private void DeterminePortal(PortalSettings portalSettings)
         {
-            PortalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+            this.PortalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
         }
 
         private void DetermineUser(UserInfo user)
         {
-            AccessingUser = HttpContext.Current != null ? (UserInfo)HttpContext.Current.Items["UserInfo"] : new UserInfo();
-            User = user ?? AccessingUser;
+            this.AccessingUser = HttpContext.Current != null ? (UserInfo)HttpContext.Current.Items["UserInfo"] : new UserInfo();
+            this.User = user ?? this.AccessingUser;
         }
 
         private void DetermineLanguage(string language)
         {
-            Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
+            this.Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
         }
 
         private void DetermineModule(int moduleID)
         {
             if (moduleID != Null.NullInteger)
-                ModuleId = moduleID;
+                this.ModuleId = moduleID;
         }
 
         /// <summary>
@@ -132,28 +132,28 @@ namespace DotNetNuke.Services.Tokens
         /// <value>ModuleID (Integer).</value>
         public int ModuleId
         {
-            get => TokenContext.Module?.ModuleID ?? Null.NullInteger;
-            set => TokenContext.Module = GetModule(value);
+            get => this.TokenContext.Module?.ModuleID ?? Null.NullInteger;
+            set => this.TokenContext.Module = this.GetModule(value);
         }
 
         /// <summary>
-        /// Load the module for the Module Token Provider
+        /// Load the module for the Module Token Provider.
         /// </summary>
         /// <param name="moduleId"></param>
-        /// <returns>The populated ModuleInfo or null</returns>
+        /// <returns>The populated ModuleInfo or null.</returns>
         /// <remarks>
         /// This method is called by the Setter of ModuleId.
-        /// Because of this, it may NOT access ModuleId itself (which will still be -1) but use moduleId (lower case)
+        /// Because of this, it may NOT access ModuleId itself (which will still be -1) but use moduleId (lower case).
         /// </remarks>
         private ModuleInfo GetModule(int moduleId)
         {
-            if (moduleId == TokenContext.Module?.ModuleID)
-                return TokenContext.Module;
+            if (moduleId == this.TokenContext.Module?.ModuleID)
+                return this.TokenContext.Module;
 
             if (moduleId <= 0)
                 return null;
 
-            var tab = TokenContext.Tab ?? PortalSettings?.ActiveTab;
+            var tab = this.TokenContext.Tab ?? this.PortalSettings?.ActiveTab;
             if (tab != null && tab.TabID > 0)
                 return ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
 
@@ -165,8 +165,8 @@ namespace DotNetNuke.Services.Tokens
         /// </summary>
         public ModuleInfo ModuleInfo
         {
-            get => TokenContext.Module;
-            set => TokenContext.Module = value;
+            get => this.TokenContext.Module;
+            set => this.TokenContext.Module = value;
         }
 
         /// <summary>
@@ -175,8 +175,8 @@ namespace DotNetNuke.Services.Tokens
         /// <value>PortalSettings oject.</value>
         public PortalSettings PortalSettings
         {
-            get => TokenContext.Portal;
-            set => TokenContext.Portal = value;
+            get => this.TokenContext.Portal;
+            set => this.TokenContext.Portal = value;
         }
 
         /// <summary>
@@ -185,8 +185,8 @@ namespace DotNetNuke.Services.Tokens
         /// <value>UserInfo oject.</value>
         public UserInfo User
         {
-            get => TokenContext.User;
-            set => TokenContext.User = value;
+            get => this.TokenContext.User;
+            set => this.TokenContext.User = value;
         }
 
         /// <summary>

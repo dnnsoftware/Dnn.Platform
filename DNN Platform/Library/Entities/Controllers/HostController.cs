@@ -187,7 +187,7 @@ namespace DotNetNuke.Entities.Controllers
                 var dbProvider = DataProvider.Instance();
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                var settings = GetSettingsFromDatabase();
+                var settings = this.GetSettingsFromDatabase();
                 if (settings.ContainsKey(config.Key))
                 {
                     IConfigurationSetting currentconfig;
@@ -263,7 +263,7 @@ namespace DotNetNuke.Entities.Controllers
         /// <summary>
         /// Gets all settings from the databse.
         /// </summary>
-        /// <returns><see cref="Dictionary{TKey, TValue}"/></returns>
+        /// <returns><see cref="Dictionary{TKey, TValue}"/>.</returns>
         private Dictionary<string, IConfigurationSetting> GetSettingsFromDatabase()
         {
             var dicSettings = new Dictionary<string, IConfigurationSetting>();

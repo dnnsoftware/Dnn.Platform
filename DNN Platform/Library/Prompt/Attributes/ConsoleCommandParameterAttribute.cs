@@ -9,19 +9,19 @@ namespace DotNetNuke.Prompt
     public class ConsoleCommandParameterAttribute : Attribute
     {
         /// <summary>
-        /// The name used in commands to access this parameter
+        /// The name used in commands to access this parameter.
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// Whether the parameter is required
+        /// Whether the parameter is required.
         /// </summary>
         public bool Required { get; set; }
         /// <summary>
-        /// The default value serialized as string
+        /// The default value serialized as string.
         /// </summary>
         public string DefaultValue { get; set; }
         /// <summary>
-        /// The resource key for the description of this parameter
+        /// The resource key for the description of this parameter.
         /// </summary>
         public string DescriptionKey { get; set; }
         /// <summary>
@@ -33,10 +33,10 @@ namespace DotNetNuke.Prompt
         /// <param name="defaultValue"></param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required, string defaultValue)
         {
-            Name = name;
-            Required = required;
-            DefaultValue = defaultValue;
-            DescriptionKey = descriptionKey;
+            this.Name = name;
+            this.Required = required;
+            this.DefaultValue = defaultValue;
+            this.DescriptionKey = descriptionKey;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.

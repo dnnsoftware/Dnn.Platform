@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)
         {
-            var log = (LogInfo)GetLog(logInfo.LogGUID);
+            var log = (LogInfo)this.GetLog(logInfo.LogGUID);
 
             if (returnType == ReturnType.LogInfoObjects)
             {

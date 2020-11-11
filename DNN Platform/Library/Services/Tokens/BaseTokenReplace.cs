@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Tokens
         /// <value>An CultureInfo.</value>
         protected virtual CultureInfo FormatProvider
         {
-            get { return _formatProvider ?? (_formatProvider = Thread.CurrentThread.CurrentUICulture); }
+            get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
@@ -51,13 +51,13 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                return _language;
+                return this._language;
             }
 
             set
             {
-                _language = value;
-                _formatProvider = new CultureInfo(_language);
+                this._language = value;
+                this._formatProvider = new CultureInfo(this._language);
             }
         }
 

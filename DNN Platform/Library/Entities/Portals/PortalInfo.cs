@@ -224,8 +224,8 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalId instead.")]
         public int PortalID
         {
-            get => PortalId;
-            set => PortalId = value;
+            get => this.PortalId;
+            set => this.PortalId = value;
         }
 
         /// <inheritdoc />
@@ -234,8 +234,8 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead.")]
         public int PortalGroupID
         {
-            get => PortalGroupId;
-            set => PortalGroupId = value;
+            get => this.PortalGroupId;
+            set => this.PortalGroupId = value;
         }
 
         /// <inheritdoc />

@@ -692,13 +692,13 @@ namespace DotNetNuke.Entities.Modules
         ///     Note - the base module is not removed unless both the flags are set, indicating
         ///     to delete all instances AND to delete the Base Module.
         /// </remarks>
-        ///     <param name="moduleId">The Id of the module to copy.</param>
-        ///     <param name="tabId">The Id of the current tab.</param>
+        /// <param name="moduleId">The Id of the module to copy.</param>
+        /// <param name="tabId">The Id of the current tab.</param>
         /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted.</param>
-        ///     <param name="fromTabs">An ArrayList of TabItem objects.</param>
-        ///     <param name="includeCurrent">A flag to indicate whether to delete from the current tab
+        /// <param name="fromTabs">An ArrayList of TabItem objects.</param>
+        /// <param name="includeCurrent">A flag to indicate whether to delete from the current tab
         ///         as identified ny tabId.</param>
-        ///     <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself.</param>
+        /// <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself.</param>
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
             var moduleInfo = this.GetModule(moduleId, tabId, false);
@@ -1305,10 +1305,10 @@ namespace DotNetNuke.Entities.Modules
         /// MoveModule moes a Module from one Tab to another including all the
         ///     TabModule settings.
         /// </summary>
-        ///     <param name="moduleId">The Id of the module to move.</param>
-        ///     <param name="fromTabId">The Id of the source tab.</param>
-        ///     <param name="toTabId">The Id of the destination tab.</param>
-        ///     <param name="toPaneName">The name of the Pane on the destination tab where the module will end up.</param>
+        /// <param name="moduleId">The Id of the module to move.</param>
+        /// <param name="fromTabId">The Id of the source tab.</param>
+        /// <param name="toTabId">The Id of the destination tab.</param>
+        /// <param name="toPaneName">The name of the Pane on the destination tab where the module will end up.</param>
         public void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName)
         {
             // Move the module to the Tab

@@ -9,17 +9,12 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationLogoffBase class provides a base class for Authentiication
     /// Logoff controls.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLogoffBase : UserModuleBase
     {
-        private string _AuthenticationType = Null.NullString;
-        private string _RedirectURL = Null.NullString;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationLogoffBase"/> class.
         /// </summary>
@@ -28,27 +23,20 @@ namespace DotNetNuke.Services.Authentication
             this.DependencyProvider = Globals.DependencyProvider;
         }
 
+        /// <summary>
+        /// Fires when a LogOff occurs.
+        /// </summary>
         public event EventHandler LogOff;
 
+        /// <summary>
+        /// Fires when a redirect occurs.
+        /// </summary>
         public event EventHandler Redirect;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the Type of Authentication associated with this control.
         /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string AuthenticationType
-        {
-            get
-            {
-                return this._AuthenticationType;
-            }
-
-            set
-            {
-                this._AuthenticationType = value;
-            }
-        }
+        public string AuthenticationType { get; set; } = Null.NullString;
 
         /// <summary>
         /// Gets the Dependency Provider to resolve registered
@@ -57,8 +45,12 @@ namespace DotNetNuke.Services.Authentication
         /// <value>
         /// The Dependency Service.
         /// </value>
-        protected IServiceProvider DependencyProvider { get; }
+        protected new IServiceProvider DependencyProvider { get; }
 
+        /// <summary>
+        /// Handles the <see cref="LogOff"/> event.
+        /// </summary>
+        /// <param name="a">The event arguments.</param>
         protected virtual void OnLogOff(EventArgs a)
         {
             if (this.LogOff != null)
@@ -67,6 +59,10 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
+        /// <summary>
+        /// Handles the <see cref="Redirect"/> event.
+        /// </summary>
+        /// <param name="a">The event arguments.</param>
         protected virtual void OnRedirect(EventArgs a)
         {
             if (this.Redirect != null)

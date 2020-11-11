@@ -108,7 +108,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether the default Edit Bar is disabled
+        ///   Gets a value indicating whether the default Edit Bar is disabled.
         /// </summary>
         /// <remarks>
         ///   Defaults to false.

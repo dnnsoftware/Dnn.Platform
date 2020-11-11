@@ -12,8 +12,8 @@ namespace DotNetNuke.Prompt
         /// </summary>
         public ConsoleErrorResultModel()
         {
-            IsError = true;
-            Output = Localization.GetString("Prompt_InvalidSyntax", Constants.DefaultPromptResourceFile, true);
+            this.IsError = true;
+            this.Output = Localization.GetString("Prompt_InvalidSyntax", Constants.DefaultPromptResourceFile, true);
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace DotNetNuke.Prompt
         /// <param name="errMessage"></param>
         public ConsoleErrorResultModel(string errMessage)
         {
-            IsError = true;
-            Output = errMessage;
+            this.IsError = true;
+            this.Output = errMessage;
         }
     }
 }
