@@ -117,8 +117,8 @@ namespace DNNConnect.CKEditorProvider.Module
                                      Text = m.ModuleTitle,
                                      ImageUrl =
                                          SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKMI#{m.ModuleID}#INS#")
-                                             ? "../js/ckeditor/4.15.1/images/ModuleHasSetting.png"
-                                             : "../js/ckeditor/4.15.1/images/ModuleNoSetting.png",
+                                             ? "../images/ModuleHasSetting.png"
+                                             : "../images/ModuleNoSetting.png",
                                  };
 
                 if (modulesNodes.ContainsKey(m.TabID))
@@ -150,8 +150,8 @@ namespace DNNConnect.CKEditorProvider.Module
             Func<int, bool> getParentIdCheck = x => x != -1;
             Func<TabInfo, string> getNodeImageURL =
                 x => SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKT#{x.TabID}#")
-                         ? "../js/ckeditor/4.15.1/images/PageHasSetting.png"
-                         : "../js/ckeditor/4.15.1/images/PageNoSetting.png";
+                         ? "../images/PageHasSetting.png"
+                         : "../images/PageNoSetting.png";
 
             TreeViewHelper<int> tvh = new TreeViewHelper<int>();
             tvh.LoadNodes(tabs, portalNode.ChildNodes, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL, getParentIdCheck, modulesNodes);
@@ -361,8 +361,8 @@ namespace DNNConnect.CKEditorProvider.Module
                 Value = "h",
                 ImageUrl =
                                hostSettingsExist
-                                    ? "../js/ckeditor/4.15.1/images/HostHasSetting.png"
-                                    : "../js/ckeditor/4.15.1/images/HostNoSetting.png",
+                                    ? "../images/HostHasSetting.png"
+                                    : "../images/HostNoSetting.png",
                 Expanded = true,
             };
 
@@ -394,8 +394,8 @@ namespace DNNConnect.CKEditorProvider.Module
                 Value = $"p{portal.PortalID}",
                 ImageUrl =
                     portalSettingsExists
-                        ? "../js/ckeditor/4.15.1/images/PortalHasSetting.png"
-                        : "../js/ckeditor/4.15.1/images/PortalNoSetting.png",
+                        ? "../images/PortalHasSetting.png"
+                        : "../images/PortalNoSetting.png",
                 Expanded = this.PortalOnly.Checked,
             };
 
