@@ -1239,7 +1239,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Checks to see whether the specified alias is a customTabAlias for the TabId in result
+        /// Checks to see whether the specified alias is a customTabAlias for the TabId in result.
         /// </summary>
         /// <param name="result"></param>
         /// <param name="httpAlias"></param>
@@ -1251,10 +1251,10 @@ namespace DotNetNuke.Entities.Urls
             bool isCurrentTabCustomTabAlias = false;
             if (customAliasesForTab != null && customAliasesForTab.Count > 0)
             {
-                //see if we have a customAlias for the current CultureCode
+                // see if we have a customAlias for the current CultureCode
                 if (customAliasesForTab.ContainsKey(result.CultureCode))
                 {
-                    //if it is for the current culture, we need to know if it's a primary alias
+                    // if it is for the current culture, we need to know if it's a primary alias
                     var tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(customAliasesForTab[result.CultureCode]);
                     if (tabPortalAlias != null && !tabPortalAlias.IsPrimary)
                     {
@@ -1263,6 +1263,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             // if it's not a custom alias for the current tab, we'll need to change the result
             if (!isCurrentTabCustomTabAlias)
             {
@@ -2195,12 +2196,12 @@ namespace DotNetNuke.Entities.Urls
                     // we should check if the current alias is indeed a valid custom alias for the current tab.
                     if (result.TabId > 0 && result.HttpAlias != result.PrimaryAlias.HTTPAlias && !CheckIfAliasIsCurrentTabCustomTabAlias(ref result, settings))
                     {
-                        //it was an incorrect alias
-                        //try and redirect the alias if the settings allow it
+                        // it was an incorrect alias
+                        // try and redirect the alias if the settings allow it
                         if (RedirectPortalAlias(result.PrimaryAlias.HTTPAlias, ref result, settings))
                         {
-                            //not correct alias for tab : will be redirected
-                            //perform a 301 redirect if one has already been found
+                            // not correct alias for tab : will be redirected
+                            // perform a 301 redirect if one has already been found
                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                             response.RedirectPermanent(result.FinalUrl, false);
                             finished = true;

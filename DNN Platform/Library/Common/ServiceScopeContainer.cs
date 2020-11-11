@@ -19,8 +19,8 @@ namespace DotNetNuke.Common
         /// <param name="shouldDispose">A value indicating whether to dispose the <see cref="ServiceScope"/> when this instance is disposed.</param>
         public ServiceScopeContainer(IServiceScope serviceScope, bool shouldDispose)
         {
-            ServiceScope = serviceScope;
-            ShouldDispose = shouldDispose;
+            this.ServiceScope = serviceScope;
+            this.ShouldDispose = shouldDispose;
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace DotNetNuke.Common
         /// <inheritdoc />
         public void Dispose()
         {
-            if (ShouldDispose)
+            if (this.ShouldDispose)
             {
-                ServiceScope.Dispose();
+                this.ServiceScope.Dispose();
             }
         }
     }

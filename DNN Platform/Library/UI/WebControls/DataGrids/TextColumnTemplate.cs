@@ -96,7 +96,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="container">The parent container (DataGridItem).</param>
+        /// <param name="container">The parent container (DataGridItem).</param>
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -127,7 +127,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the value of the Data Field.
         /// </summary>
-        ///     <param name="container">The parent container (DataGridItem).</param>
+        /// <param name="container">The parent container (DataGridItem).</param>
         /// -----------------------------------------------------------------------------
         private string GetValue(DataGridItem container)
         {

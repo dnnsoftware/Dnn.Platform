@@ -46,41 +46,41 @@ namespace DotNetNuke.Entities.Modules.Prompt
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
-            ParseParameters(this);
+            this.ParseParameters(this);
         }
 
         /// <inheritdoc/>
         public override IConsoleResultModel Run()
         {
-            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+            var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);
 
             int total;
-            var portalDesktopModules = DesktopModuleController.GetPortalDesktopModules(PortalId);
+            var portalDesktopModules = DesktopModuleController.GetPortalDesktopModules(this.PortalId);
 
-            var pageIndex = (Page > 0 ? Page - 1 : 0);
+            var pageIndex = (this.Page > 0 ? this.Page - 1 : 0);
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
-            var pageSize = Max;
+            var pageSize = this.Max;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
-            ModuleName = ModuleName?.Replace("*", "");
-            ModuleTitle = ModuleTitle?.Replace("*", "");
-            var modules = ModuleController.Instance.GetModules(PortalSettings.PortalId)
+            this.ModuleName = this.ModuleName?.Replace("*", "");
+            this.ModuleTitle = this.ModuleTitle?.Replace("*", "");
+            var modules = ModuleController.Instance.GetModules(this.PortalSettings.PortalId)
                     .Cast<ModuleInfo>().Where(ModulePermissionController.CanViewModule);
-            if (!string.IsNullOrEmpty(ModuleName))
-                modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(ModuleName, StringComparison.OrdinalIgnoreCase) >= 0);
-            if (!string.IsNullOrEmpty(ModuleTitle))
-                modules = modules.Where(module => module.ModuleTitle.IndexOf(ModuleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
+            if (!string.IsNullOrEmpty(this.ModuleName))
+                modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(this.ModuleName, StringComparison.OrdinalIgnoreCase) >= 0);
+            if (!string.IsNullOrEmpty(this.ModuleTitle))
+                modules = modules.Where(module => module.ModuleTitle.IndexOf(this.ModuleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
 
-            //Return only deleted modules with matching criteria.
-            if (PageId.HasValue && PageId.Value > 0)
+            // Return only deleted modules with matching criteria.
+            if (this.PageId.HasValue && this.PageId.Value > 0)
             {
-                modules = modules.Where(x => x.TabID == PageId.Value);
+                modules = modules.Where(x => x.TabID == this.PageId.Value);
             }
-            if (Deleted.HasValue)
+            if (this.Deleted.HasValue)
             {
-                modules = modules.Where(module => module.IsDeleted == Deleted);
+                modules = modules.Where(module => module.IsDeleted == this.Deleted);
             }
 
-            //Get distincts.
+            // Get distincts.
             modules = modules.GroupBy(x => x.ModuleID).Select(group => group.First()).OrderBy(x => x.ModuleID);
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;
@@ -92,10 +92,10 @@ namespace DotNetNuke.Entities.Modules.Prompt
                         kvp.Value.DesktopModuleID == moduleDefinition?.DesktopModuleID);
                 });
 
-            var results = modules.Select(x => PromptModuleInfo.FromDnnModuleInfo(x, Deleted));
+            var results = modules.Select(x => PromptModuleInfo.FromDnnModuleInfo(x, this.Deleted));
 
             var totalPages = total / max + (total % max == 0 ? 0 : 1);
-            var pageNo = Page > 0 ? Page : 1;
+            var pageNo = this.Page > 0 ? this.Page : 1;
             return new ConsoleResultModel
             {
                 Data = results,
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
                     PageSize = max
                 },
                 Records = results.Count(),
-                Output = results.Count() == 0 ? LocalizeString("Prompt_NoModules") : ""
+                Output = results.Count() == 0 ? this.LocalizeString("Prompt_NoModules") : ""
             };
         }
     }

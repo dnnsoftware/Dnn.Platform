@@ -18,47 +18,47 @@ namespace DotNetNuke.Services.Tokens
     public class TokenContext
     {
         /// <summary>
-        /// Gets/sets the user object representing the currently accessing user (permission)
+        /// Gets/sets the user object representing the currently accessing user (permission).
         /// </summary>
-        /// <value>UserInfo oject</value>
+        /// <value>UserInfo oject.</value>
         public UserInfo AccessingUser { get; set; }
 
         /// <summary>
-        /// Gets/sets the user object to use for 'User:' token replacement
+        /// Gets/sets the user object to use for 'User:' token replacement.
         /// </summary>
-        /// <value>UserInfo oject</value>
+        /// <value>UserInfo oject.</value>
         public UserInfo User { get; set; }
 
         /// <summary>
-        /// Gets/sets the portal settings object to use for 'Portal:' token replacement
+        /// Gets/sets the portal settings object to use for 'Portal:' token replacement.
         /// </summary>
-        /// <value>PortalSettings oject</value>
+        /// <value>PortalSettings oject.</value>
         public PortalSettings Portal { get; set; }
 
         /// <summary>
-        /// Gets/sets the tab settings object to use for 'Tab:' token replacement
+        /// Gets/sets the tab settings object to use for 'Tab:' token replacement.
         /// </summary>
         public TabInfo Tab { get; set; }
 
         /// <summary>
-        /// Gets/sets the module settings object to use for 'Module:' token replacement
+        /// Gets/sets the module settings object to use for 'Module:' token replacement.
         /// </summary>
         public ModuleInfo Module { get; set; }
 
         /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture
+        /// Gets the Format provider as Culture info from stored language or current culture.
         /// </summary>
-        /// <value>An CultureInfo</value>
+        /// <value>An CultureInfo.</value>
         public CultureInfo Language { get; set; } = Thread.CurrentThread.CurrentUICulture;
 
         /// <summary>
-        /// Gets/sets the current Access Level controlling access to critical user settings
+        /// Gets/sets the current Access Level controlling access to critical user settings.
         /// </summary>
-        /// <value>A TokenAccessLevel as defined above</value>
+        /// <value>A TokenAccessLevel as defined above.</value>
         public Scope CurrentAccessLevel { get; set; }
 
         /// <summary>
-        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages 
+        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages. 
         /// </summary>
         public bool DebugMessages { get; set; }
 

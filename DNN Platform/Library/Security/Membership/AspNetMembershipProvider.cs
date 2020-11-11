@@ -24,6 +24,7 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
+
     // DNN-4016
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;

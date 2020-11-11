@@ -27,14 +27,14 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         public IEnumerable<ICommand> GetCommands()
         {
-            return CommandList().Values;
+            return this.CommandList().Values;
         }
 
         /// <inheritdoc/>
         public IConsoleCommand GetCommand(string commandName)
         {
             commandName = commandName.ToUpper();
-            var allCommands = CommandList();
+            var allCommands = this.CommandList();
             if (allCommands.ContainsKey(commandName))
             {
                 return (IConsoleCommand)Activator.CreateInstance(Type.GetType(allCommands[commandName].TypeFullName));
@@ -86,7 +86,7 @@ namespace DotNetNuke.Prompt
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
             return DataCache.GetCachedData<ICommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => GetCommandHelpInternal(consoleCommand));
+                c => this.GetCommandHelpInternal(consoleCommand));
         }
 
         private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
