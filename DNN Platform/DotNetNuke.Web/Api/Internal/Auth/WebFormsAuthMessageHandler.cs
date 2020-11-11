@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     {
         public string AuthScheme => "Forms";
 
+        /// <inheritdoc/>
         protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             MembershipModule.AuthenticateRequest(request.GetHttpContext(), allowUnknownExtensions: true);
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             return request;
         }
 
+        /// <inheritdoc/>
         protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             return response;

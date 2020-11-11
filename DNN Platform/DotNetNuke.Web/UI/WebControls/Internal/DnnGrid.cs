@@ -31,9 +31,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 return this.PageIndex;
             }
 
-            set { this.PageIndex = value; }
+            set
+            {
+                this.PageIndex = value;
+            }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -43,6 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

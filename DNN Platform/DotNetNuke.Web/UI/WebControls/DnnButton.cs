@@ -52,6 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public bool Localize
         {
             get
@@ -70,8 +71,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
+        /// <inheritdoc/>
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -102,6 +105,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -124,6 +128,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

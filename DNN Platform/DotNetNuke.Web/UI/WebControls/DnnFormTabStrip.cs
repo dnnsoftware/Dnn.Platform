@@ -4,12 +4,12 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     public class DnnFormTabStrip : ListControl
     {
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);

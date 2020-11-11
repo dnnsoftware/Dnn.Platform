@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.Api
 {
-    using System;
     using System.Net.Http;
 
     using DotNetNuke.Entities.Modules;
@@ -22,6 +21,7 @@ namespace DotNetNuke.Web.Api
 
         public SecurityAccessLevel AccessLevel { get; set; }
 
+        /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var activeModule = this.FindModuleInfo(context.ActionContext.Request);

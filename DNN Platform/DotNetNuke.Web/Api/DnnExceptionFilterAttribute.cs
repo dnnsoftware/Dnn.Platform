@@ -12,12 +12,23 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>
+    /// Automatically handles WebAPI exceptions.
+    /// </summary>
     public class DnnExceptionFilterAttribute : ExceptionFilterAttribute
     {
+        /// <summary>
+        /// Gets or sets the message key for exception localization.
+        /// ie: "controller_action.Error".
+        /// </summary>
         public string MessageKey { get; set; }
 
+        /// <summary>
+        /// Gets or sets the resource file used to localize the exception messages.
+        /// </summary>
         public string LocalResourceFile { get; set; }
 
+        /// <inheritdoc/>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             if (actionExecutedContext.Exception != null)

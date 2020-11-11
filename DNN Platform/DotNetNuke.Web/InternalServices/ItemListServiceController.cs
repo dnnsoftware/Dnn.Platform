@@ -13,8 +13,6 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net.Http;
     using System.Runtime.Serialization;
     using System.Web.Http;
-
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.DataStructures;

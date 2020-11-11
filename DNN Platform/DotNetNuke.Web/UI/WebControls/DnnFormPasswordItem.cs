@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -73,6 +72,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this._password;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -85,6 +85,7 @@ namespace DotNetNuke.Web.UI.WebControls
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

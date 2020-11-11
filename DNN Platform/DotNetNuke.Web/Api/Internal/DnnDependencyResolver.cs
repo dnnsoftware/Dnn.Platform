@@ -7,8 +7,6 @@ namespace DotNetNuke.Web.Api.Internal
     using System;
     using System.Collections.Generic;
     using System.Web.Http.Dependencies;
-
-    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Services.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection;
 

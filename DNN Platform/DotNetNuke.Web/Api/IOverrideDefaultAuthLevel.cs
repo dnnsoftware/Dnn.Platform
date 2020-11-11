@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Web.Api
 {
-    using System;
-
     /// <summary>
     /// Implementing this interface on an Auth filter will allow the filter to override the default
     /// Host level auth provided by DnnController.

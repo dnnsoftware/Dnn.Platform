@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Api.Internal
 
     internal class DnnActionFilterProvider : IFilterProvider
     {
+        /// <inheritdoc/>
         public IEnumerable<FilterInfo> GetFilters(HttpConfiguration configuration, HttpActionDescriptor actionDescriptor)
         {
             // Requires.NotNull("configuration", configuration);

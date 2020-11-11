@@ -25,6 +25,7 @@ namespace DotNetNuke.Web.Mvp
 
         public Dictionary<string, string> TabModuleSettings { get; set; }
 
+        /// <inheritdoc/>
         protected override void LoadFromContext()
         {
             base.LoadFromContext();
