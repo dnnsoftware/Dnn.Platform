@@ -46,6 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override ControlCollection Controls
         {
             get
@@ -295,6 +296,7 @@ namespace DotNetNuke.Web.UI.WebControls
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -312,6 +314,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Controls.Add(this._stateControl);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -319,6 +322,7 @@ namespace DotNetNuke.Web.UI.WebControls
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             RegisterClientScript(this.Page, this.Skin);

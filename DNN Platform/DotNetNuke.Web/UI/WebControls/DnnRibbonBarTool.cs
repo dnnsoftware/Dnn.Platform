@@ -106,6 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public virtual string ToolName
         {
             get
@@ -245,6 +246,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -252,12 +254,14 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Controls.Add(this.DnnLink);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();
             this.DnnLinkButton.Click += this.ControlPanelTool_OnClick;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             this.ProcessTool();

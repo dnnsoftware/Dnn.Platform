@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls.Extensions;
@@ -24,6 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         private string _initValue;
         private string _multipleValue;
 
+        /// <inheritdoc/>
         public override string SelectedValue
         {
             get
@@ -77,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -85,6 +86,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         public override void DataBind()
         {
             if (!string.IsNullOrEmpty(this._initValue))
@@ -152,6 +154,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
+        /// <inheritdoc/>
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var postData = postCollection[postDataKey];
@@ -163,6 +166,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return base.LoadPostData(postDataKey, postCollection);
         }
 
+        /// <inheritdoc/>
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (this.TagKey == HtmlTextWriterTag.Select)
@@ -171,6 +175,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             Utilities.ApplySkin(this);

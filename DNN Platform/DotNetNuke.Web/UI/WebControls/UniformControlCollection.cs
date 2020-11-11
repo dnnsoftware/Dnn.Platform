@@ -237,6 +237,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this._owner.Controls.Contains(item);
         }
 
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.EnumerableGetEnumerator();

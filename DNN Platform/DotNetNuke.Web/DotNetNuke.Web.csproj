@@ -167,7 +167,7 @@
     <Compile Include="Api\AuthFilterContext.cs" />
     <Compile Include="Api\AuthorizeAttributeBase.cs" />
     <Compile Include="Api\DnnAuthorizeAttribute.cs" />
-    <Compile Include="Api\DnnExceptionAttribute.cs" />
+    <Compile Include="Api\DnnExceptionFilterAttribute.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
     <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
     <Compile Include="Api\Extensions\StartupExtensions.cs" />

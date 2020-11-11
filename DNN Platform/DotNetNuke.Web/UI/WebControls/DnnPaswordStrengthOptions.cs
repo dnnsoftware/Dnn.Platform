@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    using System;
     using System.Runtime.Serialization;
 
     using DotNetNuke.Entities.Portals;

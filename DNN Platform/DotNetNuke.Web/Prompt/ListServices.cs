@@ -20,8 +20,10 @@ namespace DotNetNuke.Web.Prompt
     [ConsoleCommand("list-services", "Prompt_DebugCategory", "Prompt_ListServices_Description")]
     public class ListServices : ConsoleCommand
     {
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
+        /// <inheritdoc/>
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
@@ -33,6 +35,7 @@ namespace DotNetNuke.Web.Prompt
             this.ParseParameters(this);
         }
 
+        /// <inheritdoc/>
         public override IConsoleResultModel Run()
         {
             if (!this.User.IsSuperUser)

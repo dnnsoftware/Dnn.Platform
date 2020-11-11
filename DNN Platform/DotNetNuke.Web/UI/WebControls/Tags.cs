@@ -7,14 +7,12 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections.Specialized;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;
 
     public class Tags : WebControl, IPostBackEventHandler, IPostBackDataHandler
@@ -96,6 +94,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override void RenderControl(HtmlTextWriter writer)
         {
             // Render Outer Div
@@ -206,6 +205,7 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.RenderEndTag();
         }
 
+        /// <inheritdoc/>
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this._Tags = postCollection[postDataKey];
@@ -213,10 +213,12 @@ namespace DotNetNuke.Web.UI.WebControls
             return true;
         }
 
+        /// <inheritdoc/>
         public void RaisePostDataChangedEvent()
         {
         }
 
+        /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
             switch (eventArgument)
@@ -244,6 +246,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

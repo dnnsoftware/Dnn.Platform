@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -30,6 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);

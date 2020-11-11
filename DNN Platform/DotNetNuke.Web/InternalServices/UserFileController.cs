@@ -10,8 +10,6 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-
-    using DotNetNuke.Common;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;

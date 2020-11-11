@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.Api
 {
-    using System;
     using System.Collections.Generic;
     using System.Web.Routing;
 

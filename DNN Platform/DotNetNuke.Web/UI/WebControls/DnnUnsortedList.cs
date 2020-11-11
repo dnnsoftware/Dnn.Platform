@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    using System;
     using System.ComponentModel;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -50,11 +49,13 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ListItems.Add(listItem);
         }
 
+        /// <inheritdoc/>
         protected override sealed ControlCollection CreateControlCollection()
         {
             return new TypedControlCollection<DnnUnsortedListItem>(this);
         }
 
+        /// <inheritdoc/>
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);

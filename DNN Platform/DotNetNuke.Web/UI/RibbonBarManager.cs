@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.UI
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Text.RegularExpressions;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -20,7 +19,6 @@ namespace DotNetNuke.Web.UI
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;

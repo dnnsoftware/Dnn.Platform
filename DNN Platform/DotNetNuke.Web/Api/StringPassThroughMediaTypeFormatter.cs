@@ -38,16 +38,19 @@ namespace DotNetNuke.Web.Api
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanReadType(Type type)
         {
             return type == typeof(string);
         }
 
+        /// <inheritdoc/>
         public override bool CanWriteType(Type type)
         {
             return type == typeof(string);
         }
 
+        /// <inheritdoc/>
         public override Task<object> ReadFromStreamAsync(Type type, Stream readStream, System.Net.Http.HttpContent content, IFormatterLogger formatterLogger)
         {
             using (var reader = new StreamReader(readStream))
@@ -60,6 +63,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
+        /// <inheritdoc/>
         public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, System.Net.Http.HttpContent content, TransportContext transportContext)
         {
             using (var writer = new StreamWriter(writeStream))
