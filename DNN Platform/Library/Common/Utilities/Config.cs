@@ -496,7 +496,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets a provider by it's type and name.
+        /// Gets a provider by its type and name.
         /// </summary>
         /// <param name="type">The provider type.</param>
         /// <param name="name">The provider name.</param>
@@ -646,7 +646,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Save an XML document to the application root folder.
         /// </summary>
-        /// <param name="xmlDoc">The configuraiton as an XML document.</param>
+        /// <param name="xmlDoc">The configuration as an XML document.</param>
         /// <param name="filename">The file name to save to.</param>
         /// <returns>An emptry string upon success or the error message upon failure.</returns>
         public static string Save(XmlDocument xmlDoc, string filename)
