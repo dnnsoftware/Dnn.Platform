@@ -197,7 +197,7 @@ namespace DotNetNuke.Data
 
             try
             {
-                this.ExecuteNonQuery(this.ConnectionString, "GetDatabaseVersion");
+                this.ExecuteNonQuery("GetDatabaseVersion");
             }
             catch (SqlException ex)
             {
