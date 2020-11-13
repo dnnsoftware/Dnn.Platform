@@ -87,6 +87,7 @@
     <Compile Include="HttpModules\EditBarModule.cs" />
     <Compile Include="Items\AddExistingModuleMenu.cs" />
     <Compile Include="Items\AddModuleMenu.cs" />
+    <Compile Include="Items\AddModuleNowMenu.cs" />
     <Compile Include="Items\ExitEditModeMenu.cs" />
     <Compile Include="Items\PageSettingsMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -112,6 +113,8 @@
     <None Include="editBar\css\SourceCodePro-Regular.ttf.woff" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf.woff" />
+    <Content Include="editBar\css\AddModuleNow.css" />
+    <Content Include="editBar\scripts\AddModuleNow.js" />
     <Content Include="Module.build">
       <SubType>Designer</SubType>
     </Content>
@@ -232,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="editBar\App_LocalResources\AddExistingModule.resx" />
+    <EmbeddedResource Include="editBar\App_LocalResources\AddModuleNow.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\Common.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\EditBar.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\AddModule.resx" />
