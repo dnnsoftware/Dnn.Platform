@@ -1,12 +1,14 @@
-﻿namespace Dnn.EditBar.UI.Items
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace Dnn.EditBar.UI.Items
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Web.Components.Controllers;
@@ -14,13 +16,15 @@
     [Serializable]
     public class AddModuleNowMenu : BaseMenuItem
     {
+        private const string LocalResourceFile = "~/DesktopModules/Admin/Dnn.EditBar/App_LocalResources/AddModuleNow.resx";
+
         public override string Name { get; } = "AddModuleNow";
 
         public override string Text
         {
             get
             {
-                return "Add Module Now";
+                return DotNetNuke.Services.Localization.Localization.GetString("AddModuleNow", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
             }
         }
 
@@ -56,7 +60,8 @@
                     panes += $"<option value=\"{paneName}\"{selected}>{paneName}</options>";
                 }
 
-                return $"<div><select id=\"menu-AddModuleNow-module\">{string.Join(string.Empty, moduleList)}</select><select id=\"menu-AddModuleNow-pane\">{panes}</select><button href=\"javascript: void(0);\">{this.Text}</button></div>";
+                var toolTip = DotNetNuke.Services.Localization.Localization.GetString("AddModuleNow.Tooltip", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+                return $"<div><select id=\"menu-AddModuleNow-module\">{string.Join(string.Empty, moduleList)}</select><select id=\"menu-AddModuleNow-pane\">{panes}</select><button href=\"javascript: void(0);\">{this.Text}</button></div><div class=\"submenuEditBar\">{toolTip}</div>";
             }
         }
 
