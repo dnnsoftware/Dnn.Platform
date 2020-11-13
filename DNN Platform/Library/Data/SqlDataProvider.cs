@@ -21,7 +21,13 @@ namespace DotNetNuke.Data
         private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
 
         /// <inheritdoc/>
-        public override bool IsConnectionValid => CanConnect();
+        public override bool IsConnectionValid
+        {
+            get
+            {
+                return CanConnect(this.ConnectionString, this.DatabaseOwner, this.ObjectQualifier);
+            }
+        }
 
         /// <inheritdoc/>
         public override Dictionary<string, string> Settings
@@ -191,13 +197,13 @@ namespace DotNetNuke.Data
             return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
-        private bool CanConnect()
+        private static bool CanConnect(string connectionString, string owner, string qualifier)
         {
             bool connectionValid = true;
 
             try
             {
-                this.ExecuteNonQuery(this.ConnectionString, "GetDatabaseVersion");
+                _dbConnectionProvider.ExecuteReader(connectionString, CommandType.StoredProcedure, 0, owner + qualifier + "GetDatabaseVersion");
             }
             catch (SqlException ex)
             {
