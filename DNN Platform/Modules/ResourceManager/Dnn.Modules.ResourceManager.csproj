@@ -94,7 +94,6 @@
     <EmbeddedResource Include="App_LocalResources\EditFolderMapping.ascx.fa-IR.resx" />
     <EmbeddedResource Include="App_LocalResources\ResourceManager.fa-IR.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.fa-IR.resx" />
-    <EmbeddedResource Include="App_LocalResources\View.ascx.fa-IR.resx" />
     <Content Include="Data\00.00.01.SqlDataProvider" />
     <Content Include="Data\Uninstall.SqlDataProvider" />
     <Compile Include="Components\Common\Utils.cs" />
@@ -161,6 +160,7 @@
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <Content Include="App_LocalResources\View.ascx.fa-IR.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="EditFolderMapping.ascx" />
