@@ -1,3 +1,125 @@
 ﻿.ReactModalPortal .modal-header {
     padding: 0;
 }
+
+.rtl .rm-container #Assets-panel #assets-header.socialpanelheader .right-container {
+    right: unset;
+    left: 0;
+}
+
+.rtl .rm-container #Assets-panel .rm-button.secondary {
+    margin-right: unset;
+    margin-left: 10px;
+}
+
+.rtl .rm-container #Assets-panel .assets-body .header-container .rm-folder-picker-refresh-sync-container .rm-refresh-sync-dropdown {
+    border-left: 1px solid #C8C8C8;
+}
+
+.rtl .dnn-dropdown .collapsible-label .dropdown-prepend > strong {
+    margin-right: unset;
+    margin-left: 5px;
+}
+
+.rtl .dnn-folder-selector:after {
+    right: unset;
+    left: 20px;
+}
+
+
+.rtl .dnn-dropdown .dropdown-icon {
+    right: unset;
+    left: 10px;
+}
+
+.rtl .ReactCollapse--content div div div {
+    margin-right: 0px !important;
+}
+
+.rtl .rm-container #Assets-panel .assets-body .header-container a.search-button {
+    left: 15px;
+    right: unset;
+}
+
+.rlt .rm-container #Assets-panel .assets-body .header-container input[type='search'].assets-input {
+    padding-left: 29px;
+    padding-right: unset;
+}
+
+.rtl .rm-container #Assets-panel .breadcrumbs-container > div:not(:last-child)::after {
+    left: -10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    right: unset;
+    transform: rotate(180deg);
+}
+
+.rtl .rm-container #Assets-panel .breadcrumbs-container > div:last-child {
+    padding-left: 10px;
+    margin-right: 5px;
+    padding-right: 0;
+    margin-left: 0;
+    font-family: inherit;
+}
+
+.rtl .rm-container #Assets-panel .breadcrumbs-container > div:first-child:not(:last-child) {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.rtl .rm-container #Assets-panel .breadcrumbs-container > div:not(:first-child):not(:last-child) {
+    padding-right: 10px;
+    margin-left: 10px;
+}
+
+.rtl .rm-container #Assets-panel .breadcrumbs-container div > span {
+    padding-right: 3px;
+    padding-left: 10px;
+}
+
+.rtl .rm-container #Assets-panel .breadcrumbs-container div {
+    font-family: inherit;
+}
+
+.rtl .rm-container #Assets-panel .rm-card.selected > div.rm-actions, .rm-container #Assets-panel .rm-card:hover > div.rm-actions {
+    right: unset;
+    left: 0;
+}
+
+.rtl .rm-container #Assets-panel .rm-card > div.rm-actions {
+    left: -32px;
+    right: unset !important;
+}
+
+.rtl .rm-container #Assets-panel .rm-card.selected > div.rm-actions, .rm-container #Assets-panel .rm-card:hover > div.rm-actions {
+    right: unset !important;
+    left: 0;
+}
+
+.rtl .rm-container #Assets-panel .rm-card.selected > div.rm-actions, .rm-container #Assets-panel .rm-card:hover > div.rm-actions {
+    left: 0;
+    right: unset !important;
+}
+
+.rtl .rm-container #Assets-panel div.details-icon {
+    float: right !important;
+    margin: 0 0 25px 15px !important;
+}
+
+.rtl .rm-container #Assets-panel div.details-field + div.line-break {
+    clear: left;
+}
+
+.rtl .rm-container #Assets-panel .rm-card-container {
+    float: right;
+    margin-left: 3%;
+    margin-right: 0;
+}
+
+.rtl .rm-container #Assets-panel div.save {
+    float: right;
+}
+
+.rtl .rm-container #Assets-panel div.cancel {
+    float: right;
+}
